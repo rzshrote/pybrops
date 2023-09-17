@@ -1,21 +1,14 @@
 import numpy
+import pandas
 import pytest
 import copy
-from numpy.random import Generator
-from numpy.random import PCG64
 
-from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_concrete_method
 
 from pybrops.breed.prot.pt.TruePhenotyping import TruePhenotyping
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.popgen.ptdf.PhenotypeDataFrame import is_PhenotypeDataFrame
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -204,22 +197,22 @@ def ptprot(gpmod):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(TruePhenotyping)
+    assert_docstring(TruePhenotyping)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(TruePhenotyping, "__init__")
+    assert_concrete_method(TruePhenotyping, "__init__")
 
 def test_phenotype_is_concrete():
-    generic_assert_concrete_method(TruePhenotyping, "phenotype")
+    assert_concrete_method(TruePhenotyping, "phenotype")
 
 def test_set_h2_is_concrete():
-    generic_assert_concrete_method(TruePhenotyping, "set_h2")
+    assert_concrete_method(TruePhenotyping, "set_h2")
 
 def test_set_H2_is_concrete():
-    generic_assert_concrete_method(TruePhenotyping, "set_H2")
+    assert_concrete_method(TruePhenotyping, "set_H2")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -238,11 +231,11 @@ def test_gpmod_fset(ptprot, gpmod):
     assert id(ptprot.gpmod) == id(a)
 
 def test_gpmod_fdel(ptprot):
-    del ptprot.gpmod
-    assert not hasattr(ptprot, "_gpmod")
+    with pytest.raises(AttributeError):
+        del ptprot.gpmod
 
 def test_var_err_fget(ptprot):
-    assert numpy.all(ptprot.var_err == 1.0)
+    assert numpy.all(ptprot.var_err == 0.0)
 
 def test_var_err_fset(ptprot):
     with pytest.raises(AttributeError):
@@ -256,18 +249,18 @@ def test_var_err_fdel(ptprot):
 ###################### Test concrete method functionality ######################
 ################################################################################
 def test_phenotype(ptprot, dpgmat, gpmod):
-    df = ptprot.phenotype(dpgmat, gpmod)
-    assert is_PhenotypeDataFrame(df)
+    # conduct true phenotyping
+    df = ptprot.phenotype(dpgmat)
 
-    expected_ncol = gpmod.ntrait
-    if dpgmat.taxa is not None:
-        expected_ncol += 1
-    if dpgmat.taxa_grp is not None:
-        expected_ncol += 1
-    assert df.ncol == expected_ncol
+    # check if output is a pandas dataframe
+    assert isinstance(df, pandas.DataFrame)
 
-    expected_nrow = dpgmat.ntaxa
-    assert df.nrow == expected_nrow
+    # check that the number of rows == number of individuals
+    assert len(df) == dpgmat.ntaxa
+
+    # check that the number of columns == 2 + number of traits
+    # two other columns are taxa and taxa_grp
+    assert len(df.columns) == (2 + gpmod.ntrait)
 
 def test_set_h2(ptprot, dpgmat):
     with pytest.raises(AttributeError):

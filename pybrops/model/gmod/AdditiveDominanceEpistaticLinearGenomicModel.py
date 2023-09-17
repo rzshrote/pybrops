@@ -3,10 +3,10 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic additive, dominance, and epistatic effects.
 """
 
-from typing import Any
+from abc import ABCMeta, abstractmethod
 from pybrops.model.gmod.AdditiveDominanceLinearGenomicModel import AdditiveDominanceLinearGenomicModel
 
-class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomicModel):
+class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomicModel,metaclass=ABCMeta):
     """
     The AdditiveDominanceEpistaticLinearGenomicModel class represents an interface for a
     Multivariate Multiple Linear Regression model.
@@ -63,71 +63,32 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
     - ``t`` is the number of traits
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class AdditiveDominanceEpistaticLinearGenomicModel.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(AdditiveDominanceEpistaticLinearGenomicModel, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
-
-    def u_i():
-        doc = "Epistatic genomic marker effects."
-        def fget(self):
-            """Get epistatic genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set epistatic genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete epistatic genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    u_i = property(**u_i())
+    @property
+    @abstractmethod
+    def u_i(self) -> object:
+        """Epistatic genomic marker effects."""
+        raise NotImplementedError("property is abstract")
+    @u_i.setter
+    @abstractmethod
+    def u_i(self, value: object) -> None:
+        """Set epistatic genomic marker effects"""
+        raise NotImplementedError("property is abstract")
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_AdditiveDominanceEpistaticLinearGenomicModel(v: Any) -> bool:
-    """
-    Determine whether an object is a AdditiveDominanceEpistaticLinearGenomicModel.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a AdditiveDominanceEpistaticLinearGenomicModel object instance.
-    """
-    return isinstance(v, AdditiveDominanceEpistaticLinearGenomicModel)
-
-def check_is_AdditiveDominanceEpistaticLinearGenomicModel(v: Any, vname: str) -> None:
+def check_is_AdditiveDominanceEpistaticLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type AdditiveDominanceEpistaticLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, AdditiveDominanceEpistaticLinearGenomicModel):

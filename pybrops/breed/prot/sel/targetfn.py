@@ -4,6 +4,12 @@ Module containing functions for generating target allele frequencies.
 
 import numpy
 
+__all__ = [
+    "target_positive",
+    "target_negative",
+    "target_stabilizing",
+]
+
 def target_positive(u_a: numpy.ndarray) -> numpy.ndarray:
     """
     Generate target allele frequencies, selecting for only beneficial alleles.

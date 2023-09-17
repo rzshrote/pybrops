@@ -3,10 +3,18 @@ Module defining interfaces and associated error checking routines for matrices
 storing genic variance estimates.
 """
 
-from typing import Any
-from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
+__all__ = [
+    "GenicVarianceMatrix",
+    "check_is_GenicVarianceMatrix",
+]
 
-class GenicVarianceMatrix(SquareTaxaMatrix):
+from abc import ABCMeta, abstractmethod
+from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
+from pybrops.core.mat.TraitMatrix import TraitMatrix
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+
+class GenicVarianceMatrix(SquareTaxaMatrix,TraitMatrix,metaclass=ABCMeta):
     """
     An abstract class for additive genetic variance matrices.
 
@@ -14,33 +22,48 @@ class GenicVarianceMatrix(SquareTaxaMatrix):
         1) Estimation of genic variance from a genomic model.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
+
+    ############################ Object Properties #############################
+
+    ######## Expected parental genome contributions ########
+    @property
+    @abstractmethod
+    def epgc(self) -> tuple:
+        """Expected parental genome contribution to the offspring."""
+        raise NotImplementedError("property is abstract")
+    @epgc.setter
+    @abstractmethod
+    def epgc(self, value: tuple) -> None:
+        """Set a tuple of the expected parental genome contributions."""
+        raise NotImplementedError("property is abstract")    
+
+    ############################## Object Methods ##############################
+    @abstractmethod
+    def to_csv(
             self, 
-            **kwargs: dict
+            fname: str
         ) -> None:
         """
-        Constructor for the abstract class GenicVarianceMatrix.
+        Write a genic variance matrix to a CSV file.
 
         Parameters
         ----------
-        kwargs : dict
-            Additional keyword arguments. Used for cooperative inheritance.
-            Dictionary passing unused arguments to the parent class constructor.
+        fname : str
+            Filename to which to write.
         """
-        super(GenicVarianceMatrix, self).__init__(**kwargs)
+        raise NotImplementedError("method is abstract")
 
-    ############################################################################
-    ############################ Object Properties #############################
-    ############################################################################
-
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
     @classmethod
-    def from_gmod(cls, gmod, pgmat, nprogeny):
+    @abstractmethod
+    def from_gmod(
+            cls, 
+            gmod: GenomicModel, 
+            pgmat: PhasedGenotypeMatrix, 
+            nprogeny: int,
+            **kwargs: dict
+        ):
         """
         Estimate genetic variances from a GenomicModel.
 
@@ -53,42 +76,26 @@ class GenicVarianceMatrix(SquareTaxaMatrix):
         nprogeny : int
             Number of progeny to simulate per cross to estimate genetic
             variance.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------
-        out : GeneticVarianceMatrix
+        out : GenicVarianceMatrix
             A matrix of genic variance estimations.
         """
         raise NotImplementedError("method is abstract")
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_GenicVarianceMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a ``GenicVarianceMatrix``.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``GenicVarianceMatrix`` object instance.
-    """
-    return isinstance(v, GenicVarianceMatrix)
-
-def check_is_GenicVarianceMatrix(v: Any, vname: str) -> None:
+def check_is_GenicVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``GenicVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.

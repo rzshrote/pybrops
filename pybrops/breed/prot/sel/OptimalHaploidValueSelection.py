@@ -1,702 +1,436 @@
 """
-Module implementing selection protocols for optimal haploid value selection.
+Module implementing selection protocols for maximum mean expected heterozygosity selection.
 """
 
-import types
+__all__ = [
+    "OptimalHaploidValueSelectionMixin",
+    "OptimalHaploidValueBinarySelection",
+    "OptimalHaploidValueIntegerSelection",
+    "OptimalHaploidValueRealSelection",
+    "OptimalHaploidValueSubsetSelection",
+]
+
+from abc import ABCMeta
+from numbers import Integral, Real
+from typing import Callable, Optional, Union
+
 import numpy
+from numpy.random import Generator, RandomState
+import pandas
 
-from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
-from pybrops.algo.opt.SteepestAscentSetHillClimber import SteepestAscentSetHillClimber
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.core.error import check_is_bool
-from pybrops.core.error import check_is_callable
-from pybrops.core.error import check_is_dict
-from pybrops.core.error import check_is_int
-from pybrops.core.error import check_is_gt
-from pybrops.core.error import check_is_str
-from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.random.prng import global_prng
-from pybrops.core.util.arrayix import triuix
-from pybrops.core.util.arrayix import triudix
-from pybrops.core.util.haplo import calc_haplobin
-from pybrops.core.util.haplo import calc_haplobin_bounds
-from pybrops.core.util.haplo import calc_nhaploblk_chrom
+from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
+from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueBinarySelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueIntegerSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueRealSelectionProblem
+from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
+from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
+from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
+from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProtocol
+from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtocol
+from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
+from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm
+from pybrops.opt.algo.IntegerOptimizationAlgorithm import IntegerOptimizationAlgorithm
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_bool
+from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
+from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm
+from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
-class OptimalHaploidValueSelection(SelectionProtocol):
+class OptimalHaploidValueSelectionMixin(metaclass=ABCMeta):
     """
-    Class implementing selection protocols for optimal haploid value selection.
-
-    # TODO: add formulae for methodology.
+    Semi-abstract class for Optimal Haploid Value (OHV) Selection with constraints.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self,
-            nconfig: int, 
-            nparent: int, 
-            ncross: int, 
-            nprogeny: int, 
-            nhaploblk: int,
-            unique_parents = True, 
-            method = "single",
-            objfn_trans = None, 
-            objfn_trans_kwargs = None, 
-            objfn_wt = 1.0,
-            ndset_trans = None, 
-            ndset_trans_kwargs = None, 
-            ndset_wt = 1.0,
-            rng = None, 
-            soalgo = None, 
-            moalgo = None,
-            **kwargs : dict
-        ):
-        """
-        Constructor for Optimal Haploid Value Selection (OHV).
+    # __init__() CANNOT be defined to be classified as a Mixin class
 
-        Parameters
-        ----------
-        nconfig : int
-            Number of cross configurations to consider.
-
-            Examples:
-
-            - 20 two-way crosses would be: ``nconfig = 20``
-            - 20 three way crosses would be: ``nconfig = 20``
-        nparent : int
-            Number of parents to per configuration.
-
-            Example:
-
-            - 20 two-way crosses would be: ``nparent = 2``
-            - 20 three-way crosses would be: ``nparent = 3``
-        ncross : int
-            Number of crosses to perform per configuration.
-        nprogeny : int
-            Number of progeny to derive from each cross configuration.
-        nhaploblk : int
-            Number of haplotype blocks to segment the genome into.
-        unique_parents : bool, default = True
-            Whether to allow force unique parents or not.
-            If ``True``, all parents in the mating configuration must be unique.
-            If ``False``, non-unique parents are allowed. In this scenario,
-            self-fertilization is considered as a viable option.
-        method : str
-            Method of selecting parents.
-
-            +--------------+---------------------------------------------------+
-            | Method       | Description                                       |
-            +==============+===================================================+
-            | ``"single"`` | OHV is transformed to a single objective and      |
-            |              | optimization is done on the transformed function. |
-            |              | This is done using the ``trans`` function         |
-            |              | provided::                                        |
-            |              |                                                   |
-            |              |    optimize : objfn_trans(MOGS)                   |
-            +--------------+---------------------------------------------------+
-            | ``"pareto"`` | OHV is transformed by a transformation function,  |
-            |              | but NOT reduced to a single objective. The Pareto |
-            |              | frontier for this transformed function is mapped  |
-            |              | using a multi-objective genetic algorithm.        |
-            |              |                                                   |
-            |              | Objectives are scaled to :math:`[0,1]` and a      |
-            |              | vector orthogonal to the hyperplane defined by    |
-            |              | the extremes of the front is drawn starting at    |
-            |              | the point defined by ``ndset_trans``. The closest |
-            |              | point on the Pareto frontier to the orthogonal    |
-            |              | vector is selected.                               |
-            +--------------+---------------------------------------------------+
-        objfn_trans : function, callable, None
-        objfn_trans_kwargs : dict, None
-        objfn_wt : float, numpy.ndarray
-        ndset_trans : function, callable, None
-        ndset_trans_kwargs : dict, None
-        ndset_wt : float
-        soalgo : OptimizationAlgorithm
-            Single-objective optimization algorithm to optimize the objective
-            function. If ``None``, use a SteepestAscentSetHillClimber with the
-            following parameters::
-
-                soalgo = SteepestAscentSetHillClimber(
-                    rng = self.rng  # PRNG source
-                )
-        moalgo : OptimizationAlgorithm
-            Multi-objective optimization algorithm to optimize the objective
-            functions. If ``None``, use a NSGA2SetGeneticAlgorithm with the
-            following parameters::
-
-                moalgo = NSGA2SetGeneticAlgorithm(
-                    ngen = 250,     # number of generations to evolve
-                    mu = 100,       # number of parents in population
-                    lamb = 100,     # number of progeny to produce
-                    M = 1.5,        # algorithm crossover genetic map length
-                    rng = self.rng  # PRNG source
-                )
-        rng : numpy.random.Generator, numpy.random.RandomState
-        """
-        super(OptimalHaploidValueSelection, self).__init__(**kwargs)
-
-        # error checks and assignments (ORDER DEPENDENT!!!)
-        self.nconfig = nconfig
-        self.nparent = nparent
-        self.ncross = ncross
-        self.nprogeny = nprogeny
-        self.nhaploblk = nhaploblk
-        self.unique_parents = unique_parents
-        self.method = method
-        self.objfn_trans = objfn_trans
-        self.objfn_trans_kwargs = objfn_trans_kwargs # property replaces None with {}
-        self.objfn_wt = objfn_wt
-        self.ndset_trans = ndset_trans
-        self.ndset_trans_kwargs = ndset_trans_kwargs # property replaces None with {}
-        self.ndset_wt = ndset_wt
-        self.rng = rng  # property replaces None with pybrops.core.random
-        # soalgo, moalgo MUST GO AFTER 'rng'; properties provide default if None
-        self.soalgo = soalgo
-        self.moalgo = moalgo
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
-    def nconfig():
-        doc = "The nconfig property."
-        def fget(self):
-            return self._nconfig
-        def fset(self, value):
-            check_is_int(value, "nconfig")      # must be int
-            check_is_gt(value, "nconfig", 0)    # int must be >0
-            self._nconfig = value
-        def fdel(self):
-            del self._nconfig
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nconfig = property(**nconfig())
+    @property
+    def ntrait(self) -> Integral:
+        """Number of traits to expect from matrix inputs."""
+        return self._ntrait
+    @ntrait.setter
+    def ntrait(self, value: Integral) -> None:
+        """Set number of traits to expect."""
+        check_is_Integral(value, "ntrait")
+        check_is_gt(value, "ntrait", 0)
+        self._ntrait = value
 
-    def nparent():
-        doc = "The nparent property."
-        def fget(self):
-            return self._nparent
-        def fset(self, value):
-            check_is_int(value, "nparent")      # must be int
-            check_is_gt(value, "nparent", 0)    # int must be >0
-            self._nparent = value
-        def fdel(self):
-            del self._nparent
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nparent = property(**nparent())
+    @property
+    def nhaploblk(self) -> Integral:
+        """Number of haplotype blocks to consider."""
+        return self._nhaploblk
+    @nhaploblk.setter
+    def nhaploblk(self, value: Integral) -> None:
+        """Set number of haplotype blocks to consider."""
+        check_is_Integral(value, "nhaploblk")
+        check_is_gt(value, "nhaploblk", 0)
+        self._nhaploblk = value
+    
+    @property
+    def unique_parents(self) -> bool:
+        """Whether parents should be unique."""
+        return self._unique_parents
+    @unique_parents.setter
+    def unique_parents(self, value: bool) -> None:
+        """Set whether parents should be unique."""
+        check_is_bool(value, "unique_parents")
+        self._unique_parents = value
 
-    def ncross():
-        doc = "The ncross property."
-        def fget(self):
-            return self._ncross
-        def fset(self, value):
-            check_is_int(value, "ncross")       # must be int
-            check_is_gt(value, "ncross", 0)     # int must be >0
-            self._ncross = value
-        def fdel(self):
-            del self._ncross
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ncross = property(**ncross())
+class OptimalHaploidValueBinarySelection(OptimalHaploidValueSelectionMixin,BinarySelectionProtocol):
+    """
+    Class defining Optimal Haploid Value (OHV) Selection for a binary search spaces.
+    """
 
-    def nprogeny():
-        doc = "The nprogeny property."
-        def fget(self):
-            return self._nprogeny
-        def fset(self, value):
-            check_is_int(value, "nprogeny")     # must be int
-            check_is_gt(value, "nprogeny", 0)   # int must be >0
-            self._nprogeny = value
-        def fdel(self):
-            del self._nprogeny
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nprogeny = property(**nprogeny())
-
-    def nhaploblk():
-        doc = "The nhaploblk property."
-        def fget(self):
-            return self._nhaploblk
-        def fset(self, value):
-            check_is_int(value, "nhaploblk")    # must be int
-            check_is_gt(value, "nhaploblk", 0)  # int must be >0
-            self._nhaploblk = value
-        def fdel(self):
-            del self._nhaploblk
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nhaploblk = property(**nhaploblk())
-
-    def unique_parents():
-        doc = "The unique_parents property."
-        def fget(self):
-            return self._unique_parents
-        def fset(self, value):
-            check_is_bool(value, "unique_parents")
-            self._unique_parents = value
-        def fdel(self):
-            del self._unique_parents
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    unique_parents = property(**unique_parents())
-
-    def method():
-        doc = "The method property."
-        def fget(self):
-            return self._method
-        def fset(self, value):
-            check_is_str(value, "method")       # must be string
-            value = value.lower()               # convert to lowercase
-            options = ("single", "pareto")      # method options
-            if value not in options:            # if not method supported
-                raise ValueError(               # raise ValueError
-                    "Unsupported 'method'. Options are: " +
-                    ", ".join(map(str, options))
-                )
-            self._method = value
-        def fdel(self):
-            del self._method
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    method = property(**method())
-
-    def objfn_trans():
-        doc = "The objfn_trans property."
-        def fget(self):
-            return self._objfn_trans
-        def fset(self, value):
-            if value is not None:                       # if given object
-                check_is_callable(value, "objfn_trans") # must be callable
-            self._objfn_trans = value
-        def fdel(self):
-            del self._objfn_trans
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    objfn_trans = property(**objfn_trans())
-
-    def objfn_trans_kwargs():
-        doc = "The objfn_trans_kwargs property."
-        def fget(self):
-            return self._objfn_trans_kwargs
-        def fset(self, value):
-            if value is None:                           # if given None
-                value = {}                              # set default to empty dict
-            check_is_dict(value, "objfn_trans_kwargs")  # check is dict
-            self._objfn_trans_kwargs = value
-        def fdel(self):
-            del self._objfn_trans_kwargs
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    objfn_trans_kwargs = property(**objfn_trans_kwargs())
-
-    def objfn_wt():
-        doc = "The objfn_wt property."
-        def fget(self):
-            return self._objfn_wt
-        def fset(self, value):
-            self._objfn_wt = value
-        def fdel(self):
-            del self._objfn_wt
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    objfn_wt = property(**objfn_wt())
-
-    def ndset_trans():
-        doc = "The ndset_trans property."
-        def fget(self):
-            return self._ndset_trans
-        def fset(self, value):
-            if value is not None:                       # if given object
-                check_is_callable(value, "ndset_trans") # must be callable
-            self._ndset_trans = value
-        def fdel(self):
-            del self._ndset_trans
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ndset_trans = property(**ndset_trans())
-
-    def ndset_trans_kwargs():
-        doc = "The ndset_trans_kwargs property."
-        def fget(self):
-            return self._ndset_trans_kwargs
-        def fset(self, value):
-            if value is None:                           # if given None
-                value = {}                              # set default to empty dict
-            check_is_dict(value, "ndset_trans_kwargs")  # check is dict
-            self._ndset_trans_kwargs = value
-        def fdel(self):
-            del self._ndset_trans_kwargs
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ndset_trans_kwargs = property(**ndset_trans_kwargs())
-
-    def ndset_wt():
-        doc = "The ndset_wt property."
-        def fget(self):
-            return self._ndset_wt
-        def fset(self, value):
-            self._ndset_wt = value
-        def fdel(self):
-            del self._ndset_wt
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ndset_wt = property(**ndset_wt())
-
-    def rng():
-        doc = "The rng property."
-        def fget(self):
-            return self._rng
-        def fset(self, value):
-            # if None, use default random number generator
-            if value is None:
-                value = global_prng
-            check_is_Generator_or_RandomState(value, "rng")# check is numpy.Generator
-            self._rng = value
-        def fdel(self):
-            del self._rng
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    rng = property(**rng())
-
-    def soalgo():
-        doc = "The soalgo property."
-        def fget(self):
-            return self._soalgo
-        def fset(self, value):
-            if value is None:
-                value = SteepestAscentSetHillClimber(
-                    rng = self.rng  # PRNG source
-                )
-            self._soalgo = value
-        def fdel(self):
-            del self._soalgo
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    soalgo = property(**soalgo())
-
-    def moalgo():
-        doc = "The moalgo property."
-        def fget(self):
-            return self._moalgo
-        def fset(self, value):
-            if value is None:
-                value = NSGA2SetGeneticAlgorithm(
-                    ngen = 250,     # number of generations to evolve
-                    mu = 100,       # number of parents in population
-                    lamb = 100,     # number of progeny to produce
-                    M = 1.5,        # algorithm crossover genetic map length
-                    rng = self.rng  # PRNG source
-                )
-            self._moalgo = value
-        def fdel(self):
-            del self._moalgo
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    moalgo = property(**moalgo())
-
-    ############################################################################
-    ########################## Private Object Methods ##########################
-    ############################################################################
-    def _calc_hmat(self, gmat, mod):
+    ########################## Special Object Methods ##########################
+    def __init__(
+            self, 
+            ntrait: Integral,
+            nhaploblk: Integral,
+            unique_parents: bool,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[BinaryOptimizationAlgorithm] = None,
+            moalgo: Optional[BinaryOptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
         """
-        Calculate a haplotype matrix from a genome matrix and model.
+        Constructor for the concrete class OptimalHaploidValueBinarySelection.
 
         Parameters
         ----------
-        gmat : PhasedGenotypeMatrix
-            A genome matrix.
-        mod : DenseAdditiveLinearGenomicModel
-            A genomic prediction model.
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
 
-        Returns
-        -------
-        hmat : numpy.ndarray
-            A haplotype effect matrix of shape ``(m,n,b,t)``.
-        """
-        mat         = gmat.mat              # get genotypes
-        genpos      = gmat.vrnt_genpos      # get genetic positions
-        chrgrp_stix = gmat.vrnt_chrgrp_stix # get chromosome start indices
-        chrgrp_spix = gmat.vrnt_chrgrp_spix # get chromosome stop indices
-        chrgrp_len  = gmat.vrnt_chrgrp_len  # get chromosome marker lengths
-        u           = mod.u_a               # get regression coefficients
+        nhaploblk : Integral
+            Number of haplotype blocks to consider.
+    
+        unique_parents : bool
+            Whether parents should be unique.
 
-        if (chrgrp_stix is None) or (chrgrp_spix is None):
-            raise RuntimeError("markers are not sorted by chromosome position")
+        ncross : Integral
+            Number of cross configurations to consider.
+        
+        nparent : Integral
+            Number of parents per cross configuration.
+        
+        nmating : Integral, numpy.ndarray
+            Number of matings per configuration.
 
-        # get number of chromosomes
-        nchr = len(chrgrp_stix)
+            If ``nmating`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nmating`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+        
+        nprogeny : Integral, numpy.ndarray
+            Number of progeny to derive from each mating event.
 
-        if self.nhaploblk < nchr:
-            raise RuntimeError("number of haplotype blocks is less than the number of chromosomes")
+            If ``nprogeny`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nprogeny`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
 
-        # calculate number of marker blocks to assign to each chromosome
-        nblk = calc_nhaploblk_chrom(self.nhaploblk, genpos, chrgrp_stix, chrgrp_spix)
+        nobj : Integral
+            Number of optimization objectives when constructing a 
+            ``SelectionProblem``. This is equivalent to the vector length 
+            returned by the ``obj_trans`` function. Must be ``Integral`` greater 
+            than 0.
+        
+        obj_wt : numpy.ndarray, Real, None
+            Objective function weights. Weights from this vector are applied 
+            to objective function values via the Hadamard product. If values 
+            are ``1.0`` or ``-1.0``, this can be used to specify minimizing 
+            and maximizing objectives, respectively.
 
-        # ensure there are enough markers per chromosome
-        if numpy.any(nblk > chrgrp_len):
-            raise RuntimeError(
-                "number of haplotype blocks assigned to a chromosome greater than number of available markers"
-            )
+            If ``obj_wt`` is ``numpy.ndarray``, then the array must be of shape 
+            ``(nobj,)``.
 
-        # calculate haplotype bins
-        hbin = calc_haplobin(nblk, genpos, chrgrp_stix, chrgrp_spix)
+            If ``obj_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``.
 
-        # define shape
-        # (m,n,b,t)
-        s = (mat.shape[0], mat.shape[1], self.nhaploblk, u.shape[1])
+            If ``obj_wt`` is ``None``, then the value ``1.0`` is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``. This assumes that all 
+            objectives are to be minimized.
+        
+        obj_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the objective space. This transformation function must have the 
+            following signature::
 
-        # allocate haplotype matrix
-        # (m,n,b,t)
-        hmat = numpy.empty(s, dtype = u.dtype)
-
-        # get boundary indices
-        hstix, hspix, hlen = calc_haplobin_bounds(hbin)
-
-        # OPTIMIZE: perhaps eliminate one loop using dot function
-        # fill haplotype matrix
-        for i in range(hmat.shape[3]):                          # for each trait
-            for j,(st,sp) in enumerate(zip(hstix,hspix)):       # for each haplotype block
-                hmat[:,:,j,i] = mat[:,:,st:sp].dot(u[st:sp,i])  # take dot product and fill
-
-        return hmat
-
-    def _calc_xmap(self, ntaxa):
-        """
-        Calculate the cross map.
-
-        Parameters
-        ----------
-        ntaxa : int
-            Number of taxa.
-
-        Returns
-        -------
-        out : numpy.ndarray
-            An array of shape ``(s,d)`` containing cross map indices.
-
+                def obj_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``s`` is the number of elements in the upper triangle, including
-              or not including the diagonal (depending on ``unique_parents``).
-            - ``d`` is the number of parents in the cross.
-        """
-        if self.unique_parents:         # if we want unique parents
-            return numpy.array(         # create a numpy.ndarray
-                list(                   # convert to list
-                    triudix(            # generator for indices without diagonal
-                        ntaxa,          # number of taxa
-                        self.nparent    # number of parents
-                    )
-                )
-            )
-        else:                           # otherwise we don't want unique parents
-            return numpy.array(         # create a numpy.ndarray
-                list(                   # convert to list
-                    triuix(             # generator for indices with diagonal
-                        ntaxa,          # number of taxa
-                        self.nparent    # number of parents
-                    )
-                )
-            )
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
-        """
-        Select parents individuals for breeding.
+            If ``obj_trans`` is ``None``, then default to an identity objective 
+            transformation function.
 
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotypes (unphased most likely)
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        miscout : dict, None, default = None
-            Pointer to a dictionary for miscellaneous user defined output.
-            If ``dict``, write to dict (may overwrite previously defined fields).
-            If ``None``, user defined output is not calculated or stored.
+        obj_trans_kwargs : dict
+            Keyword arguments for the latent space to objective space 
+            transformation function. 
+
+            If `obj_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        nineqcv : Integral, None
+            Number of inequality constraint violation functions. This is 
+            equivalent to the vector length returned by the ``ineqcv_trans`` 
+            function. Must be ``Integral`` greater than or equal to zero.
+
+            If ``nineqcv`` is ``None``, then set to zero.
+
+        ineqcv_wt : numpy.ndarray, None
+            Inequality constraint violation function weights. Weights from this 
+            vector are applied to inequality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``ineqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(nineqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        ineqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the inequality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def ineqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``ineqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+        
+        ineqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to inequality constraint 
+            violation transformation function.
+        
+            If `ineqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        neqcv : Integral, None
+            Number of equality constraint violations. This is equivalent to the 
+            vector length returned by the ``eqcv_trans`` function. Must be 
+            ``Integral`` greater than or equal to zero.
+        
+            If ``neqcv`` is ``None``, then set to zero.
+
+        eqcv_wt : numpy.ndarray, None
+            Equality constraint violation function weights. Weights from this 
+            vector are applied to equality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``eqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(neqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        eqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the equality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def eqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``eqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+
+        eqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to equality constraint 
+            violation transformation function.
+
+            If `eqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        ndset_wt : Real, None
+            Nondominated set weight. The weight from this function is applied 
+            to outputs from ``ndset_trans``. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing objectives, 
+            respectively.
+
+            If ``ndset_wt`` is ``None``, then it is set to the default value of ``1.0``.
+            This assumes that the objective is to be minimized.
+
+        ndset_trans : Callable, None
+            A function which transforms values from the non-dominated set 
+            objective space to the single-objective space. This transformation 
+            function must have the following signature::
+
+                def ndset_trans(
+                        mat: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``mat`` is a ``numpy.ndarray`` containing a point coordinate array 
+                of shape ``(npt, nobj)`` where ``npt`` is the number of points 
+                and ``nobj`` is the number of objectives (dimensions). This 
+                array contains input points for calculating the distance between 
+                a point to the vector ``vec_wt``.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``ndset_trans`` is ``None``, then default to a transformation 
+            function calculating the distance between a weight vector and 
+            provided points
+
+        ndset_trans_kwargs : dict, None
+            Nondominated set transformation function keyword arguments.
+
+            If ``ndset_trans_kwargs`` is ``None``, then default to defaults for 
+            the default ``ndset_trans`` function::
+
+                ndset_trans_kwargs = {
+                    "obj_wt": numpy.repeat(1.0, nobj),
+                    "vec_wt": numpy.repeat(1.0, nobj)
+                }
+
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number source.
+
+            If ``rng`` is ``None``, default to the global random number 
+            generator.
+
+        soalgo : BinaryOptimizationAlgorithm, None
+            Single-objective optimization algorithm.
+
+            If ``soalgo`` is ``None``, then use a default single-objective 
+            optimization algorithm.
+
+        moalgo : BinaryOptimizationAlgorithm, None
+            Multi-objective opimization algorithm.
+
+            If ``moalgo`` is ``None``, then use a default multi-objective 
+            optimization algorithm.
+
         kwargs : dict
             Additional keyword arguments.
-
-        Returns
-        -------
-        out : tuple
-            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.
-
-            Where:
-
-            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
-            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
-              pattern. Each index corresponds to an individual in ``pgmat``.
-            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
-              crosses to perform per cross pattern.
-            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
-              progeny to generate per cross.
         """
-        # get selection parameters
-        nconfig = self.nconfig
-        nparent = self.nparent
-        ncross = self.ncross
-        nprogeny = self.nprogeny
-        objfn_wt = self.objfn_wt
-        ndset_trans = self.ndset_trans
-        ndset_trans_kwargs = self.ndset_trans_kwargs
-        ndset_wt = self.ndset_wt
-        method = self.method
-
-        # single-objective method: objfn_trans returns a single value for each
-        # selection configuration
-        if method == "single":
-            # get vectorized objective function
-            objfn = self.objfn(
-                pgmat = pgmat,
-                gmat = gmat,
-                ptdf = ptdf,
-                bvmat = bvmat,
-                gpmod = gpmod,
-                t_cur = t_cur,
-                t_max = t_max,
-                **kwargs
-            )
-
-            # calculate xmap
-            xmap = self._calc_xmap(pgmat.ntaxa)
-
-            # get all OHVs for each configuration
-            # (s,)
-            ohv = [objfn([i]) for i in range(len(xmap))]
-
-            # convert to numpy.ndarray
-            ohv = numpy.array(ohv)
-
-            # multiply the objectives by objfn_wt to transform to maximizing function
-            # (n,) * scalar -> (n,)
-            ohv = ohv * objfn_wt
-
-            # get indices of top nconfig OHVs
-            sel = ohv.argsort()[::-1][:nconfig]
-
-            # shuffle indices for random mating
-            self.rng.shuffle(sel)
-
-            # convert 'sel' to parent selections (ordered)
-            # (kd,)
-            sel = xmap[sel,:].flatten()
-
-            # get GEBVs for reference
-            misc = {"ohv" : ohv}
-
-            # add optimization details to miscellaneous output
-            if miscout is not None:     # if miscout was provided
-                miscout.update(misc)    # add dict to dict
-
-            return pgmat, sel, ncross, nprogeny
-
-        # multi-objective method: objfn_trans returns a multiple values for each
-        # selection configuration
-        elif method == "pareto":
-            # get the pareto frontier
-            frontier, sel_config, misc = self.pareto(
-                pgmat = pgmat,
-                gmat = gmat,
-                ptdf = ptdf,
-                bvmat = bvmat,
-                gpmod = gpmod,
-                t_cur = t_cur,
-                t_max = t_max,
-                nparent = nparent,
-                **kwargs
-            )
-
-            # get scores for each of the points along the pareto frontier
-            score = ndset_wt * ndset_trans(frontier, **ndset_trans_kwargs)
-
-            # get index of maximum score
-            ix = score.argmax()
-
-            # add fields to misc
-            misc["frontier"] = frontier
-            misc["sel_config"] = sel_config
-
-            return pgmat, sel_config[ix], ncross, nprogeny, misc
-
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
-        """
-        Return a parent selection objective function.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Phased genotype matrix.
-        gmat : GenotypeMatrix
-            Not used by this function.
-        ptdf : PhenotypeDataFrame
-            Not used by this function.
-        bvmat : BreedingValueMatrix
-            Not used by this function.
-        gpmod : LinearGenomicModel
-            Linear genomic prediction model.
-        """
-        ntaxa = pgmat.ntaxa                     # get number of taxa
-        xmap = self._calc_xmap(ntaxa)           # (s,p) get the cross map
-        mat = self._calc_hmat(pgmat, gpmod)     # (m,n,b,t) get haplotype matrix
-        ploidy = pgmat.ploidy                   # (scalar) get ploidy
-        trans = self.objfn_trans                # get transformation function
-        trans_kwargs = self.objfn_trans_kwargs  # get transformation function keyword arguments
-
-        # copy objective function and modify default values
-        # this avoids using functools.partial and reduces function execution time.
-        outfn = types.FunctionType(
-            self.objfn_static.__code__,                 # byte code pointer
-            self.objfn_static.__globals__,              # global variables
-            None,                                       # new name for the function
-            (xmap, mat, ploidy, trans, trans_kwargs),   # default values for arguments
-            self.objfn_static.__closure__               # closure byte code pointer
+        # order dependent assignments
+        # make assignments from Mixin class first
+        self.ntrait = ntrait
+        self.nhaploblk = nhaploblk
+        self.unique_parents = unique_parents
+        # make assignments from BinarySelectionProtocol second
+        super(OptimalHaploidValueBinarySelection, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans,
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            rng = rng,
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
         )
 
-        return outfn
+    ############################ Object Properties #############################
 
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, **kwargs: dict):
+    ############################## Object Methods ##############################
+
+    ########## Optimization Problem Construction ###########
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: pandas.DataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> BinarySelectionProblem:
         """
-        Return a vectorized selection objective function for the provided datasets.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Input genome matrix.
-        gmat : GenotypeMatrix
-            Not used by this function.
-        ptdf : PhenotypeDataFrame
-            Not used by this function.
-        bvmat : BreedingValueMatrix
-            Not used by this function.
-        gpmod : LinearGenomicModel
-            Linear genomic prediction model.
-
-        Returns
-        -------
-        outfn : function
-            A vectorized selection objective function for the specified problem.
-        """
-        # get selection parameters
-        mat = self._calc_hmat(pgmat, gpmod)     # (m,n,b,t) get haplotype matrix
-        xmap = self._calc_xmap()                # (s,p) get the cross map
-        ploidy = pgmat.ploidy                   # (scalar) get ploidy
-        trans = self.objfn_trans                # get transformation function
-        trans_kwargs = self.objfn_trans_kwargs  # get transformation function keyword arguments
-
-        # copy objective function and modify default values
-        # this avoids using functools.partial and reduces function execution time.
-        outfn = types.FunctionType(
-            self.objfn_vec_static.__code__,             # byte code pointer
-            self.objfn_vec_static.__globals__,          # global variables
-            None,                                       # new name for the function
-            (xmap, mat, ploidy, trans, trans_kwargs),   # default values for arguments
-            self.objfn_vec_static.__closure__           # closure byte code pointer
-        )
-
-        return outfn
-
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, **kwargs: dict):
-        """
-        Calculate a Pareto frontier for objectives.
+        Create an optimization problem definition using provided inputs.
 
         Parameters
         ----------
@@ -704,7 +438,7 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             Genomes
         gmat : GenotypeMatrix
             Genotypes
-        ptdf : PhenotypeDataFrame
+        ptdf : pandas.DataFrame
             Phenotype dataframe
         bvmat : BreedingValueMatrix
             Breeding value matrix
@@ -714,225 +448,1328 @@ class OptimalHaploidValueSelection(SelectionProtocol):
             Current generation number.
         t_max : int
             Maximum (deadline) generation number.
-        miscout : dict, None, default = None
-            Pointer to a dictionary for miscellaneous user defined output.
-            If ``dict``, write to dict (may overwrite previously defined fields).
-            If ``None``, user defined output is not calculated or stored.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        out : tuple
-            A tuple containing two objects ``(frontier, sel_config)``.
-
-            Where:
-
-            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing
-              Pareto frontier points.
-            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing
-              parent selection decisions for each corresponding point in the
-              Pareto frontier.
-
-            Where:
-
-            - ``q`` is the number of points in the frontier.
-            - ``v`` is the number of objectives for the frontier.
-            - ``k`` is the number of search space decision variables.
+        out : BinarySelectionProblem
+            An optimization problem definition.
         """
-        # get selection parameters
-        nparent = self.nparent
-        objfn_wt = self.objfn_wt
-        moalgo = self.moalgo
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
+        # get the cross map (inefficient)
+        xmap = OptimalHaploidValueBinarySelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            self.nparent,
+            self.unique_parents
+        )
 
-        # get number of taxa
-        ntaxa = pgmat.ntaxa
+        # get decision space parameters
+        decn_space_lower = numpy.repeat(0, len(xmap))
+        decn_space_upper = numpy.repeat(1, len(xmap))
+        decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
-        # create objective function
-        objfn = self.objfn(
+        # construct problem
+        prob = OptimalHaploidValueBinarySelectionProblem.from_pgmat_gpmod(
+            nparent = self.nparent,
+            nhaploblk = self.nhaploblk,
+            unique_parents = self.unique_parents,
             pgmat = pgmat,
-            gmat = gmat,
-            ptdf = ptdf,
-            bvmat = bvmat,
             gpmod = gpmod,
-            t_cur = t_cur,
-            t_max = t_max,
+            ndecn = len(xmap),
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = self.nobj,
+            obj_wt = self.obj_wt,
+            obj_trans = self.obj_trans,
+            obj_trans_kwargs = self.obj_trans_kwargs,
+            nineqcv = self.nineqcv,
+            ineqcv_wt = self.ineqcv_wt,
+            ineqcv_trans = self.ineqcv_trans,
+            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
+            eqcv_wt = self.eqcv_wt,
+            eqcv_trans = self.eqcv_trans,
+            eqcv_trans_kwargs = self.eqcv_trans_kwargs
+        )
+
+        return prob
+
+    ############## Pareto Frontier Functions ###############
+    # inherit pareto() implementation
+
+    ################# Selection Functions ##################
+    # inherit select() implementation
+
+class OptimalHaploidValueIntegerSelection(OptimalHaploidValueSelectionMixin,IntegerSelectionProtocol):
+    """
+    Class defining Optimal Haploid Value (OHV) Selection for a integer search spaces.
+    """
+
+    ########################## Special Object Methods ##########################
+    def __init__(
+            self, 
+            ntrait: Integral,
+            nhaploblk: Integral,
+            unique_parents: bool,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[IntegerOptimizationAlgorithm] = None,
+            moalgo: Optional[IntegerOptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for the concrete class OptimalHaploidValueIntegerSelection.
+
+        Parameters
+        ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        nhaploblk : Integral
+            Number of haplotype blocks to consider.
+    
+        unique_parents : bool
+            Whether parents should be unique.
+
+        ncross : Integral
+            Number of cross configurations to consider.
+        
+        nparent : Integral
+            Number of parents per cross configuration.
+        
+        nmating : Integral, numpy.ndarray
+            Number of matings per configuration.
+
+            If ``nmating`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nmating`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+        
+        nprogeny : Integral, numpy.ndarray
+            Number of progeny to derive from each mating event.
+
+            If ``nprogeny`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nprogeny`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+
+        nobj : Integral
+            Number of optimization objectives when constructing a 
+            ``SelectionProblem``. This is equivalent to the vector length 
+            returned by the ``obj_trans`` function. Must be ``Integral`` greater 
+            than 0.
+        
+        obj_wt : numpy.ndarray, Real, None
+            Objective function weights. Weights from this vector are applied 
+            to objective function values via the Hadamard product. If values 
+            are ``1.0`` or ``-1.0``, this can be used to specify minimizing 
+            and maximizing objectives, respectively.
+
+            If ``obj_wt`` is ``numpy.ndarray``, then the array must be of shape 
+            ``(nobj,)``.
+
+            If ``obj_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``.
+
+            If ``obj_wt`` is ``None``, then the value ``1.0`` is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``. This assumes that all 
+            objectives are to be minimized.
+        
+        obj_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the objective space. This transformation function must have the 
+            following signature::
+
+                def obj_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``obj_trans`` is ``None``, then default to an identity objective 
+            transformation function.
+
+        obj_trans_kwargs : dict
+            Keyword arguments for the latent space to objective space 
+            transformation function. 
+
+            If `obj_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        nineqcv : Integral, None
+            Number of inequality constraint violation functions. This is 
+            equivalent to the vector length returned by the ``ineqcv_trans`` 
+            function. Must be ``Integral`` greater than or equal to zero.
+
+            If ``nineqcv`` is ``None``, then set to zero.
+
+        ineqcv_wt : numpy.ndarray, None
+            Inequality constraint violation function weights. Weights from this 
+            vector are applied to inequality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``ineqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(nineqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        ineqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the inequality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def ineqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``ineqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+        
+        ineqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to inequality constraint 
+            violation transformation function.
+        
+            If `ineqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        neqcv : Integral, None
+            Number of equality constraint violations. This is equivalent to the 
+            vector length returned by the ``eqcv_trans`` function. Must be 
+            ``Integral`` greater than or equal to zero.
+        
+            If ``neqcv`` is ``None``, then set to zero.
+
+        eqcv_wt : numpy.ndarray, None
+            Equality constraint violation function weights. Weights from this 
+            vector are applied to equality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``eqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(neqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        eqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the equality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def eqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``eqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+
+        eqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to equality constraint 
+            violation transformation function.
+
+            If `eqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        ndset_wt : Real, None
+            Nondominated set weight. The weight from this function is applied 
+            to outputs from ``ndset_trans``. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing objectives, 
+            respectively.
+
+            If ``ndset_wt`` is ``None``, then it is set to the default value of ``1.0``.
+            This assumes that the objective is to be minimized.
+
+        ndset_trans : Callable, None
+            A function which transforms values from the non-dominated set 
+            objective space to the single-objective space. This transformation 
+            function must have the following signature::
+
+                def ndset_trans(
+                        mat: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``mat`` is a ``numpy.ndarray`` containing a point coordinate array 
+                of shape ``(npt, nobj)`` where ``npt`` is the number of points 
+                and ``nobj`` is the number of objectives (dimensions). This 
+                array contains input points for calculating the distance between 
+                a point to the vector ``vec_wt``.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``ndset_trans`` is ``None``, then default to a transformation 
+            function calculating the distance between a weight vector and 
+            provided points
+
+        ndset_trans_kwargs : dict, None
+            Nondominated set transformation function keyword arguments.
+
+            If ``ndset_trans_kwargs`` is ``None``, then default to defaults for 
+            the default ``ndset_trans`` function::
+
+                ndset_trans_kwargs = {
+                    "obj_wt": numpy.repeat(1.0, nobj),
+                    "vec_wt": numpy.repeat(1.0, nobj)
+                }
+
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number source.
+
+            If ``rng`` is ``None``, default to the global random number 
+            generator.
+
+        soalgo : IntegerOptimizationAlgorithm, None
+            Single-objective optimization algorithm.
+
+            If ``soalgo`` is ``None``, then use a default single-objective 
+            optimization algorithm.
+
+        moalgo : IntegerOptimizationAlgorithm, None
+            Multi-objective opimization algorithm.
+
+            If ``moalgo`` is ``None``, then use a default multi-objective 
+            optimization algorithm.
+
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # order dependent assignments
+        # make assignments from Mixin class first
+        self.ntrait = ntrait
+        self.nhaploblk = nhaploblk
+        self.unique_parents = unique_parents
+        # make assignments from IntegerSelectionProtocol second
+        super(OptimalHaploidValueIntegerSelection, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans,
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            rng = rng,
+            soalgo = soalgo,
+            moalgo = moalgo,
             **kwargs
         )
 
-        # use multi-objective optimization to approximate Pareto front.
-        frontier, sel_config, misc = moalgo.optimize(
-            objfn = objfn,                  # objective function
-            k = nparent,                    # vector length to optimize (sspace^k)
-            sspace = numpy.arange(ntaxa),   # search space options
-            objfn_wt = objfn_wt             # weights to apply to each objective
+    ############################ Object Properties #############################
+
+    ############################## Object Methods ##############################
+
+    ########## Optimization Problem Construction ###########
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: pandas.DataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> IntegerSelectionProblem:
+        """
+        Create an optimization problem definition using provided inputs.
+
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : pandas.DataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : IntegerSelectionProblem
+            An optimization problem definition.
+        """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
+        # get the cross map (inefficient)
+        xmap = OptimalHaploidValueIntegerSelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            self.nparent,
+            self.unique_parents
         )
 
-        # handle miscellaneous output
-        if miscout is not None:     # if miscout is provided
-            miscout.update(misc)    # add 'misc' to 'miscout', overwriting as needed
+        # get decision space parameters
+        decn_space_lower = numpy.repeat(0, len(xmap))
+        decn_space_upper = numpy.repeat(numpy.sum(self.nmating * self.nprogeny), len(xmap))
+        decn_space = numpy.stack([decn_space_lower,decn_space_upper])
 
-        # TODO: fix sel_config output format: currently in xmap indices format.
-        return frontier, sel_config
+        # construct problem
+        prob = OptimalHaploidValueIntegerSelectionProblem.from_pgmat_gpmod(
+            nparent = self.nparent,
+            nhaploblk = self.nhaploblk,
+            unique_parents = self.unique_parents,
+            pgmat = pgmat,
+            gpmod = gpmod,
+            ndecn = len(xmap),
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = self.nobj,
+            obj_wt = self.obj_wt,
+            obj_trans = self.obj_trans,
+            obj_trans_kwargs = self.obj_trans_kwargs,
+            nineqcv = self.nineqcv,
+            ineqcv_wt = self.ineqcv_wt,
+            ineqcv_trans = self.ineqcv_trans,
+            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
+            eqcv_wt = self.eqcv_wt,
+            eqcv_trans = self.eqcv_trans,
+            eqcv_trans_kwargs = self.eqcv_trans_kwargs
+        )
 
-    ############################################################################
-    ############################## Static Methods ##############################
-    ############################################################################
-    @staticmethod
-    def objfn_static(sel, xmap, mat, ploidy, trans, kwargs):
+        return prob
+
+    ############## Pareto Frontier Functions ###############
+    # inherit pareto() implementation
+
+    ################# Selection Functions ##################
+    # inherit select() implementation
+
+class OptimalHaploidValueRealSelection(OptimalHaploidValueSelectionMixin,RealSelectionProtocol):
+    """
+    Class defining Optimal Haploid Value (OHV) Selection for real search spaces.
+    """
+
+    ########################## Special Object Methods ##########################
+    def __init__(
+            self, 
+            ntrait: Integral,
+            nhaploblk: Integral,
+            unique_parents: bool,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[RealOptimizationAlgorithm] = None,
+            moalgo: Optional[RealOptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
         """
-        Score a population of individuals based on Optimal Haploid Value
-        Selection (OHV). Scoring for OHV is defined as the sum of maximum
-        haploid breeding values obtainable from a population.
-
-        OHV selects the ``q`` individuals with the largest OHVs.
+        Constructor for the concrete class OptimalHaploidValueRealSelection.
 
         Parameters
         ----------
-        sel : numpy.ndarray
-            A cross selection indices array of shape ``(k,)``.
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
 
+        nhaploblk : Integral
+            Number of haplotype blocks to consider.
+    
+        unique_parents : bool
+            Whether parents should be unique.
+
+        ncross : Integral
+            Number of cross configurations to consider.
+        
+        nparent : Integral
+            Number of parents per cross configuration.
+        
+        nmating : Integral, numpy.ndarray
+            Number of matings per configuration.
+
+            If ``nmating`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nmating`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+        
+        nprogeny : Integral, numpy.ndarray
+            Number of progeny to derive from each mating event.
+
+            If ``nprogeny`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nprogeny`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+
+        nobj : Integral
+            Number of optimization objectives when constructing a 
+            ``SelectionProblem``. This is equivalent to the vector length 
+            returned by the ``obj_trans`` function. Must be ``Integral`` greater 
+            than 0.
+        
+        obj_wt : numpy.ndarray, Real, None
+            Objective function weights. Weights from this vector are applied 
+            to objective function values via the Hadamard product. If values 
+            are ``1.0`` or ``-1.0``, this can be used to specify minimizing 
+            and maximizing objectives, respectively.
+
+            If ``obj_wt`` is ``numpy.ndarray``, then the array must be of shape 
+            ``(nobj,)``.
+
+            If ``obj_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``.
+
+            If ``obj_wt`` is ``None``, then the value ``1.0`` is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``. This assumes that all 
+            objectives are to be minimized.
+        
+        obj_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the objective space. This transformation function must have the 
+            following signature::
+
+                def obj_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``k`` is the number of crosses to select.
-        xmap : numpy.ndarray
-            A cross selection index map array of shape ``(s,p)``.
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
+            If ``obj_trans`` is ``None``, then default to an identity objective 
+            transformation function.
+
+        obj_trans_kwargs : dict
+            Keyword arguments for the latent space to objective space 
+            transformation function. 
+
+            If `obj_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        nineqcv : Integral, None
+            Number of inequality constraint violation functions. This is 
+            equivalent to the vector length returned by the ``ineqcv_trans`` 
+            function. Must be ``Integral`` greater than or equal to zero.
+
+            If ``nineqcv`` is ``None``, then set to zero.
+
+        ineqcv_wt : numpy.ndarray, None
+            Inequality constraint violation function weights. Weights from this 
+            vector are applied to inequality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``ineqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(nineqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        ineqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the inequality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def ineqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``s`` is the size of the sample space (number of cross
-              combinations for ``d`` parents).
-            - ``p`` is the number of parents.
-        mat : numpy.ndarray
-            A haplotype effect matrix of shape ``(m,n,b,t)``.
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
+            If ``ineqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+        
+        ineqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to inequality constraint 
+            violation transformation function.
+        
+            If `ineqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        neqcv : Integral, None
+            Number of equality constraint violations. This is equivalent to the 
+            vector length returned by the ``eqcv_trans`` function. Must be 
+            ``Integral`` greater than or equal to zero.
+        
+            If ``neqcv`` is ``None``, then set to zero.
+
+        eqcv_wt : numpy.ndarray, None
+            Equality constraint violation function weights. Weights from this 
+            vector are applied to equality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``eqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(neqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        eqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the equality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def eqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
-            - ``n`` is the number of individuals.
-            - ``b`` is the number of haplotype blocks.
-            - ``t`` is the number of traits.
-        ploidy : int
-            Ploidy level of the species.
-            In many cases, this should be equal to ``m`` from the ``mat``
-            parameter. In cases where data is unphased (``m == 1``), then this
-            parameter should be different from ``m``.
-        trans : function or callable
-            A transformation operator to alter the output.
-            Function must adhere to the following standard::
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
-                trans(numpy.ndarray, **kwargs: dict):
-                    return (scalar or numpy.ndarray)
+            If ``eqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+
+        eqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to equality constraint 
+            violation transformation function.
+
+            If `eqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        ndset_wt : Real, None
+            Nondominated set weight. The weight from this function is applied 
+            to outputs from ``ndset_trans``. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing objectives, 
+            respectively.
+
+            If ``ndset_wt`` is ``None``, then it is set to the default value of ``1.0``.
+            This assumes that the objective is to be minimized.
+
+        ndset_trans : Callable, None
+            A function which transforms values from the non-dominated set 
+            objective space to the single-objective space. This transformation 
+            function must have the following signature::
+
+                def ndset_trans(
+                        mat: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``mat`` is a ``numpy.ndarray`` containing a point coordinate array 
+                of shape ``(npt, nobj)`` where ``npt`` is the number of points 
+                and ``nobj`` is the number of objectives (dimensions). This 
+                array contains input points for calculating the distance between 
+                a point to the vector ``vec_wt``.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``ndset_trans`` is ``None``, then default to a transformation 
+            function calculating the distance between a weight vector and 
+            provided points
+
+        ndset_trans_kwargs : dict, None
+            Nondominated set transformation function keyword arguments.
+
+            If ``ndset_trans_kwargs`` is ``None``, then default to defaults for 
+            the default ``ndset_trans`` function::
+
+                ndset_trans_kwargs = {
+                    "obj_wt": numpy.repeat(1.0, nobj),
+                    "vec_wt": numpy.repeat(1.0, nobj)
+                }
+
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number source.
+
+            If ``rng`` is ``None``, default to the global random number 
+            generator.
+
+        soalgo : RealOptimizationAlgorithm, None
+            Single-objective optimization algorithm.
+
+            If ``soalgo`` is ``None``, then use a default single-objective 
+            optimization algorithm.
+
+        moalgo : RealOptimizationAlgorithm, None
+            Multi-objective opimization algorithm.
+
+            If ``moalgo`` is ``None``, then use a default multi-objective 
+            optimization algorithm.
+
         kwargs : dict
-            Dictionary of keyword arguments to pass to the ``trans`` function.
-
-        Returns
-        -------
-        ohv : numpy.ndarray
-            A OHV matrix of shape ``(t,)`` if ``trans`` is ``None``.
-            Otherwise, of shape specified by ``trans``.
-
-            Where:
-
-            - ``t`` is the number of traits.
+            Additional keyword arguments.
         """
-        # get the cross configurations
-        # (s,d)[(k,),:] -> (k,d)
-        sel = xmap[sel,:]
+        # order dependent assignments
+        # make assignments from Mixin class first
+        self.ntrait = ntrait
+        self.nhaploblk = nhaploblk
+        self.unique_parents = unique_parents
+        # make assignments from RealSelectionProtocol second
+        super(OptimalHaploidValueRealSelection, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans,
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            rng = rng,
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
+        )
 
-        # get maximum haplotype value
-        # (m,n,b,t)[:,(k,d),:,:] -> (m,k,d,b,t) # select k individuals
-        # (m,k,d,b,t).max((0,2)) -> (k,b,t)     # find maximum haplotype across all parental phases
-        # (k,b,t).sum((0,1)) -> (t,)            # add maximum haplotypes for k crosses and b blocks
-        ohv = mat[:,sel,:,:].max((0,2)).sum((0,1))
+    ############################ Object Properties #############################
 
-        # multiply by ploidy
-        # scalar * (t,) -> (t,)                 # multiply result by number of phases
-        ohv *= ploidy
+    ############################## Object Methods ##############################
 
-        # apply transformations
-        # (t,) ---trans---> (?,)
-        if trans:
-            ohv = trans(ohv, **kwargs)
-
-        return ohv
-
-    @staticmethod
-    def objfn_vec_static(sel, xmap, mat, ploidy, trans, kwargs):
+    ########## Optimization Problem Construction ###########
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: pandas.DataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> RealSelectionProblem:
         """
-        Score a population of individuals based on Optimal Haploid Value
-        Selection (OHV). Scoring for OHV is defined as the sum of maximum
-        haploid breeding values obtainable from a population.
-
-        OHV selects the ``q`` individuals with the largest OHVs.
+        Create an optimization problem definition using provided inputs.
 
         Parameters
         ----------
-        sel : numpy.ndarray
-            A selection indices matrix of shape ``(j,k)``.
-
-            Where:
-
-            - ``j`` is the number of selection configurations.
-            - ``k`` is the number of individuals to select.
-        xmap : numpy.ndarray
-            A cross selection index map array of shape ``(s,p)``.
-
-            Where:
-
-            - ``s`` is the size of the sample space (number of cross
-              combinations for ``d`` parents).
-            - ``p`` is the number of parents.
-        mat : numpy.ndarray
-            A haplotype effect matrix of shape ``(t,m,n,b)``.
-
-            Where:
-
-            - ``t`` is the number of traits.
-            - ``m`` is the number of chromosome phases (2 for diploid, etc.).
-            - ``n`` is the number of individuals.
-            - ``b`` is the number of haplotype blocks.
-        ploidy : int
-            Ploidy level of the species.
-            In many cases, this should be equal to ``m`` from the ``mat``
-            parameter. In cases where data is unphased (``m == 1``), then this
-            parameter should be different from ``m``.
-        trans : function or callable
-            A transformation operator to alter the output.
-            Function must adhere to the following standard::
-
-                trans(numpy.ndarray, **kwargs: dict):
-                    return (scalar or numpy.ndarray)
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : pandas.DataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
         kwargs : dict
-            Dictionary of keyword arguments to pass to the ``trans`` function.
+            Additional keyword arguments.
 
         Returns
         -------
-        ohv : numpy.ndarray
-            A OHV matrix of shape ``(t,)`` if ``trans`` is ``None``.
-            Otherwise, of shape specified by ``trans``.
+        out : RealSelectionProblem
+            An optimization problem definition.
+        """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
+        # get the cross map (inefficient)
+        xmap = OptimalHaploidValueRealSelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            self.nparent,
+            self.unique_parents
+        )
 
+        # get decision space parameters
+        decn_space_lower = numpy.repeat(0.0, len(xmap))
+        decn_space_upper = numpy.repeat(1.0, len(xmap))
+        decn_space = numpy.stack([decn_space_lower,decn_space_upper])
+
+        # construct problem
+        prob = OptimalHaploidValueRealSelectionProblem.from_pgmat_gpmod(
+            nparent = self.nparent,
+            nhaploblk = self.nhaploblk,
+            unique_parents = self.unique_parents,
+            pgmat = pgmat,
+            gpmod = gpmod,
+            ndecn = len(xmap),
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = self.nobj,
+            obj_wt = self.obj_wt,
+            obj_trans = self.obj_trans,
+            obj_trans_kwargs = self.obj_trans_kwargs,
+            nineqcv = self.nineqcv,
+            ineqcv_wt = self.ineqcv_wt,
+            ineqcv_trans = self.ineqcv_trans,
+            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
+            eqcv_wt = self.eqcv_wt,
+            eqcv_trans = self.eqcv_trans,
+            eqcv_trans_kwargs = self.eqcv_trans_kwargs
+        )
+
+        return prob
+
+    ############## Pareto Frontier Functions ###############
+    # inherit pareto() implementation
+
+    ################# Selection Functions ##################
+    # inherit select() implementation
+
+class OptimalHaploidValueSubsetSelection(OptimalHaploidValueSelectionMixin,SubsetSelectionProtocol):
+    """
+    Class defining Optimal Haploid Value (OHV) Selection for subset search spaces.
+    """
+
+    ########################## Special Object Methods ##########################
+    def __init__(
+            self, 
+            ntrait: Integral,
+            nhaploblk: Integral,
+            unique_parents: bool,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[SubsetOptimizationAlgorithm] = None,
+            moalgo: Optional[SubsetOptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for the concrete class OptimalHaploidValueSubsetSelection.
+
+        Parameters
+        ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        nhaploblk : Integral
+            Number of haplotype blocks to consider.
+    
+        unique_parents : bool
+            Whether parents should be unique.
+
+        ncross : Integral
+            Number of cross configurations to consider.
+        
+        nparent : Integral
+            Number of parents per cross configuration.
+        
+        nmating : Integral, numpy.ndarray
+            Number of matings per configuration.
+
+            If ``nmating`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nmating`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+        
+        nprogeny : Integral, numpy.ndarray
+            Number of progeny to derive from each mating event.
+
+            If ``nprogeny`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nprogeny`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+
+        nobj : Integral
+            Number of optimization objectives when constructing a 
+            ``SelectionProblem``. This is equivalent to the vector length 
+            returned by the ``obj_trans`` function. Must be ``Integral`` greater 
+            than 0.
+        
+        obj_wt : numpy.ndarray, Real, None
+            Objective function weights. Weights from this vector are applied 
+            to objective function values via the Hadamard product. If values 
+            are ``1.0`` or ``-1.0``, this can be used to specify minimizing 
+            and maximizing objectives, respectively.
+
+            If ``obj_wt`` is ``numpy.ndarray``, then the array must be of shape 
+            ``(nobj,)``.
+
+            If ``obj_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``.
+
+            If ``obj_wt`` is ``None``, then the value ``1.0`` is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``. This assumes that all 
+            objectives are to be minimized.
+        
+        obj_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the objective space. This transformation function must have the 
+            following signature::
+
+                def obj_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``t`` is the number of traits.
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``obj_trans`` is ``None``, then default to an identity objective 
+            transformation function.
+
+        obj_trans_kwargs : dict
+            Keyword arguments for the latent space to objective space 
+            transformation function. 
+
+            If `obj_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        nineqcv : Integral, None
+            Number of inequality constraint violation functions. This is 
+            equivalent to the vector length returned by the ``ineqcv_trans`` 
+            function. Must be ``Integral`` greater than or equal to zero.
+
+            If ``nineqcv`` is ``None``, then set to zero.
+
+        ineqcv_wt : numpy.ndarray, None
+            Inequality constraint violation function weights. Weights from this 
+            vector are applied to inequality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``ineqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(nineqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        ineqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the inequality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def ineqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``ineqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+        
+        ineqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to inequality constraint 
+            violation transformation function.
+        
+            If `ineqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        neqcv : Integral, None
+            Number of equality constraint violations. This is equivalent to the 
+            vector length returned by the ``eqcv_trans`` function. Must be 
+            ``Integral`` greater than or equal to zero.
+        
+            If ``neqcv`` is ``None``, then set to zero.
+
+        eqcv_wt : numpy.ndarray, None
+            Equality constraint violation function weights. Weights from this 
+            vector are applied to equality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``eqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(neqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        eqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the equality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def eqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``eqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+
+        eqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to equality constraint 
+            violation transformation function.
+
+            If `eqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        ndset_wt : Real, None
+            Nondominated set weight. The weight from this function is applied 
+            to outputs from ``ndset_trans``. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing objectives, 
+            respectively.
+
+            If ``ndset_wt`` is ``None``, then it is set to the default value of ``1.0``.
+            This assumes that the objective is to be minimized.
+
+        ndset_trans : Callable, None
+            A function which transforms values from the non-dominated set 
+            objective space to the single-objective space. This transformation 
+            function must have the following signature::
+
+                def ndset_trans(
+                        mat: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``mat`` is a ``numpy.ndarray`` containing a point coordinate array 
+                of shape ``(npt, nobj)`` where ``npt`` is the number of points 
+                and ``nobj`` is the number of objectives (dimensions). This 
+                array contains input points for calculating the distance between 
+                a point to the vector ``vec_wt``.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``ndset_trans`` is ``None``, then default to a transformation 
+            function calculating the distance between a weight vector and 
+            provided points
+
+        ndset_trans_kwargs : dict, None
+            Nondominated set transformation function keyword arguments.
+
+            If ``ndset_trans_kwargs`` is ``None``, then default to defaults for 
+            the default ``ndset_trans`` function::
+
+                ndset_trans_kwargs = {
+                    "obj_wt": numpy.repeat(1.0, nobj),
+                    "vec_wt": numpy.repeat(1.0, nobj)
+                }
+
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number source.
+
+            If ``rng`` is ``None``, default to the global random number 
+            generator.
+
+        soalgo : SubsetOptimizationAlgorithm, None
+            Single-objective optimization algorithm.
+
+            If ``soalgo`` is ``None``, then use a default single-objective 
+            optimization algorithm.
+
+        moalgo : SubsetOptimizationAlgorithm, None
+            Multi-objective opimization algorithm.
+
+            If ``moalgo`` is ``None``, then use a default multi-objective 
+            optimization algorithm.
+
+        kwargs : dict
+            Additional keyword arguments.
         """
-        # get the cross configurations
-        # (s,d)[(j,k),:] -> (j,k,d)
-        sel = xmap[sel,:]
+        # order dependent assignments
+        # make assignments from Mixin class first
+        self.ntrait = ntrait
+        self.nhaploblk = nhaploblk
+        self.unique_parents = unique_parents
+        # make assignments from SubsetSelectionProtocol second
+        super(OptimalHaploidValueSubsetSelection, self).__init__(
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans,
+            ndset_trans_kwargs = ndset_trans_kwargs,
+            rng = rng,
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
+        )
 
-        # get maximum haplotype value
-        # (m,n,b,t)[:,(j,k,d),:] -> (m,j,k,d,b,t)   # select k individuals
-        # (m,j,k,d,b,t).max((0,3)) -> (j,k,b,t)     # find maximum haplotype across all parental phases
-        # (j,k,b,t).sum((1,2)) -> (j,t)             # add maximum haplotypes for k crosses and b blocks
-        ohv = mat[:,sel,:,:].max((0,3)).sum((1,2))
+    ############################ Object Properties #############################
 
-        # multiply by ploidy
-        # scalar * (j,t) -> (j,t)                   # multiply result by number of phases
-        ohv *= ploidy
+    ############################## Object Methods ##############################
 
-        # apply transformations
-        # (j,t) ---trans---> (?,?)
-        if trans:
-            ohv = trans(ohv, **kwargs)
+    ########## Optimization Problem Construction ###########
+    def problem(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            gmat: GenotypeMatrix, 
+            ptdf: pandas.DataFrame, 
+            bvmat: BreedingValueMatrix, 
+            gpmod: GenomicModel, 
+            t_cur: Integral, 
+            t_max: Integral, 
+            **kwargs: dict
+        ) -> SubsetSelectionProblem:
+        """
+        Create an optimization problem definition using provided inputs.
 
-        return ohv
+        Parameters
+        ----------
+        pgmat : PhasedGenotypeMatrix
+            Genomes
+        gmat : GenotypeMatrix
+            Genotypes
+        ptdf : pandas.DataFrame
+            Phenotype dataframe
+        bvmat : BreedingValueMatrix
+            Breeding value matrix
+        gpmod : GenomicModel
+            Genomic prediction model
+        t_cur : int
+            Current generation number.
+        t_max : int
+            Maximum (deadline) generation number.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : SubsetSelectionProblem
+            An optimization problem definition.
+        """
+        # type checks
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_GenomicModel(gpmod, "gpmod")
+        
+        # get the cross map (inefficient)
+        xmap = OptimalHaploidValueSubsetSelectionProblem._calc_xmap(
+            pgmat.ntaxa,
+            self.nparent,
+            self.unique_parents
+        )
+
+        # get decision space parameters
+        decn_space = numpy.arange(len(xmap))
+        decn_space_lower = numpy.repeat(0, self.ncross)
+        decn_space_upper = numpy.repeat(len(xmap)-1, self.ncross)
+
+        # construct problem
+        prob = OptimalHaploidValueSubsetSelectionProblem.from_pgmat_gpmod(
+            nparent = self.nparent,
+            nhaploblk = self.nhaploblk,
+            unique_parents = self.unique_parents,
+            pgmat = pgmat,
+            gpmod = gpmod,
+            ndecn = self.ncross,
+            decn_space = decn_space,
+            decn_space_lower = decn_space_lower,
+            decn_space_upper = decn_space_upper,
+            nobj = self.nobj,
+            obj_wt = self.obj_wt,
+            obj_trans = self.obj_trans,
+            obj_trans_kwargs = self.obj_trans_kwargs,
+            nineqcv = self.nineqcv,
+            ineqcv_wt = self.ineqcv_wt,
+            ineqcv_trans = self.ineqcv_trans,
+            ineqcv_trans_kwargs = self.ineqcv_trans_kwargs,
+            neqcv = self.neqcv,
+            eqcv_wt = self.eqcv_wt,
+            eqcv_trans = self.eqcv_trans,
+            eqcv_trans_kwargs = self.eqcv_trans_kwargs
+        )
+
+        return prob
+
+    ############## Pareto Frontier Functions ###############
+    # inherit pareto() implementation
+
+    ################# Selection Functions ##################
+    # inherit select() implementation

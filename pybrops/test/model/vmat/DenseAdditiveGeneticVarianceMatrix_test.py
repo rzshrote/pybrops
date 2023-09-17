@@ -1,17 +1,14 @@
 import pytest
 import numpy
 
-from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix
-from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import is_DenseAdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import check_is_DenseAdditiveGeneticVarianceMatrix
+from pybrops.test.model.vmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -41,7 +38,7 @@ def mat_taxa_grp():
 
 @pytest.fixture
 def mat(mat_float64, mat_taxa, mat_taxa_grp):
-    yield DenseAdditiveGeneticVarianceMatrix(
+    yield DummyDenseAdditiveGeneticVarianceMatrix(
         mat = mat_float64,
         taxa = mat_taxa,
         taxa_grp = mat_taxa_grp
@@ -51,13 +48,13 @@ def mat(mat_float64, mat_taxa, mat_taxa_grp):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseAdditiveGeneticVarianceMatrix)
+    assert_docstring(DenseAdditiveGeneticVarianceMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveGeneticVarianceMatrix, "__init__")
+    assert_concrete_method(DenseAdditiveGeneticVarianceMatrix, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -70,14 +67,8 @@ def test_init_is_concrete():
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseAdditiveGeneticVarianceMatrix_is_concrete():
-    generic_assert_concrete_function(is_DenseAdditiveGeneticVarianceMatrix)
-
-def test_is_DenseAdditiveGeneticVarianceMatrix(mat):
-    assert is_DenseAdditiveGeneticVarianceMatrix(mat)
-
 def test_check_is_DenseAdditiveGeneticVarianceMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_DenseAdditiveGeneticVarianceMatrix)
+    assert_concrete_function(check_is_DenseAdditiveGeneticVarianceMatrix)
 
 def test_check_is_DenseAdditiveGeneticVarianceMatrix(mat):
     with not_raises(TypeError):

@@ -3,22 +3,27 @@ Module implementing a dense matrix with variant metadata and associated error
 checking routines.
 """
 
+__all__ = [
+    "DenseVariantMatrix",
+    "check_is_DenseVariantMatrix",
+]
+
 import copy
 import numpy
-from typing import Any, Sequence, Union
+from typing import Sequence, Union
 from typing import Optional
 from numpy.typing import ArrayLike
 
-from pybrops.core.error import check_is_iterable
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_axis_len
-from pybrops.core.error import check_ndarray_dtype_is_bool
-from pybrops.core.error import check_ndarray_dtype_is_int64
-from pybrops.core.error import check_ndarray_dtype_is_float64
-from pybrops.core.error import check_ndarray_dtype_is_object
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import error_readonly
-from pybrops.core.error import generic_check_isinstance
+from pybrops.core.error.error_attr_python import check_is_iterable
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_bool
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_int64
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_float64
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_generic_python import generic_check_isinstance
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
@@ -33,9 +38,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         2) Dense matrix variant routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -185,286 +188,207 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         return out
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############### Variant Data Properites ################
-    def vrnt_chrgrp():
-        doc = "Variant chromosome group label property."
-        def fget(self):
-            """Get variant chromosome group lable array"""
-            return self._vrnt_chrgrp
-        def fset(self, value):
-            """Set variant chromosome group lable array"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_chrgrp")
-                check_ndarray_dtype_is_int64(value, "vrnt_chrgrp")
-                check_ndarray_ndim(value, "vrnt_chrgrp", 1)
-                check_ndarray_axis_len(value, "vrnt_chrgrp", 0, self.nvrnt)
-            self._vrnt_chrgrp = value
-        def fdel(self):
-            """Delete variant chromosome group lable array"""
-            del self._vrnt_chrgrp
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp = property(**vrnt_chrgrp())
+    @property
+    def vrnt_chrgrp(self) -> Union[numpy.ndarray,None]:
+        """Variant chromosome group label."""
+        return self._vrnt_chrgrp
+    @vrnt_chrgrp.setter
+    def vrnt_chrgrp(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant chromosome group lable array"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_chrgrp")
+            check_ndarray_dtype_is_int64(value, "vrnt_chrgrp")
+            check_ndarray_ndim(value, "vrnt_chrgrp", 1)
+            check_ndarray_axis_len(value, "vrnt_chrgrp", 0, self.nvrnt)
+        self._vrnt_chrgrp = value
 
-    def vrnt_phypos():
-        doc = "Variant physical position property."
-        def fget(self):
-            """Get variant physical position array"""
-            return self._vrnt_phypos
-        def fset(self, value):
-            """Set variant physical position array"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_phypos")
-                check_ndarray_dtype_is_int64(value, "vrnt_phypos")
-                check_ndarray_ndim(value, "vrnt_phypos", 1)
-                check_ndarray_axis_len(value, "vrnt_phypos", 0, self.nvrnt)
-            self._vrnt_phypos = value
-        def fdel(self):
-            """Delete variant physical position array"""
-            del self._vrnt_phypos
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_phypos = property(**vrnt_phypos())
+    @property
+    def vrnt_phypos(self) -> Union[numpy.ndarray,None]:
+        """Variant physical position."""
+        return self._vrnt_phypos
+    @vrnt_phypos.setter
+    def vrnt_phypos(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant physical position array"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_phypos")
+            check_ndarray_dtype_is_int64(value, "vrnt_phypos")
+            check_ndarray_ndim(value, "vrnt_phypos", 1)
+            check_ndarray_axis_len(value, "vrnt_phypos", 0, self.nvrnt)
+        self._vrnt_phypos = value
 
-    def vrnt_name():
-        doc = "Variant name property."
-        def fget(self):
-            """Get variant name array"""
-            return self._vrnt_name
-        def fset(self, value):
-            """Set variant name array"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_name")
-                check_ndarray_dtype_is_object(value, "vrnt_name")
-                check_ndarray_ndim(value, "vrnt_name", 1)
-                check_ndarray_axis_len(value, "vrnt_name", 0, self.nvrnt)
-            self._vrnt_name = value
-        def fdel(self):
-            """Delete variant name array"""
-            del self._vrnt_name
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_name = property(**vrnt_name())
+    @property
+    def vrnt_name(self) -> Union[numpy.ndarray,None]:
+        """Variant name."""
+        return self._vrnt_name
+    @vrnt_name.setter
+    def vrnt_name(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant name array"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_name")
+            check_ndarray_dtype_is_object(value, "vrnt_name")
+            check_ndarray_ndim(value, "vrnt_name", 1)
+            check_ndarray_axis_len(value, "vrnt_name", 0, self.nvrnt)
+        self._vrnt_name = value
 
-    def vrnt_genpos():
-        doc = "Variant genetic position property."
-        def fget(self):
-            """Get variant genetic position array"""
-            return self._vrnt_genpos
-        def fset(self, value):
-            """Set variant genetic position array"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_genpos")
-                check_ndarray_dtype_is_float64(value, "vrnt_genpos")
-                check_ndarray_ndim(value, "vrnt_genpos", 1)
-                check_ndarray_axis_len(value, "vrnt_genpos", 0, self.nvrnt)
-            self._vrnt_genpos = value
-        def fdel(self):
-            """Delete variant genetic position array"""
-            del self._vrnt_genpos
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_genpos = property(**vrnt_genpos())
+    @property
+    def vrnt_genpos(self) -> Union[numpy.ndarray,None]:
+        """Variant genetic position."""
+        return self._vrnt_genpos
+    @vrnt_genpos.setter
+    def vrnt_genpos(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant genetic position array"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_genpos")
+            check_ndarray_dtype_is_float64(value, "vrnt_genpos")
+            check_ndarray_ndim(value, "vrnt_genpos", 1)
+            check_ndarray_axis_len(value, "vrnt_genpos", 0, self.nvrnt)
+        self._vrnt_genpos = value
 
-    def vrnt_xoprob():
-        doc = "Variant crossover sequential probability property."
-        def fget(self):
-            """Get variant crossover sequential probability array"""
-            return self._vrnt_xoprob
-        def fset(self, value):
-            """Set variant crossover sequential probability array"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_xoprob")
-                check_ndarray_dtype_is_float64(value, "vrnt_xoprob")
-                check_ndarray_ndim(value, "vrnt_xoprob", 1)
-                check_ndarray_axis_len(value, "vrnt_xoprob", 0, self.nvrnt)
-            self._vrnt_xoprob = value
-        def fdel(self):
-            """Delete variant crossover sequential probability array"""
-            del self._vrnt_xoprob
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_xoprob = property(**vrnt_xoprob())
+    @property
+    def vrnt_xoprob(self) -> Union[numpy.ndarray,None]:
+        """Variant crossover sequential probability."""
+        return self._vrnt_xoprob
+    @vrnt_xoprob.setter
+    def vrnt_xoprob(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant crossover sequential probability array"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_xoprob")
+            check_ndarray_dtype_is_float64(value, "vrnt_xoprob")
+            check_ndarray_ndim(value, "vrnt_xoprob", 1)
+            check_ndarray_axis_len(value, "vrnt_xoprob", 0, self.nvrnt)
+        self._vrnt_xoprob = value
 
-    def vrnt_hapgrp():
-        doc = "Variant haplotype group label property."
-        def fget(self):
-            """Get variant haplotype group label array"""
-            return self._vrnt_hapgrp
-        def fset(self, value):
-            """Set variant haplotype group label array"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_hapgrp")
-                check_ndarray_dtype_is_int64(value, "vrnt_hapgrp")
-                check_ndarray_ndim(value, "vrnt_hapgrp", 1)
-                check_ndarray_axis_len(value, "vrnt_hapgrp", 0, self.nvrnt)
-            self._vrnt_hapgrp = value
-        def fdel(self):
-            """Delete variant haplotype group label array"""
-            del self._vrnt_hapgrp
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_hapgrp = property(**vrnt_hapgrp())
+    @property
+    def vrnt_hapgrp(self) -> Union[numpy.ndarray,None]:
+        """Variant haplotype group label."""
+        return self._vrnt_hapgrp
+    @vrnt_hapgrp.setter
+    def vrnt_hapgrp(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant haplotype group label array"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_hapgrp")
+            check_ndarray_dtype_is_int64(value, "vrnt_hapgrp")
+            check_ndarray_ndim(value, "vrnt_hapgrp", 1)
+            check_ndarray_axis_len(value, "vrnt_hapgrp", 0, self.nvrnt)
+        self._vrnt_hapgrp = value
 
-    def vrnt_hapalt():
-        doc = "Variant haplotype sequence property."
-        def fget(self):
-            """Get variant haplotype sequence"""
-            return self._vrnt_hapalt
-        def fset(self, value):
-            """Set variant haplotype sequence"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_hapalt")
-                check_ndarray_dtype_is_object(value, "vrnt_hapalt")
-                check_ndarray_ndim(value, "vrnt_hapalt", 1)
-                check_ndarray_axis_len(value, "vrnt_hapalt", 0, self.nvrnt)
-            self._vrnt_hapalt = value
-        def fdel(self):
-            """Delete variant haplotype sequence"""
-            del self._vrnt_hapalt
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_hapalt = property(**vrnt_hapalt())
+    @property
+    def vrnt_hapalt(self) -> Union[numpy.ndarray,None]:
+        """Variant haplotype sequence."""
+        return self._vrnt_hapalt
+    @vrnt_hapalt.setter
+    def vrnt_hapalt(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant haplotype sequence"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_hapalt")
+            check_ndarray_dtype_is_object(value, "vrnt_hapalt")
+            check_ndarray_ndim(value, "vrnt_hapalt", 1)
+            check_ndarray_axis_len(value, "vrnt_hapalt", 0, self.nvrnt)
+        self._vrnt_hapalt = value
 
-    def vrnt_hapref():
-        doc = "Variant reference haplotype sequence property."
-        def fget(self):
-            """Get variant reference haplotype sequence"""
-            return self._vrnt_hapref
-        def fset(self, value):
-            """Set variant reference haplotype sequence"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_hapref")
-                check_ndarray_dtype_is_object(value, "vrnt_hapref")
-                check_ndarray_ndim(value, "vrnt_hapref", 1)
-                check_ndarray_axis_len(value, "vrnt_hapref", 0, self.nvrnt)
-            self._vrnt_hapref = value
-        def fdel(self):
-            """Delete variant reference haplotype sequence"""
-            del self._vrnt_hapref
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_hapref = property(**vrnt_hapref())
+    @property
+    def vrnt_hapref(self) -> Union[numpy.ndarray,None]:
+        """Variant reference haplotype sequence."""
+        return self._vrnt_hapref
+    @vrnt_hapref.setter
+    def vrnt_hapref(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant reference haplotype sequence"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_hapref")
+            check_ndarray_dtype_is_object(value, "vrnt_hapref")
+            check_ndarray_ndim(value, "vrnt_hapref", 1)
+            check_ndarray_axis_len(value, "vrnt_hapref", 0, self.nvrnt)
+        self._vrnt_hapref = value
 
-    def vrnt_mask():
-        doc = "Variant mask property."
-        def fget(self):
-            """Get variant mask"""
-            return self._vrnt_mask
-        def fset(self, value):
-            """Set variant mask"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_mask")
-                check_ndarray_dtype_is_bool(value, "vrnt_mask")
-                check_ndarray_ndim(value, "vrnt_mask", 1)
-                check_ndarray_axis_len(value, "vrnt_mask", 0, self.nvrnt)
-            self._vrnt_mask = value
-        def fdel(self):
-            """Delete variant mask"""
-            del self._vrnt_mask
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_mask = property(**vrnt_mask())
+    @property
+    def vrnt_mask(self) -> Union[numpy.ndarray,None]:
+        """Variant mask."""
+        return self._vrnt_mask
+    @vrnt_mask.setter
+    def vrnt_mask(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant mask"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_mask")
+            check_ndarray_dtype_is_bool(value, "vrnt_mask")
+            check_ndarray_ndim(value, "vrnt_mask", 1)
+            check_ndarray_axis_len(value, "vrnt_mask", 0, self.nvrnt)
+        self._vrnt_mask = value
 
     ############# Variant Metadata Properites ##############
-    def nvrnt():
-        doc = "Number of variants property."
-        def fget(self):
-            """Get number of variants"""
-            return self._mat.shape[self.vrnt_axis]
-        def fset(self, value):
-            """Set number of variants"""
-            error_readonly("nvrnt")
-        def fdel(self):
-            """Delete number of variants"""
-            error_readonly("nvrnt")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nvrnt = property(**nvrnt())
+    @property
+    def nvrnt(self) -> int:
+        """Number of variants."""
+        return self._mat.shape[self.vrnt_axis]
+    @nvrnt.setter
+    def nvrnt(self, value: int) -> None:
+        """Set number of variants"""
+        error_readonly("nvrnt")
 
-    def vrnt_axis():
-        doc = "Axis along which variants are stored property."
-        def fget(self):
-            """Get variant axis"""
-            return 0
-        def fset(self, value):
-            """Set variant axis"""
-            error_readonly("vrnt_axis")
-        def fdel(self):
-            """Delete variant axis"""
-            error_readonly("vrnt_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_axis = property(**vrnt_axis())
+    @property
+    def vrnt_axis(self) -> int:
+        """Axis along which variants are stored."""
+        return 0
+    @vrnt_axis.setter
+    def vrnt_axis(self, value: int) -> None:
+        """Set variant axis"""
+        error_readonly("vrnt_axis")
 
-    def vrnt_chrgrp_name():
-        doc = "Variant chromosome group names property."
-        def fget(self):
-            """Get variant chromosome group name array"""
-            return self._vrnt_chrgrp_name
-        def fset(self, value):
-            """Set variant chromosome group name array"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_chrgrp_name")
-                check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_name")
-                check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
-            self._vrnt_chrgrp_name = value
-        def fdel(self):
-            """Delete variant chromosome group name array"""
-            del self._vrnt_chrgrp_name
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_name = property(**vrnt_chrgrp_name())
+    @property
+    def vrnt_chrgrp_name(self) -> Union[numpy.ndarray,None]:
+        """Variant chromosome group names."""
+        return self._vrnt_chrgrp_name
+    @vrnt_chrgrp_name.setter
+    def vrnt_chrgrp_name(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant chromosome group name array"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_chrgrp_name")
+            check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_name")
+            check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
+        self._vrnt_chrgrp_name = value
 
-    def vrnt_chrgrp_stix():
-        doc = "Variant chromosome group start indices property."
-        def fget(self):
-            """Get variant chromosome group start indices array"""
-            return self._vrnt_chrgrp_stix
-        def fset(self, value):
-            """Set variant chromosome group start indices array"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_chrgrp_stix")
-                check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_stix")
-                check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
-            self._vrnt_chrgrp_stix = value
-        def fdel(self):
-            """Delete variant chromosome group start indices array"""
-            del self._vrnt_chrgrp_stix
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_stix = property(**vrnt_chrgrp_stix())
+    @property
+    def vrnt_chrgrp_stix(self) -> Union[numpy.ndarray,None]:
+        """Variant chromosome group start indices."""
+        return self._vrnt_chrgrp_stix
+    @vrnt_chrgrp_stix.setter
+    def vrnt_chrgrp_stix(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant chromosome group start indices array"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_chrgrp_stix")
+            check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_stix")
+            check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
+        self._vrnt_chrgrp_stix = value
 
-    def vrnt_chrgrp_spix():
-        doc = "Variant chromosome group stop indices property."
-        def fget(self):
-            """Get variant chromosome group stop indices array"""
-            return self._vrnt_chrgrp_spix
-        def fset(self, value):
-            """Set variant chromosome group stop indices array"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_chrgrp_spix")
-                check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_spix")
-                check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
-            self._vrnt_chrgrp_spix = value
-        def fdel(self):
-            """Delete variant chromosome group stop indices array"""
-            del self._vrnt_chrgrp_spix
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_spix = property(**vrnt_chrgrp_spix())
+    @property
+    def vrnt_chrgrp_spix(self) -> Union[numpy.ndarray,None]:
+        """Variant chromosome group stop indices."""
+        return self._vrnt_chrgrp_spix
+    @vrnt_chrgrp_spix.setter
+    def vrnt_chrgrp_spix(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant chromosome group stop indices array"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_chrgrp_spix")
+            check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_spix")
+            check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
+        self._vrnt_chrgrp_spix = value
 
-    def vrnt_chrgrp_len():
-        doc = "Variant chromosome group length property."
-        def fget(self):
-            """Get variant chromosome group length array"""
-            return self._vrnt_chrgrp_len
-        def fset(self, value):
-            """Set variant chromosome group length array"""
-            if value is not None:
-                check_is_ndarray(value, "vrnt_chrgrp_len")
-                check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_len")
-                check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
-            self._vrnt_chrgrp_len = value
-        def fdel(self):
-            """Delete variant chromosome group length array"""
-            del self._vrnt_chrgrp_len
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_len = property(**vrnt_chrgrp_len())
+    @property
+    def vrnt_chrgrp_len(self) -> Union[numpy.ndarray,None]:
+        """Variant chromosome group length."""
+        return self._vrnt_chrgrp_len
+    @vrnt_chrgrp_len.setter
+    def vrnt_chrgrp_len(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set variant chromosome group length array"""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_chrgrp_len")
+            check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_len")
+            check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
+        self._vrnt_chrgrp_len = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(
@@ -1736,7 +1660,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
         # dispatch to correct function
         if axis == self.vrnt_axis:
-            self.lexsort_vrnt(keys = keys, **kwargs)
+            indices = self.lexsort_vrnt(keys = keys, **kwargs)
         else:
             raise ValueError("cannot lexsort along axis {0}".format(axis))
 
@@ -1918,8 +1842,15 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             **kwargs: dict
         ) -> None:
         """
-        Sort matrix along axis, then populate grouping indices for the axis.
-        Calculate chromosome grouping indices (group by vrnt_chrgrp).
+        Sort the DenseVariantMatrix along an axis, then populate grouping 
+        indices.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values are grouped.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -1953,6 +1884,49 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
             self._vrnt_chrgrp_name, self._vrnt_chrgrp_stix, self._vrnt_chrgrp_len = uniq
             # calculate stop indices
             self._vrnt_chrgrp_spix = self._vrnt_chrgrp_stix + self._vrnt_chrgrp_len
+
+    def ungroup(
+            self,
+            axis: int = -1,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseVariantMatrix along an axis by removing grouping metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # transform axis number to an index
+        axis = get_axis(axis, self.mat_ndim)
+
+        # dispatch functions
+        if axis == self.vrnt_axis:
+            self.ungroup_vrnt(**kwargs)
+        else:
+            raise ValueError("cannot ungroup along axis {0}".format(axis))
+
+    def ungroup_vrnt(
+            self,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseVariantMatrix along the variant axis by removing 
+        variant group metadata.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # set variant metadata to None
+        self.vrnt_chrgrp_name = None
+        self.vrnt_chrgrp_stix = None
+        self.vrnt_chrgrp_spix = None
+        self.vrnt_chrgrp_len = None
 
     def is_grouped(
             self, 
@@ -2006,35 +1980,17 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseVariantMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DenseVariantMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseVariantMatrix object instance.
-    """
-    return isinstance(v, DenseVariantMatrix)
-
-def check_is_DenseVariantMatrix(v: Any, vname: str) -> None:
+def check_is_DenseVariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseVariantMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
-    if not is_DenseVariantMatrix(v):
-        raise TypeError("'{0}' must be a DenseVariantMatrix".format(vname))
+    if not isinstance(v, DenseVariantMatrix):
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DenseVariantMatrix.__name__,type(v).__name__))

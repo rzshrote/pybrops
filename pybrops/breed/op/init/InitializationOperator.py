@@ -3,10 +3,16 @@ Module defining interfaces and associated error checking routines for
 breeding program initialization operators.
 """
 
-from typing import Any
+__all__ = [
+    "InitializationOperator",
+    "check_is_InitializationOperator",
+]
+
+from abc import ABCMeta, abstractmethod
+from typing import Optional
 
 
-class InitializationOperator:
+class InitializationOperator(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for the evaluation of an entire breeding
     program.
@@ -15,21 +21,15 @@ class InitializationOperator:
         1) Initialization of an entire breeding program.
     """
 
-    def __init__(
+    ########################## Special Object Methods ##########################
+
+    ############################## Object Methods ##############################
+    @abstractmethod
+    def initialize(
             self, 
+            miscout: Optional[dict], 
             **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class InitializationOperator.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(InitializationOperator, self).__init__()
-
-    def initialize(self, miscout, **kwargs: dict):
+        ) -> tuple:
         """
         Initialize a breeding program.
 
@@ -59,35 +59,17 @@ class InitializationOperator:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_InitializationOperator(v: Any) -> bool:
-    """
-    Determine whether an object is a InitializationOperator.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a InitializationOperator object instance.
-    """
-    return isinstance(v, InitializationOperator)
-
-def check_is_InitializationOperator(v: Any, varname: str):
+def check_is_InitializationOperator(v: object, vname: str):
     """
     Check if object is of type InitializationOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, InitializationOperator):
-        raise TypeError("'%s' must be a InitializationOperator." % varname)
+        raise TypeError("'%s' must be a InitializationOperator." % vname)

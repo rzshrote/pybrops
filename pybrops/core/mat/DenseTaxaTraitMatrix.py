@@ -3,13 +3,17 @@ Module defining implementing dense matrices with taxa and trait metadata and
 associated error checking routines.
 """
 
+__all__ = [
+    "DenseTaxaTraitMatrix",
+    "check_is_DenseTaxaTraitMatrix",
+]
+
 import numpy
 from numpy.typing import ArrayLike
 import copy
 from typing import Optional, Sequence, Union
-from typing import Any
 
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
@@ -22,14 +26,13 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
     The purpose of this concrete class is to merge the following implementations
     and interfaces:
-        1) DenseTaxaMatrix
-        2) DenseTraitMatrix
-        3) TaxaTraitMatrix
+
+        1. DenseTaxaMatrix
+        2. DenseTraitMatrix
+        3. TaxaTraitMatrix
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -129,43 +132,21 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         return out
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############### Taxa Metadata Properites ###############
-    def taxa_axis():
-        doc = "Axis along which taxa are stored property."
-        def fget(self):
-            """Get taxa axis number"""
-            return 0
-        def fset(self, value):
-            """Set taxa axis number"""
-            error_readonly("taxa_axis")
-        def fdel(self):
-            """Delete taxa axis number"""
-            error_readonly("taxa_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_axis = property(**taxa_axis())
+    @DenseTaxaMatrix.taxa_axis.getter
+    def taxa_axis(self) -> int:
+        """Get taxa axis number"""
+        return 0
 
     ############# Variant Metadata Properites ##############
-    def trait_axis():
-        doc = "Axis along which variants are stored property."
-        def fget(self):
-            """Get variant axis"""
-            return 1
-        def fset(self, value):
-            """Set variant axis"""
-            error_readonly("trait_axis")
-        def fdel(self):
-            """Delete variant axis"""
-            error_readonly("trait_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    trait_axis = property(**trait_axis())
+    @DenseTraitMatrix.trait_axis.getter
+    def trait_axis(self):
+        """Get variant axis"""
+        return 1
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(
@@ -916,7 +897,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
         axis = get_axis(axis, self.mat_ndim)
 
         if axis == self.taxa_axis:
-            self.incorp(
+            self.incorp_taxa(
                 obj = obj,
                 values = values,
                 taxa = taxa,
@@ -924,7 +905,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
                 **kwargs
             )
         elif axis == self.trait_axis:
-            self.incorp(
+            self.incorp_trait(
                 obj = obj,
                 values = values,
                 trait = trait,
@@ -962,9 +943,9 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
         # dispatch to correct function
         if axis == self.taxa_axis:
-            self.lexsort_taxa(keys = keys, **kwargs)
+            indices = self.lexsort_taxa(keys = keys, **kwargs)
         elif axis == self.trait_axis:
-            self.lexsort_trait(keys = keys, **kwargs)
+            indices = self.lexsort_trait(keys = keys, **kwargs)
         else:
             raise ValueError("cannot lexsort along axis {0}".format(axis))
 
@@ -997,7 +978,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
     def sort(
             self, 
-            keys: Union[tuple,numpy.ndarray,None], 
+            keys: Optional[Union[tuple,numpy.ndarray]] = None, 
             axis: int = -1, 
             **kwargs: dict
         ) -> None:
@@ -1032,8 +1013,15 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             **kwargs: dict
         ) -> None:
         """
-        Sort matrix along axis, then populate grouping indices for the axis.
-        Calculate chromosome grouping indices (group by vrnt_chrgrp).
+        Sort the DenseTaxaTraitMatrix along an axis, then populate grouping 
+        indices.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values are grouped.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -1045,6 +1033,33 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             raise ValueError("cannot group along axis {0} (trait axis)".format(axis))
         else:
             raise ValueError("cannot group along axis {0}".format(axis))
+
+    def ungroup(
+            self, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseTaxaTraitMatrix along an axis by removing grouping 
+        metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # transform axis number to an index
+        axis = get_axis(axis, self.mat_ndim)
+
+        # dispatch functions
+        if axis == self.taxa_axis:
+            self.ungroup_taxa(**kwargs)
+        elif axis == self.vrnt_axis:
+            raise ValueError("cannot ungroup along axis {0} (trait axis)".format(axis))
+        else:
+            raise ValueError("cannot ungroup along axis {0}".format(axis))
 
     def is_grouped(
             self, 
@@ -1074,35 +1089,17 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseTaxaTraitMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DenseTaxaTraitMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseTaxaTraitMatrix object instance.
-    """
-    return isinstance(v, DenseTaxaTraitMatrix)
-
-def check_is_DenseTaxaTraitMatrix(v: Any, vname: str) -> None:
+def check_is_DenseTaxaTraitMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseTaxaTraitMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
-    if not is_DenseTaxaTraitMatrix(v):
-        raise TypeError("'{0}' must be a DenseTaxaTraitMatrix".format(vname))
+    if not isinstance(v, DenseTaxaTraitMatrix):
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DenseTaxaTraitMatrix.__name__,type(v).__name__))

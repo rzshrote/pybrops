@@ -3,10 +3,10 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic coancestry effects.
 """
 
-from typing import Any
+from abc import ABCMeta, abstractmethod
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 
-class CoancestryLinearGenomicModel(LinearGenomicModel):
+class CoancestryLinearGenomicModel(LinearGenomicModel,metaclass=ABCMeta):
     """
     The CoancestryLinearGenomicModel class represents an interface for a
     Multivariate Multiple Linear Regression model.
@@ -57,84 +57,43 @@ class CoancestryLinearGenomicModel(LinearGenomicModel):
     - ``t`` is the number of traits
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class CoancestryLinearGenomicModel.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(CoancestryLinearGenomicModel, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
-    def u_misc():
-        doc = "Miscellaneous random effects."
-        def fget(self):
-            """Get miscellaneous random effects"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set miscellaneous random effects"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete miscellaneous random effects"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    u_misc = property(**u_misc())
+    @property
+    @abstractmethod
+    def u_misc(self) -> object:
+        """Miscellaneous random effects."""
+        raise NotImplementedError("property is abstract")
+    @u_misc.setter
+    @abstractmethod
+    def u_misc(self, value: object) -> None:
+        """Set miscellaneous random effects"""
+        raise NotImplementedError("property is abstract")
 
-    def u_c():
-        doc = "Genomic coancestry effects."
-        def fget(self):
-            """Get genomic coancestry effects"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set genomic coancestry effects"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete genomic coancestry effects"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    u_c = property(**u_c())
+    @property
+    @abstractmethod
+    def u_c(self) -> object:
+        """Genomic coancestry effects."""
+        raise NotImplementedError("property is abstract")
+    @u_c.setter
+    @abstractmethod
+    def u_c(self, value: object) -> None:
+        """Set genomic coancestry effects"""
+        raise NotImplementedError("property is abstract")
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_CoancestryLinearGenomicModel(v: Any) -> bool:
-    """
-    Determine whether an object is a CoancestryLinearGenomicModel.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a CoancestryLinearGenomicModel object instance.
-    """
-    return isinstance(v, CoancestryLinearGenomicModel)
-
-def check_is_CoancestryLinearGenomicModel(v: Any, vname: str) -> None:
+def check_is_CoancestryLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type CoancestryLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, CoancestryLinearGenomicModel):

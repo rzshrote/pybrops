@@ -3,7 +3,6 @@ import pytest
 import numpy
 
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
-from pybrops.popgen.gmap.ExtendedGeneticMap import is_ExtendedGeneticMap
 from pybrops.popgen.gmap.ExtendedGeneticMap import check_is_ExtendedGeneticMap
 
 ################################################################################
@@ -21,10 +20,6 @@ def egmap_sample(shared_datadir):
 ################################################################################
 #################################### Tests #####################################
 ################################################################################
-
-def test_is_ExtendedGeneticMap(egmap):
-    assert is_ExtendedGeneticMap(egmap)
-
 def test_check_is_ExtendedGeneticMap():
     with pytest.raises(TypeError):
         check_is_ExtendedGeneticMap(None, "None")

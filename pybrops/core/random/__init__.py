@@ -1,55 +1,9 @@
 # order dependent imports
 # import random
 
-# import everything
-from .prng import *
+__all__ = [
+    "prng",
+]
 
-# can't import everthing since there are private variables
-# from .random_util import (
-#     default_BitGenerator,
-#     seed_nbytes,
-#     beta,
-#     binomial,
-#     bytes,
-#     chisquare,
-#     choice,
-#     dirichlet,
-#     exponential,
-#     f,
-#     gamma,
-#     geometric,
-#     gumbel,
-#     hypergeometric,
-#     integers,
-#     laplace,
-#     logistic,
-#     lognormal,
-#     logseries,
-#     multinomial,
-#     multivariate_hypergeometric,
-#     multivariate_normal,
-#     negative_binomial,
-#     noncentral_chisquare,
-#     noncentral_f,
-#     normal,
-#     pareto,
-#     permutation,
-#     poisson,
-#     power,
-#     random,
-#     rayleigh,
-#     seed,
-#     shuffle,
-#     spawn,
-#     standard_cauchy,
-#     standard_exponential,
-#     standard_gamma,
-#     standard_normal,
-#     standard_t,
-#     triangular,
-#     uniform,
-#     vonmises,
-#     wald,
-#     weibull,
-#     zipf,
-# )
+# import everything
+from pybrops.core.random import prng

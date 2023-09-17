@@ -3,10 +3,15 @@ Module defining interfaces and associated error checking routines for
 breeding program parental selection operators.
 """
 
-from typing import Any
+__all__ = [
+    "ParentSelectionOperator",
+    "check_is_ParentSelectionOperator",
+]
+
+from abc import ABCMeta, abstractmethod
 
 
-class ParentSelectionOperator:
+class ParentSelectionOperator(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for parental selection within an entire
     breeding program.
@@ -15,21 +20,22 @@ class ParentSelectionOperator:
         1) Parental selection for an entire breeding program.
     """
 
-    def __init__(
+    ########################## Special Object Methods ##########################
+
+    ############################## Object Methods ##############################
+    @abstractmethod
+    def pselect(
             self, 
+            genome: dict, 
+            geno: dict, 
+            pheno: dict, 
+            bval: dict, 
+            gmod: dict, 
+            t_cur: int, 
+            t_max: int, 
+            miscout: dict, 
             **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class ParentSelectionOperator.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(ParentSelectionOperator, self).__init__()
-
-    def pselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs: dict):
+        ) -> tuple:
         """
         Select individuals to serve as parents in a breeding program.
 
@@ -74,35 +80,17 @@ class ParentSelectionOperator:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_ParentSelectionOperator(v: Any) -> bool:
-    """
-    Determine whether an object is a ParentSelectionOperator.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a ParentSelectionOperator object instance.
-    """
-    return isinstance(v, ParentSelectionOperator)
-
-def check_is_ParentSelectionOperator(v: Any, varname: str) -> None:
+def check_is_ParentSelectionOperator(v: object, vname: str) -> None:
     """
     Check if object is of type ParentSelectionOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, ParentSelectionOperator):
-        raise TypeError("'%s' must be a ParentSelectionOperator." % varname)
+        raise TypeError("'%s' must be a ParentSelectionOperator." % vname)

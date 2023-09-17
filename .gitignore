@@ -56,8 +56,8 @@ coverage.xml
 *.pot
 
 # Sphinx documentation
-doc/build/
-doc/source/_autosummary/
+docsrc/build/
+docsrc/source/_autosummary/
 
 # PyBuilder
 target/
@@ -93,9 +93,5 @@ venv.bak/
 *.png
 *.gif
 *.7z
-experiments/2020-Mar-26_soybean_optimize/Song_2016_phased_chr.vcf
-experiments/2020-Mar-26_soybean_optimize/Song_2016.linear.egmap
 *.mp4
-breeding/tarspot/tarspot_geno.vcf.gz
-breeding/height/2019_wisdiv_geno.vcf.gz
-.idea/
+*.test.txt

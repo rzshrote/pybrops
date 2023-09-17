@@ -28,9 +28,16 @@ build:
 dist:
 	echo "distribution build instructions not written yet"
 
-# instructions for building the package html documentation
+# instructions for building the package documentation in html format
 doc-html:
-	cd doc/ && $(MAKE) html
+	cd docsrc/ && $(MAKE) html
+	if [ ! -d docs ]; then mkdir docs; fi
+	cp -r docsrc/build/html/* docs/
+	cp -r docsrc/build/html/.* docs/
+
+# instructions for building the package documentation in pdf format (requires LaTeX)
+doc-pdf:
+	cd docsrc/ && $(MAKE) latexpdf
 
 # instructions for cleaning the virtual environment
 clean-virtualenv-devel:

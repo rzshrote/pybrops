@@ -1,36 +1,47 @@
+import numpy
 import pytest
-
-from pybrops.test import generic_test_abstract_methods
-from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
-
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_abstract_method
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.breed.prot.mate.common_fixtures import *
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
-from pybrops.breed.prot.mate.MatingProtocol import is_MatingProtocol
 from pybrops.breed.prot.mate.MatingProtocol import check_is_MatingProtocol
+
+class DummyMatingProtocol(MatingProtocol):
+    def __init__(self):
+        pass
+    def mate(self, pgmat, xconfig, nmating, nprogeny, miscout, **kwargs):
+        pass
+    @property
+    def nparent(self) -> int:
+        """nparent."""
+        return 0
+    @nparent.setter
+    def nparent(self, value: int) -> None:
+        """Set nparent."""
+        self._nparent = value
+    
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
 def mprot():
-    yield MatingProtocol()
+    yield DummyMatingProtocol()
 
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(MatingProtocol)
+    assert_docstring(MatingProtocol)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(MatingProtocol, "__init__")
+    assert_concrete_method(MatingProtocol, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -40,23 +51,17 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_mate_is_abstract():
-    generic_assert_abstract_method(MatingProtocol, "mate")
+    assert_abstract_method(MatingProtocol, "mate")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_MatingProtocol_is_concrete():
-    generic_assert_concrete_function(is_MatingProtocol)
-
 def test_check_is_MatingProtocol_is_concrete():
-    generic_assert_concrete_function(check_is_MatingProtocol)
+    assert_concrete_function(check_is_MatingProtocol)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_MatingProtocol(mprot):
-    assert is_MatingProtocol(mprot)
-
 def test_check_is_MatingProtocol(mprot):
     with not_raises(TypeError):
         check_is_MatingProtocol(mprot, "mprot")

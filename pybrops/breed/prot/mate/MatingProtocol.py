@@ -3,10 +3,14 @@ Module defining interfaces and associated error checking routines for mating
 mating protocols.
 """
 
-from typing import Any
+from abc import ABCMeta, abstractmethod
+from numbers import Integral
+from typing import Optional, Union
+import numpy
 
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class MatingProtocol:
+class MatingProtocol(metaclass=ABCMeta):
     """
     Abstract class for mating protocols.
 
@@ -14,27 +18,31 @@ class MatingProtocol:
         1) Mating simulation and progeny generation from genotype matrices.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for abstract class MatingProtocol.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(MatingProtocol, self).__init__()
+    ############################ Object Properties #############################
+    @property
+    @abstractmethod
+    def nparent(self) -> Integral:
+        """Number of parents the mating protocol requires."""
+        raise NotImplementedError("property is abstract")
+    @nparent.setter
+    @abstractmethod
+    def nparent(self, value: Integral) -> None:
+        """Set number of parents the mating protocol requires."""
+        raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
-    def mate(self, pgmat, sel, ncross, nprogeny, miscout, **kwargs: dict):
+    @abstractmethod
+    def mate(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            xconfig: numpy.ndarray, 
+            nmating: Union[Integral,numpy.ndarray], 
+            nprogeny: Union[Integral,numpy.ndarray], 
+            miscout: Optional[dict], 
+            **kwargs: dict
+        ) -> PhasedGenotypeMatrix:
         """
         Mate individuals according to a mating scheme.
 
@@ -42,13 +50,14 @@ class MatingProtocol:
         ----------
         pgmat : PhasedGenotypeMatrix
             A PhasedGenotypeMatrix of parental candidates.
-        sel : numpy.ndarray
-            Array of indices specifying a cross pattern. Each index corresponds
-            to an individual in 'pgvmat'.
-        ncross : numpy.ndarray
-            Number of crosses to perform per cross pattern.
-        nprogeny : numpy.ndarray
-            Number of progeny to generate per cross.
+        xconfig : numpy.ndarray
+            Array of shape ``(ncross,nparent)`` containing indices specifying a cross
+            configuration. Each index corresponds to an individual in ``pgmat``.
+        nmating : Integral, numpy.ndarray
+            Number of matings of the cross configuration per cross pattern.
+            Relevant in situations with heterozygous parents.
+        nprogeny : Integral, numpy.ndarray
+            Number of progeny to generate per mating.
         miscout : dict, None
             Pointer to a dictionary for miscellaneous user defined output.
             If ``dict``, write to dict (may overwrite previously defined fields).
@@ -65,35 +74,17 @@ class MatingProtocol:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_MatingProtocol(v: Any) -> bool:
-    """
-    Determine whether an object is a MatingProtocol.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a MatingProtocol object instance.
-    """
-    return isinstance(v, MatingProtocol)
-
-def check_is_MatingProtocol(v: Any, varname: str) -> None:
+def check_is_MatingProtocol(v: object, vname: str) -> None:
     """
     Check if object is of type MatingProtocol. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, MatingProtocol):
-        raise TypeError("'%s' must be a MatingProtocol." % varname)
+        raise TypeError("'%s' must be a MatingProtocol." % vname)

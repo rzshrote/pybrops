@@ -3,26 +3,34 @@ Module defining implementing dense matrices with taxa metadata and associated
 error checking routines.
 """
 
+__all__ = [
+    "DenseTaxaMatrix",
+    "check_is_DenseTaxaMatrix",
+]
+
 import copy
 import numpy
+import h5py
 from typing import Optional, Sequence, Union
-from typing import Any
 from numpy.typing import ArrayLike
+from pybrops.core.error.error_io_h5py import check_group_in_hdf5
+from pybrops.core.error.error_io_python import check_file_exists
 
-from pybrops.core.error import check_is_array_like
-from pybrops.core.error import check_is_iterable
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_at_least_1d
-from pybrops.core.error import check_ndarray_axis_len
-from pybrops.core.error import check_ndarray_dtype_is_int64
-from pybrops.core.error import check_ndarray_dtype_is_object
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import error_readonly
-from pybrops.core.error import generic_check_isinstance
+from pybrops.core.error.error_type_python import check_is_array_like
+from pybrops.core.error.error_attr_python import check_is_iterable
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_int64
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_generic_python import generic_check_isinstance
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim_gteq
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
+from pybrops.core.util.h5py import save_dict_to_hdf5
 
 class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
     """
@@ -33,9 +41,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         2) Dense matrix taxa routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -126,170 +132,117 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         return out
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
-    def mat():
-        doc = "Pointer to raw matrix object."
-        def fget(self):
-            """Get pointer to raw matrix object"""
-            return self._mat
-        def fset(self, value):
-            """Set pointer to raw matrix object"""
-            check_is_ndarray(value, "mat")
-            check_ndarray_at_least_1d(value, "mat")
-            self._mat = value
-        def fdel(self):
-            """Delete raw matrix object"""
-            del self._mat
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat = property(**mat())
+    @DenseMutableMatrix.mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        """Set pointer to raw numpy.ndarray object."""
+        check_is_ndarray(value, "mat")
+        check_ndarray_ndim_gteq(value, "mat", 1)
+        self._mat = value
 
     ################# Taxa Data Properites #################
-    def taxa():
-        doc = "Taxa label property."
-        def fget(self):
-            """Get taxa label array"""
-            return self._taxa
-        def fset(self, value):
-            """Set taxa label array"""
-            if value is not None:
-                check_is_ndarray(value, "taxa")
-                check_ndarray_dtype_is_object(value, "taxa")
-                check_ndarray_ndim(value, "taxa", 1)
-                check_ndarray_axis_len(value, "taxa", 0, self.ntaxa)
-            self._taxa = value
-        def fdel(self):
-            """Delete taxa label array"""
-            del self._taxa
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa = property(**taxa())
+    @property
+    def taxa(self) -> Union[numpy.ndarray,None]:
+        """Taxa label array"""
+        return self._taxa
+    @taxa.setter
+    def taxa(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa label array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa")
+            check_ndarray_dtype_is_object(value, "taxa")
+            check_ndarray_ndim(value, "taxa", 1)
+            check_ndarray_axis_len(value, "taxa", 0, self.ntaxa)
+        self._taxa = value
 
-    def taxa_grp():
-        doc = "Taxa group label property."
-        def fget(self):
-            """Get taxa group label array"""
-            return self._taxa_grp
-        def fset(self, value):
-            """Set taxa group label array"""
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp")
-                check_ndarray_dtype_is_int64(value, "taxa_grp")
-                check_ndarray_ndim(value, "taxa_grp", 1)
-                check_ndarray_axis_len(value, "taxa_grp", 0, self.ntaxa)
-            self._taxa_grp = value
-        def fdel(self):
-            """Delete taxa group label array"""
-            del self._taxa_grp
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp = property(**taxa_grp())
+    @property
+    def taxa_grp(self) -> Union[numpy.ndarray,None]:
+        """Taxa group label."""
+        return self._taxa_grp
+    @taxa_grp.setter
+    def taxa_grp(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group label array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp")
+            check_ndarray_dtype_is_int64(value, "taxa_grp")
+            check_ndarray_ndim(value, "taxa_grp", 1)
+            check_ndarray_axis_len(value, "taxa_grp", 0, self.ntaxa)
+        self._taxa_grp = value
 
     ############### Taxa Metadata Properites ###############
-    def ntaxa():
-        doc = "Number of taxa property."
-        def fget(self):
-            """Get number of taxa"""
-            return self._mat.shape[self.taxa_axis]
-        def fset(self, value):
-            """Set number of taxa"""
-            error_readonly("ntaxa")
-        def fdel(self):
-            """Delete number of taxa"""
-            error_readonly("ntaxa")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ntaxa = property(**ntaxa())
+    @property
+    def ntaxa(self) -> int:
+        """Number of taxa"""
+        return self._mat.shape[self.taxa_axis]
+    @ntaxa.setter
+    def ntaxa(self, value: int) -> None:
+        """Set number of taxa"""
+        error_readonly("ntaxa")
+    
+    @property
+    def taxa_axis(self) -> int:
+        """Axis along which taxa are stored"""
+        return 0
+    @taxa_axis.setter
+    def taxa_axis(self, value: int) -> None:
+        """Set taxa axis number"""
+        error_readonly("taxa_axis")
+    
+    @property
+    def taxa_grp_name(self) -> Union[numpy.ndarray,None]:
+        """Taxa group name."""
+        return self._taxa_grp_name
+    @taxa_grp_name.setter
+    def taxa_grp_name(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group name array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_name")
+            check_ndarray_dtype_is_int64(value, "taxa_grp_name")
+            check_ndarray_ndim(value, "taxa_grp_name", 1)
+        self._taxa_grp_name = value
 
-    def taxa_axis():
-        doc = "Axis along which taxa are stored property."
-        def fget(self):
-            """Get taxa axis number"""
-            return 0
-        def fset(self, value):
-            """Set taxa axis number"""
-            error_readonly("taxa_axis")
-        def fdel(self):
-            """Delete taxa axis number"""
-            error_readonly("taxa_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_axis = property(**taxa_axis())
+    @property
+    def taxa_grp_stix(self) -> Union[numpy.ndarray,None]:
+        """Taxa group start index."""
+        return self._taxa_grp_stix
+    @taxa_grp_stix.setter
+    def taxa_grp_stix(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group start indices array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_stix")
+            check_ndarray_dtype_is_int64(value, "taxa_grp_stix")
+            check_ndarray_ndim(value, "taxa_grp_stix", 1)
+        self._taxa_grp_stix = value
 
-    def taxa_grp_name():
-        doc = "Taxa group name property."
-        def fget(self):
-            """Get taxa group name array"""
-            return self._taxa_grp_name
-        def fset(self, value):
-            """Set taxa group name array"""
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_name")
-                check_ndarray_dtype_is_int64(value, "taxa_grp_name")
-                check_ndarray_ndim(value, "taxa_grp_name", 1)
-            self._taxa_grp_name = value
-        def fdel(self):
-            """Delete taxa group array"""
-            del self._taxa_grp_name
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_name = property(**taxa_grp_name())
+    @property
+    def taxa_grp_spix(self) -> Union[numpy.ndarray,None]:
+        """Taxa group stop index."""
+        return self._taxa_grp_spix
+    @taxa_grp_spix.setter
+    def taxa_grp_spix(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group stop indices array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_spix")
+            check_ndarray_dtype_is_int64(value, "taxa_grp_spix")
+            check_ndarray_ndim(value, "taxa_grp_spix", 1)
+        self._taxa_grp_spix = value
 
-    def taxa_grp_stix():
-        doc = "Taxa group start index property."
-        def fget(self):
-            """Get taxa group start indices array"""
-            return self._taxa_grp_stix
-        def fset(self, value):
-            """Set taxa group start indices array"""
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_stix")
-                check_ndarray_dtype_is_int64(value, "taxa_grp_stix")
-                check_ndarray_ndim(value, "taxa_grp_stix", 1)
-            self._taxa_grp_stix = value
-        def fdel(self):
-            """Delete taxa group start indices array"""
-            del self._taxa_grp_stix
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_stix = property(**taxa_grp_stix())
+    @property
+    def taxa_grp_len(self) -> Union[numpy.ndarray,None]:
+        """Taxa group length."""
+        return self._taxa_grp_len
+    @taxa_grp_len.setter
+    def taxa_grp_len(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group length array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_len")
+            check_ndarray_dtype_is_int64(value, "taxa_grp_len")
+            check_ndarray_ndim(value, "taxa_grp_len", 1)
+        self._taxa_grp_len = value
 
-    def taxa_grp_spix():
-        doc = "Taxa group stop index property."
-        def fget(self):
-            """Get taxa group stop indices array"""
-            return self._taxa_grp_spix
-        def fset(self, value):
-            """Set taxa group stop indices array"""
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_spix")
-                check_ndarray_dtype_is_int64(value, "taxa_grp_spix")
-                check_ndarray_ndim(value, "taxa_grp_spix", 1)
-            self._taxa_grp_spix = value
-        def fdel(self):
-            """Delete taxa group stop indices array"""
-            del self._taxa_grp_spix
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_spix = property(**taxa_grp_spix())
-
-    def taxa_grp_len():
-        doc = "Taxa group length property."
-        def fget(self):
-            """Get taxa group length array"""
-            return self._taxa_grp_len
-        def fset(self, value):
-            """Set taxa group length array"""
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_len")
-                check_ndarray_dtype_is_int64(value, "taxa_grp_len")
-                check_ndarray_ndim(value, "taxa_grp_len", 1)
-            self._taxa_grp_len = value
-        def fdel(self):
-            """Delete taxa group length array"""
-            del self._taxa_grp_len
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_len = property(**taxa_grp_len())
-
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(
@@ -1087,7 +1040,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
 
         # dispatch to correct function
         if axis == self.taxa_axis:
-            self.lexsort_taxa(keys = keys, **kwargs)
+            indices = self.lexsort_taxa(keys = keys, **kwargs)
         else:
             raise ValueError("cannot lexsort along axis {0}".format(axis))
 
@@ -1255,7 +1208,14 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             **kwargs: dict
         ) -> None:
         """
-        Sort matrix along axis, then populate grouping indices for the axis.
+        Sort the DenseTaxaMatrix along an axis, then populate grouping indices.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values are grouped.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -1289,6 +1249,49 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             self._taxa_grp_name, self._taxa_grp_stix, self._taxa_grp_len = uniq
             # calculate stop indices
             self._taxa_grp_spix = self._taxa_grp_stix + self._taxa_grp_len
+
+    def ungroup(
+            self,
+            axis: int = -1,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseTaxaMatrix along an axis by removing grouping metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # transform axis number to an index
+        axis = get_axis(axis, self.mat_ndim)
+
+        # dispatch functions
+        if axis == self.taxa_axis:
+            self.ungroup_taxa(**kwargs)
+        else:
+            raise ValueError("cannot ungroup along axis {0}".format(axis))
+
+    def ungroup_taxa(
+            self,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseTaxaMatrix along the taxa axis by removing taxa group 
+        metadata.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # set taxa metadata to None
+        self.taxa_grp_name = None
+        self.taxa_grp_stix = None
+        self.taxa_grp_spix = None
+        self.taxa_grp_len = None
 
     def is_grouped(
             self, 
@@ -1340,37 +1343,112 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
             (self._taxa_grp_len is not None)
         )
 
+    ################### Matrix File I/O ####################
+    def to_hdf5(
+            self, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> None:
+        """
+        Write GenotypeMatrix to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name to which to write.
+        groupname : str or None
+            HDF5 group name under which the ``DenseMatrix`` data is stored.
+            If ``None``, the ``DenseMatrix`` is written to the base HDF5 group.
+        """
+        h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### populate HDF5 file
+        data_dict = {                                           # data dictionary
+            "mat": self.mat,
+            "taxa" : self.taxa,
+            "taxa_grp" : self.taxa_grp
+        }
+        save_dict_to_hdf5(h5file, groupname, data_dict)         # save data
+        ######################################################### write conclusion
+        h5file.close()                                          # close the file
+
+    ############################## Class Methods ###############################
+
+    ################### Matrix File I/O ####################
+    @classmethod
+    def from_hdf5(
+            cls, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> 'DenseTaxaMatrix':
+        """
+        Read DenseMatrix from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which DenseMatrix data is stored.
+            If None, DenseMatrix is read from base HDF5 group.
+
+        Returns
+        -------
+        out : DenseMatrix
+            A dense matrix read from file.
+        """
+        check_file_exists(filename)                             # check file exists
+        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### check that we have all required fields
+        required_fields = ["mat"]                               # all required arguments
+        for field in required_fields:                           # for each required field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
+        ######################################################### read data
+        data_dict = {                                           # output dictionary
+            "mat": None,
+            "taxa" : None,
+            "taxa_grp" : None
+        }
+        for field in data_dict.keys():                          # for each field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            if fieldname in h5file:                             # if the field exists in the HDF5 file
+                data_dict[field] = h5file[fieldname][()]        # read array
+        ######################################################### read conclusion
+        h5file.close()                                          # close file
+        ######################################################### create object
+        mat = cls(**data_dict)                                  # create object from read data
+        return mat
 
 
-################################################################################
+
 ################################## Utilities ###################################
-################################################################################
-def is_DenseTaxaMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DenseTaxaMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseTaxaMatrix object instance.
-    """
-    return isinstance(v, DenseTaxaMatrix)
-
-def check_is_DenseTaxaMatrix(v: Any, vname: str) -> None:
+def check_is_DenseTaxaMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseTaxaMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
-    if not is_DenseTaxaMatrix(v):
-        raise TypeError("'{0}' must be a DenseTaxaMatrix".format(vname))
+    if not isinstance(v, DenseTaxaMatrix):
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DenseTaxaMatrix.__name__,type(v).__name__))

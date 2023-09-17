@@ -2,13 +2,19 @@
 Module defining phased matrix interfaces and associated error checking routines.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "PhasedMatrix",
+    "check_is_PhasedMatrix",
+]
+
+from abc import ABCMeta, abstractmethod
+from typing import Sequence, Union
 import numpy
 from numpy.typing import ArrayLike
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
-class PhasedMatrix(MutableMatrix):
+class PhasedMatrix(MutableMatrix,metaclass=ABCMeta):
     """
     An abstract class for phased matrix wrapper objects.
 
@@ -19,62 +25,37 @@ class PhasedMatrix(MutableMatrix):
         1) Matrix phase manipulation routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        PhasedMatrix constructor
 
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(PhasedMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############## Phase Metadata Properites ###############
-    def nphase():
-        doc = "Number of chromosome phases represented by the matrix."
-        def fget(self):
-            """Get number of phases"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set number of phases"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete number of phases"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nphase = property(**nphase())
-
-    def phase_axis():
-        doc = "Axis along which phases are stored property."
-        def fget(self):
-            """Get phase axis number"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set phase axis number"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete phase axis number"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    phase_axis = property(**phase_axis())
-
-    ############################################################################
+    @property
+    @abstractmethod
+    def nphase(self) -> int:
+        """Number of chromosome phases represented by the matrix."""
+        raise NotImplementedError("property is abstract")
+    @nphase.setter
+    @abstractmethod
+    def nphase(self, value: int) -> None:
+        """Set number of phases"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def phase_axis(self) -> int:
+        """Axis along which phases are stored."""
+        raise NotImplementedError("property is abstract")
+    @phase_axis.setter
+    @abstractmethod
+    def phase_axis(self, value: int) -> None:
+        """Set phase axis number"""
+        raise NotImplementedError("property is abstract")
+    
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
+    @abstractmethod
     def adjoin_phase(
             self, 
             values: Union[Matrix,numpy.ndarray], 
@@ -98,6 +79,7 @@ class PhasedMatrix(MutableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
+    @abstractmethod
     def delete_phase(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -121,6 +103,7 @@ class PhasedMatrix(MutableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
+    @abstractmethod
     def insert_phase(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -148,6 +131,7 @@ class PhasedMatrix(MutableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
+    @abstractmethod
     def select_phase(
             self, 
             indices: ArrayLike, 
@@ -172,6 +156,7 @@ class PhasedMatrix(MutableMatrix):
         raise NotImplementedError("method is abstract")
 
     @classmethod
+    @abstractmethod
     def concat_phase(
             cls, 
             mats: Sequence, 
@@ -197,6 +182,7 @@ class PhasedMatrix(MutableMatrix):
         raise NotImplementedError("static method is abstract")
 
     ######### Matrix element in-place-manipulation #########
+    @abstractmethod
     def append_phase(
             self, 
             values: Union[Matrix,numpy.ndarray], 
@@ -214,6 +200,7 @@ class PhasedMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def remove_phase(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -231,6 +218,7 @@ class PhasedMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def incorp_phase(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -254,35 +242,17 @@ class PhasedMatrix(MutableMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_PhasedMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a PhasedMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a PhasedMatrix object instance.
-    """
-    return isinstance(v, PhasedMatrix)
-
-def check_is_PhasedMatrix(v: Any, vname: str) -> None:
+def check_is_PhasedMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type PhasedMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, PhasedMatrix):
-        raise TypeError("'{0}' must be a PhasedMatrix".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,PhasedMatrix.__name__,type(v).__name__))

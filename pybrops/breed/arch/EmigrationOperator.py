@@ -3,10 +3,16 @@ Module defining interfaces and associated error checking routines for
 emigration operators.
 """
 
-from typing import Any
-from pybrops.breed.arch.BreedingEdge import BreedingEdge
+__all__ = [
+    "EmigrationOperator",
+    "check_is_EmigrationOperator",
+]
 
-class EmigrationOperator(BreedingEdge):
+from abc import ABCMeta, abstractmethod
+from pybrops.breed.arch.BreedingEdge import BreedingEdge
+from pybrops.breed.arch.BreedingNode import BreedingNode
+
+class EmigrationOperator(BreedingEdge,metaclass=ABCMeta):
     """
     Abstract class defining immigration operators.
 
@@ -14,31 +20,17 @@ class EmigrationOperator(BreedingEdge):
         1) Protocols for emigration between different breeding nodes.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
+
+    ############################ Object Properties #############################
+
+    ############################## Object Methods ##############################
+    @abstractmethod
+    def emigrate(
             self, 
+            bnode: BreedingNode, 
             **kwargs: dict
         ) -> None:
-        """
-        Constructor for the abstract class EmigrationOperator.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(EmigrationOperator, self).__init__(**kwargs)
-
-    ############################################################################
-    ############################ Object Properties #############################
-    ############################################################################
-
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
-    def emigrate(self, bnode, **kwargs: dict):
         """
         Emigrate individuals to a BreedingNode.
 
@@ -53,35 +45,17 @@ class EmigrationOperator(BreedingEdge):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_EmigrationOperator(v: Any) -> bool:
-    """
-    Determine whether an object is a EmigrationOperator.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a EmigrationOperator object instance.
-    """
-    return isinstance(v, EmigrationOperator)
-
-def check_is_EmigrationOperator(v: Any, varname: str) -> None:
+def check_is_EmigrationOperator(v: object, vname: str) -> None:
     """
     Check if object is of type EmigrationOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, EmigrationOperator):
-        raise TypeError("'%s' must be a EmigrationOperator." % varname)
+        raise TypeError("'%s' must be a EmigrationOperator." % vname)

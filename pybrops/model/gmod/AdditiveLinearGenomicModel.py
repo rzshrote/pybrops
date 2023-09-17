@@ -3,10 +3,10 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic additive effects.
 """
 
-from typing import Any
+from abc import ABCMeta, abstractmethod
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 
-class AdditiveLinearGenomicModel(LinearGenomicModel):
+class AdditiveLinearGenomicModel(LinearGenomicModel,metaclass=ABCMeta):
     """
     The AdditiveLinearGenomicModel class represents an interface for a
     Multivariate Multiple Linear Regression model.
@@ -57,84 +57,43 @@ class AdditiveLinearGenomicModel(LinearGenomicModel):
     - ``t`` is the number of traits
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class AdditiveLinearGenomicModel.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(AdditiveLinearGenomicModel, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
-    def u_misc():
-        doc = "Miscellaneous random effects."
-        def fget(self):
-            """Get miscellaneous random effects"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set miscellaneous random effects"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete miscellaneous random effects"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    u_misc = property(**u_misc())
+    @property
+    @abstractmethod
+    def u_misc(self) -> object:
+        """Miscellaneous random effects."""
+        raise NotImplementedError("property is abstract")
+    @u_misc.setter
+    @abstractmethod
+    def u_misc(self, value: object) -> None:
+        """Set miscellaneous random effects"""
+        raise NotImplementedError("property is abstract")
 
-    def u_a():
-        doc = "Additive genomic marker effects."
-        def fget(self):
-            """Get additive genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set additive genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete additive genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    u_a = property(**u_a())
+    @property
+    @abstractmethod
+    def u_a(self) -> object:
+        """Additive genomic marker effects."""
+        raise NotImplementedError("property is abstract")
+    @u_a.setter
+    @abstractmethod
+    def u_a(self, value: object) -> None:
+        """Set additive genomic marker effects"""
+        raise NotImplementedError("property is abstract")
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_AdditiveLinearGenomicModel(v: Any) -> bool:
-    """
-    Determine whether an object is a AdditiveLinearGenomicModel.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a AdditiveLinearGenomicModel object instance.
-    """
-    return isinstance(v, AdditiveLinearGenomicModel)
-
-def check_is_AdditiveLinearGenomicModel(v: Any, vname: str) -> None:
+def check_is_AdditiveLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type AdditiveLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, AdditiveLinearGenomicModel):

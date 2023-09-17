@@ -4,7 +4,12 @@ Module implementing a dense mutable matrix and associated error checking routine
 Mutable refers to the ability of adding/removing rows and columns from the matrix.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "DenseMutableMatrix",
+    "check_is_DenseMutableMatrix",
+]
+
+from typing import Sequence, Union
 import numpy
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMatrix import DenseMatrix
@@ -19,9 +24,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
         1) Dense matrix in-place matrix shape changing routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -42,9 +45,7 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
             **kwargs
         )
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element in-place-manipulation #########
     def append(
@@ -135,35 +136,17 @@ class DenseMutableMatrix(DenseMatrix,MutableMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseMutableMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a HDF5InputOutput.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a HDF5InputOutput object instance.
-    """
-    return isinstance(v, DenseMutableMatrix)
-
-def check_is_DenseMutableMatrix(v: Any, varname: str) -> None:
+def check_is_DenseMutableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type HDF5InputOutput. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseMutableMatrix):
-        raise TypeError("'%s' must be a DenseMutableMatrix." % varname)
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DenseMutableMatrix.__name__,type(v).__name__))

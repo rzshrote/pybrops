@@ -3,14 +3,18 @@ Module implementing a dense matrix with phase, taxa, and variant metadata
 and associated error checking routines.
 """
 
+__all__ = [
+    "DensePhasedTaxaVariantMatrix",
+    "check_is_DensePhasedTaxaVariantMatrix",
+]
+
 import numpy
-from typing import Any, Sequence, Union
+from typing import Sequence, Union
 from typing import Optional
 from numpy.typing import ArrayLike
 
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_at_least_3d
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim_gteq
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
@@ -24,14 +28,13 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 
     The purpose of this concrete class is to merge the following classes and
     interfaces:
-        1) DenseTaxaVariantMatrix
-        2) DensePhasedMatrix
-        3) PhasedTaxaVariantMatrix
+
+        1. DenseTaxaVariantMatrix
+        2. DensePhasedMatrix
+        3. PhasedTaxaVariantMatrix
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray,
@@ -84,72 +87,34 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
-    def mat():
-        doc = "Raw underlying matrix"
-        def fget(self):
-            return self._mat
-        def fset(self, value):
-            check_is_ndarray(value, "mat")
-            check_ndarray_at_least_3d(value, "mat")
-            self._mat = value
-        def fdel(self):
-            del self._mat
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat = property(**mat())
+    @DenseTaxaVariantMatrix.mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        check_is_ndarray(value, "mat")
+        check_ndarray_ndim_gteq(value, "mat", 3)
+        self._mat = value
 
     ############## Phase Metadata Properites ###############
-    def phase_axis():
-        doc = "Axis along which phases are stored property."
-        def fget(self):
-            """Get phase axis number"""
-            return 0
-        def fset(self, value):
-            """Set phase axis number"""
-            error_readonly("phase_axis")
-        def fdel(self):
-            """Delete phase axis number"""
-            error_readonly("phase_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    phase_axis = property(**phase_axis())
+    @DensePhasedMatrix.phase_axis.getter
+    def phase_axis(self) -> int:
+        """Get phase axis number"""
+        return 0
 
     ############### Taxa Metadata Properites ###############
-    def taxa_axis():
-        doc = "Axis along which taxa are stored property."
-        def fget(self):
-            """Get taxa axis number"""
-            return 1
-        def fset(self, value):
-            """Set taxa axis number"""
-            error_readonly("taxa_axis")
-        def fdel(self):
-            """Delete taxa axis number"""
-            error_readonly("taxa_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_axis = property(**taxa_axis())
+    @DenseTaxaVariantMatrix.taxa_axis.getter
+    def taxa_axis(self) -> int:
+        """Get taxa axis number"""
+        return 1
 
     ############# Variant Metadata Properites ##############
-    def vrnt_axis():
-        doc = "Axis along which variants are stored property."
-        def fget(self):
-            """Get variant axis"""
-            return 2
-        def fset(self, value):
-            """Set variant axis"""
-            error_readonly("vrnt_axis")
-        def fdel(self):
-            """Delete variant axis"""
-            error_readonly("vrnt_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_axis = property(**vrnt_axis())
+    @DenseTaxaVariantMatrix.vrnt_axis.getter
+    def vrnt_axis(self) -> int:
+        """Get variant axis"""
+        return 2
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(
@@ -834,6 +799,64 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
     ################### Sorting Methods ####################
 
     ################### Grouping Methods ###################
+    def group(
+            self, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
+        """
+        Sort the DensePhasedTaxaVariantMatrix along an axis, then populate 
+        grouping indices.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values are grouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # transform axis number to an index
+        axis = get_axis(axis, self.mat_ndim)
+
+        # dispatch functions
+        if axis == self.phase_axis:
+            raise ValueError("cannot group along axis {0} (phase axis)".format(axis))
+        elif axis == self.taxa_axis:
+            self.group_taxa(**kwargs)
+        elif axis == self.vrnt_axis:
+            self.group_vrnt(**kwargs)
+        else:
+            raise ValueError("cannot group along axis {0}".format(axis))
+
+    def ungroup(
+            self, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DensePhasedTaxaVariantMatrix along an axis by removing 
+        grouping metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # transform axis number to an index
+        axis = get_axis(axis, self.mat_ndim)
+
+        # dispatch functions
+        if axis == self.phase_axis:
+            raise ValueError("cannot ungroup along axis {0} (phase axis)".format(axis))
+        elif axis == self.taxa_axis:
+            self.ungroup_taxa(**kwargs)
+        elif axis == self.vrnt_axis:
+            self.ungroup_vrnt(**kwargs)
+        else:
+            raise ValueError("cannot ungroup along axis {0}".format(axis))
+
     def is_grouped(
             self, 
             axis: int = -1, 
@@ -864,35 +887,17 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DensePhasedTaxaVariantMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DensePhasedTaxaVariantMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DensePhasedTaxaVariantMatrix object instance.
-    """
-    return isinstance(v, DensePhasedTaxaVariantMatrix)
-
-def check_is_DensePhasedTaxaVariantMatrix(v: Any, vname: str) -> None:
+def check_is_DensePhasedTaxaVariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DensePhasedTaxaVariantMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DensePhasedTaxaVariantMatrix):
-        raise TypeError("'{0}' must be a DensePhasedTaxaVariantMatrix".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DensePhasedTaxaVariantMatrix.__name__,type(v).__name__))

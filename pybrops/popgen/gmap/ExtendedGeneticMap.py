@@ -3,21 +3,26 @@ Module implementing a custom, extended genetic map format and associated error
 checking routines.
 """
 
-from typing import Any, Optional, Sequence, Union
+__all__ = [
+    "ExtendedGeneticMap",
+    "check_is_ExtendedGeneticMap",
+]
+
+from typing import Optional, Sequence, Union
 import numpy
 import math
 import pandas
 import warnings
 from scipy.interpolate import interp1d
 
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_is_not_None
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import check_ndarray_size
-from pybrops.core.error import check_ndarray_dtype
-from pybrops.core.error import check_is_dict
-from pybrops.core.error import check_is_str
-from pybrops.core.error import check_ndarray_dtype_is_object
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_python import check_is_not_None
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_size
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 
 class ExtendedGeneticMap(GeneticMap):
@@ -33,9 +38,7 @@ class ExtendedGeneticMap(GeneticMap):
         6) Import and export of extended genetic maps.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             vrnt_chrgrp: numpy.ndarray, 
@@ -76,200 +79,170 @@ class ExtendedGeneticMap(GeneticMap):
         """Get the number of markers in the genetic map."""
         return len(self._vrnt_genpos)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ################### Data Properites ####################
-    def vrnt_chrgrp():
-        doc = "The vrnt_chrgrp property."
-        def fget(self):
-            return self._vrnt_chrgrp
-        def fset(self, value):
-            check_is_ndarray(value, "vrnt_chrgrp")
-            check_ndarray_dtype(value, "vrnt_chrgrp", numpy.int64)
-            check_ndarray_ndim(value, "vrnt_chrgrp", 1)
-            self._vrnt_chrgrp = value
-        def fdel(self):
-            del self._vrnt_chrgrp
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp = property(**vrnt_chrgrp())
+    @property
+    def vrnt_chrgrp(self) -> numpy.ndarray:
+        """Description for property vrnt_chrgrp."""
+        return self._vrnt_chrgrp
+    @vrnt_chrgrp.setter
+    def vrnt_chrgrp(self, value: numpy.ndarray) -> None:
+        """Set data for property vrnt_chrgrp."""
+        check_is_ndarray(value, "vrnt_chrgrp")
+        check_ndarray_dtype(value, "vrnt_chrgrp", numpy.int64)
+        check_ndarray_ndim(value, "vrnt_chrgrp", 1)
+        self._vrnt_chrgrp = value
 
-    def vrnt_phypos():
-        doc = "The vrnt_phypos property."
-        def fget(self):
-            return self._vrnt_phypos
-        def fset(self, value):
-            check_is_ndarray(value, "vrnt_phypos")
-            check_ndarray_dtype(value, "vrnt_phypos", numpy.int64)
-            check_ndarray_ndim(value, "vrnt_phypos", 1)
-            self._vrnt_phypos = value
-        def fdel(self):
-            del self._vrnt_phypos
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_phypos = property(**vrnt_phypos())
+    @property
+    def vrnt_phypos(self) -> numpy.ndarray:
+        """Description for property vrnt_phypos."""
+        return self._vrnt_phypos
+    @vrnt_phypos.setter
+    def vrnt_phypos(self, value: numpy.ndarray) -> None:
+        """Set data for property vrnt_phypos."""
+        check_is_ndarray(value, "vrnt_phypos")
+        check_ndarray_dtype(value, "vrnt_phypos", numpy.int64)
+        check_ndarray_ndim(value, "vrnt_phypos", 1)
+        self._vrnt_phypos = value
 
-    def vrnt_genpos():
-        doc = "The vrnt_genpos property."
-        def fget(self):
-            return self._vrnt_genpos
-        def fset(self, value):
-            check_is_ndarray(value, "vrnt_genpos")
-            check_ndarray_dtype(value, "vrnt_genpos", numpy.float64)
-            check_ndarray_ndim(value, "vrnt_genpos", 1)
-            self._vrnt_genpos = value
-        def fdel(self):
-            del self._vrnt_genpos
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_genpos = property(**vrnt_genpos())
+    @property
+    def vrnt_genpos(self) -> numpy.ndarray:
+        """Description for property vrnt_genpos."""
+        return self._vrnt_genpos
+    @vrnt_genpos.setter
+    def vrnt_genpos(self, value: numpy.ndarray) -> None:
+        """Set data for property vrnt_genpos."""
+        check_is_ndarray(value, "vrnt_genpos")
+        check_ndarray_dtype(value, "vrnt_genpos", numpy.float64)
+        check_ndarray_ndim(value, "vrnt_genpos", 1)
+        self._vrnt_genpos = value
 
-    def vrnt_stop():
-        doc = "The vrnt_stop property."
-        def fget(self):
-            return self._vrnt_stop
-        def fset(self, value):
-            check_is_ndarray(value, "vrnt_stop")
-            check_ndarray_dtype(value, "vrnt_stop", numpy.int64)
-            check_ndarray_ndim(value, "vrnt_stop", 1)
-            self._vrnt_stop = value
-        def fdel(self):
-            del self._vrnt_stop
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_stop = property(**vrnt_stop())
+    @property
+    def vrnt_stop(self) -> numpy.ndarray:
+        """Description for property vrnt_stop."""
+        return self._vrnt_stop
+    @vrnt_stop.setter
+    def vrnt_stop(self, value: numpy.ndarray) -> None:
+        """Set data for property vrnt_stop."""
+        check_is_ndarray(value, "vrnt_stop")
+        check_ndarray_dtype(value, "vrnt_stop", numpy.int64)
+        check_ndarray_ndim(value, "vrnt_stop", 1)
+        self._vrnt_stop = value
 
-    def vrnt_name():
-        doc = "The vrnt_name property."
-        def fget(self):
-            return self._vrnt_name
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "vrnt_name")
-                check_ndarray_dtype_is_object(value, "vrnt_name")
-                check_ndarray_ndim(value, "vrnt_name", 1)
-            self._vrnt_name = value
-        def fdel(self):
-            del self._vrnt_name
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_name = property(**vrnt_name())
+    @property
+    def vrnt_name(self) -> Union[numpy.ndarray,None]:
+        """Description for property vrnt_name."""
+        return self._vrnt_name
+    @vrnt_name.setter
+    def vrnt_name(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set data for property vrnt_name."""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_name")
+            check_ndarray_dtype_is_object(value, "vrnt_name")
+            check_ndarray_ndim(value, "vrnt_name", 1)
+        self._vrnt_name = value
 
-    def vrnt_fncode():
-        doc = "The vrnt_fncode property."
-        def fget(self):
-            return self._vrnt_fncode
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "vrnt_fncode")
-                check_ndarray_dtype_is_object(value, "vrnt_fncode")
-                check_ndarray_ndim(value, "vrnt_fncode", 1)
-            self._vrnt_fncode = value
-        def fdel(self):
-            del self._vrnt_fncode
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_fncode = property(**vrnt_fncode())
+    @property
+    def vrnt_fncode(self) -> Union[numpy.ndarray,None]:
+        """Description for property vrnt_fncode."""
+        return self._vrnt_fncode
+    @vrnt_fncode.setter
+    def vrnt_fncode(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set data for property vrnt_fncode."""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_fncode")
+            check_ndarray_dtype_is_object(value, "vrnt_fncode")
+            check_ndarray_ndim(value, "vrnt_fncode", 1)
+        self._vrnt_fncode = value
 
     ################# Metadata Properites ##################
-    def vrnt_chrgrp_name():
-        doc = "The vrnt_chrgrp_name property."
-        def fget(self):
-            return self._vrnt_chrgrp_name
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "vrnt_chrgrp_name")
-                check_ndarray_dtype(value, "vrnt_chrgrp_name", numpy.int64)
-                check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
-            self._vrnt_chrgrp_name = value
-        def fdel(self):
-            del self._vrnt_chrgrp_name
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_name = property(**vrnt_chrgrp_name())
+    @property
+    def vrnt_chrgrp_name(self) -> Union[numpy.ndarray,None]:
+        """Description for property vrnt_chrgrp_name."""
+        return self._vrnt_chrgrp_name
+    @vrnt_chrgrp_name.setter
+    def vrnt_chrgrp_name(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set data for property vrnt_chrgrp_name."""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_chrgrp_name")
+            check_ndarray_dtype(value, "vrnt_chrgrp_name", numpy.int64)
+            check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
+        self._vrnt_chrgrp_name = value
 
-    def vrnt_chrgrp_stix():
-        doc = "The vrnt_chrgrp_stix property."
-        def fget(self):
-            return self._vrnt_chrgrp_stix
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "vrnt_chrgrp_stix")
-                check_ndarray_dtype(value, "vrnt_chrgrp_stix", numpy.int64)
-                check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
-            self._vrnt_chrgrp_stix = value
-        def fdel(self):
-            del self._vrnt_chrgrp_stix
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_stix = property(**vrnt_chrgrp_stix())
+    @property
+    def vrnt_chrgrp_stix(self) -> Union[numpy.ndarray,None]:
+        """Description for property vrnt_chrgrp_stix."""
+        return self._vrnt_chrgrp_stix
+    @vrnt_chrgrp_stix.setter
+    def vrnt_chrgrp_stix(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set data for property vrnt_chrgrp_stix."""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_chrgrp_stix")
+            check_ndarray_dtype(value, "vrnt_chrgrp_stix", numpy.int64)
+            check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
+        self._vrnt_chrgrp_stix = value
 
-    def vrnt_chrgrp_spix():
-        doc = "The vrnt_chrgrp_spix property."
-        def fget(self):
-            return self._vrnt_chrgrp_spix
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "vrnt_chrgrp_spix")
-                check_ndarray_dtype(value, "vrnt_chrgrp_spix", numpy.int64)
-                check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
-            self._vrnt_chrgrp_spix = value
-        def fdel(self):
-            del self._vrnt_chrgrp_spix
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_spix = property(**vrnt_chrgrp_spix())
+    @property
+    def vrnt_chrgrp_spix(self) -> Union[numpy.ndarray,None]:
+        """Description for property vrnt_chrgrp_spix."""
+        return self._vrnt_chrgrp_spix
+    @vrnt_chrgrp_spix.setter
+    def vrnt_chrgrp_spix(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set data for property vrnt_chrgrp_spix."""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_chrgrp_spix")
+            check_ndarray_dtype(value, "vrnt_chrgrp_spix", numpy.int64)
+            check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
+        self._vrnt_chrgrp_spix = value
 
-    def vrnt_chrgrp_len():
-        doc = "The vrnt_chrgrp_len property."
-        def fget(self):
-            return self._vrnt_chrgrp_len
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "vrnt_chrgrp_len")
-                check_ndarray_dtype(value, "vrnt_chrgrp_len", numpy.int64)
-                check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
-            self._vrnt_chrgrp_len = value
-        def fdel(self):
-            del self._vrnt_chrgrp_len
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_len = property(**vrnt_chrgrp_len())
+    @property
+    def vrnt_chrgrp_len(self) -> Union[numpy.ndarray,None]:
+        """Description for property vrnt_chrgrp_len."""
+        return self._vrnt_chrgrp_len
+    @vrnt_chrgrp_len.setter
+    def vrnt_chrgrp_len(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set data for property vrnt_chrgrp_len."""
+        if value is not None:
+            check_is_ndarray(value, "vrnt_chrgrp_len")
+            check_ndarray_dtype(value, "vrnt_chrgrp_len", numpy.int64)
+            check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
+        self._vrnt_chrgrp_len = value
 
     ################## Spline Properites ###################
-    def spline():
-        doc = "The spline property."
-        def fget(self):
-            return self._spline
-        def fset(self, value):
-            if value is not None:
-                check_is_dict(value, "spline")
-            self._spline = value
-        def fdel(self):
-            del self._spline
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    spline = property(**spline())
+    @property
+    def spline(self) -> Union[dict,None]:
+        """Description for property spline."""
+        return self._spline
+    @spline.setter
+    def spline(self, value: Union[dict,None]) -> None:
+        """Set data for property spline."""
+        if value is not None:
+            check_is_dict(value, "spline")
+        self._spline = value
 
     ############# Spline Metadata Properites ###############
-    def spline_kind():
-        doc = "The spline_kind property."
-        def fget(self):
-            return self._spline_kind
-        def fset(self, value):
-            if value is not None:
-                check_is_str(value, "spline_kind")
-            self._spline_kind = value
-        def fdel(self):
-            del self._spline_kind
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    spline_kind = property(**spline_kind())
+    @property
+    def spline_kind(self) -> Union[str,None]:
+        """Description for property spline_kind."""
+        return self._spline_kind
+    @spline_kind.setter
+    def spline_kind(self, value: Union[str,None]) -> None:
+        """Set data for property spline_kind."""
+        if value is not None:
+            check_is_str(value, "spline_kind")
+        self._spline_kind = value
 
-    def spline_fill_value():
-        doc = "The spline_fill_value property."
-        def fget(self):
-            return self._spline_fill_value
-        def fset(self, value):
-            self._spline_fill_value = value
-        def fdel(self):
-            del self._spline_fill_value
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    spline_fill_value = property(**spline_fill_value())
+    @property
+    def spline_fill_value(self) -> object:
+        """Description for property spline_fill_value."""
+        return self._spline_fill_value
+    @spline_fill_value.setter
+    def spline_fill_value(self, value: object) -> None:
+        """Set data for property spline_fill_value."""
+        self._spline_fill_value = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################### Sorting Methods ####################
     def lexsort(
@@ -1004,12 +977,12 @@ class ExtendedGeneticMap(GeneticMap):
         """
         # create a dictionary of our values
         df_dict = {
-            "chr_grp" : numpy.char.decode(self._chr_grp, 'utf-8'),
-            "chr_start" : self._chr_start,
-            "chr_stop" : self._chr_stop,
-            "map_pos" : self._map_pos,
-            "mkr_name" : numpy.char.decode(self._mkr_name, 'utf-8'),
-            "map_fncode" : numpy.char.decode(self._map_fncode, 'utf-8')
+            "chr_grp" : self.vrnt_chrgrp,
+            "chr_start" : self.vrnt_phypos,
+            "chr_stop" : self.vrnt_stop,
+            "map_pos" : self.vrnt_genpos,
+            "mkr_name" : self.vrnt_name,
+            "map_fncode" : self.vrnt_fncode
         }
 
         # make the DataFrame
@@ -1052,9 +1025,7 @@ class ExtendedGeneticMap(GeneticMap):
             index = False
         )
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     @classmethod
     def from_pandas_df(
             cls, 
@@ -1064,7 +1035,9 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_stop_ix: int = 2, 
             vrnt_genpos_ix: int = 3, 
             vrnt_name_ix: Optional[int] = None, 
-            vrnt_fncode_ix: Optional[int] = None
+            vrnt_fncode_ix: Optional[int] = None,
+            auto_group: bool = True,
+            auto_build_spline: bool = True
         ) -> 'ExtendedGeneticMap':
         """
         Read genetic map data from a Pandas DataFrame.
@@ -1085,6 +1058,13 @@ class ExtendedGeneticMap(GeneticMap):
             Column index to specify 'vrnt_name' (marker name) field.
         vrnt_fncode_ix : int, default=None
             Column index to specify 'vrnt_fncode' (mapping function code) field.
+        auto_group : bool
+            Whether to automatically group and sort markers into linkage groups after 
+            loading the ``ExtendedGeneticMap``.
+        auto_build_spline : bool
+            Whether to automatically construct an interpolation spline after 
+            loading the ``ExtendedGeneticMap``. Interpolation spline type is the default
+            value for the ``build_spline`` method.
 
         Returns
         -------
@@ -1170,6 +1150,14 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_fncode = vrnt_fncode
         )
 
+        # auto group genetic map on object construction
+        if auto_group:
+            genetic_map.group()
+
+        # auto build interpolation spline on object construction
+        if auto_build_spline:
+            genetic_map.build_spline()
+
         return genetic_map
 
     @classmethod
@@ -1183,7 +1171,9 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_stop_ix: int = 2, 
             vrnt_genpos_ix: int = 3, 
             vrnt_name_ix: Optional[int] = None, 
-            vrnt_fncode_ix: Optional[int] = None
+            vrnt_fncode_ix: Optional[int] = None,
+            auto_group: bool = True,
+            auto_build_spline: bool = True
         ) -> 'ExtendedGeneticMap':
         """
         Create an ExtendedGeneticMap object from a csv or delimited file.
@@ -1209,6 +1199,13 @@ class ExtendedGeneticMap(GeneticMap):
             Column index to specify 'vrnt_name' (marker name) field.
         vrnt_fncode_ix : int, default=None
             Column index to specify 'vrnt_fncode' (mapping function code) field.
+        auto_group : bool
+            Whether to automatically group and sort markers into linkage groups on 
+            loading the ``ExtendedGeneticMap``.
+        auto_build_spline : bool
+            Whether to automatically construct an interpolation spline after 
+            loading the ``ExtendedGeneticMap``. Interpolation spline type is the default
+            value for the ``build_spline`` method.
 
         Returns
         -------
@@ -1231,7 +1228,9 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_stop_ix = vrnt_stop_ix,
             vrnt_genpos_ix = vrnt_genpos_ix,
             vrnt_name_ix = vrnt_name_ix,
-            vrnt_fncode_ix = vrnt_fncode_ix
+            vrnt_fncode_ix = vrnt_fncode_ix,
+            auto_group = auto_group,
+            auto_build_spline = auto_build_spline
         )
 
         return genetic_map
@@ -1239,7 +1238,9 @@ class ExtendedGeneticMap(GeneticMap):
     @classmethod
     def from_egmap(
             cls, 
-            fpath: str
+            fpath: str,
+            auto_group: bool = True,
+            auto_build_spline: bool = True
         ) -> 'ExtendedGeneticMap':
         """
         Read an extended genetic map file (.egmap).
@@ -1249,6 +1250,13 @@ class ExtendedGeneticMap(GeneticMap):
         fpath : str, path object, or file-like object
             Any valid string path, including URLs. Valid URL schemes include http,
             ftp, s3, and file. For file URLs, a host is expected. (see pandas docs)
+        auto_group : bool
+            Whether to automatically group and sort markers into linkage groups on 
+            loading the ``ExtendedGeneticMap``.
+        auto_build_spline : bool
+            Whether to automatically construct an interpolation spline after 
+            loading the ``ExtendedGeneticMap``. Interpolation spline type is the default
+            value for the ``build_spline`` method.
 
         Returns
         -------
@@ -1322,19 +1330,16 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_stop_ix = 2,
             vrnt_genpos_ix = 3,
             vrnt_name_ix = 4 if "mkr_name" in df.columns else None,
-            vrnt_fncode_ix = 5 if "map_fncode" in df.columns else None
+            vrnt_fncode_ix = 5 if "map_fncode" in df.columns else None,
+            auto_group = auto_group,
+            auto_build_spline = auto_build_spline
         )
 
         return genetic_map
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_ExtendedGeneticMap(v: Any) -> bool:
-    return isinstance(v, ExtendedGeneticMap)
-
-def check_is_ExtendedGeneticMap(v: Any, varname: str) -> None:
+def check_is_ExtendedGeneticMap(v: object, vname: str) -> None:
     if not isinstance(v, ExtendedGeneticMap):
-        raise TypeError("'%s' must be an ExtendedGeneticMap." % varname)
+        raise TypeError("'%s' must be an ExtendedGeneticMap." % vname)

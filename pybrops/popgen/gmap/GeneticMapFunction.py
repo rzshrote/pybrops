@@ -3,14 +3,16 @@ Module defining basal genetic map function interfaces and associated error
 checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "GeneticMapFunction",
+    "check_is_GeneticMapFunction",
+]
 
+from abc import ABCMeta, abstractmethod
 import numpy
-
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 
-
-class GeneticMapFunction:
+class GeneticMapFunction(metaclass=ABCMeta):
     """
     An abstract class for genetic map function objects.
 
@@ -20,33 +22,29 @@ class GeneticMapFunction:
         3) Converting physical distance to recombination probability.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
+    def __repr__(
+            self
+        ) -> str:
         """
-        Constructor for the abstract class GeneticMapFunction.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
         """
-        super(GeneticMapFunction, self).__init__()
+        return "<{0} at {1}>".format(
+            type(self).__name__,
+            hex(id(self))
+        )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Mapping & Inverse Mapping Methods ###########
+    @abstractmethod
     def mapfn(
             self, 
             d: numpy.ndarray
@@ -67,6 +65,7 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def invmapfn(
             self, 
             r: numpy.ndarray
@@ -87,6 +86,7 @@ class GeneticMapFunction:
         raise NotImplementedError("method is abstract")
 
     ########## Recombination Probability Methods ###########
+    @abstractmethod
     def rprob1g(
             self, 
             gmap: GeneticMap, 
@@ -122,6 +122,7 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def rprob2g(
             self, 
             gmap: GeneticMap, 
@@ -150,6 +151,7 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def rprob1p(
             self, 
             gmap: GeneticMap, 
@@ -177,6 +179,7 @@ class GeneticMapFunction:
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def rprob2p(
             self, 
             gmap: GeneticMap, 
@@ -206,14 +209,8 @@ class GeneticMapFunction:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_GeneticMapFunction(v: Any) -> bool:
-    """Return whether an object is a GeneticMapFunction or not"""
-    return isinstance(v, GeneticMapFunction)
-
-def check_is_GeneticMapFunction(v: Any, vname: str) -> None:
+def check_is_GeneticMapFunction(v: object, vname: str) -> None:
     """Raise TypeError if object is not a GeneticMapFunction"""
     if not isinstance(v, GeneticMapFunction):
         raise TypeError("variable '{0}' must be a GeneticMapFunction".format(vname))

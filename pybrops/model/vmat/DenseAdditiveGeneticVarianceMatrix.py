@@ -3,13 +3,12 @@ Module implementing classes and associated error checking routines for matrices
 storing dense additive genetic variance estimates.
 """
 
-from typing import Any, Optional
+from typing import Optional
 
 import numpy
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import DenseGeneticVarianceMatrix
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 
-# TODO: implement me
 class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGeneticVarianceMatrix):
     """
     A semi-concrete class for dense additive genetic variance matrices.
@@ -21,10 +20,15 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
     remain abstract and must be implemented by inheriting classes.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ):
         """
         Constructor for the concrete class DenseAdditiveGeneticVarianceMatrix.
 
@@ -36,6 +40,8 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
             Taxa names.
         taxa_grp : numpy.ndarray
             Taxa groupings.
+        trait : numpy.ndarray
+            Trait names.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -43,20 +49,15 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
+            trait = trait,
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     # from_gmod
     # this method should remain abstract; it depends on the cross structure
     # maybe in the future if generic cross structures are implemented,
@@ -69,32 +70,14 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseAdditiveGeneticVarianceMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a ``DenseAdditiveGeneticVarianceMatrix``.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``DenseAdditiveGeneticVarianceMatrix`` object instance.
-    """
-    return isinstance(v, DenseAdditiveGeneticVarianceMatrix)
-
-def check_is_DenseAdditiveGeneticVarianceMatrix(v: Any, vname: str) -> None:
+def check_is_DenseAdditiveGeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseAdditiveGeneticVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.

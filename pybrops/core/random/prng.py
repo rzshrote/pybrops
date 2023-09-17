@@ -2,12 +2,6 @@
 Module containing wrappers for random number generation.
 """
 
-from typing import Optional, Union
-import numpy
-import random as py_random
-from numpy.random import PCG64
-from numpy.random import Generator
-
 # list of all names to import when using wildcard ('*') import
 __all__ = [
     "global_prng",
@@ -60,8 +54,14 @@ __all__ = [
     # "sample",
     # "ranf",
     "seed",
-    "spawn"
+    "spawn",
 ]
+
+from typing import Optional, Union
+import numpy
+import random as py_random
+from numpy.random import PCG64
+from numpy.random import Generator
 
 # get the numpy random number generator state
 global_prng = numpy.random.random.__self__
@@ -147,7 +147,7 @@ def spawn(
     Parameters
     ----------
     n : None, int
-        Number of streams to spawn using entropy from the random module.
+        Number of streams to spawn using entropy from the ``random`` module.
         If ``None``, generate one stream. Integer must be positive or zero.
     BitGenerator : numpy.random.BitGenerator
         A constructor for a ``numpy.random.BitGenerator`` object.

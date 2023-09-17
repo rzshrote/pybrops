@@ -3,7 +3,12 @@ Module implementing matrix routines and associated error checking routines
 for dense breeding value matrices estimated from phenotypic data.
 """
 
-from typing import Any, Optional
+__all__ = [
+    "DenseEstimatedBreedingValueMatrix",
+    "check_is_DenseEstimatedBreedingValueMatrix",
+]
+
+from typing import Optional
 
 import numpy
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
@@ -35,7 +40,16 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
         X = \\sigma BV + \\mu
     """
 
-    def __init__(self, mat: numpy.ndarray, location, scale, taxa = None, taxa_grp = None, trait: Optional[numpy.ndarray] = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            location: numpy.ndarray, 
+            scale: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class DenseEstimatedBreedingValueMatrix.
 
@@ -72,34 +86,16 @@ class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseEstimatedBreedingValueMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DenseEstimatedBreedingValueMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseEstimatedBreedingValueMatrix object instance.
-    """
-    return isinstance(v, DenseEstimatedBreedingValueMatrix)
-
-def check_is_DenseEstimatedBreedingValueMatrix(v: Any, vname: str) -> None:
+def check_is_DenseEstimatedBreedingValueMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseEstimatedBreedingValueMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseEstimatedBreedingValueMatrix):

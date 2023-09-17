@@ -3,24 +3,27 @@ Module providing implementations of dense genotype matrices and associated error
 checking routines.
 """
 
+__all__ = [
+    "DenseGenotypeMatrix",
+    "check_is_DenseGenotypeMatrix",
+]
+
 import copy
-import numbers
-from typing import Any, Optional, Sequence, Union
+from numbers import Real
+from typing import Optional, Sequence, Union
 import cyvcf2
 import h5py
 import numpy
 from numpy.typing import DTypeLike, ArrayLike
 
-from pybrops.core.error import check_file_exists
-from pybrops.core.error import check_group_in_hdf5
-from pybrops.core.error import check_is_int
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_dtype_is_int8
-from pybrops.core.error import check_ndarray_is_2d
-from pybrops.core.error import error_readonly
-from pybrops.core.error import check_ndarray_in_interval
+from pybrops.core.error.error_io_python import check_file_exists
+from pybrops.core.error.error_io_h5py import check_group_in_hdf5
+from pybrops.core.error.error_type_python import check_is_int
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_int8
+from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.mat.Matrix import Matrix
-from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.popgen.gmap.DenseGeneticMappableMatrix import DenseGeneticMappableMatrix
@@ -38,9 +41,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         5) Loading genotype matrices from VCF and HDF5.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -131,7 +132,9 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         )
 
     #################### Matrix copying ####################
-    def __copy__(self):
+    def __copy__(
+            self
+        ) -> 'DenseGenotypeMatrix':
         """
         Make a shallow copy of the the matrix.
 
@@ -170,7 +173,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(
+            self, 
+            memo: dict
+        ) -> 'DenseGenotypeMatrix':
         """
         Make a deep copy of the matrix.
 
@@ -212,102 +218,58 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         return out
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############## Genotype Data Properites ##############
-    def mat():
-        doc = "The mat property."
-        def fget(self):
-            return self._mat
-        def fset(self, value):
-            check_is_ndarray(value, "mat")
-            check_ndarray_dtype_is_int8(value, "mat")
-            check_ndarray_is_2d(value, "mat")
-            # check_ndarray_in_interval(value, "mat", 0, self._ploidy + 1)
-            self._mat = value
-        def fdel(self):
-            del self._mat
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat = property(**mat())
+    @DenseTaxaVariantMatrix.mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        check_is_ndarray(value, "mat")
+        check_ndarray_dtype_is_int8(value, "mat")
+        check_ndarray_ndim(value, "mat", 2)
+        # check_ndarray_in_interval(value, "mat", 0, self._ploidy + 1)
+        self._mat = value
 
     ############## General matrix properties ###############
-    def ploidy():
-        doc = "Ploidy number represented by matrix property."
-        def fget(self):
-            """Get matrix ploidy number"""
-            return self._ploidy
-        def fset(self, value):
-            """Set matrix ploidy number"""
-            error_readonly("ploidy")
-        def fdel(self):
-            """Delete matrix ploidy number"""
-            error_readonly("ploidy")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ploidy = property(**ploidy())
+    @property
+    def ploidy(self) -> int:
+        """Genome ploidy number represented by matrix."""
+        return self._ploidy
+    @ploidy.setter
+    def ploidy(self, value: int) -> None:
+        """Set matrix ploidy number"""
+        error_readonly("ploidy")
 
-    def nphase():
-        doc = "Number of chromosome phases represented by the matrix."
-        def fget(self):
-            """Get number of phases"""
-            return 0
-        def fset(self, value):
-            """Set number of phases"""
-            error_readonly("nphase")
-        def fdel(self):
-            """Delete number of phases"""
-            error_readonly("nphase")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nphase = property(**nphase())
+    @property
+    def nphase(self) -> int:
+        """Number of chromosome phases represented by the matrix."""
+        return 0
+    @nphase.setter
+    def nphase(self, value: int) -> None:
+        """Set number of phases"""
+        error_readonly("nphase")
 
-    def mat_format():
-        doc = "Matrix representation format property."
-        def fget(self):
-            """Get matrix representation format"""
-            return "{0,1,2}"
-        def fset(self, value):
-            """Set matrix representation format"""
-            error_readonly("mat_format")
-        def fdel(self):
-            """Delete matrix representation format"""
-            error_readonly("mat_format")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat_format = property(**mat_format())
+    @property
+    def mat_format(self) -> str:
+        """Matrix representation format."""
+        return "{0,1,2}"
+    @mat_format.setter
+    def mat_format(self, value: str) -> None:
+        """Set matrix representation format"""
+        error_readonly("mat_format")
 
     ############### Taxa Metadata Properites ###############
-    def taxa_axis():
-        doc = "Axis along which taxa are stored property."
-        def fget(self):
-            """Get taxa axis number"""
-            return 0
-        def fset(self, value):
-            """Set taxa axis number"""
-            error_readonly("taxa_axis")
-        def fdel(self):
-            """Delete taxa axis number"""
-            error_readonly("taxa_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_axis = property(**taxa_axis())
+    @DenseTaxaVariantMatrix.taxa_axis.getter
+    def taxa_axis(self) -> int:
+        """Get taxa axis number"""
+        return 0
 
     ############# Variant Metadata Properites ##############
-    def vrnt_axis():
-        doc = "Axis along which variants are stored property."
-        def fget(self):
-            """Get variant axis"""
-            return 1
-        def fset(self, value):
-            """Set variant axis"""
-            error_readonly("vrnt_axis")
-        def fdel(self):
-            """Delete variant axis"""
-            error_readonly("vrnt_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_axis = property(**vrnt_axis())
+    @DenseTaxaVariantMatrix.vrnt_axis.getter
+    def vrnt_axis(self) -> int:
+        """Get variant axis"""
+        return 1
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
     def adjoin_taxa(
@@ -920,7 +882,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     def meh(
             self, 
             dtype: Optional[DTypeLike] = None
-        ) -> numbers.Number:
+        ) -> Real:
         """
         Mean expected heterozygosity across all taxa.
 
@@ -931,7 +893,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         Returns
         -------
-        out : numbers.Number
+        out : Real
             A number representing the mean expected heterozygous.
             If ``dtype`` is ``None``, then a native 64-bit floating point is
             returned. Otherwise, of type specified by ``dtype``.
@@ -1076,9 +1038,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ######################################################### write conclusion
         h5file.close()                                          # close the file
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
 
     ################### Matrix File I/O ####################
     @classmethod
@@ -1169,7 +1129,8 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     @classmethod
     def from_vcf(
             cls, 
-            fname: str
+            fname: str,
+            auto_group_vrnt: bool = True
         ) -> 'DenseGenotypeMatrix':
         """
         Create a DenseGenotypeMatrix from a VCF file.
@@ -1178,6 +1139,8 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ----------
         fname : str
             Path to VCF file.
+        auto_group_vrnt : bool
+            Whether to group variants in returned genotype matrix.
 
         Returns
         -------
@@ -1233,7 +1196,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         vrnt_phypos = numpy.int64(vrnt_phypos)  # convert to int64 array
         vrnt_name = numpy.object_(vrnt_name)    # convert to object array
 
-        pvm = cls(
+        out = cls(
             mat = mat,
             taxa = taxa,
             vrnt_chrgrp = vrnt_chrgrp,
@@ -1242,39 +1205,24 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             ploidy = ploidy
         )
 
-        return pvm
+        if auto_group_vrnt:
+            out.group_vrnt()
+
+        return out
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseGenotypeMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a ``DenseGenotypeMatrix``.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``v`` is a ``DenseGenotypeMatrix`` object instance.
-    """
-    return isinstance(v, DenseGenotypeMatrix)
-
-def check_is_DenseGenotypeMatrix(v: Any, varname: str) -> None:
+def check_is_DenseGenotypeMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseGenotypeMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in ``TypeError`` message.
     """
     if not isinstance(v, DenseGenotypeMatrix):
-        raise TypeError("'{0}' must be a DenseGenotypeMatrix.".format(varname))
+        raise TypeError("'{0}' must be a DenseGenotypeMatrix.".format(vname))

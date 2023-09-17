@@ -22,7 +22,7 @@ PyBrOpS relies on several dependencies. They are:
 
 1) `cyvcf2-0.30.14+` (reading VCFs)
 2) `cvxpy-1.1.18+` (linear programming)
-3) `deap-1.3.1+` (genetic algorithms)
+3) `pymoo-0.6.0+` (genetic algorithms)
 4) `h5py-3.6.0+` (HDF5 file support)
 5) `matplotlib-3.5.1+` (graphics)
 6) `numpy-1.22.2+` (matrix storage and algebra)

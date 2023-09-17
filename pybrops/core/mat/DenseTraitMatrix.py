@@ -3,19 +3,24 @@ Module implementing a dense matrix with trait metadata and associated error
 checking routines.
 """
 
+__all__ = [
+    "DenseTraitMatrix",
+    "check_is_DenseTraitMatrix",
+]
+
 import numpy
 import copy
-from typing import Any, Sequence, Union
+from typing import Sequence, Union
 from typing import Optional
 from numpy.typing import ArrayLike
 
-from pybrops.core.error import check_is_iterable
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_axis_len
-from pybrops.core.error import check_ndarray_dtype_is_object
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import error_readonly
-from pybrops.core.error import generic_check_isinstance
+from pybrops.core.error.error_attr_python import check_is_iterable
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_generic_python import generic_check_isinstance
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
@@ -30,9 +35,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
         2) Dense matrix trait routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -103,59 +106,42 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         return out
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ###################### Trait data ######################
-    def trait():
-        doc = "Trait label property."
-        def fget(self):
-            """Get trait label array"""
-            return self._trait
-        def fset(self, value):
-            """Set trait label array"""
-            if value is not None:
-                check_is_ndarray(value, "trait")
-                check_ndarray_dtype_is_object(value, "trait")
-                check_ndarray_ndim(value, "trait", 1)
-                check_ndarray_axis_len(value, "trait", 0, self.ntrait)
-            self._trait = value
-        def fdel(self):
-            """Delete trait label array"""
-            del self._trait
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    trait = property(**trait())
-
+    @property
+    def trait(self) -> Union[numpy.ndarray,None]:
+        """Trait label."""
+        return self._trait
+    @trait.setter
+    def trait(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set trait label array"""
+        if value is not None:
+            check_is_ndarray(value, "trait")
+            check_ndarray_dtype_is_object(value, "trait")
+            check_ndarray_ndim(value, "trait", 1)
+            check_ndarray_axis_len(value, "trait", 0, self.ntrait)
+        self._trait = value
+    
     #################### Trait metadata ####################
-    def ntrait():
-        doc = "Number of traits property."
-        def fget(self):
-            """Get number of traits"""
-            return self._mat.shape[self.trait_axis]
-        def fset(self, value):
-            """Set number of traits"""
-            error_readonly("ntrait")
-        def fdel(self):
-            """Delete number of traits"""
-            error_readonly("ntrait")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ntrait = property(**ntrait())
-
-    def trait_axis():
-        doc = "Axis along which traits are stored property."
-        def fget(self):
-            """Get trait axis number"""
-            return 0
-        def fset(self, value):
-            """Set trait axis number"""
-            error_readonly("ntrait")
-        def fdel(self):
-            """Delete trait axis number"""
-            error_readonly("ntrait")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    trait_axis = property(**trait_axis())
-
+    @property
+    def ntrait(self) -> int:
+        """Number of traits."""
+        return self._mat.shape[self.trait_axis]
+    @ntrait.setter
+    def ntrait(self, value: int) -> None:
+        """Set number of traits"""
+        error_readonly("ntrait")
+    
+    @property
+    def trait_axis(self) -> int:
+        """Axis along which traits are stored."""
+        return 0
+    @trait_axis.setter
+    def trait_axis(self, value: int) -> None:
+        """Set trait axis number"""
+        error_readonly("ntrait")
+    
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(
             self, 
@@ -857,7 +843,7 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         # dispatch to correct function
         if axis == self.trait_axis:
-            self.lexsort_trait(keys = keys, **kwargs)
+            indices = self.lexsort_trait(keys = keys, **kwargs)
         else:
             raise ValueError("cannot lexsort along axis {0}".format(axis))
 
@@ -1011,35 +997,17 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseTraitMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DenseTraitMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseTraitMatrix object instance.
-    """
-    return isinstance(v, DenseTraitMatrix)
-
-def check_is_DenseTraitMatrix(v: Any, vname: str) -> None:
+def check_is_DenseTraitMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseTraitMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
-    if not is_DenseTraitMatrix(v):
-        raise TypeError("'{0}' must be a DenseTraitMatrix".format(vname))
+    if not isinstance(v, DenseTraitMatrix):
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DenseTraitMatrix.__name__,type(v).__name__))

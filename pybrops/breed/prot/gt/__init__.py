@@ -1,10 +1,16 @@
 """
 Module containing genotyping protocols.
 """
+
+__all__ = [
+    "GenotypingProtocol",
+    "DenseUnphasedGenotyping",
+]
+
 # order dependent imports
 
 # abstract classes
-from . import GenotypingProtocol
+from pybrops.breed.prot.gt import GenotypingProtocol
 
 # concrete classes
-from . import DenseUnphasedGenotyping
+from pybrops.breed.prot.gt import DenseUnphasedGenotyping

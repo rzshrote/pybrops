@@ -1,13 +1,13 @@
 import pytest
 import numpy
 
-from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_abstract_method
+from pybrops.test.assert_python import assert_abstract_function
+from pybrops.test.assert_python import assert_abstract_property
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.vmat.DenseTwoWayDHAdditiveGeneticVarianceMatrix import DenseTwoWayDHAdditiveGeneticVarianceMatrix
 # from pybrops.model.vmat.DenseTwoWayDHAdditiveGeneticVarianceMatrix import is_DenseTwoWayDHAdditiveGeneticVarianceMatrix
@@ -237,19 +237,19 @@ def gmapfn():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseTwoWayDHAdditiveGeneticVarianceMatrix)
+    assert_docstring(DenseTwoWayDHAdditiveGeneticVarianceMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "__init__")
+    assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "__init__")
 
-# def test_from_gmod_is_concrete():
-#     generic_assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "from_gmod")
+def test_from_gmod_is_concrete():
+    assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "from_gmod")
 
 def test_from_algmod_is_concrete():
-    generic_assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "from_algmod")
+    assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "from_algmod")
 
 ################################################################################
 ###################### Test concrete method functionality ######################
@@ -260,7 +260,7 @@ def test_from_algmod(dalgmod, dpgmat, ncross, nprogeny, gmapfn):
         pgmat = dpgmat,
         ncross = ncross,
         nprogeny = nprogeny,
-        s = 0,
+        nself = 0,
         gmapfn = gmapfn,
         mem = None
     )
@@ -269,7 +269,7 @@ def test_from_algmod(dalgmod, dpgmat, ncross, nprogeny, gmapfn):
         pgmat = dpgmat,
         ncross = ncross,
         nprogeny = nprogeny,
-        s = 1,
+        nself = 1,
         gmapfn = gmapfn,
         mem = None
     )

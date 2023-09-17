@@ -2,12 +2,18 @@
 Module defining mutable matrix interfaces and associated error checking routines.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "MutableMatrix",
+    "check_is_MutableMatrix",
+]
+
+from abc import ABCMeta, abstractmethod
+from typing import Sequence, Union
 
 import numpy
 from pybrops.core.mat.Matrix import Matrix
 
-class MutableMatrix(Matrix):
+class MutableMatrix(Matrix,metaclass=ABCMeta):
     """
     An abstract class for mutable matrix wrapper objects.
 
@@ -17,29 +23,12 @@ class MutableMatrix(Matrix):
     The shape of a MutableMatrix is mutable.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        MutableMatrix constructor
 
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(MutableMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element in-place-manipulation #########
+    @abstractmethod
     def append(
             self, 
             values: Union[Matrix,numpy.ndarray], 
@@ -60,6 +49,7 @@ class MutableMatrix(Matrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def remove(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -80,6 +70,7 @@ class MutableMatrix(Matrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def incorp(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -106,35 +97,17 @@ class MutableMatrix(Matrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_MutableMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a MutableMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a MutableMatrix object instance.
-    """
-    return isinstance(v, MutableMatrix)
-
-def check_is_MutableMatrix(v: Any, varname: str) -> None:
+def check_is_MutableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type MutableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, MutableMatrix):
-        raise TypeError("'%s' must be a MutableMatrix." % varname)
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,MutableMatrix.__name__,type(v).__name__))

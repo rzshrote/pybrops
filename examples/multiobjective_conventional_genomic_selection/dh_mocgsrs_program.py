@@ -13,13 +13,13 @@ from pybrops.breed.prot.bv.MeanPhenotypicBreedingValue import MeanPhenotypicBree
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 from pybrops.breed.prot.pt.G_E_Phenotyping import G_E_Phenotyping
-from pybrops.breed.prot.sel.FamilyPhenotypicSelection import FamilyPhenotypicSelection
-from pybrops.breed.prot.sel.ConventionalPhenotypicSelection import ConventionalPhenotypicSelection
+from pybrops.breed.prot.sel.UnconstrainedFamilyPhenotypicSelection import FamilyPhenotypicSelection
+from pybrops.breed.prot.sel.UnconstrainedConventionalPhenotypicSelection import ConventionalPhenotypicSelection
 from pybrops.breed.prot.sel.ConventionalGenomicSelection import ConventionalGenomicSelection
 from pybrops.breed.prot.sel.transfn import trans_sum
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
 from pybrops.breed.prot.sel.transfn import trans_dot
-from pybrops.core.random import global_prng
+from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
@@ -75,7 +75,7 @@ class MyInitMatingOperator(MatingOperator):
             family_counter = fcnt
         )
     def mate(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout = None, **kwargs):
-        progeny = self.mprot.mate(**mcfg, s = 0, miscout = miscout)  # mate parents
+        progeny = self.mprot.mate(**mcfg, nself = 0, miscout = miscout)  # mate parents
         genome["queue"].append(progeny)                 # add progeny to queue in genome dict
         return genome, geno, pheno, bval, gmod
 
@@ -238,7 +238,7 @@ class MyMatingOperator(MatingOperator):
             family_counter = fcnt
         )
     def mate(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout = None, **kwargs):
-        progeny = self.mprot.mate(**mcfg, s = 0, miscout = miscout)  # mate parents
+        progeny = self.mprot.mate(**mcfg, nself = 0, miscout = miscout)  # mate parents
         genome["queue"].append(progeny)                 # add progeny to queue in genome dict
         return genome, geno, pheno, bval, gmod
 

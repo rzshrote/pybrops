@@ -3,7 +3,6 @@ Module containing core, generalized utilities for ``PyBrOpS``.
 
 These utilities are:
 
-- ``df`` - Provides general dataframe support.
 - ``error`` - Provides error checking routines.
 - ``io`` - Provides input/output interfaces.
 - ``mat`` - Provides general matrix interfaces and implementations.
@@ -11,19 +10,27 @@ These utilities are:
 - ``util`` - Provides general, miscellaneous utilities.
 """
 
+__all__ = [
+    "error",
+    "util",
+    "random",
+    "io",
+    "mat",
+]
+
 # order dependent import
 
 # all error functions must go first!
-from . import error
+from pybrops.core import error
 
 # utility functions
-from . import util
+from pybrops.core import util
 
 # random number generator interface
-from . import random
+from pybrops.core import random
 
 # input/output interfaces
-from . import io
+from pybrops.core import io
 
 # base matrix interfaces
-from . import mat
+from pybrops.core import mat

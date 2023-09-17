@@ -1,12 +1,16 @@
+"""
+Module defining implementing dense matrices with taxa and variant metadata and
+associated error checking routines.
+"""
+
 import copy
 import numpy
-from typing import Any, Sequence, Union
+from typing import Sequence, Union
 from typing import Optional
 from numpy.typing import ArrayLike
 
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_at_least_2d
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim_gteq
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
@@ -17,16 +21,15 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
     """
     A concrete class for dense matrices with taxa and variant metadata.
 
-    The purpose of this concrete class is to merge the following implementations
+    The purpose of this concrete class is to merge the following implementations 
     and interfaces:
-        1) DenseTaxaMatrix (implementation)
-        2) DenseVariantMatrix (implementation)
-        3) TaxaVariantMatrix (interface)
+
+        1. DenseTaxaMatrix (implementation)
+        2. DenseVariantMatrix (implementation)
+        3. TaxaVariantMatrix (interface)
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -211,57 +214,29 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         return out
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
-    def mat():
-        doc = "Raw underlying matrix"
-        def fget(self):
-            return self._mat
-        def fset(self, value):
-            check_is_ndarray(value, "mat")
-            check_ndarray_at_least_2d(value, "mat")
-            self._mat = value
-        def fdel(self):
-            del self._mat
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat = property(**mat())
+    @DenseTaxaMatrix.mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        """Set raw underlying numpy.ndarray object."""
+        check_is_ndarray(value, "mat")
+        check_ndarray_ndim_gteq(value, "mat", 2)
+        self._mat = value
 
     ############### Taxa Metadata Properites ###############
-    def taxa_axis():
-        doc = "Axis along which taxa are stored property."
-        def fget(self):
-            """Get taxa axis number"""
-            return 0
-        def fset(self, value):
-            """Set taxa axis number"""
-            error_readonly("taxa_axis")
-        def fdel(self):
-            """Delete taxa axis number"""
-            error_readonly("taxa_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_axis = property(**taxa_axis())
+    @DenseTaxaMatrix.taxa_axis.getter
+    def taxa_axis(self) -> int:
+        """Get taxa axis number"""
+        return 0
 
     ############# Variant Metadata Properites ##############
-    def vrnt_axis():
-        doc = "Axis along which variants are stored property."
-        def fget(self):
-            """Get variant axis"""
-            return 1
-        def fset(self, value):
-            """Set variant axis"""
-            error_readonly("vrnt_axis")
-        def fdel(self):
-            """Delete variant axis"""
-            error_readonly("vrnt_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_axis = property(**vrnt_axis())
+    @DenseVariantMatrix.vrnt_axis.getter
+    def vrnt_axis(self) -> int:
+        """Get variant axis"""
+        return 1
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(
@@ -1214,7 +1189,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         axis = get_axis(axis, self.mat_ndim)
 
         if axis == self.taxa_axis:
-            self.incorp(
+            self.incorp_taxa(
                 obj = obj,
                 values = values,
                 taxa = taxa,
@@ -1222,7 +1197,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
                 **kwargs
             )
         elif axis == self.vrnt_axis:
-            self.incorp(
+            self.incorp_vrnt(
                 obj = obj,
                 values = values,
                 vrnt_chrgrp = vrnt_chrgrp,
@@ -1242,7 +1217,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
     ################### Sorting Methods ####################
     def lexsort(
             self, 
-            keys: Union[tuple,numpy.ndarray,None], 
+            keys: Union[tuple,numpy.ndarray,None] = None, 
             axis: int = -1, 
             **kwargs: dict
         ) -> numpy.ndarray:
@@ -1268,9 +1243,9 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
         # dispatch to correct function
         if axis == self.taxa_axis:
-            self.lexsort_taxa(keys = keys, **kwargs)
+            indices = self.lexsort_taxa(keys = keys, **kwargs)
         elif axis == self.vrnt_axis:
-            self.lexsort_vrnt(keys = keys, **kwargs)
+            indices = self.lexsort_vrnt(keys = keys, **kwargs)
         else:
             raise ValueError("cannot lexsort along axis {0}".format(axis))
 
@@ -1303,7 +1278,7 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
     def sort(
             self, 
-            keys: Union[tuple,numpy.ndarray,None], 
+            keys: Union[tuple,numpy.ndarray,None] = None, 
             axis: int = -1, 
             **kwargs: dict
         ) -> None:
@@ -1338,8 +1313,15 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             **kwargs: dict
         ) -> None:
         """
-        Sort matrix along axis, then populate grouping indices for the axis.
-        Calculate chromosome grouping indices (group by vrnt_chrgrp).
+        Sort the DenseTaxaVariantMatrix along an axis, then populate grouping 
+        indices.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values are grouped.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -1351,6 +1333,33 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             self.group_vrnt(**kwargs)
         else:
             raise ValueError("cannot group along axis {0}".format(axis))
+
+    def ungroup(
+            self, 
+            axis: int = -1, 
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseTaxaVariantMatrix along an axis by removing grouping 
+        metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # transform axis number to an index
+        axis = get_axis(axis, self.mat_ndim)
+
+        # dispatch functions
+        if axis == self.taxa_axis:
+            self.ungroup_taxa(**kwargs)
+        elif axis == self.vrnt_axis:
+            self.ungroup_vrnt(**kwargs)
+        else:
+            raise ValueError("cannot ungroup along axis {0}".format(axis))
 
     def is_grouped(
             self, 
@@ -1380,35 +1389,17 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseTaxaVariantMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DenseTaxaVariantMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseTaxaVariantMatrix object instance.
-    """
-    return isinstance(v, DenseTaxaVariantMatrix)
-
-def check_is_DenseTaxaVariantMatrix(v: Any, vname: str) -> None:
+def check_is_DenseTaxaVariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseTaxaVariantMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
-    if not is_DenseTaxaVariantMatrix(v):
-        raise TypeError("'{0}' must be a DenseTaxaVariantMatrix".format(vname))
+    if not isinstance(v, DenseTaxaVariantMatrix):
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DenseTaxaVariantMatrix.__name__,type(v).__name__))

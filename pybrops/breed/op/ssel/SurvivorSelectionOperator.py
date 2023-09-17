@@ -3,10 +3,15 @@ Module defining interfaces and associated error checking routines for
 breeding program survivor selection operators.
 """
 
-from typing import Any
+__all__ = [
+    "SurvivorSelectionOperator",
+    "check_is_SurvivorSelectionOperator",
+]
+
+from abc import ABCMeta, abstractmethod
 
 
-class SurvivorSelectionOperator:
+class SurvivorSelectionOperator(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for survivor selection within an entire
     breeding program.
@@ -15,21 +20,22 @@ class SurvivorSelectionOperator:
         1) Survivor selection for an entire breeding program.
     """
 
-    def __init__(
+    ########################## Special Object Methods ##########################
+
+    ############################## Object Methods ##############################
+    @abstractmethod
+    def sselect(
             self, 
+            genome: dict, 
+            geno: dict, 
+            pheno: dict, 
+            bval: dict, 
+            gmod: dict, 
+            t_cur: int, 
+            t_max: int, 
+            miscout: dict, 
             **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class SurvivorSelectionOperator.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(SurvivorSelectionOperator, self).__init__()
-
-    def sselect(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs: dict):
+        ) -> tuple:
         """
         Select progeny survivors in a breeding program.
 
@@ -73,35 +79,17 @@ class SurvivorSelectionOperator:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_SurvivorSelectionOperator(v: Any) -> bool:
-    """
-    Determine whether an object is a SurvivorSelectionOperator.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a SurvivorSelectionOperator object instance.
-    """
-    return isinstance(v, SurvivorSelectionOperator)
-
-def check_is_SurvivorSelectionOperator(v: Any, varname: str) -> None:
+def check_is_SurvivorSelectionOperator(v: object, vname: str) -> None:
     """
     Check if object is of type SurvivorSelectionOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SurvivorSelectionOperator):
-        raise TypeError("'%s' must be a SurvivorSelectionOperator." % varname)
+        raise TypeError("'%s' must be a SurvivorSelectionOperator." % vname)

@@ -6,7 +6,7 @@ import numpy
 import h5py
 
 __all__ = [
-    "save_dict_to_hdf5"
+    "save_dict_to_hdf5",
 ]
 
 # ruthlessly stolen/based on:

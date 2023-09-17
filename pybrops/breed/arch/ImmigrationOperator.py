@@ -3,10 +3,16 @@ Module defining interfaces and associated error checking routines for
 immigration operators.
 """
 
-from typing import Any
-from pybrops.breed.arch.BreedingEdge import BreedingEdge
+__all__ = [
+    "ImmigrationOperator",
+    "check_is_ImmigrationOperator",
+]
 
-class ImmigrationOperator(BreedingEdge):
+from abc import ABCMeta, abstractmethod
+from pybrops.breed.arch.BreedingEdge import BreedingEdge
+from pybrops.breed.arch.BreedingNode import BreedingNode
+
+class ImmigrationOperator(BreedingEdge,metaclass=ABCMeta):
     """
     Abstract class defining immigration operators.
 
@@ -14,31 +20,17 @@ class ImmigrationOperator(BreedingEdge):
         1) Protocols for immigration between different breeding nodes.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class ImmigrationOperator.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(ImmigrationOperator, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
-    def immigrate(self, bnode, **kwargs: dict):
+    @abstractmethod
+    def immigrate(
+            self, 
+            bnode: BreedingNode, 
+            **kwargs: dict
+        ) -> dict:
         """
         Immigrate individuals from a BreedingNode.
 
@@ -56,35 +48,17 @@ class ImmigrationOperator(BreedingEdge):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_ImmigrationOperator(v: Any) -> bool:
-    """
-    Determine whether an object is a ImmigrationOperator.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a ImmigrationOperator object instance.
-    """
-    return isinstance(v, ImmigrationOperator)
-
-def check_is_ImmigrationOperator(v: Any, varname: str) -> None:
+def check_is_ImmigrationOperator(v: object, vname: str) -> None:
     """
     Check if object is of type ImmigrationOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, ImmigrationOperator):
-        raise TypeError("'%s' must be a ImmigrationOperator." % varname)
+        raise TypeError("'%s' must be a ImmigrationOperator." % vname)

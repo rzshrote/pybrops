@@ -2,7 +2,11 @@
 Module implementing the Kosambi genetic map function and associated error checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "KosambiMapFunction",
+    "check_is_KosambiMapFunction",
+]
+
 import numpy
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
@@ -17,9 +21,7 @@ class KosambiMapFunction(GeneticMapFunction):
         3) Converting physical distance to recombination probability.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -32,15 +34,11 @@ class KosambiMapFunction(GeneticMapFunction):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(KosambiMapFunction, self).__init__(**kwargs)
+        super(KosambiMapFunction, self).__init__()
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Mapping & Inverse Mapping Methods ###########
     def mapfn(
@@ -89,7 +87,7 @@ class KosambiMapFunction(GeneticMapFunction):
             function. The shape of the array is the same shape as that of ``r``.
         """
         # convert r to d
-        d = numpy.log(1.0 + (2.0 * r)) / (4.0 - (8.0 * r))
+        d = 0.5 * numpy.arctanh(2.0 * r)
         return d
 
     ########## Recombination Probability Methods ###########
@@ -212,35 +210,17 @@ class KosambiMapFunction(GeneticMapFunction):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_KosambiMapFunction(v: Any) -> bool:
-    """
-    Determine whether an object is a KosambiMapFunction.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a KosambiMapFunction object instance.
-    """
-    return isinstance(v, KosambiMapFunction)
-
-def check_is_KosambiMapFunction(v: Any, varname: str) -> None:
+def check_is_KosambiMapFunction(v: object, vname: str) -> None:
     """
     Check if object is of type KosambiMapFunction. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, KosambiMapFunction):
-        raise TypeError("'{0}' must be of type KosambiMapFunction.".format(varname))
+        raise TypeError("'{0}' must be of type KosambiMapFunction.".format(vname))

@@ -3,11 +3,15 @@ Module defining interfaces and associated error checking routines for matrices
 that can have their axes grouped.
 """
 
-from typing import Any
+__all__ = [
+    "GroupableMatrix",
+    "check_is_GroupableMatrix",
+]
 
+from abc import ABCMeta, abstractmethod
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 
-class GroupableMatrix(SortableMatrix):
+class GroupableMatrix(SortableMatrix,metaclass=ABCMeta):
     """
     An abstract class for groupable matrix wrapper objects.
 
@@ -15,36 +19,19 @@ class GroupableMatrix(SortableMatrix):
         1) Matrix in-place matrix axis grouping routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        GroupableMatrix constructor
 
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(GroupableMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################### Grouping Methods ###################
+    @abstractmethod
     def group(
             self, 
             axis: int, 
             **kwargs: dict
         ) -> None:
         """
-        Sort the Matrix, then populate grouping indices.
+        Sort the GroupableMatrix along an axis, then populate grouping indices.
 
         Parameters
         ----------
@@ -55,6 +42,25 @@ class GroupableMatrix(SortableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
+    def ungroup(
+            self,
+            axis: int,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the GroupableMatrix along an axis by removing grouping metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
     def is_grouped(
             self, 
             axis: int, 
@@ -81,35 +87,17 @@ class GroupableMatrix(SortableMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_GroupableMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a GroupableMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a GroupableMatrix object instance.
-    """
-    return isinstance(v, GroupableMatrix)
-
-def check_is_GroupableMatrix(v: Any, vname: str) -> None:
+def check_is_GroupableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type GroupableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
-    if not is_GroupableMatrix(v):
-        raise TypeError("'{0}' must be a GroupableMatrix".format(vname))
+    if not isinstance(v, GroupableMatrix):
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,GroupableMatrix.__name__,type(v).__name__))

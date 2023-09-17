@@ -3,10 +3,15 @@ Module defining interfaces and associated error checking routines for matrices
 with axes that are square.
 """
 
-from typing import Any
+__all__ = [
+    "SquareMatrix",
+    "check_is_SquareMatrix",
+]
+
+from abc import ABCMeta, abstractmethod
 from pybrops.core.mat.Matrix import Matrix
 
-class SquareMatrix(Matrix):
+class SquareMatrix(Matrix,metaclass=ABCMeta):
     """
     An abstract class for square matrices. A "square matrix" is defined as a
     matrix that has the same axis metadata associated with two or more axes.
@@ -29,76 +34,48 @@ class SquareMatrix(Matrix):
         2) Determination of square matrix conformity.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the SquareMatrix abstract class.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments. Used for cooperative inheritance.
-            Dictionary passing unused arguments to the parent class constructor.
-        """
-        super(SquareMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############## Square Metadata Properties ##############
-    def nsquare():
-        doc = "Number of axes that are square"
-        def fget(self):
-            """Get the number of axes that are square"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the number of axes that are square"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the number of axes that are square"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nsquare = property(**nsquare())
+    @property
+    @abstractmethod
+    def nsquare(self) -> int:
+        """Number of axes that are square."""
+        raise NotImplementedError("property is abstract")
+    @nsquare.setter
+    @abstractmethod
+    def nsquare(self, value: int) -> None:
+        """Set the number of axes that are square"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def square_axes(self) -> tuple:
+        """Axis indices for axes that are square."""
+        raise NotImplementedError("property is abstract")
+    @square_axes.setter
+    @abstractmethod
+    def square_axes(self, value: tuple) -> None:
+        """Set axis indices for axes that are square"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def square_axes_len(self) -> tuple:
+        """Axis lengths for axes that are square."""
+        raise NotImplementedError("property is abstract")
+    @square_axes_len.setter
+    @abstractmethod
+    def square_axes_len(self, value: tuple) -> None:
+        """Set axis lengths for axes that are square"""
+        raise NotImplementedError("property is abstract")
 
-    def square_axes():
-        doc = "Axis indices for axes that are square"
-        def fget(self):
-            """Get axis indices for axes that are square"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set axis indices for axes that are square"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete axis indices for axes that are square"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    square_axes = property(**square_axes())
-
-    def square_axes_len():
-        doc = "Axis lengths for axes that are square"
-        def fget(self):
-            """Get axis lengths for axes that are square"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set axis lengths for axes that are square"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete axis lengths for axes that are square"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    square_axes_len = property(**square_axes_len())
-
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     #################### Square Methods ####################
+    @abstractmethod
     def is_square(
             self
         ) -> bool:
@@ -115,35 +92,17 @@ class SquareMatrix(Matrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_SquareMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a ``SquareMatrix``.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``SquareMatrix`` object instance.
-    """
-    return isinstance(v, SquareMatrix)
-
-def check_is_SquareMatrix(v: Any, vname: str) -> None:
+def check_is_SquareMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``SquareMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.
     """
     if not isinstance(v, SquareMatrix):
-        raise TypeError("'{0}' must be a SquareMatrix".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,SquareMatrix.__name__,type(v).__name__))

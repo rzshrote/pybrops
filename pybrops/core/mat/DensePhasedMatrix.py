@@ -2,15 +2,20 @@
 Module implementing a dense phased matrix and associated error checking routines.
 """
 
+__all__ = [
+    "DensePhasedMatrix",
+    "check_is_DensePhasedMatrix",
+]
+
 import copy
 import numpy
-from typing import Any, Optional, Sequence, Union
+from typing import Optional, Sequence, Union
 from numpy.typing import ArrayLike
 
-from pybrops.core.error import check_is_array_like
-from pybrops.core.error import check_is_iterable
-from pybrops.core.error import error_readonly
-from pybrops.core.error import generic_check_isinstance
+from pybrops.core.error.error_type_python import check_is_array_like
+from pybrops.core.error.error_attr_python import check_is_iterable
+from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_generic_python import generic_check_isinstance
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
@@ -27,9 +32,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         1) Dense matrix phase manipulation routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -90,42 +93,28 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
         return out
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############## Phase Metadata Properites ###############
-    def nphase():
-        doc = "Number of chromosome phases represented by the matrix."
-        def fget(self):
-            """Get number of phases"""
-            return self._mat.shape[self.phase_axis]
-        def fset(self, value):
-            """Set number of phases"""
-            error_readonly("nphase")
-        def fdel(self):
-            """Delete number of phases"""
-            error_readonly("nphase")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nphase = property(**nphase())
+    @property
+    def nphase(self) -> int:
+        """Number of chromosome phases represented by the matrix."""
+        return self._mat.shape[self.phase_axis]
+    @nphase.setter
+    def nphase(self, value: int) -> None:
+        """Set number of phases"""
+        error_readonly("nphase")
+    
+    @property
+    def phase_axis(self) -> int:
+        """Axis along which phases are stored."""
+        return 0
+    @phase_axis.setter
+    def phase_axis(self, value: int) -> None:
+        """Set phase axis number"""
+        error_readonly("phase_axis")
 
-    def phase_axis():
-        doc = "Axis along which phases are stored property."
-        def fget(self):
-            """Get phase axis number"""
-            return 0
-        def fset(self, value):
-            """Set phase axis number"""
-            error_readonly("phase_axis")
-        def fdel(self):
-            """Delete phase axis number"""
-            error_readonly("phase_axis")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    phase_axis = property(**phase_axis())
-
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(
@@ -713,35 +702,17 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DensePhasedMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DensePhasedMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DensePhasedMatrix object instance.
-    """
-    return isinstance(v, DensePhasedMatrix)
-
-def check_is_DensePhasedMatrix(v: Any, vname: str) -> None:
+def check_is_DensePhasedMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DensePhasedMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DensePhasedMatrix):
-        raise TypeError("'%s' must be a DensePhasedMatrix." % vname)
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DensePhasedMatrix.__name__,type(v).__name__))

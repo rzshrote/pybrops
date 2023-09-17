@@ -3,10 +3,14 @@ Module defining interfaces and associated error checking routines for matrices
 storing genetic variance estimates.
 """
 
-from typing import Any
+from abc import ABCMeta, abstractmethod
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
+from pybrops.core.mat.TraitMatrix import TraitMatrix
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class GeneticVarianceMatrix(SquareTaxaMatrix):
+class GeneticVarianceMatrix(SquareTaxaMatrix,TraitMatrix,metaclass=ABCMeta):
     """
     An abstract class for additive genetic variance matrices.
 
@@ -14,37 +18,51 @@ class GeneticVarianceMatrix(SquareTaxaMatrix):
         1) Estimation of genetic variance from a genomic model.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
+
+    ############################ Object Properties #############################
+
+    ######## Expected parental genome contributions ########
+    @property
+    @abstractmethod
+    def epgc(self) -> tuple:
+        """Expected parental genome contribution to the offspring."""
+        raise NotImplementedError("property is abstract")
+    @epgc.setter
+    @abstractmethod
+    def epgc(self, value: tuple) -> None:
+        """Set a tuple of the expected parental genome contributions."""
+        raise NotImplementedError("property is abstract")    
+
+    ############################## Object Methods ##############################
+    @abstractmethod
+    def to_csv(
             self, 
-            **kwargs: dict
+            fname: str
         ) -> None:
         """
-        Constructor for the abstract class GeneticVarianceMatrix.
+        Write a genetic variance matrix to a CSV file.
 
         Parameters
         ----------
-        kwargs : dict
-            Additional keyword arguments. Used for cooperative inheritance.
-            Dictionary passing unused arguments to the parent class constructor.
+        fname : str
+            Filename to which to write.
         """
-        super(GeneticVarianceMatrix, self).__init__(**kwargs)
+        raise NotImplementedError("method is abstract")
 
-    ############################################################################
-    ############################ Object Properties #############################
-    ############################################################################
-
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
-
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     @classmethod
-    def from_gmod(cls, gmod, pgmat, ncross, nprogeny, s):
+    @abstractmethod
+    def from_gmod(
+            cls, 
+            gmod: GenomicModel, 
+            pgmat: PhasedGenotypeMatrix, 
+            ncross: int, 
+            nprogeny: int, 
+            nself: int, 
+            gmapfn: GeneticMapFunction, 
+            **kwargs: dict
+        ) -> 'GeneticVarianceMatrix':
         """
         Estimate genetic variances from a GenomicModel.
 
@@ -60,9 +78,13 @@ class GeneticVarianceMatrix(SquareTaxaMatrix):
         nprogeny : int
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        s : int
+        nself : int
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
+        gmapfn : GeneticMapFunction
+            Genetic map function with which to calculate recombination probabilities.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------
@@ -73,32 +95,14 @@ class GeneticVarianceMatrix(SquareTaxaMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_GeneticVarianceMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a ``GeneticVarianceMatrix``.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``GeneticVarianceMatrix`` object instance.
-    """
-    return isinstance(v, GeneticVarianceMatrix)
-
-def check_is_GeneticVarianceMatrix(v: Any, vname: str) -> None:
+def check_is_GeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``GeneticVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.

@@ -1,9 +1,14 @@
 """
 Module containing logbook operators.
 """
+
+__all__ = [
+    "Logbook",
+]
+
 # order dependent import
 
 # abstract classes
-from . import Logbook
+from pybrops.breed.op.log import Logbook
 
 # concrete classes

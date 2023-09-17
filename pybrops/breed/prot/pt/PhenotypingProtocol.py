@@ -2,10 +2,15 @@
 Module defining interfaces and associated protocols for phenotyping protocols.
 """
 
-from typing import Any
+from abc import ABCMeta, abstractmethod
+from numbers import Real
+from typing import Union
+import numpy
+import pandas
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-
-class PhenotypingProtocol:
+class PhenotypingProtocol(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for phenotyping protocols.
 
@@ -15,61 +20,42 @@ class PhenotypingProtocol:
         3) Manipulation and setting of environmental variance metadata.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class PhenotypingProtocol.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(PhenotypingProtocol, self).__init__()
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############### Genomic Model Properties ###############
-    def gpmod():
-        doc = "Genomic prediction model."
-        def fget(self):
-            """Get genomic prediction model"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set genomic prediction model"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete genomic prediction model"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    gpmod = property(**gpmod())
+    @property
+    @abstractmethod
+    def gpmod(self) -> GenomicModel:
+        """Genomic prediction model."""
+        raise NotImplementedError("property is abstract")
+    @gpmod.setter
+    @abstractmethod
+    def gpmod(self, value: GenomicModel) -> None:
+        """Set genomic prediction model"""
+        raise NotImplementedError("property is abstract")
 
     ################ Stochastic Parameters #################
-    def var_err():
-        doc = "Error variance for each trait."
-        def fget(self):
-            """Get error variance"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set error variance"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete error variance"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    var_err = property(**var_err())
+    @property
+    @abstractmethod
+    def var_err(self) -> object:
+        """Error variance for each trait."""
+        raise NotImplementedError("property is abstract")
+    @var_err.setter
+    @abstractmethod
+    def var_err(self, value: object) -> None:
+        """Set error variance"""
+        raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
-    def phenotype(self, pgmat, miscout, **kwargs: dict):
+    @abstractmethod
+    def phenotype(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            miscout: dict, 
+            **kwargs: dict
+        ) -> pandas.DataFrame:
         """
         Phenotype a set of genotypes using a genomic prediction model.
 
@@ -86,18 +72,24 @@ class PhenotypingProtocol:
 
         Returns
         -------
-        out : PhenotypeDataFrame
-            A PhenotypeDataFrame containing phenotypes for individuals.
+        out : pandas.DataFrame
+            A pandas.DataFrame containing phenotypes for individuals.
         """
         raise NotImplementedError("method is abstract")
 
-    def set_h2(self, h2, pgmat, **kwargs: dict):
+    @abstractmethod
+    def set_h2(
+            self, 
+            h2: Union[Real,numpy.ndarray], 
+            pgmat: PhasedGenotypeMatrix, 
+            **kwargs: dict
+        ) -> None:
         """
         Set the narrow sense heritability for environments.
 
         Parameters
         ----------
-        h2 : float, numpy.ndarray
+        h2 : Real, numpy.ndarray
             Narrow sense heritability.
         pgmat : PhasedGenotypeMatrix
             Founder genotypes.
@@ -106,13 +98,19 @@ class PhenotypingProtocol:
         """
         raise NotImplementedError("method is abstract")
 
-    def set_H2(self, H2, pgmat, **kwargs: dict):
+    @abstractmethod
+    def set_H2(
+            self, 
+            H2: Union[Real,numpy.ndarray], 
+            pgmat: PhasedGenotypeMatrix, 
+            **kwargs: dict
+        ) -> None:
         """
         Set the broad sense heritability for environments.
 
         Parameters
         ----------
-        H2 : float, numpy.ndarray
+        H2 : Real, numpy.ndarray
             Broad sense heritability.
         pgmat : PhasedGenotypeMatrix
             Founder genotypes.
@@ -123,35 +121,17 @@ class PhenotypingProtocol:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_PhenotypingProtocol(v: Any) -> bool:
-    """
-    Determine whether an object is a PhenotypingProtocol.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a PhenotypingProtocol object instance.
-    """
-    return isinstance(v, PhenotypingProtocol)
-
-def check_is_PhenotypingProtocol(v: Any, varname: str) -> None:
+def check_is_PhenotypingProtocol(v: object, vname: str) -> None:
     """
     Check if object is of type PhenotypingProtocol. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, PhenotypingProtocol):
-        raise TypeError("'%s' must be a PhenotypingProtocol." % varname)
+        raise TypeError("'%s' must be a PhenotypingProtocol." % vname)

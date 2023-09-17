@@ -3,7 +3,12 @@ Module implementing dense matrices that can have their variants placed on a
 genetic map and associated error checking routines.
 """
 
-from typing import Any, Optional
+__all__ = [
+    "DenseGeneticMappableMatrix",
+    "check_is_DenseGeneticMappableMatrix",
+]
+
+from typing import Optional
 
 import numpy
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
@@ -17,9 +22,7 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
     GeneticMap.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -66,9 +69,7 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
             **kwargs
         )
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################# Interpolation Methods ################
     def interp_genpos(
@@ -116,7 +117,7 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
 
         # check if self has been sorted and grouped
         if not self.is_grouped_vrnt():
-            raise RuntimeError("must be grouped first before interpolation of crossover probabilities")
+            raise ValueError("must be grouped first before interpolation of crossover probabilities")
 
         # interpolate genetic positions
         self.vrnt_genpos = gmap.interp_genpos(self._vrnt_chrgrp, self._vrnt_phypos)
@@ -126,35 +127,17 @@ class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseGeneticMappableMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DenseGeneticMappableMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseGeneticMappableMatrix object instance.
-    """
-    return isinstance(v, DenseGeneticMappableMatrix)
-
-def check_is_DenseGeneticMappableMatrix(v: Any, varname: str) -> None:
+def check_is_DenseGeneticMappableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseGeneticMappableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseGeneticMappableMatrix):
-        raise TypeError("'{0}' must be a DenseGeneticMappableMatrix".format(varname))
+        raise TypeError("'{0}' must be a DenseGeneticMappableMatrix".format(vname))

@@ -5,7 +5,7 @@ from matplotlib import pyplot
 from matplotlib import animation
 
 import pybrops
-from pybrops.algo.opt.NSGA2BinaryGeneticAlgorithm import NSGA2BinaryGeneticAlgorithm
+from pybrops.opt.algo.UnconstrainedNSGA2BinaryGeneticAlgorithm import UnconstrainedNSGA2BinaryGeneticAlgorithm
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
@@ -49,7 +49,7 @@ def objfn1(x):
     return out
 
 # construct NSGA-II object
-moea = NSGA2BinaryGeneticAlgorithm(
+moea = UnconstrainedNSGA2BinaryGeneticAlgorithm(
     ngen = 400,
     mu = 400,
     lamb = 400
@@ -86,7 +86,7 @@ def objfn2(x):
     return out
 
 # construct NSGA-II object
-moea = NSGA2BinaryGeneticAlgorithm(
+moea = UnconstrainedNSGA2BinaryGeneticAlgorithm(
     ngen = 550,
     mu = 200,
     lamb = 200

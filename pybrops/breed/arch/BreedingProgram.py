@@ -3,10 +3,16 @@ Module defining interfaces and associated error checking routines for
 germplasm bank representation.
 """
 
-from typing import Any
-from pybrops.breed.arch.BreedingNode import BreedingNode
+__all__ = [
+    "BreedingProgram",
+    "check_is_BreedingProgram",
+]
 
-class BreedingProgram(BreedingNode):
+from abc import ABCMeta, abstractmethod
+from pybrops.breed.arch.BreedingNode import BreedingNode
+from pybrops.breed.op.log.Logbook import Logbook
+
+class BreedingProgram(BreedingNode,metaclass=ABCMeta):
     """
     Abstract class defining a breeding program.
 
@@ -17,9 +23,7 @@ class BreedingProgram(BreedingNode):
         4) Advancement of simulations for the breeding program.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -34,165 +38,139 @@ class BreedingProgram(BreedingNode):
         """
         super(BreedingProgram, self).__init__(**kwargs)
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############ Starting condition containers #############
-    def start_genome():
-        doc = "Starting genomes for individuals in the breeding program."
-        def fget(self):
-            """Get starting genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set starting genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete starting genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    start_genome = property(**start_genome())
+    @property
+    @abstractmethod
+    def start_genome(self) -> object:
+        """Starting genomes for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @start_genome.setter
+    @abstractmethod
+    def start_genome(self, value: object) -> None:
+        """Set starting genomes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def start_geno():
-        doc = "Starting genotypes for individuals in the breeding program."
-        def fget(self):
-            """Get starting genotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set starting genotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete starting genotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    start_geno = property(**start_geno())
+    @property
+    @abstractmethod
+    def start_geno(self) -> object:
+        """Starting genotypes for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @start_geno.setter
+    @abstractmethod
+    def start_geno(self, value: object) -> None:
+        """Set starting genotypes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def start_pheno():
-        doc = "Starting phenotypes for individuals in the breeding program."
-        def fget(self):
-            """Get starting phenotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set starting phenotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete starting phenotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    start_pheno = property(**start_pheno())
+    @property
+    @abstractmethod
+    def start_pheno(self) -> object:
+        """Starting phenotypes for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @start_pheno.setter
+    @abstractmethod
+    def start_pheno(self, value: object) -> None:
+        """Set starting phenotypes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def start_bval():
-        doc = "Starting breeding values for individuals in the breeding program."
-        def fget(self):
-            """Get starting breeding values for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set starting breeding values for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete starting breeding values for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    start_bval = property(**start_bval())
+    @property
+    @abstractmethod
+    def start_bval(self) -> object:
+        """Starting breeding values for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @start_bval.setter
+    @abstractmethod
+    def start_bval(self, value: object) -> None:
+        """Set starting breeding values for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def start_gmod():
-        doc = "Starting genomic models for individuals in the breeding program."
-        def fget(self):
-            """Get starting genomic models for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set starting genomic models for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete starting genomic models for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    start_gmod = property(**start_gmod())
+    @property
+    @abstractmethod
+    def start_gmod(self) -> object:
+        """Starting genomic models for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @start_gmod.setter
+    @abstractmethod
+    def start_gmod(self, value: object) -> None:
+        """Set starting genomic models for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
     ######### Breeding program operator properties #########
-    def initop():
-        doc = "Initialization operator"
-        def fget(self):
-            """Get the initialization operator"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the initialization operator"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the initialization operator"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    initop = property(**initop())
+    @property
+    @abstractmethod
+    def initop(self) -> object:
+        """Initialization operator."""
+        raise NotImplementedError("property is abstract")
+    @initop.setter
+    @abstractmethod
+    def initop(self, value: object) -> None:
+        """Set the initialization operator"""
+        raise NotImplementedError("property is abstract")
 
-    def pselop():
-        doc = "Parent selection operator."
-        def fget(self):
-            """Get the parent selection operator"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the parent selection operator"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the parent selection operator"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    pselop = property(**pselop())
+    @property
+    @abstractmethod
+    def pselop(self) -> object:
+        """Parent selection operator."""
+        raise NotImplementedError("property is abstract")
+    @pselop.setter
+    @abstractmethod
+    def pselop(self, value: object) -> None:
+        """Set the parent selection operator"""
+        raise NotImplementedError("property is abstract")
 
-    def mateop():
-        doc = "Mating operator."
-        def fget(self):
-            """Get the mating operator"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the mating operator"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the mating operator"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mateop = property(**mateop())
+    @property
+    @abstractmethod
+    def mateop(self) -> object:
+        """Mating operator."""
+        raise NotImplementedError("property is abstract")
+    @mateop.setter
+    @abstractmethod
+    def mateop(self, value: object) -> None:
+        """Set the mating operator"""
+        raise NotImplementedError("property is abstract")
 
-    def evalop():
-        doc = "Evaluation operator."
-        def fget(self):
-            """Get the evaluation operator"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the evaluation operator"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the evaluation operator"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    evalop = property(**evalop())
+    @property
+    @abstractmethod
+    def evalop(self) -> object:
+        """Evaluation operator."""
+        raise NotImplementedError("property is abstract")
+    @evalop.setter
+    @abstractmethod
+    def evalop(self, value: object) -> None:
+        """Set the evaluation operator"""
+        raise NotImplementedError("property is abstract")
 
-    def sselop():
-        doc = "Survivor selection operator."
-        def fget(self):
-            """Get the survivor selection operator"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the survivor selection operator"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the survivor selection operator"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    sselop = property(**sselop())
+    @property
+    @abstractmethod
+    def sselop(self) -> object:
+        """Survivor selection operator."""
+        raise NotImplementedError("property is abstract")
+    @sselop.setter
+    @abstractmethod
+    def sselop(self, value: object) -> None:
+        """Set the survivor selection operator"""
+        raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ############# Initialize breeding program ##############
-    def initialize(self, **kwargs: dict):
+    @abstractmethod
+    def initialize(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Initialize the breeding program with genotypes, phenotypes, and genomic
         models.
         """
         raise NotImplementedError("method is abstract")
 
-    def is_initialized(self, **kwargs: dict):
+    @abstractmethod
+    def is_initialized(
+            self, 
+            **kwargs: dict
+        ) -> bool:
         """
         Return whether or not the BreedingProgram has been initialized with a
         starting set of conditions.
@@ -211,7 +189,11 @@ class BreedingProgram(BreedingNode):
         raise NotImplementedError("method is abstract")
 
     ############# Population evolution methods #############
-    def reset(self, **kwargs: dict):
+    @abstractmethod
+    def reset(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Reset the evolution of the breeding program back to starting conditions.
 
@@ -222,7 +204,13 @@ class BreedingProgram(BreedingNode):
         """
         raise NotImplementedError("method is abstract")
 
-    def advance(self, ngen, lbook, **kwargs: dict):
+    @abstractmethod
+    def advance(
+            self, 
+            ngen: int, 
+            lbook: Logbook, 
+            **kwargs: dict
+        ) -> None:
         """
         Advance the breeding program by a specified number of generations.
 
@@ -237,7 +225,14 @@ class BreedingProgram(BreedingNode):
         """
         raise NotImplementedError("method is abstract")
 
-    def evolve(self, nrep, ngen, lbook, **kwargs: dict):
+    @abstractmethod
+    def evolve(
+            self, 
+            nrep: int, 
+            ngen: int, 
+            lbook: Logbook, 
+            **kwargs: dict
+        ) -> None:
         """
         Evolve the breeding program for a set number of replications and
         generations. The BreedingProgram is restarted using the starting geno,
@@ -257,35 +252,17 @@ class BreedingProgram(BreedingNode):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_BreedingProgram(v: Any) -> bool:
-    """
-    Determine whether an object is a BreedingProgram.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a BreedingProgram object instance.
-    """
-    return isinstance(v, BreedingProgram)
-
-def check_is_BreedingProgram(v: Any, varname: str) -> None:
+def check_is_BreedingProgram(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingProgram. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingProgram):
-        raise TypeError("'%s' must be a BreedingProgram." % varname)
+        raise TypeError("'%s' must be a BreedingProgram." % vname)

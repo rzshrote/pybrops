@@ -3,14 +3,20 @@ Module defining basal matrix interfaces and associated error checking routines
 for haplotype matrices.
 """
 
-import numbers
-from typing import Any, Optional
+__all__ = [
+    "HaplotypeMatrix",
+    "check_is_HaplotypeMatrix",
+]
+
+from abc import ABCMeta, abstractmethod
+from numbers import Real
+from typing import Optional
 import numpy
 from numpy.typing import DTypeLike
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 
-class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
+class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput,metaclass=ABCMeta):
     """
     An abstract class for haplotype matrix objects.
 
@@ -19,79 +25,52 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         2) haplotype math functions.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        HaplotypeMatrix constructor
 
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(HaplotypeMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############## General matrix properties ###############
-    def ploidy():
-        doc = "Ploidy number represented by matrix property."
-        def fget(self):
-            """Get matrix ploidy number"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set matrix ploidy number"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete matrix ploidy number"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ploidy = property(**ploidy())
-
+    ############## Matrix Metadata Properites ##############
+    @property
+    @abstractmethod
+    def ploidy(self) -> int:
+        """The ploidy level represented by the haplotype matrix."""
+        raise NotImplementedError("property is abstract")
+    @ploidy.setter
+    @abstractmethod
+    def ploidy(self, value: int) -> None:
+        """Set ploidy level"""
+        raise NotImplementedError("property is abstract")
+    
     # REMARK: this property is defined in PhasedMatrix as well. the purpose of
     # adding this here as well is to facilitate determination of the number of
     # phases represented by the HaplotypeMatrix. If 0, unphased; if >0, phased.
-    def nphase():
-        doc = "Number of chromosome phases represented by the matrix."
-        def fget(self):
-            """Get number of phases"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set number of phases"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete number of phases"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nphase = property(**nphase())
+    @property
+    @abstractmethod
+    def nphase(self) -> int:
+        """The number of phases represented by the haplotype matrix."""
+        raise NotImplementedError("property is abstract")
+    @nphase.setter
+    @abstractmethod
+    def nphase(self, value: int) -> None:
+        """Set number of phases represented by the haplotype matrix"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def mat_format(self) -> str:
+        """Matrix representation format."""
+        raise NotImplementedError("property is abstract")
+    @mat_format.setter
+    @abstractmethod
+    def mat_format(self, value: str) -> None:
+        """Set matrix representation format"""
+        raise NotImplementedError("property is abstract")
 
-    def mat_format():
-        doc = "Matrix representation format property."
-        def fget(self):
-            """Get matrix representation format"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set matrix representation format"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete matrix representation format"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat_format = property(**mat_format())
-
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ############## Matrix summary statistics ###############
+    @abstractmethod
     def thcount(
             self, 
             dtype: Optional[DTypeLike]
@@ -113,6 +92,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def thfreq(
             self, 
             dtype: Optional[DTypeLike]
@@ -135,6 +115,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def hcount(
             self, 
             dtype: Optional[DTypeLike]
@@ -155,6 +136,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def hfreq(
             self, 
             dtype: Optional[DTypeLike]
@@ -175,6 +157,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def mhf(
             self, 
             dtype: Optional[DTypeLike]
@@ -195,10 +178,11 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def meh(
             self, 
             dtype: Optional[DTypeLike]
-        ) -> numbers.Number:
+        ) -> Real:
         """
         Mean expected heterozygosity across all taxa.
 
@@ -215,6 +199,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def gtcount(
             self, 
             dtype: Optional[DTypeLike]
@@ -242,6 +227,7 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def gtfreq(
             self, 
             dtype: Optional[DTypeLike]
@@ -271,14 +257,8 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_HaplotypeMatrix(v: Any) -> bool:
-    """Return whether an object is a HaplotypeMatrix or not"""
-    return isinstance(v, HaplotypeMatrix)
-
-def check_is_HaplotypeMatrix(v: Any, varname: str) -> None:
+def check_is_HaplotypeMatrix(v: object, vname: str) -> None:
     """Raise TypeError if object is not a HaplotypeMatrix"""
     if not isinstance(v, HaplotypeMatrix):
-        raise TypeError("'%s' must be a HaplotypeMatrix." % varname)
+        raise TypeError("'%s' must be a HaplotypeMatrix." % vname)

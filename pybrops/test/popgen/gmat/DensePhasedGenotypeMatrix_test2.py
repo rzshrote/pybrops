@@ -4,8 +4,6 @@ import pytest
 import os.path
 
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import is_DensePhasedGenotypeMatrix
-
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 
@@ -71,7 +69,7 @@ def gmapfn():
 ################################################################################
 
 def test_is_DensePhasedGenotypeMatrix(dpgmat):
-    assert is_DensePhasedGenotypeMatrix(dpgmat)
+    assert isinstance(dpgmat, DensePhasedGenotypeMatrix)
 
 def test_mat_fget(dpgmat, mat_int8):
     assert numpy.all(dpgmat.mat == mat_int8)

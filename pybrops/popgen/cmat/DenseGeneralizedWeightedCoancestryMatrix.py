@@ -2,15 +2,20 @@
 Module providing an implementation for a dense generalized weighted genomic relationship matrix.
 """
 
+__all__ = [
+    "DenseGeneralizedWeightedCoancestryMatrix",
+    "check_is_DenseGeneralizedWeightedCoancestryMatrix",
+]
+
 import math
-import numbers
-from typing import Any, Union
+from numbers import Real
+from typing import Union
 import numpy
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_in_interval
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import check_ndarray_axis_len
-from pybrops.core.error.error_value_python import check_number_in_interval
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_numpy import check_ndarray_in_interval
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
+from pybrops.core.error.error_value_python import check_is_in_interval_inclusive
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
@@ -20,16 +25,14 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
     docstring for DenseGeneralizedWeightedCoancestryMatrix.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
-        self, 
-        mat: numpy.ndarray,
-        taxa: Union[numpy.ndarray,None] = None,
-        taxa_grp: Union[numpy.ndarray,None] = None,
-        **kwargs: dict
-        ):
+            self, 
+            mat: numpy.ndarray,
+            taxa: Union[numpy.ndarray,None] = None,
+            taxa_grp: Union[numpy.ndarray,None] = None,
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for DenseGeneralizedWeightedCoancestryMatrix.
         
@@ -45,17 +48,15 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
             **kwargs
         )
     
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     @classmethod
     def from_gmat(
-        cls, 
-        gmat: GenotypeMatrix, 
-        mkrwt: Union[numpy.ndarray,numbers.Number,None] = None,
-        afreq: Union[numpy.ndarray,numbers.Number,None] = None, 
-        **kwargs: dict
-        ):
+            cls, 
+            gmat: GenotypeMatrix, 
+            mkrwt: Union[numpy.ndarray,Real,None] = None,
+            afreq: Union[numpy.ndarray,Real,None] = None, 
+            **kwargs: dict
+        ) -> 'DenseGeneralizedWeightedCoancestryMatrix':
         """
         Construct a generalized weighted genomic relationship matrix.
         
@@ -63,10 +64,10 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
         ----------
         gmat : GenotypeMatrix
             Input genotype matrix.
-        mkrwt : numpy.ndarray, numbers.Number, None
+        mkrwt : numpy.ndarray, Real, None
             Marker weights to apply to the genotype matrix.
             If None, markers weights are assumed to be 1.
-        afreq : numpy.ndarray, numbers.Number, None
+        afreq : numpy.ndarray, Real, None
             Allele frequency of the mean point.
             If None, allele frequencies are assumed to equal the allele frequency of the input GenotypeMatrix.
         kwargs : dict
@@ -87,11 +88,11 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
             check_is_ndarray(mkrwt, "mkrwt")
             check_ndarray_ndim(mkrwt, "mkrwt", 1)
             check_ndarray_axis_len(mkrwt, "mkrwt", 0, gmat.nvrnt)
-        elif isinstance(mkrwt, numbers.Number):
-            check_number_in_interval(mkrwt, "mkrwt", 0.0, math.inf)
+        elif isinstance(mkrwt, Real):
+            check_is_in_interval_inclusive(mkrwt, "mkrwt", 0.0, math.inf)
             mkrwt = numpy.full((gmat.nvrnt,), mkrwt, dtype = "float64")
         else:
-            raise TypeError("variable 'mkrwt' must be of type 'numpy.ndarray', 'numbers.Number', or None")
+            raise TypeError("variable 'mkrwt' must be of type 'numpy.ndarray', 'Real', or None")
             
         # check afreq inputs
         if afreq is None:
@@ -100,11 +101,11 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
             check_ndarray_ndim(afreq, "afreq", 1)
             check_ndarray_axis_len(afreq, "afreq", 0, gmat.nvrnt)
             check_ndarray_in_interval(afreq, "afreq", 0.0, 1.0)
-        elif isinstance(afreq, numbers.Number):
-            check_number_in_interval(afreq, "afreq", 0.0, 1.0)
+        elif isinstance(afreq, Real):
+            check_is_in_interval_inclusive(afreq, "afreq", 0.0, 1.0)
             afreq = numpy.full((gmat.nvrnt,), afreq, dtype = "float64")
         else:
-            raise TypeError("variable 'afreq' must be of type 'numpy.ndarray', 'numbers.Number', or None")
+            raise TypeError("variable 'afreq' must be of type 'numpy.ndarray', 'Real', or None")
         
         # multiply afreq by ploidy level to get the number of alleles on which to center
         # (p,) -> (1,p)
@@ -153,34 +154,16 @@ class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseGeneralizedWeightedCoancestryMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a ``DenseGeneralizedWeightedCoancestryMatrix``.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``v`` is a ``DenseGeneralizedWeightedCoancestryMatrix`` object instance.
-    """
-    return isinstance(v, DenseGeneralizedWeightedCoancestryMatrix)
-
-def check_is_DenseGeneralizedWeightedCoancestryMatrix(v: Any, vname: str) -> None:
+def check_is_DenseGeneralizedWeightedCoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseGeneralizedWeightedCoancestryMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseGeneralizedWeightedCoancestryMatrix):

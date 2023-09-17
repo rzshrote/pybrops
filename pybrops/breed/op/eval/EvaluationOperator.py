@@ -3,10 +3,15 @@ Module defining interfaces and associated error checking routines for
 breeding program evaluation operators.
 """
 
-from typing import Any
+__all__ = [
+    "EvaluationOperator",
+    "check_is_EvaluationOperator",
+]
+
+from abc import ABCMeta, abstractmethod
 
 
-class EvaluationOperator:
+class EvaluationOperator(metaclass=ABCMeta):
     """
     Abstract class defining interfaces for the evaluation of an entire breeding
     program.
@@ -15,21 +20,22 @@ class EvaluationOperator:
         1) Evaluation of an entire breeding program.
     """
 
-    def __init__(
+    ########################## Special Object Methods ##########################
+
+    ############################## Object Methods ##############################
+    @abstractmethod
+    def evaluate(
             self, 
+            genome: dict, 
+            geno: dict, 
+            pheno: dict, 
+            bval: dict, 
+            gmod: dict, 
+            t_cur: int, 
+            t_max: int, 
+            miscout: dict, 
             **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class EvaluationOperator.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(EvaluationOperator, self).__init__()
-
-    def evaluate(self, genome, geno, pheno, bval, gmod, t_cur, t_max, miscout, **kwargs: dict):
+        ) -> tuple:
         """
         Evaluate individuals in a breeding program.
 
@@ -73,35 +79,17 @@ class EvaluationOperator:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_EvaluationOperator(v: Any) -> bool:
-    """
-    Determine whether an object is a EvaluationOperator.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a EvaluationOperator object instance.
-    """
-    return isinstance(v, EvaluationOperator)
-
-def check_is_EvaluationOperator(v: Any, varname: str) -> None:
+def check_is_EvaluationOperator(v: object, vname: str) -> None:
     """
     Check if object is of type EvaluationOperator. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, EvaluationOperator):
-        raise TypeError("'%s' must be a EvaluationOperator." % varname)
+        raise TypeError("'%s' must be a EvaluationOperator." % vname)

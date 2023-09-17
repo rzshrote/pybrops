@@ -3,10 +3,13 @@ Module defining interfaces and associated error checking routines for matrices
 storing additive genetic variance estimates.
 """
 
-from typing import Any
+from abc import ABCMeta, abstractmethod
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
+class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix,metaclass=ABCMeta):
     """
     An abstract class for additive genetic variance matrices.
 
@@ -15,37 +18,26 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
            genomic model.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class AdditiveGeneticVarianceMatrix.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments. Used for cooperative inheritance.
-            Dictionary passing unused arguments to the parent class constructor.
-        """
-        super(AdditiveGeneticVarianceMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
     @classmethod
-    def from_algmod(cls, algmod, pgmat, ncross, nprogeny, s, gmapfn, mem):
+    @abstractmethod
+    def from_algmod(
+            cls, 
+            algmod: AdditiveLinearGenomicModel, 
+            pgmat: PhasedGenotypeMatrix, 
+            ncross: int, 
+            nprogeny: int, 
+            nself: int, 
+            gmapfn: GeneticMapFunction, 
+            mem: int,
+            **kwargs: dict
+        ) -> 'AdditiveGeneticVarianceMatrix':
         """
         Estimate genetic variances from a GenomicModel.
 
@@ -61,7 +53,7 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
         nprogeny : int
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        s : int
+        nself : int
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
         gmapfn : GeneticMapFunction
@@ -69,6 +61,8 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
             recombination.
         mem : int
             Memory chunk size to use during matrix operations.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------
@@ -79,32 +73,14 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_AdditiveGeneticVarianceMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a ``AdditiveGeneticVarianceMatrix``.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``v`` is a ``AdditiveGeneticVarianceMatrix`` object instance.
-    """
-    return isinstance(v, AdditiveGeneticVarianceMatrix)
-
-def check_is_AdditiveGeneticVarianceMatrix(v: Any, vname: str) -> None:
+def check_is_AdditiveGeneticVarianceMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``AdditiveGeneticVarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in ``TypeError`` message.

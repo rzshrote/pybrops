@@ -2,10 +2,17 @@
 Module defining basal genetic map interfaces and associated error checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "GeneticMap",
+    "check_is_GeneticMap",
+]
 
+from abc import ABCMeta, abstractmethod
+from typing import Optional, Union
+import numpy
+import pandas
 
-class GeneticMap:
+class GeneticMap(metaclass=ABCMeta):
     """
     An abstract class for genetic map objects.
 
@@ -18,181 +25,154 @@ class GeneticMap:
         6) Import and export of genetic maps.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class GeneticMap.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(GeneticMap, self).__init__()
-
+    @abstractmethod
     def __len__(self):
         """Get the number of markers in the genetic map."""
         raise NotImplementedError("method is abstract")
 
-    ############################################################################
+    def __repr__(
+            self
+        ) -> str:
+        """
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
+        """
+        return "<{0} of length {1} at {2}>".format(
+            type(self).__name__,
+            len(self),
+            hex(id(self))
+        )
+
     ############################ Object Properties #############################
-    ############################################################################
 
     ################### Data Properites ####################
-    def vrnt_chrgrp():
-        doc = "Variant chromosome group label property."
-        def fget(self):
-            """Get variant chromosome group lable array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant chromosome group lable array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant chromosome group lable array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp = property(**vrnt_chrgrp())
+    @property
+    @abstractmethod
+    def vrnt_chrgrp(self) -> object:
+        """Variant chromosome group label."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_chrgrp.setter
+    @abstractmethod
+    def vrnt_chrgrp(self, value: object) -> None:
+        """Set variant chromosome group label array"""
+        raise NotImplementedError("property is abstract")
 
-    def vrnt_phypos():
-        doc = "Variant physical position property."
-        def fget(self):
-            """Get variant physical position array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant physical position array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant physical position array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_phypos = property(**vrnt_phypos())
+    @property
+    @abstractmethod
+    def vrnt_phypos(self) -> object:
+        """Variant physical position."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_phypos.setter
+    @abstractmethod
+    def vrnt_phypos(self, value: object) -> None:
+        """Set variant physical position array"""
+        raise NotImplementedError("property is abstract")
 
-    def vrnt_genpos():
-        doc = "Variant genetic position property."
-        def fget(self):
-            """Get variant genetic position array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant genetic position array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant genetic position array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_genpos = property(**vrnt_genpos())
-
+    @property
+    @abstractmethod
+    def vrnt_genpos(self) -> object:
+        """Variant genetic position."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_genpos.setter
+    @abstractmethod
+    def vrnt_genpos(self, value: object) -> None:
+        """Set variant genetic position array"""
+        raise NotImplementedError("property is abstract")
+    
     ################# Metadata Properites ##################
-    def vrnt_chrgrp_name():
-        doc = "Variant chromosome group names property."
-        def fget(self):
-            """Get variant chromosome group name array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant chromosome group name array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant chromosome group name array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_name = property(**vrnt_chrgrp_name())
+    @property
+    @abstractmethod
+    def vrnt_chrgrp_name(self) -> object:
+        """Variant chromosome group names."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_chrgrp_name.setter
+    @abstractmethod
+    def vrnt_chrgrp_name(self, value: object) -> None:
+        """Set variant chromosome group name array"""
+        raise NotImplementedError("property is abstract")
 
-    def vrnt_chrgrp_stix():
-        doc = "Variant chromosome group start indices property."
-        def fget(self):
-            """Get variant chromosome group start indices array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant chromosome group start indices array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant chromosome group start indices array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_stix = property(**vrnt_chrgrp_stix())
+    @property
+    @abstractmethod
+    def vrnt_chrgrp_stix(self) -> object:
+        """Variant chromosome group start indices."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_chrgrp_stix.setter
+    @abstractmethod
+    def vrnt_chrgrp_stix(self, value: object) -> None:
+        """Set variant chromosome group start indices array"""
+        raise NotImplementedError("property is abstract")
 
-    def vrnt_chrgrp_spix():
-        doc = "Variant chromosome group stop indices property."
-        def fget(self):
-            """Get variant chromosome group stop indices array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant chromosome group stop indices array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant chromosome group stop indices array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_spix = property(**vrnt_chrgrp_spix())
+    @property
+    @abstractmethod
+    def vrnt_chrgrp_spix(self) -> object:
+        """Variant chromosome group stop indices."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_chrgrp_spix.setter
+    @abstractmethod
+    def vrnt_chrgrp_spix(self, value: object) -> None:
+        """Set variant chromosome group stop indices array"""
+        raise NotImplementedError("property is abstract")
 
-    def vrnt_chrgrp_len():
-        doc = "Variant chromosome group length property."
-        def fget(self):
-            """Get variant chromosome group length array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant chromosome group length array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant chromosome group length array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_len = property(**vrnt_chrgrp_len())
+    @property
+    @abstractmethod
+    def vrnt_chrgrp_len(self) -> object:
+        """Variant chromosome group length."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_chrgrp_len.setter
+    @abstractmethod
+    def vrnt_chrgrp_len(self, value: object) -> None:
+        """Set variant chromosome group length array"""
+        raise NotImplementedError("property is abstract")
 
     ################## Spline Properites ###################
-    def spline():
-        doc = "Interpolation spline property."
-        def fget(self):
-            """Get interpolation spline(s)"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set interpolation spline(s)"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete interpolation spline(s)"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    spline = property(**spline())
+    @property
+    @abstractmethod
+    def spline(self) -> object:
+        """Interpolation spline(s)."""
+        raise NotImplementedError("property is abstract")
+    @spline.setter
+    @abstractmethod
+    def spline(self, value: object) -> None:
+        """Set interpolation spline(s)"""
+        raise NotImplementedError("property is abstract")
 
     ############# Spline Metadata Properites ###############
-    def spline_kind():
-        doc = "Spline kind property."
-        def fget(self):
-            """Get the spline kind"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the spline kind"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the spline kind"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    spline_kind = property(**spline_kind())
+    @property
+    @abstractmethod
+    def spline_kind(self) -> object:
+        """Spline kind."""
+        raise NotImplementedError("property is abstract")
+    @spline_kind.setter
+    @abstractmethod
+    def spline_kind(self, value: object) -> None:
+        """Set the spline kind"""
+        raise NotImplementedError("property is abstract")
 
-    def spline_fill_value():
-        doc = "Spline fill value property."
-        def fget(self):
-            """Get the spline fill value"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the spline fill value"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the spline fill value"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    spline_fill_value = property(**spline_fill_value())
+    @property
+    @abstractmethod
+    def spline_fill_value(self) -> object:
+        """Default spline fill value."""
+        raise NotImplementedError("property is abstract")
+    @spline_fill_value.setter
+    @abstractmethod
+    def spline_fill_value(self, value: object) -> None:
+        """Set the default spline fill value"""
+        raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################### Sorting Methods ####################
-    def lexsort(self, keys, **kwargs: dict):
+    @abstractmethod
+    def lexsort(
+            self, 
+            keys, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
         """
         Perform an indirect stable sort using a sequence of keys.
 
@@ -211,7 +191,12 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def reorder(self, indices, **kwargs: dict):
+    @abstractmethod
+    def reorder(
+            self, 
+            indices, 
+            **kwargs: dict
+        ) -> None:
         """
         Reorder markers in the GeneticMap using an array of indices.
         Note this modifies the GeneticMap in-place.
@@ -225,7 +210,12 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def sort(self, keys, **kwargs: dict):
+    @abstractmethod
+    def sort(
+            self, 
+            keys, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort slements of the GeneticMap using a sequence of keys.
         Note this modifies the GeneticMap in-place.
@@ -241,7 +231,11 @@ class GeneticMap:
         raise NotImplementedError("method is abstract")
 
     ################### Grouping Methods ###################
-    def group(self, **kwargs: dict):
+    @abstractmethod
+    def group(
+            self, 
+            **kwargs: dict
+        ) -> None:
         """
         Sort the GeneticMap, then populate grouping indices.
 
@@ -252,7 +246,11 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def is_grouped(self, **kwargs: dict):
+    @abstractmethod
+    def is_grouped(
+            self, 
+            **kwargs: dict
+        ) -> bool:
         """
         Determine whether the GeneticMap has been sorted and grouped.
 
@@ -270,7 +268,12 @@ class GeneticMap:
         raise NotImplementedError("method is abstract")
 
     ################ Insert/Delete Methods #################
-    def remove(self, indices, **kwargs: dict):
+    @abstractmethod
+    def remove(
+            self, 
+            indices, 
+            **kwargs: dict
+        ) -> None:
         """
         Remove indices from the GeneticMap. Sort and group internal arrays.
 
@@ -287,7 +290,12 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def select(self, indices, **kwargs: dict):
+    @abstractmethod
+    def select(
+            self, 
+            indices, 
+            **kwargs: dict
+        ) -> None:
         """
         Keep only selected markers, removing all others from the GeneticMap.
         Sort and group internal arrays.
@@ -305,7 +313,13 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def prune(self, nt, M, **kwargs: dict):
+    @abstractmethod
+    def prune(
+            self, 
+            nt: int, 
+            M: float, 
+            **kwargs: dict
+        ) -> None:
         """
         Prune markers evenly across all chromosomes.
 
@@ -327,7 +341,10 @@ class GeneticMap:
     # TODO: def insert(self, ...)
 
     ################## Integrity Methods ###################
-    def congruence(self):
+    @abstractmethod
+    def congruence(
+            self
+        ) -> numpy.ndarray:
         """
         If not grouped, will group.
         Assess physical and genetic map site congruency.
@@ -346,7 +363,10 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def is_congruent(self):
+    @abstractmethod
+    def is_congruent(
+            self
+        ) -> bool:
         """
         Determine if the genetic map is congruent
         Determine if all sites in the genetic map demonstrate congruence with
@@ -354,7 +374,10 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def remove_discrepancies(self):
+    @abstractmethod
+    def remove_discrepancies(
+            self
+        ) -> None:
         """
         Remove discrepancies between the physical map and the genetic map.
         In instances of conflict, assume that the physical map is correct.
@@ -366,7 +389,13 @@ class GeneticMap:
         raise NotImplementedError("method is abstract")
 
     ################# Interpolation Methods ################
-    def build_spline(self, kind, fill_value, **kwargs: dict):
+    @abstractmethod
+    def build_spline(
+            self, 
+            kind: str, 
+            fill_value: object, 
+            **kwargs: dict
+        ) -> None:
         """
         Build a spline for estimating genetic map distances. This is built
         using the marker start indices (self.chr_start)
@@ -382,11 +411,19 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def has_spline(self):
+    @abstractmethod
+    def has_spline(
+            self
+        ) -> bool:
         """Return whether or not the GeneticMap has a built spline."""
         raise NotImplementedError("method is abstract")
 
-    def interp_genpos(self, vrnt_chrgrp, vrnt_phypos):
+    @abstractmethod
+    def interp_genpos(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray
+        ) -> numpy.ndarray:
         """
         Interpolate genetic positions given variant physical positions
 
@@ -401,7 +438,13 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def interp_gmap(self, vrnt_chrgrp, vrnt_phypos, **kwargs: dict):
+    @abstractmethod
+    def interp_gmap(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray, 
+            **kwargs: dict
+        ):
         """
         Interpolate a new genetic map from the current genetic map.
         Associate spline of current GeneticMap with new GeneticMap.
@@ -409,7 +452,14 @@ class GeneticMap:
         raise NotImplementedError("method is abstract")
 
     ############### Genetic Distance Methods ###############
-    def gdist1g(self, vrnt_chrgrp, vrnt_genpos, ast, asp):
+    @abstractmethod
+    def gdist1g(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray, 
+            ast: Optional[int], 
+            asp: Optional[int]
+        ) -> numpy.ndarray:
         """
         Calculate sequential genetic distances using genetic positions.
         Requires vrnt_chrgrp and vrnt_genpos to have been sorted descending.
@@ -432,7 +482,16 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def gdist2g(self, vrnt_chrgrp, vrnt_genpos, rst, rsp, cst, csp):
+    @abstractmethod
+    def gdist2g(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_genpos: numpy.ndarray, 
+            rst: Optional[int], 
+            rsp: Optional[int], 
+            cst: Optional[int], 
+            csp: Optional[int]
+        ) -> numpy.ndarray:
         """
         Calculate pairwise genetic distances using genetic positions.
         Requires vrnt_chrgrp and vrnt_genpos to have been sorted descending.
@@ -459,7 +518,14 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def gdist1p(self, vrnt_chrgrp, vrnt_phypos, ast, asp):
+    @abstractmethod
+    def gdist1p(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray, 
+            ast: Optional[int], 
+            asp: Optional[int]
+        ) -> numpy.ndarray:
         """
         Calculate sequential genetic distances using physical positions.
         Requires vrnt_chrgrp and vrnt_phypos to have been sorted descending.
@@ -483,7 +549,16 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def gdist2p(self, vrnt_chrgrp, vrnt_phypos, rst, rsp, cst, csp):
+    @abstractmethod
+    def gdist2p(
+            self, 
+            vrnt_chrgrp: numpy.ndarray, 
+            vrnt_phypos: numpy.ndarray, 
+            rst: Optional[int], 
+            rsp: Optional[int], 
+            cst: Optional[int], 
+            csp: Optional[int]
+        ) -> numpy.ndarray:
         """
         Calculate pairwise genetic distances using physical positions.
         Requires vrnt_chrgrp and vrnt_phypos to have been sorted descending.
@@ -512,7 +587,10 @@ class GeneticMap:
         raise NotImplementedError("method is abstract")
 
     #################### Export Methods ####################
-    def to_pandas_df(self):
+    @abstractmethod
+    def to_pandas_df(
+            self
+        ) -> pandas.DataFrame:
         """
         Convert a GeneticMap object to a pandas DataFrame.
 
@@ -523,7 +601,15 @@ class GeneticMap:
         """
         raise NotImplementedError("method is abstract")
 
-    def to_csv(self, fname, sep, header, index, **kwargs: dict):
+    @abstractmethod
+    def to_csv(
+            self, 
+            fname: str, 
+            sep: str, 
+            header: bool, 
+            index: Union[bool,int], 
+            **kwargs: dict
+        ) -> None:
         """
         Convert a GeneticMap object to a csv file.
 
@@ -540,34 +626,16 @@ class GeneticMap:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_GeneticMap(v: Any) -> bool:
-    """
-    Determine whether an object is a GeneticMap.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a GeneticMap object instance.
-    """
-    return isinstance(v, GeneticMap)
-
-def check_is_GeneticMap(v: Any, vname: str) -> None:
+def check_is_GeneticMap(v: object, vname: str) -> None:
     """
     Check if object is of type GeneticMap. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, GeneticMap):

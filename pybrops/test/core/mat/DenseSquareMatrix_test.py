@@ -2,16 +2,15 @@ import pytest
 import numpy
 import copy
 
-from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_abstract_method
+from pybrops.test.assert_python import assert_abstract_function
+from pybrops.test.assert_python import assert_abstract_property
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DenseSquareMatrix import DenseSquareMatrix
-from pybrops.core.mat.DenseSquareMatrix import is_DenseSquareMatrix
 from pybrops.core.mat.DenseSquareMatrix import check_is_DenseSquareMatrix
 
 ################################################################################
@@ -45,7 +44,7 @@ def mat_rectangle():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseSquareMatrix)
+    assert_docstring(DenseSquareMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
@@ -68,9 +67,8 @@ def test_mat_fset(mat, mat_float64):
     assert numpy.all(mat.mat == mat_float64.T)
 
 def test_mat_fdel(mat):
-    del mat.mat
     with pytest.raises(AttributeError):
-        mat.mat
+        del mat.mat
 
 ################ Square Metadata Properites ################
 def test_nsquare_fget(mat, mat_float64):
@@ -122,14 +120,8 @@ def test_is_square(mat, mat_rectangle):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseSquareMatrix_is_concrete():
-    generic_assert_concrete_function(is_DenseSquareMatrix)
-
-def test_is_DenseSquareMatrix(mat):
-    assert is_DenseSquareMatrix(mat)
-
 def test_check_is_DenseSquareMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_DenseSquareMatrix)
+    assert_concrete_function(check_is_DenseSquareMatrix)
 
 def test_check_is_DenseSquareMatrix(mat):
     with not_raises(TypeError):

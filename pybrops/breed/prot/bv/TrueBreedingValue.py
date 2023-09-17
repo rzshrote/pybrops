@@ -2,19 +2,25 @@
 Module implementing the extraction of true breeding value.
 """
 
+from typing import Union
+import numpy
+import pandas
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
-from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 class TrueBreedingValue(BreedingValueProtocol):
     """
     Class implementing the extraction of true breeding value.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(self, gpmod, **kwargs: dict):
+    def __init__(
+            self, 
+            gpmod: GenomicModel, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for the concrete class TrueBreedingValue.
 
@@ -27,36 +33,33 @@ class TrueBreedingValue(BreedingValueProtocol):
         super(TrueBreedingValue, self).__init__(**kwargs)
         self.gpmod = gpmod
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############### Genomic Model Properties ###############
-    def gpmod():
-        doc = "Genomic prediction model."
-        def fget(self):
-            """Get genomic prediction model"""
-            return self._gpmod
-        def fset(self, value):
-            """Set genomic prediction model"""
-            check_is_GenomicModel(value, "gpmod")
-            self._gpmod = value
-        def fdel(self):
-            """Delete genomic prediction model"""
-            del self._gpmod
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    gpmod = property(**gpmod())
+    @property
+    def gpmod(self) -> GenomicModel:
+        """Genomic prediction model."""
+        return self._gpmod
+    @gpmod.setter
+    def gpmod(self, value: GenomicModel) -> None:
+        """Set genomic prediction model."""
+        check_is_GenomicModel(value, "gpmod")
+        self._gpmod = value
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
-    def estimate(self, ptobj, gtobj, miscout = None, gpmod = None, **kwargs: dict):
+    def estimate(
+            self, 
+            ptobj: Union[pandas.DataFrame,BreedingValueMatrix,numpy.ndarray], 
+            gtobj: Union[GenotypeMatrix,numpy.ndarray], 
+            miscout: dict = None, 
+            **kwargs: dict
+        ) -> BreedingValueMatrix:
         """
         Estimate breeding values.
 
         Parameters
         ----------
-        ptobj : BreedingValueMatrix, PhenotypeDataFrame, numpy.ndarray
+        ptobj : BreedingValueMatrix, pandas.DataFrame, numpy.ndarray
             An object containing phenotype data. Must be a matrix of breeding
             values or a phenotype data frame.
         gtobj : GenotypeMatrix, numpy.ndarray
@@ -76,16 +79,7 @@ class TrueBreedingValue(BreedingValueProtocol):
         out : BreedingValueMatrix
             A matrix of breeding values.
         """
-        # check inputs
-        check_is_PhasedGenotypeMatrix(gtobj, "gmat")
-
-        # get default parameters
-        if gpmod is None:
-            gpmod = self.gpmod
-        else:
-            check_is_GenomicModel(gpmod, "gpmod")
-
         # calculate true breeding values
-        bvmat = gpmod.gebv(gtobj)
+        bvmat = self.gpmod.gebv(gtobj)
 
         return bvmat

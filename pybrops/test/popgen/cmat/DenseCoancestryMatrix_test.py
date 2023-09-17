@@ -1,18 +1,15 @@
 import pytest
 import numpy
 
-from pybrops.test import generic_test_abstract_methods
-from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_abstract_method
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
-from pybrops.popgen.cmat.DenseCoancestryMatrix import is_DenseCoancestryMatrix
 from pybrops.popgen.cmat.DenseCoancestryMatrix import check_is_DenseCoancestryMatrix
+from pybrops.test.popgen.cmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -39,37 +36,37 @@ def A_mat_float64(X_mat_int8):
 
 @pytest.fixture
 def cmat(A_mat_float64):
-    yield DenseCoancestryMatrix(A_mat_float64)
+    yield DummyDenseCoancestryMatrix(A_mat_float64)
 
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseCoancestryMatrix)
+    assert_docstring(DenseCoancestryMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DenseCoancestryMatrix, "__init__")
+    assert_concrete_method(DenseCoancestryMatrix, "__init__")
 
 def test_coancestry_is_concrete():
-    generic_assert_concrete_method(DenseCoancestryMatrix, "coancestry")
+    assert_concrete_method(DenseCoancestryMatrix, "coancestry")
 
 def test_kinship_is_concrete():
-    generic_assert_concrete_method(DenseCoancestryMatrix, "kinship")
+    assert_concrete_method(DenseCoancestryMatrix, "kinship")
 
 def test_is_positive_semidefinite_is_concrete():
-    generic_assert_concrete_method(DenseCoancestryMatrix, "is_positive_semidefinite")
+    assert_concrete_method(DenseCoancestryMatrix, "is_positive_semidefinite")
 
 def test_apply_jitter_is_concrete():
-    generic_assert_concrete_method(DenseCoancestryMatrix, "apply_jitter")
+    assert_concrete_method(DenseCoancestryMatrix, "apply_jitter")
 
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
 def test_from_gmat_is_abstract():
-    generic_assert_abstract_method(DenseCoancestryMatrix, "from_gmat")
+    assert_abstract_method(DenseCoancestryMatrix, "from_gmat")
 
 ################################################################################
 ############################ Test Class Properties #############################
@@ -92,9 +89,8 @@ def test_mat_fset(cmat, A_mat_float64):
     assert numpy.all(cmat.mat == A_mat_float64)
 
 def test_mat_fdel(cmat, A_mat_float64):
-    del cmat.mat
     with pytest.raises(AttributeError):
-        cmat.mat
+        del cmat.mat
 
 ################################################################################
 ###################### Test concrete method functionality ######################
@@ -183,18 +179,12 @@ def test_apply_jitter(cmat):
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_DenseCoancestryMatrix_is_concrete():
-    generic_assert_concrete_function(is_DenseCoancestryMatrix)
-
 def test_check_is_DenseCoancestryMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_DenseCoancestryMatrix)
+    assert_concrete_function(check_is_DenseCoancestryMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseCoancestryMatrix(cmat):
-    assert is_DenseCoancestryMatrix(cmat)
-
 def test_check_is_DenseCoancestryMatrix(cmat):
     with not_raises(TypeError):
         check_is_DenseCoancestryMatrix(cmat, "cmat")

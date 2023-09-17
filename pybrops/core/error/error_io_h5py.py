@@ -2,7 +2,13 @@
 Module containing error subroutines related to HDF5 files.
 """
 
-def check_group_in_hdf5(groupname: str, h5file, h5filename: str):
+__all__ = [
+    "check_group_in_hdf5",
+]
+
+from io import FileIO
+
+def check_group_in_hdf5(groupname: str, h5file: FileIO, h5filename: str) -> None:
     """
     Subroutine to check whether a given group is in an HDF5 file.
     If the group is not in the HDF5 file, raise an LookupError with a custom
@@ -12,7 +18,7 @@ def check_group_in_hdf5(groupname: str, h5file, h5filename: str):
     ----------
     groupname : str
         Name of the group to search for in the HDF5 file.
-    h5file : File
+    h5file : FileIO
         File pointer to an HDF5 file.
     h5filename : str
         String representing a name given to ``h5file``. This does not
@@ -20,6 +26,4 @@ def check_group_in_hdf5(groupname: str, h5file, h5filename: str):
         for the HDF5 file (e.g. "genotype HDF5 file")
     """
     if groupname not in h5file:
-        raise LookupError(
-            "{0} group does not exist in {1}".format(groupname, h5filename)
-        )
+        raise LookupError("{0} group does not exist in {1}".format(groupname, h5filename))

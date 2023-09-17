@@ -2,20 +2,19 @@ import numpy
 import pytest
 import os.path
 
-from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_abstract_method
+from pybrops.test.assert_python import assert_abstract_function
+from pybrops.test.assert_python import assert_abstract_property
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
-from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import is_DenseAdditiveLinearGenomicModel
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import check_is_DenseAdditiveLinearGenomicModel
 
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.popgen.bvmat.BreedingValueMatrix import is_BreedingValueMatrix
+from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -130,85 +129,85 @@ def mat_intercept(dpgmat, mat_beta):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseAdditiveLinearGenomicModel)
+    assert_docstring(DenseAdditiveLinearGenomicModel)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "__init__")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "__init__")
 
 def test_copy_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "__copy__")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "__copy__")
 
 def test_deepcopy_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "__deepcopy__")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "__deepcopy__")
 
 def test_fit_numpy_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "fit_numpy")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "fit_numpy")
 
 def test_fit_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "fit")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "fit")
 
 def test_predict_numpy_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "predict_numpy")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "predict_numpy")
 
 def test_predict_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "predict")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "predict")
 
 def test_score_numpy_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "score_numpy")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "score_numpy")
 
 def test_score_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "score")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "score")
 
 def test_gebv_numpy_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "gebv_numpy")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "gebv_numpy")
 
 def test_gebv_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "gebv")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "gebv")
 
 def test_var_G_numpy_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_G_numpy")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_G_numpy")
 
 def test_var_G_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_G")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_G")
 
 def test_var_A_numpy_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_A_numpy")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_A_numpy")
 
 def test_var_A_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_A")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_A")
 
 def test_var_a_numpy_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_a_numpy")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_a_numpy")
 
 def test_var_a_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_a")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_a")
 
 def test_bulmer_numpy_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "bulmer_numpy")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "bulmer_numpy")
 
 def test_bulmer_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "bulmer")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "bulmer")
 
 def test_usl_numpy_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "usl_numpy")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "usl_numpy")
 
 def test_usl_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "usl")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "usl")
 
 def test_lsl_numpy_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "lsl_numpy")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "lsl_numpy")
 
 def test_lsl_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "lsl")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "lsl")
 
 def test_from_hdf5_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "from_hdf5")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "from_hdf5")
 
 def test_to_hdf5_is_concrete():
-    generic_assert_concrete_method(DenseAdditiveLinearGenomicModel, "to_hdf5")
+    assert_concrete_method(DenseAdditiveLinearGenomicModel, "to_hdf5")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -263,7 +262,7 @@ def test_predict(dalgmod, mat_intercept, mat_beta, mat_int8, mat_u_a, dpgmat):
     b = (mat_intercept @ mat_beta) + (geno @ mat_u_a)
     b = (b - b.mean(0)) / b.std(0)
     assert numpy.all(a == b)
-    assert is_BreedingValueMatrix(a)
+    assert isinstance(a, BreedingValueMatrix)
 
 def test_score_numpy(dalgmod, mat_intercept, mat_int8):
     geno = mat_int8.sum(0)
@@ -352,18 +351,12 @@ def test_to_from_hdf5(dalgmod, shared_datadir):
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
-def test_is_DenseAdditiveLinearGenomicModel_is_concrete():
-    generic_assert_concrete_function(is_DenseAdditiveLinearGenomicModel)
-
 def test_check_is_DenseAdditiveLinearGenomicModel_is_concrete():
-    generic_assert_concrete_function(check_is_DenseAdditiveLinearGenomicModel)
+    assert_concrete_function(check_is_DenseAdditiveLinearGenomicModel)
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseAdditiveLinearGenomicModel(dalgmod):
-    assert is_DenseAdditiveLinearGenomicModel(dalgmod)
-
 def test_check_is_DenseAdditiveLinearGenomicModel(dalgmod):
     with not_raises(TypeError):
         check_is_DenseAdditiveLinearGenomicModel(dalgmod, "dalgmod")

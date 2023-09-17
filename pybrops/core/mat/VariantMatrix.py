@@ -3,14 +3,20 @@ Module defining interfaces and associated error checking routines for matrices
 with variant metadata.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "VariantMatrix",
+    "check_is_VariantMatrix",
+]
+
+from abc import ABCMeta, abstractmethod
+from typing import Sequence, Union
 
 import numpy
 from numpy.typing import ArrayLike
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
 from pybrops.core.mat.Matrix import Matrix
 
-class VariantMatrix(GroupableMatrix):
+class VariantMatrix(GroupableMatrix,metaclass=ABCMeta):
     """
     An abstract class for matrix wrapper objects with variant metadata.
 
@@ -19,245 +25,181 @@ class VariantMatrix(GroupableMatrix):
         2) variant manipulation routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        VariantMatrix constructor
 
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(VariantMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############### Variant Data Properites ################
-    def vrnt_chrgrp():
-        doc = "Variant chromosome group label property."
-        def fget(self):
-            """Get variant chromosome group lable array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant chromosome group lable array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant chromosome group lable array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp = property(**vrnt_chrgrp())
-
-    def vrnt_phypos():
-        doc = "Variant physical position property."
-        def fget(self):
-            """Get variant physical position array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant physical position array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant physical position array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_phypos = property(**vrnt_phypos())
-
-    def vrnt_name():
-        doc = "Variant name property."
-        def fget(self):
-            """Get variant name array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant name array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant name array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_name = property(**vrnt_name())
-
-    def vrnt_genpos():
-        doc = "Variant genetic position property."
-        def fget(self):
-            """Get variant genetic position array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant genetic position array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant genetic position array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_genpos = property(**vrnt_genpos())
-
-    def vrnt_xoprob():
-        doc = "Variant crossover sequential probability property."
-        def fget(self):
-            """Get variant crossover sequential probability array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant crossover sequential probability array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant crossover sequential probability array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_xoprob = property(**vrnt_xoprob())
-
-    def vrnt_hapgrp():
-        doc = "Variant haplotype group label property."
-        def fget(self):
-            """Get variant haplotype group label array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant haplotype group label array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant haplotype group label array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_hapgrp = property(**vrnt_hapgrp())
-
-    def vrnt_hapalt():
-        doc = "Variant haplotype sequence property."
-        def fget(self):
-            """Get variant haplotype sequence"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant haplotype sequence"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant haplotype sequence"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_hapalt = property(**vrnt_hapalt())
-
-    def vrnt_hapref():
-        doc = "Variant reference haplotype sequence property."
-        def fget(self):
-            """Get variant reference haplotype sequence"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant reference haplotype sequence"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant reference haplotype sequence"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_hapref = property(**vrnt_hapref())
-
-    def vrnt_mask():
-        doc = "Variant mask property."
-        def fget(self):
-            """Get variant mask"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant mask"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant mask"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_mask = property(**vrnt_mask())
-
+    @property
+    @abstractmethod
+    def vrnt_chrgrp(self) -> object:
+        """Variant chromosome group label."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_chrgrp.setter
+    @abstractmethod
+    def vrnt_chrgrp(self, value: object) -> None:
+        """Set variant chromosome group lable array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_phypos(self) -> object:
+        """Variant physical position."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_phypos.setter
+    @abstractmethod
+    def vrnt_phypos(self, value: object) -> None:
+        """Set variant physical position array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_name(self) -> object:
+        """Variant name."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_name.setter
+    @abstractmethod
+    def vrnt_name(self, value: object) -> None:
+        """Set variant name array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_genpos(self) -> object:
+        """Variant genetic position."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_genpos.setter
+    @abstractmethod
+    def vrnt_genpos(self, value: object) -> None:
+        """Set variant genetic position array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_xoprob(self) -> object:
+        """Variant crossover sequential probability."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_xoprob.setter
+    @abstractmethod
+    def vrnt_xoprob(self, value: object) -> None:
+        """Set variant crossover sequential probability array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_hapgrp(self) -> object:
+        """Variant haplotype group label."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_hapgrp.setter
+    @abstractmethod
+    def vrnt_hapgrp(self, value: object) -> None:
+        """Set variant haplotype group label array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_hapalt(self) -> object:
+        """Variant haplotype sequence."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_hapalt.setter
+    @abstractmethod
+    def vrnt_hapalt(self, value: object) -> None:
+        """Set variant haplotype sequence"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_hapref(self) -> object:
+        """Variant reference haplotype sequence."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_hapref.setter
+    @abstractmethod
+    def vrnt_hapref(self, value: object) -> None:
+        """Set variant reference haplotype sequence"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_mask(self) -> object:
+        """Variant mask."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_mask.setter
+    @abstractmethod
+    def vrnt_mask(self, value: object) -> None:
+        """Set variant mask"""
+        raise NotImplementedError("property is abstract")
+    
     ############# Variant Metadata Properites ##############
-    def nvrnt():
-        doc = "Number of variants property."
-        def fget(self):
-            """Get number of variants"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set number of variants"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete number of variants"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nvrnt = property(**nvrnt())
-
-    def vrnt_axis():
-        doc = "Axis along which variants are stored property."
-        def fget(self):
-            """Get variant axis"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant axis"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant axis"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_axis = property(**vrnt_axis())
-
-    def vrnt_chrgrp_name():
-        doc = "Variant chromosome group names property."
-        def fget(self):
-            """Get variant chromosome group name array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant chromosome group name array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant chromosome group name array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_name = property(**vrnt_chrgrp_name())
-
-    def vrnt_chrgrp_stix():
-        doc = "Variant chromosome group start indices property."
-        def fget(self):
-            """Get variant chromosome group start indices array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant chromosome group start indices array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant chromosome group start indices array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_stix = property(**vrnt_chrgrp_stix())
-
-    def vrnt_chrgrp_spix():
-        doc = "Variant chromosome group stop indices property."
-        def fget(self):
-            """Get variant chromosome group stop indices array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant chromosome group stop indices array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant chromosome group stop indices array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_spix = property(**vrnt_chrgrp_spix())
-
-    def vrnt_chrgrp_len():
-        doc = "Variant chromosome group length property."
-        def fget(self):
-            """Get variant chromosome group length array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set variant chromosome group length array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete variant chromosome group length array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    vrnt_chrgrp_len = property(**vrnt_chrgrp_len())
-
-    ############################################################################
+    @property
+    @abstractmethod
+    def nvrnt(self) -> int:
+        """Number of variants."""
+        raise NotImplementedError("property is abstract")
+    @nvrnt.setter
+    @abstractmethod
+    def nvrnt(self, value: int) -> None:
+        """Set number of variants"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_axis(self) -> int:
+        """Axis along which variants are stored."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_axis.setter
+    @abstractmethod
+    def vrnt_axis(self, value: int) -> None:
+        """Set variant axis"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_chrgrp_name(self) -> object:
+        """Variant chromosome group names."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_chrgrp_name.setter
+    @abstractmethod
+    def vrnt_chrgrp_name(self, value: object) -> None:
+        """Set variant chromosome group name array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_chrgrp_stix(self) -> object:
+        """Variant chromosome group start indices."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_chrgrp_stix.setter
+    @abstractmethod
+    def vrnt_chrgrp_stix(self, value: object) -> None:
+        """Set variant chromosome group start indices array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_chrgrp_spix(self) -> object:
+        """Variant chromosome group stop indices."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_chrgrp_spix.setter
+    @abstractmethod
+    def vrnt_chrgrp_spix(self, value: object) -> None:
+        """Set variant chromosome group stop indices array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def vrnt_chrgrp_len(self) -> object:
+        """Variant chromosome group length."""
+        raise NotImplementedError("property is abstract")
+    @vrnt_chrgrp_len.setter
+    @abstractmethod
+    def vrnt_chrgrp_len(self, value: object) -> None:
+        """Set variant chromosome group length array"""
+        raise NotImplementedError("property is abstract")
+    
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
+    @abstractmethod
     def adjoin_vrnt(
             self, 
             values: Union[Matrix,numpy.ndarray], 
@@ -302,6 +244,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
+    @abstractmethod
     def delete_vrnt(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -325,6 +268,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
+    @abstractmethod
     def insert_vrnt(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -373,6 +317,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("static method is abstract")
 
+    @abstractmethod
     def select_vrnt(
             self, 
             indices: ArrayLike, 
@@ -397,6 +342,7 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     @classmethod
+    @abstractmethod
     def concat_vrnt(
             cls, 
             mats: Sequence, 
@@ -422,6 +368,7 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("static method is abstract")
 
     ######### Matrix element in-place-manipulation #########
+    @abstractmethod
     def append_vrnt(
             self, 
             values: Union[Matrix,numpy.ndarray], 
@@ -460,6 +407,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def remove_vrnt(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -477,6 +425,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def incorp_vrnt(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -520,6 +469,7 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################### Sorting Methods ####################
+    @abstractmethod
     def lexsort_vrnt(
             self, 
             keys: Union[tuple,numpy.ndarray], 
@@ -544,6 +494,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def reorder_vrnt(
             self, 
             indices: Union[numpy.ndarray,Sequence], 
@@ -562,6 +513,7 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def sort_vrnt(
             self, 
             keys: Union[tuple,numpy.ndarray], 
@@ -582,13 +534,14 @@ class VariantMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################### Grouping Methods ###################
+    @abstractmethod
     def group_vrnt(
             self, 
             **kwargs: dict
         ) -> None:
         """
-        Sort the Matrix along the variant axis, then populate grouping indices
-        for the variant axis.
+        Sort the VariantMatrix along the variant axis, then populate grouping 
+        indices for the variant axis.
 
         Parameters
         ----------
@@ -597,6 +550,23 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
+    def ungroup_vrnt(
+            self,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the VariantMatrix along the variant axis by removing variant 
+        group metadata.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
     def is_grouped_vrnt(
             self, 
             **kwargs: dict
@@ -618,91 +588,19 @@ class VariantMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
-    ################# Interpolation Methods ################
-    # TODO: remove me. This violates acyclical dependency requirements
-    def interp_genpos(self, gmap, **kwargs: dict):
-        """
-        Interpolate genetic map postions for variants using a GeneticMap
-
-        Parameters
-        ----------
-        gmap : GeneticMap
-            A genetic map from which to interopolate genetic map postions for
-            loci within the VariantMatrix.
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        raise NotImplementedError("method is abstract")
-
-    # TODO: remove me. This violates acyclical dependency requirements
-    def interp_xoprob(self, gmap, gmapfn, **kwargs: dict):
-        """
-        Interpolate genetic map positions AND crossover probabilities between
-        sequential markers using a GeneticMap and a GeneticMapFunction.
-
-        Parameters
-        ----------
-        gmap : GeneticMap
-            A genetic map from which to interopolate genetic map postions for
-            loci within the VariantMatrix.
-        gmapfn : GeneticMapFunction
-            A genetic map function from which to interpolate crossover
-            probabilities for loci within the VariantMatrix.
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        raise NotImplementedError("method is abstract")
-
-    ################## Clustering Methods ##################
-    # TODO: remove me???
-    def assign_hapgrp(
-            self, 
-            k: Union[int,numpy.ndarray], 
-            **kwargs: dict
-        ) -> None:
-        """
-        Assign haplotype groups using k-means clustering.
-
-        Parameters
-        ----------
-        k : int, numpy.ndarray
-            Number of haplotype groups to assign to each
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        raise NotImplementedError("method is abstract")
 
 
-
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_VariantMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a VariantMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a VariantMatrix object instance.
-    """
-    return isinstance(v, VariantMatrix)
-
-def check_is_VariantMatrix(v: Any, varname: str) -> None:
+def check_is_VariantMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type VariantMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, VariantMatrix):
-        raise TypeError("'{0}' must be a VariantMatrix".format(varname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,VariantMatrix.__name__,type(v).__name__))

@@ -3,10 +3,11 @@ Module providing a dense coancestry matrix implementation for identity by state
 and associated error checking routines.
 """
 
-from typing import Any, Optional
+from typing import Optional
 import numpy
 
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     """
@@ -18,10 +19,14 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         2) Dense coancestry matrix value access.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for DenseMolecularCoancestryMatrix class.
 
@@ -38,14 +43,10 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     # methods already inherited from DenseSquareTaxaMatrix and DenseCoancestryMatrix
     # ################### Sorting Methods ####################
@@ -149,9 +150,12 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
-    # FIXME: there is a bug here. gmat with phased and unphased matrices return different values.
     @classmethod
-    def from_gmat(cls, gmat, **kwargs: dict):
+    def from_gmat(
+            cls, 
+            gmat: GenotypeMatrix, 
+            **kwargs: dict
+        ) -> 'DenseMolecularCoancestryMatrix':
         """
         Create a CoancestryMatrix from a GenotypeMatrix.
 
@@ -221,34 +225,16 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseMolecularCoancestryMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DenseMolecularCoancestryMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseMolecularCoancestryMatrix object instance.
-    """
-    return isinstance(v, DenseMolecularCoancestryMatrix)
-
-def check_is_DenseMolecularCoancestryMatrix(v: Any, vname: str) -> None:
+def check_is_DenseMolecularCoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseMolecularCoancestryMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseMolecularCoancestryMatrix):

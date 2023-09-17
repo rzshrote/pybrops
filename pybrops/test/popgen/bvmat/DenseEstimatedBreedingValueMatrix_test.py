@@ -2,16 +2,15 @@ import pytest
 import numpy
 import copy
 
-from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_abstract_method
+from pybrops.test.assert_python import assert_abstract_function
+from pybrops.test.assert_python import assert_abstract_property
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
-from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import is_DenseEstimatedBreedingValueMatrix
 from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import check_is_DenseEstimatedBreedingValueMatrix
 
 ################################################################################
@@ -102,13 +101,13 @@ def mat(mat_float64, location_float64, scale_float64, taxa_object, taxa_grp_int6
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseEstimatedBreedingValueMatrix)
+    assert_docstring(DenseEstimatedBreedingValueMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DenseEstimatedBreedingValueMatrix, "__init__")
+    assert_concrete_method(DenseEstimatedBreedingValueMatrix, "__init__")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -127,14 +126,8 @@ def test_init_is_concrete():
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseEstimatedBreedingValueMatrix_is_concrete():
-    generic_assert_concrete_function(is_DenseEstimatedBreedingValueMatrix)
-
-def test_is_DenseEstimatedBreedingValueMatrix(mat):
-    assert is_DenseEstimatedBreedingValueMatrix(mat)
-
 def test_check_is_DenseEstimatedBreedingValueMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_DenseEstimatedBreedingValueMatrix)
+    assert_concrete_function(check_is_DenseEstimatedBreedingValueMatrix)
 
 def test_check_is_DenseEstimatedBreedingValueMatrix(mat):
     with not_raises(TypeError):

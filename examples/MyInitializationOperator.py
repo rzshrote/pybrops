@@ -5,14 +5,14 @@ from pybrops.breed.op.mate import MatingOperator
 from pybrops.breed.op.eval import EvaluationOperator
 from pybrops.breed.op.ssel import SurvivorSelectionOperator
 
-from pybrops.breed.prot.sel import ConventionalPhenotypicSelection
+from pybrops.breed.prot.sel import UnconstrainedConventionalPhenotypicSelection
 from pybrops.breed.prot.sel.transfn import trans_sum
 from pybrops.breed.prot.mate import GenerationalTwoWayDHCross
 
 class MyInitParentSelectionOperator(ParentSelectionOperator):
     def __init__(self, nparent, ncross, nprogeny, **kwargs):
         super(InitParentSelectionOperator, self).__init__(**kwargs)
-        self.cps = ConventionalPhenotypicSelection( # create the selection protocol
+        self.cps = UnconstrainedConventionalPhenotypicSelection( # create the selection protocol
             nparent = nparent,                      # number of parents
             ncross = ncross,                        # number of times to perform cross
             nprogeny = nprogeny,                    # number of progeny per cross
@@ -31,10 +31,10 @@ class MyInitParentSelectionOperator(ParentSelectionOperator):
         )
         # store parent selections configurations in dict
         mcfg = {
-            "pgmat" = pgmat,
-            "sel" = sel,
-            "ncross" = ncross,
-            "nprogeny" = nprogeny
+            "pgmat" : pgmat,
+            "sel" : sel,
+            "ncross" : ncross,
+            "nprogeny" : nprogeny
         }
         return mcfg, genome, geno, pheno, bval, gmod, misc
 

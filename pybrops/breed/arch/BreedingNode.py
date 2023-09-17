@@ -4,10 +4,11 @@ breeding nodes. Breeding nodes compose complex breeding programs in a graph-like
 structure. They are points were germplasm and information are located.
 """
 
-from typing import Any
+
+from abc import ABCMeta, abstractmethod
 
 
-class BreedingNode:
+class BreedingNode(metaclass=ABCMeta):
     """
     Abstract class defining a breeding node. Breeding nodes compose complex
     breeding programs in a graph-like structure. They are points were germplasm
@@ -18,162 +19,104 @@ class BreedingNode:
         2) Time related information.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class BreedingNode.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(BreedingNode, self).__init__()
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ############ Program information containers ############
-    def genome():
-        doc = "Genomes for individuals in the breeding program."
-        def fget(self):
-            """Get genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete genomes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    genome = property(**genome())
+    @property
+    @abstractmethod
+    def genome(self) -> object:
+        """Genomes for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @genome.setter
+    @abstractmethod
+    def genome(self, value: object) -> None:
+        """Set genomes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def geno():
-        doc = "Genotypes for individuals in the breeding program."
-        def fget(self):
-            """Get genotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set genotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete genotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    geno = property(**geno())
+    @property
+    @abstractmethod
+    def geno(self) -> object:
+        """Genotypes for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @geno.setter
+    @abstractmethod
+    def geno(self, value: object) -> None:
+        """Set genotypes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def pheno():
-        doc = "Phenotypes for individuals in the breeding program."
-        def fget(self):
-            """Get phenotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set phenotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete phenotypes for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    pheno = property(**pheno())
+    @property
+    @abstractmethod
+    def pheno(self) -> object:
+        """Phenotypes for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @pheno.setter
+    @abstractmethod
+    def pheno(self, value: object) -> None:
+        """Set phenotypes for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def bval():
-        doc = "Breeding values for individuals in the breeding program."
-        def fget(self):
-            """Get breeding values for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set breeding values for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete breeding values for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    bval = property(**bval())
+    @property
+    @abstractmethod
+    def bval(self) -> object:
+        """Breeding values for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @bval.setter
+    @abstractmethod
+    def bval(self, value: object) -> None:
+        """Set breeding values for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
-    def gmod():
-        doc = "Genomic models for individuals in the breeding program."
-        def fget(self):
-            """Get genomic models for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set genomic models for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete genomic models for individuals in the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    gmod = property(**gmod())
+    @property
+    @abstractmethod
+    def gmod(self) -> object:
+        """Genomic models for individuals in the breeding program."""
+        raise NotImplementedError("property is abstract")
+    @gmod.setter
+    @abstractmethod
+    def gmod(self, value: object) -> None:
+        """Set genomic models for individuals in the breeding program"""
+        raise NotImplementedError("property is abstract")
 
     ############# Generation number properties #############
-    def t_cur():
-        doc = "Current time of the BreedingNode."
-        def fget(self):
-            """Get the current time for the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the current time for the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the current time for the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    t_cur = property(**t_cur())
+    @property
+    @abstractmethod
+    def t_cur(self) -> int:
+        """Current time of the BreedingNode."""
+        raise NotImplementedError("property is abstract")
+    @t_cur.setter
+    @abstractmethod
+    def t_cur(self, value: int) -> None:
+        """Set the current time for the BreedingNode"""
+        raise NotImplementedError("property is abstract")
 
-    def t_max():
-        doc = "Maximum time of the BreedingNode."
-        def fget(self):
-            """Get the maximum time for the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set the maximum time for the breeding program"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete the maximum time for the breeding program"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    t_max = property(**t_max())
+    @property
+    @abstractmethod
+    def t_max(self) -> int:
+        """Maximum time of the BreedingNode."""
+        raise NotImplementedError("property is abstract")
+    @t_max.setter
+    @abstractmethod
+    def t_max(self, value: int) -> None:
+        """Set the maximum time for the BreedingNode"""
+        raise NotImplementedError("property is abstract")
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_BreedingNode(v: Any) -> bool:
-    """
-    Determine whether an object is a BreedingNode.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a BreedingNode object instance.
-    """
-    return isinstance(v, BreedingNode)
-
-def check_is_BreedingNode(v: Any, varname: str) -> None:
+def check_is_BreedingNode(v: object, vname: str) -> None:
     """
     Check if object is of type BreedingNode. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, BreedingNode):
-        raise TypeError("'%s' must be a BreedingNode." % varname)
+        raise TypeError("'%s' must be a BreedingNode." % vname)

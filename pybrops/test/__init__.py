@@ -1,5 +1,12 @@
-# order dependent import
-from .generic_python import *
-from .generic_numpy import *
+"""
+Module containing assertion tools for testing.
+"""
 
-from .generic_numpy_mathops import *
+__all__ = [
+    "assert_python",
+    "assert_numpy",
+]
+
+# order dependent import
+from pybrops.test import assert_python
+from pybrops.test import assert_numpy

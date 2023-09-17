@@ -2,10 +2,14 @@
 Module containing the abstract class GenotypingProtocol and its service functions.
 """
 
-from typing import Any
+from abc import ABCMeta, abstractmethod
+from typing import Optional
+
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class GenotypingProtocol:
+class GenotypingProtocol(metaclass=ABCMeta):
     """
     Abstract class defining genotyping protocols.
 
@@ -13,27 +17,16 @@ class GenotypingProtocol:
         1) Genotyping of individuals (converting a genome matrix to genotype matrix).
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class GenotypingProtocol.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(GenotypingProtocol, self).__init__()
-
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
-    def genotype(self, pgmat, miscout, **kwargs: dict):
+    @abstractmethod
+    def genotype(
+            self, 
+            pgmat: PhasedGenotypeMatrix, 
+            miscout: Optional[dict], 
+            **kwargs: dict
+        ) -> GenotypeMatrix:
         """
         Genotype a genome.
 
@@ -57,35 +50,17 @@ class GenotypingProtocol:
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_GenotypingProtocol(v: Any) -> bool:
-    """
-    Determine whether an object is a GenotypingProtocol.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a GenotypingProtocol object instance.
-    """
-    return isinstance(v, GenotypingProtocol)
-
-def check_is_GenotypingProtocol(v: Any, varname: str) -> None:
+def check_is_GenotypingProtocol(v: object, vname: str) -> None:
     """
     Check if object is of type GenotypingProtocol. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, GenotypingProtocol):
-        raise TypeError("'%s' must be a GenotypingProtocol." % varname)
+        raise TypeError("'%s' must be a GenotypingProtocol." % vname)

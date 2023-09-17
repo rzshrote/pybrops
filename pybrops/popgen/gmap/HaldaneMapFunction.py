@@ -2,7 +2,11 @@
 Module implementing the Haldane genetic map function and associated error checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "HaldaneMapFunction",
+    "check_is_HaldaneMapFunction",
+]
+
 import numpy
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
@@ -17,9 +21,7 @@ class HaldaneMapFunction(GeneticMapFunction):
         3) Converting physical distance to recombination probability.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             **kwargs: dict
@@ -32,15 +34,11 @@ class HaldaneMapFunction(GeneticMapFunction):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(HaldaneMapFunction, self).__init__(**kwargs)
+        super(HaldaneMapFunction, self).__init__()
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ########## Mapping & Inverse Mapping Methods ###########
     def mapfn(
@@ -214,35 +212,17 @@ class HaldaneMapFunction(GeneticMapFunction):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_HaldaneMapFunction(v: Any) -> bool:
-    """
-    Determine whether an object is a HaldaneMapFunction.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a HaldaneMapFunction object instance.
-    """
-    return isinstance(v, HaldaneMapFunction)
-
-def check_is_HaldaneMapFunction(v: Any, varname: str) -> None:
+def check_is_HaldaneMapFunction(v: object, vname: str) -> None:
     """
     Check if object is of type HaldaneMapFunction. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, HaldaneMapFunction):
-        raise TypeError("'{0}' must be of type HaldaneMapFunction.".format(varname))
+        raise TypeError("'{0}' must be of type HaldaneMapFunction.".format(vname))

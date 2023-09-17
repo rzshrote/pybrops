@@ -3,12 +3,18 @@ Module defining interfaces and associated error checking routines for matrices
 that can have their axes sorted.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "SortableMatrix",
+    "check_is_SortableMatrix",
+]
+
+from abc import ABCMeta, abstractmethod
+from typing import Sequence, Union
 
 import numpy
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
-class SortableMatrix(MutableMatrix):
+class SortableMatrix(MutableMatrix,metaclass=ABCMeta):
     """
     An abstract class for sortable matrix wrapper objects.
 
@@ -16,29 +22,12 @@ class SortableMatrix(MutableMatrix):
         1) Matrix in-place matrix sorting routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        SortableMatrix constructor
 
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(SortableMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################### Sorting Methods ####################
+    @abstractmethod
     def lexsort(
             self, 
             keys: Union[tuple,numpy.ndarray], 
@@ -65,6 +54,7 @@ class SortableMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def reorder(
             self, 
             indices: Union[numpy.ndarray,Sequence], 
@@ -86,6 +76,7 @@ class SortableMatrix(MutableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def sort(
             self, 
             keys: Union[tuple,numpy.ndarray], 
@@ -110,35 +101,17 @@ class SortableMatrix(MutableMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_SortableMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a SortableMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a SortableMatrix object instance.
-    """
-    return isinstance(v, SortableMatrix)
-
-def check_is_SortableMatrix(v: Any, varname: str) -> None:
+def check_is_SortableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type SortableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, SortableMatrix):
-        raise TypeError("'%s' must be a SortableMatrix." % varname)
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,SortableMatrix.__name__,type(v).__name__))

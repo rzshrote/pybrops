@@ -3,14 +3,20 @@ Module defining interfaces and associated error checking routines for matrices
 with taxa metadata.
 """
 
-from typing import Any, Sequence, Union
+__all__ = [
+    "TaxaMatrix",
+    "check_is_TaxaMatrix",
+]
+
+from abc import ABCMeta, abstractmethod
+from typing import Sequence, Union
 
 import numpy
 from numpy.typing import ArrayLike
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
 from pybrops.core.mat.Matrix import Matrix
 
-class TaxaMatrix(GroupableMatrix):
+class TaxaMatrix(GroupableMatrix,metaclass=ABCMeta):
     """
     An abstract class for matrix wrapper objects with taxa metadata.
 
@@ -19,147 +25,104 @@ class TaxaMatrix(GroupableMatrix):
         2) Matrix taxa routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        TaxaMatrix constructor
 
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(TaxaMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ################# Taxa Data Properites #################
-    def taxa():
-        doc = "Taxa label property."
-        def fget(self):
-            """Get taxa label array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa label array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa label array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa = property(**taxa())
-
-    def taxa_grp():
-        doc = "Taxa group label property."
-        def fget(self):
-            """Get taxa group label array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa group label array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa group label array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp = property(**taxa_grp())
-
+    @property
+    @abstractmethod
+    def taxa(self) -> object:
+        """Taxa label."""
+        raise NotImplementedError("property is abstract")
+    @taxa.setter
+    @abstractmethod
+    def taxa(self, value: object) -> None:
+        """Set taxa label array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def taxa_grp(self) -> object:
+        """Taxa group label."""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp.setter
+    @abstractmethod
+    def taxa_grp(self, value: object) -> None:
+        """Set taxa group label array"""
+        raise NotImplementedError("property is abstract")
+    
     ############### Taxa Metadata Properites ###############
-    def ntaxa():
-        doc = "Number of taxa property."
-        def fget(self):
-            """Get number of taxa"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set number of taxa"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete number of taxa"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    ntaxa = property(**ntaxa())
-
-    def taxa_axis():
-        doc = "Axis along which taxa are stored property."
-        def fget(self):
-            """Get taxa axis number"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa axis number"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa axis number"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_axis = property(**taxa_axis())
-
-    def taxa_grp_name():
-        doc = "Taxa group name property."
-        def fget(self):
-            """Get taxa group name array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa group name array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa group array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_name = property(**taxa_grp_name())
-
-    def taxa_grp_stix():
-        doc = "Taxa group start index property."
-        def fget(self):
-            """Get taxa group start indices array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa group start indices array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa group start indices array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_stix = property(**taxa_grp_stix())
-
-    def taxa_grp_spix():
-        doc = "Taxa group stop index property."
-        def fget(self):
-            """Get taxa group stop indices array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa group stop indices array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa group stop indices array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_spix = property(**taxa_grp_spix())
-
-    def taxa_grp_len():
-        doc = "Taxa group length property."
-        def fget(self):
-            """Get taxa group length array"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set taxa group length array"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete taxa group length array"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    taxa_grp_len = property(**taxa_grp_len())
-
-    ############################################################################
+    @property
+    @abstractmethod
+    def ntaxa(self) -> int:
+        """Number of taxa."""
+        raise NotImplementedError("property is abstract")
+    @ntaxa.setter
+    @abstractmethod
+    def ntaxa(self, value: int) -> None:
+        """Set number of taxa"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def taxa_axis(self) -> int:
+        """Axis along which taxa are stored."""
+        raise NotImplementedError("property is abstract")
+    @taxa_axis.setter
+    @abstractmethod
+    def taxa_axis(self, value: int) -> None:
+        """Set taxa axis number"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def taxa_grp_name(self) -> object:
+        """Taxa group name."""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp_name.setter
+    @abstractmethod
+    def taxa_grp_name(self, value: object) -> None:
+        """Set taxa group name array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def taxa_grp_stix(self) -> object:
+        """Taxa group start index."""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp_stix.setter
+    @abstractmethod
+    def taxa_grp_stix(self, value: object) -> None:
+        """Set taxa group start indices array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def taxa_grp_spix(self) -> object:
+        """Taxa group stop index."""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp_spix.setter
+    @abstractmethod
+    def taxa_grp_spix(self, value: object) -> None:
+        """Set taxa group stop indices array"""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def taxa_grp_len(self) -> object:
+        """Taxa group length."""
+        raise NotImplementedError("property is abstract")
+    @taxa_grp_len.setter
+    @abstractmethod
+    def taxa_grp_len(self, value: object) -> None:
+        """Set taxa group length array"""
+        raise NotImplementedError("property is abstract")
+    
     ############################## Object Methods ##############################
-    ############################################################################
 
     ######### Matrix element copy-on-manipulation ##########
+    @abstractmethod
     def adjoin_taxa(
             self, 
             values: Union[Matrix,numpy.ndarray], 
@@ -189,6 +152,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def delete_taxa(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -212,6 +176,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def insert_taxa(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -245,6 +210,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def select_taxa(
             self, 
             indices: ArrayLike, 
@@ -269,6 +235,7 @@ class TaxaMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     @classmethod
+    @abstractmethod
     def concat_taxa(
             cls, 
             mats: Sequence, 
@@ -294,6 +261,7 @@ class TaxaMatrix(GroupableMatrix):
         raise NotImplementedError("class method is abstract")
 
     ######### Matrix element in-place-manipulation #########
+    @abstractmethod
     def append_taxa(
             self, 
             values: Union[Matrix,numpy.ndarray], 
@@ -317,6 +285,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def remove_taxa(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -334,6 +303,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def incorp_taxa(
             self, 
             obj: Union[int,slice,Sequence], 
@@ -362,6 +332,7 @@ class TaxaMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################### Sorting Methods ####################
+    @abstractmethod
     def lexsort_taxa(
             self, 
             keys: Union[tuple,numpy.ndarray], 
@@ -386,6 +357,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def reorder_taxa(
             self, 
             indices: Union[numpy.ndarray,Sequence], 
@@ -404,6 +376,7 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
     def sort_taxa(
             self, 
             keys: Union[tuple,numpy.ndarray], 
@@ -424,6 +397,7 @@ class TaxaMatrix(GroupableMatrix):
         raise NotImplementedError("method is abstract")
 
     ################### Grouping Methods ###################
+    @abstractmethod
     def group_taxa(
             self, 
             **kwargs: dict
@@ -439,6 +413,23 @@ class TaxaMatrix(GroupableMatrix):
         """
         raise NotImplementedError("method is abstract")
 
+    @abstractmethod
+    def ungroup_taxa(
+            self,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the TaxaMatrix along the taxa axis by removing taxa group 
+        metadata.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
     def is_grouped_taxa(
             self, 
             **kwargs: dict
@@ -462,35 +453,17 @@ class TaxaMatrix(GroupableMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_TaxaMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a TaxaMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a TaxaMatrix object instance.
-    """
-    return isinstance(v, TaxaMatrix)
-
-def check_is_TaxaMatrix(v: Any, varname: str) -> None:
+def check_is_TaxaMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type TaxaMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, TaxaMatrix):
-        raise TypeError("'{0}' must be a TaxaMatrix".format(varname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,TaxaMatrix.__name__,type(v).__name__))

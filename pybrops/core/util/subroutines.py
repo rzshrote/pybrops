@@ -10,7 +10,7 @@ __all__ = [
     "matrix_is_sorted",
     "slice_to_range",
     "slice_to_list",
-    "human2bytes"
+    "human2bytes",
 ]
 
 def srange(start: int, stop: int, step: int) -> int:

@@ -3,10 +3,15 @@ Module defining comma separated value I/O interfaces and associated error
 checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "CSVInputOutput",
+    "check_is_CSVInputOutput",
+]
+
+from abc import ABCMeta, abstractmethod
 
 
-class CSVInputOutput:
+class CSVInputOutput(metaclass=ABCMeta):
     """
     Abstract class for defining CSV input/output functionality.
 
@@ -16,93 +21,69 @@ class CSVInputOutput:
     - ``from_csv`` - load an object from a csv file.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
+
+    ############################## Object Methods ##############################
+
+    ####################### File I/O #######################
+    @abstractmethod
+    def to_csv(
             self, 
+            filename: str,
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the abstract class CSVInputOutput.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(CSVInputOutput, self).__init__()
-
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
-
-    ####################### File I/O #######################
-    def to_csv(self, filename: str) -> None:
-        """
-        Write and object to a CSV file.
+        Write an object to a CSV file.
 
         Parameters
         ----------
         filename : str
             CSV file name to which to write.
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a CSV.
         """
         raise NotImplementedError("method is abstract")
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
 
     ####################### File I/O #######################
     @classmethod
-    def from_csv(cls, filename: str) -> 'CSVInputOutput':
+    @abstractmethod
+    def from_csv(
+            cls, 
+            filename: str,
+            **kwargs: dict
+        ) -> 'CSVInputOutput':
         """
-        Read object from a CSV file.
+        Read an object from a CSV file.
 
         Parameters
         ----------
         filename : str
             CSV file name from which to read.
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a CSV.
 
         Returns
         -------
-        out : cls
-            An object of the appropriate class type.
+        out : CSVInputOutput
+            An object read from a CSV file.
         """
-        raise NotImplementedError("method is abstract")
+        raise NotImplementedError("class method is abstract")
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_CSVInputOutput(v: Any) -> bool:
-    """
-    Determine whether an object is a CSVInputOutput.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a CSVInputOutput object instance.
-    """
-    return isinstance(v, CSVInputOutput)
-
-def check_is_CSVInputOutput(v: Any, vname: str) -> None:
+def check_is_CSVInputOutput(v: object, vname: str) -> None:
     """
     Check if object is of type CSVInputOutput. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, CSVInputOutput):
-        raise TypeError("variable '{0}' must be a CSVInputOutput".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,CSVInputOutput.__name__,type(v).__name__))

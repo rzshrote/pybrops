@@ -2,18 +2,30 @@
 Module providing dense coancestry matrix implementations and associated error checking routines.
 """
 
-from typing import Any, Optional
+__all__ = [
+    "DenseCoancestryMatrix",
+    "check_is_DenseCoancestryMatrix",
+]
+
+from numbers import Real
+from typing import Optional, Union
 import numpy
 import warnings
-
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_all_equal
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_dtype
-from pybrops.core.error import check_ndarray_ndim
-from pybrops.core.error import check_ndarray_axis_len
-from pybrops.core.error import check_ndarray_dtype_is_object
+import h5py
+from numpy.typing import DTypeLike
+from pybrops.core.error.error_io_h5py import check_group_in_hdf5
+from pybrops.core.error.error_io_python import check_file_exists
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_python import check_all_equal
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
+from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_value_python import check_str_value
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
+from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 
 class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
@@ -25,10 +37,14 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         2) Dense coancestry matrix value access.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> None:
         """
         Constructor for DenseCoancestryMatrix class.
 
@@ -53,123 +69,75 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
-
-    ################# Taxa Data Properites #################
-    def taxa():
-        doc = "The taxa property."
-        def fget(self):
-            return self._taxa
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "taxa")
-                check_ndarray_dtype_is_object(value, "taxa")
-                check_ndarray_ndim(value, "taxa", 1)
-                check_ndarray_axis_len(value, "taxa", 0, self._mat.shape[0])
-            self._taxa = value
-        def fdel(self):
-            del self._taxa
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    taxa = property(**taxa())
-
-    def taxa_grp():
-        doc = "The taxa_grp property."
-        def fget(self):
-            return self._taxa_grp
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp")
-                check_ndarray_dtype(value, "taxa_grp", numpy.int64)
-                check_ndarray_ndim(value, "taxa_grp", 1)
-                check_ndarray_axis_len(value, "taxa_grp", 0, self._mat.shape[0])
-            self._taxa_grp = value
-        def fdel(self):
-            del self._taxa_grp
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    taxa_grp = property(**taxa_grp())
-
-    ############### Taxa Metadata Properites ###############
-    def taxa_grp_name():
-        doc = "The taxa_grp_name property."
-        def fget(self):
-            return self._taxa_grp_name
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_name")
-                check_ndarray_dtype(value, "taxa_grp_name", numpy.int64)
-                check_ndarray_ndim(value, "taxa_grp_name", 1)
-            self._taxa_grp_name = value
-        def fdel(self):
-            del self._taxa_grp_name
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    taxa_grp_name = property(**taxa_grp_name())
-
-    def taxa_grp_stix():
-        doc = "The taxa_grp_stix property."
-        def fget(self):
-            return self._taxa_grp_stix
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_stix")
-                check_ndarray_dtype(value, "taxa_grp_stix", numpy.int64)
-                check_ndarray_ndim(value, "taxa_grp_stix", 1)
-            self._taxa_grp_stix = value
-        def fdel(self):
-            del self._taxa_grp_stix
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    taxa_grp_stix = property(**taxa_grp_stix())
-
-    def taxa_grp_spix():
-        doc = "The taxa_grp_spix property."
-        def fget(self):
-            return self._taxa_grp_spix
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_spix")
-                check_ndarray_dtype(value, "taxa_grp_spix", numpy.int64)
-                check_ndarray_ndim(value, "taxa_grp_spix", 1)
-            self._taxa_grp_spix = value
-        def fdel(self):
-            del self._taxa_grp_spix
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    taxa_grp_spix = property(**taxa_grp_spix())
-
-    def taxa_grp_len():
-        doc = "The taxa_grp_len property."
-        def fget(self):
-            return self._taxa_grp_len
-        def fset(self, value):
-            if value is not None:
-                check_is_ndarray(value, "taxa_grp_len")
-                check_ndarray_dtype(value, "taxa_grp_len", numpy.int64)
-                check_ndarray_ndim(value, "taxa_grp_len", 1)
-            self._taxa_grp_len = value
-        def fdel(self):
-            del self._taxa_grp_len
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    taxa_grp_len = property(**taxa_grp_len())
 
     ############## Coancestry Data Properites ##############
-    def mat():
-        doc = "The mat property."
-        def fget(self):
-            return self._mat
-        def fset(self, value):
-            check_is_ndarray(value, "mat")
-            check_all_equal(value.shape, "mat.shape")
-            check_ndarray_dtype(value, "mat", numpy.float64)
-            check_ndarray_ndim(value, "mat", 2)
-            self._mat = value
-        def fdel(self):
-            del self._mat
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    mat = property(**mat())
+    @DenseSquareTaxaMatrix.mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        check_is_ndarray(value, "mat")
+        check_all_equal(value.shape, "mat.shape")
+        check_ndarray_dtype(value, "mat", numpy.float64)
+        check_ndarray_ndim(value, "mat", 2)
+        self._mat = value
 
-    ############################################################################
+    ################# Taxa Data Properites #################
+    @DenseSquareTaxaMatrix.taxa.setter
+    def taxa(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa label array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa")
+            check_ndarray_dtype_is_object(value, "taxa")
+            check_ndarray_ndim(value, "taxa", 1)
+            check_ndarray_axis_len(value, "taxa", 0, self._mat.shape[0])
+        self._taxa = value
+
+    @DenseSquareTaxaMatrix.taxa_grp.setter
+    def taxa_grp(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group label array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp")
+            check_ndarray_dtype(value, "taxa_grp", numpy.int64)
+            check_ndarray_ndim(value, "taxa_grp", 1)
+            check_ndarray_axis_len(value, "taxa_grp", 0, self._mat.shape[0])
+        self._taxa_grp = value
+
+    ############### Taxa Metadata Properites ###############
+    @DenseSquareTaxaMatrix.taxa_grp_name.setter
+    def taxa_grp_name(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group name array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_name")
+            check_ndarray_dtype(value, "taxa_grp_name", numpy.int64)
+            check_ndarray_ndim(value, "taxa_grp_name", 1)
+        self._taxa_grp_name = value
+
+    @DenseSquareTaxaMatrix.taxa_grp_stix.setter
+    def taxa_grp_stix(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group start indices array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_stix")
+            check_ndarray_dtype(value, "taxa_grp_stix", numpy.int64)
+            check_ndarray_ndim(value, "taxa_grp_stix", 1)
+        self._taxa_grp_stix = value
+
+    @DenseSquareTaxaMatrix.taxa_grp_spix.setter
+    def taxa_grp_spix(self, value: Union[numpy.ndarray,None]) -> None:
+        """Set taxa group stop indices array"""
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_spix")
+            check_ndarray_dtype(value, "taxa_grp_spix", numpy.int64)
+            check_ndarray_ndim(value, "taxa_grp_spix", 1)
+        self._taxa_grp_spix = value
+
+    @DenseSquareTaxaMatrix.taxa_grp_len.setter
+    def taxa_grp_len(self, value: Union[numpy.ndarray,None]) -> None:
+        if value is not None:
+            check_is_ndarray(value, "taxa_grp_len")
+            check_ndarray_dtype(value, "taxa_grp_len", numpy.int64)
+            check_ndarray_ndim(value, "taxa_grp_len", 1)
+        self._taxa_grp_len = value
+
     ############################## Object Methods ##############################
-    ############################################################################
 
     ################## Matrix conversion ###################
     def mat_asformat(self, format: str) -> numpy.ndarray:
@@ -186,16 +154,16 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         out : numpy.ndarray
             Matrix in the desired output format.
         """
-        # input type check
-        if not isinstance(format, str):
-            raise TypeError("'format' argument must be of type 'str'")
+        # check values
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+
         # process string
-        if format.lower() == "coancestry":
+        if format == "coancestry":
             return self._mat.copy()
-        elif format.lower() == "kinship":
+        elif format == "kinship":
             return 0.5 * self._mat
-        else:
-            raise ValueError('Format not recognized. Options are "coancestry" or "kinship"')
 
     ############## Coancestry/kinship Methods ##############
     def coancestry(self, *args, **kwargs: dict):
@@ -224,7 +192,10 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         """
         return 0.5 * self._mat[args]
 
-    def is_positive_semidefinite(self, eigvaltol = 2e-14):
+    def is_positive_semidefinite(
+            self, 
+            eigvaltol = 2e-14
+        ) -> bool:
         """
         Determine whether the coancestry matrix is positive semidefinite.
         
@@ -245,7 +216,13 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             eigvaltol = 0.0
         return numpy.all(numpy.linalg.eigvals(self._mat) >= eigvaltol)
     
-    def apply_jitter(self, eigvaltol = 2e-14, minjitter = 1e-10, maxjitter = 1e-6, nattempt = 100):
+    def apply_jitter(
+            self, 
+            eigvaltol = 2e-14, 
+            minjitter = 1e-10, 
+            maxjitter = 1e-6, 
+            nattempt = 100
+        ) -> bool:
         """
         Add a random jitter value to the diagonal of the coancestry matrix until 
         all eigenvalues exceed the provided eigenvalue tolerance.
@@ -289,36 +266,336 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         
         return True
 
+    def max_inbreeding(
+            self,
+            format: str = "coancestry"
+        ) -> Real:
+        """
+        Calculate the maximum attainable inbreeding after one generation for 
+        the coancestry matrix. For coancestry, this is equivalent to:
+        
+        ..math:
+            \\max(\\mathrm{diag}(\\mathbf{G}))
+
+        or for kinship, the equivalent is:
+
+        ..math:
+            \\max(\\mathrm{diag}(\\mathbf{K}))
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        
+        Returns
+        -------
+        out : Real
+            The maximum attainable inbreeding after one generation.
+        """
+        # check values
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+
+        # get output in coancestry format
+        out = self.mat.diagonal().max()
+
+        # if requested format is kinship, then convert coancestry to kinship
+        if format == "kinship":
+            out = 0.5 * out
+        
+        return out
+
+    def min_inbreeding(
+            self,
+            format: str = "coancestry"
+        ) -> Real:
+        """
+        Calculate the minimum attainable inbreeding after one generation for 
+        the coancestry matrix. For coancestry, this is equivalent to:
+        
+        ..math:
+            \\frac{1}{\\mathbf{1'G1}}
+
+        or for kinship, the equivalent is:
+
+        ..math:
+            \\frac{1}{\\mathbf{1'K1}}
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        
+        Returns
+        -------
+        out : Real
+            The minimum attainable inbreeding after one generation.
+        """
+        # check values
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+
+        # calculate G inverse
+        Ginv = numpy.linalg.inv(self.mat)
+
+        # calculate min inbreeding
+        out = 1.0 / Ginv.sum()
+
+        # if requested format is kinship, then convert coancestry to kinship
+        if format == "kinship":
+            out = 0.5 * out
+        
+        return out
+
+    def inverse(
+            self,
+            format: str = "coancestry"
+        ) -> numpy.ndarray:
+        """
+        Calculate the inverse of the coancestry matrix.
+
+        Parameters
+        ----------
+        format : str
+            Desired matrix type on which to calculate the inverse. 
+            Options are "coancestry", "kinship".
+
+        Returns
+        -------
+        out : numpy.ndarray
+            Inverse of the coancestry or kinship matrix.
+        """
+        # type checks
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+
+        # invert matrix
+        if format == "coancestry":
+            out = numpy.linalg.inv(self._mat)
+        elif format == "kinship":
+            out = numpy.linalg.inv(0.5 * self._mat)
+        
+        return out
+
+    ############## Matrix summary statistics ###############
+    def max(
+            self,
+            format: str = "coancestry",
+            axis: Union[int,tuple,None] = None
+    ) -> Union[Real,numpy.ndarray]:
+        """
+        Calculate the maximum coancestry or kinship for the CoancestryMatrix
+        along a specified axis.
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        axis : int, tuple of ints, None
+            Axis along which to find the maximum value.
+        
+        Returns
+        -------
+        out : Real, numpy.ndarray
+            Maximum coancestry or kinship for the CoancestryMatrix along the 
+            specified axis.
+        """
+        # type checks
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+        
+        # calculate mean values
+        out = self._mat.max(axis = axis)
+
+        # process string and apply transformations
+        if format == "kinship":
+            out *= 0.5
+        
+        return out
+
+    def mean(
+            self,
+            format: str = "coancestry",
+            axis: Union[int,tuple,None] = None,
+            dtype: Optional[DTypeLike] = None
+        ) -> Real:
+        """
+        Calculate the mean coancestry or kinship for the CoancestryMatrix.
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        axis : int, tuple of ints, None
+            Axis along which to find the mean value.
+        dtype : DTypeLike, None
+            Type to use in computing the mean. If ``None`` use the native 
+            float type.
+
+        Returns
+        -------
+        out : Real
+            Mean coancestry or kinship for the CoancestryMatrix.
+        """
+        # type checks
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+        
+        # calculate mean values
+        out = self._mat.mean(axis = axis, dtype = dtype)
+
+        # process string and apply transformations
+        if format == "kinship":
+            out *= 0.5
+        
+        return out
+
+    def min(
+            self,
+            format: str = "coancestry",
+            axis: Union[int,tuple,None] = None
+    ) -> Union[Real,numpy.ndarray]:
+        """
+        Calculate the minimum coancestry or kinship for the CoancestryMatrix
+        along a specified axis.
+
+        Parameters
+        ----------
+        format : str
+            Desired output format. Options are "coancestry", "kinship".
+        axis : int, tuple of ints, None
+            Axis along which to find the minimum value.
+        
+        Returns
+        -------
+        out : Real, numpy.ndarray
+            Minimum coancestry or kinship for the CoancestryMatrix along the 
+            specified axis.
+        """
+        # type checks
+        check_is_str(format, "format")
+        format = format.lower()
+        check_str_value(format, "format", "coancestry", "kinship")
+        
+        # calculate mean values
+        out = self._mat.min(axis = axis)
+
+        # process string and apply transformations
+        if format == "kinship":
+            out *= 0.5
+        
+        return out
+
+    ################### Matrix File I/O ####################
+    def to_hdf5(
+            self, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> None:
+        """
+        Write GenotypeMatrix to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name to which to write.
+        groupname : str or None
+            HDF5 group name under which the ``DenseMatrix`` data is stored.
+            If ``None``, the ``DenseMatrix`` is written to the base HDF5 group.
+        """
+        h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### populate HDF5 file
+        data_dict = {                                           # data dictionary
+            "mat": self.mat,
+            "taxa" : self.taxa,
+            "taxa_grp" : self.taxa_grp
+        }
+        save_dict_to_hdf5(h5file, groupname, data_dict)         # save data
+        ######################################################### write conclusion
+        h5file.close()                                          # close the file
+
+    ############################## Class Methods ###############################
+
+    ################### Matrix File I/O ####################
+    @classmethod
+    def from_hdf5(
+            cls, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> 'DenseCoancestryMatrix':
+        """
+        Read DenseMatrix from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which DenseMatrix data is stored.
+            If None, DenseMatrix is read from base HDF5 group.
+
+        Returns
+        -------
+        out : DenseMatrix
+            A dense matrix read from file.
+        """
+        check_file_exists(filename)                             # check file exists
+        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### check that we have all required fields
+        required_fields = ["mat"]                               # all required arguments
+        for field in required_fields:                           # for each required field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
+        ######################################################### read data
+        data_dict = {                                           # output dictionary
+            "mat": None,
+            "taxa" : None,
+            "taxa_grp" : None
+        }
+        for field in data_dict.keys():                          # for each field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            if fieldname in h5file:                             # if the field exists in the HDF5 file
+                data_dict[field] = h5file[fieldname][()]        # read array
+        ######################################################### read conclusion
+        h5file.close()                                          # close file
+        ######################################################### create object
+        mat = cls(**data_dict)                                  # create object from read data
+        return mat
 
 
-################################################################################
+
 ################################## Utilities ###################################
-################################################################################
-def is_DenseCoancestryMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DenseCoancestryMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseCoancestryMatrix object instance.
-    """
-    return isinstance(v, DenseCoancestryMatrix)
-
-def check_is_DenseCoancestryMatrix(v: Any, vname: str) -> None:
+def check_is_DenseCoancestryMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseCoancestryMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseCoancestryMatrix):

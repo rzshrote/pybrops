@@ -2,16 +2,21 @@
 Module implementing a dense matrix and associated error checking routines.
 """
 
+__all__ = [
+    "DenseMatrix",
+    "check_is_DenseMatrix",
+]
+
 import copy
 import numpy
 import h5py
-from typing import Any, Optional, Sequence, Union
+from typing import Optional, Sequence, Union
 from numpy.typing import ArrayLike
 
-from pybrops.core.error import check_file_exists
-from pybrops.core.error import check_group_in_hdf5
-from pybrops.core.error import error_readonly
-from pybrops.core.error import check_is_ndarray
+from pybrops.core.error.error_io_python import check_file_exists
+from pybrops.core.error.error_io_h5py import check_group_in_hdf5
+from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.util.h5py import save_dict_to_hdf5
@@ -29,9 +34,7 @@ class DenseMatrix(Matrix):
         5) Dense matrix read-only matrix shape changing routines.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -41,7 +44,7 @@ class DenseMatrix(Matrix):
         Parameters
         ----------
         mat : numpy.ndarray
-            Matrix to store
+            Matrix to store.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -283,56 +286,58 @@ class DenseMatrix(Matrix):
             mat = copy.deepcopy(self.mat, memo)
         )
 
-    ############################################################################
+    ########### Miscellaneous special functions ############
+    def __repr__(
+            self
+        ) -> str:
+        """
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
+        """
+        return "<{0} of shape {1} at {2}>".format(
+            type(self).__name__,
+            str(self.mat_shape),
+            hex(id(self))
+        )
+
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
-    def mat():
-        doc = "The mat property."
-        def fget(self):
-            return self._mat
-        def fset(self, value):
-            # The only assumption is that mat is a numpy.ndarray matrix.
-            # Let the user decide whether to overwrite error checks.
-            check_is_ndarray(value, "mat")
-            self._mat = value
-        def fdel(self):
-            del self._mat
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat = property(**mat())
-
-    def mat_ndim():
-        doc = "Number of dimensions of the raw matrix property."
-        def fget(self):
-            """Get number of dimensions of the raw matrix"""
-            return self._mat.ndim
-        def fset(self, value):
-            """Set number of dimensions of the raw matrix"""
-            error_readonly("mat_ndim")
-        def fdel(self):
-            """Delete number of dimensions of the raw matrix"""
-            error_readonly("mat_ndim")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat_ndim = property(**mat_ndim())
-
-    def mat_shape():
-        doc = "Shape of the raw matrix property."
-        def fget(self):
-            """Get the shape of the raw matrix"""
-            return self._mat.shape
-        def fset(self, value):
-            """Set the shape of the raw matrix"""
-            error_readonly("mat_shape")
-        def fdel(self):
-            """Delete the shape of the raw matrix"""
-            error_readonly("mat_shape")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat_shape = property(**mat_shape())
-
-    ############################################################################
+    @property
+    def mat(self) -> numpy.ndarray:
+        """Pointer to raw numpy.ndarray object."""
+        return self._mat
+    @mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        """Set pointer to raw numpy.ndarray object."""
+        # The only assumption is that mat is a numpy.ndarray matrix.
+        # Let the user decide whether to overwrite error checks.
+        check_is_ndarray(value, "mat")
+        self._mat = value
+    
+    @property
+    def mat_ndim(self) -> int:
+        """Number of dimensions of the raw numpy.ndarray."""
+        return self._mat.ndim
+    @mat_ndim.setter
+    def mat_ndim(self, value: int) -> None:
+        """Set number of dimensions of the raw numpy.ndarray"""
+        error_readonly("mat_ndim")
+    
+    @property
+    def mat_shape(self) -> tuple:
+        """Shape of the raw numpy.ndarray."""
+        return self._mat.shape
+    @mat_shape.setter
+    def mat_shape(self, value: tuple) -> None:
+        """Set the shape of the raw numpy.ndarray"""
+        error_readonly("mat_shape")
+    
     ############################## Object Methods ##############################
-    ############################################################################
 
     #################### Matrix copying ####################
     def copy(
@@ -594,9 +599,7 @@ class DenseMatrix(Matrix):
         ######################################################### write conclusion
         h5file.close()                                          # close the file
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
 
     ################### Matrix File I/O ####################
     @classmethod
@@ -653,35 +656,17 @@ class DenseMatrix(Matrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DenseMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseMatrix object instance.
-    """
-    return isinstance(v, DenseMatrix)
-
-def check_is_DenseMatrix(v: Any, varname: str) -> None:
+def check_is_DenseMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseMatrix):
-        raise TypeError("'%s' must be a DenseMatrix." % varname)
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DenseMatrix.__name__,type(v).__name__))

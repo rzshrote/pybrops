@@ -3,15 +3,20 @@ Module implementing a dense matrix with taxa metadata and axes that are square
 and associated error checking routines.
 """
 
-from typing import Any, Optional, Sequence, Union
+__all__ = [
+    "DenseSquareTaxaMatrix",
+    "check_is_DenseSquareTaxaMatrix",
+]
+
+from typing import Optional, Sequence, Union
 import numpy
 from numpy.typing import ArrayLike
 
-from pybrops.core.error import check_is_array_like
-from pybrops.core.error import check_is_iterable
+from pybrops.core.error.error_type_python import check_is_array_like
+from pybrops.core.error.error_attr_python import check_is_iterable
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
-from pybrops.core.error import generic_check_isinstance
+from pybrops.core.error.error_generic_python import generic_check_isinstance
 from pybrops.core.mat.DenseSquareMatrix import DenseSquareMatrix
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
@@ -23,14 +28,13 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
     The purpose of this abstract class is to merge the following implementations
     and interfaces:
-        1) DenseSquareMatrix (implementation)
-        2) DenseTaxaMatrix (implementation)
-        3) SquareTaxaMatrix (interface)
+
+        1. DenseSquareMatrix (implementation)
+        2. DenseTaxaMatrix (implementation)
+        3. SquareTaxaMatrix (interface)
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -65,9 +69,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
     #################### Matrix copying ####################
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
     # mat inherited from DenseSquareMatrix
@@ -86,9 +88,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
     ################### Fill data lookup ###################
     # _fill_value inherited from DenseSquareMatrix
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     #################### Square Methods ####################
     # is_square inherited from DenseSquareMatrix
@@ -866,7 +866,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
         axis = get_axis(axis, self.mat_ndim)
 
         if axis in self.square_axes:
-            self.incorp(
+            self.incorp_taxa(
                 obj = obj,
                 values = values,
                 taxa = taxa,
@@ -966,7 +966,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
         # dispatch to correct function
         if axis in self.square_axes:
-            self.lexsort_taxa(keys = keys, **kwargs)
+            indices = self.lexsort_taxa(keys = keys, **kwargs)
         else:
             raise ValueError("cannot lexsort along axis {0}".format(axis))
 
@@ -1076,7 +1076,7 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
     def sort(
             self, 
-            keys: Union[tuple,numpy.ndarray,None], 
+            keys: Optional[Union[tuple,numpy.ndarray]] = None, 
             axis: int = -1, 
             **kwargs: dict
         ) -> None:
@@ -1123,6 +1123,33 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
     # group_taxa is unaltered
 
+    def ungroup(
+            self,
+            axis: int = -1,
+            **kwargs: dict
+        ) -> None:
+        """
+        Ungroup the DenseSquareTaxaMatrix along an axis by removing grouping 
+        metadata.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be ungrouped.
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # transform axis number to an index
+        axis = get_axis(axis, self.mat_ndim)
+
+        # dispatch functions
+        if axis in self.square_axes:
+            self.ungroup_taxa(**kwargs)
+        else:
+            raise ValueError("cannot ungroup along axis {0}".format(axis))
+
+    # ungroup_taxa is unaltered
+
     def is_grouped(
             self, 
             axis: int = -1, 
@@ -1151,35 +1178,17 @@ class DenseSquareTaxaMatrix(DenseSquareMatrix,DenseTaxaMatrix,SquareTaxaMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseSquareTaxaMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a DenseSquareTaxaMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a DenseSquareTaxaMatrix object instance.
-    """
-    return isinstance(v, DenseSquareTaxaMatrix)
-
-def check_is_DenseSquareTaxaMatrix(v: Any, vname: str) -> None:
+def check_is_DenseSquareTaxaMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type DenseSquareTaxaMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
     vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, DenseSquareTaxaMatrix):
-        raise TypeError("'{0}' must be a DenseSquareTaxaMatrix".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DenseSquareTaxaMatrix.__name__,type(v).__name__))

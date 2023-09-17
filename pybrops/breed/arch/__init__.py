@@ -1,20 +1,32 @@
 """
 Modules specifying breeding program high-level architecture.
 """
+
+__all__ = [
+    "BreedingNode",
+    "BreedingProgram",
+    "GermplasmBank",
+    "BreedingEdge",
+    "ImmigrationOperator",
+    "EmigrationOperator",
+    "BreedingGraph",
+    "RecurrentSelectionBreedingProgram",
+]
+
 # order dependent import libraries
 
 # graph nodes
-from . import BreedingNode
-from . import BreedingProgram
-from . import GermplasmBank
+from pybrops.breed.arch import BreedingNode
+from pybrops.breed.arch import BreedingProgram
+from pybrops.breed.arch import GermplasmBank
 
 # graph edges
-from . import BreedingEdge
-from . import ImmigrationOperator
-from . import EmigrationOperator
+from pybrops.breed.arch import BreedingEdge
+from pybrops.breed.arch import ImmigrationOperator
+from pybrops.breed.arch import EmigrationOperator
 
 # full graph
-from . import BreedingGraph
+from pybrops.breed.arch import BreedingGraph
 
 # objects
-from . import RecurrentSelectionBreedingProgram
+from pybrops.breed.arch import RecurrentSelectionBreedingProgram

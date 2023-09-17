@@ -4,6 +4,11 @@ Module for building marker weight vectors
 
 import numpy
 
+__all__ = [
+    "weight_absolute",
+    "weight_one",
+]
+
 def weight_absolute(u_a: numpy.ndarray) -> numpy.ndarray:
     """
     Construct marker weights using absolute value of marker effect coefficients

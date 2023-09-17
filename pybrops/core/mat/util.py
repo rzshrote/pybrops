@@ -3,7 +3,7 @@ Module containing matrix utilities.
 """
 
 __all__ = [
-    "get_axis"
+    "get_axis",
 ]
 
 def get_axis(

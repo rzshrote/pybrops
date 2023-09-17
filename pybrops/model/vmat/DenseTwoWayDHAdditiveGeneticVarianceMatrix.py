@@ -4,15 +4,22 @@ storing dense additive genetic variance estimates calculated using two-way DH
 formulae.
 """
 
-from typing import Optional
+import math
+from numbers import Integral, Real
+from typing import Optional, Union
 import numpy
 import pandas
-from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_Integral_or_None, check_is_Integral_or_inf
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.util.subroutines import srange
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel, check_is_AdditiveLinearGenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.model.vmat.util import cov_D1s
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_GeneticMapFunction
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
-# TODO: implement me
 class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix):
     """
     A concrete class for dense additive genetic variance matrices calculated
@@ -23,10 +30,15 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         2) I/O for two-way DH progeny variance matrices.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(self, mat: numpy.ndarray, taxa: Optional[numpy.ndarray] = None, taxa_grp: Optional[numpy.ndarray] = None, **kwargs: dict):
+    def __init__(
+            self, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ):
         """
         Constructor for the concrete class DenseTwoWayDHAdditiveGeneticVarianceMatrix.
 
@@ -45,35 +57,57 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             mat = mat,
             taxa = taxa,
             taxa_grp = taxa_grp,
+            trait = trait,
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
+
+    ##################### Matrix Data ######################
+    @DenseAdditiveGeneticVarianceMatrix.mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        """Set pointer to raw numpy.ndarray object."""
+        check_is_ndarray(value, "mat")
+        check_ndarray_ndim(value, "mat", 3) # (ntaxa,ntaxa,ntrait)
+        self._mat = value
 
     ############## Square Metadata Properties ##############
-    def square_axes():
-        doc = "Axis indices for axes that are square"
-        def fget(self):
-            """Get axis indices for axes that are square"""
-            return (0,1) # (female, male)
-        def fset(self, value):
-            """Set axis indices for axes that are square"""
-            error_readonly("square_axes")
-        def fdel(self):
-            """Delete axis indices for axes that are square"""
-            error_readonly("square_axes")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    square_axes = property(**square_axes())
+    @DenseAdditiveGeneticVarianceMatrix.square_axes.getter
+    def square_axes(self) -> tuple:
+        """Get axis indices for axes that are square"""
+        return (0,1) # (female, male)
 
-    ############################################################################
+    #################### Trait metadata ####################
+    @DenseAdditiveGeneticVarianceMatrix.trait_axis.getter
+    def trait_axis(self) -> int:
+        return 2
+
+    ######## Expected parental genome contributions ########
+    @DenseAdditiveGeneticVarianceMatrix.epgc.getter
+    def epgc(self) -> tuple:
+        """Get a tuple of the expected parental genome contributions."""
+        return (0.5, 0.5)
+
     ############################## Object Methods ##############################
-    ############################################################################
-    def to_csv(self, fname):
+    def to_csv(
+            self, 
+            fname: str
+        ) -> None:
+        """
+        Write a dense two-way additive genetic variance matrix to a csv.
+
+        Parameters
+        ----------
+        fname : str
+            Filename to which to write.
+        """
+        # calculate how much zero fill we need
+        taxazfill = math.ceil(math.log10(self.ntaxa))+1
+        traitzfill = math.ceil(math.log10(self.ntrait))+1
+
         # get names for taxa and traits
-        taxa = [str(e) for e in range(self.mat_shape[0])] if self.taxa is None else self.taxa
-        trait = [str(e) for e in range(self.mat_shape[2])]
+        taxa = ["Taxon"+str(e).zfill(taxazfill) for e in range(self.ntaxa)] if self.taxa is None else self.taxa
+        trait = ["Trait"+str(e).zfill(traitzfill) for e in range(self.ntrait)] if self.trait is None else self.trait
 
         # make dictionary to store output columns
         out_dict = {
@@ -85,7 +119,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
 
         # construct columns element by element
         for femaleix in range(self.mat_shape[0]):
-            for maleix in range(self.mat_shape[1]):
+            for maleix in range(femaleix,self.mat_shape[1]):
                 for traitix in range(self.mat_shape[2]):
                     out_dict["Female"].append(taxa[femaleix])
                     out_dict["Male"].append(taxa[maleix])
@@ -98,14 +132,97 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         # write DataFrame to file
         out_df.to_csv(fname, index = False)
 
-    ############################################################################
     ############################## Class Methods ###############################
-    ############################################################################
-    # TODO: implement me
-    # from_gmod
+    # TODO: provide support for non-linear models
+    @classmethod
+    def from_gmod(
+            cls, 
+            gmod: GenomicModel, 
+            pgmat: PhasedGenotypeMatrix, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Union[Integral,Real],
+            gmapfn: GeneticMapFunction,
+            **kwargs: dict
+        ) -> 'DenseTwoWayDHAdditiveGeneticVarianceMatrix':
+        """
+        Calculate a symmetrical matrix of progeny variance for each pairwise
+        2-way cross between *inbred* individuals.
+
+        Parameters
+        ----------
+        gmod : GenomicModel
+            Genomic Model with which to estimate genetic variances.
+        pgmat : PhasedGenotypeMatrix
+            Input genomes to use to estimate genetic variances.
+        ncross : Integral
+            Number of cross patterns to simulate for genetic variance
+            estimation.
+        nprogeny : Integral
+            Number of progeny to simulate per cross to estimate genetic
+            variance.
+        nself : Integral, Real
+            Number of selfing generations post-cross pattern before 'nprogeny'
+            individuals are simulated.
+
+            +-----------------+-------------------------+
+            | Example         | Description             |
+            +=================+=========================+
+            | ``nself = 0``   | Derive gametes from F1  |
+            +-----------------+-------------------------+
+            | ``nself = 1``   | Derive gametes from F2  |
+            +-----------------+-------------------------+
+            | ``nself = 2``   | Derive gametes from F3  |
+            +-----------------+-------------------------+
+            | ``...``         | etc.                    |
+            +-----------------+-------------------------+
+            | ``nself = inf`` | Derive gametes from SSD |
+            +-----------------+-------------------------+
+        gmapfn : GeneticMapFunction
+            GeneticMapFunction to use to estimate covariance induced by
+            recombination.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DenseTwoWayDHAdditiveGeneticVarianceMatrix
+            A matrix of additive genetic variance estimations.
+        """
+        # type checks
+        check_is_GenomicModel(gmod, "gmod")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral_or_inf(nself, "nself")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+
+        # if genomic model is an additive linear genomic model, then use specialized routine
+        if isinstance(gmod, AdditiveLinearGenomicModel):
+            return cls.from_algmod(
+                algmod = gmod, 
+                pgmat = pgmat, 
+                ncross = ncross, 
+                nprogeny = nprogeny, 
+                nself = nself, 
+                gmapfn = gmapfn, 
+                **kwargs
+            )
+        # otherwise raise error since non-linear support hasn't been implemented yet
+        else:
+            raise NotImplementedError("support for non-linear models not implemented yet")
 
     @classmethod
-    def from_algmod(cls, algmod, pgmat, ncross, nprogeny, s, gmapfn, mem = 1024):
+    def from_algmod(
+            cls, 
+            algmod: AdditiveLinearGenomicModel, 
+            pgmat: PhasedGenotypeMatrix, 
+            ncross: Integral, 
+            nprogeny: Integral, 
+            nself: Union[Integral,Real], 
+            gmapfn: GeneticMapFunction, 
+            mem: Union[Integral,None] = 1024
+        ) -> 'DenseTwoWayDHAdditiveGeneticVarianceMatrix':
         """
         Calculate a symmetrical matrix of progeny variance for each pairwise
         2-way cross between *inbred* individuals.
@@ -117,33 +234,33 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             AdditiveLinearGenomicModel with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
-        ncross : int
+        ncross : Integral
             Number of cross patterns to simulate for genetic variance
             estimation.
-        nprogeny : int
+        nprogeny : Integral
             Number of progeny to simulate per cross to estimate genetic
             variance.
-        s : int
+        nself : Integral, Real
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
 
-            +-------------+-------------------------+
-            | Example     | Description             |
-            +=============+=========================+
-            | ``s = 0``   | Derive gametes from F1  |
-            +-------------+-------------------------+
-            | ``s = 1``   | Derive gametes from F2  |
-            +-------------+-------------------------+
-            | ``s = 2``   | Derive gametes from F3  |
-            +-------------+-------------------------+
-            | ``...``     | etc.                    |
-            +-------------+-------------------------+
-            | ``s = inf`` | Derive gametes from SSD |
-            +-------------+-------------------------+
+            +-----------------+-------------------------+
+            | Example         | Description             |
+            +=================+=========================+
+            | ``nself = 0``   | Derive gametes from F1  |
+            +-----------------+-------------------------+
+            | ``nself = 1``   | Derive gametes from F2  |
+            +-----------------+-------------------------+
+            | ``nself = 2``   | Derive gametes from F3  |
+            +-----------------+-------------------------+
+            | ``...``         | etc.                    |
+            +-----------------+-------------------------+
+            | ``nself = inf`` | Derive gametes from SSD |
+            +-----------------+-------------------------+
         gmapfn : GeneticMapFunction
             GeneticMapFunction to use to estimate covariance induced by
             recombination.
-        mem : int, default = 1024
+        mem : Integral, default = 1024
             Memory chunk size to use during matrix operations. If ``None``,
             then memory chunk size is not limited.
 
@@ -157,9 +274,22 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         out : GeneticVarianceMatrix
             A matrix of additive genetic variance estimations.
         """
+        # type checks
+        check_is_AdditiveLinearGenomicModel(algmod, "algmod")
+        check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
+        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nprogeny, "nprogeny")
+        check_is_Integral_or_inf(nself, "nself")
+        check_is_GeneticMapFunction(gmapfn, "gmapfn")
+        check_is_Integral_or_None(mem, "mem")
+        
         # check for chromosome grouping
         if not pgmat.is_grouped_vrnt():
-            raise RuntimeError("pgmat must be grouped along the vrnt axis")
+            raise ValueError("pgmat must be grouped along the vrnt axis")
+
+        # check for genetic positions
+        if pgmat.vrnt_genpos is None:
+            raise ValueError("pgmat must have genetic positions")
 
         # gather shapes of data input
         ntrait = algmod.ntrait                  # number of traits (t)
@@ -197,7 +327,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
                     r = gmapfn.mapfn(numpy.abs(gi - gj)) # (rb,cb) covariance matrix
 
                     # calculate a D1 recombination covariance matrix; this is specific to mating scheme
-                    D1 = cov_D1s(r, s)  # (rb,cb) covariance matrix
+                    D1 = cov_D1s(r, nself)  # (rb,cb) covariance matrix
 
                     # get marker coefficients for rows and columns
                     ru = u[rst:rsp].T # (rb,t)' -> (t,rb)
@@ -217,7 +347,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
                             ceffect = cdgeno * cu # (cb,)*(t,cb) -> (t,cb)
 
                             # compute dot product for each trait to get partial variance sum
-                            # (t,rb)x(rb,cb) -> (t,cb)
+                            # (t,rb)@(rb,cb) -> (t,cb)
                             # (t,cb)*(t,cb) -> (t,cb)
                             # (t,cb)[1] -> (t,)
                             var_A_partial = (reffect @ D1 * ceffect).sum(1)
@@ -234,7 +364,8 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         out = cls(
             mat = var_A,
             taxa = pgmat.taxa,
-            taxa_grp = pgmat.taxa_grp
+            taxa_grp = pgmat.taxa_grp,
+            trait = algmod.trait
         )
 
         return out

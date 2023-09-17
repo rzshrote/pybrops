@@ -3,10 +3,10 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic additive and dominance effects.
 """
 
-from typing import Any
+from abc import ABCMeta, abstractmethod
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 
-class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
+class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel,metaclass=ABCMeta):
     """
     The AdditiveDominanceLinearGenomicModel class represents an interface for a
     Multivariate Multiple Linear Regression model.
@@ -60,71 +60,32 @@ class AdditiveDominanceLinearGenomicModel(AdditiveLinearGenomicModel):
     - ``t`` is the number of traits
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Constructor for the abstract class AdditiveDominanceLinearGenomicModel.
 
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        super(AdditiveDominanceLinearGenomicModel, self).__init__(**kwargs)
-
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
-
-    def u_d():
-        doc = "Dominance genomic marker effects."
-        def fget(self):
-            """Get dominance genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        def fset(self, value):
-            """Set dominance genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        def fdel(self):
-            """Delete dominance genomic marker effects"""
-            raise NotImplementedError("method is abstract")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    u_d = property(**u_d())
+    @property
+    @abstractmethod
+    def u_d(self) -> object:
+        """Dominance genomic marker effects."""
+        raise NotImplementedError("property is abstract")
+    @u_d.setter
+    @abstractmethod
+    def u_d(self, value: object) -> None:
+        """Set dominance genomic marker effects"""
+        raise NotImplementedError("property is abstract")
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_AdditiveDominanceLinearGenomicModel(v: Any) -> bool:
-    """
-    Determine whether an object is a AdditiveDominanceLinearGenomicModel.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a AdditiveDominanceLinearGenomicModel object instance.
-    """
-    return isinstance(v, AdditiveDominanceLinearGenomicModel)
-
-def check_is_AdditiveDominanceLinearGenomicModel(v: Any, vname: str) -> None:
+def check_is_AdditiveDominanceLinearGenomicModel(v: object, vname: str) -> None:
     """
     Check if object is of type AdditiveDominanceLinearGenomicModel. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, AdditiveDominanceLinearGenomicModel):

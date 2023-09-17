@@ -7,11 +7,11 @@ from matplotlib import pyplot
 from matplotlib import animation
 
 import pybrops
-from pybrops.algo.opt.NSGA3UnityConstraintGeneticAlgorithm import NSGA3UnityConstraintGeneticAlgorithm
+from pybrops.opt.algo.UnconstrainedNSGA3UnityConstraintGeneticAlgorithm import UnconstrainedNSGA3UnityConstraintGeneticAlgorithm
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.sel.transfn import trans_ndpt_to_vec_dist
-from pybrops.breed.prot.sel.OptimalContributionSelection import OptimalContributionSelection
-from pybrops.core.random import global_prng
+from pybrops.breed.prot.sel.UnconstrainedOptimalContributionSelection import OptimalContributionSelection
+from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
@@ -85,7 +85,7 @@ sel = OptimalContributionSelection(
         "objfn_wt": numpy.array([1.0, 1.0, 1.0]),   # all objectives maximizing
         "wt": numpy.array([1./3., 1./3., 1./3.])    # 1/3 equal weight to all
     },
-    moalgo = NSGA3UnityConstraintGeneticAlgorithm(
+    moalgo = UnconstrainedNSGA3UnityConstraintGeneticAlgorithm(
         ngen = 1500,            # number of generations to evolve
         mu = 100,               # number of parents in population
         lamb = 100,             # number of progeny to produce

@@ -3,12 +3,16 @@ Module implementing a dense matrix with axes that are square and associated
 error checking routines.
 """
 
-from typing import Any
+__all__ = [
+    "DenseSquareMatrix",
+    "check_is_DenseSquareMatrix",
+]
+
 import numpy
 
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_ndarray_at_least_2d
-from pybrops.core.error import error_readonly
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim_gteq
 from pybrops.core.mat.DenseMatrix import DenseMatrix
 from pybrops.core.mat.SquareMatrix import SquareMatrix
 
@@ -35,9 +39,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         2) Determination of square matrix conformity.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -57,69 +59,43 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
             **kwargs
         )
 
-    ############################################################################
     ############################ Object Properties #############################
-    ############################################################################
 
     ##################### Matrix Data ######################
-    def mat():
-        doc = "Pointer to raw matrix object."
-        def fget(self):
-            """Get pointer to raw matrix object"""
-            return self._mat
-        def fset(self, value):
-            """Set pointer to raw matrix object"""
-            check_is_ndarray(value, "mat")
-            check_ndarray_at_least_2d(value, "mat")
-            self._mat = value
-        def fdel(self):
-            """Delete raw matrix object"""
-            del self._mat
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    mat = property(**mat())
+    @DenseMatrix.mat.setter
+    def mat(self, value: numpy.ndarray) -> None:
+        """Set pointer to raw numpy.ndarray object."""
+        check_is_ndarray(value, "mat")
+        check_ndarray_ndim_gteq(value, "mat", 2)
+        self._mat = value
 
     ############## Square Metadata Properties ##############
-    def nsquare():
-        doc = "Number of axes that are square"
-        def fget(self):
-            """Get the number of axes that are square"""
-            return len(self.square_axes)
-        def fset(self, value):
-            """Set the number of axes that are square"""
-            error_readonly("nsquare")
-        def fdel(self):
-            """Delete the number of axes that are square"""
-            error_readonly("nsquare")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    nsquare = property(**nsquare())
+    @property
+    def nsquare(self) -> int:
+        """Number of axes that are square."""
+        return len(self.square_axes)
+    @nsquare.setter
+    def nsquare(self, value: int) -> None:
+        """Set the number of axes that are square"""
+        error_readonly("nsquare")
 
-    def square_axes():
-        doc = "Axis indices for axes that are square"
-        def fget(self):
-            """Get axis indices for axes that are square"""
-            return (0, 1)
-        def fset(self, value):
-            """Set axis indices for axes that are square"""
-            error_readonly("square_axes")
-        def fdel(self):
-            """Delete axis indices for axes that are square"""
-            error_readonly("square_axes")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    square_axes = property(**square_axes())
+    @property
+    def square_axes(self) -> tuple:
+        """Axis indices for axes that are square."""
+        return (0,1)
+    @square_axes.setter
+    def square_axes(self, value: tuple) -> None:
+        """Set axis indices for axes that are square"""
+        error_readonly("square_axes")
 
-    def square_axes_len():
-        doc = "Axis lengths for axes that are square"
-        def fget(self):
-            """Get axis lengths for axes that are square"""
-            return tuple(self.mat_shape[ix] for ix in self.square_axes)
-        def fset(self, value):
-            """Set axis lengths for axes that are square"""
-            error_readonly("square_axes_len")
-        def fdel(self):
-            """Delete axis lengths for axes that are square"""
-            error_readonly("square_axes_len")
-        return {"doc":doc, "fget":fget, "fset":fset, "fdel":fdel}
-    square_axes_len = property(**square_axes_len())
+    @property
+    def square_axes_len(self) -> tuple:
+        """Axis lengths for axes that are square."""
+        return tuple(self.mat_shape[ix] for ix in self.square_axes)
+    @square_axes_len.setter
+    def square_axes_len(self, value: tuple) -> None:
+        """Set axis lengths for axes that are square"""
+        error_readonly("square_axes_len")
 
     ################### Fill data lookup ###################
     # map dtypes to fill values
@@ -168,9 +144,7 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         numpy.dtype("float"): numpy.float_(numpy.nan),                  # NaN
     }
 
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
 
     #################### Square Methods ####################
     def is_square(
@@ -195,26 +169,8 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_DenseSquareMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a ``DenseSquareMatrix``.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        ``True`` or ``False`` for whether ``obj`` is a ``DenseSquareMatrix`` object instance.
-    """
-    return isinstance(v, DenseSquareMatrix)
-
-def check_is_DenseSquareMatrix(v: Any, vname: str) -> None:
+def check_is_DenseSquareMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type ``DenseSquareMatrix``. Otherwise raise ``TypeError``.
 
@@ -226,4 +182,4 @@ def check_is_DenseSquareMatrix(v: Any, vname: str) -> None:
         Name of variable to print in ``TypeError`` message.
     """
     if not isinstance(v, DenseSquareMatrix):
-        raise TypeError("'{0}' must be a DenseSquareMatrix".format(vname))
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,DenseSquareMatrix.__name__,type(v).__name__))

@@ -1,743 +1,1304 @@
 """
-Module implementing selection protocols for weighted genomic selection.
+Module implementing generalized weighted genomic selection protocols.
 """
 
+__all__ = [
+    "WeightedGenomicBinarySelection",
+    "WeightedGenomicIntegerSelection",
+    "WeightedGenomicRealSelection",
+    "WeightedGenomicSubsetSelection",
+]
+
+from numbers import Integral, Real
+from typing import Callable, Optional, Union
+
 import numpy
-import types
+from numpy.random import Generator, RandomState
+from pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection import GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection
+from pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection import GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection
+from pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection import GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection
+from pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection import GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection
+from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm
+from pybrops.opt.algo.IntegerOptimizationAlgorithm import IntegerOptimizationAlgorithm
+from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm
+from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 
-import pybrops.core.random
-from pybrops.algo.opt.NSGA2SetGeneticAlgorithm import NSGA2SetGeneticAlgorithm
-from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
-from pybrops.core.error import check_is_int
-from pybrops.core.error import check_is_ndarray
-from pybrops.core.error import check_is_callable
-from pybrops.core.error import check_is_dict
-from pybrops.core.error import check_is_Generator_or_RandomState
-from pybrops.core.random.prng import global_prng
-
-class WeightedGenomicSelection(SelectionProtocol):
+class WeightedGenomicBinarySelection(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection):
     """
-    Class implementing selection protocols for weighted genomic selection.
-
-    # TODO: add formulae for methodology.
+    Weighted Genomic Selection in a subset search space.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(self, nparent, ncross, nprogeny, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = 1.0, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = 1.0, rng = None, **kwargs: dict):
+    # override constructor from GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection
+    def __init__(
+            self, 
+            ntrait: Integral,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[BinaryOptimizationAlgorithm] = None,
+            moalgo: Optional[BinaryOptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
         """
-        Constructor for WeightedGenomicSelection class.
+        Constructor for WeightedGenomicBinarySelection.
 
         Parameters
         ----------
-        nparent : int
-        ncross : int
-        nprogeny : int
-        """
-        super(WeightedGenomicSelection, self).__init__(**kwargs)
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
 
-        # variable assignment
-        self.nparent = nparent
-        self.ncross = ncross
-        self.nprogeny = nprogeny
-        self.objfn_trans = objfn_trans
-        self.objfn_trans_kwargs = objfn_trans_kwargs
-        self.objfn_wt = objfn_wt
-        self.ndset_trans = ndset_trans
-        self.ndset_trans_kwargs = ndset_trans_kwargs
-        self.ndset_wt = ndset_wt
-        self.rng = rng
+        ncross : Integral
+            Number of cross configurations to consider.
+        
+        nparent : Integral
+            Number of parents per cross configuration.
+        
+        nmating : Integral, numpy.ndarray
+            Number of matings per configuration.
 
-    ############################################################################
-    ############################ Object Properties #############################
-    ############################################################################
-    def nparent():
-        doc = "The nparent property."
-        def fget(self):
-            """Get value for nparent."""
-            return self._nparent
-        def fset(self, value):
-            """Set value for nparent."""
-            check_is_int(value, "nparent")
-            self._nparent = value
-        def fdel(self):
-            """Delete value for nparent."""
-            del self._nparent
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    nparent = property(**nparent())
+            If ``nmating`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nmating`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+        
+        nprogeny : Integral, numpy.ndarray
+            Number of progeny to derive from each mating event.
 
-    def ncross():
-        doc = "The ncross property."
-        def fget(self):
-            """Get value for ncross."""
-            return self._ncross
-        def fset(self, value):
-            """Set value for ncross."""
-            check_is_int(value, "ncross")
-            self._ncross = value
-        def fdel(self):
-            """Delete value for ncross."""
-            del self._ncross
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ncross = property(**ncross())
+            If ``nprogeny`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nprogeny`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
 
-    def nprogeny():
-        doc = "The nprogeny property."
-        def fget(self):
-            """Get value for nprogeny."""
-            return self._nprogeny
-        def fset(self, value):
-            """Set value for nprogeny."""
-            check_is_int(value, "nprogeny")
-            self._nprogeny = value
-        def fdel(self):
-            """Delete value for nprogeny."""
-            del self._nprogeny
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    nprogeny = property(**nprogeny())
+        nobj : Integral
+            Number of optimization objectives when constructing a 
+            ``SelectionProblem``. This is equivalent to the vector length 
+            returned by the ``obj_trans`` function. Must be ``Integral`` greater 
+            than 0.
+        
+        obj_wt : numpy.ndarray, Real, None
+            Objective function weights. Weights from this vector are applied 
+            to objective function values via the Hadamard product. If values 
+            are ``1.0`` or ``-1.0``, this can be used to specify minimizing 
+            and maximizing objectives, respectively.
 
-    def objfn_trans():
-        doc = "The objfn_trans property."
-        def fget(self):
-            """Get value for objfn_trans."""
-            return self._objfn_trans
-        def fset(self, value):
-            """Set value for objfn_trans."""
-            if value is not None:
-                check_is_callable(value, "objfn_trans")
-            self._objfn_trans = value
-        def fdel(self):
-            """Delete value for objfn_trans."""
-            del self._objfn_trans
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    objfn_trans = property(**objfn_trans())
+            If ``obj_wt`` is ``numpy.ndarray``, then the array must be of shape 
+            ``(nobj,)``.
 
-    def objfn_trans_kwargs():
-        doc = "The objfn_trans_kwargs property."
-        def fget(self):
-            """Get value for objfn_trans_kwargs."""
-            return self._objfn_trans_kwargs
-        def fset(self, value):
-            """Set value for objfn_trans_kwargs."""
-            if value is not None:
-                check_is_dict(value, "objfn_trans_kwargs")
-            else:
-                value = {}
-            self._objfn_trans_kwargs = value
-        def fdel(self):
-            """Delete value for objfn_trans_kwargs."""
-            del self._objfn_trans_kwargs
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    objfn_trans_kwargs = property(**objfn_trans_kwargs())
+            If ``obj_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``.
 
-    # TODO: finish error checks
-    def objfn_wt():
-        doc = "The objfn_wt property."
-        def fget(self):
-            """Get value for objfn_wt."""
-            return self._objfn_wt
-        def fset(self, value):
-            """Set value for objfn_wt."""
-            self._objfn_wt = value
-        def fdel(self):
-            """Delete value for objfn_wt."""
-            del self._objfn_wt
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    objfn_wt = property(**objfn_wt())
+            If ``obj_wt`` is ``None``, then the value ``1.0`` is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``. This assumes that all 
+            objectives are to be minimized.
+        
+        obj_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the objective space. This transformation function must have the 
+            following signature::
 
-    def ndset_trans():
-        doc = "The ndset_trans property."
-        def fget(self):
-            """Get value for ndset_trans."""
-            return self._ndset_trans
-        def fset(self, value):
-            """Set value for ndset_trans."""
-            if value is not None:
-                check_is_callable(value, "ndset_trans")
-            self._ndset_trans = value
-        def fdel(self):
-            """Delete value for ndset_trans."""
-            del self._ndset_trans
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ndset_trans = property(**ndset_trans())
+                def obj_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
 
-    def ndset_trans_kwargs():
-        doc = "The ndset_trans_kwargs property."
-        def fget(self):
-            """Get value for ndset_trans_kwargs."""
-            return self._ndset_trans_kwargs
-        def fset(self, value):
-            """Set value for ndset_trans_kwargs."""
-            if value is not None:
-                check_is_dict(value, "ndset_trans_kwargs")
-            else:
-                value = {}
-            self._ndset_trans_kwargs = value
-        def fdel(self):
-            """Delete value for ndset_trans_kwargs."""
-            del self._ndset_trans_kwargs
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ndset_trans_kwargs = property(**ndset_trans_kwargs())
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
-    # TODO: finish error checks
-    def ndset_wt():
-        doc = "The ndset_wt property."
-        def fget(self):
-            """Get value for ndset_wt."""
-            return self._ndset_wt
-        def fset(self, value):
-            """Set value for ndset_wt."""
-            self._ndset_wt = value
-        def fdel(self):
-            """Delete value for ndset_wt."""
-            del self._ndset_wt
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    ndset_wt = property(**ndset_wt())
+            If ``obj_trans`` is ``None``, then default to an identity objective 
+            transformation function.
 
-    def rng():
-        doc = "The rng property."
-        def fget(self):
-            """Get value for rng."""
-            return self._rng
-        def fset(self, value):
-            """Set value for rng."""
-            if value is not None:
-                check_is_Generator_or_RandomState(value, "rng")
-            else:
-                value = global_prng
-            self._rng = value
-        def fdel(self):
-            """Delete value for rng."""
-            del self._rng
-        return {"fget":fget, "fset":fset, "fdel":fdel, "doc":doc}
-    rng = property(**rng())
+        obj_trans_kwargs : dict
+            Keyword arguments for the latent space to objective space 
+            transformation function. 
 
-    ############################################################################
-    ############################## Object Methods ##############################
-    ############################################################################
-    def select(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, method = "single", nparent = None, ncross = None, nprogeny = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, ndset_trans = None, ndset_trans_kwargs = None, ndset_wt = None, **kwargs: dict):
-        """
-        Select parents individuals for breeding.
+            If `obj_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
 
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Phased genotype matrix containing full genome information.
-        gmat : GenotypeMatrix
-            Genotype matrix containing genotype data (phased or unphased)
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        miscout : dict, None, default = None
-            Pointer to a dictionary for miscellaneous user defined output.
-            If dict, write to dict (may overwrite previously defined fields).
-            If None, user defined output is not calculated or stored.
-        method : str
-            Options: "single", "pareto"
-        nparent : int, None
-            Number of parents. If None, use default.
-        ncross : int, None
-            Number of crosses per configuration. If None, use default.
-        nprogeny : int
-            Number of progeny per cross. If None, use default.
+        nineqcv : Integral, None
+            Number of inequality constraint violation functions. This is 
+            equivalent to the vector length returned by the ``ineqcv_trans`` 
+            function. Must be ``Integral`` greater than or equal to zero.
+
+            If ``nineqcv`` is ``None``, then set to zero.
+
+        ineqcv_wt : numpy.ndarray, None
+            Inequality constraint violation function weights. Weights from this 
+            vector are applied to inequality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``ineqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(nineqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        ineqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the inequality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def ineqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``ineqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+        
+        ineqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to inequality constraint 
+            violation transformation function.
+        
+            If `ineqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        neqcv : Integral, None
+            Number of equality constraint violations. This is equivalent to the 
+            vector length returned by the ``eqcv_trans`` function. Must be 
+            ``Integral`` greater than or equal to zero.
+        
+            If ``neqcv`` is ``None``, then set to zero.
+
+        eqcv_wt : numpy.ndarray, None
+            Equality constraint violation function weights. Weights from this 
+            vector are applied to equality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``eqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(neqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        eqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the equality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def eqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``eqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+
+        eqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to equality constraint 
+            violation transformation function.
+
+            If `eqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        ndset_wt : Real, None
+            Nondominated set weight. The weight from this function is applied 
+            to outputs from ``ndset_trans``. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing objectives, 
+            respectively.
+
+            If ``ndset_wt`` is ``None``, then it is set to the default value of ``1.0``.
+            This assumes that the objective is to be minimized.
+
+        ndset_trans : Callable, None
+            A function which transforms values from the non-dominated set 
+            objective space to the single-objective space. This transformation 
+            function must have the following signature::
+
+                def ndset_trans(
+                        mat: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``mat`` is a ``numpy.ndarray`` containing a point coordinate array 
+                of shape ``(npt, nobj)`` where ``npt`` is the number of points 
+                and ``nobj`` is the number of objectives (dimensions). This 
+                array contains input points for calculating the distance between 
+                a point to the vector ``vec_wt``.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``ndset_trans`` is ``None``, then default to a transformation 
+            function calculating the distance between a weight vector and 
+            provided points
+
+        ndset_trans_kwargs : dict, None
+            Nondominated set transformation function keyword arguments.
+
+            If ``ndset_trans_kwargs`` is ``None``, then default to defaults for 
+            the default ``ndset_trans`` function::
+
+                ndset_trans_kwargs = {
+                    "obj_wt": numpy.repeat(1.0, nobj),
+                    "vec_wt": numpy.repeat(1.0, nobj)
+                }
+
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number source.
+
+            If ``rng`` is ``None``, default to the global random number 
+            generator.
+
+        soalgo : BinaryOptimizationAlgorithm, None
+            Single-objective optimization algorithm.
+
+            If ``soalgo`` is ``None``, then use a default single-objective 
+            optimization algorithm.
+
+        moalgo : BinaryOptimizationAlgorithm, None
+            Multi-objective opimization algorithm.
+
+            If ``moalgo`` is ``None``, then use a default multi-objective 
+            optimization algorithm.
+
         kwargs : dict
             Additional keyword arguments.
-
-        Returns
-        -------
-        out : tuple
-            A tuple containing four objects: (pgmat, sel, ncross, nprogeny)
-
-            Where:
-
-            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.
-            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross
-              pattern. Each index corresponds to an individual in ``pgmat``.
-            - ``ncross`` is a ``numpy.ndarray`` specifying the number of
-              crosses to perform per cross pattern.
-            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of
-              progeny to generate per cross.
         """
-        # get default parameters if any are None
-        if nparent is None:
-            nparent = self.nparent
-        if ncross is None:
-            ncross = self.ncross
-        if nprogeny is None:
-            nprogeny = self.nprogeny
-        if objfn_trans is None:
-            objfn_trans = self.objfn_trans
-        if objfn_trans_kwargs is None:
-            objfn_trans_kwargs = self.objfn_trans_kwargs
-        if objfn_wt is None:
-            objfn_wt = self.objfn_wt
-        if ndset_trans is None:
-            ndset_trans = self.ndset_trans
-        if ndset_trans_kwargs is None:
-            ndset_trans_kwargs = self.ndset_trans_kwargs
-        if ndset_wt is None:
-            ndset_wt = self.ndset_wt
-
-        # convert method string to lower
-        method = method.lower()
-
-        # single objective method: objfn_trans returns a single value for each
-        # selection configuration
-        if method == "single":
-            # get vectorized objective function
-            objfn = self.objfn(
-                pgmat = pgmat,
-                gmat = gmat,
-                ptdf = ptdf,
-                bvmat = bvmat,
-                gpmod = gpmod,
-                t_cur = t_cur,
-                t_max = t_max,
-                trans = objfn_trans,
-                trans_kwargs = objfn_trans_kwargs
-            )
-
-            # get all wGEBVs for each individual
-            # (n,)
-            wgebv = [objfn(i) for i in range(gmat.ntaxa)]
-
-            # convert to numpy.ndarray
-            wgebv = numpy.array(wgebv)
-
-            # multiply the objectives by objfn_wt to transform to maximizing function
-            # (n,) * scalar -> (n,)
-            wgebv = wgebv * objfn_wt
-
-            # get indices of top nparent GEBVs
-            sel = wgebv.argsort()[::-1][:nparent]
-
-            # shuffle indices for random mating
-            self.rng.shuffle(sel)
-
-            # get GEBVs for reference
-            if miscout is not None:
-                miscout["wgebv"] = wgebv
-
-            return pgmat, sel, ncross, nprogeny
-
-        # multi-objective method: objfn_trans returns a multiple values for each
-        # selection configuration
-        elif method == "pareto":
-            # get the pareto frontier
-            frontier, sel_config = self.pareto(
-                pgmat = pgmat,
-                gmat = gmat,
-                ptdf = ptdf,
-                bvmat = bvmat,
-                gpmod = gpmod,
-                t_cur = t_cur,
-                t_max = t_max,
-                miscout = miscout,
-                nparent = nparent,
-                objfn_trans = objfn_trans,
-                objfn_trans_kwargs = objfn_trans_kwargs,
-                objfn_wt = objfn_wt
-            )
-
-            # get scores for each of the points along the pareto frontier
-            score = ndset_wt * ndset_trans(frontier, **ndset_trans_kwargs)
-
-            # get index of maximum score
-            ix = score.argmax()
-
-            # add fields to miscout
-            if miscout is not None:
-                miscout["frontier"] = frontier
-                miscout["sel_config"] = sel_config
-
-            return pgmat, sel_config[ix], ncross, nprogeny
-        else:
-            raise ValueError("argument 'method' must be either 'single' or 'pareto'")
-
-    def objfn(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs: dict):
-        """
-        Return an objective function for the provided datasets.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Not used by this function.
-        gmat : GenotypeMatrix
-            Used by this function. Input genotype matrix.
-        ptdf : PhenotypeDataFrame
-            Not used by this function.
-        bvmat : BreedingValueMatrix
-            Not used by this function.
-        gpmod : AdditiveLinearGenomicModel
-            Linear genomic prediction model.
-
-        Returns
-        -------
-        outfn : function
-            A selection objective function for the specified problem.
-        """
-        # get default parameters if any are None
-        if trans is None:
-            trans = self.objfn_trans
-        if trans_kwargs is None:
-            trans_kwargs = self.objfn_trans_kwargs
-
-        # get pointers to raw numpy.ndarray matrices
-        mat = gmat.mat  # (n,p) get genotype matrix
-        u = gpmod.u_a   # (p,t) get regression coefficients
-
-        # calculate weight adjustments for WGS
-        afreq = gmat.afreq()[:,None]        # (p,1) allele frequencies
-        fafreq = numpy.where(               # (p,t) calculate favorable allele frequencies
-            u > 0.0,                        # if dominant (1) allele is beneficial
-            afreq,                          # get dominant allele frequency
-            1.0 - afreq                     # else get recessive allele frequency
-        )
-        fafreq[fafreq <= 0.0] = 1.0         # avoid division by zero/imaginary
-        uwt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
-
-        # copy objective function and modify default values
-        # this avoids using functools.partial and reduces function execution time.
-        outfn = types.FunctionType(
-            self.objfn_static.__code__,                 # byte code pointer
-            self.objfn_static.__globals__,              # global variables
-            None,                                       # new name for the function
-            (mat, u, uwt, trans, trans_kwargs),   # default values for arguments
-            self.objfn_static.__closure__               # closure byte code pointer
-        )
-
-        return outfn
-
-    def objfn_vec(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, trans = None, trans_kwargs = None, **kwargs: dict):
-        """
-        Return a vectorized objective function for the provided datasets.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Not used by this function.
-        gmat : GenotypeMatrix
-            Used by this function. Input genotype matrix.
-        ptdf : PhenotypeDataFrame
-            Not used by this function.
-        bvmat : BreedingValueMatrix
-            Not used by this function.
-        gpmod : AdditiveLinearGenomicModel
-            Linear genomic prediction model.
-
-        Returns
-        -------
-        outfn : function
-            A vectorized selection objective function for the specified problem.
-        """
-        # get default parameters if any are None
-        if trans is None:
-            trans = self.objfn_trans
-        if trans_kwargs is None:
-            trans_kwargs = self.objfn_trans_kwargs
-
-        # get pointers to raw numpy.ndarray matrices
-        mat = gmat.mat  # (n,p) get genotype matrix
-        u = gpmod.u_a   # (p,t) get regression coefficients
-
-        # calculate weight adjustments for WGS
-        afreq = gmat.afreq()[:,None]        # (p,1) allele frequencies
-        fafreq = numpy.where(               # (p,t) calculate favorable allele frequencies
-            u > 0.0,                        # if dominant (1) allele is beneficial
-            afreq,                          # get dominant allele frequency
-            1.0 - afreq                     # else get recessive allele frequency
-        )
-        fafreq[fafreq <= 0.0] = 1.0         # avoid division by zero/imaginary
-        uwt = numpy.power(fafreq, -0.5)  # calculate weights: 1/sqrt(p)
-
-        # copy objective function and modify default values
-        # this avoids using functools.partial and reduces function execution time.
-        outfn = types.FunctionType(
-            self.objfn_vec_static.__code__,             # byte code pointer
-            self.objfn_vec_static.__globals__,          # global variables
-            None,                                       # new name for the function
-            (mat, u, uwt, trans, trans_kwargs),   # default values for arguments
-            self.objfn_vec_static.__closure__           # closure byte code pointer
-        )
-
-        return outfn
-
-    def pareto(self, pgmat, gmat, ptdf, bvmat, gpmod, t_cur, t_max, miscout = None, nparent = None, objfn_trans = None, objfn_trans_kwargs = None, objfn_wt = None, **kwargs: dict):
-        """
-        Calculate a Pareto frontier for objectives.
-
-        Parameters
-        ----------
-        pgmat : PhasedGenotypeMatrix
-            Genomes
-        gmat : GenotypeMatrix
-            Genotypes
-        ptdf : PhenotypeDataFrame
-            Phenotype dataframe
-        bvmat : BreedingValueMatrix
-            Breeding value matrix
-        gpmod : GenomicModel
-            Genomic prediction model
-        t_cur : int
-            Current generation number.
-        t_max : int
-            Maximum (deadline) generation number.
-        miscout : dict, None, default = None
-            Pointer to a dictionary for miscellaneous user defined output.
-            If ``dict``, write to dict (may overwrite previously defined fields).
-            If ``None``, user defined output is not calculated or stored.
-        kwargs : dict
-            Additional keyword arguments.
-
-        Returns
-        -------
-        out : tuple
-            A tuple containing two objects ``(frontier, sel_config)``.
-
-            Where:
-
-            - frontier is a ``numpy.ndarray`` of shape ``(q,v)`` containing
-              Pareto frontier points.
-            - sel_config is a ``numpy.ndarray`` of shape ``(q,k)`` containing
-              parent selection decisions for each corresponding point in the
-              Pareto frontier.
-
-            Where:
-
-            - ``q`` is the number of points in the frontier.
-            - ``v`` is the number of objectives for the frontier.
-            - ``k`` is the number of search space decision variables.
-        """
-        if nparent is None:
-            nparent = self.nparent
-        if objfn_trans is None:
-            objfn_trans = self.objfn_trans
-        if objfn_trans_kwargs is None:
-            objfn_trans_kwargs = self.objfn_trans_kwargs
-        if objfn_wt is None:
-            objfn_wt = self.objfn_wt
-
-        # get number of taxa
-        ntaxa = gmat.ntaxa
-
-        # create objective function
-        objfn = self.objfn(
-            pgmat = pgmat,
-            gmat = gmat,
-            ptdf = ptdf,
-            bvmat = bvmat,
-            gpmod = gpmod,
-            t_cur = t_cur,
-            t_max = t_max,
-            trans = objfn_trans,
-            trans_kwargs = objfn_trans_kwargs
-        )
-
-        # create optimization algorithm
-        moalgo = NSGA2SetGeneticAlgorithm(
-            rng = self.rng,
+        super(WeightedGenomicBinarySelection, self).__init__(
+            ntrait = ntrait,
+            alpha = 0.5,
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans, 
+            ndset_trans_kwargs = ndset_trans_kwargs, 
+            rng = rng, 
+            soalgo = soalgo,
+            moalgo = moalgo,
             **kwargs
         )
 
-        # TODO: fixme with miscout dictionary
-        frontier, sel_config, misc = moalgo.optimize(
-            objfn = objfn,                  # objective function
-            k = nparent,                    # vector length to optimize (sspace^k)
-            sspace = numpy.arange(ntaxa),   # search space options
-            objfn_wt = objfn_wt             # weights to apply to each objective
+class WeightedGenomicIntegerSelection(GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection):
+    """
+    Weighted Genomic Selection in an integer search space.
+    """
+
+    ########################## Special Object Methods ##########################
+    # override constructor from GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection
+    def __init__(
+            self, 
+            ntrait: Integral,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[IntegerOptimizationAlgorithm] = None,
+            moalgo: Optional[IntegerOptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for WeightedGenomicIntegerSelection.
+
+        Parameters
+        ----------
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
+
+        ncross : Integral
+            Number of cross configurations to consider.
+        
+        nparent : Integral
+            Number of parents per cross configuration.
+        
+        nmating : Integral, numpy.ndarray
+            Number of matings per configuration.
+
+            If ``nmating`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nmating`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+        
+        nprogeny : Integral, numpy.ndarray
+            Number of progeny to derive from each mating event.
+
+            If ``nprogeny`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nprogeny`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+
+        nobj : Integral
+            Number of optimization objectives when constructing a 
+            ``SelectionProblem``. This is equivalent to the vector length 
+            returned by the ``obj_trans`` function. Must be ``Integral`` greater 
+            than 0.
+        
+        obj_wt : numpy.ndarray, Real, None
+            Objective function weights. Weights from this vector are applied 
+            to objective function values via the Hadamard product. If values 
+            are ``1.0`` or ``-1.0``, this can be used to specify minimizing 
+            and maximizing objectives, respectively.
+
+            If ``obj_wt`` is ``numpy.ndarray``, then the array must be of shape 
+            ``(nobj,)``.
+
+            If ``obj_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``.
+
+            If ``obj_wt`` is ``None``, then the value ``1.0`` is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``. This assumes that all 
+            objectives are to be minimized.
+        
+        obj_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the objective space. This transformation function must have the 
+            following signature::
+
+                def obj_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``obj_trans`` is ``None``, then default to an identity objective 
+            transformation function.
+
+        obj_trans_kwargs : dict
+            Keyword arguments for the latent space to objective space 
+            transformation function. 
+
+            If `obj_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        nineqcv : Integral, None
+            Number of inequality constraint violation functions. This is 
+            equivalent to the vector length returned by the ``ineqcv_trans`` 
+            function. Must be ``Integral`` greater than or equal to zero.
+
+            If ``nineqcv`` is ``None``, then set to zero.
+
+        ineqcv_wt : numpy.ndarray, None
+            Inequality constraint violation function weights. Weights from this 
+            vector are applied to inequality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``ineqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(nineqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        ineqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the inequality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def ineqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``ineqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+        
+        ineqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to inequality constraint 
+            violation transformation function.
+        
+            If `ineqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        neqcv : Integral, None
+            Number of equality constraint violations. This is equivalent to the 
+            vector length returned by the ``eqcv_trans`` function. Must be 
+            ``Integral`` greater than or equal to zero.
+        
+            If ``neqcv`` is ``None``, then set to zero.
+
+        eqcv_wt : numpy.ndarray, None
+            Equality constraint violation function weights. Weights from this 
+            vector are applied to equality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``eqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(neqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        eqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the equality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def eqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``eqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+
+        eqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to equality constraint 
+            violation transformation function.
+
+            If `eqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        ndset_wt : Real, None
+            Nondominated set weight. The weight from this function is applied 
+            to outputs from ``ndset_trans``. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing objectives, 
+            respectively.
+
+            If ``ndset_wt`` is ``None``, then it is set to the default value of ``1.0``.
+            This assumes that the objective is to be minimized.
+
+        ndset_trans : Callable, None
+            A function which transforms values from the non-dominated set 
+            objective space to the single-objective space. This transformation 
+            function must have the following signature::
+
+                def ndset_trans(
+                        mat: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
+            Where:
+
+            - ``mat`` is a ``numpy.ndarray`` containing a point coordinate array 
+                of shape ``(npt, nobj)`` where ``npt`` is the number of points 
+                and ``nobj`` is the number of objectives (dimensions). This 
+                array contains input points for calculating the distance between 
+                a point to the vector ``vec_wt``.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
+
+            If ``ndset_trans`` is ``None``, then default to a transformation 
+            function calculating the distance between a weight vector and 
+            provided points
+
+        ndset_trans_kwargs : dict, None
+            Nondominated set transformation function keyword arguments.
+
+            If ``ndset_trans_kwargs`` is ``None``, then default to defaults for 
+            the default ``ndset_trans`` function::
+
+                ndset_trans_kwargs = {
+                    "obj_wt": numpy.repeat(1.0, nobj),
+                    "vec_wt": numpy.repeat(1.0, nobj)
+                }
+
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number source.
+
+            If ``rng`` is ``None``, default to the global random number 
+            generator.
+
+        soalgo : IntegerOptimizationAlgorithm, None
+            Single-objective optimization algorithm.
+
+            If ``soalgo`` is ``None``, then use a default single-objective 
+            optimization algorithm.
+
+        moalgo : IntegerOptimizationAlgorithm, None
+            Multi-objective opimization algorithm.
+
+            If ``moalgo`` is ``None``, then use a default multi-objective 
+            optimization algorithm.
+
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        super(WeightedGenomicIntegerSelection, self).__init__(
+            ntrait = ntrait,
+            alpha = 0.5,
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans, 
+            ndset_trans_kwargs = ndset_trans_kwargs, 
+            rng = rng, 
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
         )
 
-        if miscout is not None:
-            for k,i in misc.pairs():
-                miscout[k] = i
+class WeightedGenomicRealSelection(GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection):
+    """
+    Weighted Genomic Selection in a real search space.
+    """
 
-        return frontier, sel_config
-
-    ############################################################################
-    ############################## Static Methods ##############################
-    ############################################################################
-    @staticmethod
-    def objfn_static(sel, mat, u, uwt, trans, kwargs):
+    ########################## Special Object Methods ##########################
+    # override constructor from GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection
+    def __init__(
+            self, 
+            ntrait: Integral,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[RealOptimizationAlgorithm] = None,
+            moalgo: Optional[RealOptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
         """
-        Score a population of individuals based on Weighted Genomic Selection
-        (WGS). Scoring for WGS is defined as the sum of weighted Genomic
-        Estimated Breeding Values (wGEBV) for a population.
-
-        WGS selects the ``q`` individuals with the largest GEBVs.
+        Constructor for WeightedGenomicRealSelection.
 
         Parameters
         ----------
-        sel : numpy.ndarray, None
-            A selection indices matrix of shape ``(k,)``
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
 
+        ncross : Integral
+            Number of cross configurations to consider.
+        
+        nparent : Integral
+            Number of parents per cross configuration.
+        
+        nmating : Integral, numpy.ndarray
+            Number of matings per configuration.
+
+            If ``nmating`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nmating`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+        
+        nprogeny : Integral, numpy.ndarray
+            Number of progeny to derive from each mating event.
+
+            If ``nprogeny`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nprogeny`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+
+        nobj : Integral
+            Number of optimization objectives when constructing a 
+            ``SelectionProblem``. This is equivalent to the vector length 
+            returned by the ``obj_trans`` function. Must be ``Integral`` greater 
+            than 0.
+        
+        obj_wt : numpy.ndarray, Real, None
+            Objective function weights. Weights from this vector are applied 
+            to objective function values via the Hadamard product. If values 
+            are ``1.0`` or ``-1.0``, this can be used to specify minimizing 
+            and maximizing objectives, respectively.
+
+            If ``obj_wt`` is ``numpy.ndarray``, then the array must be of shape 
+            ``(nobj,)``.
+
+            If ``obj_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``.
+
+            If ``obj_wt`` is ``None``, then the value ``1.0`` is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``. This assumes that all 
+            objectives are to be minimized.
+        
+        obj_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the objective space. This transformation function must have the 
+            following signature::
+
+                def obj_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``k`` is the number of individuals to select.
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
-            Each index indicates which individuals to select.
-            Each index in ``sel`` represents a single individual's row.
-            If ``sel`` is None, use all individuals.
-        mat : numpy.ndarray
-            A int8 binary genotype matrix of shape ``(n,p)``.
+            If ``obj_trans`` is ``None``, then default to an identity objective 
+            transformation function.
 
+        obj_trans_kwargs : dict
+            Keyword arguments for the latent space to objective space 
+            transformation function. 
+
+            If `obj_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        nineqcv : Integral, None
+            Number of inequality constraint violation functions. This is 
+            equivalent to the vector length returned by the ``ineqcv_trans`` 
+            function. Must be ``Integral`` greater than or equal to zero.
+
+            If ``nineqcv`` is ``None``, then set to zero.
+
+        ineqcv_wt : numpy.ndarray, None
+            Inequality constraint violation function weights. Weights from this 
+            vector are applied to inequality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``ineqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(nineqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        ineqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the inequality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def ineqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``n`` is the number of individuals.
-            - ``p`` is the number of markers.
-        u : numpy.ndarray
-            A trait prediction coefficients matrix of shape ``(p,t)``.
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
+            If ``ineqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+        
+        ineqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to inequality constraint 
+            violation transformation function.
+        
+            If `ineqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        neqcv : Integral, None
+            Number of equality constraint violations. This is equivalent to the 
+            vector length returned by the ``eqcv_trans`` function. Must be 
+            ``Integral`` greater than or equal to zero.
+        
+            If ``neqcv`` is ``None``, then set to zero.
+
+        eqcv_wt : numpy.ndarray, None
+            Equality constraint violation function weights. Weights from this 
+            vector are applied to equality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``eqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(neqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        eqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the equality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def eqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``p`` is the number of markers.
-            - ``t`` is the number of traits.
-        uwt : numpy.ndarray
-            Multiplicative marker weights matrix to apply to the trait
-            prediction coefficients provided of shape ``(p,t)``.
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
+            If ``eqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+
+        eqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to equality constraint 
+            violation transformation function.
+
+            If `eqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        ndset_wt : Real, None
+            Nondominated set weight. The weight from this function is applied 
+            to outputs from ``ndset_trans``. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing objectives, 
+            respectively.
+
+            If ``ndset_wt`` is ``None``, then it is set to the default value of ``1.0``.
+            This assumes that the objective is to be minimized.
+
+        ndset_trans : Callable, None
+            A function which transforms values from the non-dominated set 
+            objective space to the single-objective space. This transformation 
+            function must have the following signature::
+
+                def ndset_trans(
+                        mat: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``p`` is the number of markers.
-            - ``t`` is the number of traits.
+            - ``mat`` is a ``numpy.ndarray`` containing a point coordinate array 
+                of shape ``(npt, nobj)`` where ``npt`` is the number of points 
+                and ``nobj`` is the number of objectives (dimensions). This 
+                array contains input points for calculating the distance between 
+                a point to the vector ``vec_wt``.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
-            Trait prediction coefficients (:math:`\\textbf{u}`) are transformed as follows:
+            If ``ndset_trans`` is ``None``, then default to a transformation 
+            function calculating the distance between a weight vector and 
+            provided points
 
-            .. math::
-                \\textbf{u}_{new} = \\textbf{u} \\bigdot \\textbf{uwt}
+        ndset_trans_kwargs : dict, None
+            Nondominated set transformation function keyword arguments.
 
-            Where:
+            If ``ndset_trans_kwargs`` is ``None``, then default to defaults for 
+            the default ``ndset_trans`` function::
 
-            - :math:`\\bigdot` is the Hadamard product
-        trans : function or callable
-            A transformation operator to alter the output.
-            Function must adhere to the following standard:
+                ndset_trans_kwargs = {
+                    "obj_wt": numpy.repeat(1.0, nobj),
+                    "vec_wt": numpy.repeat(1.0, nobj)
+                }
 
-            - Must accept a single ``numpy.ndarray`` argument.
-            - Must return a single object, whether scalar or ``numpy.ndarray``.
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number source.
+
+            If ``rng`` is ``None``, default to the global random number 
+            generator.
+
+        soalgo : RealOptimizationAlgorithm, None
+            Single-objective optimization algorithm.
+
+            If ``soalgo`` is ``None``, then use a default single-objective 
+            optimization algorithm.
+
+        moalgo : RealOptimizationAlgorithm, None
+            Multi-objective opimization algorithm.
+
+            If ``moalgo`` is ``None``, then use a default multi-objective 
+            optimization algorithm.
+
         kwargs : dict
-            Dictionary of keyword arguments to pass to ``trans`` function.
-
-        Returns
-        -------
-        wgs : numpy.ndarray
-            A GEBV matrix of shape ``(k,t)`` if ``objwt`` is ``None``.
-            A GEBV matrix of shape ``(k,)`` if ``objwt`` shape is ``(t,)``
-
-            Where:
-
-            - ``k`` is the number of individuals selected.
-            - ``t`` is the number of traits.
+            Additional keyword arguments.
         """
-        # if sel is None, slice all individuals
-        if sel is None:
-            sel = slice(None)
+        super(WeightedGenomicRealSelection, self).__init__(
+            ntrait = ntrait,
+            alpha = 0.5,
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans, 
+            ndset_trans_kwargs = ndset_trans_kwargs, 
+            rng = rng, 
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
+        )
 
-        # CGS calculation explanation
-        # Step 1: (n,p) -> (k,p)            # select individuals
-        # Step 2: (k,p) . (p,t) -> (k,t)    # calculate wGEBVs
-        # Step 3: (k,t).sum(0) -> (t,)      # sum across all individuals
-        wgs = mat[sel,:].dot(u*uwt).sum(0)
+class WeightedGenomicSubsetSelection(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection):
+    """
+    Weighted Genomic Selection in a subset search space.
+    """
 
-        # apply transformations
-        # (t,) ---trans---> (?,)
-        if trans:
-            wgs = trans(wgs, **kwargs)
-
-        return wgs
-
-    @staticmethod
-    def objfn_vec_static(sel, mat, u, uwt, trans, kwargs):
+    ########################## Special Object Methods ##########################
+    # override constructor from GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection
+    def __init__(
+            self, 
+            ntrait: Integral,
+            ncross: Integral,
+            nparent: Integral,
+            nmating: Union[Integral,numpy.ndarray],
+            nprogeny: Union[Integral,numpy.ndarray],
+            nobj: Integral,
+            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            obj_trans_kwargs: Optional[dict] = None,
+            nineqcv: Optional[Integral] = None,
+            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            ineqcv_trans_kwargs: Optional[dict] = None,
+            neqcv: Optional[Integral] = None,
+            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
+            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
+            eqcv_trans_kwargs: Optional[dict] = None,
+            ndset_wt: Optional[Real] = None,
+            ndset_trans: Optional[Callable[[numpy.ndarray,dict],numpy.ndarray]] = None, 
+            ndset_trans_kwargs: Optional[dict] = None, 
+            rng: Optional[Union[Generator,RandomState]] = None, 
+            soalgo: Optional[SubsetOptimizationAlgorithm] = None,
+            moalgo: Optional[SubsetOptimizationAlgorithm] = None,
+            **kwargs: dict
+        ) -> None:
         """
-        Score a population of individuals based on Conventional Genomic Selection
-        (CGS) (Meuwissen et al., 2001). Scoring for CGS is defined as the sum of
-        Genomic Estimated Breeding Values (GEBV) for a population.
+        Constructor for WeightedGenomicSubsetSelection.
 
         Parameters
         ----------
-        sel : numpy.ndarray, None
-            A selection indices matrix of shape ``(j,k)``.
+        ntrait : Integral
+            Number of traits to expect from matrix inputs.
 
+        ncross : Integral
+            Number of cross configurations to consider.
+        
+        nparent : Integral
+            Number of parents per cross configuration.
+        
+        nmating : Integral, numpy.ndarray
+            Number of matings per configuration.
+
+            If ``nmating`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nmating`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+        
+        nprogeny : Integral, numpy.ndarray
+            Number of progeny to derive from each mating event.
+
+            If ``nprogeny`` is ``Integral``, then broadcast to a ``numpy.ndarray`` 
+            of shape ``(ncross,)``.
+            
+            If ``nprogeny`` is ``numpy.ndarray``, then the array must be of type 
+            ``Integral`` and of shape ``(ncross,)``.
+
+        nobj : Integral
+            Number of optimization objectives when constructing a 
+            ``SelectionProblem``. This is equivalent to the vector length 
+            returned by the ``obj_trans`` function. Must be ``Integral`` greater 
+            than 0.
+        
+        obj_wt : numpy.ndarray, Real, None
+            Objective function weights. Weights from this vector are applied 
+            to objective function values via the Hadamard product. If values 
+            are ``1.0`` or ``-1.0``, this can be used to specify minimizing 
+            and maximizing objectives, respectively.
+
+            If ``obj_wt`` is ``numpy.ndarray``, then the array must be of shape 
+            ``(nobj,)``.
+
+            If ``obj_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``.
+
+            If ``obj_wt`` is ``None``, then the value ``1.0`` is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``. This assumes that all 
+            objectives are to be minimized.
+        
+        obj_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the objective space. This transformation function must have the 
+            following signature::
+
+                def obj_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``j`` is the number of selection configurations.
-            - ``k`` is the number of individuals to select.
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
-            Each index indicates which individuals to select.
-            Each index in ``sel`` represents a single individual's row.
-            If ``sel`` is None, score each individual separately: ``(n,1)``
-        mat : numpy.ndarray
-            A genotype matrix of shape ``(n,p)``.
+            If ``obj_trans`` is ``None``, then default to an identity objective 
+            transformation function.
 
+        obj_trans_kwargs : dict
+            Keyword arguments for the latent space to objective space 
+            transformation function. 
+
+            If `obj_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        nineqcv : Integral, None
+            Number of inequality constraint violation functions. This is 
+            equivalent to the vector length returned by the ``ineqcv_trans`` 
+            function. Must be ``Integral`` greater than or equal to zero.
+
+            If ``nineqcv`` is ``None``, then set to zero.
+
+        ineqcv_wt : numpy.ndarray, None
+            Inequality constraint violation function weights. Weights from this 
+            vector are applied to inequality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``ineqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(nineqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        ineqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the inequality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def ineqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``n`` is the number of individuals.
-            - ``p`` is the number of markers.
-        u : numpy.ndarray
-            A trait prediction coefficients matrix of shape ``(p,t)``.
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
+            If ``ineqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+        
+        ineqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to inequality constraint 
+            violation transformation function.
+        
+            If `ineqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        neqcv : Integral, None
+            Number of equality constraint violations. This is equivalent to the 
+            vector length returned by the ``eqcv_trans`` function. Must be 
+            ``Integral`` greater than or equal to zero.
+        
+            If ``neqcv`` is ``None``, then set to zero.
+
+        eqcv_wt : numpy.ndarray, None
+            Equality constraint violation function weights. Weights from this 
+            vector are applied to equality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``eqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(neqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        eqcv_trans : Callable, None
+            A function which transforms values from a latent objective space to 
+            the equality constraint violation space. This transformation 
+            function must have the following signature::
+
+                def eqcv_trans(
+                        decnvec: numpy.ndarray,
+                        latentvec: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``p`` is the number of markers.
-            - ``t`` is the number of traits.
-        uwt : numpy.ndarray
-            Multiplicative marker weights matrix to apply to the trait
-            prediction coefficients provided of shape ``(p,t)``.
+            - ``decnvec`` is a ``numpy.ndarray`` containing the decision vector.
+            - ``latentvec`` is a ``numpy.ndarray`` containing the latent space 
+                objective function values which are to be transformed.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
+            If ``eqcv_trans`` is ``None``, then default to a transformation 
+            function returning an empty vector.
+
+        eqcv_trans_kwargs : dict, None
+            Keyword arguments for the latent space to equality constraint 
+            violation transformation function.
+
+            If `eqcv_trans_kwargs`` is ``None``, then default to an empty 
+            dictionary.
+
+        ndset_wt : Real, None
+            Nondominated set weight. The weight from this function is applied 
+            to outputs from ``ndset_trans``. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing objectives, 
+            respectively.
+
+            If ``ndset_wt`` is ``None``, then it is set to the default value of ``1.0``.
+            This assumes that the objective is to be minimized.
+
+        ndset_trans : Callable, None
+            A function which transforms values from the non-dominated set 
+            objective space to the single-objective space. This transformation 
+            function must have the following signature::
+
+                def ndset_trans(
+                        mat: numpy.ndarray, 
+                        **kwargs: dict
+                    ) -> numpy.ndarray:
+                    # do stuff
+                    return output
+            
             Where:
 
-            - ``p`` is the number of markers.
-            - ``t`` is the number of traits.
+            - ``mat`` is a ``numpy.ndarray`` containing a point coordinate array 
+                of shape ``(npt, nobj)`` where ``npt`` is the number of points 
+                and ``nobj`` is the number of objectives (dimensions). This 
+                array contains input points for calculating the distance between 
+                a point to the vector ``vec_wt``.
+            - ``kwargs`` is a ``dict`` containing additional keyword arguments.
 
-            Trait prediction coefficients (:math:`\\textbf{u}`) are transformed as follows:
+            If ``ndset_trans`` is ``None``, then default to a transformation 
+            function calculating the distance between a weight vector and 
+            provided points
 
-            .. math::
-                \\textbf{u}_{new} = \\textbf{u} \\bigdot \\textbf{uwt}
+        ndset_trans_kwargs : dict, None
+            Nondominated set transformation function keyword arguments.
 
-            Where:
+            If ``ndset_trans_kwargs`` is ``None``, then default to defaults for 
+            the default ``ndset_trans`` function::
 
-            - :math:`\\bigdot` is the Hadamard product
-        trans : function or callable
-            A transformation operator to alter the output.
-            Function must adhere to the following standard:
+                ndset_trans_kwargs = {
+                    "obj_wt": numpy.repeat(1.0, nobj),
+                    "vec_wt": numpy.repeat(1.0, nobj)
+                }
 
-            - Must accept a single ``numpy.ndarray`` argument.
-            - Must return a single object, whether scalar or ``numpy.ndarray``.
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number source.
+
+            If ``rng`` is ``None``, default to the global random number 
+            generator.
+
+        soalgo : SubsetOptimizationAlgorithm, None
+            Single-objective optimization algorithm.
+
+            If ``soalgo`` is ``None``, then use a default single-objective 
+            optimization algorithm.
+
+        moalgo : SubsetOptimizationAlgorithm, None
+            Multi-objective opimization algorithm.
+
+            If ``moalgo`` is ``None``, then use a default multi-objective 
+            optimization algorithm.
+
         kwargs : dict
-            Dictionary of keyword arguments to pass to ``trans`` function.
-
-        Returns
-        -------
-        cgs : numpy.ndarray
-            A GEBV matrix of shape ``(j,t)`` if ``trans`` is ``None``.
-            Otherwise, of shape specified by ``trans``.
-
-            Where:
-
-            - ``j`` is the number of selection configurations.
-            - ``t`` is the number of traits.
+            Additional keyword arguments.
         """
-        # if sel is None, slice all individuals
-        if sel is None:
-            n = mat.shape[0]
-            sel = numpy.arange(n).reshape(n,1)
-
-        # CGS calculation explanation
-        # (n,p)[(j,k),:] -> (j,k,p)     # select configurations
-        # (j,k,p) . (p,t) -> (j,k,t)    # calculate wGEBVs
-        # (j,k,t).sum(1) -> (j,t)       # sum across all individuals in config
-        cgs = mat[sel,:].dot(u*uwt).sum(1)
-
-        # apply transformations
-        # (j,t) ---trans---> (?,?)
-        if trans:
-            cgs = trans(cgs, **kwargs)
-
-        return cgs
+        super(WeightedGenomicSubsetSelection, self).__init__(
+            ntrait = ntrait,
+            alpha = 0.5,
+            ncross = ncross,
+            nparent = nparent,
+            nmating = nmating,
+            nprogeny = nprogeny,
+            nobj = nobj,
+            obj_wt = obj_wt,
+            obj_trans = obj_trans,
+            obj_trans_kwargs = obj_trans_kwargs,
+            nineqcv = nineqcv,
+            ineqcv_wt = ineqcv_wt,
+            ineqcv_trans = ineqcv_trans,
+            ineqcv_trans_kwargs = ineqcv_trans_kwargs,
+            neqcv = neqcv,
+            eqcv_wt = eqcv_wt,
+            eqcv_trans = eqcv_trans,
+            eqcv_trans_kwargs = eqcv_trans_kwargs,
+            ndset_wt = ndset_wt,
+            ndset_trans = ndset_trans, 
+            ndset_trans_kwargs = ndset_trans_kwargs, 
+            rng = rng, 
+            soalgo = soalgo,
+            moalgo = moalgo,
+            **kwargs
+        )

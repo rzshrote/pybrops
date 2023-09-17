@@ -2,16 +2,15 @@ import pytest
 import numpy
 import copy
 
-from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_abstract_method
+from pybrops.test.assert_python import assert_abstract_function
+from pybrops.test.assert_python import assert_abstract_property
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
-from pybrops.core.mat.DenseTaxaMatrix import is_DenseTaxaMatrix
 from pybrops.core.mat.DenseTaxaMatrix import check_is_DenseTaxaMatrix
 
 ################################################################################
@@ -67,56 +66,58 @@ def mat(mat_float64, taxa_object, taxa_grp_int64):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DenseTaxaMatrix)
+    assert_docstring(DenseTaxaMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DenseTaxaMatrix, "__init__")
+    assert_concrete_method(DenseTaxaMatrix, "__init__")
 
 def test_copy_is_concrete():
-    generic_assert_concrete_method(DenseTaxaMatrix, "__copy__")
+    assert_concrete_method(DenseTaxaMatrix, "__copy__")
 
 def test_deepcopy_is_concrete():
-    generic_assert_concrete_method(DenseTaxaMatrix, "__deepcopy__")
+    assert_concrete_method(DenseTaxaMatrix, "__deepcopy__")
 
 def test_adjoin_taxa_is_concrete():
-    generic_assert_concrete_method(DenseTaxaMatrix, "adjoin_taxa")
+    assert_concrete_method(DenseTaxaMatrix, "adjoin_taxa")
 
 def test_delete_taxa_is_concrete():
-    generic_assert_concrete_method(DenseTaxaMatrix, "delete_taxa")
+    assert_concrete_method(DenseTaxaMatrix, "delete_taxa")
 
 def test_insert_taxa_is_concrete():
-    generic_assert_concrete_method(DenseTaxaMatrix, "insert_taxa")
+    assert_concrete_method(DenseTaxaMatrix, "insert_taxa")
 
 def test_select_taxa_is_concrete():
-    generic_assert_concrete_method(DenseTaxaMatrix, "select_taxa")
+    assert_concrete_method(DenseTaxaMatrix, "select_taxa")
 
 def test_concat_taxa_is_concrete():
-    generic_assert_concrete_method(DenseTaxaMatrix, "concat_taxa")
+    assert_concrete_method(DenseTaxaMatrix, "concat_taxa")
 
 def test_append_taxa_is_concrete():
-    generic_assert_concrete_method(DenseTaxaMatrix, "append_taxa")
+    assert_concrete_method(DenseTaxaMatrix, "append_taxa")
 
 def test_remove_taxa_is_concrete():
-    generic_assert_concrete_method(DenseTaxaMatrix, "remove_taxa")
+    assert_concrete_method(DenseTaxaMatrix, "remove_taxa")
 
 def test_incorp_taxa_is_concrete():
-    generic_assert_concrete_method(DenseTaxaMatrix, "incorp_taxa")
+    assert_concrete_method(DenseTaxaMatrix, "incorp_taxa")
 
 def test_lexsort_taxa_is_concrete():
-    generic_assert_concrete_method(DenseTaxaMatrix, "lexsort_taxa")
+    assert_concrete_method(DenseTaxaMatrix, "lexsort_taxa")
 
-# TODO: # FIXME: not_raises fails for an edge case
-# def test_sort_taxa_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaMatrix, "sort_taxa")
-#
-# def test_group_taxa_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaMatrix, "group_taxa")
-#
-# def test_is_grouped_taxa_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaMatrix, "is_grouped_taxa")
+def test_sort_taxa_is_concrete():
+    assert_concrete_method(DenseTaxaMatrix, "sort_taxa")
+
+def test_group_taxa_is_concrete():
+    assert_concrete_method(DenseTaxaMatrix, "group_taxa")
+
+def test_ungroup_taxa_is_concrete():
+    assert_concrete_method(DenseTaxaMatrix, "ungroup_taxa")
+
+def test_is_grouped_taxa_is_concrete():
+    assert_concrete_method(DenseTaxaMatrix, "is_grouped_taxa")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -164,9 +165,8 @@ def test_taxa_fset(mat, taxa_object):
     assert numpy.all(mat.taxa == taxa_object)
 
 def test_taxa_fdel(mat):
-    del mat.taxa
     with pytest.raises(AttributeError):
-        mat.taxa
+        del mat.taxa
 
 def test_taxa_grp_fget(mat, taxa_grp_int64):
     assert numpy.all(mat.taxa_grp == taxa_grp_int64)
@@ -176,9 +176,8 @@ def test_taxa_grp_fset(mat, taxa_grp_int64):
     assert numpy.all(mat.taxa_grp == taxa_grp_int64)
 
 def test_taxa_grp_fdel(mat):
-    del mat.taxa_grp
     with pytest.raises(AttributeError):
-        mat.taxa_grp
+        del mat.taxa_grp
 
 ################# Taxa Metadata Properites #################
 def test_ntaxa_fget(mat, mat_float64):
@@ -211,9 +210,8 @@ def test_taxa_grp_name_fset(mat, taxa_grp_name_int64):
     assert numpy.all(mat.taxa_grp_name == taxa_grp_name_int64)
 
 def test_taxa_grp_name_fdel(mat):
-    del mat.taxa_grp_name
     with pytest.raises(AttributeError):
-        mat.taxa_grp_name
+        del mat.taxa_grp_name
 
 def test_taxa_grp_stix_fget(mat, taxa_grp_stix_int64):
     assert numpy.all(mat.taxa_grp_stix == taxa_grp_stix_int64)
@@ -223,9 +221,8 @@ def test_taxa_grp_stix_fset(mat, taxa_grp_stix_int64):
     assert numpy.all(mat.taxa_grp_stix == taxa_grp_stix_int64)
 
 def test_taxa_grp_stix_fdel(mat):
-    del mat.taxa_grp_stix
     with pytest.raises(AttributeError):
-        mat.taxa_grp_stix
+        del mat.taxa_grp_stix
 
 def test_taxa_grp_spix_fget(mat, taxa_grp_spix_int64):
     assert numpy.all(mat.taxa_grp_spix == taxa_grp_spix_int64)
@@ -235,9 +232,8 @@ def test_taxa_grp_spix_fset(mat, taxa_grp_spix_int64):
     assert numpy.all(mat.taxa_grp_spix == taxa_grp_spix_int64)
 
 def test_taxa_grp_spix_fdel(mat):
-    del mat.taxa_grp_spix
     with pytest.raises(AttributeError):
-        mat.taxa_grp_spix
+        del mat.taxa_grp_spix
 
 def test_taxa_grp_len_fget(mat, taxa_grp_len_int64):
     assert numpy.all(mat.taxa_grp_len == taxa_grp_len_int64)
@@ -247,9 +243,8 @@ def test_taxa_grp_len_fset(mat, taxa_grp_len_int64):
     assert numpy.all(mat.taxa_grp_len == taxa_grp_len_int64)
 
 def test_taxa_grp_len_fdel(mat):
-    del mat.taxa_grp_len
     with pytest.raises(AttributeError):
-        mat.taxa_grp_len
+        del mat.taxa_grp_len
 
 ################################################################################
 ###################### Test concrete method functionality ######################
@@ -412,6 +407,11 @@ def test_group_taxa(mat, taxa_grp_name_int64, taxa_grp_stix_int64, taxa_grp_spix
     assert numpy.all(mat.taxa_grp_stix == taxa_grp_stix_int64)
     assert numpy.all(mat.taxa_grp_spix == taxa_grp_spix_int64)
     assert numpy.all(mat.taxa_grp_len == taxa_grp_len_int64)
+    assert mat.is_grouped_taxa()
+
+def test_ungroup_taxa(mat):
+    mat.ungroup_taxa()
+    assert not mat.is_grouped_taxa()
 
 def test_is_grouped_taxa(mat):
     mat.group_taxa()
@@ -425,14 +425,8 @@ def test_is_grouped_taxa(mat):
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DenseTaxaMatrix_is_concrete():
-    generic_assert_concrete_function(is_DenseTaxaMatrix)
-
-def test_is_DenseTaxaMatrix(mat):
-    assert is_DenseTaxaMatrix(mat)
-
 def test_check_is_DenseTaxaMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_DenseTaxaMatrix)
+    assert_concrete_function(check_is_DenseTaxaMatrix)
 
 def test_check_is_DenseTaxaMatrix(mat):
     with not_raises(TypeError):

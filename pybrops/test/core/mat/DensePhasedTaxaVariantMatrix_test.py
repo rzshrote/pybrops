@@ -1,16 +1,12 @@
 import pytest
 import numpy
 
-from pybrops.test import not_raises
-from pybrops.test import generic_assert_docstring
-from pybrops.test import generic_assert_abstract_method
-from pybrops.test import generic_assert_abstract_function
-from pybrops.test import generic_assert_abstract_property
-from pybrops.test import generic_assert_concrete_method
-from pybrops.test import generic_assert_concrete_function
+from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_docstring
+from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_concrete_function
 
 from pybrops.core.mat.DensePhasedTaxaVariantMatrix import DensePhasedTaxaVariantMatrix
-from pybrops.core.mat.DensePhasedTaxaVariantMatrix import is_DensePhasedTaxaVariantMatrix
 from pybrops.core.mat.DensePhasedTaxaVariantMatrix import check_is_DensePhasedTaxaVariantMatrix
 
 ################################################################################
@@ -154,37 +150,46 @@ def mat(mat_int8, taxa_object, taxa_grp_int64, vrnt_chrgrp_int64, vrnt_phypos_in
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    generic_assert_docstring(DensePhasedTaxaVariantMatrix)
+    assert_docstring(DensePhasedTaxaVariantMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "__init__")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "__init__")
 
 def test_adjoin_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "adjoin_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "adjoin_phase")
 
 def test_delete_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "delete_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "delete_phase")
 
 def test_insert_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "insert_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "insert_phase")
 
 def test_select_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "select_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "select_phase")
 
 def test_concat_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "concat_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "concat_phase")
 
 def test_append_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "append_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "append_phase")
 
 def test_remove_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "remove_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "remove_phase")
 
 def test_incorp_phase_is_concrete():
-    generic_assert_concrete_method(DensePhasedTaxaVariantMatrix, "incorp_phase")
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "incorp_phase")
+
+def test_group_is_concrete():
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "group")
+
+def test_ungroup_is_concrete():
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "ungroup")
+
+def test_is_grouped_is_concrete():
+    assert_concrete_method(DensePhasedTaxaVariantMatrix, "is_grouped")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -233,6 +238,8 @@ def test_vrnt_axis_fdel(mat):
 ################################################################################
 ###################### Test concrete method functionality ######################
 ################################################################################
+
+### adjoin ###
 def test_adjoin_phase_cls(mat, mat_int8):
     m = mat.adjoin_phase(mat)
     # test metadata copying
@@ -257,6 +264,9 @@ def test_adjoin_phase_ndarray(mat, mat_int8):
     assert numpy.all(m.vrnt_chrgrp_spix == mat.vrnt_chrgrp_spix)
     assert numpy.all(m.vrnt_chrgrp_len == mat.vrnt_chrgrp_len)
 
+### adjoin_phase ###
+
+### delete ###
 def test_delete_phase_cls_slice(mat, mat_int8):
     obj = slice(0,2,None)
     m = mat.delete_phase(obj)
@@ -296,6 +306,9 @@ def test_delete_phase_cls_array_like(mat, mat_int8):
     assert numpy.all(m.vrnt_chrgrp_spix == mat.vrnt_chrgrp_spix)
     assert numpy.all(m.vrnt_chrgrp_len == mat.vrnt_chrgrp_len)
 
+### delete_phase ###
+
+### insert ###
 def test_insert_phase_cls_slice(mat, mat_int8):
     obj = slice(0,len(mat_int8),None)
     m = mat.insert_phase(obj, mat)
@@ -335,6 +348,9 @@ def test_insert_phase_cls_array_like(mat, mat_int8):
     assert numpy.all(m.vrnt_chrgrp_spix == mat.vrnt_chrgrp_spix)
     assert numpy.all(m.vrnt_chrgrp_len == mat.vrnt_chrgrp_len)
 
+### insert_phase ###
+
+### select ###
 def test_select_phase_cls_array_like(mat, mat_int8):
     obj = [0,0,1]
     m = mat.select_phase(obj)
@@ -348,6 +364,9 @@ def test_select_phase_cls_array_like(mat, mat_int8):
     assert numpy.all(m.vrnt_chrgrp_spix == mat.vrnt_chrgrp_spix)
     assert numpy.all(m.vrnt_chrgrp_len == mat.vrnt_chrgrp_len)
 
+### select_phase ###
+
+### concat ###
 def test_concat_phase_cls(mat, mat_int8):
     obj = [mat, mat]
     m = mat.concat_phase(obj)
@@ -361,17 +380,106 @@ def test_concat_phase_cls(mat, mat_int8):
     assert numpy.all(m.vrnt_chrgrp_spix == mat.vrnt_chrgrp_spix)
     assert numpy.all(m.vrnt_chrgrp_len == mat.vrnt_chrgrp_len)
 
+### concat_phase ###
+
+### append ###
+
+### remove ###
+
+### incorp ###
+
+### group ###
+def test_group_axis_0(mat):
+    with pytest.raises(ValueError):
+        mat.ungroup(0)
+    with pytest.raises(ValueError):
+        mat.group(0)
+    assert not mat.is_grouped(0)
+
+def test_group_axis_1(mat):
+    with not_raises(ValueError):
+        mat.ungroup(1)
+    with not_raises(ValueError):
+        mat.group(1)
+    assert mat.is_grouped(1)
+
+def test_group_axis_2(mat):
+    with not_raises(ValueError):
+        mat.ungroup(2)
+    with not_raises(ValueError):
+        mat.group(2)
+    assert mat.is_grouped(2)
+
+### ungroup ###
+def test_ungroup_axis_0(mat):
+    with pytest.raises(ValueError):
+        mat.ungroup(0)
+    assert not mat.is_grouped(0)
+    with pytest.raises(ValueError):
+        mat.group(0)
+    assert not mat.is_grouped(0)
+
+def test_ungroup_axis_1(mat):
+    with not_raises(ValueError):
+        mat.ungroup(1)
+    assert not mat.is_grouped(1)
+    with not_raises(ValueError):
+        mat.group(1)
+    assert mat.is_grouped(1)
+
+def test_ungroup_axis_2(mat):
+    with not_raises(ValueError):
+        mat.ungroup(2)
+    assert not mat.is_grouped(2)
+    with not_raises(ValueError):
+        mat.group(2)
+    assert mat.is_grouped(2)
+
+### is_grouped ###
+def test_is_grouped_axis_0(mat):
+    with pytest.raises(ValueError):
+        mat.ungroup(0)
+    value1 = mat.is_grouped(0)
+    assert not value1
+    with pytest.raises(ValueError):
+        mat.group(0)
+    value2 = mat.is_grouped(0)
+    assert not value2
+    assert value1 == False
+    assert value2 == False
+    assert value1 == value2
+
+def test_is_grouped_axis_1(mat):
+    with not_raises(ValueError):
+        mat.ungroup(1)
+    value1 = mat.is_grouped(1)
+    assert not value1
+    with not_raises(ValueError):
+        mat.group(1)
+    value2 = mat.is_grouped(1)
+    assert value2
+    assert value1 == False
+    assert value2 == True
+    assert value1 != value2
+
+def test_is_grouped_axis_2(mat):
+    with not_raises(ValueError):
+        mat.ungroup(2)
+    value1 = mat.is_grouped(2)
+    assert not value1
+    with not_raises(ValueError):
+        mat.group(2)
+    value2 = mat.is_grouped(2)
+    assert value2
+    assert value1 == False
+    assert value2 == True
+    assert value1 != value2
+
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
-def test_is_DensePhasedTaxaVariantMatrix_is_concrete():
-    generic_assert_concrete_function(is_DensePhasedTaxaVariantMatrix)
-
-def test_is_DensePhasedTaxaVariantMatrix(mat):
-    assert is_DensePhasedTaxaVariantMatrix(mat)
-
 def test_check_is_DensePhasedTaxaVariantMatrix_is_concrete():
-    generic_assert_concrete_function(check_is_DensePhasedTaxaVariantMatrix)
+    assert_concrete_function(check_is_DensePhasedTaxaVariantMatrix)
 
 def test_check_is_DensePhasedTaxaVariantMatrix(mat):
     with not_raises(TypeError):

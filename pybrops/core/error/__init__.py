@@ -1,25 +1,38 @@
 """
 Module containing general error checking routines.
 """
+
+__all__ = [
+    "error_generic_python",
+    "error_generic_numpy",
+    "error_attr_python",
+    "error_io_python",
+    "error_type_python",
+    "error_value_python",
+    "error_io_h5py",
+    "error_type_numpy",
+    "error_value_numpy",
+    "error_type_pandas",
+]
+
 # order dependent import
 
 # generic
-from .error_generic_python import *
-from .error_generic_numpy import *
+from pybrops.core.error import error_generic_python
+from pybrops.core.error import error_generic_numpy
 
 # python errors
-from .error_attr_python import *
-from .error_io_python import *
-from .error_type_python import *
-from .error_value_python import *
+from pybrops.core.error import error_attr_python
+from pybrops.core.error import error_io_python
+from pybrops.core.error import error_type_python
+from pybrops.core.error import error_value_python
 
 # h5py errors
-from .error_io_h5py import *
+from pybrops.core.error import error_io_h5py
 
 # numpy errors
-# from .error_attr_numpy import *
-from .error_type_numpy import *
-from .error_value_numpy import *
+from pybrops.core.error import error_type_numpy
+from pybrops.core.error import error_value_numpy
 
 # pandas errors
-from .error_type_pandas import *
+from pybrops.core.error import error_type_pandas

@@ -3,13 +3,17 @@ Module defining interfaces and associated error checking routines for matrices
 that can be pruned along an axis.
 """
 
-from typing import Any
+__all__ = [
+    "PrunableMatrix",
+    "check_is_PrunableMatrix",
+]
 
+from abc import ABCMeta, abstractmethod
 import numpy
 from pybrops.core.mat.Matrix import Matrix
 
 # TODO: is this class even necessary?
-class PrunableMatrix(Matrix):
+class PrunableMatrix(Matrix,metaclass=ABCMeta):
     """
     An abstract class for prunable matrix wrapper objects.
 
@@ -20,27 +24,10 @@ class PrunableMatrix(Matrix):
     The shape of a PrunableMatrix should be immutable.
     """
 
-    ############################################################################
     ########################## Special Object Methods ##########################
-    ############################################################################
-    def __init__(
-            self, 
-            **kwargs: dict
-        ) -> None:
-        """
-        PrunableMatrix constructor
 
-        Parameters
-        ----------
-        kwargs : dict
-            Used for cooperative inheritance. Dictionary passing unused
-            arguments to the parent class constructor.
-        """
-        super(PrunableMatrix, self).__init__(**kwargs)
-
-    ############################################################################
     ############################## Object Methods ##############################
-    ############################################################################
+    @abstractmethod
     def prune(
             self, 
             axis: int, 
@@ -65,35 +52,17 @@ class PrunableMatrix(Matrix):
 
 
 
-################################################################################
 ################################## Utilities ###################################
-################################################################################
-def is_PrunableMatrix(v: Any) -> bool:
-    """
-    Determine whether an object is a PrunableMatrix.
-
-    Parameters
-    ----------
-    v : Any
-        Any Python object to test.
-
-    Returns
-    -------
-    out : bool
-        True or False for whether v is a PrunableMatrix object instance.
-    """
-    return isinstance(v, PrunableMatrix)
-
-def check_is_PrunableMatrix(v: Any, varname: str) -> None:
+def check_is_PrunableMatrix(v: object, vname: str) -> None:
     """
     Check if object is of type PrunableMatrix. Otherwise raise TypeError.
 
     Parameters
     ----------
-    v : Any
+    v : object
         Any Python object to test.
-    varname : str
+    vname : str
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, PrunableMatrix):
-        raise TypeError("'%s' must be a PrunableMatrix." % varname)
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,PrunableMatrix.__name__,type(v).__name__))
