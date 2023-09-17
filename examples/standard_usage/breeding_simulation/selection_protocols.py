@@ -11,11 +11,12 @@ from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMat
 ### =====================
 
 ###
-### abstract interface classes
+### Abstract interface classes
 ### --------------------------
 
 # interface for all selection protocols
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
+from pybrops.breed.prot.sel.MateSelectionProtocol import MateSelectionProtocol
 
 # interfaces for all individual selection protocols
 from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtocol
@@ -30,7 +31,7 @@ from pybrops.breed.prot.sel.RealMateSelectionProtocol import RealMateSelectionPr
 from pybrops.breed.prot.sel.SubsetMateSelectionProtocol import SubsetMateSelectionProtocol
 
 ###
-### concrete implementation classes
+### Concrete implementation classes
 ### -------------------------------
 
 # EBV selection
@@ -109,86 +110,6 @@ selprot = GenomicEstimatedBreedingValueSubsetSelection(
     nmating = 1,
     nprogeny = 40,
     nobj = 2,
-)
-
-#
-# Creating a genomic model
-#
-
-# model parameters
-nfixed = 1      # number of fixed effects
-ntrait = 2      # number of traits
-nmisc = 0       # number of miscellaneous random effects
-nadditive = 50  # number of additive marker effects
-
-# create dummy values
-beta = numpy.random.random((nfixed,ntrait))
-u_misc = numpy.random.random((nmisc,ntrait))
-u_a = numpy.random.random((nadditive,ntrait))
-trait = numpy.array(["Trait"+str(i+1).zfill(2) for i in range(ntrait)], dtype = object)
-
-# create additive linear genomic model
-algmod = DenseAdditiveLinearGenomicModel(
-    beta = beta,
-    u_misc = u_misc,
-    u_a = u_a,
-    trait = trait,
-    model_name = "example",
-    params = None
-)
-
-#
-# Construct random genomes
-#
-
-# shape parameters for random genomes
-ntaxa = 100
-nvrnt = nadditive
-ngroup = 20
-nchrom = 10
-nphase = 2
-
-# create random genotypes
-mat = numpy.random.randint(0, 2, size = (nphase,ntaxa,nvrnt)).astype("int8")
-
-# create taxa names
-taxa = numpy.array(["taxon"+str(i+1).zfill(3) for i in range(ntaxa)], dtype = object)
-
-# create taxa groups
-taxa_grp = numpy.random.randint(1, ngroup+1, ntaxa)
-taxa_grp.sort()
-
-# create marker variant chromsome assignments
-vrnt_chrgrp = numpy.random.randint(1, nchrom+1, nvrnt)
-vrnt_chrgrp.sort()
-
-# create marker physical positions
-vrnt_phypos = numpy.random.choice(1000000, size = nvrnt, replace = False)
-vrnt_phypos.sort()
-
-# create marker variant names
-vrnt_name = numpy.array(["SNP"+str(i+1).zfill(4) for i in range(nvrnt)], dtype = object)
-
-# create a phased genotype matrix from scratch using NumPy arrays
-pgmat = DensePhasedGenotypeMatrix(
-    mat = mat,
-    taxa = taxa,
-    taxa_grp = taxa_grp, 
-    vrnt_chrgrp = vrnt_chrgrp,
-    vrnt_phypos = vrnt_phypos, 
-    vrnt_name = vrnt_name, 
-    ploidy = nphase
-)
-
-# create a genotype matrix from scratch using NumPy arrays
-gmat = DenseGenotypeMatrix(
-    mat = mat.sum(0, dtype="int8"),
-    taxa = taxa,
-    taxa_grp = taxa_grp, 
-    vrnt_chrgrp = vrnt_chrgrp,
-    vrnt_phypos = vrnt_phypos, 
-    vrnt_name = vrnt_name, 
-    ploidy = nphase
 )
 
 ###
@@ -309,6 +230,86 @@ selprot_constrained = GenomicEstimatedBreedingValueSubsetSelection(
 ## Generating the selection problem
 ## --------------------------------
 
+#
+# Creating a genomic model
+#
+
+# model parameters
+nfixed = 1      # number of fixed effects
+ntrait = 2      # number of traits
+nmisc = 0       # number of miscellaneous random effects
+nadditive = 50  # number of additive marker effects
+
+# create dummy values
+beta = numpy.random.random((nfixed,ntrait))
+u_misc = numpy.random.random((nmisc,ntrait))
+u_a = numpy.random.random((nadditive,ntrait))
+trait = numpy.array(["Trait"+str(i+1).zfill(2) for i in range(ntrait)], dtype = object)
+
+# create additive linear genomic model
+algmod = DenseAdditiveLinearGenomicModel(
+    beta = beta,
+    u_misc = u_misc,
+    u_a = u_a,
+    trait = trait,
+    model_name = "example",
+    params = None
+)
+
+#
+# Construct random genomes
+#
+
+# shape parameters for random genomes
+ntaxa = 100
+nvrnt = nadditive
+ngroup = 20
+nchrom = 10
+nphase = 2
+
+# create random genotypes
+mat = numpy.random.randint(0, 2, size = (nphase,ntaxa,nvrnt)).astype("int8")
+
+# create taxa names
+taxa = numpy.array(["taxon"+str(i+1).zfill(3) for i in range(ntaxa)], dtype = object)
+
+# create taxa groups
+taxa_grp = numpy.random.randint(1, ngroup+1, ntaxa)
+taxa_grp.sort()
+
+# create marker variant chromsome assignments
+vrnt_chrgrp = numpy.random.randint(1, nchrom+1, nvrnt)
+vrnt_chrgrp.sort()
+
+# create marker physical positions
+vrnt_phypos = numpy.random.choice(1000000, size = nvrnt, replace = False)
+vrnt_phypos.sort()
+
+# create marker variant names
+vrnt_name = numpy.array(["SNP"+str(i+1).zfill(4) for i in range(nvrnt)], dtype = object)
+
+# create a phased genotype matrix from scratch using NumPy arrays
+pgmat = DensePhasedGenotypeMatrix(
+    mat = mat,
+    taxa = taxa,
+    taxa_grp = taxa_grp, 
+    vrnt_chrgrp = vrnt_chrgrp,
+    vrnt_phypos = vrnt_phypos, 
+    vrnt_name = vrnt_name, 
+    ploidy = nphase
+)
+
+# create a genotype matrix from scratch using NumPy arrays
+gmat = DenseGenotypeMatrix(
+    mat = mat.sum(0, dtype="int8"),
+    taxa = taxa,
+    taxa_grp = taxa_grp, 
+    vrnt_chrgrp = vrnt_chrgrp,
+    vrnt_phypos = vrnt_phypos, 
+    vrnt_name = vrnt_name, 
+    ploidy = nphase
+)
+
 # generate an unconstrained GEBV subset selection problem
 # for this selection protocol type, we only need the genotype matrix and a genomic prediction model
 prob_unconstrained = selprot_unconstrained.problem(
@@ -400,6 +401,9 @@ soln_unconstrained.soln_eqcv
 ### Selection
 ### =========
 
+# Select individuals for the constrained problem formulation. In this selection,
+# the best solution from a single-objective optimization is selected to 
+# determine the selection.
 selcfg_constrained = selprot_constrained.select(
     pgmat = pgmat,
     gmat = gmat,
@@ -409,3 +413,24 @@ selcfg_constrained = selprot_constrained.select(
     t_cur = None,
     t_max = None,
 )
+
+# view cross configuration from the selection
+selcfg_constrained.xconfig
+
+# Select individuals for the unconstrained problem formulation. In this 
+# selection, a Pareto frontier is estimated and a point selected from the 
+# frontier which is closest to a 1 vector projection in invariant space.
+# The vector determining the selection configuration may be customized by
+# changing how the selection protocol is constructed.
+selcfg_unconstrained = selprot_unconstrained.select(
+    pgmat = pgmat,
+    gmat = gmat,
+    ptdf = None,
+    bvmat = None,
+    gpmod = algmod,
+    t_cur = None,
+    t_max = None,
+)
+
+# view cross configuration from the selection
+selcfg_unconstrained.xconfig
