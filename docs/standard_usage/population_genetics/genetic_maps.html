@@ -417,12 +417,13 @@
 </section>
 <section id="summary-of-genetic-map-classes">
 <h2>Summary of Genetic Map Classes<a class="headerlink" href="#summary-of-genetic-map-classes" title="Permalink to this heading">#</a></h2>
+<p>Genetic map support for PyBrOpS is found in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.gmap</span></code> module. Contained in this submodule are several <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> class type definitions. These classes are summarized in the table below.</p>
 <table class="colwidths-given table" id="id1">
 <caption><span class="caption-text">Summary of classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.gmap</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
 <colgroup>
-<col style="width: 26%" />
-<col style="width: 21%" />
-<col style="width: 53%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+<col style="width: 56%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Class Name</p></th>
@@ -437,14 +438,14 @@
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ExtendedGeneticMap</span></code></p></td>
 <td><p>Concrete</p></td>
-<td><p>Class representing genetic maps with extra genetic data.</p></td>
+<td><p>Class representing genetic maps with additional genetic map metadata.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="loading-genetic-map-modules">
 <h2>Loading Genetic Map Modules<a class="headerlink" href="#loading-genetic-map-modules" title="Permalink to this heading">#</a></h2>
-<p>Genetic map support for PyBrOpS is found in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.gmap</span></code> submodule. Example imports from this submodule are:</p>
+<p>The various genetic map classes summarized above can be imported into a Python scope as demonstrated in the code example below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the GeneticMap class (an abstract interface class)</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.gmap.GeneticMap</span> <span class="kn">import</span> <span class="n">GeneticMap</span>
 
@@ -453,10 +454,45 @@
 </pre></div>
 </div>
 </section>
+<section id="creating-genetic-maps">
+<h2>Creating Genetic Maps<a class="headerlink" href="#creating-genetic-maps" title="Permalink to this heading">#</a></h2>
+<section id="creating-genetic-maps-from-numpy-arrays">
+<h3>Creating genetic maps from NumPy arrays<a class="headerlink" href="#creating-genetic-maps-from-numpy-arrays" title="Permalink to this heading">#</a></h3>
+<p>Genetic map objects can be constructed from raw NumPy arrays, which may be useful for creating simulated genetic maps. The code below demonstrates the construction of an <code class="docutils literal notranslate"><span class="pre">ExtendedGeneticMap</span></code> from NumPy arrays.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># define number of variants</span>
+<span class="n">nvrnt</span> <span class="o">=</span> <span class="mi">100</span>
+
+<span class="c1"># create random chromosome groups 1-9</span>
+<span class="n">chroms</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="s2">&quot;123456789&quot;</span><span class="p">)</span>
+<span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">chroms</span><span class="p">,</span> <span class="n">nvrnt</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span>
+<span class="n">vrnt_chrgrp</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="c1"># create variant physical positions in range [1, 2**28]</span>
+<span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">20</span><span class="p">,</span> <span class="n">nvrnt</span><span class="p">)</span>
+<span class="n">vrnt_phypos</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="c1"># create variant genetic positions in range [0,1]</span>
+<span class="n">vrnt_genpos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="n">nvrnt</span><span class="p">)</span>
+<span class="n">vrnt_genpos</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="c1"># create variant names</span>
+<span class="n">vrnt_name</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;SNP&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nvrnt</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+<span class="c1"># construct genetic map</span>
+<span class="n">gmap</span> <span class="o">=</span> <span class="n">ExtendedGeneticMap</span><span class="p">(</span>
+    <span class="n">vrnt_chrgrp</span><span class="o">=</span><span class="n">vrnt_chrgrp</span><span class="p">,</span>
+    <span class="n">vrnt_phypos</span><span class="o">=</span><span class="n">vrnt_phypos</span><span class="p">,</span>
+    <span class="n">vrnt_stop</span><span class="o">=</span><span class="n">vrnt_phypos</span><span class="p">,</span>
+    <span class="n">vrnt_genpos</span><span class="o">=</span><span class="n">vrnt_genpos</span><span class="p">,</span>
+    <span class="n">vrnt_name</span><span class="o">=</span><span class="n">vrnt_name</span><span class="p">,</span>
+    <span class="n">vrnt_fncode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># not needed</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="reading-genetic-maps-from-a-file">
-<h2>Reading Genetic Maps from a File<a class="headerlink" href="#reading-genetic-maps-from-a-file" title="Permalink to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> objects can be read from a file.</p>
-<p>The example below illustrates the reading of an <code class="docutils literal notranslate"><span class="pre">ExtendedGeneticMap</span></code> from a file.</p>
+<h3>Reading genetic maps from a file<a class="headerlink" href="#reading-genetic-maps-from-a-file" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> objects can also be read from a file. This may be useful for users who have their own, empirically determined genetic maps from an organism of their choosing. The example below illustrates the reading of an <code class="docutils literal notranslate"><span class="pre">ExtendedGeneticMap</span></code> from a file. Specifically, this is the maize genetic map constructed from the US NAM population as published by McMullen et al. (2009).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read genetic map from file</span>
 <span class="c1"># for the purpose of this example, do not automatically group markers</span>
 <span class="c1"># and build an interpolation spline after reading genetic map data.</span>
@@ -468,9 +504,141 @@
 </pre></div>
 </div>
 </section>
+</section>
+<section id="genetic-map-properties">
+<h2>Genetic Map Properties<a class="headerlink" href="#genetic-map-properties" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> objects have a set of properties shared by all genetic maps. These properties can be grouped into two categories: marker variant properties and spline properties. The former set of properties contain information about the marker set constituting the genetic map, while the latter set of properties contain spline model information necessary for the interpolation of genetic map positions. Marker variant and spline properties are summarized in the tables below.</p>
+<section id="marker-variant-properties">
+<h3>Marker variant properties<a class="headerlink" href="#marker-variant-properties" title="Permalink to this heading">#</a></h3>
+<table class="colwidths-given table" id="id2">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> marker variant properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nvrnt</span></code></p></td>
+<td><p>Number of variants in the Genetic Map</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp</span></code></p></td>
+<td><p>Marker variant chromosome group labels</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_phypos</span></code></p></td>
+<td><p>Marker variant chromosome physical positions</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_genpos</span></code></p></td>
+<td><p>Marker variant chromosome genetic positions</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_name</span></code></p></td>
+<td><p>Marker variant names</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp_name</span></code></p></td>
+<td><p>Names of chromosome groups</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp_stix</span></code></p></td>
+<td><p>Chromosome group start indices</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp_spix</span></code></p></td>
+<td><p>Chromosome group stop indices</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp_len</span></code></p></td>
+<td><p>Number of marker variants on each chromosome group</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="spline-properties">
+<h3>Spline properties<a class="headerlink" href="#spline-properties" title="Permalink to this heading">#</a></h3>
+<table class="colwidths-given table" id="id3">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> spline properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">spline</span></code></p></td>
+<td><p>Interpolation splines</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">spline_kind</span></code></p></td>
+<td><p>Interpolation spline type</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">spline_fill_value</span></code></p></td>
+<td><p>Interpolation spline default fill value</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="copying-genetic-maps">
+<h2>Copying Genetic Maps<a class="headerlink" href="#copying-genetic-maps" title="Permalink to this heading">#</a></h2>
+<p>At times, it may be necessary to copy a genetic map. There are two methods of copying genetic maps: shallow copying and deep copying.</p>
+<section id="shallow-copying">
+<h3>Shallow copying<a class="headerlink" href="#shallow-copying" title="Permalink to this heading">#</a></h3>
+<p>In shallow copying, references to a <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code>’s variant and spline data are copied to a new genetic map object. Copying is only one level deep and changes to the data in the original object may affect data values in the copied object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># copy the genetic map</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">gmap</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="deep-copying">
+<h3>Deep copying<a class="headerlink" href="#deep-copying" title="Permalink to this heading">#</a></h3>
+<p>In deep copying, data in a <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code>’s variant and spline data are recursively copyied. Copying occurs down to the deepest level making it so that changes to the data in the original object will not affect data values in the copied object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># deep copy the genetic map</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">gmap</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
 <section id="sorting-and-grouping-genetic-maps">
 <h2>Sorting and Grouping Genetic Maps<a class="headerlink" href="#sorting-and-grouping-genetic-maps" title="Permalink to this heading">#</a></h2>
-<p>On import from a file, genetic map data needs to be sorted and grouped into marker linkage groups. Often, an import method for a <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> object will automatically sort and group data, but occasionally it may be necessary to manually sort and group marker data. This can be accomplished using the <code class="docutils literal notranslate"><span class="pre">group</span></code> method:</p>
+<section id="reordering-map-elements">
+<h3>Reordering map elements<a class="headerlink" href="#reordering-map-elements" title="Permalink to this heading">#</a></h3>
+<p>In some instances, it may be useful to manually reorder genetic map elements. This may be accomplished by providing an array of reordering indices to the <code class="docutils literal notranslate"><span class="pre">reorder</span></code> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create reordering indices</span>
+<span class="n">indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">gmap</span><span class="o">.</span><span class="n">nvrnt</span><span class="p">)</span>
+<span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
+
+<span class="c1"># reorder values</span>
+<span class="n">tmp</span><span class="o">.</span><span class="n">reorder</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="lexsorting-map-elements">
+<h3>Lexsorting map elements<a class="headerlink" href="#lexsorting-map-elements" title="Permalink to this heading">#</a></h3>
+<p>An indirect stable sort may be performed using the <code class="docutils literal notranslate"><span class="pre">lexsort</span></code> method. If the <code class="docutils literal notranslate"><span class="pre">lexsort</span></code> method is not provided a set of <code class="docutils literal notranslate"><span class="pre">keys</span></code>, it defaults to utilizing marker variant chromosome group assignments, marker variant chromosome physical positions, and marker variant chromosome genetic positions in that order of priority.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create lexsort keys</span>
+<span class="n">key1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">gmap</span><span class="o">.</span><span class="n">nvrnt</span><span class="p">)</span>
+<span class="n">key2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">gmap</span><span class="o">.</span><span class="n">nvrnt</span><span class="p">,</span> <span class="n">gmap</span><span class="o">.</span><span class="n">nvrnt</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># lexsort using keys</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">lexsort</span><span class="p">((</span><span class="n">key2</span><span class="p">,</span><span class="n">key1</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+<section id="sorting-map-elements">
+<h3>Sorting map elements<a class="headerlink" href="#sorting-map-elements" title="Permalink to this heading">#</a></h3>
+<p>In-place sorting of marker variants in a <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> object can be accomplished using the <code class="docutils literal notranslate"><span class="pre">sort</span></code> method. The <code class="docutils literal notranslate"><span class="pre">sort</span></code> method optionally accepts a set of <code class="docutils literal notranslate"><span class="pre">keys</span></code> which can be used to sort the marker variants in the genetic map. If a set of <code class="docutils literal notranslate"><span class="pre">keys</span></code> is not provided, the keys are the same defaults as those in the <code class="docutils literal notranslate"><span class="pre">lexsort</span></code> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># sort the genetic map</span>
+<span class="n">gmap</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="grouping-map-elements">
+<h3>Grouping map elements<a class="headerlink" href="#grouping-map-elements" title="Permalink to this heading">#</a></h3>
+<p>On import from a file, genetic map data needs to be sorted and grouped into marker linkage groups so that an interpolation spline can be built. Often, the constructor or an import method for a <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> object will automatically sort and group data, but occasionally it may be necessary to manually sort and group marker data. This can be accomplished using the <code class="docutils literal notranslate"><span class="pre">group</span></code> method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># group markers based on their chromosome/linkage group</span>
 <span class="n">gmap</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
 </pre></div>
@@ -481,8 +649,11 @@
 </pre></div>
 </div>
 </section>
-<section id="checking-for-the-congruence-of-a-genetic-map">
-<h2>Checking for the Congruence of a Genetic Map<a class="headerlink" href="#checking-for-the-congruence-of-a-genetic-map" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="genetic-map-congruency">
+<h2>Genetic Map Congruency<a class="headerlink" href="#genetic-map-congruency" title="Permalink to this heading">#</a></h2>
+<section id="checking-for-congruency">
+<h3>Checking for congruency<a class="headerlink" href="#checking-for-congruency" title="Permalink to this heading">#</a></h3>
 <p>Sometimes physical positions and genetic map positions are in disagreement as to their orderings. This may be caused by errors made in genome assemblies and/or genetic map assemblies. Unfortunately, these disagreements cause issues for interpolation spline construction and need to be removed or corrected. An elementwise physical position-genetic position congruence test can be conducted using the <code class="docutils literal notranslate"><span class="pre">congruence</span></code> method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># elementwise test of marker congruence</span>
 <span class="n">value</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">congruence</span><span class="p">()</span>
@@ -494,9 +665,19 @@
 </pre></div>
 </div>
 </section>
+<section id="removing-map-discrepancies">
+<h3>Removing map discrepancies<a class="headerlink" href="#removing-map-discrepancies" title="Permalink to this heading">#</a></h3>
+<p>Loci where the physical positions and genetic positions are not in agreement may be automatically removed using the <code class="docutils literal notranslate"><span class="pre">remove_discrepancies</span></code>. Be mindful that a manual inspection and correction of a genetic map’s discrepancies may be superior to this automatic method.</p>
+<p>The code below demonstrates automatic discrepancy removal:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># automatically remove discrepancies</span>
+<span class="n">gmap</span><span class="o">.</span><span class="n">remove_discrepancies</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
 <section id="building-interpolation-splines">
 <h2>Building Interpolation Splines<a class="headerlink" href="#building-interpolation-splines" title="Permalink to this heading">#</a></h2>
-<p>Before using a <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> to interpolate genetic position data, an interpolation spline must be constructed. Often, an import method for a <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> object will automatically construct a spline from the provided data. Occasionally, it may be necessary to manually construct an interpolation spline. The <code class="docutils literal notranslate"><span class="pre">build_spline</span></code> method can be used to construct an interpolation spline:</p>
+<p>Before using a <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> to interpolate genetic position data, an interpolation spline must be constructed. Often, the constructor or an import method for a <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code> object will automatically construct a spline from the provided data. Occasionally, it may be necessary to manually construct an interpolation spline. The <code class="docutils literal notranslate"><span class="pre">build_spline</span></code> method can be used to construct an interpolation spline:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct a linear spline to interpolate genetic map positions</span>
 <span class="n">gmap</span><span class="o">.</span><span class="n">build_spline</span><span class="p">()</span>
 </pre></div>
@@ -513,20 +694,15 @@
 <p>Interpolating genetic map positions from physical positions can be done using the <code class="docutils literal notranslate"><span class="pre">interp_genpos</span></code> method:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">### create new positions to interpolate</span>
 <span class="c1"># construct linkage group array: everything is on chromosome 1</span>
-<span class="n">new_vrnt_chrgrp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-    <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-    <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span>
-<span class="p">)</span>
+<span class="n">chrgrp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+
 <span class="c1"># construct physical position array</span>
-<span class="n">new_vrnt_phypos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-    <span class="p">[</span><span class="mi">18209321</span><span class="p">,</span> <span class="mi">19296303</span><span class="p">,</span> <span class="mi">20115034</span><span class="p">,</span> <span class="mi">20475472</span><span class="p">,</span> <span class="mi">21396838</span><span class="p">],</span>
-    <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span>
-<span class="p">)</span>
+<span class="n">phypos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">18203210</span><span class="p">,</span><span class="mi">19293034</span><span class="p">,</span><span class="mi">20110347</span><span class="p">,</span><span class="mi">20474722</span><span class="p">,</span><span class="mi">21398386</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
 
 <span class="c1"># interpolate new gentic map positions</span>
-<span class="n">new_vrnt_genpos</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">interp_genpos</span><span class="p">(</span>
-    <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">new_vrnt_chrgrp</span><span class="p">,</span>
-    <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">new_vrnt_phypos</span>
+<span class="n">genpos</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">interp_genpos</span><span class="p">(</span>
+    <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">chrgrp</span><span class="p">,</span>
+    <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">phypos</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -587,19 +763,99 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#reading-genetic-maps-from-a-file">
-   Reading Genetic Maps from a File
+  <a class="reference internal nav-link" href="#creating-genetic-maps">
+   Creating Genetic Maps
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#creating-genetic-maps-from-numpy-arrays">
+     Creating genetic maps from NumPy arrays
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reading-genetic-maps-from-a-file">
+     Reading genetic maps from a file
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#genetic-map-properties">
+   Genetic Map Properties
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#marker-variant-properties">
+     Marker variant properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#spline-properties">
+     Spline properties
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#copying-genetic-maps">
+   Copying Genetic Maps
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#shallow-copying">
+     Shallow copying
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#deep-copying">
+     Deep copying
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#sorting-and-grouping-genetic-maps">
    Sorting and Grouping Genetic Maps
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#reordering-map-elements">
+     Reordering map elements
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lexsorting-map-elements">
+     Lexsorting map elements
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sorting-map-elements">
+     Sorting map elements
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#grouping-map-elements">
+     Grouping map elements
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#checking-for-the-congruence-of-a-genetic-map">
-   Checking for the Congruence of a Genetic Map
+  <a class="reference internal nav-link" href="#genetic-map-congruency">
+   Genetic Map Congruency
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#checking-for-congruency">
+     Checking for congruency
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#removing-map-discrepancies">
+     Removing map discrepancies
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#building-interpolation-splines">
