@@ -8,6 +8,7 @@ __all__ = [
 ]
 
 from abc import ABCMeta, abstractmethod
+from numbers import Integral
 from typing import Optional, Union
 import numpy
 import pandas
@@ -48,9 +49,50 @@ class GeneticMap(metaclass=ABCMeta):
             hex(id(self))
         )
 
+    ################## GeneticMap copying ##################
+    @abstractmethod
+    def __copy__(
+            self
+        ) -> 'GeneticMap':
+        """
+        Make a shallow copy of the GeneticMap.
+
+        Returns
+        -------
+        out : GeneticMap
+            A shallow copy of the original GeneticMap.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __deepcopy__(
+            self, 
+            memo: dict
+        ) -> 'GeneticMap':
+        """
+        Make a deep copy of the GeneticMap.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : GeneticMap
+            A deep copy of the original GeneticMap.
+        """
+        raise NotImplementedError("method is abstract")
+
     ############################ Object Properties #############################
 
     ################### Data Properites ####################
+    @property
+    @abstractmethod
+    def nvrnt(self) -> Integral:
+        """Number of variants in the GeneticMap."""
+        raise NotImplementedError("property is abstract")
+    
     @property
     @abstractmethod
     def vrnt_chrgrp(self) -> object:
@@ -165,6 +207,41 @@ class GeneticMap(metaclass=ABCMeta):
         raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################
+
+    ################## GeneticMap copying ##################
+    @abstractmethod
+    def copy(
+            self
+        ) -> 'GeneticMap':
+        """
+        Make a shallow copy of the GeneticMap.
+
+        Returns
+        -------
+        out : GeneticMap
+            A shallow copy of the original GeneticMap.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def deepcopy(
+            self, 
+            memo: dict
+        ) -> 'GeneticMap':
+        """
+        Make a deep copy of the GeneticMap.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : GeneticMap
+            A deep copy of the original GeneticMap.
+        """
+        raise NotImplementedError("method is abstract")
 
     ################### Sorting Methods ####################
     @abstractmethod
