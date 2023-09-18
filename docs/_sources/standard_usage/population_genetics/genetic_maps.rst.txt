@@ -11,7 +11,7 @@ Summary of Genetic Map Classes
 
 Genetic map support for PyBrOpS is found in the ``pybrops.popgen.gmap`` module. Contained in this submodule are several ``GeneticMap`` class type definitions. These classes are summarized in the table below.
 
-.. list-table:: Summary of classes in the ``pybrops.popgen.gmap`` module
+.. list-table:: Summary of genetic map classes in the ``pybrops.popgen.gmap`` module
     :widths: 25 15 50
     :header-rows: 1
 

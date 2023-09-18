@@ -417,12 +417,13 @@
 </section>
 <section id="summary-of-genetic-map-function-classes">
 <h2>Summary of Genetic Map Function Classes<a class="headerlink" href="#summary-of-genetic-map-function-classes" title="Permalink to this heading">#</a></h2>
+<p>Genetic map function support in PyBrOpS is found in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.gmap</span></code> module. Contained in this submodule are several <code class="docutils literal notranslate"><span class="pre">GeneticMapFunction</span></code> class type definitions. These classes are summarized in the table below.</p>
 <table class="colwidths-given table" id="id1">
-<caption><span class="caption-text">Summary of classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.gmap</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<caption><span class="caption-text">Summary of genetic map function classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.gmap</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
 <colgroup>
-<col style="width: 26%" />
-<col style="width: 21%" />
-<col style="width: 53%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+<col style="width: 56%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Class Name</p></th>
@@ -485,8 +486,8 @@
 </pre></div>
 </div>
 </section>
-<section id="calculating-map-distances">
-<h2>Calculating Map Distances<a class="headerlink" href="#calculating-map-distances" title="Permalink to this heading">#</a></h2>
+<section id="calculating-genetic-map-distances">
+<h2>Calculating Genetic Map Distances<a class="headerlink" href="#calculating-genetic-map-distances" title="Permalink to this heading">#</a></h2>
 <p>Genetic map distances for arbitrary recombination probabilities can be calculated by using the <code class="docutils literal notranslate"><span class="pre">invmapfn</span></code> method, the inverse of the <code class="docutils literal notranslate"><span class="pre">mapfn</span></code> function. An example of its usage is below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># invert the recombination probability calculated previously</span>
 <span class="n">d_haldane</span> <span class="o">=</span> <span class="n">haldane</span><span class="o">.</span><span class="n">invmapfn</span><span class="p">(</span><span class="n">r_haldane</span><span class="p">)</span>
@@ -495,6 +496,50 @@
 <span class="n">d_kosambi</span> <span class="o">=</span> <span class="n">kosambi</span><span class="o">.</span><span class="n">invmapfn</span><span class="p">(</span><span class="n">r_kosambi</span><span class="p">)</span>
 </pre></div>
 </div>
+</section>
+<section id="calculating-sequential-and-pairwise-recombination-probabilities">
+<h2>Calculating Sequential and Pairwise Recombination Probabilities<a class="headerlink" href="#calculating-sequential-and-pairwise-recombination-probabilities" title="Permalink to this heading">#</a></h2>
+<p>In some instances, it may be useful to calculate sequential and/or pairwise recombination probabilities to simulate recombination. Genetic map function objects have four methods which allow for the calculation of these probabilities: <code class="docutils literal notranslate"><span class="pre">rprob1g</span></code>, <code class="docutils literal notranslate"><span class="pre">rprob1p</span></code>, <code class="docutils literal notranslate"><span class="pre">rprob2g</span></code>, and <code class="docutils literal notranslate"><span class="pre">rprob2p</span></code>.</p>
+<section id="calculating-sequential-recombination-probabilities">
+<h3>Calculating sequential recombination probabilities<a class="headerlink" href="#calculating-sequential-recombination-probabilities" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">rprob1g</span></code> and <code class="docutils literal notranslate"><span class="pre">rprob1p</span></code> methods are used to calculate sequential recombination probabilities between successive markers, provided chromosome group assignments, and genetic positions or physical positions, respectively. Chromosome boundaries always start with probabilities of 0.5.</p>
+<p>The code segment below demonstrates the use of the <code class="docutils literal notranslate"><span class="pre">rprob1g</span></code> and <code class="docutils literal notranslate"><span class="pre">rprob1p</span></code> methods.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate from genetic positions</span>
+<span class="n">xoprob</span> <span class="o">=</span> <span class="n">haldane</span><span class="o">.</span><span class="n">rprob1g</span><span class="p">(</span>
+    <span class="n">gmap</span> <span class="o">=</span> <span class="n">gmap</span><span class="p">,</span>
+    <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">vrnt_chrgrp</span><span class="p">,</span>
+    <span class="n">vrnt_genpos</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">vrnt_genpos</span>
+<span class="p">)</span>
+
+<span class="c1"># calculate from physical positions</span>
+<span class="n">xoprob</span> <span class="o">=</span> <span class="n">haldane</span><span class="o">.</span><span class="n">rprob1p</span><span class="p">(</span>
+    <span class="n">gmap</span> <span class="o">=</span> <span class="n">gmap</span><span class="p">,</span>
+    <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">vrnt_chrgrp</span><span class="p">,</span>
+    <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">vrnt_phypos</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="calculating-pairwise-recombination-probabilities">
+<h3>Calculating pairwise recombination probabilities<a class="headerlink" href="#calculating-pairwise-recombination-probabilities" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">rprob2g</span></code> and <code class="docutils literal notranslate"><span class="pre">rprob2p</span></code> methods are used to calculate pairwise recombination probabilities between markers, provided chromosome group assignments, and genetic positions or physical positions, respectively. Inter-chromosome pairings are always assigned probabilities of 0.5.</p>
+<p>The code segment below demonstrates the use of the <code class="docutils literal notranslate"><span class="pre">rprob2g</span></code> and <code class="docutils literal notranslate"><span class="pre">rprob2p</span></code> methods.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate from genetic positions</span>
+<span class="n">xoprob</span> <span class="o">=</span> <span class="n">haldane</span><span class="o">.</span><span class="n">rprob2g</span><span class="p">(</span>
+    <span class="n">gmap</span> <span class="o">=</span> <span class="n">gmap</span><span class="p">,</span>
+    <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">vrnt_chrgrp</span><span class="p">,</span>
+    <span class="n">vrnt_genpos</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">vrnt_genpos</span>
+<span class="p">)</span>
+
+<span class="c1"># calculate from physical positions</span>
+<span class="n">xoprob</span> <span class="o">=</span> <span class="n">haldane</span><span class="o">.</span><span class="n">rprob2p</span><span class="p">(</span>
+    <span class="n">gmap</span> <span class="o">=</span> <span class="n">gmap</span><span class="p">,</span>
+    <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">vrnt_chrgrp</span><span class="p">,</span>
+    <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">vrnt_phypos</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
@@ -562,9 +607,26 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#calculating-map-distances">
-   Calculating Map Distances
+  <a class="reference internal nav-link" href="#calculating-genetic-map-distances">
+   Calculating Genetic Map Distances
   </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#calculating-sequential-and-pairwise-recombination-probabilities">
+   Calculating Sequential and Pairwise Recombination Probabilities
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#calculating-sequential-recombination-probabilities">
+     Calculating sequential recombination probabilities
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#calculating-pairwise-recombination-probabilities">
+     Calculating pairwise recombination probabilities
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 

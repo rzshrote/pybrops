@@ -38,12 +38,12 @@ vrnt_name = numpy.array(["SNP"+str(i+1).zfill(3) for i in range(nvrnt)], dtype=o
 
 # construct genetic map
 gmap = ExtendedGeneticMap(
-    vrnt_chrgrp=vrnt_chrgrp,
-    vrnt_phypos=vrnt_phypos,
-    vrnt_stop=vrnt_phypos,
-    vrnt_genpos=vrnt_genpos,
-    vrnt_name=vrnt_name,
-    vrnt_fncode=None, # not needed
+    vrnt_chrgrp = vrnt_chrgrp,
+    vrnt_phypos = vrnt_phypos,
+    vrnt_stop   = vrnt_phypos,
+    vrnt_genpos = vrnt_genpos,
+    vrnt_name   = vrnt_name,
+    vrnt_fncode = None, # not needed
 )
 
 ##
