@@ -1,0 +1,1218 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Selection Protocols &#8212; pybrops 1.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/wider_borders.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'standard_usage/breeding_protocols/selection_protocols';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Initialization Operators" href="../breeding_operators/initialization_operators.html" />
+    <link rel="prev" title="Mating Protocols" href="mating_protocols.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+    <p class="title logo__title">pybrops 1.0.0 documentation</p>
+  
+</a>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation/installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../prerequisites/prerequisites.html">
+                        Prerequisites
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../examples.html">
+                        .. Examples
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../installation/installation.html">
+                        Installation
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../prerequisites/prerequisites.html">
+                        Prerequisites
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../examples.html">
+                        .. Examples
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">
+    Section Navigation
+  </p>
+  <div class="bd-toc-item navbar-nav">
+    <p aria-level="2" class="caption" role="heading"><span class="caption-text">Core Infrastructure Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../core_infrastructure/random_number_generation.html">Random Number Generation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Population Genetics Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../population_genetics/genetic_maps.html">Genetic Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../population_genetics/genetic_map_functions.html">Genetic Map Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../population_genetics/genotype_matrices.html">Genotype Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../population_genetics/phased_genotype_matrices.html">Phased Genotype Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../population_genetics/breeding_value_matrices.html">Breeding Value Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../population_genetics/coancestry_matrices.html">Coancestry Matrices</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../optimization/optimization_problems.html">Optimization Problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimization/optimization_solutions.html">Optimization Solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../optimization/optimization_algorithms.html">Optimization Algorithms</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Genomic Modeling Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../genomic_modeling/genomic_models.html">Genomic Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genomic_modeling/variance_matrices.html">Variance Matrices</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Breeding Protocol Modules Usage:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="genotyping_protocols.html">Genotyping Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="phenotyping_protocols.html">Phenotyping Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="breeding_value_protocols.html">Breeding Value Estimation Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mating_protocols.html">Mating Protocols</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Selection Protocols</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Breeding Operator Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../breeding_operators/initialization_operators.html">Initialization Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../breeding_operators/parental_selection_operators.html">Parental Selection Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../breeding_operators/mating_operators.html">Mating Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../breeding_operators/evaluation_operators.html">Evaluation Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../breeding_operators/survivor_selection_operators.html">Survivor Selection Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../breeding_operators/logbooks.html">Logbooks</a></li>
+</ul>
+
+  </div>
+</nav>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <section id="selection-protocols">
+<h1>Selection Protocols<a class="headerlink" href="#selection-protocols" title="Permalink to this heading">#</a></h1>
+<section id="class-family-overview">
+<h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="summary-of-selection-protocol-classes">
+<h2>Summary of Selection Protocol Classes<a class="headerlink" href="#summary-of-selection-protocol-classes" title="Permalink to this heading">#</a></h2>
+<section id="abstract-selection-protocol-classes">
+<h3>Abstract selection protocol classes<a class="headerlink" href="#abstract-selection-protocol-classes" title="Permalink to this heading">#</a></h3>
+<table class="colwidths-given table" id="id1">
+<caption><span class="caption-text">Summary of abstract classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.prot.sel</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 21%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Class Name(s)</p></th>
+<th class="head"><p>Class Type(s)</p></th>
+<th class="head"><p>Class Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">SelectionProtocol</span></code></div>
+</div>
+</td>
+<td><p>Abstract</p></td>
+<td><p>Interface for all selection protocol classes.</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">BinarySelectionProtocol</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">IntegerSelectionProtocol</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">RealSelectionProtocol</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">SubsetSelectionProtocol</span></code></div>
+</div>
+</td>
+<td><p>Abstract</p></td>
+<td><p>Interface for all selection protocol classes for binary, integer, real, and subset search spaces, respectively.</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">MateSelectionProtocol</span></code></div>
+</div>
+</td>
+<td><p>Abstract</p></td>
+<td><p>Interface for all mate selection protocol classes.</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">BinaryMateSelectionProtocol</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">IntegerMateSelectionProtocol</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">RealMateSelectionProtocol</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">SubsetMateSelectionProtocol</span></code></div>
+</div>
+</td>
+<td><p>Abstract</p></td>
+<td><p>Interface for all mate selection protocol classes for binary, integer, real, and subset search spaces, respectively.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="concrete-selection-protocol-classes">
+<h3>Concrete selection protocol classes<a class="headerlink" href="#concrete-selection-protocol-classes" title="Permalink to this heading">#</a></h3>
+<table class="colwidths-given table" id="id2">
+<caption><span class="caption-text">Summary of concrete classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.prot.sel</span></code> module</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 21%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Class Name(s)</p></th>
+<th class="head"><p>Class Type(s)</p></th>
+<th class="head"><p>Class Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">EstimatedBreedingValueBinarySelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">EstimatedBreedingValueIntegerSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">EstimatedBreedingValueRealSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">EstimatedBreedingValueSubsetSelection</span></code></div>
+</div>
+</td>
+<td><p>Concrete</p></td>
+<td><p>Concrete classes for selection on estimated breeding values in binary, integer, real, and subset search spaces, respectively.</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ExpectedMaximumBreedingValueBinarySelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ExpectedMaximumBreedingValueIntegerSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ExpectedMaximumBreedingValueRealSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">ExpectedMaximumBreedingValueSubsetSelection</span></code></div>
+</div>
+</td>
+<td><p>Concrete</p></td>
+<td><p>Concrete classes for selection on expected maximum breeding values in binary, integer, real, and subset search spaces, respectively.</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">FamilyEstimatedBreedingValueBinarySelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">FamilyEstimatedBreedingValueIntegerSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">FamilyEstimatedBreedingValueRealSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">FamilyEstimatedBreedingValueSubsetSelection</span></code></div>
+</div>
+</td>
+<td><p>Concrete</p></td>
+<td><p>Concrete classes for selection on within-family estimated breeding values in binary, integer, real, and subset search spaces, respectively.</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">GenomicEstimatedBreedingValueBinarySelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">GenomicEstimatedBreedingValueIntegerSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">GenomicEstimatedBreedingValueRealSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">GenomicEstimatedBreedingValueSubsetSelection</span></code></div>
+</div>
+</td>
+<td><p>Concrete</p></td>
+<td><p>Concrete classes for selection on genomic estimated breeding values in binary, integer, real, and subset search spaces, respectively.</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">GenotypeBuilderSubsetSelection</span></code></div>
+</div>
+</td>
+<td><p>Concrete</p></td>
+<td><p>Concrete classes for selection using the genotype builder strategy in subset search spaces.</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OptimalContributionBinarySelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OptimalContributionIntegerSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OptimalContributionRealSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OptimalContributionSubsetSelection</span></code></div>
+</div>
+</td>
+<td><p>Concrete</p></td>
+<td><p>Concrete classes for selection using optimal contribution selection in binary, integer, real, and subset search spaces, respectively.</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OptimalHaploidValueBinarySelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OptimalHaploidValueIntegerSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OptimalHaploidValueRealSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OptimalHaploidValueSubsetSelection</span></code></div>
+</div>
+</td>
+<td><p>Concrete</p></td>
+<td><p>Concrete classes for selection on optimal haploid value values in binary, integer, real, and subset search spaces, respectively.</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">OptimalPopulationValueSubsetSelection</span></code></div>
+</div>
+</td>
+<td><p>Concrete</p></td>
+<td><p>Concrete classes for selection on optimal population values in subset search spaces.</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">RandomBinarySelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">RandomIntegerSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">RandomRealSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">RandomSubsetSelection</span></code></div>
+</div>
+</td>
+<td><p>Concrete</p></td>
+<td><p>Concrete classes for selection on random values in binary, integer, real, and subset search spaces, respectively.</p></td>
+</tr>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">UsefulnessCriterionBinarySelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">UsefulnessCriterionIntegerSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">UsefulnessCriterionRealSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">UsefulnessCriterionSubsetSelection</span></code></div>
+</div>
+</td>
+<td><p>Concrete</p></td>
+<td><p>Concrete classes for selection on usefulness criterion values in binary, integer, real, and subset search spaces, respectively.</p></td>
+</tr>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">WeightedGenomicBinarySelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">WeightedGenomicIntegerSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">WeightedGenomicRealSelection</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">WeightedGenomicSubsetSelection</span></code></div>
+</div>
+</td>
+<td><p>Concrete</p></td>
+<td><p>Concrete classes for selection on weighted genomic estimated breeding values in binary, integer, real, and subset search spaces, respectively.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="loading-class-modules">
+<h2>Loading Class Modules<a class="headerlink" href="#loading-class-modules" title="Permalink to this heading">#</a></h2>
+<section id="abstract-interface-classes">
+<h3>Abstract interface classes<a class="headerlink" href="#abstract-interface-classes" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># interface for all selection protocols</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.SelectionProtocol</span> <span class="kn">import</span> <span class="n">SelectionProtocol</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.MateSelectionProtocol</span> <span class="kn">import</span> <span class="n">MateSelectionProtocol</span>
+
+<span class="c1"># interfaces for all individual selection protocols</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.BinarySelectionProtocol</span> <span class="kn">import</span> <span class="n">BinarySelectionProtocol</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.IntegerSelectionProtocol</span> <span class="kn">import</span> <span class="n">IntegerSelectionProtocol</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.RealSelectionProtocol</span> <span class="kn">import</span> <span class="n">RealSelectionProtocol</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.SubsetSelectionProtocol</span> <span class="kn">import</span> <span class="n">SubsetSelectionProtocol</span>
+
+<span class="c1"># interfaces for all mate selection protocols</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.BinaryMateSelectionProtocol</span> <span class="kn">import</span> <span class="n">BinaryMateSelectionProtocol</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.IntegerMateSelectionProtocol</span> <span class="kn">import</span> <span class="n">IntegerMateSelectionProtocol</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.RealMateSelectionProtocol</span> <span class="kn">import</span> <span class="n">RealMateSelectionProtocol</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.SubsetMateSelectionProtocol</span> <span class="kn">import</span> <span class="n">SubsetMateSelectionProtocol</span>
+</pre></div>
+</div>
+</section>
+<section id="concrete-implementation-classes">
+<h3>Concrete implementation classes<a class="headerlink" href="#concrete-implementation-classes" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># EBV selection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.EstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">EstimatedBreedingValueBinarySelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.EstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">EstimatedBreedingValueIntegerSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.EstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">EstimatedBreedingValueRealSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.EstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">EstimatedBreedingValueSubsetSelection</span>
+
+<span class="c1"># EMBV selection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.ExpectedMaximumBreedingValueSelection</span> <span class="kn">import</span> <span class="n">ExpectedMaximumBreedingValueBinarySelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.ExpectedMaximumBreedingValueSelection</span> <span class="kn">import</span> <span class="n">ExpectedMaximumBreedingValueIntegerSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.ExpectedMaximumBreedingValueSelection</span> <span class="kn">import</span> <span class="n">ExpectedMaximumBreedingValueRealSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.ExpectedMaximumBreedingValueSelection</span> <span class="kn">import</span> <span class="n">ExpectedMaximumBreedingValueSubsetSelection</span>
+
+<span class="c1"># within family EBV selection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.FamilyEstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">FamilyEstimatedBreedingValueBinarySelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.FamilyEstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">FamilyEstimatedBreedingValueIntegerSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.FamilyEstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">FamilyEstimatedBreedingValueRealSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.FamilyEstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">FamilyEstimatedBreedingValueSubsetSelection</span>
+
+<span class="c1"># GEBV selection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">GenomicEstimatedBreedingValueBinarySelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">GenomicEstimatedBreedingValueIntegerSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">GenomicEstimatedBreedingValueRealSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">GenomicEstimatedBreedingValueSubsetSelection</span>
+
+<span class="c1"># GB selection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.GenotypeBuilderSelection</span> <span class="kn">import</span> <span class="n">GenotypeBuilderSubsetSelection</span>
+
+<span class="c1"># optimal contribution selection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.OptimalContributionSelection</span> <span class="kn">import</span> <span class="n">OptimalContributionBinarySelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.OptimalContributionSelection</span> <span class="kn">import</span> <span class="n">OptimalContributionIntegerSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.OptimalContributionSelection</span> <span class="kn">import</span> <span class="n">OptimalContributionRealSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.OptimalContributionSelection</span> <span class="kn">import</span> <span class="n">OptimalContributionSubsetSelection</span>
+
+<span class="c1"># OHV selection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.OptimalHaploidValueSelection</span> <span class="kn">import</span> <span class="n">OptimalHaploidValueBinarySelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.OptimalHaploidValueSelection</span> <span class="kn">import</span> <span class="n">OptimalHaploidValueIntegerSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.OptimalHaploidValueSelection</span> <span class="kn">import</span> <span class="n">OptimalHaploidValueRealSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.OptimalHaploidValueSelection</span> <span class="kn">import</span> <span class="n">OptimalHaploidValueSubsetSelection</span>
+
+<span class="c1"># OPV selection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.OptimalPopulationValueSelection</span> <span class="kn">import</span> <span class="n">OptimalPopulationValueSubsetSelection</span>
+
+<span class="c1"># random selection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.RandomSelection</span> <span class="kn">import</span> <span class="n">RandomBinarySelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.RandomSelection</span> <span class="kn">import</span> <span class="n">RandomIntegerSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.RandomSelection</span> <span class="kn">import</span> <span class="n">RandomRealSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.RandomSelection</span> <span class="kn">import</span> <span class="n">RandomSubsetSelection</span>
+
+<span class="c1"># UC selection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.UsefulnessCriterionSelection</span> <span class="kn">import</span> <span class="n">UsefulnessCriterionBinarySelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.UsefulnessCriterionSelection</span> <span class="kn">import</span> <span class="n">UsefulnessCriterionIntegerSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.UsefulnessCriterionSelection</span> <span class="kn">import</span> <span class="n">UsefulnessCriterionRealSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.UsefulnessCriterionSelection</span> <span class="kn">import</span> <span class="n">UsefulnessCriterionSubsetSelection</span>
+
+<span class="c1"># weighted GEBV selection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.WeightedGenomicSelection</span> <span class="kn">import</span> <span class="n">WeightedGenomicBinarySelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.WeightedGenomicSelection</span> <span class="kn">import</span> <span class="n">WeightedGenomicIntegerSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.WeightedGenomicSelection</span> <span class="kn">import</span> <span class="n">WeightedGenomicRealSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.WeightedGenomicSelection</span> <span class="kn">import</span> <span class="n">WeightedGenomicSubsetSelection</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="creating-selection-protocol-classes">
+<h2>Creating Selection Protocol Classes<a class="headerlink" href="#creating-selection-protocol-classes" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create standard GEBV selection protocol in subset decision space</span>
+<span class="n">selprot</span> <span class="o">=</span> <span class="n">GenomicEstimatedBreedingValueSubsetSelection</span><span class="p">(</span>
+    <span class="n">ntrait</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">ncross</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">nparent</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">nmating</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">nprogeny</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
+    <span class="n">nobj</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="generating-selection-problems-for-optimization">
+<h2>Generating Selection Problems for Optimization<a class="headerlink" href="#generating-selection-problems-for-optimization" title="Permalink to this heading">#</a></h2>
+<section id="setup-for-unconstrained-optimization">
+<h3>Setup for unconstrained optimization<a class="headerlink" href="#setup-for-unconstrained-optimization" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create the selection protocol for 10 two-way crosses</span>
+<span class="n">selprot_unconstrained</span> <span class="o">=</span> <span class="n">GenomicEstimatedBreedingValueSubsetSelection</span><span class="p">(</span>
+    <span class="n">ntrait</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">ncross</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="c1"># ten crosses total</span>
+    <span class="n">nparent</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># two-way</span>
+    <span class="n">nmating</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">nprogeny</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
+    <span class="n">nobj</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="setup-for-constrained-optimization">
+<h3>Setup for constrained optimization<a class="headerlink" href="#setup-for-constrained-optimization" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># suppose we desire to minimize the negated GEBV of our first trait,</span>
+<span class="c1"># using our second trait as a constraint</span>
+
+<span class="c1"># define an objective transformation function</span>
+<span class="k">def</span> <span class="nf">obj_trans</span><span class="p">(</span>
+        <span class="n">decnvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">latentvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">maskvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A custom objective transformation function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    decnvec : numpy.ndarray</span>
+<span class="sd">        A decision space vector of shape (ndecn,)</span>
+<span class="sd">    latentvec : numpy.ndarray</span>
+<span class="sd">        A latent space function vector of shape (ntrait,)</span>
+<span class="sd">    maskvec : numpy.ndarray</span>
+<span class="sd">        A mask vector of shape (ntrait,)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : numpy.ndarray</span>
+<span class="sd">        A vector of shape (sum(maskvec),).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># extract trait(s) as objective(s)</span>
+    <span class="k">return</span> <span class="n">latentvec</span><span class="p">[</span><span class="n">maskvec</span><span class="p">]</span>
+
+<span class="c1"># define an inequality constraint violation function</span>
+<span class="k">def</span> <span class="nf">ineqcv_trans</span><span class="p">(</span>
+        <span class="n">decnvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">latentvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">minvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A custom inequality constraint violation function.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    decnvec : numpy.ndarray</span>
+<span class="sd">        A decision space vector of shape (ndecn,)</span>
+<span class="sd">    latentvec : numpy.ndarray</span>
+<span class="sd">        A latent space function vector of shape (ntrait,)</span>
+<span class="sd">    minvec : numpy.ndarray</span>
+<span class="sd">        Vector of minimum values for which the latent vector can take.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : numpy.ndarray</span>
+<span class="sd">        An inequality constraint violation vector of shape (ntrait,).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># calculate constraint violations</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">minvec</span> <span class="o">-</span> <span class="n">latentvec</span>
+    <span class="c1"># where constraint violation is negative (no constraint violation), set to zero</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">out</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># return inequality constraint violation array</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+<span class="c1"># for constrained selection, make keyword arguments for our custom</span>
+<span class="c1"># transformation functions</span>
+<span class="n">obj_trans_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># we want to select the first trait</span>
+    <span class="s2">&quot;maskvec&quot;</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">ineqcv_trans_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># we don&#39;t care about the first trait&#39;s minimum value (negated maximum), so set to -Inf</span>
+    <span class="c1"># we do care about the second trait&#39;s minimum value (negated maximum), so set to -1.0</span>
+    <span class="s2">&quot;minvec&quot;</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># create the constrained selection protocol for 10 two-way crosses</span>
+<span class="n">selprot_constrained</span> <span class="o">=</span> <span class="n">GenomicEstimatedBreedingValueSubsetSelection</span><span class="p">(</span>
+    <span class="n">ntrait</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">ncross</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="c1"># ten crosses total</span>
+    <span class="n">nparent</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="c1"># two-way</span>
+    <span class="n">nmating</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">nprogeny</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>
+    <span class="n">nobj</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="c1"># one since sum(maskvec) == 1</span>
+    <span class="n">obj_trans</span> <span class="o">=</span> <span class="n">obj_trans</span><span class="p">,</span>
+    <span class="n">obj_trans_kwargs</span> <span class="o">=</span> <span class="n">obj_trans_kwargs</span><span class="p">,</span>
+    <span class="n">nineqcv</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="n">ineqcv_trans</span> <span class="o">=</span> <span class="n">ineqcv_trans</span><span class="p">,</span>
+    <span class="n">ineqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">ineqcv_trans_kwargs</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="generating-the-selection-problem">
+<h3>Generating the selection problem<a class="headerlink" href="#generating-the-selection-problem" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="c1"># Creating a genomic model</span>
+<span class="c1">#</span>
+
+<span class="c1"># model parameters</span>
+<span class="n">nfixed</span> <span class="o">=</span> <span class="mi">1</span>      <span class="c1"># number of fixed effects</span>
+<span class="n">ntrait</span> <span class="o">=</span> <span class="mi">2</span>      <span class="c1"># number of traits</span>
+<span class="n">nmisc</span> <span class="o">=</span> <span class="mi">0</span>       <span class="c1"># number of miscellaneous random effects</span>
+<span class="n">nadditive</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># number of additive marker effects</span>
+
+<span class="c1"># create dummy values</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">nfixed</span><span class="p">,</span><span class="n">ntrait</span><span class="p">))</span>
+<span class="n">u_misc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">nmisc</span><span class="p">,</span><span class="n">ntrait</span><span class="p">))</span>
+<span class="n">u_a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">nadditive</span><span class="p">,</span><span class="n">ntrait</span><span class="p">))</span>
+<span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;Trait&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntrait</span><span class="p">)],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+
+<span class="c1"># create additive linear genomic model</span>
+<span class="n">algmod</span> <span class="o">=</span> <span class="n">DenseAdditiveLinearGenomicModel</span><span class="p">(</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span><span class="p">,</span>
+    <span class="n">u_misc</span> <span class="o">=</span> <span class="n">u_misc</span><span class="p">,</span>
+    <span class="n">u_a</span> <span class="o">=</span> <span class="n">u_a</span><span class="p">,</span>
+    <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+    <span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;example&quot;</span><span class="p">,</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span>
+
+<span class="c1">#</span>
+<span class="c1"># Construct random genomes</span>
+<span class="c1">#</span>
+
+<span class="c1"># shape parameters for random genomes</span>
+<span class="n">ntaxa</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">nvrnt</span> <span class="o">=</span> <span class="n">nadditive</span>
+<span class="n">ngroup</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="n">nchrom</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">nphase</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c1"># create random genotypes</span>
+<span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">nphase</span><span class="p">,</span><span class="n">ntaxa</span><span class="p">,</span><span class="n">nvrnt</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int8&quot;</span><span class="p">)</span>
+
+<span class="c1"># create taxa names</span>
+<span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;taxon&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntaxa</span><span class="p">)],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+
+<span class="c1"># create taxa groups</span>
+<span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ngroup</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ntaxa</span><span class="p">)</span>
+<span class="n">taxa_grp</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="c1"># create marker variant chromsome assignments</span>
+<span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nchrom</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">nvrnt</span><span class="p">)</span>
+<span class="n">vrnt_chrgrp</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="c1"># create marker physical positions</span>
+<span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">nvrnt</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">vrnt_phypos</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+<span class="c1"># create marker variant names</span>
+<span class="n">vrnt_name</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;SNP&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nvrnt</span><span class="p">)],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+
+<span class="c1"># create a phased genotype matrix from scratch using NumPy arrays</span>
+<span class="n">pgmat</span> <span class="o">=</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="p">(</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+    <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+    <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+    <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">vrnt_chrgrp</span><span class="p">,</span>
+    <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">vrnt_phypos</span><span class="p">,</span>
+    <span class="n">vrnt_name</span> <span class="o">=</span> <span class="n">vrnt_name</span><span class="p">,</span>
+    <span class="n">ploidy</span> <span class="o">=</span> <span class="n">nphase</span>
+<span class="p">)</span>
+
+<span class="c1"># create a genotype matrix from scratch using NumPy arrays</span>
+<span class="n">gmat</span> <span class="o">=</span> <span class="n">DenseGenotypeMatrix</span><span class="p">(</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int8&quot;</span><span class="p">),</span>
+    <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+    <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+    <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">vrnt_chrgrp</span><span class="p">,</span>
+    <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">vrnt_phypos</span><span class="p">,</span>
+    <span class="n">vrnt_name</span> <span class="o">=</span> <span class="n">vrnt_name</span><span class="p">,</span>
+    <span class="n">ploidy</span> <span class="o">=</span> <span class="n">nphase</span>
+<span class="p">)</span>
+
+<span class="c1"># generate an unconstrained GEBV subset selection problem</span>
+<span class="c1"># for this selection protocol type, we only need the genotype matrix and a genomic prediction model</span>
+<span class="n">prob_unconstrained</span> <span class="o">=</span> <span class="n">selprot_unconstrained</span><span class="o">.</span><span class="n">problem</span><span class="p">(</span>
+    <span class="n">pgmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">gmat</span> <span class="o">=</span> <span class="n">gmat</span><span class="p">,</span>
+    <span class="n">ptdf</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">bvmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">gpmod</span> <span class="o">=</span> <span class="n">algmod</span><span class="p">,</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># generate a constrained GEBV subset selection problem</span>
+<span class="c1"># for this selection protocol type, we only need the genotype matrix and a genomic prediction model</span>
+<span class="n">prob_constrained</span> <span class="o">=</span> <span class="n">selprot_constrained</span><span class="o">.</span><span class="n">problem</span><span class="p">(</span>
+    <span class="n">pgmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">gmat</span> <span class="o">=</span> <span class="n">gmat</span><span class="p">,</span>
+    <span class="n">ptdf</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">bvmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">gpmod</span> <span class="o">=</span> <span class="n">algmod</span><span class="p">,</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># generate a random solution to test</span>
+<span class="n">soln</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">prob_constrained</span><span class="o">.</span><span class="n">decn_space</span><span class="p">,</span> <span class="n">prob_constrained</span><span class="o">.</span><span class="n">ndecn</span><span class="p">)</span>
+
+<span class="c1"># evaluate the solution in the unconstrained problem</span>
+<span class="n">eval_unconstrained</span> <span class="o">=</span> <span class="n">prob_unconstrained</span><span class="o">.</span><span class="n">evalfn</span><span class="p">(</span><span class="n">soln</span><span class="p">)</span>
+
+<span class="c1"># evaluate the solution in the constrained problem</span>
+<span class="n">eval_constrained</span> <span class="o">=</span> <span class="n">prob_constrained</span><span class="o">.</span><span class="n">evalfn</span><span class="p">(</span><span class="n">soln</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="single-objective-optimization">
+<h2>Single-Objective Optimization<a class="headerlink" href="#single-objective-optimization" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># perform single-objective optimization using</span>
+<span class="n">soln_constrained</span> <span class="o">=</span> <span class="n">selprot_constrained</span><span class="o">.</span><span class="n">sosolve</span><span class="p">(</span>
+    <span class="n">pgmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">gmat</span> <span class="o">=</span> <span class="n">gmat</span><span class="p">,</span>
+    <span class="n">ptdf</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">bvmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">gpmod</span> <span class="o">=</span> <span class="n">algmod</span><span class="p">,</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># examine the solution decision vector(s)</span>
+<span class="n">soln_constrained</span><span class="o">.</span><span class="n">soln_decn</span>
+
+<span class="c1"># examine the solution objective function vector(s)</span>
+<span class="n">soln_constrained</span><span class="o">.</span><span class="n">soln_obj</span>
+
+<span class="c1"># examine the solution inequality constraint violation vector(s)</span>
+<span class="n">soln_constrained</span><span class="o">.</span><span class="n">soln_ineqcv</span>
+
+<span class="c1"># examine the soltuion equality constraint violation vector(s)</span>
+<span class="n">soln_constrained</span><span class="o">.</span><span class="n">soln_eqcv</span>
+</pre></div>
+</div>
+</section>
+<section id="multi-objective-optimization">
+<h2>Multi-Objective Optimization<a class="headerlink" href="#multi-objective-optimization" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># perform single-objective optimization using</span>
+<span class="n">soln_unconstrained</span> <span class="o">=</span> <span class="n">selprot_unconstrained</span><span class="o">.</span><span class="n">mosolve</span><span class="p">(</span>
+    <span class="n">pgmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">gmat</span> <span class="o">=</span> <span class="n">gmat</span><span class="p">,</span>
+    <span class="n">ptdf</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">bvmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">gpmod</span> <span class="o">=</span> <span class="n">algmod</span><span class="p">,</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># examine the solution decision vector(s)</span>
+<span class="n">soln_unconstrained</span><span class="o">.</span><span class="n">soln_decn</span>
+
+<span class="c1"># examine the solution objective function vector(s)</span>
+<span class="n">soln_unconstrained</span><span class="o">.</span><span class="n">soln_obj</span>
+
+<span class="c1"># examine the solution inequality constraint violation vector(s)</span>
+<span class="n">soln_unconstrained</span><span class="o">.</span><span class="n">soln_ineqcv</span>
+
+<span class="c1"># examine the soltuion equality constraint violation vector(s)</span>
+<span class="n">soln_unconstrained</span><span class="o">.</span><span class="n">soln_eqcv</span>
+</pre></div>
+</div>
+</section>
+<section id="selection">
+<h2>Selection<a class="headerlink" href="#selection" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select individuals for the constrained problem formulation. In this selection,</span>
+<span class="c1"># the best solution from a single-objective optimization is selected to</span>
+<span class="c1"># determine the selection.</span>
+<span class="n">selcfg_constrained</span> <span class="o">=</span> <span class="n">selprot_constrained</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="n">pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="p">,</span>
+    <span class="n">gmat</span> <span class="o">=</span> <span class="n">gmat</span><span class="p">,</span>
+    <span class="n">ptdf</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">bvmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">gpmod</span> <span class="o">=</span> <span class="n">algmod</span><span class="p">,</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># view cross configuration from the selection</span>
+<span class="n">selcfg_constrained</span><span class="o">.</span><span class="n">xconfig</span>
+
+<span class="c1"># Select individuals for the unconstrained problem formulation. In this</span>
+<span class="c1"># selection, a Pareto frontier is estimated and a point selected from the</span>
+<span class="c1"># frontier which is closest to a 1 vector projection in invariant space.</span>
+<span class="c1"># The vector determining the selection configuration may be customized by</span>
+<span class="c1"># changing how the selection protocol is constructed.</span>
+<span class="n">selcfg_unconstrained</span> <span class="o">=</span> <span class="n">selprot_unconstrained</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+    <span class="n">pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="p">,</span>
+    <span class="n">gmat</span> <span class="o">=</span> <span class="n">gmat</span><span class="p">,</span>
+    <span class="n">ptdf</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">bvmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">gpmod</span> <span class="o">=</span> <span class="n">algmod</span><span class="p">,</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># view cross configuration from the selection</span>
+<span class="n">selcfg_unconstrained</span><span class="o">.</span><span class="n">xconfig</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="mating_protocols.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Mating Protocols</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="../breeding_operators/initialization_operators.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Initialization Operators</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#class-family-overview">
+   Class Family Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary-of-selection-protocol-classes">
+   Summary of Selection Protocol Classes
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#abstract-selection-protocol-classes">
+     Abstract selection protocol classes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concrete-selection-protocol-classes">
+     Concrete selection protocol classes
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#loading-class-modules">
+   Loading Class Modules
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#abstract-interface-classes">
+     Abstract interface classes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#concrete-implementation-classes">
+     Concrete implementation classes
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#creating-selection-protocol-classes">
+   Creating Selection Protocol Classes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#generating-selection-problems-for-optimization">
+   Generating Selection Problems for Optimization
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#setup-for-unconstrained-optimization">
+     Setup for unconstrained optimization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#setup-for-constrained-optimization">
+     Setup for constrained optimization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generating-the-selection-problem">
+     Generating the selection problem
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#single-objective-optimization">
+   Single-Objective Optimization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#multi-objective-optimization">
+   Multi-Objective Optimization
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#selection">
+   Selection
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2023, Robert Shrote.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>
