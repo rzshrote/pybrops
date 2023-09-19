@@ -415,9 +415,37 @@
 <h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
 <p>Perhaps the most important family of classes in PyBrOpS is the <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> object family. The purpose of this family of classes is to store and represent genotypic data. <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> classes can be used in the estimation of genomic prediction models, the estimation of breeding values, the calculation of genomic relationship matrices, and to make selection decisions. Within PyBrOpS it is possible to read genotypic data from VCF files to create <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> objects, allowing for real-world data to be used in breeding program simulations.</p>
 </section>
+<section id="summary-of-genotype-matrix-classes">
+<h2>Summary of Genotype Matrix Classes<a class="headerlink" href="#summary-of-genotype-matrix-classes" title="Permalink to this heading">#</a></h2>
+<p>Genotype matrix classes in PyBrOpS are found in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.gmat</span></code> module. Contained in this moduel are several <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> class type definitions which are summarized in the table below.</p>
+<table class="colwidths-given table" id="id1">
+<caption><span class="caption-text">Summary of genotype matrix classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.gmat</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 17%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Class Name</p></th>
+<th class="head"><p>Class Type</p></th>
+<th class="head"><p>Class Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code></p></td>
+<td><p>Abstract</p></td>
+<td><p>Interface for all genotype matrix child classes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DenseGenotypeMatrix</span></code></p></td>
+<td><p>Concrete</p></td>
+<td><p>Class representing dense, genotype matrices.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="loading-class-modules">
 <h2>Loading Class Modules<a class="headerlink" href="#loading-class-modules" title="Permalink to this heading">#</a></h2>
-<p>Genotype matrix support in PyBrOpS is found in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.gmat</span></code> submodule. The <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> abstract class is the basal interface for all genotype matrices. Classes can be imported as follows:</p>
+<p>Genotype matrix classes can be imported as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the GenotypeMatrix class (an abstract interface class)</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.GenotypeMatrix</span> <span class="kn">import</span> <span class="n">GenotypeMatrix</span>
 
@@ -428,10 +456,11 @@
 </section>
 <section id="creating-genotype-matrices">
 <h2>Creating Genotype Matrices<a class="headerlink" href="#creating-genotype-matrices" title="Permalink to this heading">#</a></h2>
+<p>Genotype matrices can be created using several methods. Genotype matrices may be constructed from raw NumPy arrays, by reading data from VCF files, or by reading data from an HDF5 file containing a saved genotype matrix.</p>
 <section id="creating-genotype-matrices-from-numpy-arrays">
 <h3>Creating genotype matrices from NumPy arrays<a class="headerlink" href="#creating-genotype-matrices-from-numpy-arrays" title="Permalink to this heading">#</a></h3>
-<p>Genotype matrices can be created from raw <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>’s. The example below illustrates creating a <code class="docutils literal notranslate"><span class="pre">DenseGenotypeMatrix</span></code>. The only requirement to construct a <code class="docutils literal notranslate"><span class="pre">DenseGenotypeMatrix</span></code> is a <code class="docutils literal notranslate"><span class="pre">(n,p)</span></code> numerical matrix containing genotypic codings. Here, <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of taxa and <code class="docutils literal notranslate"><span class="pre">p</span></code> is the number of marker variants. The matrix must be coded in the <code class="docutils literal notranslate"><span class="pre">{0,1,2}</span></code> (number of alternative alleles) format and must have an <code class="docutils literal notranslate"><span class="pre">int8</span></code> data type.</p>
-<p>Additional optional metadata may be stored along with a <code class="docutils literal notranslate"><span class="pre">DenseGenotypeMatrix</span></code> including taxa names (<code class="docutils literal notranslate"><span class="pre">taxa</span></code>), taxa groups (<code class="docutils literal notranslate"><span class="pre">taxa_grp</span></code>), marker variant chromosome assignments (<code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp</span></code>), marker variant chromosme physical positions (<code class="docutils literal notranslate"><span class="pre">vrnt_phypos</span></code>), marker variant names (<code class="docutils literal notranslate"><span class="pre">vrnt_name</span></code>), marker variant genetic map positions (<code class="docutils literal notranslate"><span class="pre">vrnt_genpos</span></code>), sequential recombination probabilities between markers (<code class="docutils literal notranslate"><span class="pre">vrnt_xoprob</span></code>), marker variant haplotype group assignments (<code class="docutils literal notranslate"><span class="pre">vrnt_hapgrp</span></code>), reference haplotype (<code class="docutils literal notranslate"><span class="pre">vrnt_hapref</span></code>), alternative haplotype (<code class="docutils literal notranslate"><span class="pre">vrnt_hapalt</span></code>), a variant mask (<code class="docutils literal notranslate"><span class="pre">vrnt_mask</span></code>), and finally the ploidy of the genotypes (<code class="docutils literal notranslate"><span class="pre">ploid</span></code>).</p>
+<p>Genotype matrices can be created from raw NumPy arrays. The example below illustrates creating a <code class="docutils literal notranslate"><span class="pre">DenseGenotypeMatrix</span></code>. The only requirement to construct a <code class="docutils literal notranslate"><span class="pre">DenseGenotypeMatrix</span></code> is a <code class="docutils literal notranslate"><span class="pre">(n,p)</span></code> numerical matrix containing genotypic codings. Here, <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of taxa and <code class="docutils literal notranslate"><span class="pre">p</span></code> is the number of marker variants. The matrix must be coded in the <code class="docutils literal notranslate"><span class="pre">{0,1,2}</span></code> (number of alternative alleles) format and must have an <code class="docutils literal notranslate"><span class="pre">int8</span></code> data type.</p>
+<p>Additional optional metadata may be stored along with a <code class="docutils literal notranslate"><span class="pre">DenseGenotypeMatrix</span></code> including taxa names (<code class="docutils literal notranslate"><span class="pre">taxa</span></code>), taxa groups (<code class="docutils literal notranslate"><span class="pre">taxa_grp</span></code>), marker variant chromosome assignments (<code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp</span></code>), marker variant chromosome physical positions (<code class="docutils literal notranslate"><span class="pre">vrnt_phypos</span></code>), marker variant names (<code class="docutils literal notranslate"><span class="pre">vrnt_name</span></code>), marker variant genetic map positions (<code class="docutils literal notranslate"><span class="pre">vrnt_genpos</span></code>), sequential recombination probabilities between markers (<code class="docutils literal notranslate"><span class="pre">vrnt_xoprob</span></code>), marker variant haplotype group assignments (<code class="docutils literal notranslate"><span class="pre">vrnt_hapgrp</span></code>), reference haplotype (<code class="docutils literal notranslate"><span class="pre">vrnt_hapref</span></code>), alternative haplotype (<code class="docutils literal notranslate"><span class="pre">vrnt_hapalt</span></code>), a variant mask (<code class="docutils literal notranslate"><span class="pre">vrnt_mask</span></code>), and finally the ploidy of the genotypes (<code class="docutils literal notranslate"><span class="pre">ploid</span></code>).</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create random genotypes</span>
 <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ploidy</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">ntaxa</span><span class="p">,</span><span class="n">nvrnt</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int8&quot;</span><span class="p">)</span>
 
@@ -480,7 +509,7 @@
 </section>
 <section id="loading-genotype-matrices-from-vcf-files">
 <h3>Loading genotype matrices from VCF files<a class="headerlink" href="#loading-genotype-matrices-from-vcf-files" title="Permalink to this heading">#</a></h3>
-<p>VCF files can be loaded into the Python environment as genotype matrices using the <code class="docutils literal notranslate"><span class="pre">from_vcf</span></code> method.</p>
+<p>VCF files can be loaded into Python scopes as genotype matrices using the <code class="docutils literal notranslate"><span class="pre">from_vcf</span></code> method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read a genotype matrix from file</span>
 <span class="n">gmat</span> <span class="o">=</span> <span class="n">DenseGenotypeMatrix</span><span class="o">.</span><span class="n">from_vcf</span><span class="p">(</span><span class="s2">&quot;widiv_2000SNPs.vcf.gz&quot;</span><span class="p">)</span>
 </pre></div>
@@ -488,7 +517,7 @@
 </section>
 <section id="loading-genotype-matrices-from-hdf5-files">
 <h3>Loading genotype matrices from HDF5 files<a class="headerlink" href="#loading-genotype-matrices-from-hdf5-files" title="Permalink to this heading">#</a></h3>
-<p>Genotype matrices in PyBrOpS can be exported to HDF5 files via the <code class="docutils literal notranslate"><span class="pre">to_hdf5</span></code> method. These files can later be read into PyBrOpS via the <code class="docutils literal notranslate"><span class="pre">from_hdf5</span></code> method. The example below illustrates loading a <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> into memory from an HDF5 file:</p>
+<p>Genotype matrices in PyBrOpS can be exported to HDF5 files via the <code class="docutils literal notranslate"><span class="pre">to_hdf5</span></code> method. These files can later be read into PyBrOpS via the <code class="docutils literal notranslate"><span class="pre">from_hdf5</span></code> method. The example below illustrates loading a <code class="docutils literal notranslate"><span class="pre">DenseGenotypeMatrix</span></code> into memory from an HDF5 file:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read a genotype matrix from HDF5 file</span>
 <span class="n">gmat</span> <span class="o">=</span> <span class="n">DenseGenotypeMatrix</span><span class="o">.</span><span class="n">from_hdf5</span><span class="p">(</span><span class="s2">&quot;widiv_2000SNPs.h5&quot;</span><span class="p">)</span>
 </pre></div>
@@ -497,10 +526,12 @@
 </section>
 <section id="genotype-matrix-properties">
 <h2>Genotype Matrix Properties<a class="headerlink" href="#genotype-matrix-properties" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> objects share a set of common object properties which can be grouped into three groups: general properties, taxa properties, and marker variant properties.</p>
 <section id="general-properties">
 <h3>General properties<a class="headerlink" href="#general-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id1">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> general properties</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<p>General properties of a genotype matrix primarily relate to the shape and format of the genotype matrix itself. These properties are summarized in the table below.</p>
+<table class="colwidths-given table" id="id2">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> general properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -529,19 +560,14 @@
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nphase</span></code></p></td>
 <td><p>The number of chromosome phases represented by the genotype matrix</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ntaxa</span></code></p></td>
-<td><p>The number of taxa represented by the genotype matrix</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nvrnt</span></code></p></td>
-<td><p>The number of genotype variants represented by the genotype matrix</p></td>
-</tr>
 </tbody>
 </table>
 </section>
 <section id="taxa-properties">
 <h3>Taxa properties<a class="headerlink" href="#taxa-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id2">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> taxa properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<p>Genotype matrices can store basic information on the taxa represented by the matrix. These data include taxa names and any grouping labels. Grouping labels may be used to indicate a family of individuals. Taxa and taxa grouping data can be accessed using the object properties summarized in the table below.</p>
+<table class="colwidths-given table" id="id3">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> taxa properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -552,25 +578,28 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ntaxa</span></code></p></td>
+<td><p>The number of taxa represented by the genotype matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa</span></code></p></td>
 <td><p>The names of the taxa</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_axis</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_axis</span></code></p></td>
 <td><p>The matrix axis along which taxa are stored</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp</span></code></p></td>
 <td><p>Taxa group label</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_name</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_name</span></code></p></td>
 <td><p>The names of the taxa groups</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_stix</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_stix</span></code></p></td>
 <td><p>The start indices (inclusive) for each taxa group, post sorting and grouping</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_spix</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_spix</span></code></p></td>
 <td><p>The stop indices (exclusive) for each taxa group, post sorting and grouping</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_len</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_len</span></code></p></td>
 <td><p>The length of each taxa group, post sorting and grouping</p></td>
 </tr>
 </tbody>
@@ -578,8 +607,9 @@
 </section>
 <section id="marker-variant-properties">
 <h3>Marker variant properties<a class="headerlink" href="#marker-variant-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id3">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> marker variant properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
+<p>Genotype matrices can also store basic information about the genetic markers which are represented by the matrix. Key information about a marker variant’s name, chromosome assignment, physical and genetic positions, and sequential crossover probabilities can be stored. The table below summarizes marker variant properties in genotype matrices.</p>
+<table class="colwidths-given table" id="id4">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> marker variant properties</span><a class="headerlink" href="#id4" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -590,46 +620,49 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_name</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nvrnt</span></code></p></td>
+<td><p>The number of genotype variants represented by the genotype matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_name</span></code></p></td>
 <td><p>The names of the marker variants</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_axis</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_axis</span></code></p></td>
 <td><p>The axis along which marker variants are stored</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp</span></code></p></td>
 <td><p>The chromosome to which a marker variant belongs</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_phypos</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_phypos</span></code></p></td>
 <td><p>The physical position of a marker variant</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_genpos</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_genpos</span></code></p></td>
 <td><p>The genetic position of a marker variant</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_xoprob</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_xoprob</span></code></p></td>
 <td><p>The crossover probability between the previous marker</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_hapref</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_hapref</span></code></p></td>
 <td><p>The reference haplotype for the marker variant</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_hapalt</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_hapalt</span></code></p></td>
 <td><p>The alternative haplotype for the marker variant</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_hapgrp</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_hapgrp</span></code></p></td>
 <td><p>The haplotype grouping for the marker variant</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_mask</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_mask</span></code></p></td>
 <td><p>A mask associated with the marker variants</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp_name</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp_name</span></code></p></td>
 <td><p>The names of the chromosomes</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp_stix</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp_stix</span></code></p></td>
 <td><p>The start indices (inclusive) for each chromosome, post sorting and grouping</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp_spix</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp_spix</span></code></p></td>
 <td><p>The stop indices (exclusive) for each chromosome, post sorting and grouping</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp_len</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vrnt_chrgrp_len</span></code></p></td>
 <td><p>The length of each chromosome, post sorting and grouping</p></td>
 </tr>
 </tbody>
@@ -638,8 +671,10 @@
 </section>
 <section id="copying-genotype-matrices">
 <h2>Copying Genotype Matrices<a class="headerlink" href="#copying-genotype-matrices" title="Permalink to this heading">#</a></h2>
+<p>Genotype matrices can be copied. There are two methods that can be used to copy a genotype matrix: shallow copying and deep copying.</p>
 <section id="shallow-copying">
 <h3>Shallow copying<a class="headerlink" href="#shallow-copying" title="Permalink to this heading">#</a></h3>
+<p>In shallow copying, only references to a <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code>’s data are copied to a new genotype matrix. Copying is only one level deep so any changes to the data in the original object will be reflected in the copied object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># copy a genotype matrix</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">gmat</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -648,6 +683,7 @@
 </section>
 <section id="deep-copying">
 <h3>Deep copying<a class="headerlink" href="#deep-copying" title="Permalink to this heading">#</a></h3>
+<p>In deep copying, a <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code>’s data is recursively copied to the deepest level. Changes to data values in the original genotype matrix will not affect the data values in the copy.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># deep copy a genotype matrix</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">gmat</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
@@ -657,8 +693,10 @@
 </section>
 <section id="copy-on-element-manipulation">
 <h2>Copy-On Element Manipulation<a class="headerlink" href="#copy-on-element-manipulation" title="Permalink to this heading">#</a></h2>
+<p>Genotype matrices have several methods which create a modified copy of the original matrix, leaving the original genotype matrix unaltered.</p>
 <section id="adjoin-elements">
 <h3>Adjoin elements<a class="headerlink" href="#adjoin-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">adjoin</span></code> family of methods allows for a genotype matrix to be adjoined to another genotype matrix, creating a new matrix in the process. Use of the <code class="docutils literal notranslate"><span class="pre">adjoin</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new genotype matrix to demonstrate</span>
 <span class="n">new</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
 
@@ -674,6 +712,7 @@
 </section>
 <section id="delete-elements">
 <h3>Delete elements<a class="headerlink" href="#delete-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">delete</span></code> family of methods allows for rows (taxa) and columns (marker variants) of the genotype matrix to be removed in a copy of the original. Use of the <code class="docutils literal notranslate"><span class="pre">delete</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># delete taxa examples</span>
 <span class="c1">#</span>
@@ -710,6 +749,7 @@
 </section>
 <section id="insert-elements">
 <h3>Insert elements<a class="headerlink" href="#insert-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">insert</span></code> family of methods allows for rows (taxa) and columns (marker variants) of the genotype matrix to be inserted into a copy of the original matrix. Use of the <code class="docutils literal notranslate"><span class="pre">insert</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new genotype matrix to demonstrate</span>
 <span class="n">new</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
 
@@ -725,6 +765,7 @@
 </section>
 <section id="select-elements">
 <h3>Select elements<a class="headerlink" href="#select-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">select</span></code> family of methods allows for rows (taxa) and columns (marker variants) of the genotype matrix to be extracted to a copy of the original matrix. The <code class="docutils literal notranslate"><span class="pre">select</span></code> family is the inverse of the <code class="docutils literal notranslate"><span class="pre">delete</span></code> family. Use of the <code class="docutils literal notranslate"><span class="pre">select</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># select first five taxa using a Sequence</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
@@ -738,8 +779,10 @@
 </section>
 <section id="in-place-element-manipulation">
 <h2>In-Place Element Manipulation<a class="headerlink" href="#in-place-element-manipulation" title="Permalink to this heading">#</a></h2>
+<p>Genotype matrices have several methods which create a modify a matrix in-place.</p>
 <section id="append-elements">
 <h3>Append elements<a class="headerlink" href="#append-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">append</span></code> family of methods allows for new rows (taxa) and columns (marker variants) to be appended to the genotype matrix. The code segment below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># append genotype matrices along the taxa axis</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>                   <span class="c1"># copy original</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gmat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>  <span class="c1"># append original to copy</span>
@@ -758,6 +801,7 @@
 </section>
 <section id="remove-elements">
 <h3>Remove elements<a class="headerlink" href="#remove-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">remove</span></code> family of methods allows for rows (taxa) and columns (marker variants) to be removed from a genotype matrix. A demonstration of their use can be seen below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># remove taxa examples</span>
 <span class="c1">#</span>
@@ -812,6 +856,7 @@
 </section>
 <section id="incorporate-elements">
 <h3>Incorporate elements<a class="headerlink" href="#incorporate-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">incorp</span></code> family of methods allows for new rows (taxa) and columns (marker variants) to be inserted at specific locations a genotype matrix. Use of the <code class="docutils literal notranslate"><span class="pre">incorp</span></code> family is demonstrated in the code segment below below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># incorp genotype matrix along the taxa axis before index 0</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>                           <span class="c1"># copy original</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">incorp</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">gmat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>      <span class="c1"># incorporate into copy</span>
@@ -830,6 +875,7 @@
 </section>
 <section id="concatenate-elements">
 <h3>Concatenate elements<a class="headerlink" href="#concatenate-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">concat</span></code> family of methods allows for multiple genotype matrices to be concatenated to each other. The code segment below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># concatenate along the taxa axis</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">gmat</span><span class="p">,</span> <span class="n">gmat</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">concat_taxa</span><span class="p">([</span><span class="n">gmat</span><span class="p">,</span> <span class="n">gmat</span><span class="p">])</span>
@@ -843,8 +889,10 @@
 </section>
 <section id="grouping-and-sorting">
 <h2>Grouping and Sorting<a class="headerlink" href="#grouping-and-sorting" title="Permalink to this heading">#</a></h2>
+<p>Genotype matrices in PyBrOpS have several sorting and grouping focused methods. Sorting methods can be used to sort taxa alphanumerically and marker variants according to their chromosome positions. Grouping methods sort taxa and marker variants, and calculate metadata to allow for indexing of taxa groups and chromosomes groups.</p>
 <section id="reordering-elements">
 <h3>Reordering elements<a class="headerlink" href="#reordering-elements" title="Permalink to this heading">#</a></h3>
+<p>Taxa and marker variants in a genotype matrix can be reordered using the <code class="docutils literal notranslate"><span class="pre">reorder</span></code> family of methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># taxa reordering example</span>
 <span class="c1">#</span>
@@ -876,6 +924,7 @@
 </section>
 <section id="lexsorting-elements">
 <h3>Lexsorting elements<a class="headerlink" href="#lexsorting-elements" title="Permalink to this heading">#</a></h3>
+<p>An indirect sort for the taxa and marker variants axes can be performed using the <code class="docutils literal notranslate"><span class="pre">lexsort</span></code> family of methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># taxa lexsort example</span>
 <span class="c1">#</span>
@@ -906,6 +955,7 @@
 </section>
 <section id="sorting-elements">
 <h3>Sorting elements<a class="headerlink" href="#sorting-elements" title="Permalink to this heading">#</a></h3>
+<p>Sorting along taxa and marker variant axes can be done using the <code class="docutils literal notranslate"><span class="pre">sort</span></code> family of methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make copy</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
 
@@ -929,6 +979,7 @@
 </section>
 <section id="grouping-elements">
 <h3>Grouping elements<a class="headerlink" href="#grouping-elements" title="Permalink to this heading">#</a></h3>
+<p>Grouping along taxa and marker variant axes can be done using the <code class="docutils literal notranslate"><span class="pre">sort</span></code> family of methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make copy</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
 
@@ -961,8 +1012,10 @@
 </section>
 <section id="summary-statistics">
 <h2>Summary Statistics<a class="headerlink" href="#summary-statistics" title="Permalink to this heading">#</a></h2>
+<p>Various summary statistics can be calculated from genotype matrices. PyBrOpS offers several common routines which are summarized in the sections below.</p>
 <section id="population-allele-counts">
 <h3>Population allele counts<a class="headerlink" href="#population-allele-counts" title="Permalink to this heading">#</a></h3>
+<p>Allele counts of the dominant allele (the allele coded as 1) at each locus may be calculated using the <code class="docutils literal notranslate"><span class="pre">acount</span></code> method. The code below demonstrates this method’s use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># count the number of major alleles across all taxa</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">acount</span><span class="p">()</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">acount</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;int32&quot;</span><span class="p">)</span>
@@ -971,6 +1024,7 @@
 </section>
 <section id="population-allele-frequencies">
 <h3>Population allele frequencies<a class="headerlink" href="#population-allele-frequencies" title="Permalink to this heading">#</a></h3>
+<p>Allele frequencies of the dominant allele (the allele coded as 1) at each locus may be calculated using the <code class="docutils literal notranslate"><span class="pre">afreq</span></code> method. The code below demonstrates this method’s use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the allele frequency across all taxa</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">afreq</span><span class="p">()</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">afreq</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;float32&quot;</span><span class="p">)</span>
@@ -979,6 +1033,7 @@
 </section>
 <section id="population-allele-polymorphism-presence">
 <h3>Population allele polymorphism presence<a class="headerlink" href="#population-allele-polymorphism-presence" title="Permalink to this heading">#</a></h3>
+<p>The presense of allele polymorphisms at each locus can be determined using the <code class="docutils literal notranslate"><span class="pre">apoly</span></code> method. The code below demonstrates this method’s use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate whether a locus is polymorphic across all taxa</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">apoly</span><span class="p">()</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">apoly</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
@@ -987,6 +1042,7 @@
 </section>
 <section id="population-genotype-counts">
 <h3>Population genotype counts<a class="headerlink" href="#population-genotype-counts" title="Permalink to this heading">#</a></h3>
+<p>Genotype counts at each locus may be calculated using the <code class="docutils literal notranslate"><span class="pre">gtcount</span></code> method. This method counts the number of homozygous recessive, heterozygous, and homozygous dominant individuals. The code below demonstrates this method’s use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># count the number of genotypes across all taxa</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">gtcount</span><span class="p">()</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">gtcount</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;int32&quot;</span><span class="p">)</span>
@@ -995,6 +1051,7 @@
 </section>
 <section id="population-genotype-frequencies">
 <h3>Population genotype frequencies<a class="headerlink" href="#population-genotype-frequencies" title="Permalink to this heading">#</a></h3>
+<p>Genotype frequencies at each locus may be calculated using the <code class="docutils literal notranslate"><span class="pre">gtfreq</span></code> method. The code below demonstrates this method’s use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the genotype frequency across all taxa</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">gtfreq</span><span class="p">()</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">gtfreq</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;float32&quot;</span><span class="p">)</span>
@@ -1003,6 +1060,7 @@
 </section>
 <section id="population-minor-allele-frequencies">
 <h3>Population minor allele frequencies<a class="headerlink" href="#population-minor-allele-frequencies" title="Permalink to this heading">#</a></h3>
+<p>The minor allele frequency at each locus may be calculated using the <code class="docutils literal notranslate"><span class="pre">maf</span></code> method. The code below demonstrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the minor allele frequency across all taxa</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">maf</span><span class="p">()</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">maf</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;float32&quot;</span><span class="p">)</span>
@@ -1011,6 +1069,7 @@
 </section>
 <section id="population-mean-expected-heterozygosity">
 <h3>Population mean expected heterozygosity<a class="headerlink" href="#population-mean-expected-heterozygosity" title="Permalink to this heading">#</a></h3>
+<p>The mean expected heterozygosity of the genotype matrix as a whole may be calculated using the <code class="docutils literal notranslate"><span class="pre">meh</span></code> method. Use of the <code class="docutils literal notranslate"><span class="pre">meh</span></code> method can be seen in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the mean expected heterozygosity for the population</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">meh</span><span class="p">()</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">meh</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;float32&quot;</span><span class="p">)</span>
@@ -1019,6 +1078,7 @@
 </section>
 <section id="taxa-allele-counts">
 <h3>Taxa allele counts<a class="headerlink" href="#taxa-allele-counts" title="Permalink to this heading">#</a></h3>
+<p>Allele counts of the dominant allele within each individual taxon may be calculated using the <code class="docutils literal notranslate"><span class="pre">tacount</span></code> method. A demonstration of this method’s use is below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># count the number of major alleles individually within taxa</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">tacount</span><span class="p">()</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">tacount</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;int32&quot;</span><span class="p">)</span>
@@ -1027,6 +1087,7 @@
 </section>
 <section id="taxa-allele-frequencies">
 <h3>Taxa allele frequencies<a class="headerlink" href="#taxa-allele-frequencies" title="Permalink to this heading">#</a></h3>
+<p>Allele frequencies of the dominant allele within each individual taxon may be calculated using the <code class="docutils literal notranslate"><span class="pre">tafreq</span></code> method. The <code class="docutils literal notranslate"><span class="pre">tafreq</span></code> method can be used like so.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the allele frequency individually within taxa</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">tafreq</span><span class="p">()</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">tafreq</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;float32&quot;</span><span class="p">)</span>
@@ -1036,8 +1097,10 @@
 </section>
 <section id="saving-genotype-matrices">
 <h2>Saving Genotype Matrices<a class="headerlink" href="#saving-genotype-matrices" title="Permalink to this heading">#</a></h2>
+<p>Genotype matrices can be exported and saved to disk. Currently, only one export format is available: HDF5.</p>
 <section id="exporting-to-hdf5">
 <h3>Exporting to HDF5<a class="headerlink" href="#exporting-to-hdf5" title="Permalink to this heading">#</a></h3>
+<p>Genotype matrices can be exported to the <a class="reference external" href="https://www.hdfgroup.org/">HDF5 format</a>. The code below demonstrates how to export a genotype matrix to an HDF5 file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># write a breeding value matrix to an HDF5 file</span>
 <span class="n">gmat</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_genotypes.h5&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1087,6 +1150,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#class-family-overview">
    Class Family Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary-of-genotype-matrix-classes">
+   Summary of Genotype Matrix Classes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">

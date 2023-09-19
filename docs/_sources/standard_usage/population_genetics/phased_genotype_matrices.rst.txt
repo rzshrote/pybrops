@@ -4,11 +4,31 @@ Phased Genotype Matrices
 Class Family Overview
 =====================
 
+The ``PhasedGenotypeMatrix`` object family is a derivative of the ``GenotypeMatrix`` object family. The ``PhasedGenotypeMatrix`` family of objects has all the same purposes and functionality as its parent family except that it is used to represent phased genotypes. Phased genotype matrix representation is essential to the representation of genomes in PyBrOpS.
+
 Summary of Phased Genotype Matrix Classes
 =========================================
 
+Phased genotype matrix classes in PyBrOpS are found in the ``pybrops.popgen.gmat`` module. Contained in this moduel are several ``PhasedGenotypeMatrix`` class type definitions which are summarized in the table below.
+
+.. list-table:: Summary of phased genotype matrix classes in the ``pybrops.popgen.gmat`` module
+    :widths: 25 15 50
+    :header-rows: 1
+
+    * - Class Name
+      - Class Type
+      - Class Description
+    * - ``PhasedGenotypeMatrix``
+      - Abstract
+      - Interface for all phased genotype matrix child classes.
+    * - ``DensePhasedGenotypeMatrix``
+      - Concrete
+      - Class representing dense, phased genotype matrices.
+
 Loading Class Modules
 =====================
+
+Phased genotype matrix classes can be imported as follows:
 
 .. code-block:: python
 
@@ -21,8 +41,14 @@ Loading Class Modules
 Creating Phased Genotype Matrices
 =================================
 
+Like the ``GenotypeMatrix`` family of classes, members of the ``PhasedGenotypeMatrix`` family can be constructed from raw NumPy arrays, by reading data from VCF files, or by reading data from an HDF5 file containing a saved phased genotype matrix.
+
 Creating phased genotype matrices from NumPy arrays
 ---------------------------------------------------
+
+Phased genotype matrices can be constructed from raw NumPy arrays using the constructor. The example below demonstrates the construction of a phased genotype matrix using the ``DensePhasedGenotypeMatrix`` class. Numerical matrix inputs containing genotypic codings must have a shape of ``(m,n,p)``, where ``m`` is the number of phases, ``n`` is the number of taxa, and ``p`` is the number of marker variants. The genotype code matrix must be binary in nature (``{0,1}``) and must have an ``int8`` data type.
+
+Like the ``DenseGenotypeMatrix`` class, additional optional metadata may be stored along with a ``DensePhasedGenotypeMatrix`` including taxa names (``taxa``), taxa groups (``taxa_grp``), marker variant chromosome assignments (``vrnt_chrgrp``), marker variant chromosome physical positions (``vrnt_phypos``), marker variant names (``vrnt_name``), marker variant genetic map positions (``vrnt_genpos``), sequential recombination probabilities between markers (``vrnt_xoprob``), marker variant haplotype group assignments (``vrnt_hapgrp``), reference haplotype (``vrnt_hapref``), alternative haplotype (``vrnt_hapalt``), and a variant mask (``vrnt_mask``).
 
 .. code-block:: python
 
@@ -68,6 +94,8 @@ Creating phased genotype matrices from NumPy arrays
 Loading phased genotype matrices from VCF files
 -----------------------------------------------
 
+Data from VCF files can be loaded using the ``from_vcf`` method. This import method assumes that the provided VCF file has been previously phased. If an input file is unphased, it will be loaded as if it were correctly phased, which will be problematic for non-homozygous loci.
+
 .. code-block:: python
 
     # read a phased genotype matrix from VCF file
@@ -75,6 +103,8 @@ Loading phased genotype matrices from VCF files
 
 Loading phased genotype matrices from HDF5 files
 ------------------------------------------------
+
+Like regular genotype matrices, phased genotype matrices can be exported to HDF5 files via the ``to_hdf5`` method. These files can later be read into PyBrOpS using the ``from_hdf5`` method. The example below illustrates loading a ``DensePhasedGenotypeMatrix`` into memory from an HDF5 file:
 
 .. code-block:: python
 

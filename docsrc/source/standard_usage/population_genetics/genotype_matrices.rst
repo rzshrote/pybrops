@@ -6,10 +6,29 @@ Class Family Overview
 
 Perhaps the most important family of classes in PyBrOpS is the ``GenotypeMatrix`` object family. The purpose of this family of classes is to store and represent genotypic data. ``GenotypeMatrix`` classes can be used in the estimation of genomic prediction models, the estimation of breeding values, the calculation of genomic relationship matrices, and to make selection decisions. Within PyBrOpS it is possible to read genotypic data from VCF files to create ``GenotypeMatrix`` objects, allowing for real-world data to be used in breeding program simulations.
 
+Summary of Genotype Matrix Classes
+==================================
+
+Genotype matrix classes in PyBrOpS are found in the ``pybrops.popgen.gmat`` module. Contained in this moduel are several ``GenotypeMatrix`` class type definitions which are summarized in the table below.
+
+.. list-table:: Summary of genotype matrix classes in the ``pybrops.popgen.gmat`` module
+    :widths: 25 15 50
+    :header-rows: 1
+
+    * - Class Name
+      - Class Type
+      - Class Description
+    * - ``GenotypeMatrix``
+      - Abstract
+      - Interface for all genotype matrix child classes.
+    * - ``DenseGenotypeMatrix``
+      - Concrete
+      - Class representing dense, genotype matrices.
+
 Loading Class Modules
 =====================
 
-Genotype matrix support in PyBrOpS is found in the ``pybrops.popgen.gmat`` submodule. The ``GenotypeMatrix`` abstract class is the basal interface for all genotype matrices. Classes can be imported as follows:
+Genotype matrix classes can be imported as follows:
 
 .. code-block:: python
 
@@ -22,12 +41,14 @@ Genotype matrix support in PyBrOpS is found in the ``pybrops.popgen.gmat`` submo
 Creating Genotype Matrices
 ==========================
 
+Genotype matrices can be created using several methods. Genotype matrices may be constructed from raw NumPy arrays, by reading data from VCF files, or by reading data from an HDF5 file containing a saved genotype matrix.
+
 Creating genotype matrices from NumPy arrays
 --------------------------------------------
 
-Genotype matrices can be created from raw ``numpy.ndarray``'s. The example below illustrates creating a ``DenseGenotypeMatrix``. The only requirement to construct a ``DenseGenotypeMatrix`` is a ``(n,p)`` numerical matrix containing genotypic codings. Here, ``n`` is the number of taxa and ``p`` is the number of marker variants. The matrix must be coded in the ``{0,1,2}`` (number of alternative alleles) format and must have an ``int8`` data type.
+Genotype matrices can be created from raw NumPy arrays. The example below illustrates creating a ``DenseGenotypeMatrix``. The only requirement to construct a ``DenseGenotypeMatrix`` is a ``(n,p)`` numerical matrix containing genotypic codings. Here, ``n`` is the number of taxa and ``p`` is the number of marker variants. The matrix must be coded in the ``{0,1,2}`` (number of alternative alleles) format and must have an ``int8`` data type.
 
-Additional optional metadata may be stored along with a ``DenseGenotypeMatrix`` including taxa names (``taxa``), taxa groups (``taxa_grp``), marker variant chromosome assignments (``vrnt_chrgrp``), marker variant chromosme physical positions (``vrnt_phypos``), marker variant names (``vrnt_name``), marker variant genetic map positions (``vrnt_genpos``), sequential recombination probabilities between markers (``vrnt_xoprob``), marker variant haplotype group assignments (``vrnt_hapgrp``), reference haplotype (``vrnt_hapref``), alternative haplotype (``vrnt_hapalt``), a variant mask (``vrnt_mask``), and finally the ploidy of the genotypes (``ploid``).
+Additional optional metadata may be stored along with a ``DenseGenotypeMatrix`` including taxa names (``taxa``), taxa groups (``taxa_grp``), marker variant chromosome assignments (``vrnt_chrgrp``), marker variant chromosome physical positions (``vrnt_phypos``), marker variant names (``vrnt_name``), marker variant genetic map positions (``vrnt_genpos``), sequential recombination probabilities between markers (``vrnt_xoprob``), marker variant haplotype group assignments (``vrnt_hapgrp``), reference haplotype (``vrnt_hapref``), alternative haplotype (``vrnt_hapalt``), a variant mask (``vrnt_mask``), and finally the ploidy of the genotypes (``ploid``).
 
 .. code-block:: python
 
@@ -78,7 +99,7 @@ Additional optional metadata may be stored along with a ``DenseGenotypeMatrix`` 
 Loading genotype matrices from VCF files
 ----------------------------------------
 
-VCF files can be loaded into the Python environment as genotype matrices using the ``from_vcf`` method.
+VCF files can be loaded into Python scopes as genotype matrices using the ``from_vcf`` method.
 
 .. code-block:: python
 
@@ -88,7 +109,7 @@ VCF files can be loaded into the Python environment as genotype matrices using t
 Loading genotype matrices from HDF5 files
 -----------------------------------------
 
-Genotype matrices in PyBrOpS can be exported to HDF5 files via the ``to_hdf5`` method. These files can later be read into PyBrOpS via the ``from_hdf5`` method. The example below illustrates loading a ``GenotypeMatrix`` into memory from an HDF5 file:
+Genotype matrices in PyBrOpS can be exported to HDF5 files via the ``to_hdf5`` method. These files can later be read into PyBrOpS via the ``from_hdf5`` method. The example below illustrates loading a ``DenseGenotypeMatrix`` into memory from an HDF5 file:
 
 .. code-block:: python
 
@@ -98,8 +119,12 @@ Genotype matrices in PyBrOpS can be exported to HDF5 files via the ``to_hdf5`` m
 Genotype Matrix Properties
 ==========================
 
+``GenotypeMatrix`` objects share a set of common object properties which can be grouped into three groups: general properties, taxa properties, and marker variant properties.
+
 General properties
 ------------------
+
+General properties of a genotype matrix primarily relate to the shape and format of the genotype matrix itself. These properties are summarized in the table below.
 
 .. list-table:: Summary of ``GenotypeMatrix`` general properties
     :widths: 25 50
@@ -119,13 +144,11 @@ General properties
       - The ploidy of the taxa represented by the genotype matrix
     * - ``nphase``
       - The number of chromosome phases represented by the genotype matrix
-    * - ``ntaxa``
-      - The number of taxa represented by the genotype matrix
-    * - ``nvrnt``
-      - The number of genotype variants represented by the genotype matrix
 
 Taxa properties
 ---------------
+
+Genotype matrices can store basic information on the taxa represented by the matrix. These data include taxa names and any grouping labels. Grouping labels may be used to indicate a family of individuals. Taxa and taxa grouping data can be accessed using the object properties summarized in the table below.
 
 .. list-table:: Summary of ``GenotypeMatrix`` taxa properties
     :widths: 25 50
@@ -133,6 +156,8 @@ Taxa properties
 
     * - Property
       - Description
+    * - ``ntaxa``
+      - The number of taxa represented by the genotype matrix
     * - ``taxa``
       - The names of the taxa
     * - ``taxa_axis``
@@ -151,12 +176,16 @@ Taxa properties
 Marker variant properties
 -------------------------
 
+Genotype matrices can also store basic information about the genetic markers which are represented by the matrix. Key information about a marker variant's name, chromosome assignment, physical and genetic positions, and sequential crossover probabilities can be stored. The table below summarizes marker variant properties in genotype matrices.
+
 .. list-table:: Summary of ``GenotypeMatrix`` marker variant properties
     :widths: 25 50
     :header-rows: 1
 
     * - Property
       - Description
+    * - ``nvrnt``
+      - The number of genotype variants represented by the genotype matrix
     * - ``vrnt_name``
       - The names of the marker variants
     * - ``vrnt_axis``
@@ -189,8 +218,12 @@ Marker variant properties
 Copying Genotype Matrices
 =========================
 
+Genotype matrices can be copied. There are two methods that can be used to copy a genotype matrix: shallow copying and deep copying.
+
 Shallow copying
 ---------------
+
+In shallow copying, only references to a ``GenotypeMatrix``'s data are copied to a new genotype matrix. Copying is only one level deep so any changes to the data in the original object will be reflected in the copied object.
 
 .. code-block:: python
 
@@ -201,6 +234,8 @@ Shallow copying
 Deep copying
 ------------
 
+In deep copying, a ``GenotypeMatrix``'s data is recursively copied to the deepest level. Changes to data values in the original genotype matrix will not affect the data values in the copy. 
+
 .. code-block:: python
 
     # deep copy a genotype matrix
@@ -210,8 +245,12 @@ Deep copying
 Copy-On Element Manipulation
 ============================
 
+Genotype matrices have several methods which create a modified copy of the original matrix, leaving the original genotype matrix unaltered.
+
 Adjoin elements
 ---------------
+
+The ``adjoin`` family of methods allows for a genotype matrix to be adjoined to another genotype matrix, creating a new matrix in the process. Use of the ``adjoin`` method family is demonstrated in the code below.
 
 .. code-block:: python
 
@@ -228,6 +267,8 @@ Adjoin elements
 
 Delete elements
 ---------------
+
+The ``delete`` family of methods allows for rows (taxa) and columns (marker variants) of the genotype matrix to be removed in a copy of the original. Use of the ``delete`` method family is demonstrated in the code below.
 
 .. code-block:: python
 
@@ -266,6 +307,8 @@ Delete elements
 Insert elements
 ---------------
 
+The ``insert`` family of methods allows for rows (taxa) and columns (marker variants) of the genotype matrix to be inserted into a copy of the original matrix. Use of the ``insert`` method family is demonstrated in the code below.
+
 .. code-block:: python
 
     # create a new genotype matrix to demonstrate
@@ -282,6 +325,8 @@ Insert elements
 Select elements
 ---------------
 
+The ``select`` family of methods allows for rows (taxa) and columns (marker variants) of the genotype matrix to be extracted to a copy of the original matrix. The ``select`` family is the inverse of the ``delete`` family. Use of the ``select`` method family is demonstrated in the code below.
+
 .. code-block:: python
 
     # select first five taxa using a Sequence
@@ -295,8 +340,12 @@ Select elements
 In-Place Element Manipulation
 =============================
 
+Genotype matrices have several methods which create a modify a matrix in-place.
+
 Append elements
 ---------------
+
+The ``append`` family of methods allows for new rows (taxa) and columns (marker variants) to be appended to the genotype matrix. The code segment below demonstrates their use. 
 
 .. code-block:: python
 
@@ -316,6 +365,8 @@ Append elements
 
 Remove elements
 ---------------
+
+The ``remove`` family of methods allows for rows (taxa) and columns (marker variants) to be removed from a genotype matrix. A demonstration of their use can be seen below. 
 
 .. code-block:: python
 
@@ -372,6 +423,8 @@ Remove elements
 Incorporate elements
 --------------------
 
+The ``incorp`` family of methods allows for new rows (taxa) and columns (marker variants) to be inserted at specific locations a genotype matrix. Use of the ``incorp`` family is demonstrated in the code segment below below. 
+
 .. code-block:: python
 
     # incorp genotype matrix along the taxa axis before index 0
@@ -391,6 +444,8 @@ Incorporate elements
 Concatenate elements
 --------------------
 
+The ``concat`` family of methods allows for multiple genotype matrices to be concatenated to each other. The code segment below demonstrates their use. 
+
 .. code-block:: python
 
     # concatenate along the taxa axis
@@ -404,8 +459,12 @@ Concatenate elements
 Grouping and Sorting
 ====================
 
+Genotype matrices in PyBrOpS have several sorting and grouping focused methods. Sorting methods can be used to sort taxa alphanumerically and marker variants according to their chromosome positions. Grouping methods sort taxa and marker variants, and calculate metadata to allow for indexing of taxa groups and chromosomes groups.
+
 Reordering elements
 -------------------
+
+Taxa and marker variants in a genotype matrix can be reordered using the ``reorder`` family of methods.
 
 .. code-block:: python
 
@@ -439,6 +498,8 @@ Reordering elements
 Lexsorting elements
 -------------------
 
+An indirect sort for the taxa and marker variants axes can be performed using the ``lexsort`` family of methods.
+
 .. code-block:: python
 
     #
@@ -470,6 +531,8 @@ Lexsorting elements
 Sorting elements
 ----------------
 
+Sorting along taxa and marker variant axes can be done using the ``sort`` family of methods.
+
 .. code-block:: python
 
     # make copy
@@ -493,6 +556,8 @@ Sorting elements
 
 Grouping elements
 -----------------
+
+Grouping along taxa and marker variant axes can be done using the ``sort`` family of methods.
 
 .. code-block:: python
 
@@ -526,8 +591,12 @@ Grouping elements
 Summary Statistics
 ==================
 
+Various summary statistics can be calculated from genotype matrices. PyBrOpS offers several common routines which are summarized in the sections below.
+
 Population allele counts
 ------------------------
+
+Allele counts of the dominant allele (the allele coded as 1) at each locus may be calculated using the ``acount`` method. The code below demonstrates this method's use.
 
 .. code-block:: python
 
@@ -538,6 +607,8 @@ Population allele counts
 Population allele frequencies
 -----------------------------
 
+Allele frequencies of the dominant allele (the allele coded as 1) at each locus may be calculated using the ``afreq`` method. The code below demonstrates this method's use.
+
 .. code-block:: python
 
     # calculate the allele frequency across all taxa
@@ -546,6 +617,8 @@ Population allele frequencies
 
 Population allele polymorphism presence
 ---------------------------------------
+
+The presense of allele polymorphisms at each locus can be determined using the ``apoly`` method. The code below demonstrates this method's use.
 
 .. code-block:: python
 
@@ -556,6 +629,8 @@ Population allele polymorphism presence
 Population genotype counts
 --------------------------
 
+Genotype counts at each locus may be calculated using the ``gtcount`` method. This method counts the number of homozygous recessive, heterozygous, and homozygous dominant individuals. The code below demonstrates this method's use.
+
 .. code-block:: python
 
     # count the number of genotypes across all taxa
@@ -564,6 +639,8 @@ Population genotype counts
 
 Population genotype frequencies
 -------------------------------
+
+Genotype frequencies at each locus may be calculated using the ``gtfreq`` method. The code below demonstrates this method's use.
 
 .. code-block:: python
 
@@ -574,6 +651,8 @@ Population genotype frequencies
 Population minor allele frequencies
 -----------------------------------
 
+The minor allele frequency at each locus may be calculated using the ``maf`` method. The code below demonstrates the use of this method.
+
 .. code-block:: python
 
     # calculate the minor allele frequency across all taxa
@@ -582,6 +661,8 @@ Population minor allele frequencies
 
 Population mean expected heterozygosity
 ---------------------------------------
+
+The mean expected heterozygosity of the genotype matrix as a whole may be calculated using the ``meh`` method. Use of the ``meh`` method can be seen in the code below.
 
 .. code-block:: python
 
@@ -592,6 +673,8 @@ Population mean expected heterozygosity
 Taxa allele counts
 ------------------
 
+Allele counts of the dominant allele within each individual taxon may be calculated using the ``tacount`` method. A demonstration of this method's use is below.
+
 .. code-block:: python
 
     # count the number of major alleles individually within taxa
@@ -600,6 +683,8 @@ Taxa allele counts
 
 Taxa allele frequencies
 -----------------------
+
+Allele frequencies of the dominant allele within each individual taxon may be calculated using the ``tafreq`` method. The ``tafreq`` method can be used like so.
 
 .. code-block:: python
 
@@ -610,8 +695,12 @@ Taxa allele frequencies
 Saving Genotype Matrices
 ========================
 
+Genotype matrices can be exported and saved to disk. Currently, only one export format is available: HDF5.
+
 Exporting to HDF5
 -----------------
+
+Genotype matrices can be exported to the `HDF5 format <https://www.hdfgroup.org/>`_. The code below demonstrates how to export a genotype matrix to an HDF5 file.
 
 .. code-block:: python
 
