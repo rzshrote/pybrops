@@ -19,7 +19,7 @@ from scipy.interpolate import interp1d
 
 from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_floating, check_ndarray_dtype_is_integer
 from pybrops.core.error.error_value_python import check_is_not_None
-from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim
 from pybrops.core.error.error_value_numpy import check_ndarray_size
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.error.error_type_python import check_is_str
@@ -404,18 +404,33 @@ class ExtendedGeneticMap(GeneticMap):
         """
         # if no keys were provided, set a default
         if keys is None:
-            keys = (
-                self._vrnt_genpos,  # 3rd priority
-                self._vrnt_phypos,  # 2nd priority
-                self._vrnt_chrgrp   # 1st priority
-            )
+            # key priority: (1) vrnt_chrgrp (2) vrnt_phypos (3) vrnt_genpos
+            keys = (self.vrnt_genpos, self.vrnt_phypos, self.vrnt_chrgrp)
+        
+        # if a tuple of keys was provided, check that all keys are ndarrays of 
+        # acceptable length, then remove any None
+        elif isinstance(keys, tuple):
+            for i,key in enumerate(keys):
+                check_is_ndarray(key, "keys[{0}]".format(i))
+                check_ndarray_len_eq(key, "keys[{0}]".format(i), self.nvrnt)
+        
+        # if a ndarray was provided, check that its length is acceptable, 
+        # then convert to tuple
+        elif isinstance(keys, numpy.ndarray):
+            check_ndarray_len_eq(keys, "keys", self.nvrnt)
+            keys = (keys,)
+        
+        # otherwise raise type error
         else:
-            # check that matrix lengths are the same
-            for i,k in enumerate(keys):
-                check_ndarray_size(k, "key"+i, len(self))
-
-        # build tuple
-        keys = tuple(k for k in keys if k is not None)
+            raise TypeError(
+                "argument '{0}' must be of type '{1}', '{2}', or '{3}' but received type '{4}'".format(
+                    "keys",
+                    tuple.__name__,
+                    numpy.ndarray.__name__,
+                    "None",
+                    type(keys).__name__
+                )
+            )
 
         # get indices
         indices = numpy.lexsort(keys)

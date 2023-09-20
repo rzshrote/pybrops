@@ -250,7 +250,13 @@ def check_ndarray_len_eq(v: numpy.ndarray, vname: str, vlen: int) -> None:
         Expected length of the input array.
     """
     if len(v) != vlen:
-        raise ValueError("ndarray '{0}' must have length equal to {1}".format(vname, vlen))
+        raise ValueError(
+            "ndarray '{0}' must have length equal to {1} but received length equal to {2}".format(
+                vname, 
+                vlen, 
+                len(v)
+            )
+        )
 
 def check_ndarray_len_gteq(v: numpy.ndarray, vname: str, vlen: int) -> None:
     """
@@ -266,7 +272,13 @@ def check_ndarray_len_gteq(v: numpy.ndarray, vname: str, vlen: int) -> None:
         Minimum length of the input array.
     """
     if len(v) < vlen:
-        raise ValueError("ndarray '{0}' must have length greater than or equal to {1}".format(vname, vlen))
+        raise ValueError(
+            "ndarray '{0}' must have length greater than or equal to {1} but received length equal to {2}".format(
+                vname, 
+                vlen,
+                len(v)
+            )
+        )
 
 ############### generic_check_ndarray_shape ################
 def check_ndarray_shape_eq(v: numpy.ndarray, vname: str, vshape: tuple) -> None:

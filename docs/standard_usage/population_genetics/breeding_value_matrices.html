@@ -400,8 +400,37 @@
 <h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> family of classes is used to represent breeding values as its name implies. <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> objects can be used in the estimation of genomic prediction models and to make selection decisions.</p>
 </section>
+<section id="summary-of-breeding-value-matrix-classes">
+<h2>Summary of Breeding Value Matrix Classes<a class="headerlink" href="#summary-of-breeding-value-matrix-classes" title="Permalink to this heading">#</a></h2>
+<p>Breeding value matrix classes in PyBrOpS are found in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.bvmat</span></code> module. Within this module are several <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> class definitions which are summarized in the table below.</p>
+<table class="colwidths-given table" id="id1">
+<caption><span class="caption-text">Summary of breeding value matrix classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.bvmat</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 17%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Class Name</p></th>
+<th class="head"><p>Class Type</p></th>
+<th class="head"><p>Class Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code></p></td>
+<td><p>Abstract</p></td>
+<td><p>Interface for all breeding value matrix child classes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DenseBreedingValueMatrix</span></code></p></td>
+<td><p>Concrete</p></td>
+<td><p>Class representing dense, breeding value matrices.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="loading-breeding-value-matrix-modules">
 <h2>Loading Breeding Value Matrix Modules<a class="headerlink" href="#loading-breeding-value-matrix-modules" title="Permalink to this heading">#</a></h2>
+<p>Breeding value matrix classes can be imported as demonstrated in the code chunk below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the BreedingValueMatrix class (an abstract interface class)</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.bvmat.BreedingValueMatrix</span> <span class="kn">import</span> <span class="n">BreedingValueMatrix</span>
 
@@ -412,6 +441,7 @@
 </section>
 <section id="creating-breeding-value-matrices">
 <h2>Creating Breeding Value Matrices<a class="headerlink" href="#creating-breeding-value-matrices" title="Permalink to this heading">#</a></h2>
+<p>Breeding value matrices can be created using several method including from raw NumPy arrays,</p>
 <section id="creating-breeding-value-matrices-from-numpy-arrays">
 <h3>Creating breeding value matrices from NumPy arrays<a class="headerlink" href="#creating-breeding-value-matrices-from-numpy-arrays" title="Permalink to this heading">#</a></h3>
 <p>Using the <code class="docutils literal notranslate"><span class="pre">DenseBreedingValueMatrix</span></code> constructor, one can create a breeding value matrix from NumPy arrays.</p>
@@ -496,8 +526,8 @@
 <h2>Breeding Value Matrix Properties<a class="headerlink" href="#breeding-value-matrix-properties" title="Permalink to this heading">#</a></h2>
 <section id="breeding-value-matrix-general-properties">
 <h3>Breeding value matrix general properties<a class="headerlink" href="#breeding-value-matrix-general-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id1">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> general properties</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<table class="colwidths-given table" id="id2">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> general properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -528,8 +558,8 @@
 </section>
 <section id="breeding-value-matrix-taxa-properties">
 <h3>Breeding value matrix taxa properties<a class="headerlink" href="#breeding-value-matrix-taxa-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id2">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> taxa properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<table class="colwidths-given table" id="id3">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> taxa properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -569,8 +599,8 @@
 </section>
 <section id="breeding-value-matrix-trait-properties">
 <h3>Breeding value matrix trait properties<a class="headerlink" href="#breeding-value-matrix-trait-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id3">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> trait properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
+<table class="colwidths-given table" id="id4">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> trait properties</span><a class="headerlink" href="#id4" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -1018,6 +1048,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#class-family-overview">
    Class Family Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary-of-breeding-value-matrix-classes">
+   Summary of Breeding Value Matrix Classes
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
