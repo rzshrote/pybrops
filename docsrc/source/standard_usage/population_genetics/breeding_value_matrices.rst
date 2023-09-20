@@ -6,8 +6,30 @@ Class Family Overview
 
 The ``BreedingValueMatrix`` family of classes is used to represent breeding values as its name implies. ``BreedingValueMatrix`` objects can be used in the estimation of genomic prediction models and to make selection decisions.
 
+Summary of Breeding Value Matrix Classes
+========================================
+
+Breeding value matrix classes in PyBrOpS are found in the ``pybrops.popgen.bvmat`` module. Within this module are several ``BreedingValueMatrix`` class definitions which are summarized in the table below.
+
+.. list-table:: Summary of breeding value matrix classes in the ``pybrops.popgen.bvmat`` module
+    :widths: 25 15 50
+    :header-rows: 1
+
+    * - Class Name
+      - Class Type
+      - Class Description
+    * - ``BreedingValueMatrix``
+      - Abstract
+      - Interface for all breeding value matrix child classes.
+    * - ``DenseBreedingValueMatrix``
+      - Concrete
+      - Class representing dense, breeding value matrices.
+
+
 Loading Breeding Value Matrix Modules
 =====================================
+
+Breeding value matrix classes can be imported as demonstrated in the code chunk below:
 
 .. code-block:: python
 
@@ -19,6 +41,8 @@ Loading Breeding Value Matrix Modules
 
 Creating Breeding Value Matrices
 ================================
+
+Breeding value matrices can be created using several method including from raw NumPy arrays, 
 
 Creating breeding value matrices from NumPy arrays
 --------------------------------------------------

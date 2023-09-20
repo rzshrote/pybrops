@@ -9,7 +9,7 @@ The ``PhasedGenotypeMatrix`` object family is a derivative of the ``GenotypeMatr
 Summary of Phased Genotype Matrix Classes
 =========================================
 
-Phased genotype matrix classes in PyBrOpS are found in the ``pybrops.popgen.gmat`` module. Contained in this moduel are several ``PhasedGenotypeMatrix`` class type definitions which are summarized in the table below.
+Phased genotype matrix classes in PyBrOpS are found in the ``pybrops.popgen.gmat`` module. Contained in this module are several ``PhasedGenotypeMatrix`` class type definitions which are summarized in the table below.
 
 .. list-table:: Summary of phased genotype matrix classes in the ``pybrops.popgen.gmat`` module
     :widths: 25 15 50

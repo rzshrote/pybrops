@@ -9,7 +9,7 @@ Perhaps the most important family of classes in PyBrOpS is the ``GenotypeMatrix`
 Summary of Genotype Matrix Classes
 ==================================
 
-Genotype matrix classes in PyBrOpS are found in the ``pybrops.popgen.gmat`` module. Contained in this moduel are several ``GenotypeMatrix`` class type definitions which are summarized in the table below.
+Genotype matrix classes in PyBrOpS are found in the ``pybrops.popgen.gmat`` module. Contained in this module are several ``GenotypeMatrix`` class type definitions which are summarized in the table below.
 
 .. list-table:: Summary of genotype matrix classes in the ``pybrops.popgen.gmat`` module
     :widths: 25 15 50
