@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Advanced PyBrOpS Usage &#8212; pybrops 1.0.0 documentation</title>
+    <title>Installation &#8212; pybrops 1.0.0 documentation</title>
   
   
   
@@ -39,11 +39,9 @@
     <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'advanced_usage/advanced_usage';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'getting_started/installation';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Contributing to PyBrOpS" href="../contributing/contributing.html" />
-    <link rel="prev" title="Examples" href="../standard_usage/examples/examples.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
   </head>
@@ -117,7 +115,7 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../getting_started/getting_started.html">
+                      <a class="nav-link nav-internal" href="getting_started.html">
                         Getting Started
                       </a>
                     </li>
@@ -137,8 +135,8 @@
                     </li>
                 
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../advanced_usage/advanced_usage.html">
                         Advanced Usage
                       </a>
                     </li>
@@ -236,7 +234,7 @@
     <ul id="navbar-main-elements" class="navbar-nav">
         
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../getting_started/getting_started.html">
+                      <a class="nav-link nav-internal" href="getting_started.html">
                         Getting Started
                       </a>
                     </li>
@@ -256,8 +254,8 @@
                     </li>
                 
 
-                    <li class="nav-item current active">
-                      <a class="nav-link nav-internal" href="#">
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../advanced_usage/advanced_usage.html">
                         Advanced Usage
                       </a>
                     </li>
@@ -337,9 +335,98 @@
             
             <article class="bd-article" role="main">
               
-  <section id="advanced-pybrops-usage">
-<h1>Advanced PyBrOpS Usage<a class="headerlink" href="#advanced-pybrops-usage" title="Permalink to this heading">#</a></h1>
-<p>Under construction!</p>
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h1>
+<section id="general-installation-requirements">
+<h2>General installation requirements<a class="headerlink" href="#general-installation-requirements" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.8.0+</span></code> is an installation requirement.</p>
+<section id="python-package-dependencies">
+<h3>Python package dependencies<a class="headerlink" href="#python-package-dependencies" title="Permalink to this heading">#</a></h3>
+<p>In addition to a base installation of Python, PyBrOpS relies on several dependencies. They are:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cyvcf2-0.30.14+</span></code> (for reading VCFs)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cvxpy-1.1.18+</span></code> (for linear programming)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">deap-1.3.1+</span></code> (for genetic algorithms)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">h5py-3.6.0+</span></code> (for HDF5 file support)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib-3.5.1+</span></code> (for graphics)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numpy-1.22.2+</span></code> (for matrix storage and algebra)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas-1.4.1+</span></code> (for data frames)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pymoo-0.6.0+</span></code> (for genetic algorithms)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">scipy-1.8.0+</span></code> (for miscellaneous numerical routines)</p></li>
+</ol>
+<p>The following additional packages are also required for the developmental installation of PyBrOpS:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pytest-7.0.1+</span></code> (for unit testing)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pytest-datadir-1.3.1+</span></code> (for unit testing)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">setuptools</span></code> (for package building)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">wheel</span></code> (for package building)</p></li>
+</ol>
+</section>
+<section id="additional-linux-installation-requirements">
+<h3>Additional Linux installation requirements<a class="headerlink" href="#additional-linux-installation-requirements" title="Permalink to this heading">#</a></h3>
+<p>On Linux, you will need to install Python developmental headers in addition to
+<code class="docutils literal notranslate"><span class="pre">Python</span> <span class="pre">3.8.0+</span></code>. Even though PyBrOpS is written in pure Python, some of its
+dependencies require compilation.</p>
+<p>Below are the commands for installing Python developmental headers:</p>
+<table class="colwidths-given table" id="id1">
+<caption><span class="caption-text">Title</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Linux Distro</p></th>
+<th class="head"><p>Command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Fedora</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">dnf</span> <span class="pre">install</span> <span class="pre">python3-devel</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Ubuntu</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">python3-dev</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="release-version-installation">
+<h2>Release version installation<a class="headerlink" href="#release-version-installation" title="Permalink to this heading">#</a></h2>
+<p>To install PyBrOpS, use <code class="docutils literal notranslate"><span class="pre">pip3</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>pip3 install pybrops
+</pre></div>
+</div>
+</section>
+<section id="developmental-version-installation">
+<h2>Developmental version installation<a class="headerlink" href="#developmental-version-installation" title="Permalink to this heading">#</a></h2>
+<p>To install the developmental version, first <code class="docutils literal notranslate"><span class="pre">clone</span></code> the repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/rzshrote/pybrops.git
+</pre></div>
+</div>
+<p>It is a best practice to create a virtual environment where PyBrOpS dependencies
+can be installed. To do this, you can use the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>make install-devel
+</pre></div>
+</div>
+<p>Alternatively, this may be done manually using the following commands:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python3 -m venv env
+<span class="gp">$ </span>. env/bin/activate
+<span class="gp">$ </span>python3 -m pip install --editable .
+</pre></div>
+</div>
+<p>Next, you must activate the virtual environment using either the <code class="docutils literal notranslate"><span class="pre">.</span></code> command
+(for <code class="docutils literal notranslate"><span class="pre">sh</span></code>) or the <code class="docutils literal notranslate"><span class="pre">source</span></code> command (for <code class="docutils literal notranslate"><span class="pre">bash</span></code>):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>. env/bin/activate
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">source</span> env/bin/activate
+</pre></div>
+</div>
+<p>Now that the virtual environment is activated, you can access <code class="docutils literal notranslate"><span class="pre">pybrops</span></code>
+through the <code class="docutils literal notranslate"><span class="pre">python3</span></code> command-line interface prompt and through script
+execution.</p>
+</section>
 </section>
 
 
@@ -350,20 +437,6 @@
             <footer class="bd-footer-article">
                 <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="../standard_usage/examples/examples.html" title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-          <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Examples</p>
-      </div>
-  </a>
-  <a class='right-next' id="next-link" href="../contributing/contributing.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Contributing to PyBrOpS</p>
-  </div>
-  <i class="fa-solid fa-angle-right"></i>
-  </a>
 </div>
             </footer>
             
@@ -373,6 +446,45 @@
           
             <div class="bd-sidebar-secondary bd-toc">
               
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#general-installation-requirements">
+   General installation requirements
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#python-package-dependencies">
+     Python package dependencies
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#additional-linux-installation-requirements">
+     Additional Linux installation requirements
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#release-version-installation">
+   Release version installation
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#developmental-version-installation">
+   Developmental version installation
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
 <div class="toc-item">
   
 <div id="searchbox"></div>

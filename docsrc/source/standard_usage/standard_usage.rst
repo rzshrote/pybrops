@@ -58,3 +58,4 @@ Standard PyBrOpS Usage
     :maxdepth: 1
     :caption: Breeding Program Simulation Examples:
 
+    Examples <examples/examples>
