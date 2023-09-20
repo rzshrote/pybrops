@@ -397,7 +397,9 @@ class Matrix(HDF5InputOutput,metaclass=ABCMeta):
 
     #################### Matrix copying ####################
     @abstractmethod
-    def __copy__(self):
+    def __copy__(
+            self
+        ) -> 'Matrix':
         """
         Make a shallow copy of the Matrix.
 
@@ -409,7 +411,10 @@ class Matrix(HDF5InputOutput,metaclass=ABCMeta):
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __deepcopy__(self, memo):
+    def __deepcopy__(
+            self, 
+            memo: dict
+        ) -> 'Matrix':
         """
         Make a deep copy of the Matrix.
 

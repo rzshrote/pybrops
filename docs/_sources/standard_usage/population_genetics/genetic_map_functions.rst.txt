@@ -9,8 +9,10 @@ The ``GeneticMapFunction`` family of classes allows for the representation of ge
 Summary of Genetic Map Function Classes
 =======================================
 
-.. list-table:: Summary of classes in the ``pybrops.popgen.gmap`` module
-    :widths: 25 20 50
+Genetic map function support in PyBrOpS is found in the ``pybrops.popgen.gmap`` module. Contained in this submodule are several ``GeneticMapFunction`` class type definitions. These classes are summarized in the table below.
+
+.. list-table:: Summary of genetic map function classes in the ``pybrops.popgen.gmap`` module
+    :widths: 25 15 50
     :header-rows: 1
 
     * - Class Name
@@ -71,8 +73,8 @@ Recombination probabilities for arbitrary genetic map distances can be calculate
     # calculate recombination probability using the Kosambi map function
     r_kosambi = kosambi.mapfn(d)
 
-Calculating Map Distances
-=========================
+Calculating Genetic Map Distances
+=================================
 
 Genetic map distances for arbitrary recombination probabilities can be calculated by using the ``invmapfn`` method, the inverse of the ``mapfn`` function. An example of its usage is below:
 
@@ -83,3 +85,54 @@ Genetic map distances for arbitrary recombination probabilities can be calculate
 
     # invert the recombination probability calculated previously
     d_kosambi = kosambi.invmapfn(r_kosambi)
+
+Calculating Sequential and Pairwise Recombination Probabilities
+===============================================================
+
+In some instances, it may be useful to calculate sequential and/or pairwise recombination probabilities to simulate recombination. Genetic map function objects have four methods which allow for the calculation of these probabilities: ``rprob1g``, ``rprob1p``, ``rprob2g``, and ``rprob2p``.
+
+Calculating sequential recombination probabilities
+--------------------------------------------------
+
+The ``rprob1g`` and ``rprob1p`` methods are used to calculate sequential recombination probabilities between successive markers, provided chromosome group assignments, and genetic positions or physical positions, respectively. Chromosome boundaries always start with probabilities of 0.5.
+
+The code segment below demonstrates the use of the ``rprob1g`` and ``rprob1p`` methods.
+
+.. code-block:: python
+
+    # calculate from genetic positions
+    xoprob = haldane.rprob1g(
+        gmap = gmap,
+        vrnt_chrgrp = gmap.vrnt_chrgrp,
+        vrnt_genpos = gmap.vrnt_genpos
+    )
+
+    # calculate from physical positions
+    xoprob = haldane.rprob1p(
+        gmap = gmap,
+        vrnt_chrgrp = gmap.vrnt_chrgrp,
+        vrnt_phypos = gmap.vrnt_phypos
+    )
+
+Calculating pairwise recombination probabilities
+------------------------------------------------
+
+The ``rprob2g`` and ``rprob2p`` methods are used to calculate pairwise recombination probabilities between markers, provided chromosome group assignments, and genetic positions or physical positions, respectively. Inter-chromosome pairings are always assigned probabilities of 0.5.
+
+The code segment below demonstrates the use of the ``rprob2g`` and ``rprob2p`` methods.
+
+.. code-block:: python
+
+    # calculate from genetic positions
+    xoprob = haldane.rprob2g(
+        gmap = gmap,
+        vrnt_chrgrp = gmap.vrnt_chrgrp,
+        vrnt_genpos = gmap.vrnt_genpos
+    )
+
+    # calculate from physical positions
+    xoprob = haldane.rprob2p(
+        gmap = gmap,
+        vrnt_chrgrp = gmap.vrnt_chrgrp,
+        vrnt_phypos = gmap.vrnt_phypos
+    )

@@ -1,5 +1,5 @@
-PyBrOpS Architecture Philosophy
-###############################
+PyBrOpS Software Architecture Philosophy
+########################################
 
 PyBrOpS uses `SOLID design principles <http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod>`_ to guide its architecture. By using SOLID design principles, PyBrOpS is designed to be easily comprehensible, extentible, and maintainable. Many open source softwares commonly used in the plant and animal breeding community is not developed with a robust set of architecture principles, making them difficult to understand and extend. The use of SOLID architectural design principles in PyBrOpS aims to remedy this, maximizing the usefulness of the software to the user.
 

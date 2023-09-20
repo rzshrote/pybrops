@@ -1,3 +1,3 @@
-PyBrOpS Architecture
-####################
+PyBrOpS Implemented Software Architecture
+#########################################
 

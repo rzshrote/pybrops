@@ -35,10 +35,27 @@ Standard PyBrOpS Usage
 
 .. toctree::
     :maxdepth: 1
-    :caption: Breeding Simulation Construction:
+    :caption: Breeding Protocol Modules Usage:
 
-    Genotyping Protocols <breeding_simulation/genotyping_protocols>
-    Phenotyping Protocols <breeding_simulation/phenotyping_protocols>
-    Breeding Value Estimation Protocols <breeding_simulation/breeding_value_protocols>
-    Mating Protocols <breeding_simulation/mating_protocols>
-    Selection Protocols <breeding_simulation/selection_protocols>
+    Genotyping Protocols <breeding_protocols/genotyping_protocols>
+    Phenotyping Protocols <breeding_protocols/phenotyping_protocols>
+    Breeding Value Estimation Protocols <breeding_protocols/breeding_value_protocols>
+    Mating Protocols <breeding_protocols/mating_protocols>
+    Selection Protocols <breeding_protocols/selection_protocols>
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Breeding Operator Modules Usage:
+
+    Initialization Operators <breeding_operators/initialization_operators>
+    Parental Selection Operators <breeding_operators/parental_selection_operators>
+    Mating Operators <breeding_operators/mating_operators>
+    Evaluation Operators <breeding_operators/evaluation_operators>
+    Survivor Selection Operators <breeding_operators/survivor_selection_operators>
+    Logbooks <breeding_operators/logbooks>
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Breeding Program Simulation Examples:
+
+    Examples <examples/examples>

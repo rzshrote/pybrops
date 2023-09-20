@@ -7,7 +7,8 @@ This set of documents describes crucial data types, concepts, and architectural 
     :maxdepth: 1
     :caption: PyBrOpS Fundamentals:
 
-    Architecture Philosophy <architecture/philosophy>
-    Software Architecture <architecture/architecture>
+    Simulation Philosophy <simulation/philosophy>
+    Software Architecture Philosophy <architecture/philosophy>
+    Implemented Software Architecture <architecture/architecture>
     Core Infrastructure <core_infrastructure/core_infrastructure>
     Data Types <data_types/data_types>

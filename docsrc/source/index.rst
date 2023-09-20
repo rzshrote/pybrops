@@ -26,15 +26,16 @@ This guide is an overview and explains the important features PyBrOpS offers.
     :maxdepth: 1
     :caption: Contents:
 
-    Installation <installation/installation>
-    Prerequisites <prerequisites/prerequisites>
+    Getting Started <getting_started/getting_started>
     Fundamentals <fundamentals/fundamentals>
     Standard Usage <standard_usage/standard_usage>
     Advanced Usage <advanced_usage/advanced_usage>
     Contributing <contributing/contributing>
     Frequently Asked Questions <faq/faq>
-    .. API reference <_autosummary/pybrops>
-    .. Examples <examples>
+
+
+.. API reference <_autosummary/pybrops>
+.. Examples <examples>
 
 
 Indices and tables

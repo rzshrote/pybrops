@@ -8,6 +8,8 @@ __all__ = [
     "check_is_ExtendedGeneticMap",
 ]
 
+import copy
+from numbers import Integral
 from typing import Optional, Sequence, Union
 import numpy
 import math
@@ -15,11 +17,10 @@ import pandas
 import warnings
 from scipy.interpolate import interp1d
 
-from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_floating, check_ndarray_dtype_is_integer
 from pybrops.core.error.error_value_python import check_is_not_None
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_numpy import check_ndarray_size
-from pybrops.core.error.error_type_numpy import check_ndarray_dtype
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
@@ -47,6 +48,8 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_genpos: numpy.ndarray, 
             vrnt_name: Optional[numpy.ndarray] = None, 
             vrnt_fncode: Optional[numpy.ndarray] = None, 
+            auto_group: bool = True,
+            auto_build_spline: bool = True,
             **kwargs: dict
         ) -> None:
         """
@@ -72,71 +75,171 @@ class ExtendedGeneticMap(GeneticMap):
         self.vrnt_fncode = vrnt_fncode
         # TODO: check all lengths equivalent
 
-        # sort and group
-        self.group()
+        # set variant metadata to None
+        self.vrnt_chrgrp_name = None
+        self.vrnt_chrgrp_stix = None
+        self.vrnt_chrgrp_spix = None
+        self.vrnt_chrgrp_len  = None
+
+        # set spline metadata to None
+        self.spline = None
+        self.spline_kind = None
+        self.spline_fill_value = None
+
+        # optionally automatically group variants
+        if auto_group:
+            self.group()
+        
+        # optionally automatically build interpolation splines
+        if auto_build_spline:
+            self.build_spline(**kwargs)
 
     def __len__(self):
         """Get the number of markers in the genetic map."""
         return len(self._vrnt_genpos)
 
+    ################## GeneticMap copying ##################
+    def __copy__(
+            self
+        ) -> 'ExtendedGeneticMap':
+        """
+        Make a shallow copy of the ExtendedGeneticMap.
+
+        Returns
+        -------
+        out : ExtendedGeneticMap
+            A shallow copy of the original ExtendedGeneticMap.
+        """
+        # construct a copy of the genetic map
+        out = self.__class__(
+            vrnt_chrgrp       = copy.copy(self.vrnt_chrgrp), 
+            vrnt_phypos       = copy.copy(self.vrnt_phypos), 
+            vrnt_stop         = copy.copy(self.vrnt_stop), 
+            vrnt_genpos       = copy.copy(self.vrnt_genpos), 
+            vrnt_name         = copy.copy(self.vrnt_name), 
+            vrnt_fncode       = copy.copy(self.vrnt_fncode), 
+            auto_group        = False,
+            auto_build_spline = False,
+        )
+
+        # copy the variant metadata to the new object
+        out.vrnt_chrgrp_name = copy.copy(self.vrnt_chrgrp_name)
+        out.vrnt_chrgrp_stix = copy.copy(self.vrnt_chrgrp_stix)
+        out.vrnt_chrgrp_spix = copy.copy(self.vrnt_chrgrp_spix)
+        out.vrnt_chrgrp_len  = copy.copy(self.vrnt_chrgrp_len)
+
+        # copy the spline metadata to the new object
+        out.spline            = copy.copy(self.spline)
+        out.spline_kind       = copy.copy(self.spline_kind)
+        out.spline_fill_value = copy.copy(self.spline_fill_value)
+
+        return out
+
+    def __deepcopy__(
+            self, 
+            memo: dict
+        ) -> 'ExtendedGeneticMap':
+        """
+        Make a deep copy of the ExtendedGeneticMap.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : ExtendedGeneticMap
+            A deep copy of the original ExtendedGeneticMap.
+        """
+        # construct a deep copy of the genetic map
+        out = self.__class__(
+            vrnt_chrgrp       = copy.deepcopy(self.vrnt_chrgrp, memo), 
+            vrnt_phypos       = copy.deepcopy(self.vrnt_phypos, memo), 
+            vrnt_stop         = copy.deepcopy(self.vrnt_stop  , memo), 
+            vrnt_genpos       = copy.deepcopy(self.vrnt_genpos, memo), 
+            vrnt_name         = copy.deepcopy(self.vrnt_name  , memo), 
+            vrnt_fncode       = copy.deepcopy(self.vrnt_fncode, memo), 
+            auto_group        = False,
+            auto_build_spline = False,
+        )
+
+        # deep copy the variant metadata to the new object
+        out.vrnt_chrgrp_name = copy.deepcopy(self.vrnt_chrgrp_name, memo)
+        out.vrnt_chrgrp_stix = copy.deepcopy(self.vrnt_chrgrp_stix, memo)
+        out.vrnt_chrgrp_spix = copy.deepcopy(self.vrnt_chrgrp_spix, memo)
+        out.vrnt_chrgrp_len  = copy.deepcopy(self.vrnt_chrgrp_len , memo)
+
+        # deep copy the spline metadata to the new object
+        out.spline            = copy.copy(self.spline           , memo)
+        out.spline_kind       = copy.copy(self.spline_kind      , memo)
+        out.spline_fill_value = copy.copy(self.spline_fill_value, memo)
+
+        return out
+
     ############################ Object Properties #############################
 
     ################### Data Properites ####################
     @property
+    def nvrnt(self) -> Integral:
+        """Number of variants in the GeneticMap."""
+        return len(self._vrnt_genpos)
+
+    @property
     def vrnt_chrgrp(self) -> numpy.ndarray:
-        """Description for property vrnt_chrgrp."""
+        """Variant chromosome group label."""
         return self._vrnt_chrgrp
     @vrnt_chrgrp.setter
     def vrnt_chrgrp(self, value: numpy.ndarray) -> None:
-        """Set data for property vrnt_chrgrp."""
+        """Set variant chromosome group label array"""
         check_is_ndarray(value, "vrnt_chrgrp")
-        check_ndarray_dtype(value, "vrnt_chrgrp", numpy.int64)
+        check_ndarray_dtype_is_integer(value, "vrnt_chrgrp")
         check_ndarray_ndim(value, "vrnt_chrgrp", 1)
         self._vrnt_chrgrp = value
 
     @property
     def vrnt_phypos(self) -> numpy.ndarray:
-        """Description for property vrnt_phypos."""
+        """Variant physical position."""
         return self._vrnt_phypos
     @vrnt_phypos.setter
     def vrnt_phypos(self, value: numpy.ndarray) -> None:
-        """Set data for property vrnt_phypos."""
+        """Set variant physical position array"""
         check_is_ndarray(value, "vrnt_phypos")
-        check_ndarray_dtype(value, "vrnt_phypos", numpy.int64)
+        check_ndarray_dtype_is_integer(value, "vrnt_phypos")
         check_ndarray_ndim(value, "vrnt_phypos", 1)
         self._vrnt_phypos = value
 
     @property
     def vrnt_genpos(self) -> numpy.ndarray:
-        """Description for property vrnt_genpos."""
+        """Variant genetic position."""
         return self._vrnt_genpos
     @vrnt_genpos.setter
     def vrnt_genpos(self, value: numpy.ndarray) -> None:
-        """Set data for property vrnt_genpos."""
+        """Set variant genetic position array"""
         check_is_ndarray(value, "vrnt_genpos")
-        check_ndarray_dtype(value, "vrnt_genpos", numpy.float64)
+        check_ndarray_dtype_is_floating(value, "vrnt_genpos")
         check_ndarray_ndim(value, "vrnt_genpos", 1)
         self._vrnt_genpos = value
 
     @property
     def vrnt_stop(self) -> numpy.ndarray:
-        """Description for property vrnt_stop."""
+        """Variant physical position stop position."""
         return self._vrnt_stop
     @vrnt_stop.setter
     def vrnt_stop(self, value: numpy.ndarray) -> None:
-        """Set data for property vrnt_stop."""
+        """Set variant physical position stop position array"""
         check_is_ndarray(value, "vrnt_stop")
-        check_ndarray_dtype(value, "vrnt_stop", numpy.int64)
+        check_ndarray_dtype_is_integer(value, "vrnt_stop")
         check_ndarray_ndim(value, "vrnt_stop", 1)
         self._vrnt_stop = value
 
     @property
     def vrnt_name(self) -> Union[numpy.ndarray,None]:
-        """Description for property vrnt_name."""
+        """Variant names."""
         return self._vrnt_name
     @vrnt_name.setter
     def vrnt_name(self, value: Union[numpy.ndarray,None]) -> None:
-        """Set data for property vrnt_name."""
+        """Set variant names."""
         if value is not None:
             check_is_ndarray(value, "vrnt_name")
             check_ndarray_dtype_is_object(value, "vrnt_name")
@@ -145,11 +248,11 @@ class ExtendedGeneticMap(GeneticMap):
 
     @property
     def vrnt_fncode(self) -> Union[numpy.ndarray,None]:
-        """Description for property vrnt_fncode."""
+        """Variant function codes."""
         return self._vrnt_fncode
     @vrnt_fncode.setter
     def vrnt_fncode(self, value: Union[numpy.ndarray,None]) -> None:
-        """Set data for property vrnt_fncode."""
+        """Set variant function codes."""
         if value is not None:
             check_is_ndarray(value, "vrnt_fncode")
             check_ndarray_dtype_is_object(value, "vrnt_fncode")
@@ -159,64 +262,64 @@ class ExtendedGeneticMap(GeneticMap):
     ################# Metadata Properites ##################
     @property
     def vrnt_chrgrp_name(self) -> Union[numpy.ndarray,None]:
-        """Description for property vrnt_chrgrp_name."""
+        """Variant chromosome group names."""
         return self._vrnt_chrgrp_name
     @vrnt_chrgrp_name.setter
     def vrnt_chrgrp_name(self, value: Union[numpy.ndarray,None]) -> None:
-        """Set data for property vrnt_chrgrp_name."""
+        """Set variant chromosome group name array"""
         if value is not None:
             check_is_ndarray(value, "vrnt_chrgrp_name")
-            check_ndarray_dtype(value, "vrnt_chrgrp_name", numpy.int64)
+            check_ndarray_dtype_is_integer(value, "vrnt_chrgrp_name")
             check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
         self._vrnt_chrgrp_name = value
 
     @property
     def vrnt_chrgrp_stix(self) -> Union[numpy.ndarray,None]:
-        """Description for property vrnt_chrgrp_stix."""
+        """Variant chromosome group start indices."""
         return self._vrnt_chrgrp_stix
     @vrnt_chrgrp_stix.setter
     def vrnt_chrgrp_stix(self, value: Union[numpy.ndarray,None]) -> None:
-        """Set data for property vrnt_chrgrp_stix."""
+        """Set variant chromosome group start indices array"""
         if value is not None:
             check_is_ndarray(value, "vrnt_chrgrp_stix")
-            check_ndarray_dtype(value, "vrnt_chrgrp_stix", numpy.int64)
+            check_ndarray_dtype_is_integer(value, "vrnt_chrgrp_stix")
             check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
         self._vrnt_chrgrp_stix = value
 
     @property
     def vrnt_chrgrp_spix(self) -> Union[numpy.ndarray,None]:
-        """Description for property vrnt_chrgrp_spix."""
+        """Variant chromosome group stop indices."""
         return self._vrnt_chrgrp_spix
     @vrnt_chrgrp_spix.setter
     def vrnt_chrgrp_spix(self, value: Union[numpy.ndarray,None]) -> None:
-        """Set data for property vrnt_chrgrp_spix."""
+        """Set variant chromosome group stop indices array"""
         if value is not None:
             check_is_ndarray(value, "vrnt_chrgrp_spix")
-            check_ndarray_dtype(value, "vrnt_chrgrp_spix", numpy.int64)
+            check_ndarray_dtype_is_integer(value, "vrnt_chrgrp_spix")
             check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
         self._vrnt_chrgrp_spix = value
 
     @property
     def vrnt_chrgrp_len(self) -> Union[numpy.ndarray,None]:
-        """Description for property vrnt_chrgrp_len."""
+        """Variant chromosome group length."""
         return self._vrnt_chrgrp_len
     @vrnt_chrgrp_len.setter
     def vrnt_chrgrp_len(self, value: Union[numpy.ndarray,None]) -> None:
-        """Set data for property vrnt_chrgrp_len."""
+        """Set variant chromosome group length array"""
         if value is not None:
             check_is_ndarray(value, "vrnt_chrgrp_len")
-            check_ndarray_dtype(value, "vrnt_chrgrp_len", numpy.int64)
+            check_ndarray_dtype_is_integer(value, "vrnt_chrgrp_len")
             check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
         self._vrnt_chrgrp_len = value
 
     ################## Spline Properites ###################
     @property
     def spline(self) -> Union[dict,None]:
-        """Description for property spline."""
+        """Interpolation spline(s)."""
         return self._spline
     @spline.setter
     def spline(self, value: Union[dict,None]) -> None:
-        """Set data for property spline."""
+        """Set interpolation spline(s)"""
         if value is not None:
             check_is_dict(value, "spline")
         self._spline = value
@@ -224,25 +327,58 @@ class ExtendedGeneticMap(GeneticMap):
     ############# Spline Metadata Properites ###############
     @property
     def spline_kind(self) -> Union[str,None]:
-        """Description for property spline_kind."""
+        """Spline kind."""
         return self._spline_kind
     @spline_kind.setter
     def spline_kind(self, value: Union[str,None]) -> None:
-        """Set data for property spline_kind."""
+        """Set the spline kind"""
         if value is not None:
             check_is_str(value, "spline_kind")
         self._spline_kind = value
 
     @property
     def spline_fill_value(self) -> object:
-        """Description for property spline_fill_value."""
+        """Default spline fill value."""
         return self._spline_fill_value
     @spline_fill_value.setter
     def spline_fill_value(self, value: object) -> None:
-        """Set data for property spline_fill_value."""
+        """Set the default spline fill value"""
         self._spline_fill_value = value
 
     ############################## Object Methods ##############################
+
+    ################## GeneticMap copying ##################
+    def copy(
+            self
+        ) -> 'ExtendedGeneticMap':
+        """
+        Make a shallow copy of the ExtendedGeneticMap.
+
+        Returns
+        -------
+        out : ExtendedGeneticMap
+            A shallow copy of the original ExtendedGeneticMap.
+        """
+        return copy.copy(self)
+
+    def deepcopy(
+            self, 
+            memo: dict
+        ) -> 'ExtendedGeneticMap':
+        """
+        Make a deep copy of the ExtendedGeneticMap.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : ExtendedGeneticMap
+            A deep copy of the original ExtendedGeneticMap.
+        """
+        return copy.deepcopy(self, memo)
 
     ################### Sorting Methods ####################
     def lexsort(
@@ -1147,16 +1283,10 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_stop = vrnt_stop,
             vrnt_genpos = vrnt_genpos,
             vrnt_name = vrnt_name,
-            vrnt_fncode = vrnt_fncode
+            vrnt_fncode = vrnt_fncode,
+            auto_group = auto_group,
+            auto_build_spline = auto_build_spline
         )
-
-        # auto group genetic map on object construction
-        if auto_group:
-            genetic_map.group()
-
-        # auto build interpolation spline on object construction
-        if auto_build_spline:
-            genetic_map.build_spline()
 
         return genetic_map
 

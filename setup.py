@@ -6,64 +6,62 @@ import setuptools
 setup_location = "." # pathlib.Path(__file__).parents[1]
 
 # package metadata: general descriptors
-pybropt_name = "PyBrOpS"
-pybropt_version = "1.0.0"
-pybropt_author = "Robert Z. Shrote"
-pybropt_author_email = "shrotero@msu.edu"
-pybropt_description = "Python package for numerical breeding optimizations"
+pybrops_name = "PyBrOpS"
+pybrops_version = "1.0.0"
+pybrops_author = "Robert Z. Shrote"
+pybrops_author_email = "shrotero@msu.edu"
+pybrops_description = "Python package for numerical breeding optimizations"
 with open("README.md", "r", encoding = "utf-8") as readme_file:
-    pybropt_description_long = readme_file.read()
-    pybropt_description_long_type = "text/markdown"
+    pybrops_description_long = readme_file.read()
+    pybrops_description_long_type = "text/markdown"
 
 # package metadata: project URLs
-pybropt_url = "https://github.com/rzshrote/pybrops"
-pybropt_project_url = {
+pybrops_url = "https://github.com/rzshrote/pybrops"
+pybrops_project_url = {
     "Bug Tracker": "https://github.com/rzshrote/pybrops/issues",
 }
 
 # package metadata: licensing and classifiers
-pybropt_license = "Apache License 2.0"
-pybropt_classifiers = [
+pybrops_license = "Apache License 2.0"
+pybrops_classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
 ]
 
 # package metadata: installation requirements
-pybropt_requirements_python = ">=3.6"
-pybropt_requirements_install = [
+pybrops_requirements_python = ">=3.6"
+pybrops_requirements_install = [
     "numpy",
     "pandas",
-    "cyvcf2",
-    "rpy2",
-    "h5py",
-    "deap",
     "scipy",
-    "cvxpy",
     "matplotlib",
+    "pymoo",
+    "cyvcf2",
+    "h5py",
     "pytest",
     "pytest-datadir"
 ]
 
 # package metadata: package locations
-pybropt_package_directory = {"" : setup_location}
-pybropt_packages = setuptools.find_packages(where = setup_location)
+pybrops_package_directory = {"" : setup_location}
+pybrops_packages = setuptools.find_packages(where = setup_location)
 
 # setup the package
 setuptools.setup(
-    name = pybropt_name,
-    version = pybropt_version,
-    author = pybropt_author,
-    author_email = pybropt_author_email,
-    description = pybropt_description,
-    long_description = pybropt_description_long,
-    long_description_content_type = pybropt_description_long_type,
-    url = pybropt_url,
-    project_urls = pybropt_project_url,
-    license = pybropt_license,
-    classifiers = pybropt_classifiers,
-    package_dir = pybropt_package_directory,
-    packages = pybropt_packages,
-    python_requires = pybropt_requirements_python,
-    install_requires = pybropt_requirements_install
+    name = pybrops_name,
+    version = pybrops_version,
+    author = pybrops_author,
+    author_email = pybrops_author_email,
+    description = pybrops_description,
+    long_description = pybrops_description_long,
+    long_description_content_type = pybrops_description_long_type,
+    url = pybrops_url,
+    project_urls = pybrops_project_url,
+    license = pybrops_license,
+    classifiers = pybrops_classifiers,
+    package_dir = pybrops_package_directory,
+    packages = pybrops_packages,
+    python_requires = pybrops_requirements_python,
+    install_requires = pybrops_requirements_install
 )
