@@ -358,11 +358,11 @@ class ExtendedGeneticMap(GeneticMap):
         out : ExtendedGeneticMap
             A shallow copy of the original ExtendedGeneticMap.
         """
-        return copy.copy(self)
+        return self.__copy__()
 
     def deepcopy(
             self, 
-            memo: dict
+            memo: Optional[dict] = None
         ) -> 'ExtendedGeneticMap':
         """
         Make a deep copy of the ExtendedGeneticMap.
@@ -377,7 +377,7 @@ class ExtendedGeneticMap(GeneticMap):
         out : ExtendedGeneticMap
             A deep copy of the original ExtendedGeneticMap.
         """
-        return copy.deepcopy(self, memo)
+        return self.__deepcopy__(memo)
 
     ################### Sorting Methods ####################
     def lexsort(

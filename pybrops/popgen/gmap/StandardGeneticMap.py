@@ -9,7 +9,6 @@ __all__ = [
 ]
 
 import copy
-import math
 from numbers import Integral
 from typing import Optional, Sequence, Tuple, Union
 import warnings
@@ -21,11 +20,10 @@ from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
 from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim
 from pybrops.core.error.error_type_python import check_is_dict, check_is_str, check_is_str_or_Integral
 from pybrops.core.error.error_value_python import check_tuple_len_eq
-from pybrops.core.io.PandasInputOutput import PandasInputOutput
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 
 
-class StandardGeneticMap(GeneticMap,PandasInputOutput):
+class StandardGeneticMap(GeneticMap):
     """
     A concrete class for representing a standard genetic map format.
 
@@ -49,7 +47,7 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
             spline_fill_value: Union[str,numpy.ndarray] = "extrapolate",
             vrnt_genpos_units: str = "M",
             auto_group: bool = True,
-            auto_build_spline = True,
+            auto_build_spline: bool = True,
             **kwargs: dict
         ) -> None:
         """
@@ -161,14 +159,22 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
 
         # initialize the object instance
         out.__init__(
-            vrnt_chrgrp = copy.copy(self.vrnt_chrgrp), 
-            vrnt_phypos = copy.copy(self.vrnt_phypos), 
-            vrnt_genpos = copy.copy(self.vrnt_genpos),
+            vrnt_chrgrp       = copy.copy(self.vrnt_chrgrp), 
+            vrnt_phypos       = copy.copy(self.vrnt_phypos), 
+            vrnt_genpos       = copy.copy(self.vrnt_genpos),
+            spline            = copy.copy(self.spline),
+            spline_kind       = copy.copy(self.spline_kind),
+            spline_fill_value = copy.copy(self.spline_fill_value),
+            vrnt_genpos_units = "M",
+            auto_group        = False,
+            auto_build_spline = False,
         )
 
         # copy variant metadata to the new object
-
-        # copy the spline metadata to the new object
+        out.vrnt_chrgrp_name = copy.copy(self.vrnt_chrgrp_name)
+        out.vrnt_chrgrp_stix = copy.copy(self.vrnt_chrgrp_stix)
+        out.vrnt_chrgrp_spix = copy.copy(self.vrnt_chrgrp_spix)
+        out.vrnt_chrgrp_len  = copy.copy(self.vrnt_chrgrp_len)
 
         return out
 
@@ -197,14 +203,22 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
 
         # initialize the object instance
         out.__init__(
-            vrnt_chrgrp = copy.deepcopy(self.vrnt_chrgrp), 
-            vrnt_phypos = copy.deepcopy(self.vrnt_phypos), 
-            vrnt_genpos = copy.deepcopy(self.vrnt_genpos),
+            vrnt_chrgrp       = copy.deepcopy(self.vrnt_chrgrp,       memo), 
+            vrnt_phypos       = copy.deepcopy(self.vrnt_phypos,       memo), 
+            vrnt_genpos       = copy.deepcopy(self.vrnt_genpos,       memo),
+            spline            = copy.deepcopy(self.spline,            memo),
+            spline_kind       = copy.deepcopy(self.spline_kind,       memo),
+            spline_fill_value = copy.deepcopy(self.spline_fill_value, memo),
+            vrnt_genpos_units = "M",
+            auto_group        = False,
+            auto_build_spline = False,
         )
 
         # copy variant metadata to the new object
-
-        # copy the spline metadata to the new object
+        out.vrnt_chrgrp_name = copy.deepcopy(self.vrnt_chrgrp_name, memo)
+        out.vrnt_chrgrp_stix = copy.deepcopy(self.vrnt_chrgrp_stix, memo)
+        out.vrnt_chrgrp_spix = copy.deepcopy(self.vrnt_chrgrp_spix, memo)
+        out.vrnt_chrgrp_len  = copy.deepcopy(self.vrnt_chrgrp_len,  memo)
 
         return out
 
@@ -370,18 +384,18 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
         out : StandardGeneticMap
             A shallow copy of the original StandardGeneticMap.
         """
-        return copy.copy(self)
+        return self.__copy__()
 
     def deepcopy(
             self, 
-            memo: dict
+            memo: Optional[dict] = None
         ) -> 'StandardGeneticMap':
         """
         Make a deep copy of the StandardGeneticMap.
 
         Parameters
         ----------
-        memo : dict
+        memo : dict, None
             Dictionary of memo metadata.
 
         Returns
@@ -389,7 +403,7 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
         out : StandardGeneticMap
             A deep copy of the original StandardGeneticMap.
         """
-        return copy.deepcopy(self, memo)
+        return self.__deepcopy__(memo)
 
     ################### Sorting Methods ####################
     def lexsort(
@@ -454,13 +468,13 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
             indices: Union[Sequence,numpy.ndarray]
         ) -> None:
         """
-        Reorder markers in the GeneticMap using an array of indices.
-        Note this modifies the GeneticMap in-place.
+        Reorder markers in-place in the GeneticMap using an array of indices.
 
         Parameters
         ----------
         indices : (N,) ndarray of ints
             Array of indices that reorder the matrix along the specified axis.
+
         kwargs : dict
             Additional keyword arguments.
         """
@@ -581,7 +595,7 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
         self._vrnt_phypos = self._vrnt_phypos[indices]
         self._vrnt_genpos = self._vrnt_genpos[indices]
 
-        # sort and group
+        # automatically sort and group
         self.group()
 
     ################## Integrity Methods ###################
@@ -589,21 +603,26 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
             self
         ) -> numpy.ndarray:
         """
-        If not grouped, will group.
-        Assess physical and genetic map site congruency.
+        Assess physical and genetic map site congruency. If the genetic map is 
+        not grouped, it will be grouped. 
 
-        Notes:
-            This assumes high contiguity between physical and genetic maps
-            (i.e. a high quality reference genome). This assumption may cause
-            major issues if there are incorrect markers at the beginning of the
-            chromosome.
-            Assumes the first marker on the chromosome is placed correctly.
         Returns
         -------
         out : numpy.ndarray
             A boolean matrix of map concordancies where:
-            True = the current marker has a map_pos >= the previous position
-            False = the current marker has a map_pos < the previous position
+
+            - ``True`` = the current marker has a map_pos >= the previous 
+              position
+            - ``False`` = the current marker has a map_pos < the previous 
+              position
+
+        Notes
+        -----
+        This assumes high contiguity between physical and genetic maps
+        (i.e. a high quality reference genome). This assumption may cause
+        major issues if there are incorrect markers at the beginning of the
+        chromosome. This also assumes the first marker on the chromosome is 
+        placed correctly.
         """
         # group as a prerequisite
         if not self.is_grouped():
@@ -626,9 +645,14 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
             self
         ) -> bool:
         """
-        Determine if the genetic map is congruent
         Determine if all sites in the genetic map demonstrate congruence with
         their supposed physical and genetic positions.
+
+        Returns
+        -------
+        out : bool
+            Whether all genetic map loci demonstrate congruence between 
+            physical and genetic positions.
         """
         # determine if all sites are congruent
         out = numpy.all(self.congruence())
@@ -641,9 +665,10 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
         Remove discrepancies between the physical map and the genetic map.
         In instances of conflict, assume that the physical map is correct.
 
-        Note:
-            This assumption may cause major issues if there are incorrect
-            markers at the beginning of the chromosome.
+        Notes
+        -----
+        This assumption may cause major issues if there are incorrect markers 
+        at the beginning of the chromosome.
         """
         # get boolean mask for concordant map positions
         mask = self.congruence()
@@ -659,12 +684,11 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
     def build_spline(
             self, 
             kind: str = 'linear', 
-            fill_value: Union[numpy.ndarray,str] = 'extrapolate', 
+            fill_value: Union[str,numpy.ndarray] = 'extrapolate', 
             **kwargs: dict
         ) -> None:
         """
-        Build a spline for estimating genetic map distances. This is built
-        using the marker start indices (self.chr_start)
+        Build a spline for estimating genetic map distances.
 
         Parameters
         ----------
@@ -676,6 +700,7 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
             'previous' and 'next' simply return the previous or next value of
             the point) or as an integer specifying the order of the spline
             interpolator to use.
+
         fill_value : array-like, {'extrapolate'}, default = 'extrapolate'
             If 'extrapolate', then points outside the data range will be
             extrapolated.
@@ -689,6 +714,7 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
             or ndarray, regardless of shape) is taken to be a single array-like
             argument meant to be used for both bounds as below,
             above = fill_value, fill_value.
+
         kwargs : dict
             Additional keyword arguments.
         """
@@ -719,7 +745,14 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
     def has_spline(
             self
         ) -> bool:
-        """Return whether or not the GeneticMap has a built spline."""
+        """
+        Return whether or not the GeneticMap has a built spline.
+        
+        Returns
+        -------
+        out : bool
+            Whether the GeneticMap has a spline built.
+        """
         return (
             (self._spline is not None) and
             (self._spline_kind is not None) and
@@ -732,20 +765,24 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
             vrnt_phypos: numpy.ndarray
         ) -> numpy.ndarray:
         """
-        Interpolate genetic positions given variant physical positions
+        Interpolate genetic positions given variant physical positions.
 
         Parameters
         ----------
         vrnt_chrgrp : numpy.ndarray
+            Chromosome/linkage group labels for each marker variant.
+        
         vrnt_phypos : numpy.ndarray
+            Chromosome/linkage group physical positions for each marker variant.
 
         Returns
         -------
         out : numpy.ndarray
+            Interpolated genetic positions for each marker variant.
         """
         # raise error if no spline is found
         if not self.has_spline():
-            raise RuntimeError("interpolation spline not built")
+            raise ValueError("interpolation spline not built")
 
         # raise warning if map is not congruent
         if not self.is_congruent():
@@ -771,11 +808,55 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
             **kwargs: dict
         ) -> 'StandardGeneticMap':
         """
-        Interpolate a new genetic map from the current genetic map.
-        Associate spline of current GeneticMap with new GeneticMap.
+        Interpolate a new genetic map from the current genetic map. Associate 
+        spline of current GeneticMap with new GeneticMap.
+
+        Parameters
+        ----------
+        vrnt_chrgrp : numpy.ndarray
+            Chromosome/linkage group labels for each marker variant.
+        
+        vrnt_phypos : numpy.ndarray
+            Chromosome/linkage group physical positions for each marker variant.
+
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : StandardGeneticMap
+            An interpolated genetic map sharing a copy of the spline from the 
+            original genetic map.
         """
         # interpolate genetic positions
         vrnt_genpos = self.interp_genpos(vrnt_chrgrp, vrnt_phypos)
+
+        # get the class of self
+        cls = self.__class__
+
+        # create a new object instance
+        out = cls.__new__(cls)
+
+        # initialize the object instance
+        out.__init__(
+            vrnt_chrgrp       = vrnt_chrgrp, 
+            vrnt_phypos       = vrnt_phypos,
+            vrnt_genpos       = vrnt_genpos,
+            spline            = copy.deepcopy(self.spline),
+            spline_kind       = copy.deepcopy(self.spline_kind),
+            spline_fill_value = copy.deepcopy(self.spline_fill_value),
+            vrnt_genpos_units = "M",
+            auto_group        = False,
+            auto_build_spline = False,
+        )
+
+        # copy variant metadata to the new object
+        out.vrnt_chrgrp_name = copy.deepcopy(self.vrnt_chrgrp_name)
+        out.vrnt_chrgrp_stix = copy.deepcopy(self.vrnt_chrgrp_stix)
+        out.vrnt_chrgrp_spix = copy.deepcopy(self.vrnt_chrgrp_spix)
+        out.vrnt_chrgrp_len  = copy.deepcopy(self.vrnt_chrgrp_len)
+
+        return out
 
         # create a new genetic map using interpolations from self
         gmap = self.__class__(
@@ -785,11 +866,6 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
             **kwargs
         )
 
-        # copy pointers to spline and spline metadata
-        gmap._spline = self._spline
-        gmap._spline_kind = self._spline_kind
-        gmap._spline_fill_value = self._spline_fill_value
-
         # return new GeneticMap instance
         return gmap
 
@@ -798,30 +874,42 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
             self, 
             vrnt_chrgrp: numpy.ndarray, 
             vrnt_genpos: numpy.ndarray, 
-            ast: Optional[int] = None, 
-            asp: Optional[int] = None
+            ast: Optional[Integral] = None, 
+            asp: Optional[Integral] = None
         ) -> numpy.ndarray:
         """
         Calculate sequential genetic distances using genetic positions.
-        Requires vrnt_chrgrp and vrnt_genpos to have been sorted descending.
-
-        Sequential distance arrays will start every chromosome with numpy.inf!
+        Requires ``vrnt_chrgrp`` and ``vrnt_genpos`` to have been sorted 
+        jointly in ascending order.
 
         Parameters
         ----------
         vrnt_chrgrp : numpy.ndarray
             A 1D array of variant chromosome groups.
+            Must be sorted in ascending order jointly with ``vrnt_genpos``.
+
         vrnt_genpos : numpy.ndarray
             A 1D array of variant genetic positions.
-        ast : int, None
+            Must be sorted in ascending order jointly with ``vrnt_chrgrp``.
+
+        ast : Integral, None
             Optional array start index (inclusive).
-        asp : int, None
+            If ``None``, assume that all array elements are to be used for 
+            sequential genetic distance calculations.
+
+        asp : Integral, None
             Optional array stop index (exclusive).
+            If ``None``, assume that all array elements are to be used for 
+            sequential genetic distance calculations.
 
         Returns
         -------
-        gdist : numpy.ndarray
+        out : numpy.ndarray
             A 1D array of distances between the marker prior.
+
+        Notes
+        -----
+        Sequential distance arrays will start every chromosome with numpy.inf!
         """
         # get views of only sections we'll be looking at
         view_chrgrp = vrnt_chrgrp[ast:asp]
@@ -834,48 +922,64 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
         stop = start + counts
 
         # allocate empty array
-        gdist = numpy.empty(view_genpos.shape, dtype='float64')
+        out = numpy.empty(view_genpos.shape, dtype='float64')
 
         # for each chromosome group
         for st,sp in zip(start, stop):
             # infinite distance between chromosomes
-            gdist[st] = numpy.inf
+            out[st] = numpy.inf
             # subtract distances
-            gdist[st+1:sp] = view_genpos[st+1:sp] - view_genpos[st:sp-1]
+            out[st+1:sp] = view_genpos[st+1:sp] - view_genpos[st:sp-1]
 
-        return gdist
+        return out
 
     def gdist2g(
             self, 
             vrnt_chrgrp: numpy.ndarray, 
             vrnt_genpos: numpy.ndarray, 
-            rst: Optional[int] = None, 
-            rsp: Optional[int] = None, 
-            cst: Optional[int] = None, 
-            csp: Optional[int] = None
+            rst: Optional[Integral] = None, 
+            rsp: Optional[Integral] = None, 
+            cst: Optional[Integral] = None, 
+            csp: Optional[Integral] = None
         ) -> numpy.ndarray:
         """
         Calculate pairwise genetic distances using genetic positions.
-        Requires vrnt_chrgrp and vrnt_genpos to have been sorted descending.
+        Requires ``vrnt_chrgrp`` and ``vrnt_genpos`` to have been sorted 
+        jointly in ascending order.
 
         Parameters
         ----------
         vrnt_chrgrp : numpy.ndarray
             A 1D array of variant chromosome groups.
+            Must be sorted in ascending order jointly with ``vrnt_genpos``.
+
         vrnt_genpos : numpy.ndarray
             A 1D array of variant genetic positions.
-        rst : int, None
+            Must be sorted in ascending order jointly with ``vrnt_chrgrp``.
+
+        rst : Integral, None
             Optional row start index (inclusive).
-        rsp : int, None
+            If ``None``, assume that all rows are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
+
+        rsp : Integral, None
             Optional row stop index (exclusive).
-        cst : int, None
+            If ``None``, assume that all rows are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
+
+        cst : Integral, None
             Optional column start index (inclusive).
-        csp : int, None
+            If ``None``, assume that all columns are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
+
+        csp : Integral, None
             Optional column stop index (exclusive).
+            If ``None``, assume that all columns are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
 
         Returns
         -------
-        gdist : numpy.ndarray
+        out : numpy.ndarray
             A 2D array of distances between marker pairs.
         """
         # TODO: # OPTIMIZE: fill with inf, then add distances? - assumes sort
@@ -886,78 +990,111 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
         gi, gj = numpy.meshgrid(vrnt_genpos[rst:rsp], vrnt_genpos[cst:csp], indexing='ij', sparse=True)
 
         # calculate absolute distances
-        gdist = numpy.abs(gi - gj)
+        out = numpy.abs(gi - gj)
 
         # where chromosomes are different, set to numpy.inf
-        gdist[mi != mj] = numpy.inf
+        out[mi != mj] = numpy.inf
 
-        return gdist
+        return out
 
     def gdist1p(
             self, 
             vrnt_chrgrp: numpy.ndarray, 
             vrnt_phypos: numpy.ndarray, 
-            ast: Optional[int] = None, 
-            asp: Optional[int] = None
+            ast: Optional[Integral] = None, 
+            asp: Optional[Integral] = None
         ) -> numpy.ndarray:
         """
         Calculate sequential genetic distances using physical positions.
-        Requires vrnt_chrgrp and vrnt_phypos to have been sorted descending.
-        Requires a spline to have been built beforehand.
+        Requires ``vrnt_chrgrp`` and ``vrnt_phypos`` to have been sorted 
+        jointly in ascending order. Requires an interpolation spline to have 
+        been built beforehand.
 
         Parameters
         ----------
         vrnt_chrgrp : numpy.ndarray
             A 1D array of variant chromosome groups.
+            Must be sorted in ascending order jointly with ``vrnt_phypos``.
+
         vrnt_phypos : numpy.ndarray
-            A 1D array of variant physical positions.
+            A 1D array of variant genetic positions.
+            Must be sorted in ascending order jointly with ``vrnt_chrgrp``.
+
+        ast : Integral, None
+            Optional array start index (inclusive).
+            If ``None``, assume that all array elements are to be used for 
+            sequential genetic distance calculations.
+
+        asp : Integral, None
+            Optional array stop index (exclusive).
+            If ``None``, assume that all array elements are to be used for 
+            sequential genetic distance calculations.
 
         Returns
         -------
-        gdist : numpy.ndarray
+        out : numpy.ndarray
             A 1D array of distances between the marker prior.
+
+        Notes
+        -----
+        Sequential distance arrays will start every chromosome with numpy.inf!
         """
         # TODO: # OPTIMIZE: don't interpolate all markers
         # interpolate genetic positions
         vrnt_genpos = self.interp_genpos(vrnt_chrgrp, vrnt_phypos)
 
         # calculate genetic distances
-        gdist = self.gdist1g(vrnt_chrgrp, vrnt_genpos, ast, asp)
+        out = self.gdist1g(vrnt_chrgrp, vrnt_genpos, ast, asp)
 
-        return gdist
+        return out
 
     def gdist2p(
             self, 
             vrnt_chrgrp: numpy.ndarray, 
             vrnt_phypos: numpy.ndarray, 
-            rst: Optional[int] = None, 
-            rsp: Optional[int] = None, 
-            cst: Optional[int] = None, 
-            csp: Optional[int] = None
+            rst: Optional[Integral] = None, 
+            rsp: Optional[Integral] = None, 
+            cst: Optional[Integral] = None, 
+            csp: Optional[Integral] = None
         ) -> numpy.ndarray:
         """
         Calculate pairwise genetic distances using physical positions.
-        Requires vrnt_chrgrp and vrnt_phypos to have been sorted descending.
-        Requires a spline to have been built beforehand.
+        Requires ``vrnt_chrgrp`` and ``vrnt_phypos`` to have been sorted 
+        jointly in ascending order.
 
         Parameters
         ----------
         vrnt_chrgrp : numpy.ndarray
             A 1D array of variant chromosome groups.
+            Must be sorted in ascending order jointly with ``vrnt_phypos``.
+
         vrnt_phypos : numpy.ndarray
-            A 1D array of variant physical positions.
-        rst : int, None
+            A 1D array of variant genetic positions.
+            Must be sorted in ascending order jointly with ``vrnt_chrgrp``.
+
+        rst : Integral, None
             Optional row start index (inclusive).
-        rsp : int, None
+            If ``None``, assume that all rows are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
+
+        rsp : Integral, None
             Optional row stop index (exclusive).
-        cst : int, None
+            If ``None``, assume that all rows are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
+
+        cst : Integral, None
             Optional column start index (inclusive).
-        csp : int, None
+            If ``None``, assume that all columns are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
+
+        csp : Integral, None
             Optional column stop index (exclusive).
+            If ``None``, assume that all columns are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
 
         Returns
         -------
-        gdist : numpy.ndarray
+        out : numpy.ndarray
             A 2D array of distances between marker pairs.
         """
         # TODO: # OPTIMIZE: don't interpolate all markers
@@ -965,9 +1102,9 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
         vrnt_genpos = self.interp_genpos(vrnt_chrgrp, vrnt_phypos)
 
         # calculate genetic distances
-        gdist = self.gdist2g(vrnt_chrgrp, vrnt_genpos, rst, rsp, cst, csp)
+        out = self.gdist2g(vrnt_chrgrp, vrnt_genpos, rst, rsp, cst, csp)
 
-        return gdist
+        return out
 
     #################### Export Methods ####################
     def to_pandas(
@@ -1112,7 +1249,7 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
             spline_fill_value: Union[str,numpy.ndarray] = "extrapolate",
             vrnt_genpos_units: str = "M",
             auto_group: bool = True,
-            auto_build_spline = True,
+            auto_build_spline: bool = True,
             **kwargs: dict
         ) -> 'StandardGeneticMap':
         """
@@ -1222,7 +1359,7 @@ class StandardGeneticMap(GeneticMap,PandasInputOutput):
             spline_fill_value: Union[str,numpy.ndarray] = "extrapolate",
             vrnt_genpos_units: str = "M",
             auto_group: bool = True,
-            auto_build_spline = True,
+            auto_build_spline: bool = True,
             **kwargs: dict
         ) -> 'StandardGeneticMap':
         """
