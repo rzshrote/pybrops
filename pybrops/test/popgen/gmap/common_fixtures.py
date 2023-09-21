@@ -130,6 +130,6 @@ class DummyGeneticMap(GeneticMap):
         return super().sort(keys, **kwargs)
     def to_csv(self, fname: str, sep: str, header: bool, index: bool | int, **kwargs: dict) -> None:
         return super().to_csv(fname, sep, header, index, **kwargs)
-    def to_pandas_df(self) -> pandas.DataFrame:
-        return super().to_pandas_df()
+    def to_pandas(self) -> pandas.DataFrame:
+        return super().to_pandas()
 

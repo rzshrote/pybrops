@@ -469,3 +469,24 @@ def check_is_list_or_tuple(v: object, vname: str) -> None:
     """
     if not isinstance(v, (list,tuple)):
         raise TypeError("variable '{0}' must be of type '{1}' or '{2}' but received type '{3}'".format(vname,list.__name__,tuple.__name__,type(v).__name__))
+
+def check_is_str_or_Integral(v: object, vname: str) -> None:
+    """
+    Check if a Python object is a ``str`` or ``Integral``. Raise error if not.
+
+    Parameters
+    ----------
+    v : object
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if not isinstance(v, (str,Integral)):
+        raise TypeError(
+            "variable '{0}' must be of type '{1}' or '{2}' but received type '{3}'".format(
+                vname,
+                str.__name__,
+                Integral.__name__,
+                type(v).__name__
+            )
+        )

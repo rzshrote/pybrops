@@ -254,6 +254,33 @@ def check_str_value(v: str, vname: str, *args: tuple) -> None:
     if v not in args:
         raise ValueError("string '{0}' must be one of: {1}".format(vname, args))
 
+############################################################
+################## Tuple check functions ###################
+############################################################
+
+def check_tuple_len_eq(v: tuple, vname: str, vlen: int) -> None:
+    """
+    Check if a tuple has a length equal to a provided value.
+    Raise error if object length is not equal to provided value.
+
+    Parameters
+    ----------
+    v : tuple
+        A Python tuple
+    vname : str
+        Name of the Python tuple for use in the error message.
+    vlen : int
+        Expected length of the Python tuple.
+    """
+    if len(v) != vlen:
+        raise ValueError(
+            "tuple '{0}' must have length equal to {1} but received length {2}".format(
+                vname,
+                vlen,
+                len(v)
+            )
+        )
+
 ##################################################
 ########### Dictionary check functions ###########
 ##################################################
