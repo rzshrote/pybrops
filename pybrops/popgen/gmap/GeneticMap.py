@@ -12,8 +12,11 @@ from numbers import Integral
 from typing import Optional, Union
 import numpy
 import pandas
+from pybrops.core.io.CSVInputOutput import CSVInputOutput
 
-class GeneticMap(metaclass=ABCMeta):
+from pybrops.core.io.PandasInputOutput import PandasInputOutput
+
+class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
     """
     An abstract class for genetic map objects.
 
@@ -640,42 +643,95 @@ class GeneticMap(metaclass=ABCMeta):
 
     #################### Export Methods ####################
     @abstractmethod
-    def to_pandas_df(
-            self
+    def to_pandas(
+            self, 
+            **kwargs: dict
         ) -> pandas.DataFrame:
         """
-        Convert a GeneticMap object to a pandas DataFrame.
+        Export a GeneticMap object to a pandas.DataFrame.
 
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a 
+            pandas.DataFrame.
+        
         Returns
         -------
-        df : pandas.DataFrame
-            A pandas DataFrame containing genetic map data.
+        out : pandas.DataFrame
+            An output dataframe.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
     def to_csv(
             self, 
-            fname: str, 
-            sep: str, 
-            header: bool, 
-            index: Union[bool,int], 
+            filename: str,
             **kwargs: dict
         ) -> None:
         """
-        Convert a GeneticMap object to a csv file.
+        Write a GeneticMap to a CSV file.
 
         Parameters
         ----------
-        fname : str
-        sep : str
-        header : bool
-        index : bool, int
+        filename : str
+            CSV file name to which to write.
         kwargs : dict
-            Additional keyword arguments
+            Additional keyword arguments to use for dictating export to a CSV.
         """
         raise NotImplementedError("method is abstract")
 
+    ############################## Class Methods ###############################
+
+    #################### Import Methods ####################
+    @classmethod
+    @abstractmethod
+    def from_pandas(
+            cls, 
+            df: pandas.DataFrame,
+            **kwargs: dict
+        ) -> 'GeneticMap':
+        """
+        Read an object from a pandas.DataFrame.
+
+        Parameters
+        ----------
+        df : pandas.DataFrame
+            Pandas dataframe from which to read.
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a 
+            pandas.DataFrame.
+
+        Returns
+        -------
+        out : GeneticMap
+            A GeneticMap read from a pandas.DataFrame.
+        """
+        raise NotImplementedError("class method is abstract")
+
+    @classmethod
+    @abstractmethod
+    def from_csv(
+            cls, 
+            filename: str,
+            **kwargs: dict
+        ) -> 'GeneticMap':
+        """
+        Read a GeneticMap from a CSV file.
+
+        Parameters
+        ----------
+        filename : str
+            CSV file name from which to read.
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a CSV.
+
+        Returns
+        -------
+        out : GeneticMap
+            A GeneticMap read from a CSV file.
+        """
+        raise NotImplementedError("class method is abstract")
 
 
 ################################## Utilities ###################################

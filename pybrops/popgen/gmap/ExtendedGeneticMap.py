@@ -20,7 +20,6 @@ from scipy.interpolate import interp1d
 from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_floating, check_ndarray_dtype_is_integer
 from pybrops.core.error.error_value_python import check_is_not_None
 from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim
-from pybrops.core.error.error_value_numpy import check_ndarray_size
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
@@ -1115,7 +1114,7 @@ class ExtendedGeneticMap(GeneticMap):
         return gdist
 
     #################### Export Methods ####################
-    def to_pandas_df(
+    def to_pandas(
             self
         ) -> pandas.DataFrame:
         """
@@ -1154,7 +1153,7 @@ class ExtendedGeneticMap(GeneticMap):
         Convert a GeneticMap object to a csv file.
         """
         # convert GeneticMap to DataFrame
-        df = self.to_pandas_df()
+        df = self.to_pandas()
 
         # write to csv
         df.to_csv(
@@ -1178,7 +1177,7 @@ class ExtendedGeneticMap(GeneticMap):
 
     ############################## Class Methods ###############################
     @classmethod
-    def from_pandas_df(
+    def from_pandas(
             cls, 
             pandas_df: pandas.DataFrame, 
             vrnt_chrgrp_ix: int = 0, 
@@ -1366,7 +1365,7 @@ class ExtendedGeneticMap(GeneticMap):
             header=header
         )
 
-        genetic_map = cls.from_pandas_df(
+        genetic_map = cls.from_pandas(
             pandas_df = df,
             vrnt_chrgrp_ix = vrnt_chrgrp_ix,
             vrnt_phypos_ix = vrnt_phypos_ix,
@@ -1468,7 +1467,7 @@ class ExtendedGeneticMap(GeneticMap):
             header = 0      # there is a header
         )
 
-        genetic_map = cls.from_pandas_df(
+        genetic_map = cls.from_pandas(
             pandas_df = df,
             vrnt_chrgrp_ix = 0,
             vrnt_phypos_ix = 1,
