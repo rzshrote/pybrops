@@ -10,17 +10,23 @@ __all__ = [
 
 import copy
 from numbers import Integral
-from typing import Optional, Sequence, Union
+from typing import Optional, Sequence, Tuple, Union
 import numpy
 import math
 import pandas
 import warnings
 from scipy.interpolate import interp1d
 
-from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_floating, check_ndarray_dtype_is_integer
-from pybrops.core.error.error_value_python import check_is_not_None
-from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_is_str_or_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_floating
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
+from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
+from pybrops.core.error.error_value_python import check_tuple_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_type_python import check_is_str_or_Integral
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
@@ -47,43 +53,114 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_genpos: numpy.ndarray, 
             vrnt_name: Optional[numpy.ndarray] = None, 
             vrnt_fncode: Optional[numpy.ndarray] = None, 
+            spline: Optional[dict] = None,
+            spline_kind: str = "linear",
+            spline_fill_value: Union[str,numpy.ndarray] = "extrapolate",
+            vrnt_genpos_units: str = "M",
             auto_group: bool = True,
             auto_build_spline: bool = True,
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the concrete class ExtendedGeneticMap.
+        Constructor for creating an extended genetic map object.
 
         Parameters
         ----------
         vrnt_chrgrp : numpy.ndarray
+            Chromosome or linkage group assignment array of shape ``(n,)`` where 
+            ``n`` is the number of markers.
+        
         vrnt_phypos : numpy.ndarray
+            Physical positions array of shape ``(n,)`` where ``n`` is the number 
+            of markers. This array contains the physical positions on the 
+            chromosome or linkage group for each marker.
+        
         vrnt_stop : numpy.ndarray
+            Physical positions array of shape ``(n,)`` where ``n`` is the number 
+            of markers. This array contains the physical positions on the 
+            chromosome or linkage group where the marker stops. Useful for 
+            markers which are longer than 1 nucleotide.
+
         vrnt_genpos : numpy.ndarray
-        vrnt_name : numpy.ndarray, None
-        vrnt_fncode : numpy.ndarray, None
+            Genetic positions array of shape ``(n,)`` where ``n`` is the number 
+            of markers. This array contains the genetic positions on the 
+            chromosome or linkage group for each marker.
+
+        vrnt_name : numpy.ndarray, None, default = None
+            Array of shape ``(n,)`` where ``n`` is the number of markers. This 
+            array contains the names of each of the marker variants.
+
+        vrnt_fncode : numpy.ndarray, None, default = None
+            Array of shape ``(n,)`` where ``n`` is the number of markers. This 
+            array contains codes for the mapping function used to position the 
+            marker on the genetic map.
+            
+        spline : dict, None, default = None
+            Pre-built interpolation spline to associate with the genetic map.
+        
+        spline_kind : str, default = "linear"
+            In automatic building of splines, the spline kind to be built.
+            Specifies the kind of interpolation as a string ('linear',
+            'nearest', 'zero', 'slinear', 'quadratic', 'cubic', 'previous',
+            'next', where 'zero', 'slinear', 'quadratic' and 'cubic' refer to a
+            spline interpolation of zeroth, first, second or third order;
+            'previous' and 'next' simply return the previous or next value of
+            the point) or as an integer specifying the order of the spline
+            interpolator to use.
+            
+        spline_fill_value : str, numpy.ndarray, default = "extrapolate"
+            In automatic building of splines, the spline fill value to use.
+            If 'extrapolate', then points outside the data range will be
+            extrapolated.
+            If a ndarray (or float), this value will be used to fill in for
+            requested points outside of the data range. If not provided, then
+            the default is NaN. The array-like must broadcast properly to the
+            dimensions of the non-interpolation axes.
+            If a two-element tuple, then the first element is used as a fill
+            value for x_new < x[0] and the second element is used for
+            x_new > x[-1]. Anything that is not a 2-element tuple (e.g., list
+            or ndarray, regardless of shape) is taken to be a single array-like
+            argument meant to be used for both bounds as below,
+            above = fill_value, fill_value.
+
+        vrnt_genpos_units : str, default = "M"
+            Units in which genetic positions in the ``vrnt_genpos`` array are 
+            stored. Options are listed below and are case-sensitive:
+            
+            - ``"M"`` - genetic position units are in Morgans
+            - ``"Morgans"`` - genetic position units are in Morgans
+            - ``"cM"`` - genetic position units are in centiMorgans
+            - ``"centiMorgans"`` - genetic position units are in centiMorgans
+            
+            Internally, all genetic positions are stored in Morgans. Providing 
+            the units of the input  
+
+        auto_group : bool
+            Whether to automatically sort and group variants into chromosome groups.
+        
+        auto_build_spline : bool
+            Whether to automatically construct a spline on object construction.
+            If ``spline`` is provided, then this spline is overwritten.
+
         kwargs : dict
             Additional keyword arguments.
         """
-        super(ExtendedGeneticMap, self).__init__(**kwargs)
-        self.vrnt_chrgrp = vrnt_chrgrp
-        self.vrnt_phypos = vrnt_phypos
-        self.vrnt_stop = vrnt_stop
-        self.vrnt_genpos = vrnt_genpos
-        self.vrnt_name = vrnt_name
-        self.vrnt_fncode = vrnt_fncode
-        # TODO: check all lengths equivalent
+        # order dependent assignments
+        self.vrnt_chrgrp       = vrnt_chrgrp # must be assigned first!
+        self.vrnt_phypos       = vrnt_phypos
+        self.vrnt_stop         = vrnt_stop
+        self.vrnt_genpos       = (vrnt_genpos,vrnt_genpos_units)
+        self.vrnt_name         = vrnt_name
+        self.vrnt_fncode       = vrnt_fncode
+        self.spline            = spline
+        self.spline_kind       = spline_kind
+        self.spline_fill_value = spline_fill_value
 
         # set variant metadata to None
         self.vrnt_chrgrp_name = None
         self.vrnt_chrgrp_stix = None
         self.vrnt_chrgrp_spix = None
         self.vrnt_chrgrp_len  = None
-
-        # set spline metadata to None
-        self.spline = None
-        self.spline_kind = None
-        self.spline_fill_value = None
 
         # optionally automatically group variants
         if auto_group:
@@ -109,14 +186,24 @@ class ExtendedGeneticMap(GeneticMap):
         out : ExtendedGeneticMap
             A shallow copy of the original ExtendedGeneticMap.
         """
-        # construct a copy of the genetic map
-        out = self.__class__(
+        # get the class of self
+        cls = self.__class__
+
+        # create a new object instance
+        out = cls.__new__(cls)
+
+        # initialize the object instance
+        out.__init__(
             vrnt_chrgrp       = copy.copy(self.vrnt_chrgrp), 
             vrnt_phypos       = copy.copy(self.vrnt_phypos), 
             vrnt_stop         = copy.copy(self.vrnt_stop), 
             vrnt_genpos       = copy.copy(self.vrnt_genpos), 
             vrnt_name         = copy.copy(self.vrnt_name), 
             vrnt_fncode       = copy.copy(self.vrnt_fncode), 
+            spline            = copy.copy(self.spline),
+            spline_kind       = copy.copy(self.spline_kind),
+            spline_fill_value = copy.copy(self.spline_fill_value),
+            vrnt_genpos_units = "M",
             auto_group        = False,
             auto_build_spline = False,
         )
@@ -127,16 +214,11 @@ class ExtendedGeneticMap(GeneticMap):
         out.vrnt_chrgrp_spix = copy.copy(self.vrnt_chrgrp_spix)
         out.vrnt_chrgrp_len  = copy.copy(self.vrnt_chrgrp_len)
 
-        # copy the spline metadata to the new object
-        out.spline            = copy.copy(self.spline)
-        out.spline_kind       = copy.copy(self.spline_kind)
-        out.spline_fill_value = copy.copy(self.spline_fill_value)
-
         return out
 
     def __deepcopy__(
             self, 
-            memo: dict
+            memo: Optional[dict] = None
         ) -> 'ExtendedGeneticMap':
         """
         Make a deep copy of the ExtendedGeneticMap.
@@ -151,14 +233,24 @@ class ExtendedGeneticMap(GeneticMap):
         out : ExtendedGeneticMap
             A deep copy of the original ExtendedGeneticMap.
         """
-        # construct a deep copy of the genetic map
-        out = self.__class__(
-            vrnt_chrgrp       = copy.deepcopy(self.vrnt_chrgrp, memo), 
-            vrnt_phypos       = copy.deepcopy(self.vrnt_phypos, memo), 
-            vrnt_stop         = copy.deepcopy(self.vrnt_stop  , memo), 
-            vrnt_genpos       = copy.deepcopy(self.vrnt_genpos, memo), 
-            vrnt_name         = copy.deepcopy(self.vrnt_name  , memo), 
-            vrnt_fncode       = copy.deepcopy(self.vrnt_fncode, memo), 
+        # get the class of self
+        cls = self.__class__
+
+        # create a new object instance
+        out = cls.__new__(cls)
+
+        # initialize the object instance
+        out.__init__(
+            vrnt_chrgrp       = copy.deepcopy(self.vrnt_chrgrp,       memo), 
+            vrnt_phypos       = copy.deepcopy(self.vrnt_phypos,       memo), 
+            vrnt_stop         = copy.deepcopy(self.vrnt_stop,         memo), 
+            vrnt_genpos       = copy.deepcopy(self.vrnt_genpos,       memo), 
+            vrnt_name         = copy.deepcopy(self.vrnt_name,         memo), 
+            vrnt_fncode       = copy.deepcopy(self.vrnt_fncode,       memo), 
+            spline            = copy.deepcopy(self.spline,            memo),
+            spline_kind       = copy.deepcopy(self.spline_kind,       memo),
+            spline_fill_value = copy.deepcopy(self.spline_fill_value, memo),
+            vrnt_genpos_units = "M",
             auto_group        = False,
             auto_build_spline = False,
         )
@@ -167,12 +259,7 @@ class ExtendedGeneticMap(GeneticMap):
         out.vrnt_chrgrp_name = copy.deepcopy(self.vrnt_chrgrp_name, memo)
         out.vrnt_chrgrp_stix = copy.deepcopy(self.vrnt_chrgrp_stix, memo)
         out.vrnt_chrgrp_spix = copy.deepcopy(self.vrnt_chrgrp_spix, memo)
-        out.vrnt_chrgrp_len  = copy.deepcopy(self.vrnt_chrgrp_len , memo)
-
-        # deep copy the spline metadata to the new object
-        out.spline            = copy.copy(self.spline           , memo)
-        out.spline_kind       = copy.copy(self.spline_kind      , memo)
-        out.spline_fill_value = copy.copy(self.spline_fill_value, memo)
+        out.vrnt_chrgrp_len  = copy.deepcopy(self.vrnt_chrgrp_len,  memo)
 
         return out
 
@@ -206,19 +293,39 @@ class ExtendedGeneticMap(GeneticMap):
         check_is_ndarray(value, "vrnt_phypos")
         check_ndarray_dtype_is_integer(value, "vrnt_phypos")
         check_ndarray_ndim(value, "vrnt_phypos", 1)
+        check_ndarray_len_eq(value, "vrnt_phypos", len(self.vrnt_chrgrp))
         self._vrnt_phypos = value
 
     @property
     def vrnt_genpos(self) -> numpy.ndarray:
-        """Variant genetic position."""
+        """Variant genetic position in Morgans."""
         return self._vrnt_genpos
     @vrnt_genpos.setter
-    def vrnt_genpos(self, value: numpy.ndarray) -> None:
+    def vrnt_genpos(self, value: Union[numpy.ndarray,Tuple[numpy.ndarray,str]]) -> None:
         """Set variant genetic position array"""
-        check_is_ndarray(value, "vrnt_genpos")
-        check_ndarray_dtype_is_floating(value, "vrnt_genpos")
-        check_ndarray_ndim(value, "vrnt_genpos", 1)
-        self._vrnt_genpos = value
+        array = value
+        units = "M"
+        if isinstance(value, tuple):
+            check_tuple_len_eq(value, "vrnt_genpos", 2)
+            check_is_ndarray(value[0], "vrnt_genpos[0]")
+            check_is_str(value[1], "vrnt_genpos[1]")
+            array = value[0]
+            units = value[1]
+        if units in ("M","Morgans"):
+            pass
+        elif units in ("cM","centiMorgans"):
+            array = 0.01 * array
+        else:
+            raise ValueError(
+                "vrnt_genpos units must be 'M', 'Morgans', 'cM', or 'centiMorgans' but received value '{0}'".format(
+                    units
+                )
+            )
+        check_is_ndarray(array, "vrnt_genpos")
+        check_ndarray_dtype_is_floating(array, "vrnt_genpos")
+        check_ndarray_ndim(array, "vrnt_genpos", 1)
+        check_ndarray_len_eq(array, "vrnt_genpos", len(self.vrnt_chrgrp))
+        self._vrnt_genpos = array
 
     @property
     def vrnt_stop(self) -> numpy.ndarray:
@@ -230,6 +337,7 @@ class ExtendedGeneticMap(GeneticMap):
         check_is_ndarray(value, "vrnt_stop")
         check_ndarray_dtype_is_integer(value, "vrnt_stop")
         check_ndarray_ndim(value, "vrnt_stop", 1)
+        check_ndarray_len_eq(value, "vrnt_stop", len(self.vrnt_chrgrp))
         self._vrnt_stop = value
 
     @property
@@ -243,6 +351,7 @@ class ExtendedGeneticMap(GeneticMap):
             check_is_ndarray(value, "vrnt_name")
             check_ndarray_dtype_is_object(value, "vrnt_name")
             check_ndarray_ndim(value, "vrnt_name", 1)
+            check_ndarray_len_eq(value, "vrnt_name", len(self.vrnt_chrgrp))
         self._vrnt_name = value
 
     @property
@@ -256,6 +365,7 @@ class ExtendedGeneticMap(GeneticMap):
             check_is_ndarray(value, "vrnt_fncode")
             check_ndarray_dtype_is_object(value, "vrnt_fncode")
             check_ndarray_ndim(value, "vrnt_fncode", 1)
+            check_ndarray_len_eq(value, "vrnt_name", len(self.vrnt_chrgrp))
         self._vrnt_fncode = value
 
     ################# Metadata Properites ##################
@@ -336,12 +446,14 @@ class ExtendedGeneticMap(GeneticMap):
         self._spline_kind = value
 
     @property
-    def spline_fill_value(self) -> object:
+    def spline_fill_value(self) -> Union[str,numpy.ndarray,None]:
         """Default spline fill value."""
         return self._spline_fill_value
     @spline_fill_value.setter
-    def spline_fill_value(self, value: object) -> None:
+    def spline_fill_value(self, value: Union[str,numpy.ndarray,None]) -> None:
         """Set the default spline fill value"""
+        if value is not None:
+            check_is_str_or_ndarray(value, "spline_fill_value")
         self._spline_fill_value = value
 
     ############################## Object Methods ##############################
@@ -453,30 +565,37 @@ class ExtendedGeneticMap(GeneticMap):
             Additional keyword arguments.
         """
         # sort internal self
-        self._vrnt_chrgrp = self._vrnt_chrgrp[indices]
-        self._vrnt_phypos = self._vrnt_phypos[indices]
-        self._vrnt_stop = self._vrnt_stop[indices]
-        self._vrnt_genpos = self._vrnt_genpos[indices]
-        if self._vrnt_name is not None:
-            self._vrnt_name = self._vrnt_name[indices]
-        if self._vrnt_fncode is not None:
-            self._vrnt_fncode = self._vrnt_fncode[indices]
+        self.vrnt_chrgrp = self.vrnt_chrgrp[indices]
+        self.vrnt_phypos = self.vrnt_phypos[indices]
+        self.vrnt_stop   = self.vrnt_stop[indices]
+        self.vrnt_genpos = self.vrnt_genpos[indices]
+        if self.vrnt_name is not None:
+            self.vrnt_name = self.vrnt_name[indices]
+        if self.vrnt_fncode is not None:
+            self.vrnt_fncode = self.vrnt_fncode[indices]
 
-    def sort(
-            self, 
-            keys: Union[tuple,numpy.ndarray,None] = None
-        ) -> None:
-        """
-        Set variant chromosome group name, stix, spix, len to None.
-        Sort according to keys.
-        Preserves spline if it exists.
-        """
         # reset variant chromosome group name, stix, spix, len
         self.vrnt_chrgrp_name = None
         self.vrnt_chrgrp_stix = None
         self.vrnt_chrgrp_spix = None
         self.vrnt_chrgrp_len = None
 
+    def sort(
+            self, 
+            keys: Union[tuple,numpy.ndarray,None] = None
+        ) -> None:
+        """
+        Sort slements of the GeneticMap using a sequence of keys.
+        Note this modifies the GeneticMap in-place.
+
+        Parameters
+        ----------
+        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+            The k different columns to be sorted. The last column (or row if
+            keys is a 2D array) is the primary sort key.
+        kwargs : dict
+            Additional keyword arguments.
+        """
         # get indices for sort
         indices = self.lexsort(keys)
 
@@ -552,7 +671,9 @@ class ExtendedGeneticMap(GeneticMap):
             **kwargs: dict
         ) -> None:
         """
-        Remove indices from the GeneticMap. Sort and group internal arrays.
+        Remove indices from the GeneticMap. If the GeneticMap was grouped 
+        beforehand, then re-sort and re-group internal arrays after removing 
+        indices.
 
         Parameters
         ----------
@@ -562,21 +683,23 @@ class ExtendedGeneticMap(GeneticMap):
             Where:
 
             - ``a`` is the number of indices to remove.
+        
         kwargs : dict
             Additional keyword arguments.
         """
         # delete indices from self
-        self._vrnt_chrgrp = numpy.delete(self._vrnt_chrgrp, indices)
-        self._vrnt_phypos = numpy.delete(self._vrnt_phypos, indices)
-        self._vrnt_stop = numpy.delete(self._vrnt_stop, indices)
-        self._vrnt_genpos = numpy.delete(self._vrnt_genpos, indices)
-        if self._vrnt_name is not None:
-            self._vrnt_name = numpy.delete(self._vrnt_name, indices)
-        if self._vrnt_fncode is not None:
-            self._vrnt_fncode = numpy.delete(self._vrnt_fncode, indices)
+        self.vrnt_chrgrp = numpy.delete(self.vrnt_chrgrp, indices)
+        self.vrnt_phypos = numpy.delete(self.vrnt_phypos, indices)
+        self.vrnt_stop   = numpy.delete(self.vrnt_stop,   indices)
+        self.vrnt_genpos = numpy.delete(self.vrnt_genpos, indices)
+        if self.vrnt_name is not None:
+            self.vrnt_name = numpy.delete(self.vrnt_name, indices)
+        if self.vrnt_fncode is not None:
+            self.vrnt_fncode = numpy.delete(self.vrnt_fncode, indices)
 
-        # sort and group
-        self.group()
+        # if GeneticMap was previously grouped, re-sort and re-group
+        if self.is_grouped():
+            self.group()
 
     def select(
             self, 
@@ -585,7 +708,8 @@ class ExtendedGeneticMap(GeneticMap):
         ) -> None:
         """
         Keep only selected markers, removing all others from the GeneticMap.
-        Sort and group internal arrays.
+        If the GeneticMap was grouped beforehand, then re-sort and re-group 
+        internal arrays after removing indices.
 
         Parameters
         ----------
@@ -595,21 +719,23 @@ class ExtendedGeneticMap(GeneticMap):
             Where:
 
             - ``a`` is the number of indices to remove.
+        
         kwargs : dict
             Additional keyword arguments.
         """
         # keep only selected markers.
-        self._vrnt_chrgrp = self._vrnt_chrgrp[indices]
-        self._vrnt_phypos = self._vrnt_phypos[indices]
-        self._vrnt_stop = self._vrnt_stop[indices]
-        self._vrnt_genpos = self._vrnt_genpos[indices]
-        if self._vrnt_name is not None:
-            self._vrnt_name = self._vrnt_name[indices]
-        if self._vrnt_fncode is not None:
-            self._vrnt_fncode = self._vrnt_fncode[indices]
+        self.vrnt_chrgrp = self.vrnt_chrgrp[indices]
+        self.vrnt_phypos = self.vrnt_phypos[indices]
+        self.vrnt_stop   = self.vrnt_stop[indices]
+        self.vrnt_genpos = self.vrnt_genpos[indices]
+        if self.vrnt_name is not None:
+            self.vrnt_name = self.vrnt_name[indices]
+        if self.vrnt_fncode is not None:
+            self.vrnt_fncode = self.vrnt_fncode[indices]
 
-        # sort and group
-        self.group()
+        # if GeneticMap was previously grouped, re-sort and re-group
+        if self.is_grouped():
+            self.group()
 
     def prune(
             self, 
@@ -745,26 +871,35 @@ class ExtendedGeneticMap(GeneticMap):
         # select the desired marker indices
         self.select(indices)
 
+        # if GeneticMap was previously grouped, re-sort and re-group
+        if self.is_grouped():
+            self.group()
+
     ################## Integrity Methods ###################
     def congruence(
             self
         ) -> numpy.ndarray:
         """
-        If not grouped, will group.
-        Assess physical and genetic map site congruency.
+        Assess physical and genetic map site congruency. If the genetic map is 
+        not grouped, it will be grouped. 
 
-        Notes:
-            This assumes high contiguity between physical and genetic maps
-            (i.e. a high quality reference genome). This assumption may cause
-            major issues if there are incorrect markers at the beginning of the
-            chromosome.
-            Assumes the first marker on the chromosome is placed correctly.
         Returns
         -------
         out : numpy.ndarray
             A boolean matrix of map concordancies where:
-            True = the current marker has a map_pos >= the previous position
-            False = the current marker has a map_pos < the previous position
+
+            - ``True`` = the current marker has a map_pos >= the previous 
+              position
+            - ``False`` = the current marker has a map_pos < the previous 
+              position
+
+        Notes
+        -----
+        This assumes high contiguity between physical and genetic maps
+        (i.e. a high quality reference genome). This assumption may cause
+        major issues if there are incorrect markers at the beginning of the
+        chromosome. This also assumes the first marker on the chromosome is 
+        placed correctly.
         """
         # group as a prerequisite
         if not self.is_grouped():
@@ -787,9 +922,14 @@ class ExtendedGeneticMap(GeneticMap):
             self
         ) -> bool:
         """
-        Determine if the genetic map is congruent
         Determine if all sites in the genetic map demonstrate congruence with
         their supposed physical and genetic positions.
+
+        Returns
+        -------
+        out : bool
+            Whether all genetic map loci demonstrate congruence between 
+            physical and genetic positions.
         """
         # determine if all sites are congruent
         out = numpy.all(self.congruence())
@@ -802,9 +942,10 @@ class ExtendedGeneticMap(GeneticMap):
         Remove discrepancies between the physical map and the genetic map.
         In instances of conflict, assume that the physical map is correct.
 
-        Note:
-            This assumption may cause major issues if there are incorrect
-            markers at the beginning of the chromosome.
+        Notes
+        -----
+        This assumption may cause major issues if there are incorrect markers 
+        at the beginning of the chromosome.
         """
         # get boolean mask for concordant map positions
         mask = self.congruence()
@@ -825,8 +966,7 @@ class ExtendedGeneticMap(GeneticMap):
             **kwargs: dict
         ) -> None:
         """
-        Build a spline for estimating genetic map distances. This is built
-        using the marker start indices (self.chr_start)
+        Build a spline for estimating genetic map distances.
 
         Parameters
         ----------
@@ -838,6 +978,7 @@ class ExtendedGeneticMap(GeneticMap):
             'previous' and 'next' simply return the previous or next value of
             the point) or as an integer specifying the order of the spline
             interpolator to use.
+
         fill_value : array-like, {'extrapolate'}, default = 'extrapolate'
             If 'extrapolate', then points outside the data range will be
             extrapolated.
@@ -851,6 +992,7 @@ class ExtendedGeneticMap(GeneticMap):
             or ndarray, regardless of shape) is taken to be a single array-like
             argument meant to be used for both bounds as below,
             above = fill_value, fill_value.
+
         kwargs : dict
             Additional keyword arguments.
         """
@@ -881,7 +1023,14 @@ class ExtendedGeneticMap(GeneticMap):
     def has_spline(
             self
         ) -> bool:
-        """Return whether or not the GeneticMap has a built spline."""
+        """
+        Return whether or not the GeneticMap has a built spline.
+        
+        Returns
+        -------
+        out : bool
+            Whether the GeneticMap has a spline built.
+        """
         return (
             (self._spline is not None) and
             (self._spline_kind is not None) and
@@ -894,16 +1043,20 @@ class ExtendedGeneticMap(GeneticMap):
             vrnt_phypos: numpy.ndarray
         ) -> numpy.ndarray:
         """
-        Interpolate genetic positions given variant physical positions
+        Interpolate genetic positions given variant physical positions.
 
         Parameters
         ----------
         vrnt_chrgrp : numpy.ndarray
+            Chromosome/linkage group labels for each marker variant.
+        
         vrnt_phypos : numpy.ndarray
+            Chromosome/linkage group physical positions for each marker variant.
 
         Returns
         -------
         out : numpy.ndarray
+            Interpolated genetic positions for each marker variant.
         """
         # raise error if no spline is found
         if not self.has_spline():
@@ -936,61 +1089,117 @@ class ExtendedGeneticMap(GeneticMap):
             **kwargs: dict
         ) -> 'ExtendedGeneticMap':
         """
-        Interpolate a new genetic map from the current genetic map.
-        Associate spline of current GeneticMap with new GeneticMap.
+        Interpolate a new genetic map from the current genetic map. Associate 
+        spline of current GeneticMap with new GeneticMap.
+
+        Parameters
+        ----------
+        vrnt_chrgrp : numpy.ndarray
+            Chromosome/linkage group labels for each marker variant.
+        
+        vrnt_phypos : numpy.ndarray
+            Chromosome/linkage group physical positions for each marker variant.
+
+        vrnt_stop : numpy.ndarray
+            Physical positions for the end of a marker variant
+        
+        vrnt_name : numpy.ndarray, None, default = None
+            Marker variant names.
+        
+        vrnt_fncode : numpy.ndarray, None, default = None
+            Marker variant mapping function codes.
+
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : ExtendedGeneticMap
+            An interpolated genetic map sharing a copy of the spline from the 
+            original genetic map.
         """
         # interpolate genetic positions
         vrnt_genpos = self.interp_genpos(vrnt_chrgrp, vrnt_phypos)
 
-        # create a new genetic map using interpolations from self
-        gmap = self.__class__(
-            vrnt_chrgrp = vrnt_chrgrp,
-            vrnt_phypos = vrnt_phypos,
-            vrnt_stop = vrnt_stop,
-            vrnt_genpos = vrnt_genpos,
-            vrnt_name = vrnt_name,
-            vrnt_fncode = vrnt_fncode,
-            **kwargs
+        # get the class of self
+        cls = self.__class__
+
+        # create a new object instance
+        out = cls.__new__(cls)
+
+        # initialize the object instance
+        out.__init__(
+            vrnt_chrgrp       = vrnt_chrgrp, 
+            vrnt_phypos       = vrnt_phypos,
+            vrnt_stop         = vrnt_stop,
+            vrnt_genpos       = vrnt_genpos,
+            vrnt_name         = vrnt_name,
+            vrnt_fncode       = vrnt_fncode,
+            spline            = copy.deepcopy(self.spline),
+            spline_kind       = copy.deepcopy(self.spline_kind),
+            spline_fill_value = copy.deepcopy(self.spline_fill_value),
+            vrnt_genpos_units = "M",
+            auto_group        = False,
+            auto_build_spline = False,
         )
 
-        # copy pointers to spline and spline metadata
-        gmap._spline = self._spline
-        gmap._spline_kind = self._spline_kind
-        gmap._spline_fill_value = self._spline_fill_value
+        # copy variant metadata to the new object
+        out.vrnt_chrgrp_name = copy.deepcopy(self.vrnt_chrgrp_name)
+        out.vrnt_chrgrp_stix = copy.deepcopy(self.vrnt_chrgrp_stix)
+        out.vrnt_chrgrp_spix = copy.deepcopy(self.vrnt_chrgrp_spix)
+        out.vrnt_chrgrp_len  = copy.deepcopy(self.vrnt_chrgrp_len)
 
         # return new GeneticMap instance
-        return gmap
+        return out
 
     ############### Genetic Distance Methods ###############
     def gdist1g(
             self, 
             vrnt_chrgrp: numpy.ndarray, 
             vrnt_genpos: numpy.ndarray, 
-            ast: Optional[int] = None, 
-            asp: Optional[int] = None
+            ast: Optional[Integral] = None, 
+            asp: Optional[Integral] = None
         ) -> numpy.ndarray:
         """
         Calculate sequential genetic distances using genetic positions.
-        Requires vrnt_chrgrp and vrnt_genpos to have been sorted descending.
-
-        Sequential distance arrays will start every chromosome with numpy.inf!
+        Requires ``vrnt_chrgrp`` and ``vrnt_genpos`` to have been sorted 
+        jointly in ascending order.
 
         Parameters
         ----------
         vrnt_chrgrp : numpy.ndarray
             A 1D array of variant chromosome groups.
+            Must be sorted in ascending order jointly with ``vrnt_genpos``.
+
         vrnt_genpos : numpy.ndarray
             A 1D array of variant genetic positions.
-        ast : int, None
+            Must be sorted in ascending order jointly with ``vrnt_chrgrp``.
+
+        ast : Integral, None
             Optional array start index (inclusive).
-        asp : int, None
+            If ``None``, assume that all array elements are to be used for 
+            sequential genetic distance calculations.
+
+        asp : Integral, None
             Optional array stop index (exclusive).
+            If ``None``, assume that all array elements are to be used for 
+            sequential genetic distance calculations.
 
         Returns
         -------
-        gdist : numpy.ndarray
+        out : numpy.ndarray
             A 1D array of distances between the marker prior.
+
+        Notes
+        -----
+        Sequential distance arrays will start every chromosome with numpy.inf!
         """
+        # type checks
+        check_is_ndarray(vrnt_chrgrp, "vrnt_chrgrp")
+        check_ndarray_dtype_is_integer(vrnt_chrgrp, "vrnt_chrgrp")
+        check_is_ndarray(vrnt_genpos, "vrnt_genpos")
+        check_ndarray_dtype_is_floating(vrnt_genpos, "vrnt_genpos")
+
         # get views of only sections we'll be looking at
         view_chrgrp = vrnt_chrgrp[ast:asp]
         view_genpos = vrnt_genpos[ast:asp]
@@ -1002,48 +1211,64 @@ class ExtendedGeneticMap(GeneticMap):
         stop = start + counts
 
         # allocate empty array
-        gdist = numpy.empty(view_genpos.shape, dtype = float)
+        out = numpy.empty(view_genpos.shape, dtype = float)
 
         # for each chromosome group
         for st,sp in zip(start, stop):
             # infinite distance between chromosomes
-            gdist[st] = numpy.inf
+            out[st] = numpy.inf
             # subtract distances
-            gdist[st+1:sp] = view_genpos[st+1:sp] - view_genpos[st:sp-1]
+            out[st+1:sp] = view_genpos[st+1:sp] - view_genpos[st:sp-1]
 
-        return gdist
+        return out
 
     def gdist2g(
             self, 
             vrnt_chrgrp: numpy.ndarray, 
             vrnt_genpos: numpy.ndarray, 
-            rst: Optional[int] = None, 
-            rsp: Optional[int] = None, 
-            cst: Optional[int] = None, 
-            csp: Optional[int] = None
+            rst: Optional[Integral] = None, 
+            rsp: Optional[Integral] = None, 
+            cst: Optional[Integral] = None, 
+            csp: Optional[Integral] = None
         ) -> numpy.ndarray:
         """
         Calculate pairwise genetic distances using genetic positions.
-        Requires vrnt_chrgrp and vrnt_genpos to have been sorted descending.
+        Requires ``vrnt_chrgrp`` and ``vrnt_genpos`` to have been sorted 
+        jointly in ascending order.
 
         Parameters
         ----------
         vrnt_chrgrp : numpy.ndarray
             A 1D array of variant chromosome groups.
+            Must be sorted in ascending order jointly with ``vrnt_genpos``.
+
         vrnt_genpos : numpy.ndarray
             A 1D array of variant genetic positions.
-        rst : int, None
+            Must be sorted in ascending order jointly with ``vrnt_chrgrp``.
+
+        rst : Integral, None
             Optional row start index (inclusive).
-        rsp : int, None
+            If ``None``, assume that all rows are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
+
+        rsp : Integral, None
             Optional row stop index (exclusive).
-        cst : int, None
+            If ``None``, assume that all rows are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
+
+        cst : Integral, None
             Optional column start index (inclusive).
-        csp : int, None
+            If ``None``, assume that all columns are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
+
+        csp : Integral, None
             Optional column stop index (exclusive).
+            If ``None``, assume that all columns are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
 
         Returns
         -------
-        gdist : numpy.ndarray
+        out : numpy.ndarray
             A 2D array of distances between marker pairs.
         """
         # TODO: # OPTIMIZE: fill with inf, then add distances? - assumes sort
@@ -1054,78 +1279,117 @@ class ExtendedGeneticMap(GeneticMap):
         gi, gj = numpy.meshgrid(vrnt_genpos[rst:rsp], vrnt_genpos[cst:csp], indexing='ij', sparse=True)
 
         # calculate absolute distances
-        gdist = numpy.abs(gi - gj)
+        out = numpy.abs(gi - gj)
 
         # where chromosomes are different, set to numpy.inf
-        gdist[mi != mj] = numpy.inf
+        out[mi != mj] = numpy.inf
 
-        return gdist
+        return out
 
     def gdist1p(
             self, 
             vrnt_chrgrp: numpy.ndarray, 
             vrnt_phypos: numpy.ndarray, 
-            ast: Optional[int] = None, 
-            asp: Optional[int] = None
+            ast: Optional[Integral] = None, 
+            asp: Optional[Integral] = None
         ) -> numpy.ndarray:
         """
         Calculate sequential genetic distances using physical positions.
-        Requires vrnt_chrgrp and vrnt_phypos to have been sorted descending.
-        Requires a spline to have been built beforehand.
+        Requires ``vrnt_chrgrp`` and ``vrnt_phypos`` to have been sorted 
+        jointly in ascending order. Requires an interpolation spline to have 
+        been built beforehand.
 
         Parameters
         ----------
         vrnt_chrgrp : numpy.ndarray
             A 1D array of variant chromosome groups.
+            Must be sorted in ascending order jointly with ``vrnt_phypos``.
+
         vrnt_phypos : numpy.ndarray
-            A 1D array of variant physical positions.
+            A 1D array of variant genetic positions.
+            Must be sorted in ascending order jointly with ``vrnt_chrgrp``.
+
+        ast : Integral, None
+            Optional array start index (inclusive).
+            If ``None``, assume that all array elements are to be used for 
+            sequential genetic distance calculations.
+
+        asp : Integral, None
+            Optional array stop index (exclusive).
+            If ``None``, assume that all array elements are to be used for 
+            sequential genetic distance calculations.
 
         Returns
         -------
-        gdist : numpy.ndarray
+        out : numpy.ndarray
             A 1D array of distances between the marker prior.
+
+        Notes
+        -----
+        Sequential distance arrays will start every chromosome with numpy.inf!
         """
+        # type checks
+        check_is_ndarray(vrnt_chrgrp, "vrnt_chrgrp")
+        check_ndarray_dtype_is_integer(vrnt_chrgrp, "vrnt_chrgrp")
+        check_is_ndarray(vrnt_phypos, "vrnt_phypos")
+        check_ndarray_dtype_is_integer(vrnt_phypos, "vrnt_phypos")
+
         # TODO: # OPTIMIZE: don't interpolate all markers
         # interpolate genetic positions
         vrnt_genpos = self.interp_genpos(vrnt_chrgrp, vrnt_phypos)
 
         # calculate genetic distances
-        gdist = self.gdist1g(vrnt_chrgrp, vrnt_genpos, ast, asp)
+        out = self.gdist1g(vrnt_chrgrp, vrnt_genpos, ast, asp)
 
-        return gdist
+        return out
 
     def gdist2p(
             self, 
             vrnt_chrgrp: numpy.ndarray, 
             vrnt_phypos: numpy.ndarray, 
-            rst: Optional[int] = None, 
-            rsp: Optional[int] = None, 
-            cst: Optional[int] = None, 
-            csp: Optional[int] = None
+            rst: Optional[Integral] = None, 
+            rsp: Optional[Integral] = None, 
+            cst: Optional[Integral] = None, 
+            csp: Optional[Integral] = None
         ) -> numpy.ndarray:
         """
-        Calculate pairwise genetic distances using physical positions.
-        Requires vrnt_chrgrp and vrnt_phypos to have been sorted descending.
-        Requires a spline to have been built beforehand.
+        Calculate pairwise genetic distances using genetic positions.
+        Requires ``vrnt_chrgrp`` and ``vrnt_genpos`` to have been sorted 
+        jointly in ascending order.
 
         Parameters
         ----------
         vrnt_chrgrp : numpy.ndarray
             A 1D array of variant chromosome groups.
-        vrnt_phypos : numpy.ndarray
-            A 1D array of variant physical positions.
-        rst : int, None
+            Must be sorted in ascending order jointly with ``vrnt_genpos``.
+
+        vrnt_genpos : numpy.ndarray
+            A 1D array of variant genetic positions.
+            Must be sorted in ascending order jointly with ``vrnt_chrgrp``.
+
+        rst : Integral, None
             Optional row start index (inclusive).
-        rsp : int, None
+            If ``None``, assume that all rows are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
+
+        rsp : Integral, None
             Optional row stop index (exclusive).
-        cst : int, None
+            If ``None``, assume that all rows are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
+
+        cst : Integral, None
             Optional column start index (inclusive).
-        csp : int, None
+            If ``None``, assume that all columns are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
+
+        csp : Integral, None
             Optional column stop index (exclusive).
+            If ``None``, assume that all columns are to be calculated in the 
+            pairwise genetic distance matrix are to be calculated.
 
         Returns
         -------
-        gdist : numpy.ndarray
+        out : numpy.ndarray
             A 2D array of distances between marker pairs.
         """
         # TODO: # OPTIMIZE: don't interpolate all markers
@@ -1133,67 +1397,187 @@ class ExtendedGeneticMap(GeneticMap):
         vrnt_genpos = self.interp_genpos(vrnt_chrgrp, vrnt_phypos)
 
         # calculate genetic distances
-        gdist = self.gdist2g(vrnt_chrgrp, vrnt_genpos, rst, rsp, cst, csp)
+        out = self.gdist2g(vrnt_chrgrp, vrnt_genpos, rst, rsp, cst, csp)
 
-        return gdist
+        return out
 
     #################### Export Methods ####################
     def to_pandas(
-            self
+            self,
+            vrnt_chrgrp_col: str = "chr", 
+            vrnt_phypos_col: str = "pos", 
+            vrnt_stop_col: str = "stop",
+            vrnt_genpos_col: str = "cM",
+            vrnt_name_col: str = "name",
+            vrnt_fncode_col: str = "fncode", 
+            vrnt_genpos_units: str = "cM",
+            **kwargs: dict
         ) -> pandas.DataFrame:
         """
-        Convert a GeneticMap object to a pandas DataFrame.
+        Export a GeneticMap to a pandas.DataFrame.
 
+        Parameters
+        ----------
+        vrnt_chrgrp_col : str, default = "chr"
+            Name of the chromosome/linkage group name column to which to export.
+
+        vrnt_phypos_col : str, default = "pos"
+            Name of the physical position column to which to export.
+
+        vrnt_stop_col : str, default = "stop"
+            Name of the physical position stop column to which to export.
+
+        vrnt_genpos_col : str, default = "cM"
+            Name of the genetic position column to which to export.
+
+        vrnt_name_col : str, default = "name"
+            Name of the marker variant name column to which to export.
+
+        vrnt_fncode_col : str, default = "fncode"
+            Name of the marker variant function code column to which to export.
+
+        vrnt_genpos_units : str, default = "cM"
+            Units of the genetic position column to which to export.
+            Options are listed below and are case-sensitive:
+            
+            - ``"M"`` - genetic position units are in Morgans
+            - ``"Morgans"`` - genetic position units are in Morgans
+            - ``"cM"`` - genetic position units are in centiMorgans
+            - ``"centiMorgans"`` - genetic position units are in centiMorgans
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a 
+            pandas.DataFrame.
+        
         Returns
         -------
-        df : pandas.DataFrame
-            A pandas DataFrame containing genetic map data.
+        out : pandas.DataFrame
+            An output dataframe.
         """
-        # create a dictionary of our values
-        df_dict = {
-            "chr_grp" : self.vrnt_chrgrp,
-            "chr_start" : self.vrnt_phypos,
-            "chr_stop" : self.vrnt_stop,
-            "map_pos" : self.vrnt_genpos,
-            "mkr_name" : self.vrnt_name,
-            "map_fncode" : self.vrnt_fncode
-        }
+        # calculate genetic positions
+        vrnt_genpos_convert = self.vrnt_genpos
+        if vrnt_genpos_units in ("M","Morgans"):
+            pass
+        elif vrnt_genpos_units in ("cM", "centiMorgans"):
+            vrnt_genpos_convert = 100.0 * vrnt_genpos_convert
+        else:
+            raise ValueError(
+                "vrnt_genpos units must be 'M', 'Morgans', 'cM', or 'centiMorgans' but received value '{0}'".format(
+                    vrnt_genpos_units
+                )
+            )
 
-        # make the DataFrame
-        df = pandas.DataFrame(df_dict)
+        # construct output dataframe
+        out = pandas.DataFrame({
+            vrnt_chrgrp_col: self.vrnt_chrgrp,
+            vrnt_phypos_col: self.vrnt_phypos,
+            vrnt_stop_col  : self.vrnt_stop,
+            vrnt_genpos_col: vrnt_genpos_convert,
+            vrnt_name_col  : self.vrnt_name,
+            vrnt_fncode_col: self.vrnt_fncode,
+        })
 
-        # return it
-        return df
+        return out
 
     def to_csv(
             self, 
-            fname: str, 
+            filename: str, 
+            vrnt_chrgrp_col: str = "chr", 
+            vrnt_phypos_col: str = "pos", 
+            vrnt_stop_col: str = "stop",
+            vrnt_genpos_col: str = "cM",
+            vrnt_name_col: str = "name",
+            vrnt_fncode_col: str = "fncode", 
+            vrnt_genpos_units: str = "cM",
             sep: str = ',', 
             header: bool = True, 
             index: bool = False, 
             **kwargs: dict
         ) -> None:
         """
-        Convert a GeneticMap object to a csv file.
+        Write an ExtendedGeneticMap to a CSV file.
+
+        Parameters
+        ----------
+        filename : str
+            CSV file name to which to write.
+
+        vrnt_chrgrp_col : str, default = "chr"
+            Name of the chromosome/linkage group name column to which to export.
+
+        vrnt_phypos_col : str, default = "pos"
+            Name of the physical position column to which to export.
+
+        vrnt_stop_col : str, default = "stop"
+            Name of the physical position stop column to which to export.
+
+        vrnt_genpos_col : str, default = "cM"
+            Name of the genetic position column to which to export.
+
+        vrnt_name_col : str, default = "name"
+            Name of the marker variant name column to which to export.
+
+        vrnt_fncode_col : str, default = "fncode"
+            Name of the marker variant function code column to which to export.
+
+        vrnt_genpos_units : str, default = "cM"
+            Units of the genetic position column to which to export.
+            Options are listed below and are case-sensitive:
+            
+            - ``"M"`` - genetic position units are in Morgans
+            - ``"Morgans"`` - genetic position units are in Morgans
+            - ``"cM"`` - genetic position units are in centiMorgans
+            - ``"centiMorgans"`` - genetic position units are in centiMorgans
+
+        sep : str, default = ","
+            Separator to use in the exported CSV file.
+        
+        header : bool, default = True
+            Whether to save header names.
+        
+        index : bool, default = False
+            Whether to save a row index in the exported CSV file.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a CSV.
         """
-        # convert GeneticMap to DataFrame
-        df = self.to_pandas()
+        # convert GeneticMap to pandas.DataFrame
+        df = self.to_pandas(
+            vrnt_chrgrp_col   = vrnt_chrgrp_col,
+            vrnt_phypos_col   = vrnt_phypos_col,
+            vrnt_stop_col     = vrnt_stop_col,
+            vrnt_genpos_col   = vrnt_genpos_col,
+            vrnt_name_col     = vrnt_name_col,
+            vrnt_fncode_col   = vrnt_fncode_col,
+            vrnt_genpos_units = vrnt_genpos_units,
+        )
 
         # write to csv
         df.to_csv(
-            fname,
+            filename,
             sep = sep,
             header = header,
-            index = index
+            index = index,
+            **kwargs
         )
 
     def to_egmap(
             self, 
-            fname: str
+            filename: str
         ) -> None:
+        """
+        Write an ExtendedGeneticMap to an extended genetic map (.egmap) file.
+
+        Parameters
+        ----------
+        filename : str
+            ``.egmap`` file name to which to write.
+        """
         # write as special instance of csv
         self.to_csv(
-            fname = fname,
+            filename = filename,
+            vrnt_genpos_col = "M",
+            vrnt_genpos_units = "M",
             sep = '\t',
             header = True,
             index = False
@@ -1203,48 +1587,95 @@ class ExtendedGeneticMap(GeneticMap):
     @classmethod
     def from_pandas(
             cls, 
-            pandas_df: pandas.DataFrame, 
-            vrnt_chrgrp_ix: int = 0, 
-            vrnt_phypos_ix: int = 1, 
-            vrnt_stop_ix: int = 2, 
-            vrnt_genpos_ix: int = 3, 
-            vrnt_name_ix: Optional[int] = None, 
-            vrnt_fncode_ix: Optional[int] = None,
+            df: pandas.DataFrame, 
+            vrnt_chrgrp_col: Union[str,Integral] = "chr", 
+            vrnt_phypos_col: Union[str,Integral] = "pos", 
+            vrnt_stop_col: Union[str,Integral] = "stop",
+            vrnt_genpos_col: Union[str,Integral] = "cM",
+            vrnt_name_col: Optional[Union[str,Integral]] = None,
+            vrnt_fncode_col: Optional[Union[str,Integral]] = None,
+            spline: dict = None,
+            spline_kind: str = "linear",
+            spline_fill_value: Union[str,numpy.ndarray] = "extrapolate",
+            vrnt_genpos_units: str = "M",
             auto_group: bool = True,
-            auto_build_spline: bool = True
+            auto_build_spline: bool = True,
+            **kwargs: dict
         ) -> 'ExtendedGeneticMap':
         """
-        Read genetic map data from a Pandas DataFrame.
+        Read a ExtendedGeneticMap from a pandas.DataFrame.
 
         Parameters
         ----------
-        pandas_df : pandas.DataFrame
-            A Pandas DataFrame.
-        vrnt_chrgrp_ix : int, default=0
-            Column index to specify 'chrom' (chromosome) field.
-        vrnt_phypos_ix : int, default=1
-            Column index to specify 'vrnt_phypos' (chromosome start) field.
-        vrnt_stop_ix : int, default=2
-            Column index to specify 'vrnt_stop' (chromosome end) field.
-        vrnt_genpos_ix : int, default=3
-            Column index to specify 'vrnt_genpos' (map position in Morgans) field.
-        vrnt_name_ix : int, default=None
-            Column index to specify 'vrnt_name' (marker name) field.
-        vrnt_fncode_ix : int, default=None
-            Column index to specify 'vrnt_fncode' (mapping function code) field.
+        df : pandas.DataFrame
+            Pandas dataframe from which to read.
+
+        vrnt_chrgrp_col : str, Integral, default = "chr"
+            Name or number of the chromosome/linkage group name column from 
+            which to import.
+
+        vrnt_phypos_col : str, Integral, default = "pos"
+            Name or number of the physical position column from which to import.
+
+        vrnt_stop_col : str, Integral, default = "stop"
+            Name or number of the physical position stop column from which to 
+            import.
+
+        vrnt_genpos_col : str, Integral, default = "cM"
+            Name or number of the genetic position column from which to import.
+
+        vrnt_name_col : str, Integral, None, default = None
+            Name or number of the marker variant name column from which to 
+            import. If ``None``, do not import any marker variant names.
+
+        vrnt_fncode_col : str, Integral, None, default = None
+            Name or number of the marker variant function code column from which 
+            to import. If ``None``, do not import any marker variant function 
+            codes.
+
+        spline : dict, None, default = None
+            Pre-built interpolation spline to associate with the genetic map.
+        
+        spline_kind : str, default = "linear"
+            In automatic building of splines, the spline kind to be built.
+            Specifies the kind of interpolation as a string ('linear',
+            'nearest', 'zero', 'slinear', 'quadratic', 'cubic', 'previous',
+            'next', where 'zero', 'slinear', 'quadratic' and 'cubic' refer to a
+            spline interpolation of zeroth, first, second or third order;
+            'previous' and 'next' simply return the previous or next value of
+            the point) or as an integer specifying the order of the spline
+            interpolator to use.
+            
+        spline_fill_value : str, numpy.ndarray, default = "extrapolate"
+            In automatic building of splines, the spline fill value to use.
+            If 'extrapolate', then points outside the data range will be
+            extrapolated.
+            If a ndarray (or float), this value will be used to fill in for
+            requested points outside of the data range. If not provided, then
+            the default is NaN. The array-like must broadcast properly to the
+            dimensions of the non-interpolation axes.
+            If a two-element tuple, then the first element is used as a fill
+            value for x_new < x[0] and the second element is used for
+            x_new > x[-1]. Anything that is not a 2-element tuple (e.g., list
+            or ndarray, regardless of shape) is taken to be a single array-like
+            argument meant to be used for both bounds as below,
+            above = fill_value, fill_value.
+
         auto_group : bool
-            Whether to automatically group and sort markers into linkage groups after 
-            loading the ``ExtendedGeneticMap``.
+            Whether to automatically sort and group variants into chromosome groups.
+        
         auto_build_spline : bool
-            Whether to automatically construct an interpolation spline after 
-            loading the ``ExtendedGeneticMap``. Interpolation spline type is the default
-            value for the ``build_spline`` method.
+            Whether to automatically construct a spline on object construction.
+            If ``spline`` is provided, then this spline is overwritten.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a 
+            pandas.DataFrame.
 
         Returns
         -------
-        genetic_map : ExtendedGeneticMap
-            An ExtendedGeneticMap object containing all data required for
-            genetic inferences.
+        out : ExtendedGeneticMap
+            A ExtendedGeneticMap read from a pandas.DataFrame.
 
         Notes
         -----
@@ -1292,121 +1723,196 @@ class ExtendedGeneticMap(GeneticMap):
             - Unknown: 'U'
             - Custom: <str of any length>
         """
-        # check to make sure several indices aren't None.
-        check_is_not_None(vrnt_chrgrp_ix, "vrnt_chrgrp_ix")
-        check_is_not_None(vrnt_phypos_ix, "vrnt_phypos_ix")
-        check_is_not_None(vrnt_stop_ix, "vrnt_stop_ix")
-        check_is_not_None(vrnt_genpos_ix, "vrnt_genpos_ix")
+        # data type checks
+        check_is_pandas_DataFrame(df, "df")
+        check_is_str_or_Integral(vrnt_chrgrp_col, "vrnt_chrgrp_col")
+        check_is_str_or_Integral(vrnt_phypos_col, "vrnt_phypos_col")
+        check_is_str_or_Integral(vrnt_stop_col,   "vrnt_stop_col"  )
+        check_is_str_or_Integral(vrnt_genpos_col, "vrnt_genpos_col")
+        if vrnt_name_col is not None:
+            check_is_str_or_Integral(vrnt_name_col, "vrnt_name_col")
+        if vrnt_fncode_col is not None:
+            check_is_str_or_Integral(vrnt_fncode_col, "vrnt_fncode_col")
 
-        # get data
-        vrnt_chrgrp = pandas_df.iloc[:,vrnt_chrgrp_ix].values
-        vrnt_phypos = pandas_df.iloc[:,vrnt_phypos_ix].values
-        vrnt_stop   = pandas_df.iloc[:,vrnt_stop_ix].values
-        vrnt_genpos = pandas_df.iloc[:,vrnt_genpos_ix].values
-        vrnt_name   = pandas_df.iloc[:,vrnt_name_ix].values if vrnt_name_ix is not None else None
-        vrnt_fncode = pandas_df.iloc[:,vrnt_fncode_ix].values if vrnt_fncode_ix is not None else None
+        # extract mandatory data (pandas.Series data type)
+        vrnt_chrgrp = df[vrnt_chrgrp_col] if isinstance(vrnt_chrgrp_col, str) else df.iloc[:,vrnt_chrgrp_col]
+        vrnt_phypos = df[vrnt_phypos_col] if isinstance(vrnt_phypos_col, str) else df.iloc[:,vrnt_phypos_col]
+        vrnt_stop   = df[vrnt_stop_col  ] if isinstance(vrnt_stop_col,   str) else df.iloc[:,vrnt_stop_col  ]
+        vrnt_genpos = df[vrnt_genpos_col] if isinstance(vrnt_genpos_col, str) else df.iloc[:,vrnt_genpos_col]
+        
+        # convert mandatory data to numpy
+        vrnt_chrgrp = vrnt_chrgrp.to_numpy(dtype = int)
+        vrnt_phypos = vrnt_phypos.to_numpy(dtype = int)
+        vrnt_stop   = vrnt_stop.to_numpy(dtype = int)
+        vrnt_genpos = vrnt_genpos.to_numpy(dtype = float)
+        
+        # conditionally extract and convert optional data
+        vrnt_name   = None
+        if vrnt_name_col is not None:
+            vrnt_name = df[vrnt_name_col] if isinstance(vrnt_name_col, str) else df.iloc[:,vrnt_name_col]
+            vrnt_name = vrnt_name.to_numpy(dtype = object)
+        
+        vrnt_fncode = None
+        if vrnt_fncode_col is not None:
+            vrnt_fncode = df[vrnt_fncode_col] if isinstance(vrnt_fncode_col, str) else df.iloc[:,vrnt_fncode_col]
+            vrnt_fncode = vrnt_fncode.to_numpy(dtype = object)
 
-        # force data conversion
-        vrnt_chrgrp = numpy.int64([str(e) for e in vrnt_chrgrp])
-        vrnt_phypos = numpy.int64(vrnt_phypos)
-        vrnt_stop = numpy.int64(vrnt_stop)
-        vrnt_genpos = numpy.float64(vrnt_genpos)
-        vrnt_name = numpy.object_([str(e) for e in vrnt_name]) if vrnt_name is not None else None
-        vrnt_fncode = numpy.object_([str(e) for e in vrnt_fncode]) if vrnt_fncode is not None else None
-
-        # construct the gmap object
-        genetic_map = cls(
-            vrnt_chrgrp = vrnt_chrgrp,
-            vrnt_phypos = vrnt_phypos,
-            vrnt_stop = vrnt_stop,
-            vrnt_genpos = vrnt_genpos,
-            vrnt_name = vrnt_name,
-            vrnt_fncode = vrnt_fncode,
-            auto_group = auto_group,
-            auto_build_spline = auto_build_spline
+        # construct object
+        out = cls(
+            vrnt_chrgrp       = vrnt_chrgrp,
+            vrnt_phypos       = vrnt_phypos,
+            vrnt_stop         = vrnt_stop,
+            vrnt_genpos       = vrnt_genpos,
+            vrnt_name         = vrnt_name,
+            vrnt_fncode       = vrnt_fncode,
+            spline            = spline,
+            spline_kind       = spline_kind,
+            spline_fill_value = spline_fill_value,
+            vrnt_genpos_units = vrnt_genpos_units,
+            auto_group        = auto_group,
+            auto_build_spline = auto_build_spline,
+            **kwargs
         )
 
-        return genetic_map
+        return out
 
     @classmethod
     def from_csv(
             cls, 
-            fpath: str, 
+            filename: str, 
             sep: str = ',', 
             header: int = 0, 
-            vrnt_chrgrp_ix: int = 0, 
-            vrnt_phypos_ix: int = 1, 
-            vrnt_stop_ix: int = 2, 
-            vrnt_genpos_ix: int = 3, 
-            vrnt_name_ix: Optional[int] = None, 
-            vrnt_fncode_ix: Optional[int] = None,
+            vrnt_chrgrp_col: Union[str,Integral] = "chr", 
+            vrnt_phypos_col: Union[str,Integral] = "pos", 
+            vrnt_stop_col: Union[str,Integral] = "stop",
+            vrnt_genpos_col: Union[str,Integral] = "cM",
+            vrnt_name_col: Optional[Union[str,Integral]] = None,
+            vrnt_fncode_col: Optional[Union[str,Integral]] = None,
+            spline: dict = None,
+            spline_kind: str = "linear",
+            spline_fill_value: Union[str,numpy.ndarray] = "extrapolate",
+            vrnt_genpos_units: str = "M",
             auto_group: bool = True,
-            auto_build_spline: bool = True
+            auto_build_spline: bool = True,
+            **kwargs: dict
         ) -> 'ExtendedGeneticMap':
         """
         Create an ExtendedGeneticMap object from a csv or delimited file.
 
         Parameters
         ----------
-        fpath : str, path object, or file-like object
-            Any valid string path, including URLs. Valid URL schemes include http,
-            ftp, s3, and file. For file URLs, a host is expected. (see pandas docs)
-        sep : str, default ','
-            Delimiter to use.
+        filename : str, path object, or file-like object
+            Any valid string path, including URLs. Valid URL schemes include 
+            http, ftp, s3, and file. For file URLs, a host is expected (see 
+            pandas docs).
+        
+        sep : str, default = ','
+            CSV delimiter to use.
+        
         header : int, list of int, default=0
             Row number(s) to use as the column names, and the start of the data.
-        vrnt_chrgrp_ix : int, default=0
-            Column index to specify 'chrom' (chromosome) field.
-        vrnt_phypos_ix : int, default=1
-            Column index to specify 'vrnt_phypos' (chromosome start) field.
-        vrnt_stop_ix : int, default=2
-            Column index to specify 'vrnt_stop' (chromosome end) field.
-        vrnt_genpos_ix : int, default=3
-            Column index to specify 'vrnt_genpos' (map position in Morgans) field.
-        vrnt_name_ix : int, default=None
-            Column index to specify 'vrnt_name' (marker name) field.
-        vrnt_fncode_ix : int, default=None
-            Column index to specify 'vrnt_fncode' (mapping function code) field.
+        
+        vrnt_chrgrp_col : str, Integral, default = "chr"
+            Name or number of the chromosome/linkage group name column from 
+            which to import.
+
+        vrnt_phypos_col : str, Integral, default = "pos"
+            Name or number of the physical position column from which to import.
+
+        vrnt_stop_col : str, Integral, default = "stop"
+            Name or number of the physical position stop column from which to 
+            import.
+
+        vrnt_genpos_col : str, Integral, default = "cM"
+            Name or number of the genetic position column from which to import.
+
+        vrnt_name_col : str, Integral, None, default = None
+            Name or number of the marker variant name column from which to 
+            import. If ``None``, do not import any marker variant names.
+
+        vrnt_fncode_col : str, Integral, None, default = None
+            Name or number of the marker variant function code column from which 
+            to import. If ``None``, do not import any marker variant function 
+            codes.
+
+        spline : dict, None, default = None
+            Pre-built interpolation spline to associate with the genetic map.
+        
+        spline_kind : str, default = "linear"
+            In automatic building of splines, the spline kind to be built.
+            Specifies the kind of interpolation as a string ('linear',
+            'nearest', 'zero', 'slinear', 'quadratic', 'cubic', 'previous',
+            'next', where 'zero', 'slinear', 'quadratic' and 'cubic' refer to a
+            spline interpolation of zeroth, first, second or third order;
+            'previous' and 'next' simply return the previous or next value of
+            the point) or as an integer specifying the order of the spline
+            interpolator to use.
+            
+        spline_fill_value : str, numpy.ndarray, default = "extrapolate"
+            In automatic building of splines, the spline fill value to use.
+            If 'extrapolate', then points outside the data range will be
+            extrapolated.
+            If a ndarray (or float), this value will be used to fill in for
+            requested points outside of the data range. If not provided, then
+            the default is NaN. The array-like must broadcast properly to the
+            dimensions of the non-interpolation axes.
+            If a two-element tuple, then the first element is used as a fill
+            value for x_new < x[0] and the second element is used for
+            x_new > x[-1]. Anything that is not a 2-element tuple (e.g., list
+            or ndarray, regardless of shape) is taken to be a single array-like
+            argument meant to be used for both bounds as below,
+            above = fill_value, fill_value.
+
         auto_group : bool
-            Whether to automatically group and sort markers into linkage groups on 
-            loading the ``ExtendedGeneticMap``.
+            Whether to automatically sort and group variants into chromosome groups.
+        
         auto_build_spline : bool
-            Whether to automatically construct an interpolation spline after 
-            loading the ``ExtendedGeneticMap``. Interpolation spline type is the default
-            value for the ``build_spline`` method.
+            Whether to automatically construct a spline on object construction.
+            If ``spline`` is provided, then this spline is overwritten.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a 
+            pandas.DataFrame.
 
         Returns
         -------
-        genetic_map : ExtendedGeneticMap
+        out : ExtendedGeneticMap
             An ExtendedGeneticMap object containing all data required for
             genetic inferences.
-
         """
         # read file using pandas.read_csv
         df = pandas.read_csv(
-            fpath,
-            sep=sep,
-            header=header
+            filename,
+            sep = sep,
+            header = header
         )
 
-        genetic_map = cls.from_pandas(
-            pandas_df = df,
-            vrnt_chrgrp_ix = vrnt_chrgrp_ix,
-            vrnt_phypos_ix = vrnt_phypos_ix,
-            vrnt_stop_ix = vrnt_stop_ix,
-            vrnt_genpos_ix = vrnt_genpos_ix,
-            vrnt_name_ix = vrnt_name_ix,
-            vrnt_fncode_ix = vrnt_fncode_ix,
+        out = cls.from_pandas(
+            df = df,
+            vrnt_chrgrp_col = vrnt_chrgrp_col,
+            vrnt_phypos_col = vrnt_phypos_col,
+            vrnt_stop_col = vrnt_stop_col,
+            vrnt_genpos_col = vrnt_genpos_col,
+            vrnt_name_col = vrnt_name_col,
+            vrnt_fncode_col = vrnt_fncode_col,
+            spline = spline,
+            spline_kind = spline_kind,
+            spline_fill_value = spline_fill_value,
+            vrnt_genpos_units = vrnt_genpos_units,
             auto_group = auto_group,
-            auto_build_spline = auto_build_spline
+            auto_build_spline = auto_build_spline,
+            **kwargs
         )
 
-        return genetic_map
+        return out
 
     @classmethod
     def from_egmap(
             cls, 
-            fpath: str,
+            filename: str,
+            spline: dict = None,
+            spline_kind: str = "linear",
+            spline_fill_value: Union[str,numpy.ndarray] = "extrapolate",
             auto_group: bool = True,
             auto_build_spline: bool = True
         ) -> 'ExtendedGeneticMap':
@@ -1415,21 +1921,51 @@ class ExtendedGeneticMap(GeneticMap):
 
         Parameters
         ----------
-        fpath : str, path object, or file-like object
-            Any valid string path, including URLs. Valid URL schemes include http,
-            ftp, s3, and file. For file URLs, a host is expected. (see pandas docs)
+        filename : str, path object, or file-like object
+            Any valid string path, including URLs. Valid URL schemes include 
+            http, ftp, s3, and file. For file URLs, a host is expected (see 
+            pandas docs).
+        
+        spline : dict, None, default = None
+            Pre-built interpolation spline to associate with the genetic map.
+        
+        spline_kind : str, default = "linear"
+            In automatic building of splines, the spline kind to be built.
+            Specifies the kind of interpolation as a string ('linear',
+            'nearest', 'zero', 'slinear', 'quadratic', 'cubic', 'previous',
+            'next', where 'zero', 'slinear', 'quadratic' and 'cubic' refer to a
+            spline interpolation of zeroth, first, second or third order;
+            'previous' and 'next' simply return the previous or next value of
+            the point) or as an integer specifying the order of the spline
+            interpolator to use.
+            
+        spline_fill_value : str, numpy.ndarray, default = "extrapolate"
+            In automatic building of splines, the spline fill value to use.
+            If 'extrapolate', then points outside the data range will be
+            extrapolated.
+            If a ndarray (or float), this value will be used to fill in for
+            requested points outside of the data range. If not provided, then
+            the default is NaN. The array-like must broadcast properly to the
+            dimensions of the non-interpolation axes.
+            If a two-element tuple, then the first element is used as a fill
+            value for x_new < x[0] and the second element is used for
+            x_new > x[-1]. Anything that is not a 2-element tuple (e.g., list
+            or ndarray, regardless of shape) is taken to be a single array-like
+            argument meant to be used for both bounds as below,
+            above = fill_value, fill_value.
+
         auto_group : bool
-            Whether to automatically group and sort markers into linkage groups on 
-            loading the ``ExtendedGeneticMap``.
+            Whether to automatically sort and group variants into chromosome groups.
+        
         auto_build_spline : bool
-            Whether to automatically construct an interpolation spline after 
-            loading the ``ExtendedGeneticMap``. Interpolation spline type is the default
-            value for the ``build_spline`` method.
+            Whether to automatically construct a spline on object construction.
+            If ``spline`` is provided, then this spline is overwritten.
 
         Returns
         -------
-        genetic_map : ExtendedGeneticMap
-            A gmap object containing all data required for genetic inferences.
+        out : ExtendedGeneticMap
+            An ExtendedGeneticMap object containing all data required for 
+            genetic inferences.
 
         Notes
         -----
@@ -1486,28 +2022,49 @@ class ExtendedGeneticMap(GeneticMap):
         """
         # read the file using pandas
         df = pandas.read_csv(
-            fpath,          # file path
+            filename,       # file path
             sep = '\t',     # tab delimited
             header = 0      # there is a header
         )
 
-        genetic_map = cls.from_pandas(
-            pandas_df = df,
-            vrnt_chrgrp_ix = 0,
-            vrnt_phypos_ix = 1,
-            vrnt_stop_ix = 2,
-            vrnt_genpos_ix = 3,
-            vrnt_name_ix = 4 if "mkr_name" in df.columns else None,
-            vrnt_fncode_ix = 5 if "map_fncode" in df.columns else None,
-            auto_group = auto_group,
+        # create GeneticMap
+        out = cls.from_pandas(
+            df                = df,
+            vrnt_chrgrp_col   = 0,
+            vrnt_phypos_col   = 1,
+            vrnt_stop_col     = 2,
+            vrnt_genpos_col   = 3,
+            vrnt_name_col     = 4 if "mkr_name" in df.columns else None,
+            vrnt_fncode_col   = 5 if "map_fncode" in df.columns else None,
+            spline            = spline,
+            spline_kind       = spline_kind,
+            spline_fill_value = spline_fill_value,
+            vrnt_genpos_units = "M",
+            auto_group        = auto_group,
             auto_build_spline = auto_build_spline
         )
 
-        return genetic_map
+        return out
 
 
 
 ################################## Utilities ###################################
 def check_is_ExtendedGeneticMap(v: object, vname: str) -> None:
+    """
+    Check if object is of type ExtendedGeneticMap. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, ExtendedGeneticMap):
-        raise TypeError("'%s' must be an ExtendedGeneticMap." % vname)
+        raise TypeError(
+            "variable '{0}' must be of type '{1}' but received type '{2}'.".format(
+                vname,
+                ExtendedGeneticMap.__name__,
+                type(v).__name__
+            )
+        )

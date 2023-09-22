@@ -15,10 +15,16 @@ import warnings
 import numpy
 import pandas
 from scipy.interpolate import interp1d
-from pybrops.core.error.error_type_numpy import check_is_ndarray, check_is_str_or_ndarray, check_ndarray_dtype_is_floating, check_ndarray_dtype_is_integer
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_is_str_or_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_floating
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
 from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
-from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim
-from pybrops.core.error.error_type_python import check_is_dict, check_is_str, check_is_str_or_Integral
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_type_python import check_is_str_or_Integral
 from pybrops.core.error.error_value_python import check_tuple_len_eq
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 
@@ -69,18 +75,6 @@ class StandardGeneticMap(GeneticMap):
             of markers. This array contains the genetic positions on the 
             chromosome or linkage group for each marker.
 
-        vrnt_genpos_units : str, default = "M"
-            Units in which genetic positions in the ``vrnt_genpos`` array are 
-            stored. Options are listed below and are case-sensitive:
-            
-            - ``"M"`` - genetic position units are in Morgans
-            - ``"Morgans"`` - genetic position units are in Morgans
-            - ``"cM"`` - genetic position units are in centiMorgans
-            - ``"centiMorgans"`` - genetic position units are in centiMorgans
-            
-            Internally, all genetic positions are stored in Morgans. Providing 
-            the units of the input  
-
         spline : dict, None, default = None
             Pre-built interpolation spline to associate with the genetic map.
         
@@ -109,6 +103,18 @@ class StandardGeneticMap(GeneticMap):
             argument meant to be used for both bounds as below,
             above = fill_value, fill_value.
 
+        vrnt_genpos_units : str, default = "M"
+            Units in which genetic positions in the ``vrnt_genpos`` array are 
+            stored. Options are listed below and are case-sensitive:
+            
+            - ``"M"`` - genetic position units are in Morgans
+            - ``"Morgans"`` - genetic position units are in Morgans
+            - ``"cM"`` - genetic position units are in centiMorgans
+            - ``"centiMorgans"`` - genetic position units are in centiMorgans
+            
+            Internally, all genetic positions are stored in Morgans. Providing 
+            the units of the input  
+
         auto_group : bool
             Whether to automatically sort and group variants into chromosome groups.
         
@@ -126,6 +132,12 @@ class StandardGeneticMap(GeneticMap):
         self.spline            = spline
         self.spline_kind       = spline_kind
         self.spline_fill_value = spline_fill_value
+
+        # set variant metadata to None
+        self.vrnt_chrgrp_name = None
+        self.vrnt_chrgrp_stix = None
+        self.vrnt_chrgrp_spix = None
+        self.vrnt_chrgrp_len  = None
 
         # automatically group if requested
         if auto_group:
@@ -496,9 +508,16 @@ class StandardGeneticMap(GeneticMap):
             keys: Union[tuple,numpy.ndarray,None] = None
         ) -> None:
         """
-        Set variant chromosome group name, stix, spix, len to None.
-        Sort according to keys.
-        Preserves spline if it exists.
+        Sort slements of the GeneticMap using a sequence of keys.
+        Note this modifies the GeneticMap in-place.
+
+        Parameters
+        ----------
+        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+            The k different columns to be sorted. The last column (or row if
+            keys is a 2D array) is the primary sort key.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # get indices for sort
         indices = self.lexsort(keys)
@@ -1150,7 +1169,7 @@ class StandardGeneticMap(GeneticMap):
             **kwargs: dict
         ) -> pandas.DataFrame:
         """
-        Export an object to a pandas.DataFrame.
+        Export a GeneticMap to a pandas.DataFrame.
 
         Parameters
         ----------
@@ -1253,7 +1272,7 @@ class StandardGeneticMap(GeneticMap):
         kwargs : dict
             Additional keyword arguments to use for dictating export to a CSV.
         """
-        # construct pandas.DataFrame
+        # convert GeneticMap to pandas.DataFrame
         df = self.to_pandas(
             vrnt_chrgrp_col = vrnt_chrgrp_col,
             vrnt_phypos_col = vrnt_phypos_col,
@@ -1287,7 +1306,7 @@ class StandardGeneticMap(GeneticMap):
             **kwargs: dict
         ) -> 'StandardGeneticMap':
         """
-        Read an object from a pandas.DataFrame.
+        Read a StandardGeneticMap from a pandas.DataFrame.
 
         Parameters
         ----------
@@ -1344,8 +1363,8 @@ class StandardGeneticMap(GeneticMap):
 
         Returns
         -------
-        out : PandasInputOutput
-            An object read from a pandas.DataFrame.
+        out : StandardGeneticMap
+            A StandardGeneticMap read from a pandas.DataFrame.
         """
         # data type checks
         check_is_pandas_DataFrame(df, "df")
@@ -1504,4 +1523,10 @@ def check_is_StandardGeneticMap(v: object, vname: str) -> None:
         Name of variable to print in TypeError message.
     """
     if not isinstance(v, StandardGeneticMap):
-        raise TypeError("'{0}' must be of type StandardGeneticMap.".format(vname))
+        raise TypeError(
+            "variable '{0}' must be of type '{1}' but received type '{2}'.".format(
+                vname,
+                StandardGeneticMap.__name__,
+                type(v).__name__
+            )
+        )

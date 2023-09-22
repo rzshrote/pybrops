@@ -2,8 +2,8 @@ from numbers import Integral
 import numpy
 import pytest
 from os.path import isfile
-from pybrops.popgen.gmap.StandardGeneticMap import StandardGeneticMap
-from pybrops.test.assert_python import assert_concrete_method, assert_concrete_property, assert_docstring, not_raises
+from pybrops.popgen.gmap.StandardGeneticMap import StandardGeneticMap, check_is_StandardGeneticMap
+from pybrops.test.assert_python import assert_concrete_function, assert_concrete_method, assert_concrete_property, assert_docstring, not_raises
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -766,3 +766,15 @@ def test_from_csv(gmap):
     fin = "genetic_map.csv"
     tmp = StandardGeneticMap.from_csv(fin)
     assert isinstance(tmp, StandardGeneticMap)
+
+################################################################################
+############################ Test concrete functions ###########################
+################################################################################
+
+### check_is_StandardGeneticMap
+def test_check_is_StandardGeneticMap_is_concrete():
+    assert_concrete_function(check_is_StandardGeneticMap)
+
+def test_check_is_StandardGeneticMap():
+    with pytest.raises(TypeError):
+        check_is_StandardGeneticMap(None, "None")
