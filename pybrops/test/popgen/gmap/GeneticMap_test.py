@@ -93,9 +93,6 @@ def test_remove_is_abstract():
 def test_select_is_abstract():
     assert_abstract_method(GeneticMap, "select")
 
-def test_prune_is_abstract():
-    assert_abstract_method(GeneticMap, "prune")
-
 def test_congruence_is_abstract():
     assert_abstract_method(GeneticMap, "congruence")
 
@@ -129,8 +126,8 @@ def test_gdist1p_is_abstract():
 def test_gdist2p_is_abstract():
     assert_abstract_method(GeneticMap, "gdist2p")
 
-def test_to_pandas_df_is_abstract():
-    assert_abstract_method(GeneticMap, "to_pandas_df")
+def test_to_pandas_is_abstract():
+    assert_abstract_method(GeneticMap, "to_pandas")
 
 def test_to_csv_is_abstract():
     assert_abstract_method(GeneticMap, "to_csv")

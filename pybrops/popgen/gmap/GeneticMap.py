@@ -70,7 +70,7 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
     @abstractmethod
     def __deepcopy__(
             self, 
-            memo: dict
+            memo: Optional[dict]
         ) -> 'GeneticMap':
         """
         Make a deep copy of the GeneticMap.
@@ -98,79 +98,79 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
     
     @property
     @abstractmethod
-    def vrnt_chrgrp(self) -> object:
+    def vrnt_chrgrp(self) -> numpy.ndarray:
         """Variant chromosome group label."""
         raise NotImplementedError("property is abstract")
     @vrnt_chrgrp.setter
     @abstractmethod
-    def vrnt_chrgrp(self, value: object) -> None:
+    def vrnt_chrgrp(self, value: numpy.ndarray) -> None:
         """Set variant chromosome group label array"""
         raise NotImplementedError("property is abstract")
 
     @property
     @abstractmethod
-    def vrnt_phypos(self) -> object:
+    def vrnt_phypos(self) -> numpy.ndarray:
         """Variant physical position."""
         raise NotImplementedError("property is abstract")
     @vrnt_phypos.setter
     @abstractmethod
-    def vrnt_phypos(self, value: object) -> None:
+    def vrnt_phypos(self, value: numpy.ndarray) -> None:
         """Set variant physical position array"""
         raise NotImplementedError("property is abstract")
 
     @property
     @abstractmethod
-    def vrnt_genpos(self) -> object:
+    def vrnt_genpos(self) -> numpy.ndarray:
         """Variant genetic position."""
         raise NotImplementedError("property is abstract")
     @vrnt_genpos.setter
     @abstractmethod
-    def vrnt_genpos(self, value: object) -> None:
+    def vrnt_genpos(self, value: numpy.ndarray) -> None:
         """Set variant genetic position array"""
         raise NotImplementedError("property is abstract")
     
     ################# Metadata Properites ##################
     @property
     @abstractmethod
-    def vrnt_chrgrp_name(self) -> object:
+    def vrnt_chrgrp_name(self) -> numpy.ndarray:
         """Variant chromosome group names."""
         raise NotImplementedError("property is abstract")
     @vrnt_chrgrp_name.setter
     @abstractmethod
-    def vrnt_chrgrp_name(self, value: object) -> None:
+    def vrnt_chrgrp_name(self, value: numpy.ndarray) -> None:
         """Set variant chromosome group name array"""
         raise NotImplementedError("property is abstract")
 
     @property
     @abstractmethod
-    def vrnt_chrgrp_stix(self) -> object:
+    def vrnt_chrgrp_stix(self) -> numpy.ndarray:
         """Variant chromosome group start indices."""
         raise NotImplementedError("property is abstract")
     @vrnt_chrgrp_stix.setter
     @abstractmethod
-    def vrnt_chrgrp_stix(self, value: object) -> None:
+    def vrnt_chrgrp_stix(self, value: numpy.ndarray) -> None:
         """Set variant chromosome group start indices array"""
         raise NotImplementedError("property is abstract")
 
     @property
     @abstractmethod
-    def vrnt_chrgrp_spix(self) -> object:
+    def vrnt_chrgrp_spix(self) -> numpy.ndarray:
         """Variant chromosome group stop indices."""
         raise NotImplementedError("property is abstract")
     @vrnt_chrgrp_spix.setter
     @abstractmethod
-    def vrnt_chrgrp_spix(self, value: object) -> None:
+    def vrnt_chrgrp_spix(self, value: numpy.ndarray) -> None:
         """Set variant chromosome group stop indices array"""
         raise NotImplementedError("property is abstract")
 
     @property
     @abstractmethod
-    def vrnt_chrgrp_len(self) -> object:
+    def vrnt_chrgrp_len(self) -> numpy.ndarray:
         """Variant chromosome group length."""
         raise NotImplementedError("property is abstract")
     @vrnt_chrgrp_len.setter
     @abstractmethod
-    def vrnt_chrgrp_len(self, value: object) -> None:
+    def vrnt_chrgrp_len(self, value: numpy.ndarray) -> None:
         """Set variant chromosome group length array"""
         raise NotImplementedError("property is abstract")
 

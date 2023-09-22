@@ -1,0 +1,617 @@
+from numbers import Integral
+import numpy
+import pytest
+
+from pybrops.popgen.gmap.StandardGeneticMap import StandardGeneticMap
+from pybrops.test.assert_python import assert_concrete_method, assert_concrete_property, assert_docstring, not_raises
+
+################################################################################
+################################ Test fixtures #################################
+################################################################################
+@pytest.fixture
+def gmap(shared_datadir):
+    yield StandardGeneticMap.from_csv(
+        shared_datadir / "McMullen_2009_US_NAM.M.egmap",
+        sep='\t',
+        header=0,
+        vrnt_chrgrp_col="chr_grp",
+        vrnt_phypos_col="chr_start",
+        vrnt_genpos_col="map_pos",
+        vrnt_genpos_units="M"
+    )
+
+################################################################################
+############################## Test class docstring ############################
+################################################################################
+def test_class_docstring():
+    assert_docstring(StandardGeneticMap)
+
+################################################################################
+########################### Test concrete properties ###########################
+################################################################################
+
+### nvrnt
+def test_nvrnt_is_concrete():
+    assert_concrete_property(StandardGeneticMap, "nvrnt")
+
+def test_nvrnt_fget(gmap):
+    assert isinstance(gmap.nvrnt, Integral)
+    assert len(gmap) == gmap.nvrnt
+
+def test_nvrnt_fset_AttributeError(gmap):
+    with pytest.raises(AttributeError):
+        gmap.nvrnt = object()
+
+def test_nvrnt_fdel_AttributeError(gmap):
+    with pytest.raises(AttributeError):
+        del gmap.nvrnt
+
+### vrnt_chrgrp
+def test_vrnt_chrgrp_is_concrete():
+    assert_concrete_property(StandardGeneticMap, "vrnt_chrgrp")
+
+def test_vrnt_chrgrp_fget(gmap):
+    with not_raises(Exception):
+        tmp = gmap.vrnt_chrgrp
+    assert isinstance(gmap.vrnt_chrgrp, numpy.ndarray)
+    assert len(gmap) == len(gmap.vrnt_chrgrp)
+
+def test_vrnt_chrgrp_fset(gmap):
+    with not_raises(Exception):
+        gmap.vrnt_chrgrp = numpy.random.randint(1, 9, len(gmap))
+
+def test_vrnt_chrgrp_fset_TypeError(gmap):
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp = object()
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp = None
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp = 1
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp = 1.0
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp = numpy.random.random(len(gmap))
+
+def test_vrnt_chrgrp_fset_ValueError(gmap):
+    with pytest.raises(ValueError):
+        gmap.vrnt_chrgrp = numpy.random.randint(1, 9, (len(gmap),1))
+
+def test_vrnt_chrgrp_fdel_AttributeError(gmap):
+    with pytest.raises(AttributeError):
+        del gmap.vrnt_chrgrp
+
+### vrnt_phypos
+def test_vrnt_phypos_is_concrete():
+    assert_concrete_property(StandardGeneticMap, "vrnt_phypos")
+
+def test_vrnt_phypos_fget(gmap):
+    with not_raises(Exception):
+        tmp = gmap.vrnt_phypos
+    assert isinstance(gmap.vrnt_phypos, numpy.ndarray)
+    assert len(gmap) == len(gmap.vrnt_phypos)
+
+def test_vrnt_phypos_fset(gmap):
+    with not_raises(Exception):
+        gmap.vrnt_phypos = numpy.random.randint(1, 9, len(gmap))
+
+def test_vrnt_phypos_fset_TypeError(gmap):
+    with pytest.raises(TypeError):
+        gmap.vrnt_phypos = object()
+    with pytest.raises(TypeError):
+        gmap.vrnt_phypos = None
+    with pytest.raises(TypeError):
+        gmap.vrnt_phypos = 1
+    with pytest.raises(TypeError):
+        gmap.vrnt_phypos = 1.0
+    with pytest.raises(TypeError):
+        gmap.vrnt_phypos = numpy.random.random(len(gmap))
+
+def test_vrnt_phypos_fset_ValueError(gmap):
+    with pytest.raises(ValueError):
+        gmap.vrnt_phypos = numpy.random.randint(1, 9, (len(gmap),1))
+
+def test_vrnt_phypos_fdel_AttributeError(gmap):
+    with pytest.raises(AttributeError):
+        del gmap.vrnt_phypos
+
+### vrnt_genpos
+def test_vrnt_genpos_is_concrete():
+    assert_concrete_property(StandardGeneticMap, "vrnt_genpos")
+
+def test_vrnt_genpos_fget(gmap):
+    with not_raises(Exception):
+        tmp = gmap.vrnt_genpos
+    assert isinstance(gmap.vrnt_genpos, numpy.ndarray)
+    assert len(gmap) == len(gmap.vrnt_genpos)
+
+def test_vrnt_genpos_fset(gmap):
+    with not_raises(Exception):
+        gmap.vrnt_genpos = numpy.random.random(len(gmap))
+
+def test_vrnt_genpos_fset_TypeError(gmap):
+    with pytest.raises(TypeError):
+        gmap.vrnt_genpos = object()
+    with pytest.raises(TypeError):
+        gmap.vrnt_genpos = None
+    with pytest.raises(TypeError):
+        gmap.vrnt_genpos = 1
+    with pytest.raises(TypeError):
+        gmap.vrnt_genpos = 1.0
+    with pytest.raises(TypeError):
+        gmap.vrnt_genpos = numpy.random.randint(1, 9, len(gmap))
+
+def test_vrnt_genpos_fset_ValueError(gmap):
+    with pytest.raises(ValueError):
+        gmap.vrnt_genpos = numpy.random.random((len(gmap),1))
+
+def test_vrnt_genpos_fdel_AttributeError(gmap):
+    with pytest.raises(AttributeError):
+        del gmap.vrnt_genpos
+
+### vrnt_genpos_name
+def test_vrnt_chrgrp_name_is_concrete():
+    assert_concrete_property(StandardGeneticMap, "vrnt_chrgrp_name")
+
+def test_vrnt_chrgrp_name_fget(gmap):
+    with not_raises(Exception):
+        tmp = gmap.vrnt_chrgrp_name
+    if gmap.vrnt_chrgrp_name is not None:
+        assert isinstance(gmap.vrnt_chrgrp_name, numpy.ndarray)
+        assert len(gmap.vrnt_chrgrp_name) == len(numpy.unique(gmap.vrnt_chrgrp))
+
+def test_vrnt_chrgrp_name_fset(gmap):
+    with not_raises(Exception):
+        gmap.vrnt_chrgrp_name = numpy.random.randint(1, 9, len(gmap))
+    with not_raises(Exception):
+        gmap.vrnt_chrgrp_name = None
+
+def test_vrnt_chrgrp_name_fset_TypeError(gmap):
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_name = object()
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_name = 1
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_name = 1.0
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_name = numpy.random.random(len(gmap))
+
+def test_vrnt_chrgrp_name_fset_ValueError(gmap):
+    with pytest.raises(ValueError):
+        gmap.vrnt_chrgrp_name = numpy.random.randint(1, 9, (len(gmap),1))
+
+def test_vrnt_chrgrp_name_fdel_AttributeError(gmap):
+    with pytest.raises(AttributeError):
+        del gmap.vrnt_chrgrp_name
+
+### vrnt_chrgrp_stix
+def test_vrnt_chrgrp_stix_is_concrete():
+    assert_concrete_property(StandardGeneticMap, "vrnt_chrgrp_stix")
+
+def test_vrnt_chrgrp_stix_fget(gmap):
+    with not_raises(Exception):
+        tmp = gmap.vrnt_chrgrp_stix
+    if gmap.vrnt_chrgrp_stix is not None:
+        assert isinstance(gmap.vrnt_chrgrp_stix, numpy.ndarray)
+        assert len(gmap.vrnt_chrgrp_stix) == len(numpy.unique(gmap.vrnt_chrgrp))
+
+def test_vrnt_chrgrp_stix_fset(gmap):
+    with not_raises(Exception):
+        gmap.vrnt_chrgrp_stix = numpy.random.randint(1, 9, len(gmap))
+    with not_raises(Exception):
+        gmap.vrnt_chrgrp_stix = None
+
+def test_vrnt_chrgrp_stix_fset_TypeError(gmap):
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_stix = object()
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_stix = 1
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_stix = 1.0
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_stix = numpy.random.random(len(gmap))
+
+def test_vrnt_chrgrp_stix_fset_ValueError(gmap):
+    with pytest.raises(ValueError):
+        gmap.vrnt_chrgrp_stix = numpy.random.randint(1, 9, (len(gmap),1))
+
+def test_vrnt_chrgrp_stix_fdel_AttributeError(gmap):
+    with pytest.raises(AttributeError):
+        del gmap.vrnt_chrgrp_stix
+
+### vrnt_chrgrp_spix
+def test_vrnt_chrgrp_spix_is_concrete():
+    assert_concrete_property(StandardGeneticMap, "vrnt_chrgrp_spix")
+
+def test_vrnt_chrgrp_spix_fget(gmap):
+    with not_raises(Exception):
+        tmp = gmap.vrnt_chrgrp_spix
+    if gmap.vrnt_chrgrp_spix is not None:
+        assert isinstance(gmap.vrnt_chrgrp_spix, numpy.ndarray)
+        assert len(gmap.vrnt_chrgrp_spix) == len(numpy.unique(gmap.vrnt_chrgrp))
+
+def test_vrnt_chrgrp_spix_fset(gmap):
+    with not_raises(Exception):
+        gmap.vrnt_chrgrp_spix = numpy.random.randint(1, 9, len(gmap))
+    with not_raises(Exception):
+        gmap.vrnt_chrgrp_spix = None
+
+def test_vrnt_chrgrp_spix_fset_TypeError(gmap):
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_spix = object()
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_spix = 1
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_spix = 1.0
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_spix = numpy.random.random(len(gmap))
+
+def test_vrnt_chrgrp_spix_fset_ValueError(gmap):
+    with pytest.raises(ValueError):
+        gmap.vrnt_chrgrp_spix = numpy.random.randint(1, 9, (len(gmap),1))
+
+def test_vrnt_chrgrp_spix_fdel_AttributeError(gmap):
+    with pytest.raises(AttributeError):
+        del gmap.vrnt_chrgrp_spix
+
+### vrnt_chrgrp_len
+def test_vrnt_chrgrp_len_is_concrete():
+    assert_concrete_property(StandardGeneticMap, "vrnt_chrgrp_len")
+
+def test_vrnt_chrgrp_len_fget(gmap):
+    with not_raises(Exception):
+        tmp = gmap.vrnt_chrgrp_len
+    if gmap.vrnt_chrgrp_len is not None:
+        assert isinstance(gmap.vrnt_chrgrp_len, numpy.ndarray)
+        assert len(gmap.vrnt_chrgrp_len) == len(numpy.unique(gmap.vrnt_chrgrp))
+
+def test_vrnt_chrgrp_len_fset(gmap):
+    with not_raises(Exception):
+        gmap.vrnt_chrgrp_len = numpy.random.randint(1, 9, len(gmap))
+    with not_raises(Exception):
+        gmap.vrnt_chrgrp_len = None
+
+def test_vrnt_chrgrp_len_fset_TypeError(gmap):
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_len = object()
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_len = 1
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_len = 1.0
+    with pytest.raises(TypeError):
+        gmap.vrnt_chrgrp_len = numpy.random.random(len(gmap))
+
+def test_vrnt_chrgrp_len_fset_ValueError(gmap):
+    with pytest.raises(ValueError):
+        gmap.vrnt_chrgrp_len = numpy.random.randint(1, 9, (len(gmap),1))
+
+def test_vrnt_chrgrp_len_fdel_AttributeError(gmap):
+    with pytest.raises(AttributeError):
+        del gmap.vrnt_chrgrp_len
+
+### spline
+def test_spline_is_concrete():
+    assert_concrete_property(StandardGeneticMap, "spline")
+
+def test_spline_fget(gmap):
+    with not_raises(Exception):
+        tmp = gmap.spline
+    if gmap.spline is not None:
+        assert isinstance(gmap.spline, dict)
+        assert len(gmap.spline) == len(numpy.unique(gmap.vrnt_chrgrp))
+
+def test_spline_fset(gmap):
+    with not_raises(Exception):
+        gmap.spline = None
+    with not_raises(Exception):
+        gmap.spline = {}
+
+def test_spline_fset_TypeError(gmap):
+    with pytest.raises(TypeError):
+        gmap.spline = object()
+    with pytest.raises(TypeError):
+        gmap.spline = []
+    with pytest.raises(TypeError):
+        gmap.spline = ()
+    with pytest.raises(TypeError):
+        gmap.spline = "string"
+    with pytest.raises(TypeError):
+        gmap.spline = 1
+
+def test_spline_fdel_AttributeError(gmap):
+    with pytest.raises(AttributeError):
+        del gmap.spline
+
+### spline_kind
+def test_spline_kind_is_concrete():
+    assert_concrete_property(StandardGeneticMap, "spline_kind")
+
+def test_spline_kind_fget(gmap):
+    with not_raises(Exception):
+        tmp = gmap.spline_kind
+    if gmap.spline_kind is not None:
+        assert isinstance(gmap.spline_kind, str)
+
+def test_spline_kind_fset(gmap):
+    with not_raises(Exception):
+        gmap.spline_kind = None
+    with not_raises(Exception):
+        gmap.spline_kind = "cubic"
+
+def test_spline_kind_fset_TypeError(gmap):
+    with pytest.raises(TypeError):
+        gmap.spline_kind = object()
+
+def test_spline_kind_fdel_AttributeError(gmap):
+    with pytest.raises(AttributeError):
+        del gmap.spline_kind
+
+### spline_fill_value
+def test_spline_fill_value_is_concrete():
+    assert_concrete_property(StandardGeneticMap, "spline_fill_value")
+
+def test_spline_fill_value_fget(gmap):
+    with not_raises(Exception):
+        tmp = gmap.spline_fill_value
+    if gmap.spline_fill_value is not None:
+        assert isinstance(gmap.spline_fill_value, (str,numpy.ndarray))
+
+def test_spline_fill_value_fset(gmap):
+    with not_raises(Exception):
+        gmap.spline_fill_value = None
+    with not_raises(Exception):
+        gmap.spline_fill_value = "extrapolate"
+    with not_raises(Exception):
+        gmap.spline_fill_value = numpy.random.random(len(gmap))
+
+def test_spline_fill_value_fset_TypeError(gmap):
+    with pytest.raises(TypeError):
+        gmap.spline_fill_value = object()
+
+def test_spline_fill_value_fdel_AttributeError(gmap):
+    with pytest.raises(AttributeError):
+        del gmap.spline_fill_value
+
+################################################################################
+############################# Test concrete methods ############################
+################################################################################
+
+### __init__
+def test___init___is_concrete():
+    assert_concrete_method(StandardGeneticMap, "__init__")
+
+### __len__
+def test___len___is_concrete():
+    assert_concrete_method(StandardGeneticMap, "__len__")
+
+def test___len__(gmap):
+    assert len(gmap) == len(gmap.vrnt_chrgrp)
+
+### __copy__
+def test___copy___is_concrete():
+    assert_concrete_method(StandardGeneticMap, "__copy__")
+
+def test___copy__(gmap):
+    tmp = gmap.__copy__()
+    assert numpy.all(gmap.vrnt_chrgrp == tmp.vrnt_chrgrp)
+    assert numpy.all(gmap.vrnt_phypos == tmp.vrnt_phypos)
+    assert numpy.all(gmap.vrnt_genpos == tmp.vrnt_genpos)
+    assert numpy.all(gmap.vrnt_chrgrp_name == tmp.vrnt_chrgrp_name)
+    assert numpy.all(gmap.vrnt_chrgrp_stix == tmp.vrnt_chrgrp_stix)
+    assert numpy.all(gmap.vrnt_chrgrp_spix == tmp.vrnt_chrgrp_spix)
+    assert numpy.all(gmap.vrnt_chrgrp_len == tmp.vrnt_chrgrp_len)
+    assert gmap.spline == tmp.spline
+    assert gmap.spline_kind == tmp.spline_kind
+    assert numpy.all(gmap.spline_fill_value == tmp.spline_fill_value)
+
+### __deepcopy__
+def test___deepcopy___is_concrete():
+    assert_concrete_method(StandardGeneticMap, "__deepcopy__")
+
+def test___deepcopy__(gmap):
+    tmp = gmap.__deepcopy__()
+    assert numpy.all(gmap.vrnt_chrgrp == tmp.vrnt_chrgrp)
+    assert numpy.all(gmap.vrnt_phypos == tmp.vrnt_phypos)
+    assert numpy.all(gmap.vrnt_genpos == tmp.vrnt_genpos)
+    assert numpy.all(gmap.vrnt_chrgrp_name == tmp.vrnt_chrgrp_name)
+    assert numpy.all(gmap.vrnt_chrgrp_stix == tmp.vrnt_chrgrp_stix)
+    assert numpy.all(gmap.vrnt_chrgrp_spix == tmp.vrnt_chrgrp_spix)
+    assert numpy.all(gmap.vrnt_chrgrp_len == tmp.vrnt_chrgrp_len)
+    assert gmap.spline != tmp.spline # all spline objects should be different
+    assert gmap.spline_kind == tmp.spline_kind
+    assert numpy.all(gmap.spline_fill_value == tmp.spline_fill_value)
+
+### copy()
+def test_copy_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "copy")
+
+def test_copy(gmap):
+    tmp = gmap.copy()
+    assert numpy.all(gmap.vrnt_chrgrp == tmp.vrnt_chrgrp)
+    assert numpy.all(gmap.vrnt_phypos == tmp.vrnt_phypos)
+    assert numpy.all(gmap.vrnt_genpos == tmp.vrnt_genpos)
+    assert numpy.all(gmap.vrnt_chrgrp_name == tmp.vrnt_chrgrp_name)
+    assert numpy.all(gmap.vrnt_chrgrp_stix == tmp.vrnt_chrgrp_stix)
+    assert numpy.all(gmap.vrnt_chrgrp_spix == tmp.vrnt_chrgrp_spix)
+    assert numpy.all(gmap.vrnt_chrgrp_len == tmp.vrnt_chrgrp_len)
+    assert gmap.spline == tmp.spline
+    assert gmap.spline_kind == tmp.spline_kind
+    assert numpy.all(gmap.spline_fill_value == tmp.spline_fill_value)
+
+### deepcopy()
+def test_deepcopy_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "deepcopy")
+
+def test_deepcopy(gmap):
+    tmp = gmap.deepcopy()
+    assert numpy.all(gmap.vrnt_chrgrp == tmp.vrnt_chrgrp)
+    assert numpy.all(gmap.vrnt_phypos == tmp.vrnt_phypos)
+    assert numpy.all(gmap.vrnt_genpos == tmp.vrnt_genpos)
+    assert numpy.all(gmap.vrnt_chrgrp_name == tmp.vrnt_chrgrp_name)
+    assert numpy.all(gmap.vrnt_chrgrp_stix == tmp.vrnt_chrgrp_stix)
+    assert numpy.all(gmap.vrnt_chrgrp_spix == tmp.vrnt_chrgrp_spix)
+    assert numpy.all(gmap.vrnt_chrgrp_len == tmp.vrnt_chrgrp_len)
+    assert gmap.spline != tmp.spline # all spline objects should be different
+    assert gmap.spline_kind == tmp.spline_kind
+    assert numpy.all(gmap.spline_fill_value == tmp.spline_fill_value)
+
+### lexsort()
+def test_lexsort_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "lexsort")
+
+def test_lexsort_None(gmap):
+    output = gmap.lexsort(keys = None)
+    expected = numpy.lexsort(keys = (gmap.vrnt_genpos, gmap.vrnt_phypos, gmap.vrnt_chrgrp))
+    assert numpy.all(output == expected)
+
+def test_lexsort_tuple(gmap):
+    key1 = numpy.random.randint(1, 9, len(gmap))
+    key2 = numpy.random.random(len(gmap))
+    output = gmap.lexsort(keys = (key2, key1))
+    expected = numpy.lexsort(keys = (key2, key1))
+    assert numpy.all(output == expected)
+
+### reorder()
+def test_reorder_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "reorder")
+
+def test_reorder(gmap):
+    tmp = gmap.deepcopy()
+    indices = numpy.arange(len(gmap))
+    numpy.random.shuffle(indices)
+    tmp.reorder(indices)
+    assert numpy.all(tmp.vrnt_chrgrp == gmap.vrnt_chrgrp[indices])
+    assert numpy.all(tmp.vrnt_phypos == gmap.vrnt_phypos[indices])
+    assert numpy.all(tmp.vrnt_genpos == gmap.vrnt_genpos[indices])
+    assert tmp.vrnt_chrgrp_name is None
+    assert tmp.vrnt_chrgrp_stix is None
+    assert tmp.vrnt_chrgrp_spix is None
+    assert tmp.vrnt_chrgrp_len is None
+
+### sort()
+def test_sort_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "sort")
+
+def test_sort(gmap):
+    tmp = gmap.deepcopy()
+    key = numpy.random.random(len(gmap))
+    indices = numpy.lexsort((key,))
+    tmp.sort(key)
+    assert numpy.all(tmp.vrnt_chrgrp == gmap.vrnt_chrgrp[indices])
+    assert numpy.all(tmp.vrnt_phypos == gmap.vrnt_phypos[indices])
+    assert numpy.all(tmp.vrnt_genpos == gmap.vrnt_genpos[indices])
+    assert tmp.vrnt_chrgrp_name is None
+    assert tmp.vrnt_chrgrp_stix is None
+    assert tmp.vrnt_chrgrp_spix is None
+    assert tmp.vrnt_chrgrp_len is None
+
+### group()
+def test_group_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "group")
+
+def test_group(gmap):
+    tmp = gmap.deepcopy()
+    indices = numpy.arange(len(gmap))
+    numpy.random.shuffle(indices)
+    tmp.reorder(indices)
+    tmp.group()
+    assert numpy.all(tmp.vrnt_chrgrp == gmap.vrnt_chrgrp)
+    assert numpy.all(tmp.vrnt_phypos == gmap.vrnt_phypos)
+    assert numpy.all(tmp.vrnt_genpos == gmap.vrnt_genpos)
+    assert numpy.all(tmp.vrnt_chrgrp_name == gmap.vrnt_chrgrp_name)
+    assert numpy.all(tmp.vrnt_chrgrp_stix == gmap.vrnt_chrgrp_stix)
+    assert numpy.all(tmp.vrnt_chrgrp_spix == gmap.vrnt_chrgrp_spix)
+    assert numpy.all(tmp.vrnt_chrgrp_len == gmap.vrnt_chrgrp_len)
+
+### is_grouped()
+def test_is_grouped_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "is_grouped")
+
+def test_is_grouped(gmap):
+    tmp = gmap.deepcopy()
+    indices = numpy.arange(len(gmap))
+    numpy.random.shuffle(indices)
+    tmp.reorder(indices)
+    assert not tmp.is_grouped()
+    tmp.group()
+    assert tmp.is_grouped()
+
+### congruence()
+def test_congruence_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "congruence")
+
+### is_congruent()
+def test_is_congruent_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "is_congruent")
+
+### remove_discrepancies()
+def test_remove_discrepancies_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "remove_discrepancies")
+
+### remove()
+def test_remove_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "remove")
+
+### select()
+def test_select_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "select")
+
+### build_spline()
+def test_build_spline_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "build_spline")
+
+def test_build_spline(gmap):
+    gmap.spline = None
+    assert gmap.spline == None
+    kind = "linear"
+    fill_value = "extrapolate"
+    gmap.build_spline(kind, fill_value)
+    assert gmap.spline is not None
+    assert gmap.spline_kind == kind
+    assert numpy.all(gmap.spline_fill_value == fill_value)
+
+### has_spline()
+def test_has_spline_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "has_spline")
+
+### interp_genpos()
+def test_interp_genpos_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "interp_genpos")
+
+### interp_gmap()
+def test_interp_gmap_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "interp_gmap")
+
+### gdist1g()
+def test_gdist1g_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "gdist1g")
+
+### gdist1p()
+def test_gdist1p_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "gdist1p")
+
+### gdist2g()
+def test_gdist2g_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "gdist2g")
+
+### gdist2p()
+def test_gdist2p_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "gdist2p")
+
+### to_pandas()
+def test_to_pandas_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "to_pandas")
+
+### to_csv()
+def test_to_csv_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "to_csv")
+
+### from_pandas()
+def test_from_pandas_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "from_pandas")
+
+### from_csv()
+def test_from_csv_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "from_csv")
+
+
+

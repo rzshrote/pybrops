@@ -132,4 +132,21 @@ class DummyGeneticMap(GeneticMap):
         return super().to_csv(fname, sep, header, index, **kwargs)
     def to_pandas(self) -> pandas.DataFrame:
         return super().to_pandas()
-
+    def __copy__(self) -> GeneticMap:
+        return super().__copy__()
+    def __deepcopy__(self, memo: dict) -> GeneticMap:
+        return super().__deepcopy__(memo)
+    def copy(self) -> GeneticMap:
+        return super().copy()
+    def deepcopy(self, memo: dict) -> GeneticMap:
+        return super().deepcopy(memo)
+    @classmethod
+    def from_csv(cls, filename: str, **kwargs: dict) -> GeneticMap:
+        return super().from_csv(filename, **kwargs)
+    @classmethod
+    def from_pandas(cls, df: pandas.DataFrame, **kwargs: dict) -> GeneticMap:
+        return super().from_pandas(df, **kwargs)
+    @property
+    def nvrnt(self) -> object:
+        return super().nvrnt
+    

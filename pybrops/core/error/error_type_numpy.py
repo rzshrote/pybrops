@@ -40,6 +40,27 @@ from typing import Union
 ################################################################################
 ########################## isinstance check functions ##########################
 ################################################################################
+def check_is_str_or_ndarray(v: object, vname: str) -> None:
+    """
+    Check whether a Python object is a ``str`` or ``numpy.ndarray``.
+
+    Parameters
+    ----------
+    v : object
+        Python object to test.
+    vname : str
+        Name assigned to the Python object for an error message.
+    """
+    if not isinstance(v, (str,numpy.ndarray)):
+        raise TypeError(
+            "variable '{0}' must be of type '{1}' or '{2}' but received type '{3}'".format(
+                vname,
+                str.__name__,
+                numpy.ndarray.__name__,
+                type(v).__name__
+            )
+        )
+
 def check_is_ndarray(v: object, vname: str) -> None:
     """
     Check whether a Python object is a ``numpy.ndarray``.
@@ -52,7 +73,7 @@ def check_is_ndarray(v: object, vname: str) -> None:
         Name assigned to the Python object for an error message.
     """
     if not isinstance(v, numpy.ndarray):
-        raise TypeError("variable '{0}' must be of type '{1}' but received dtype '{2}'".format(vname,numpy.ndarray.__name__,type(v).__name__))
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,numpy.ndarray.__name__,type(v).__name__))
 
 def check_is_Generator(v: object, vname: str) -> None:
     """

@@ -15,7 +15,7 @@ import warnings
 import numpy
 import pandas
 from scipy.interpolate import interp1d
-from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_floating, check_ndarray_dtype_is_integer
+from pybrops.core.error.error_type_numpy import check_is_ndarray, check_is_str_or_ndarray, check_ndarray_dtype_is_floating, check_ndarray_dtype_is_integer
 from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
 from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim
 from pybrops.core.error.error_type_python import check_is_dict, check_is_str, check_is_str_or_Integral
@@ -180,7 +180,7 @@ class StandardGeneticMap(GeneticMap):
 
     def __deepcopy__(
             self, 
-            memo: dict
+            memo: Optional[dict] = None
         ) -> 'StandardGeneticMap':
         """
         Make a deep copy of the StandardGeneticMap.
@@ -362,12 +362,14 @@ class StandardGeneticMap(GeneticMap):
         self._spline_kind = value
 
     @property
-    def spline_fill_value(self) -> object:
+    def spline_fill_value(self) -> Union[str,numpy.ndarray,None]:
         """Default spline fill value."""
         return self._spline_fill_value
     @spline_fill_value.setter
-    def spline_fill_value(self, value: object) -> None:
+    def spline_fill_value(self, value: Union[str,numpy.ndarray,None]) -> None:
         """Set the default spline fill value"""
+        if value is not None:
+            check_is_str_or_ndarray(value, "spline_fill_value")
         self._spline_fill_value = value
 
     ############################## Object Methods ##############################
@@ -483,6 +485,12 @@ class StandardGeneticMap(GeneticMap):
         self.vrnt_phypos = self.vrnt_phypos[indices]
         self.vrnt_genpos = self.vrnt_genpos[indices]
 
+        # reset variant chromosome group name, stix, spix, len
+        self.vrnt_chrgrp_name = None
+        self.vrnt_chrgrp_stix = None
+        self.vrnt_chrgrp_spix = None
+        self.vrnt_chrgrp_len = None
+
     def sort(
             self, 
             keys: Union[tuple,numpy.ndarray,None] = None
@@ -492,12 +500,6 @@ class StandardGeneticMap(GeneticMap):
         Sort according to keys.
         Preserves spline if it exists.
         """
-        # reset variant chromosome group name, stix, spix, len
-        self.vrnt_chrgrp_name = None
-        self.vrnt_chrgrp_stix = None
-        self.vrnt_chrgrp_spix = None
-        self.vrnt_chrgrp_len = None
-
         # get indices for sort
         indices = self.lexsort(keys)
 
