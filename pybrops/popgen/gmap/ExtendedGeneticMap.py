@@ -484,11 +484,17 @@ class ExtendedGeneticMap(GeneticMap):
         self.reorder(indices)
 
     def group(
-            self
+            self,
+            **kwargs: dict
         ) -> None:
         """
-        Sort genetic map, then populate grouping indices.
-        Calculate chromosome grouping indices (group by vrnt_chrgrp).
+        Sort the GeneticMap jointly by chromosome group and physical position, 
+        then populate grouping indices.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
         """
         # sort the genetic map using default keys
         self.sort()
@@ -501,6 +507,24 @@ class ExtendedGeneticMap(GeneticMap):
 
         # calculate chr_grp_spix (stop indices)
         self._vrnt_chrgrp_spix = self._vrnt_chrgrp_stix + self._vrnt_chrgrp_len
+
+    def ungroup(
+            self,
+            **kwargs: dict
+        ) -> None:
+        """
+        Remove grouping metadata from the GeneticMap.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # set grouping metadat to None
+        self.vrnt_chrgrp_name = None
+        self.vrnt_chrgrp_stix = None
+        self.vrnt_chrgrp_spix = None
+        self.vrnt_chrgrp_len  = None
 
     def is_grouped(
             self
@@ -890,7 +914,7 @@ class ExtendedGeneticMap(GeneticMap):
             warnings.warn("genetic map is not congruent: markers are out of order", RuntimeWarning)
 
         # allocate empty memory
-        out = numpy.empty(vrnt_phypos.shape, dtype='float64')
+        out = numpy.empty(vrnt_phypos.shape, dtype = float)
 
         # for each chromosome-position pair
         for i,(chrgrp,phypos) in enumerate(zip(vrnt_chrgrp, vrnt_phypos)):
@@ -978,7 +1002,7 @@ class ExtendedGeneticMap(GeneticMap):
         stop = start + counts
 
         # allocate empty array
-        gdist = numpy.empty(view_genpos.shape, dtype='float64')
+        gdist = numpy.empty(view_genpos.shape, dtype = float)
 
         # for each chromosome group
         for st,sp in zip(start, stop):

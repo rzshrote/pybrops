@@ -317,7 +317,23 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
             **kwargs: dict
         ) -> None:
         """
-        Sort the GeneticMap, then populate grouping indices.
+        Sort the GeneticMap jointly by chromosome group and physical position, 
+        then populate grouping indices.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def ungroup(
+            self,
+            **kwargs: dict
+        ) -> None:
+        """
+        Remove grouping metadata from the GeneticMap.
 
         Parameters
         ----------
@@ -355,7 +371,9 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
             **kwargs: dict
         ) -> None:
         """
-        Remove indices from the GeneticMap. Sort and group internal arrays.
+        Remove indices from the GeneticMap. If the GeneticMap was grouped 
+        beforehand, then re-sort and re-group internal arrays after removing 
+        indices.
 
         Parameters
         ----------
@@ -365,6 +383,7 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
             Where:
 
             - ``a`` is the number of indices to remove.
+        
         kwargs : dict
             Additional keyword arguments.
         """
@@ -378,7 +397,8 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
         ) -> None:
         """
         Keep only selected markers, removing all others from the GeneticMap.
-        Sort and group internal arrays.
+        If the GeneticMap was grouped beforehand, then re-sort and re-group 
+        internal arrays after removing indices.
 
         Parameters
         ----------

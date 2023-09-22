@@ -1,7 +1,7 @@
 from numbers import Integral
 import numpy
 import pytest
-
+from os.path import isfile
 from pybrops.popgen.gmap.StandardGeneticMap import StandardGeneticMap
 from pybrops.test.assert_python import assert_concrete_method, assert_concrete_property, assert_docstring, not_raises
 
@@ -9,9 +9,21 @@ from pybrops.test.assert_python import assert_concrete_method, assert_concrete_p
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
-def gmap(shared_datadir):
+def gmap_uncorrected(shared_datadir):
     yield StandardGeneticMap.from_csv(
         shared_datadir / "McMullen_2009_US_NAM.M.egmap",
+        sep='\t',
+        header=0,
+        vrnt_chrgrp_col="chr_grp",
+        vrnt_phypos_col="chr_start",
+        vrnt_genpos_col="map_pos",
+        vrnt_genpos_units="M"
+    )
+
+@pytest.fixture
+def gmap(shared_datadir):
+    yield StandardGeneticMap.from_csv(
+        shared_datadir / "McMullen_2009_US_NAM_corrected.M.egmap",
         sep='\t',
         header=0,
         vrnt_chrgrp_col="chr_grp",
@@ -522,6 +534,15 @@ def test_group(gmap):
     assert numpy.all(tmp.vrnt_chrgrp_spix == gmap.vrnt_chrgrp_spix)
     assert numpy.all(tmp.vrnt_chrgrp_len == gmap.vrnt_chrgrp_len)
 
+### ungroup()
+def test_ungroup_is_concrete():
+    assert_concrete_method(StandardGeneticMap, "ungroup")
+
+def test_ungroup(gmap):
+    assert gmap.is_grouped()
+    gmap.ungroup()
+    assert not gmap.is_grouped()
+
 ### is_grouped()
 def test_is_grouped_is_concrete():
     assert_concrete_method(StandardGeneticMap, "is_grouped")
@@ -539,21 +560,88 @@ def test_is_grouped(gmap):
 def test_congruence_is_concrete():
     assert_concrete_method(StandardGeneticMap, "congruence")
 
+def test_congruence(gmap, gmap_uncorrected):
+    out = gmap.congruence()
+    assert isinstance(out, numpy.ndarray)
+    assert numpy.all(out)
+    out = gmap_uncorrected.congruence()
+    assert isinstance(out, numpy.ndarray)
+    assert not numpy.all(out)
+
 ### is_congruent()
 def test_is_congruent_is_concrete():
     assert_concrete_method(StandardGeneticMap, "is_congruent")
+
+def test_is_congruent(gmap, gmap_uncorrected):
+    assert gmap.is_congruent()
+    assert not gmap_uncorrected.is_congruent()
 
 ### remove_discrepancies()
 def test_remove_discrepancies_is_concrete():
     assert_concrete_method(StandardGeneticMap, "remove_discrepancies")
 
+def test_remove_discrepancies(gmap_uncorrected):
+    tmp = gmap_uncorrected.deepcopy()
+    tmp.remove_discrepancies()
+    assert len(gmap_uncorrected) != len(tmp)
+
 ### remove()
 def test_remove_is_concrete():
     assert_concrete_method(StandardGeneticMap, "remove")
 
+def test_remove(gmap):
+    # test with grouped gmap
+    tmp = gmap.deepcopy()
+    indices = numpy.arange(len(gmap) // 2)
+    tmp.remove(indices)
+    assert numpy.all(tmp.vrnt_chrgrp == numpy.delete(gmap.vrnt_chrgrp, indices))
+    assert numpy.all(tmp.vrnt_phypos == numpy.delete(gmap.vrnt_phypos, indices))
+    assert numpy.all(tmp.vrnt_genpos == numpy.delete(gmap.vrnt_genpos, indices))
+    assert tmp.vrnt_chrgrp_name is not None
+    assert tmp.vrnt_chrgrp_stix is not None
+    assert tmp.vrnt_chrgrp_spix is not None
+    assert tmp.vrnt_chrgrp_len is not None
+    # test with ungrouped gmap
+    tmp = gmap.deepcopy()
+    tmp.ungroup()
+    indices = numpy.arange(len(gmap) // 2)
+    tmp.remove(indices)
+    assert numpy.all(tmp.vrnt_chrgrp == numpy.delete(gmap.vrnt_chrgrp, indices))
+    assert numpy.all(tmp.vrnt_phypos == numpy.delete(gmap.vrnt_phypos, indices))
+    assert numpy.all(tmp.vrnt_genpos == numpy.delete(gmap.vrnt_genpos, indices))
+    assert tmp.vrnt_chrgrp_name is None
+    assert tmp.vrnt_chrgrp_stix is None
+    assert tmp.vrnt_chrgrp_spix is None
+    assert tmp.vrnt_chrgrp_len is None
+
 ### select()
 def test_select_is_concrete():
     assert_concrete_method(StandardGeneticMap, "select")
+
+def test_select(gmap):
+    # test with grouped gmap
+    tmp = gmap.deepcopy()
+    indices = numpy.arange(len(gmap) // 2)
+    tmp.select(indices)
+    assert numpy.all(tmp.vrnt_chrgrp == gmap.vrnt_chrgrp[indices])
+    assert numpy.all(tmp.vrnt_phypos == gmap.vrnt_phypos[indices])
+    assert numpy.all(tmp.vrnt_genpos == gmap.vrnt_genpos[indices])
+    assert tmp.vrnt_chrgrp_name is not None
+    assert tmp.vrnt_chrgrp_stix is not None
+    assert tmp.vrnt_chrgrp_spix is not None
+    assert tmp.vrnt_chrgrp_len is not None
+    # test with ungrouped gmap
+    tmp = gmap.deepcopy()
+    tmp.ungroup()
+    indices = numpy.arange(len(gmap) // 2)
+    tmp.select(indices)
+    assert numpy.all(tmp.vrnt_chrgrp == gmap.vrnt_chrgrp[indices])
+    assert numpy.all(tmp.vrnt_phypos == gmap.vrnt_phypos[indices])
+    assert numpy.all(tmp.vrnt_genpos == gmap.vrnt_genpos[indices])
+    assert tmp.vrnt_chrgrp_name is None
+    assert tmp.vrnt_chrgrp_stix is None
+    assert tmp.vrnt_chrgrp_spix is None
+    assert tmp.vrnt_chrgrp_len is None
 
 ### build_spline()
 def test_build_spline_is_concrete():
@@ -573,45 +661,108 @@ def test_build_spline(gmap):
 def test_has_spline_is_concrete():
     assert_concrete_method(StandardGeneticMap, "has_spline")
 
+def test_has_spline(gmap):
+    assert gmap.has_spline()
+    gmap.spline = None
+    assert not gmap.has_spline()
+
 ### interp_genpos()
 def test_interp_genpos_is_concrete():
     assert_concrete_method(StandardGeneticMap, "interp_genpos")
+
+def test_interp_genpos(gmap):
+    genpos = gmap.interp_genpos(gmap.vrnt_chrgrp, gmap.vrnt_phypos)
+    assert isinstance(genpos, numpy.ndarray)
+    assert numpy.all(genpos == gmap.vrnt_genpos)
 
 ### interp_gmap()
 def test_interp_gmap_is_concrete():
     assert_concrete_method(StandardGeneticMap, "interp_gmap")
 
+def test_interp_gmap(gmap):
+    tmp = gmap.interp_gmap(gmap.vrnt_chrgrp, gmap.vrnt_phypos)
+    assert isinstance(tmp, StandardGeneticMap)
+    assert tmp.has_spline() == gmap.has_spline()
+
 ### gdist1g()
 def test_gdist1g_is_concrete():
     assert_concrete_method(StandardGeneticMap, "gdist1g")
+
+def test_gdist1g(gmap):
+    out = gmap.gdist1g(gmap.vrnt_chrgrp, gmap.vrnt_genpos)
+    assert isinstance(out, numpy.ndarray)
+    assert out.ndim == 1
+    assert out[0] == numpy.inf
+    assert not numpy.all(out == numpy.inf)
+    assert len(out) == len(gmap)
 
 ### gdist1p()
 def test_gdist1p_is_concrete():
     assert_concrete_method(StandardGeneticMap, "gdist1p")
 
+def test_gdist1p(gmap):
+    out = gmap.gdist1p(gmap.vrnt_chrgrp, gmap.vrnt_phypos)
+    assert isinstance(out, numpy.ndarray)
+    assert out.ndim == 1
+    assert out[0] == numpy.inf
+    assert not numpy.all(out == numpy.inf)
+    assert len(out) == len(gmap)
+
 ### gdist2g()
 def test_gdist2g_is_concrete():
     assert_concrete_method(StandardGeneticMap, "gdist2g")
+
+def test_gdist2g(gmap):
+    out = gmap.gdist2g(gmap.vrnt_chrgrp, gmap.vrnt_genpos)
+    assert isinstance(out, numpy.ndarray)
+    assert out.ndim == 2
+    assert not numpy.all(out == numpy.inf)
+    assert out.shape == (len(gmap),len(gmap))
 
 ### gdist2p()
 def test_gdist2p_is_concrete():
     assert_concrete_method(StandardGeneticMap, "gdist2p")
 
+def test_gdist2p(gmap):
+    out = gmap.gdist2p(gmap.vrnt_chrgrp, gmap.vrnt_phypos)
+    assert isinstance(out, numpy.ndarray)
+    assert out.ndim == 2
+    assert not numpy.all(out == numpy.inf)
+    assert out.shape == (len(gmap),len(gmap))
+
 ### to_pandas()
 def test_to_pandas_is_concrete():
     assert_concrete_method(StandardGeneticMap, "to_pandas")
+
+def test_to_pandas(gmap):
+    df = gmap.to_pandas("chr","pos","cM")
+    assert "chr" in df.columns
+    assert "pos" in df.columns
+    assert "cM" in df.columns
 
 ### to_csv()
 def test_to_csv_is_concrete():
     assert_concrete_method(StandardGeneticMap, "to_csv")
 
+def test_to_csv(gmap):
+    fout = "genetic_map.csv"
+    gmap.to_csv(fout)
+    assert isfile(fout)
+
 ### from_pandas()
 def test_from_pandas_is_concrete():
     assert_concrete_method(StandardGeneticMap, "from_pandas")
+
+def test_from_pandas(gmap):
+    df = gmap.to_pandas()
+    tmp = StandardGeneticMap.from_pandas(df)
+    assert isinstance(tmp, StandardGeneticMap)
 
 ### from_csv()
 def test_from_csv_is_concrete():
     assert_concrete_method(StandardGeneticMap, "from_csv")
 
-
-
+def test_from_csv(gmap):
+    fin = "genetic_map.csv"
+    tmp = StandardGeneticMap.from_csv(fin)
+    assert isinstance(tmp, StandardGeneticMap)

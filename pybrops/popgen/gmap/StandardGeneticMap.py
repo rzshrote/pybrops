@@ -507,11 +507,17 @@ class StandardGeneticMap(GeneticMap):
         self.reorder(indices)
 
     def group(
-            self
+            self,
+            **kwargs: dict
         ) -> None:
         """
-        Sort genetic map, then populate grouping indices.
-        Calculate chromosome grouping indices (group by vrnt_chrgrp).
+        Sort the GeneticMap jointly by chromosome group and physical position, 
+        then populate grouping indices.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
         """
         # sort the genetic map using default keys
         self.sort()
@@ -524,6 +530,24 @@ class StandardGeneticMap(GeneticMap):
 
         # calculate chr_grp_spix (stop indices)
         self._vrnt_chrgrp_spix = self._vrnt_chrgrp_stix + self._vrnt_chrgrp_len
+
+    def ungroup(
+            self,
+            **kwargs: dict
+        ) -> None:
+        """
+        Remove grouping metadata from the GeneticMap.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
+        """
+        # set grouping metadat to None
+        self.vrnt_chrgrp_name = None
+        self.vrnt_chrgrp_stix = None
+        self.vrnt_chrgrp_spix = None
+        self.vrnt_chrgrp_len  = None
 
     def is_grouped(
             self
@@ -551,7 +575,9 @@ class StandardGeneticMap(GeneticMap):
             **kwargs: dict
         ) -> None:
         """
-        Remove indices from the GeneticMap. Sort and group internal arrays.
+        Remove indices from the GeneticMap. If the GeneticMap was grouped 
+        beforehand, then re-sort and re-group internal arrays after removing 
+        indices.
 
         Parameters
         ----------
@@ -561,16 +587,18 @@ class StandardGeneticMap(GeneticMap):
             Where:
 
             - ``a`` is the number of indices to remove.
+        
         kwargs : dict
             Additional keyword arguments.
         """
         # delete indices from self
-        self._vrnt_chrgrp = numpy.delete(self._vrnt_chrgrp, indices)
-        self._vrnt_phypos = numpy.delete(self._vrnt_phypos, indices)
-        self._vrnt_genpos = numpy.delete(self._vrnt_genpos, indices)
+        self.vrnt_chrgrp = numpy.delete(self.vrnt_chrgrp, indices)
+        self.vrnt_phypos = numpy.delete(self.vrnt_phypos, indices)
+        self.vrnt_genpos = numpy.delete(self.vrnt_genpos, indices)
 
-        # sort and group
-        self.group()
+        # if GeneticMap was previously grouped, re-sort and re-group
+        if self.is_grouped():
+            self.group()
 
     def select(
             self, 
@@ -579,7 +607,8 @@ class StandardGeneticMap(GeneticMap):
         ) -> None:
         """
         Keep only selected markers, removing all others from the GeneticMap.
-        Sort and group internal arrays.
+        If the GeneticMap was grouped beforehand, then re-sort and re-group 
+        internal arrays after removing indices.
 
         Parameters
         ----------
@@ -589,16 +618,18 @@ class StandardGeneticMap(GeneticMap):
             Where:
 
             - ``a`` is the number of indices to remove.
+        
         kwargs : dict
             Additional keyword arguments.
         """
         # keep only selected markers.
-        self._vrnt_chrgrp = self._vrnt_chrgrp[indices]
-        self._vrnt_phypos = self._vrnt_phypos[indices]
-        self._vrnt_genpos = self._vrnt_genpos[indices]
+        self.vrnt_chrgrp = self.vrnt_chrgrp[indices]
+        self.vrnt_phypos = self.vrnt_phypos[indices]
+        self.vrnt_genpos = self.vrnt_genpos[indices]
 
-        # automatically sort and group
-        self.group()
+        # if GeneticMap was previously grouped, re-sort and re-group
+        if self.is_grouped():
+            self.group()
 
     ################## Integrity Methods ###################
     def congruence(
@@ -791,7 +822,7 @@ class StandardGeneticMap(GeneticMap):
             warnings.warn("genetic map is not congruent: markers are out of order", RuntimeWarning)
 
         # allocate empty memory
-        out = numpy.empty(vrnt_phypos.shape, dtype='float64')
+        out = numpy.empty(vrnt_phypos.shape, dtype = float)
 
         # for each chromosome-position pair
         for i,(chrgrp,phypos) in enumerate(zip(vrnt_chrgrp, vrnt_phypos)):
@@ -860,17 +891,6 @@ class StandardGeneticMap(GeneticMap):
 
         return out
 
-        # create a new genetic map using interpolations from self
-        gmap = self.__class__(
-            vrnt_chrgrp = vrnt_chrgrp,
-            vrnt_phypos = vrnt_phypos,
-            vrnt_genpos = vrnt_genpos,
-            **kwargs
-        )
-
-        # return new GeneticMap instance
-        return gmap
-
     ############### Genetic Distance Methods ###############
     def gdist1g(
             self, 
@@ -913,6 +933,12 @@ class StandardGeneticMap(GeneticMap):
         -----
         Sequential distance arrays will start every chromosome with numpy.inf!
         """
+        # type checks
+        check_is_ndarray(vrnt_chrgrp, "vrnt_chrgrp")
+        check_ndarray_dtype_is_integer(vrnt_chrgrp, "vrnt_chrgrp")
+        check_is_ndarray(vrnt_genpos, "vrnt_genpos")
+        check_ndarray_dtype_is_floating(vrnt_genpos, "vrnt_genpos")
+
         # get views of only sections we'll be looking at
         view_chrgrp = vrnt_chrgrp[ast:asp]
         view_genpos = vrnt_genpos[ast:asp]
@@ -924,7 +950,7 @@ class StandardGeneticMap(GeneticMap):
         stop = start + counts
 
         # allocate empty array
-        out = numpy.empty(view_genpos.shape, dtype='float64')
+        out = numpy.empty(view_genpos.shape, dtype = float)
 
         # for each chromosome group
         for st,sp in zip(start, stop):
@@ -1041,6 +1067,12 @@ class StandardGeneticMap(GeneticMap):
         -----
         Sequential distance arrays will start every chromosome with numpy.inf!
         """
+        # type checks
+        check_is_ndarray(vrnt_chrgrp, "vrnt_chrgrp")
+        check_ndarray_dtype_is_integer(vrnt_chrgrp, "vrnt_chrgrp")
+        check_is_ndarray(vrnt_phypos, "vrnt_phypos")
+        check_ndarray_dtype_is_integer(vrnt_phypos, "vrnt_phypos")
+
         # TODO: # OPTIMIZE: don't interpolate all markers
         # interpolate genetic positions
         vrnt_genpos = self.interp_genpos(vrnt_chrgrp, vrnt_phypos)

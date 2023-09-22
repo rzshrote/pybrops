@@ -149,4 +149,5 @@ class DummyGeneticMap(GeneticMap):
     @property
     def nvrnt(self) -> object:
         return super().nvrnt
-    
+    def ungroup(self, **kwargs: dict) -> None:
+        return super().ungroup(**kwargs)

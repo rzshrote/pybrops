@@ -416,7 +416,7 @@ class PopulationAlleleFrequencyDistanceSelection(UnconstrainedSelectionProtocol)
                 return numpy.float64(gpmod.u_a <= 0.0)   # negative alleles are desired
             elif self.target == "stabilizing":
                 return 0.5                          # both alleles desired
-                # return numpy.full(coeff.shape, 0.5, dtype = 'float64')
+                # return numpy.full(coeff.shape, 0.5, dtype = float)
             else:
                 raise ValueError("string value for 'target' not recognized")
         elif isinstance(self.target, numpy.ndarray):

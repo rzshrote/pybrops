@@ -301,7 +301,7 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         # allocate a cube matrix for each 3-way variance
         varA_mat = numpy.zeros(
             (ntaxa, ntaxa, ntaxa, ntrait),      # (n,n,n,t) variance matrix
-            dtype='float64'
+            dtype = float
         )
 
         # for each linkage group

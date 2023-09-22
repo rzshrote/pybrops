@@ -306,7 +306,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         # allocate a square matrix for each pairwise variance
         varA_mat = numpy.zeros(
             (ntaxa, ntaxa, ntrait),     # (n,n,t) variance matrix
-            dtype='float64'
+            dtype = float
         )
 
         # for each linkage group
