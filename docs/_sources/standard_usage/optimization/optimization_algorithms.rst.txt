@@ -91,8 +91,12 @@ Importing optimization algorithm classes can be accomplished using the following
 Constructing Optimization Algorithms
 ====================================
 
+Within PyBrOpS there are several pre-built optimization problems. The following code examples below illustrate the construction of example single- and multi-objective optimization algorithms.
+
 Single-objective optimization algorithms
 ----------------------------------------
+
+The code below demonstrates the construction of a single-objective real-valued genetic algorithm.
 
 .. code-block:: python
 
@@ -102,6 +106,8 @@ Single-objective optimization algorithms
 Multi-objective optimization algorithms
 ---------------------------------------
 
+The code below demonstrates the construction of a multi-objective real-valued NSGA-II genetic algorithm.
+
 .. code-block:: python
 
     # create a real-valued multi-objective genetic algorithm
@@ -109,6 +115,8 @@ Multi-objective optimization algorithms
 
 Minimizing Optimization Problems
 ================================
+
+Minimizing an optimization problem can be accomplished using the ``minimize`` method. Examples of how to use this method for single- and multi-objective problems are illustrated below. Intuitively, single-objective optimization algorithms should be used to optimize single-objective optimization problems, and multi-objective optimization algorithms should be used to optimize multi-objective optimization problems.
 
 Optimization of single-objective problems
 -----------------------------------------

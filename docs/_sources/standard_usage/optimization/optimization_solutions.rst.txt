@@ -9,6 +9,8 @@ All optimization solutions in ``PyBrOpS`` are represented using classes derived 
 Summary of Optimization Solution Classes
 ========================================
 
+Optimization solution interfaces and implemented classes can be found in the ``pybrops.opt.soln`` module within PyBrOpS. These classes are summarized below.
+
 .. list-table:: Summary of classes in the ``pybrops.opt.soln`` module
     :widths: 25 20 50
     :header-rows: 1
@@ -56,6 +58,8 @@ Importing optimization solution classes can be accomplished using the following 
 
 Constructing Solutions
 ======================
+
+Optimization solutions can be created using their corresponding constructors. The two examples below illustrate the construction of the single- and multi-objective optimization solutions for a real decision space.
 
 Construct a single-objective solution
 -------------------------------------
@@ -120,3 +124,46 @@ Construct a multi-objective solution
         soln_ineqcv = None,
         soln_eqcv = None
     )
+
+Optimization Problem Properties
+===============================
+
+All optimization solutions have a set of common properties. The table below summarizes these solution properties.
+
+.. list-table:: Summary of ``Solution`` properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``ndecn``
+      - Number of decision variables.
+    * - ``decn_space``
+      - Decision space boundaries.
+    * - ``decn_space_lower``
+      - Lower boundary of the decision space.
+    * - ``decn_space_upper``
+      - Upper boundary of the decision space.
+    * - ``nobj``
+      - Number of objectives.
+    * - ``obj_wt``
+      - Objective function weights.
+    * - ``nineqcv``
+      - Number of inequality constraint violation functions.
+    * - ``ineqcv_wt``
+      - Inequality constraint violation function weights.
+    * - ``neqcv``
+      - Number of equality constraint violations.
+    * - ``eqcv_wt``
+      - Equality constraint violation function weights.
+    * - ``nsoln``
+      - Number of solutions to the problem.
+    * - ``soln_decn``
+      - Matrix of solution vectors in the decision space.
+    * - ``soln_obj``
+      - Solution objective function values.
+    * - ``soln_ineqcv``
+      - Solution inequality constraint violation function values.
+    * - ``soln_eqcv``
+      - Solution equality constraint violation function values.
+

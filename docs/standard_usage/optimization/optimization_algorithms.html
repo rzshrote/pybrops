@@ -504,8 +504,10 @@
 </section>
 <section id="constructing-optimization-algorithms">
 <h2>Constructing Optimization Algorithms<a class="headerlink" href="#constructing-optimization-algorithms" title="Permalink to this heading">#</a></h2>
+<p>Within PyBrOpS there are several pre-built optimization problems. The following code examples below illustrate the construction of example single- and multi-objective optimization algorithms.</p>
 <section id="single-objective-optimization-algorithms">
 <h3>Single-objective optimization algorithms<a class="headerlink" href="#single-objective-optimization-algorithms" title="Permalink to this heading">#</a></h3>
+<p>The code below demonstrates the construction of a single-objective real-valued genetic algorithm.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a real-valued single-objective genetic algorithm</span>
 <span class="n">soalgo</span> <span class="o">=</span> <span class="n">RealGeneticAlgorithm</span><span class="p">(</span><span class="n">ngen</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">pop_size</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
 </pre></div>
@@ -513,6 +515,7 @@
 </section>
 <section id="multi-objective-optimization-algorithms">
 <h3>Multi-objective optimization algorithms<a class="headerlink" href="#multi-objective-optimization-algorithms" title="Permalink to this heading">#</a></h3>
+<p>The code below demonstrates the construction of a multi-objective real-valued NSGA-II genetic algorithm.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a real-valued multi-objective genetic algorithm</span>
 <span class="n">moalgo</span> <span class="o">=</span> <span class="n">NSGA2RealGeneticAlgorithm</span><span class="p">(</span><span class="n">ngen</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">pop_size</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
 </pre></div>
@@ -521,6 +524,7 @@
 </section>
 <section id="minimizing-optimization-problems">
 <h2>Minimizing Optimization Problems<a class="headerlink" href="#minimizing-optimization-problems" title="Permalink to this heading">#</a></h2>
+<p>Minimizing an optimization problem can be accomplished using the <code class="docutils literal notranslate"><span class="pre">minimize</span></code> method. Examples of how to use this method for single- and multi-objective problems are illustrated below. Intuitively, single-objective optimization algorithms should be used to optimize single-objective optimization problems, and multi-objective optimization algorithms should be used to optimize multi-objective optimization problems.</p>
 <section id="optimization-of-single-objective-problems">
 <h3>Optimization of single-objective problems<a class="headerlink" href="#optimization-of-single-objective-problems" title="Permalink to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># minimize single-objective problem and get solution</span>
