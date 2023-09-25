@@ -9,6 +9,8 @@ All optimization problems in ``PyBrOpS`` are represented using classes derived f
 Summary of Optimization Problem Classes
 =======================================
 
+Definitions of optimization problem interfaces within PyBrOpS can be found in the ``pybrops.opt.prob`` module. Within this module are several semi-abstract class definitions which are summarized below.
+
 .. list-table:: Summary of classes in the ``pybrops.opt.prob`` module
     :widths: 25 20 50
     :header-rows: 1
@@ -54,46 +56,67 @@ Importing optimization problem classes can be accomplished using the following i
     # import the SubsetProblem class (a semi-abstract interface class)
     from pybrops.opt.prob.SubsetProblem import SubsetProblem
 
+Optimization Problem Properties
+===============================
+
+PyMOO specific properties
+-------------------------
+
+All optimization problem definitions inherit from PyMOO's Problem definition. For information regarding these properties, see `PyMOO's Problem Definition <https://pymoo.org/problems/definition.html>`_ webpage.
+
+PyBrOpS specific properties
+---------------------------
+
+To create a more stable interface, PyBrOpS defines several properties within its Problem definition. These additional properties are summarized below.
+
+.. list-table:: Summary of PyBrOpS specific ``Problem`` properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``ndecn``
+      - Number of decision variables.
+    * - ``decn_space``
+      - Decision space boundaries.
+    * - ``decn_space_lower``
+      - Lower boundary of the decision space.
+    * - ``decn_space_upper``
+      - Upper boundary of the decision space.
+    * - ``nobj``
+      - Number of objectives.
+    * - ``obj_wt``
+      - Objective function weights.
+    * - ``nineqcv``
+      - Number of inequality constraint violation functions.
+    * - ``ineqcv_wt``
+      - Inequality constraint violation function weights.
+    * - ``neqcv``
+      - Number of equality constraint violations.
+    * - ``eqcv_wt``
+      - Equality constraint violation function weights.
+
 Deriving Problem Classes
 ========================
 
+If one desires to create a new optimization problem, one must define a custom Problem class which implements two abstract methods: ``evalfn`` and ``_evaluate``. The ``evalfn`` method is defined and utilized by PyBrOpS internals, while the ``_evaluate`` method is utilized by PyMOO internals. The PyMOO method has a more permissive set of parameters whereas the PyBrOpS method adheres to a more strict interface.
+
+The following two examples illustrate the definition of single- and multi-objective optimization problems.
+
 Single objective problem specification
 --------------------------------------
+
+The class definition below defines an optimization problem for the sphere problem. The sphere problem is defined as:
+
+.. math::
+
+    \arg \min_{\mathbf{x}} f(\mathbf{x}) = \sum_{i=1}^{n_{decn}} x_{i}^{2}
 
 .. code-block:: python
 
     # inherit from RealProblem semi-abstract interface
     class DummySingleObjectiveRealProblem(RealProblem):
-        def __init__(
-                self, 
-                ndecn: Integral, 
-                decn_space: Union[numpy.ndarray,None], 
-                decn_space_lower: Union[numpy.ndarray,Real,None], 
-                decn_space_upper: Union[numpy.ndarray,Real,None], 
-                nobj: Integral, 
-                obj_wt: Optional[Union[numpy.ndarray,Real]] = None, 
-                nineqcv: Optional[Integral] = None, 
-                ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None, 
-                neqcv: Optional[Integral] = None, 
-                eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None, 
-                **kwargs: dict
-            ):
-            """
-            Constructor
-            """
-            super(DummySingleObjectiveRealProblem, self).__init__(
-                ndecn, 
-                decn_space, 
-                decn_space_lower, 
-                decn_space_upper, 
-                nobj, 
-                obj_wt, 
-                nineqcv, 
-                ineqcv_wt, 
-                neqcv, 
-                eqcv_wt, 
-                **kwargs
-            )
+        # inherit init since it is unchanged
         ### method required by PyBrOpS interface ###
         def evalfn(
                 self, 
@@ -198,37 +221,18 @@ Single objective problem specification
 Multi-objective problem specification
 -------------------------------------
 
+The class definition below defines an optimization problem for a multi-objective, dual sphere problem. The dual sphere problem is defined as:
+
+.. math::
+
+    \arg \min_{\mathbf{x}} f_{1}(\mathbf{x}) = \sum_{i=1}^{n_{decn}} x_{i}^{2}
+    
+    \arg \min_{\mathbf{x}} f_{2}(\mathbf{x}) = \sum_{i=1}^{n_{decn}} (1-x_{i})^{2}
+
 .. code-block:: python
 
     class DummyMultiObjectiveRealProblem(RealProblem):
-        def __init__(
-                self, 
-                ndecn: Integral, 
-                decn_space: Union[numpy.ndarray,None], 
-                decn_space_lower: Union[numpy.ndarray,Real,None], 
-                decn_space_upper: Union[numpy.ndarray,Real,None], 
-                nobj: Integral, 
-                obj_wt: Optional[Union[numpy.ndarray,Real]] = None, 
-                nineqcv: Optional[Integral] = None, 
-                ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None, 
-                neqcv: Optional[Integral] = None, 
-                eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None, 
-                **kwargs: dict
-            ):
-            """NA"""
-            super(DummyMultiObjectiveRealProblem, self).__init__(
-                ndecn, 
-                decn_space, 
-                decn_space_lower, 
-                decn_space_upper, 
-                nobj, 
-                obj_wt, 
-                nineqcv, 
-                ineqcv_wt, 
-                neqcv, 
-                eqcv_wt, 
-                **kwargs
-            )
+        # inherit init since it is unchanged
         ### method required by PyBrOpS interface ###
         def evalfn(
                 self, 
@@ -329,6 +333,8 @@ Multi-objective problem specification
 
 Constructing Problems
 =====================
+
+Optimization problems can be created using their corresponding constructors. The two examples below illustrate the construction of the single- and multi-objective optimization problems defined above.
 
 Construct a single-objective problem
 ------------------------------------

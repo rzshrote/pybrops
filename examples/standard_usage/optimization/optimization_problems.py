@@ -29,36 +29,7 @@ from pybrops.opt.prob.SubsetProblem import SubsetProblem
 
 # inherit from RealProblem semi-abstract interface
 class DummySingleObjectiveRealProblem(RealProblem):
-    def __init__(
-            self, 
-            ndecn: Integral, 
-            decn_space: Union[numpy.ndarray,None], 
-            decn_space_lower: Union[numpy.ndarray,Real,None], 
-            decn_space_upper: Union[numpy.ndarray,Real,None], 
-            nobj: Integral, 
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None, 
-            nineqcv: Optional[Integral] = None, 
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None, 
-            neqcv: Optional[Integral] = None, 
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None, 
-            **kwargs: dict
-        ):
-        """
-        Constructor
-        """
-        super(DummySingleObjectiveRealProblem, self).__init__(
-            ndecn, 
-            decn_space, 
-            decn_space_lower, 
-            decn_space_upper, 
-            nobj, 
-            obj_wt, 
-            nineqcv, 
-            ineqcv_wt, 
-            neqcv, 
-            eqcv_wt, 
-            **kwargs
-        )
+    # inherit init since it is unchanged
     ### method required by PyBrOpS interface ###
     def evalfn(
             self, 
@@ -164,34 +135,7 @@ class DummySingleObjectiveRealProblem(RealProblem):
 #
 
 class DummyMultiObjectiveRealProblem(RealProblem):
-    def __init__(
-            self, 
-            ndecn: Integral, 
-            decn_space: Union[numpy.ndarray,None], 
-            decn_space_lower: Union[numpy.ndarray,Real,None], 
-            decn_space_upper: Union[numpy.ndarray,Real,None], 
-            nobj: Integral, 
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None, 
-            nineqcv: Optional[Integral] = None, 
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None, 
-            neqcv: Optional[Integral] = None, 
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None, 
-            **kwargs: dict
-        ):
-        """NA"""
-        super(DummyMultiObjectiveRealProblem, self).__init__(
-            ndecn, 
-            decn_space, 
-            decn_space_lower, 
-            decn_space_upper, 
-            nobj, 
-            obj_wt, 
-            nineqcv, 
-            ineqcv_wt, 
-            neqcv, 
-            eqcv_wt, 
-            **kwargs
-        )
+    # inherit init since it is unchanged
     ### method required by PyBrOpS interface ###
     def evalfn(
             self, 
