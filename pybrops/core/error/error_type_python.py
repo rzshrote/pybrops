@@ -490,3 +490,25 @@ def check_is_str_or_Integral(v: object, vname: str) -> None:
                 type(v).__name__
             )
         )
+
+def check_is_str_or_Sequence(v: object, vname: str) -> None:
+    """
+    Check if a Python object is a ``str`` or ``Sequence``. Raise error if not.
+
+    Parameters
+    ----------
+    v : object
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if not isinstance(v, (str,Sequence)):
+        raise TypeError(
+            "variable '{0}' must be of type '{1}' or '{2}' but received type '{3}'".format(
+                vname,
+                str.__name__,
+                Sequence.__name__,
+                type(v).__name__
+            )
+        )
+

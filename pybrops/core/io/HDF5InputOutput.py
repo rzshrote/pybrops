@@ -68,7 +68,7 @@ class HDF5InputOutput(metaclass=ABCMeta):
 
         Returns
         -------
-        obj : HDF5InputOutput
+        out : HDF5InputOutput
             An object read from an HDF5 file.
         """
         raise NotImplementedError("class method is abstract")

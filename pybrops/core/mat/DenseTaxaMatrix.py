@@ -12,15 +12,16 @@ import copy
 import numpy
 import h5py
 from typing import Optional, Sequence, Union
+
 from numpy.typing import ArrayLike
+
 from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_io_python import check_file_exists
-
 from pybrops.core.error.error_type_python import check_is_array_like
 from pybrops.core.error.error_attr_python import check_is_iterable
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
-from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_int64
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_attr_python import error_readonly
@@ -166,7 +167,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         """Set taxa group label array"""
         if value is not None:
             check_is_ndarray(value, "taxa_grp")
-            check_ndarray_dtype_is_int64(value, "taxa_grp")
+            check_ndarray_dtype_is_integer(value, "taxa_grp")
             check_ndarray_ndim(value, "taxa_grp", 1)
             check_ndarray_axis_len(value, "taxa_grp", 0, self.ntaxa)
         self._taxa_grp = value
@@ -199,7 +200,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         """Set taxa group name array"""
         if value is not None:
             check_is_ndarray(value, "taxa_grp_name")
-            check_ndarray_dtype_is_int64(value, "taxa_grp_name")
+            check_ndarray_dtype_is_integer(value, "taxa_grp_name")
             check_ndarray_ndim(value, "taxa_grp_name", 1)
         self._taxa_grp_name = value
 
@@ -212,7 +213,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         """Set taxa group start indices array"""
         if value is not None:
             check_is_ndarray(value, "taxa_grp_stix")
-            check_ndarray_dtype_is_int64(value, "taxa_grp_stix")
+            check_ndarray_dtype_is_integer(value, "taxa_grp_stix")
             check_ndarray_ndim(value, "taxa_grp_stix", 1)
         self._taxa_grp_stix = value
 
@@ -225,7 +226,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         """Set taxa group stop indices array"""
         if value is not None:
             check_is_ndarray(value, "taxa_grp_spix")
-            check_ndarray_dtype_is_int64(value, "taxa_grp_spix")
+            check_ndarray_dtype_is_integer(value, "taxa_grp_spix")
             check_ndarray_ndim(value, "taxa_grp_spix", 1)
         self._taxa_grp_spix = value
 
@@ -238,7 +239,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         """Set taxa group length array"""
         if value is not None:
             check_is_ndarray(value, "taxa_grp_len")
-            check_ndarray_dtype_is_int64(value, "taxa_grp_len")
+            check_ndarray_dtype_is_integer(value, "taxa_grp_len")
             check_ndarray_ndim(value, "taxa_grp_len", 1)
         self._taxa_grp_len = value
 

@@ -9,18 +9,20 @@ __all__ = [
 ]
 
 import copy
-from numbers import Real
-from typing import Optional, Union
+from numbers import Integral, Real
+from typing import Optional, Sequence, Union
 import numpy
 import h5py
+import pandas
+from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
 
-from pybrops.core.error.error_type_python import check_is_array_like
-from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_python import check_is_array_like, check_is_bool, check_is_str, check_is_str_or_Integral, check_is_str_or_Sequence
+from pybrops.core.error.error_type_numpy import check_is_Real_or_ndarray, check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_all_gteq, check_ndarray_axis_len
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_io_python import check_file_exists
-from pybrops.core.error.error_value_python import check_is_gteq
+from pybrops.core.error.error_value_python import check_is_gteq, check_len, check_len_eq, check_str_value
 from pybrops.core.mat.DenseTaxaTraitMatrix import DenseTaxaTraitMatrix
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
@@ -73,21 +75,29 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             standard deviations of this array along the ``taxa`` axis are 0 and
             1, respectively, if the breeding values are with respect to the
             individuals in the breeding value matrix.
+
         location : numpy.ndarray, Real
-            A numpy.ndarray of shape ``(t,)`` containing breeding value locations.
-            If given a Real, create a numpy.ndarray of shape ``(t,)`` filled with the provided value.
+            A ``numpy.ndarray`` of shape ``(t,)`` containing breeding value 
+            locations. If given a ``Real``, create a ``numpy.ndarray`` of shape 
+            ``(t,)`` filled with the provided value.
+        
         scale : numpy.ndarray, Real
-            A numpy.ndarray of shape ``(t,)`` containing breeding value scales.
-            If given a Real, create a numpy.ndarray of shape ``(t,)`` filled with the provided value.
+            A ``numpy.ndarray`` of shape ``(t,)`` containing breeding value 
+            scales. If given a ``Real``, create a ``numpy.ndarray`` of shape 
+            ``(t,)`` filled with the provided value.
+        
         taxa : numpy.ndarray, None
-            A numpy.ndarray of shape ``(n,)`` containing taxa names.
+            A ``numpy.ndarray`` of shape ``(n,)`` containing taxa names.
             If ``None``, do not store any taxa name information.
+        
         taxa_grp : numpy.ndarray, None
-            A numpy.ndarray of shape ``(n,)`` containing taxa groupings.
+            A ``numpy.ndarray`` of shape ``(n,)`` containing taxa groupings.
             If ``None``, do not store any taxa group information.
+        
         trait : numpy.ndarray, None
-            A numpy.ndarray of shape ``(t,)`` containing trait names.
+            A ``numpy.ndarray`` of shape ``(t,)`` containing trait names.
             If ``None``, do not store any trait name information.
+        
         kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
@@ -493,6 +503,160 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         return (self._scale * self._mat) + self._location
 
     ################### Matrix File I/O ####################
+    def to_pandas(
+            self, 
+            taxa_col: Optional[str] = "taxa",
+            taxa_grp_col: Optional[str] = "taxa_grp",
+            trait_cols: Optional[Union[str,Sequence]] = "trait",
+            descale: bool = False,
+            **kwargs: dict
+        ) -> pandas.DataFrame:
+        """
+        Export a DenseBreedingValueMatrix to a pandas.DataFrame.
+
+        Parameters
+        ----------
+        taxa_col : str, None, default = "taxa"
+            Name of the column to which to write taxa names.
+            If ``str``, the column is given the name in ``taxa_col``.
+            If ``None``, the column is not exported.
+        
+        taxa_grp_col : str, None, default = "taxa_grp"
+            Name of the column to which to write taxa group names.
+            If ``str``, the column is given the name in ``taxa_grp_col``.
+            If ``None``, the column is not exported.
+
+        trait_cols : Sequence, str, None, default = "trait"
+            Names of the trait columns to which to write breeding values.
+            If ``Sequence``, column names are given by the strings in the 
+            ``trait_cols`` Sequence.
+            If ``str``, must be equal to ``"trait"``. Use trait names given in 
+            the ``trait`` property.
+            If ``None``, use numeric trait column names.
+        
+        descale : bool, default = False
+            whether to transform breeding values to their de-scaled values.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a 
+            pandas.DataFrame.
+        
+        Returns
+        -------
+        out : pandas.DataFrame
+            An output dataframe.
+        """
+        # type checks
+        if taxa_col is not None:
+            check_is_str(taxa_col, "taxa_col")
+        if taxa_grp_col is not None:
+            check_is_str(taxa_grp_col, "taxa_grp_col")
+        if trait_cols is not None:
+            if isinstance(trait_cols, str):
+                check_str_value(trait_cols, "trait_cols", "trait")
+            elif isinstance(trait_cols, Sequence):
+                check_len(trait_cols, "trait_cols", self.ntrait)
+            else:
+                check_is_str_or_Sequence(trait_cols, "trait_cols")
+        check_is_bool(descale, "descale")
+
+        # construct dictionary for labels and data
+        data_dict = {}
+
+        # process taxa_col
+        if taxa_col is not None:
+            data_dict[taxa_col] = self.taxa
+        
+        # process taxa_grp_col
+        if taxa_grp_col is not None:
+            data_dict[taxa_grp_col] = self.taxa_grp
+        
+        # process trait_cols
+        if trait_cols is None:
+            trait_cols = numpy.arange(self.ntrait)
+        elif isinstance(trait_cols, str):
+            trait_cols = numpy.arange(self.ntrait) if self.trait is None else self.trait
+        
+        # extract breeding values
+        bv = self.descale() if descale else self.mat
+        for i,trait in zip(range(self.ntrait),trait_cols):
+            data_dict[trait] = bv[:,i]
+        
+        # create dataframe
+        out = pandas.DataFrame(data_dict)
+
+        return out
+
+    def to_csv(
+            self,
+            filename: str,
+            taxa_col: Optional[str] = "taxa",
+            taxa_grp_col: Optional[str] = "taxa_grp",
+            trait_cols: Optional[Union[str,Sequence]] = "trait",
+            descale: bool = False,
+            sep: str = ',', 
+            header: bool = True, 
+            index: bool = False, 
+            **kwargs: dict
+        ) -> None:
+        """
+        Write a DenseBreedingValueMatrix to a CSV file.
+
+        Parameters
+        ----------
+        filename : str
+            CSV file name to which to write.
+        
+        taxa_col : str, None, default = "taxa"
+            Name of the column to which to write taxa names.
+            If ``str``, the column is given the name in ``taxa_col``.
+            If ``None``, the column is not exported.
+        
+        taxa_grp_col : str, None, default = "taxa_grp"
+            Name of the column to which to write taxa group names.
+            If ``str``, the column is given the name in ``taxa_grp_col``.
+            If ``None``, the column is not exported.
+
+        trait_cols : Sequence, str, None, default = "trait"
+            Names of the trait columns to which to write breeding values.
+            If ``Sequence``, column names are given by the strings in the 
+            ``trait_cols`` Sequence.
+            If ``str``, must be equal to ``"trait"``. Use trait names given in 
+            the ``trait`` property.
+            If ``None``, use numeric trait column names.
+        
+        descale : bool, default = False
+            whether to transform breeding values to their de-scaled values.
+        
+        sep : str, default = ","
+            Separator to use in the exported CSV file.
+        
+        header : bool, default = True
+            Whether to save header names.
+        
+        index : bool, default = False
+            Whether to save a row index in the exported CSV file.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a CSV.
+        """
+        # convert DenseBreedingValueMatrix to pandas.DataFrame
+        df = self.to_pandas(
+            taxa_col = taxa_col,
+            taxa_grp_col = taxa_grp_col,
+            trait_cols = trait_cols,
+            descale = descale,
+        )
+
+        # export using pandas
+        df.to_csv(
+            path_or_buf = filename,
+            sep = sep,
+            header = header,
+            index = index,
+            **kwargs
+        )
+
     def to_hdf5(
             self, 
             filename: str, 
@@ -534,6 +698,212 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
     ############################## Class Methods ###############################
 
     ################### Matrix File I/O ####################
+    @classmethod
+    def from_pandas(
+            cls, 
+            df: pandas.DataFrame,
+            location: Union[numpy.ndarray,Real] = 0.0, 
+            scale: Union[numpy.ndarray,Real] = 1.0, 
+            taxa_col: Optional[Union[str,Integral]] = "taxa",
+            taxa_grp_col: Optional[Union[str,Integral]] = "taxa_grp",
+            trait_cols: Optional[Union[str,Sequence]] = "infer",
+            **kwargs: dict
+        ) -> 'DenseBreedingValueMatrix':
+        """
+        Read a DenseBreedingValueMatrix from a pandas.DataFrame.
+
+        Parameters
+        ----------
+        df : pandas.DataFrame
+            Pandas dataframe from which to read.
+
+        location : numpy.ndarray, Real, default = 0.0
+            A ``numpy.ndarray`` of shape ``(t,)`` containing breeding value 
+            locations. If given a ``Real``, create a ``numpy.ndarray`` of shape 
+            ``(t,)`` filled with the provided value.
+
+        scale : numpy.ndarray, Real, default = 1.0
+            A ``numpy.ndarray`` of shape ``(t,)`` containing breeding value 
+            scales. If given a ``Real``, create a ``numpy.ndarray`` of shape 
+            ``(t,)`` filled with the provided value.
+
+        taxa_col : str, Integral, None, default = "taxa"
+            Name of the column to which to read taxa names.
+            If of type ``str``, taxa names are read from the column named 
+            defined by ``taxa_col``.
+            If of type ``Integral``, taxa names are read from the column 
+            number defined by ``taxa_col``.
+            If ``None``, taxa names are not imported.
+        
+        taxa_grp_col : str, None, default = "taxa_grp"
+            Name of the column to which to read taxa group names.
+            If of type ``str``, taxa group names are read from the column named 
+            defined by ``taxa_col``.
+            If of type ``Integral``, taxa group names are read from the column 
+            number defined by ``taxa_col``.
+            If ``None``, taxa group names are not imported.
+
+        trait_cols : Sequence, str, None, default = "trait"
+            Names of the trait columns to which to read breeding values.
+            If ``Sequence``, column names are given by the strings or integers 
+            in the ``trait_cols`` Sequence.
+            If ``str``, must be equal to ``"infer"``. Use remaining columns in 
+            the input dataframe to load trait breeding values.
+            If ``None``, do not load any trait breeding values.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a 
+            pandas.DataFrame.
+
+        Returns
+        -------
+        out : DenseBreedingValueMatrix
+            An object read from a pandas.DataFrame.
+        """
+        # type checks
+        check_is_pandas_DataFrame(df, "df")
+        if taxa_col is not None:
+            check_is_str_or_Integral(taxa_col, "taxa_col")
+        if taxa_grp_col is not None:
+            check_is_str_or_Integral(taxa_grp_col, "taxa_grp_col")
+        if trait_cols is not None:
+            if isinstance(trait_cols, str):
+                check_str_value(trait_cols, "trait_cols", "infer")
+            elif isinstance(trait_cols, Sequence):
+                pass
+            else:
+                check_is_str_or_Sequence(trait_cols, "trait_cols")
+
+        ### extract data from dataframe
+        colmask = numpy.full(len(df.columns), True, dtype = bool)
+
+        # extract taxa data
+        taxa = None
+        if taxa_col is not None:
+            taxaix = df.columns.get_loc(taxa_col) if isinstance(taxa_col, str) else taxa_col
+            taxa = df.iloc[:,taxaix].to_numpy(dtype = object)
+            colmask[taxaix] = False
+        
+        # extract taxa group data
+        taxa_grp = None
+        if taxa_grp_col is not None:
+            taxagrpix = df.columns.get_loc(taxa_grp_col) if isinstance(taxa_grp_col, str) else taxa_grp_col
+            taxa_grp = df.iloc[:,taxagrpix].to_numpy(dtype = int)
+            colmask[taxagrpix] = False
+        
+        # for non-string Sequence, re-construct column mask
+        if isinstance(trait_cols, Sequence) and not isinstance(trait_cols, str):
+            colmask[:] = False
+            for trait_col in trait_cols:
+                traitcolix = df.columns.get_loc(trait_col) if isinstance(trait_col, str) else trait_col
+                colmask[traitcolix] = True
+
+        # extract trait and matrix data
+        trait = df.columns[colmask].to_numpy(dtype = object)
+        mat = df.iloc[:,colmask].to_numpy(dtype = float)
+            
+        # construct output object
+        out = cls(
+            mat = mat, 
+            location = location, 
+            scale = scale, 
+            taxa = taxa, 
+            taxa_grp = taxa_grp, 
+            trait = trait, 
+        )
+
+        return out
+
+    @classmethod
+    def from_csv(
+            cls,
+            filename: str,
+            sep: str = ',',
+            header: int = 0,
+            location: Union[numpy.ndarray,Real] = 0.0, 
+            scale: Union[numpy.ndarray,Real] = 1.0, 
+            taxa_col: Optional[Union[str,Integral]] = "taxa",
+            taxa_grp_col: Optional[Union[str,Integral]] = "taxa_grp",
+            trait_cols: Optional[Union[str,Sequence]] = "infer",
+            **kwargs: dict
+        ) -> 'DenseBreedingValueMatrix':
+        """
+        Read a DenseBreedingValueMatrix from a CSV file.
+
+        Parameters
+        ----------
+        filename : str
+            CSV file name from which to read.
+        
+        sep : str, default = ','
+            CSV delimiter to use.
+        
+        header : int, list of int, default=0
+            Row number(s) to use as the column names, and the start of the data.
+
+        location : numpy.ndarray, Real, default = 0.0
+            A ``numpy.ndarray`` of shape ``(t,)`` containing breeding value 
+            locations. If given a ``Real``, create a ``numpy.ndarray`` of shape 
+            ``(t,)`` filled with the provided value.
+
+        scale : numpy.ndarray, Real, default = 1.0
+            A ``numpy.ndarray`` of shape ``(t,)`` containing breeding value 
+            scales. If given a ``Real``, create a ``numpy.ndarray`` of shape 
+            ``(t,)`` filled with the provided value.
+
+        taxa_col : str, Integral, None, default = "taxa"
+            Name of the column to which to read taxa names.
+            If of type ``str``, taxa names are read from the column named 
+            defined by ``taxa_col``.
+            If of type ``Integral``, taxa names are read from the column 
+            number defined by ``taxa_col``.
+            If ``None``, taxa names are not imported.
+        
+        taxa_grp_col : str, None, default = "taxa_grp"
+            Name of the column to which to read taxa group names.
+            If of type ``str``, taxa group names are read from the column named 
+            defined by ``taxa_col``.
+            If of type ``Integral``, taxa group names are read from the column 
+            number defined by ``taxa_col``.
+            If ``None``, taxa group names are not imported.
+
+        trait_cols : Sequence, str, None, default = "trait"
+            Names of the trait columns to which to read breeding values.
+            If ``Sequence``, column names are given by the strings or integers 
+            in the ``trait_cols`` Sequence.
+            If ``str``, must be equal to ``"infer"``. Use remaining columns in 
+            the input dataframe to load trait breeding values.
+            If ``None``, do not load any trait breeding values.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a CSV.
+
+        Returns
+        -------
+        out : DenseBreedingValueMatrix
+            A DenseBreedingValueMatrix read from a CSV file.
+        """
+        # read file using pandas
+        df = pandas.read_csv(
+            filename,
+            sep = sep,
+            header = header,
+            **kwargs
+        )
+
+        # construct genetic map from pandas.DataFrame
+        out = cls.from_pandas(
+            df = df,
+            location = location, 
+            scale = scale, 
+            taxa_col = taxa_col, 
+            taxa_grp_col = taxa_grp_col, 
+            trait_cols = trait_cols, 
+            **kwargs
+        )
+
+        return out
+
     @classmethod
     def from_hdf5(
             cls, 

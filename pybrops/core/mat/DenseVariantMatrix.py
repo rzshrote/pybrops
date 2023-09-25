@@ -18,7 +18,7 @@ from pybrops.core.error.error_attr_python import check_is_iterable
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_bool
-from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_int64
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_float64
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
@@ -200,7 +200,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         """Set variant chromosome group lable array"""
         if value is not None:
             check_is_ndarray(value, "vrnt_chrgrp")
-            check_ndarray_dtype_is_int64(value, "vrnt_chrgrp")
+            check_ndarray_dtype_is_integer(value, "vrnt_chrgrp")
             check_ndarray_ndim(value, "vrnt_chrgrp", 1)
             check_ndarray_axis_len(value, "vrnt_chrgrp", 0, self.nvrnt)
         self._vrnt_chrgrp = value
@@ -214,7 +214,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         """Set variant physical position array"""
         if value is not None:
             check_is_ndarray(value, "vrnt_phypos")
-            check_ndarray_dtype_is_int64(value, "vrnt_phypos")
+            check_ndarray_dtype_is_integer(value, "vrnt_phypos")
             check_ndarray_ndim(value, "vrnt_phypos", 1)
             check_ndarray_axis_len(value, "vrnt_phypos", 0, self.nvrnt)
         self._vrnt_phypos = value
@@ -270,7 +270,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         """Set variant haplotype group label array"""
         if value is not None:
             check_is_ndarray(value, "vrnt_hapgrp")
-            check_ndarray_dtype_is_int64(value, "vrnt_hapgrp")
+            check_ndarray_dtype_is_integer(value, "vrnt_hapgrp")
             check_ndarray_ndim(value, "vrnt_hapgrp", 1)
             check_ndarray_axis_len(value, "vrnt_hapgrp", 0, self.nvrnt)
         self._vrnt_hapgrp = value
@@ -345,7 +345,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         """Set variant chromosome group name array"""
         if value is not None:
             check_is_ndarray(value, "vrnt_chrgrp_name")
-            check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_name")
+            check_ndarray_dtype_is_integer(value, "vrnt_chrgrp_name")
             check_ndarray_ndim(value, "vrnt_chrgrp_name", 1)
         self._vrnt_chrgrp_name = value
 
@@ -358,7 +358,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         """Set variant chromosome group start indices array"""
         if value is not None:
             check_is_ndarray(value, "vrnt_chrgrp_stix")
-            check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_stix")
+            check_ndarray_dtype_is_integer(value, "vrnt_chrgrp_stix")
             check_ndarray_ndim(value, "vrnt_chrgrp_stix", 1)
         self._vrnt_chrgrp_stix = value
 
@@ -371,7 +371,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         """Set variant chromosome group stop indices array"""
         if value is not None:
             check_is_ndarray(value, "vrnt_chrgrp_spix")
-            check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_spix")
+            check_ndarray_dtype_is_integer(value, "vrnt_chrgrp_spix")
             check_ndarray_ndim(value, "vrnt_chrgrp_spix", 1)
         self._vrnt_chrgrp_spix = value
 
@@ -384,7 +384,7 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
         """Set variant chromosome group length array"""
         if value is not None:
             check_is_ndarray(value, "vrnt_chrgrp_len")
-            check_ndarray_dtype_is_int64(value, "vrnt_chrgrp_len")
+            check_ndarray_dtype_is_integer(value, "vrnt_chrgrp_len")
             check_ndarray_ndim(value, "vrnt_chrgrp_len", 1)
         self._vrnt_chrgrp_len = value
 

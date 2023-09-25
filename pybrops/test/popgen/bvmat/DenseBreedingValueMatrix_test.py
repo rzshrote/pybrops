@@ -1,12 +1,9 @@
+import pandas
 import pytest
 import numpy
-import copy
-
+from os.path import isfile
 from pybrops.test.assert_python import not_raises
 from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_function
-from pybrops.test.assert_python import assert_abstract_property
 from pybrops.test.assert_python import assert_concrete_method
 from pybrops.test.assert_python import assert_concrete_function
 
@@ -268,7 +265,128 @@ def test_tvar(bvmat):
     b = numpy.var(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
-# TODO: test to_hdf5, from_hdf5
+### to_pandas
+def test_to_pandas(bvmat, trait_object):
+    df = bvmat.to_pandas()
+    assert "taxa" in df.columns
+    assert "taxa_grp" in df.columns
+    for t in trait_object:
+        assert t in df.columns
+
+def test_to_pandas_col_rename(bvmat):
+    taxa_col = "taxa_col"
+    taxa_grp_col = "taxa_grp_col"
+    trait_cols = ["t1","t2","t3"]
+    df = bvmat.to_pandas(
+        taxa_col = taxa_col,
+        taxa_grp_col = taxa_grp_col,
+        trait_cols = trait_cols
+    )
+    assert taxa_col in df.columns
+    assert taxa_grp_col in df.columns
+    for t in trait_cols:
+        assert t in df.columns
+
+def test_to_pandas_descale(bvmat):
+    df1 = bvmat.to_pandas(descale = False)
+    df2 = bvmat.to_pandas(descale = True)
+    assert numpy.any(df1 != df2)
+
+def test_to_pandas_TypeError(bvmat):
+    with pytest.raises(TypeError):
+        df = bvmat.to_pandas(
+            taxa_col = object(),
+            taxa_grp_col = "taxa_grp",
+            trait_cols = ["Trait1","Trait2","Trait3"]
+        )
+    with pytest.raises(TypeError):
+        df = bvmat.to_pandas(
+            taxa_col = "taxa",
+            taxa_grp_col = object(),
+            trait_cols = ["Trait1","Trait2","Trait3"]
+        )
+    with pytest.raises(TypeError):
+        df = bvmat.to_pandas(
+            taxa_col = "taxa",
+            taxa_grp_col = "taxa_grp",
+            trait_cols = object()
+        )
+
+def test_to_pandas_ValueError(bvmat):
+    taxa_col = "taxa_col"
+    taxa_grp_col = "taxa_grp_col"
+    trait_cols = ["t"+str(i) for i in range(bvmat.ntrait-1)]
+    with pytest.raises(ValueError):
+        df = bvmat.to_pandas(
+            taxa_col = taxa_col,
+            taxa_grp_col = taxa_grp_col,
+            trait_cols = trait_cols
+        )
+
+### to_csv
+def test_to_csv(bvmat):
+    filename = "sample_breeding_values.csv"
+    bvmat.to_csv(filename)
+    assert isfile(filename)
+
+### from_pandas
+def test_from_pandas():
+    ntaxa = 100
+    taxa = numpy.array(["Taxon"+str(i) for i in range(ntaxa)])
+    taxa_grp = numpy.random.randint(0,10,ntaxa)
+    trait1 = numpy.random.random(ntaxa)
+    trait2 = numpy.random.random(ntaxa)
+    trait3 = numpy.random.random(ntaxa)
+    mat = numpy.stack([trait1,trait2,trait3], axis = 1)
+    df = pandas.DataFrame({
+        "taxa": taxa,
+        "taxa_grp": taxa_grp,
+        "trait1": trait1,
+        "trait2": trait2,
+        "trait3": trait3,
+    })
+    bvmat = DenseBreedingValueMatrix.from_pandas(
+        df = df,
+        location = 0.0,
+        scale = 1.0,
+    )
+    assert isinstance(bvmat, DenseBreedingValueMatrix)
+    assert numpy.all(bvmat.taxa == taxa)
+    assert numpy.all(bvmat.taxa_grp == taxa_grp)
+    assert numpy.all(bvmat.mat == mat)
+
+def test_from_pandas_col_rename():
+    ntaxa = 100
+    taxa = numpy.array(["Taxon"+str(i) for i in range(ntaxa)])
+    taxa_grp = numpy.random.randint(0,10,ntaxa)
+    trait1 = numpy.random.random(ntaxa)
+    trait2 = numpy.random.random(ntaxa)
+    trait3 = numpy.random.random(ntaxa)
+    mat = numpy.stack([trait1,trait2,trait3], axis = 1)
+    df = pandas.DataFrame({
+        "taxa_col": taxa,
+        "taxa_grp_col": taxa_grp,
+        "trait1": trait1,
+        "trait2": trait2,
+        "trait3": trait3,
+    })
+    bvmat = DenseBreedingValueMatrix.from_pandas(
+        df = df,
+        location = 0.0,
+        scale = 1.0,
+        taxa_col = "taxa_col",
+        taxa_grp_col = "taxa_grp_col",
+        trait_cols = ["trait1","trait2","trait3"]
+    )
+    assert isinstance(bvmat, DenseBreedingValueMatrix)
+    assert numpy.all(bvmat.taxa == taxa)
+    assert numpy.all(bvmat.taxa_grp == taxa_grp)
+    assert numpy.all(bvmat.mat == mat)
+
+def test_from_csv():
+    filename = "sample_breeding_values.csv"
+    out = DenseBreedingValueMatrix.from_csv(filename)
+    assert isinstance(out, DenseBreedingValueMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################

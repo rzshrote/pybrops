@@ -1282,7 +1282,7 @@ class StandardGeneticMap(GeneticMap):
 
         # use pandas to save to csv
         df.to_csv(
-            filename,
+            path_or_buf = filename,
             sep = sep,
             header = header,
             index = index,
@@ -1290,6 +1290,8 @@ class StandardGeneticMap(GeneticMap):
         )
 
     ############################## Class Methods ###############################
+
+    #################### Import Methods ####################
     @classmethod
     def from_pandas(
             cls,
@@ -1430,7 +1432,7 @@ class StandardGeneticMap(GeneticMap):
         
         header : int, list of int, default=0
             Row number(s) to use as the column names, and the start of the data.
-        
+
         vrnt_chrgrp_col : str, Integral, default = "chr"
             Name or number of the chromosome/linkage group name column from 
             which to import.
