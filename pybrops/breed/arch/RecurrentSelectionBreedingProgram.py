@@ -18,7 +18,7 @@ from pybrops.breed.op.psel.ParentSelectionOperator import ParentSelectionOperato
 from pybrops.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOperator, check_is_SurvivorSelectionOperator
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.error.error_type_python import check_is_int
-from pybrops.core.error.error_value_python import check_keys_in_dict
+from pybrops.core.error.error_value_python import check_dict_has_keys
 
 class RecurrentSelectionBreedingProgram(BreedingProgram):
     """

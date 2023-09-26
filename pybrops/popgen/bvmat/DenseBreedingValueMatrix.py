@@ -15,14 +15,20 @@ import numpy
 import h5py
 import pandas
 from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
-
-from pybrops.core.error.error_type_python import check_is_array_like, check_is_bool, check_is_str, check_is_str_or_Integral, check_is_str_or_Sequence
-from pybrops.core.error.error_type_numpy import check_is_Real_or_ndarray, check_is_ndarray
-from pybrops.core.error.error_value_numpy import check_ndarray_all_gteq, check_ndarray_axis_len
+from pybrops.core.error.error_type_python import check_is_array_like
+from pybrops.core.error.error_type_python import check_is_bool
+from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_type_python import check_is_str_or_Integral
+from pybrops.core.error.error_type_python import check_is_str_or_Sequence
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_numpy import check_ndarray_all_gteq
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_io_python import check_file_exists
-from pybrops.core.error.error_value_python import check_is_gteq, check_len, check_len_eq, check_str_value
+from pybrops.core.error.error_value_python import check_is_gteq
+from pybrops.core.error.error_value_python import check_len
+from pybrops.core.error.error_value_python import check_str_value
 from pybrops.core.mat.DenseTaxaTraitMatrix import DenseTaxaTraitMatrix
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix

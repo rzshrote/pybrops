@@ -5,7 +5,7 @@ models that incorporate genomic additive effects.
 
 import copy
 from numbers import Integral
-from typing import Optional, Union
+from typing import Dict, Optional, Sequence, Union
 import h5py
 import numpy
 import pandas
@@ -13,18 +13,26 @@ from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_float64
+from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_type_python import check_is_dict, check_is_str_or_Sequence
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.core.error.error_attr_python import error_readonly
+from pybrops.core.error.error_value_python import check_dict_has_keys, check_len, check_str_value
+from pybrops.core.io.CSVDictInputOutput import CSVDictInputOutput
+from pybrops.core.io.PandasDictInputOutput import PandasDictInputOutput
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
 
-class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
+class DenseAdditiveLinearGenomicModel(
+    AdditiveLinearGenomicModel,
+    PandasDictInputOutput,
+    CSVDictInputOutput,
+):
     """
     The DenseAdditiveLinearGenomicModel class represents a Multivariate Multiple
     Linear Regression model.
@@ -81,9 +89,9 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             beta: numpy.ndarray, 
             u_misc: Union[numpy.ndarray,None], 
             u_a: Union[numpy.ndarray,None], 
-            trait: numpy.ndarray = None, 
-            model_name: str = None, 
-            params: dict = None, 
+            trait: Optional[numpy.ndarray] = None, 
+            model_name: Optional[str] = None, 
+            params: Optional[dict] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -139,8 +147,6 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             Used for cooperative inheritance. Dictionary passing unused
             arguments to the parent class constructor.
         """
-        super(DenseAdditiveLinearGenomicModel, self).__init__(**kwargs)
-
         # set variables (order dependent)
         self.beta = beta
         self.u_misc = u_misc
@@ -1671,6 +1677,128 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         return out
 
     ################## Model I/O methods ###################
+    def to_pandas_dict(
+            self,
+            trait_cols: Optional[Union[str,Sequence]] = "trait",
+            **kwargs: dict
+        ) -> Dict[str,pandas.DataFrame]:
+        """
+        Export a DenseAdditiveLinearGenomicModel to a ``dict`` of ``pandas.DataFrame``.
+
+        Parameters
+        ----------
+        trait_cols : Sequence, str, None, default = "trait"
+            Names of the trait columns to which to write regression coefficients.
+            If ``Sequence``, column names are given by the strings in the 
+            ``trait_cols`` Sequence.
+            If ``str``, must be equal to ``"trait"``. Use trait names given in 
+            the ``trait`` property.
+            If ``None``, use numeric trait column names.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a 
+            ``dict`` of ``pandas.DataFrame``.
+
+        Returns
+        -------
+        out : dict
+            An output dataframe.
+        """
+        # type checks
+        if trait_cols is not None:
+            if isinstance(trait_cols, str):
+                check_str_value(trait_cols, "trait_cols", "trait")
+            elif isinstance(trait_cols, Sequence):
+                check_len(trait_cols, "trait_cols", self.ntrait)
+            else:
+                check_is_str_or_Sequence(trait_cols, "trait_cols")
+
+        # process trait_cols
+        if trait_cols is None:
+            trait_cols = numpy.arange(self.ntrait)
+        elif isinstance(trait_cols, str):
+            trait_cols = numpy.arange(self.ntrait) if self.trait is None else self.trait
+
+        # construct output dictionary
+        out = {
+            "beta": pandas.DataFrame(self.beta, columns = trait_cols),
+            "u_misc": pandas.DataFrame(self.u_misc, columns = trait_cols),
+            "u_a": pandas.DataFrame(self.u_a, columns = trait_cols),
+        }
+
+        return out
+
+    def to_csv_dict(
+            self,
+            filenames: Dict[str,str],
+            trait_cols: Optional[Union[str,Sequence]] = "trait",
+            sep: str = ',', 
+            header: bool = True, 
+            index: bool = False, 
+            **kwargs: dict
+        ) -> None:
+        """
+        Export a DenseAdditiveLinearGenomicModel to a set of CSV files specified 
+        by values in a ``dict``.
+
+        Parameters
+        ----------
+        filenames : dict of str
+            CSV file names to which to write. Must have the keys: ``"beta"``, 
+            ``"u_misc"``, and ``"u_a"`` (case sensitive).
+
+        trait_cols : Sequence, str, None, default = "trait"
+            Names of the trait columns to which to write regression coefficients.
+            If ``Sequence``, column names are given by the strings in the 
+            ``trait_cols`` Sequence.
+            If ``str``, must be equal to ``"trait"``. Use trait names given in 
+            the ``trait`` property.
+            If ``None``, use numeric trait column names.
+
+        sep : str, default = ","
+            Separator to use in the exported CSV files.
+        
+        header : bool, default = True
+            Whether to save header names.
+        
+        index : bool, default = False
+            Whether to save a row index in the exported CSV files.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a CSV.
+        """
+        # type checks
+        check_is_dict(filenames, "filenames")
+        check_dict_has_keys(filenames, "filenames", "beta", "u_misc", "u_a")
+
+        # export to dict of pandas.DataFrame
+        df_dict = self.to_pandas_dict(
+            trait_cols = trait_cols,
+        )
+
+        # export to CSV using pandas
+        df_dict["beta"].to_csv(
+            path_or_buf = filenames["beta"],
+            sep = sep,
+            header = header,
+            index = index,
+            **kwargs
+        )
+        df_dict["u_misc"].to_csv(
+            path_or_buf = filenames["u_misc"],
+            sep = sep,
+            header = header,
+            index = index,
+            **kwargs
+        )
+        df_dict["u_a"].to_csv(
+            path_or_buf = filenames["u_a"],
+            sep = sep,
+            header = header,
+            index = index,
+            **kwargs
+        )
+
     def to_hdf5(
             self, 
             filename: str, 
@@ -1712,6 +1840,198 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
     ############################## Class Methods ###############################
 
     ################## Model I/O methods ###################
+    @classmethod
+    def from_pandas_dict(
+            cls,
+            dic: Dict[str,pandas.DataFrame],
+            trait_cols: Optional[Union[str,Sequence]] = "infer",
+            model_name: Optional[str] = None, 
+            params: Optional[dict] = None, 
+            **kwargs: dict
+        ) -> 'DenseAdditiveLinearGenomicModel':
+        """
+        Read an object from a ``dict`` of ``pandas.DataFrame``.
+
+        Parameters
+        ----------
+        dic : dict
+            Python dictionary containing ``pandas.DataFrame`` from which to read.
+            Must have the following fields::
+
+            - ``"beta"`` - ``pandas.DataFrame`` containing fixed effects.
+            - ``"u_misc"`` - ``None`` or ``pandas.DataFrame`` containing 
+              miscellaneous random effects.
+            - ``"u_a"`` - ``None`` or ``pandas.DataFrame`` containing additive 
+              genetic marker random effects.
+
+        trait_cols : Sequence, str, None, default = "trait"
+            Names of the trait columns to which to read regression coefficients.
+            If ``Sequence``, column names are given by the strings or integers 
+            in the ``trait_cols`` Sequence.
+            If ``str``, must be equal to ``"infer"``. Use columns in the 
+            ``"beta"`` input dataframe to load trait breeding values.
+            If ``None``, do not load any trait regression coefficients.
+
+        model_name : str, None
+            Name of the model.
+
+        params : dict, None
+            Model parameters.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a 
+            ``dict`` of ``pandas.DataFrame``.
+
+        Returns
+        -------
+        out : DenseAdditiveLinearGenomicModel
+            A DenseAdditiveLinearGenomicModel read from a ``dict`` of ``pandas.DataFrame``.
+        """
+        # type checks
+        check_is_dict(dic, "dic")
+        check_dict_has_keys(dic, "dic", "beta", "u_misc", "u_a")
+        check_is_pandas_DataFrame(dic["beta"], 'dic["beta"]')
+        if dic["u_misc"] is not None:
+            check_is_pandas_DataFrame(dic["u_misc"], 'dic["u_misc"]')
+        if dic["u_a"] is not None:
+            check_is_pandas_DataFrame(dic["u_a"], 'dic["u_a"]')
+        if trait_cols is not None:
+            if isinstance(trait_cols, str):
+                check_str_value(trait_cols, "trait_cols", "infer")
+            elif isinstance(trait_cols, Sequence):
+                pass
+            else:
+                check_is_str_or_Sequence(trait_cols, "trait_cols")
+
+        # get trait values from dic["beta"]
+        trait = None
+        if trait_cols is None:
+            pass
+        elif isinstance(trait_cols, str):
+            if trait_cols == "infer":
+                trait = dic["beta"].columns.to_numpy(dtype = object)
+        elif isinstance(trait_cols, Sequence):
+            trait = numpy.array(trait_cols, dtype = object)
+        
+        # get beta values 
+        df = dic["beta"]
+        ix = [] if trait is None else [df.columns.get_loc(e) if isinstance(e,str) else e for e in trait]
+        beta = df.iloc[:,ix].to_numpy(dtype = float)
+        
+        # get u_misc values
+        u_misc = None
+        if dic["u_misc"] is not None:
+            df = dic["u_misc"]
+            ix = [] if trait is None else [df.columns.get_loc(e) if isinstance(e,str) else e for e in trait]
+            u_misc = df.iloc[:,ix].to_numpy(dtype = float)
+        
+        # get u_a values
+        u_a = None
+        if dic["u_a"] is not None:
+            df = dic["u_a"]
+            ix = [] if trait is None else [df.columns.get_loc(e) if isinstance(e,str) else e for e in trait]
+            u_misc = df.iloc[:,ix].to_numpy(dtype = float)
+
+        # create output object
+        out = cls(
+            beta = beta,
+            u_misc = u_misc,
+            u_a = u_a,
+            trait = trait,
+            model_name = model_name,
+            params = params,
+        )
+
+        return out
+
+    @classmethod
+    def from_csv_dict(
+            cls, 
+            filenames: Dict[str,str],
+            sep: str = ',',
+            header: int = 0,
+            trait_cols: Optional[Union[str,Sequence]] = "infer",
+            model_name: Optional[str] = None, 
+            params: Optional[dict] = None, 
+            **kwargs: dict
+        ) -> 'DenseAdditiveLinearGenomicModel':
+        """
+        Read a DenseAdditiveLinearGenomicModel from a set of CSV files specified by values in a ``dict``.
+
+        Parameters
+        ----------
+        filename : str
+            Dictionary of CSV file names from which to read.
+            Must have the following fields::
+
+            - ``"beta"`` - ``str`` containing fixed effects.
+            - ``"u_misc"`` - ``None`` or ``str`` of CSV file path containing 
+              miscellaneous random effects.
+            - ``"u_a"`` - ``None`` or ``str`` of CSV file path containing additive 
+              genetic marker random effects.
+
+        sep : str, default = ','
+            CSV delimiter to use.
+        
+        header : int, list of int, default=0
+            Row number(s) to use as the column names, and the start of the data.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a CSV.
+
+        trait_cols : Sequence, str, None, default = "trait"
+            Names of the trait columns to which to read regression coefficients.
+            If ``Sequence``, column names are given by the strings or integers 
+            in the ``trait_cols`` Sequence.
+            If ``str``, must be equal to ``"infer"``. Use columns in the 
+            ``"beta"`` input dataframe to load trait breeding values.
+            If ``None``, do not load any trait regression coefficients.
+
+        model_name : str, None
+            Name of the model.
+
+        params : dict, None
+            Model parameters.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a CSV.
+
+        Returns
+        -------
+        out : DenseAdditiveLinearGenomicModel
+            A DenseAdditiveLinearGenomicModel read from a set of CSV files.
+        """
+        # type checks
+        check_is_dict(filenames, "filenames")
+        check_dict_has_keys(filenames, "filenames", "beta", "u_misc", "u_a")
+        check_is_str(filenames["beta"], 'filenames["beta"]')
+        if filenames["u_misc"] is not None:
+            check_is_str(filenames["u_misc"], 'filenames["u_misc"]')
+        if filenames["u_a"] is not None:
+            check_is_str(filenames["u_a"], 'filenames["u_a"]')
+
+        # read files
+        beta_df = pandas.read_csv(filenames["beta"], sep = sep, header = header, **kwargs)
+        u_misc_df = None if filenames["u_misc"] is None else pandas.read_csv(filenames["u_misc"], sep = sep, header = header, **kwargs)
+        u_a_df = None if filenames["u_a"] is None else pandas.read_csv(filenames["u_a"], sep = sep, header = header, **kwargs)
+
+        # create pandas dictionary
+        dic = {
+            "beta": beta_df,
+            "u_misc": u_misc_df,
+            "u_a": u_a_df,
+        }
+
+        # create output
+        out = cls.from_pandas_dict(
+            dic = dic, 
+            trait_cols = trait_cols, 
+            model_name = model_name, 
+            params = params, 
+        )
+
+        return out
+
     @classmethod
     def from_hdf5(
             cls, 

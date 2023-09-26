@@ -14,7 +14,7 @@ __all__ = [
     "check_is_lteq",
     "check_is_in_interval_inclusive",
     "check_str_value",
-    "check_keys_in_dict",
+    "check_dict_has_keys",
     "check_keys_in_dict_all_type",
     "check_values_in_dict_all_type",
     "check_values_in_dict_equal_len",
@@ -284,7 +284,7 @@ def check_tuple_len_eq(v: tuple, vname: str, vlen: int) -> None:
 ##################################################
 ########### Dictionary check functions ###########
 ##################################################
-def check_keys_in_dict(v: dict, vname: str, *args: Tuple[object,...]) -> None:
+def check_dict_has_keys(v: dict, vname: str, *args: Tuple[object,...]) -> None:
     """
     Check if a set of keys can be found among the keys of a provided ``dict``.
     If any of the keys cannot be found within the dict, then raise an error.
