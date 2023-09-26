@@ -3,6 +3,11 @@
 import os
 import copy
 import numpy
+import pandas
+
+### 
+### Loading Breeding Value Matrix Modules
+### =====================================
 
 # import the BreedingValueMatrix class (an abstract interface class)
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
@@ -11,12 +16,16 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 
 ###
-### Breeding Value Matrix Object Creation
-###
+### Creating Breeding Value Matrices
+### ================================
 
-#
-# construct from NumPy
-#
+## 
+## Creating breeding value matrices from NumPy arrays
+## --------------------------------------------------
+
+# 
+# Using the constructor
+# +++++++++++++++++++++
 
 # shape parameters
 ntaxa = 100
@@ -53,14 +62,7 @@ bvmat = DenseBreedingValueMatrix(
 )
 
 #
-# read from HDF5
-#
-
-# read a breeding value matrix from an HDF5 file
-bvmat = DenseBreedingValueMatrix.from_hdf5("sample_breeding_values.h5")
-
-#
-# construct from a NumPy array
+# Using a class method as a factory
 #
 
 # shape parameters
@@ -93,6 +95,55 @@ bvmat = DenseBreedingValueMatrix.from_numpy(
     taxa_grp = taxa_grp,
     trait = trait
 )
+
+## 
+## Creating breeding value matrices from Pandas DataFrames
+## -------------------------------------------------------
+
+# create dummy pandas dataframe
+df = pandas.DataFrame({
+    "taxa": ["Taxon"+str(i).zfill(3) for i in range(1,101)],
+    "taxa_grp": numpy.repeat([1,2,3,4,5], 20),
+    "Trait1": numpy.random.random(100),
+    "Trait2": numpy.random.random(100),
+    "Trait3": numpy.random.random(100),
+})
+
+# construct breeding value matrix from pandas dataframe
+# use explicit column name identifiers as method arguments
+bvmat = DenseBreedingValueMatrix.from_pandas(
+    df = df,
+    location = 0.0,
+    scale = 1.0,
+    taxa_col = "taxa",
+    taxa_grp_col = "taxa_grp",
+    trait_cols = ["Trait1","Trait2","Trait3"],
+)
+
+# export for future use to demonstrate loading
+bvmat.to_csv("sample_breeding_values.csv")
+
+## 
+## Loading breeding value matrices from CSV files
+## ----------------------------------------------
+
+# read from a CSV file
+# use explicit column name identifiers as method arguments
+bvmat = DenseBreedingValueMatrix.from_csv(
+    filename = "sample_breeding_values.csv",
+    location = 0.0,
+    scale = 1.0,
+    taxa_col = "taxa",
+    taxa_grp_col = "taxa_grp",
+    trait_cols = ["Trait1","Trait2","Trait3"],
+)
+
+## 
+## Loading breeding value matrices from HDF5 files
+## -----------------------------------------------
+
+# read a breeding value matrix from an HDF5 file
+bvmat = DenseBreedingValueMatrix.from_hdf5("sample_breeding_values.h5")
 
 ###
 ### Breeding value matrix general properties

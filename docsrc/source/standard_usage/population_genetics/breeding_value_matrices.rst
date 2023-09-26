@@ -4,7 +4,7 @@ Breeding Value Matrices
 Class Family Overview
 =====================
 
-The ``BreedingValueMatrix`` family of classes is used to represent breeding values as its name implies. ``BreedingValueMatrix`` objects can be used in the estimation of genomic prediction models and to make selection decisions.
+The ``BreedingValueMatrix`` family of classes is used to represent breeding values as its name implies. ``BreedingValueMatrix`` objects can be used in the estimation of genomic prediction models and to make selection decisions. Since breeding values are typically mean-centered and sometimes scaled, breeding value matrices have ``location`` and ``scale`` properties to reconstitute un-scaled values. ``BreedingValueMatrix`` objects store additional taxa and trait metadata which serve as labels for rows and columns, respectively.
 
 Summary of Breeding Value Matrix Classes
 ========================================
@@ -24,6 +24,72 @@ Breeding value matrix classes in PyBrOpS are found in the ``pybrops.popgen.bvmat
     * - ``DenseBreedingValueMatrix``
       - Concrete
       - Class representing dense, breeding value matrices.
+
+Breeding Value Matrix Properties
+================================
+
+Breeding value matrix general properties
+----------------------------------------
+
+.. list-table:: Summary of ``BreedingValueMatrix`` general properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``mat``
+      - The raw breeding value matrix pointer
+    * - ``mat_ndim``
+      - The number of dimensions for the breeding value matrix
+    * - ``mat_shape``
+      - The breeding value matrix shape
+    * - ``location``
+      - The location of the breeding value matrix if it has been transformed
+    * - ``scale``
+      - The scale of the breeding value matrix if it has been transformed
+
+Breeding value matrix taxa properties
+-------------------------------------
+
+.. list-table:: Summary of ``BreedingValueMatrix`` taxa properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``ntaxa``
+      - The number of taxa represented by the breeding value matrix
+    * - ``taxa``
+      - The names of the taxa
+    * - ``taxa_axis``
+      - The matrix axis along which taxa are stored
+    * - ``taxa_grp``
+      - An optional taxa group label
+    * - ``taxa_grp_name``
+      - If taxa are sorted by group: get the names of the groups
+    * - ``taxa_grp_stix``
+      - If taxa are sorted by group: get the start indices (inclusive) for each group
+    * - ``taxa_grp_spix``
+      - If taxa are sorted by group: get the stop indices (exclusive) for each group
+    * - ``taxa_grp_len``
+      - If taxa are sorted by group: get the length of each group
+
+
+Breeding value matrix trait properties
+--------------------------------------
+
+.. list-table:: Summary of ``BreedingValueMatrix`` trait properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``ntrait``
+      - The number of traits represented by the breeding value matrix
+    * - ``trait``
+      - The names of the traits
+    * - ``trait_axis``
+      - The matrix axis along which traits are stored
 
 
 Loading Breeding Value Matrix Modules
@@ -120,80 +186,60 @@ Using the ``from_numpy`` class method, one can also create a breeding value matr
         trait = trait
     )
 
+Creating breeding value matrices from Pandas DataFrames
+-------------------------------------------------------
+
+Breeding value matrices can be created from Pandas DataFrames. To do this, use the ``from_pandas`` class method. The code block below demonstrates how to use the ``from_pandas`` method to accomplish this.
+
+.. code-block:: python
+
+    # create dummy pandas dataframe
+    df = pandas.DataFrame({
+        "taxa": ["Taxon"+str(i).zfill(3) for i in range(1,101)],
+        "taxa_grp": numpy.repeat([1,2,3,4,5], 20),
+        "Trait1": numpy.random.random(100),
+        "Trait2": numpy.random.random(100),
+        "Trait3": numpy.random.random(100),
+    })
+
+    # construct breeding value matrix from pandas dataframe
+    # use explicit column name identifiers as method arguments
+    bvmat = DenseBreedingValueMatrix.from_pandas(
+        df = df,
+        location = 0.0,
+        scale = 1.0,
+        taxa_col = "taxa",
+        taxa_grp_col = "taxa_grp",
+        trait_cols = ["Trait1","Trait2","Trait3"],
+    )
+
+Loading breeding value matrices from CSV files
+----------------------------------------------
+
+Breeding value matrices can be read from CSV files. To read a breeding value matrix from a CSV file, use the ``from_csv`` class method. The following code illustrates the use of this method.
+
+.. code-block:: python
+
+    # read from a CSV file
+    # use explicit column name identifiers as method arguments
+    bvmat = DenseBreedingValueMatrix.from_csv(
+        filename = "sample_breeding_values.csv",
+        location = 0.0,
+        scale = 1.0,
+        taxa_col = "taxa",
+        taxa_grp_col = "taxa_grp",
+        trait_cols = ["Trait1","Trait2","Trait3"],
+    )
 
 Loading breeding value matrices from HDF5 files
 -----------------------------------------------
+
+Most matrix object types in PyBrOpS allow for both the import and export of matrices into an HDF5 format. To read saved breeding value matrices from an HDF5 file, use the ``from_hdf5`` class method. The code below demonstrates the use of this function to load a breeding value matrix from an HDF5 file.
 
 .. code-block:: python
 
     # read a breeding value matrix from an HDF5 file
     bvmat = DenseBreedingValueMatrix.from_hdf5("sample_breeding_values.h5")
-
-Breeding Value Matrix Properties
-================================
-
-Breeding value matrix general properties
-----------------------------------------
-
-.. list-table:: Summary of ``BreedingValueMatrix`` general properties
-    :widths: 25 50
-    :header-rows: 1
-
-    * - Property
-      - Description
-    * - ``mat``
-      - The raw breeding value matrix pointer
-    * - ``mat_ndim``
-      - The number of dimensions for the breeding value matrix
-    * - ``mat_shape``
-      - The breeding value matrix shape
-    * - ``location``
-      - The location of the breeding value matrix if it has been transformed
-    * - ``scale``
-      - The scale of the breeding value matrix if it has been transformed
-
-Breeding value matrix taxa properties
--------------------------------------
-
-.. list-table:: Summary of ``BreedingValueMatrix`` taxa properties
-    :widths: 25 50
-    :header-rows: 1
-
-    * - Property
-      - Description
-    * - ``ntaxa``
-      - The number of taxa represented by the breeding value matrix
-    * - ``taxa``
-      - The names of the taxa
-    * - ``taxa_axis``
-      - The matrix axis along which taxa are stored
-    * - ``taxa_grp``
-      - An optional taxa group label
-    * - ``taxa_grp_name``
-      - If taxa are sorted by group: get the names of the groups
-    * - ``taxa_grp_stix``
-      - If taxa are sorted by group: get the start indices (inclusive) for each group
-    * - ``taxa_grp_spix``
-      - If taxa are sorted by group: get the stop indices (exclusive) for each group
-    * - ``taxa_grp_len``
-      - If taxa are sorted by group: get the length of each group
-
-
-Breeding value matrix trait properties
---------------------------------------
-
-.. list-table:: Summary of ``BreedingValueMatrix`` trait properties
-    :widths: 25 50
-    :header-rows: 1
-
-    * - Property
-      - Description
-    * - ``ntrait``
-      - The number of traits represented by the breeding value matrix
-    * - ``trait``
-      - The names of the traits
-    * - ``trait_axis``
-      - The matrix axis along which traits are stored
 
 
 Copying Breeding Value Matrices
