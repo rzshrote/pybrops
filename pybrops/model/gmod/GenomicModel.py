@@ -30,29 +30,32 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             self
         ) -> 'GenomicModel':
         """
-        Make a shallow copy of the GenomicModel.
+        Make a shallow copy of the ``GenomicModel``.
 
         Returns
         -------
         out : GenomicModel
+            A shallow copy of the ``GenomicModel``.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
     def __deepcopy__(
             self, 
-            memo: dict
+            memo: Optional[dict]
         ) -> 'GenomicModel':
         """
-        Make a deep copy of the GenomicModel.
+        Make a deep copy of the ``GenomicModel``.
 
         Parameters
         ----------
         memo : dict
+            Dictionary of memo metadata.
 
         Returns
         -------
         out : GenomicModel
+            A deep copy of the ``GenomicModel``.
         """
         raise NotImplementedError("method is abstract")
 

@@ -180,19 +180,19 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             A shallow copy of the model.
         """
         out = self.__class__(
-            beta = copy.copy(self.beta),
-            u_misc = copy.copy(self.u_misc),
-            u_a = copy.copy(self.u_a),
-            trait = copy.copy(self.trait),
+            beta       = copy.copy(self.beta),
+            u_misc     = copy.copy(self.u_misc),
+            u_a        = copy.copy(self.u_a),
+            trait      = copy.copy(self.trait),
             model_name = copy.copy(self.model_name),
-            params = copy.copy(self.params)
+            params     = copy.copy(self.params),
         )
 
         return out
 
     def __deepcopy__(
             self, 
-            memo: dict
+            memo: Optional[dict] = None
         ) -> 'DenseAdditiveLinearGenomicModel':
         """
         Make a deep copy of the GenomicModel.
@@ -200,6 +200,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         Parameters
         ----------
         memo : dict
+            Dictionary of memo metadata.
 
         Returns
         -------
@@ -207,12 +208,12 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
             A deep copy of the model.
         """
         out = self.__class__(
-            beta = copy.deepcopy(self.beta),
-            u_misc = copy.deepcopy(self.u_misc),
-            u_a = copy.deepcopy(self.u_a),
-            trait = copy.deepcopy(self.trait),
-            model_name = copy.deepcopy(self.model_name),
-            params = copy.deepcopy(self.params)
+            beta       = copy.deepcopy(self.beta, memo),
+            u_misc     = copy.deepcopy(self.u_misc, memo),
+            u_a        = copy.deepcopy(self.u_a, memo),
+            trait      = copy.deepcopy(self.trait, memo),
+            model_name = copy.deepcopy(self.model_name, memo),
+            params     = copy.deepcopy(self.params, memo),
         )
 
         return out
@@ -314,10 +315,11 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         """Description for property model_name."""
         return self._model_name
     @model_name.setter
-    def model_name(self, value: str) -> None:
+    def model_name(self, value: Union[str,None]) -> None:
         """Set data for property model_name."""
-        if value is not None:
-            check_is_str(value, "model_name")
+        if value is None:
+            value = ""
+        check_is_str(value, "model_name")
         self._model_name = value
     
     @property
@@ -325,7 +327,7 @@ class DenseAdditiveLinearGenomicModel(AdditiveLinearGenomicModel):
         """Description for property params."""
         return self._params
     @params.setter
-    def params(self, value: dict) -> None:
+    def params(self, value: Union[dict,None]) -> None:
         """Set data for property params."""
         if value is None:
             value = {}

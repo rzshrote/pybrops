@@ -1,25 +1,23 @@
 """
-Module defining ``numpy.ndarray`` I/O interfaces and associated error
+Module defining ``dict`` I/O interfaces and associated error
 checking routines.
 """
 
 __all__ = [
-    "NumPyInputOutput",
-    "check_is_NumPyInputOutput",
+    "DictInputOutput",
+    "check_is_DictInputOutput",
 ]
 
 from abc import ABCMeta, abstractmethod
 
-import numpy
-
-class NumPyInputOutput(metaclass=ABCMeta):
+class DictInputOutput(metaclass=ABCMeta):
     """
-    Abstract class for defining ``numpy.ndarray`` input/output functionality.
+    Abstract class for defining ``dict`` input/output functionality.
 
     This abstract class defines two functions with the following purposes:
 
-    - ``to_numpy`` - export an object to a ``numpy.ndarray``.
-    - ``from_numpy`` - load an object from a ``numpy.ndarray``.
+    - ``to_dict`` - export an object to a ``dict``.
+    - ``from_dict`` - load an object from a ``dict``.
     """
 
     ########################## Special Object Methods ##########################
@@ -28,23 +26,23 @@ class NumPyInputOutput(metaclass=ABCMeta):
 
     ####################### File I/O #######################
     @abstractmethod
-    def to_numpy(
+    def to_dict(
             self, 
             **kwargs: dict
-        ) -> numpy.ndarray:
+        ) -> dict:
         """
-        Export an object to a ``numpy.ndarray``.
+        Export an object to a ``dict``.
 
         Parameters
         ----------
         kwargs : dict
             Additional keyword arguments to use for dictating export to a 
-            ``numpy.ndarray``.
+            ``dict``.
         
         Returns
         -------
-        out : numpy.ndarray
-            An output dataframe.
+        out : dict
+            An output Python dictionary.
         """
         raise NotImplementedError("method is abstract")
 
@@ -53,35 +51,35 @@ class NumPyInputOutput(metaclass=ABCMeta):
     ####################### File I/O #######################
     @classmethod
     @abstractmethod
-    def from_numpy(
+    def from_dict(
             cls, 
-            arr: numpy.ndarray,
+            dic: dict,
             **kwargs: dict
-        ) -> 'NumPyInputOutput':
+        ) -> 'DictInputOutput':
         """
-        Read an object from a ``numpy.ndarray``.
+        Read an object from a ``dict``.
 
         Parameters
         ----------
-        arr : numpy.ndarray
-            NumPy array from which to read.
+        dic : dict
+            Python dictionary from which to read.
         kwargs : dict
             Additional keyword arguments to use for dictating importing from a 
-            ``numpy.ndarray``.
+            ``dict``.
 
         Returns
         -------
-        out : NumPyInputOutput
-            An object read from a ``numpy.ndarray``.
+        out : DictInputOutput
+            An object read from a ``dict``.
         """
         raise NotImplementedError("class method is abstract")
 
 
 
 ################################## Utilities ###################################
-def check_is_NumPyInputOutput(v: object, vname: str) -> None:
+def check_is_DictInputOutput(v: object, vname: str) -> None:
     """
-    Check if object is of type NumPyInputOutput. Otherwise raise TypeError.
+    Check if object is of type DictInputOutput. Otherwise raise TypeError.
 
     Parameters
     ----------
@@ -90,5 +88,11 @@ def check_is_NumPyInputOutput(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in TypeError message.
     """
-    if not isinstance(v, NumPyInputOutput):
-        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,NumPyInputOutput.__name__,type(v).__name__))
+    if not isinstance(v, DictInputOutput):
+        raise TypeError(
+            "variable '{0}' must be a of type '{1}' but received type '{2}'".format(
+                vname,
+                DictInputOutput.__name__,
+                type(v).__name__
+            )
+        )
