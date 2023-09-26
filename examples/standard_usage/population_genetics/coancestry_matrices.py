@@ -4,6 +4,10 @@ import os
 import copy
 import numpy
 
+### 
+### Loading Coancestry Matrix Modules
+### =================================
+
 # import the CoancestryMatrix class (an abstract interface class)
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 
@@ -20,13 +24,13 @@ from pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix import DenseVanRadenCoanc
 from pybrops.popgen.cmat.DenseYangCoancestryMatrix import DenseYangCoancestryMatrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 
-###
-### Coancestry Matrix Object Creation
-###
+### 
+### Creating Coancestry Matrices
+### ============================
 
-#
-# construct from NumPy
-#
+## 
+## Creating coancestry matrices from NumPy arrays
+## ----------------------------------------------
 
 # shape parameters
 ntaxa = 100

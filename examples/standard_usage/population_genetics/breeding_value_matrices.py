@@ -200,14 +200,14 @@ tmp = bvmat.deepcopy()
 ## adjoin examples
 ##
 
-# create a new genotype matrix to demonstrate
+# create a new breeding value matrix to demonstrate
 new = bvmat.deepcopy()
 
-# adjoin genotype matrices along the taxa axis
+# adjoin breeding value matrices along the taxa axis
 tmp = bvmat.adjoin(new, axis = bvmat.taxa_axis)
 tmp = bvmat.adjoin_taxa(new)
 
-# adjoin genotype matrices along the trait axis
+# adjoin breeding value matrices along the trait axis
 tmp = bvmat.adjoin(new, axis = bvmat.trait_axis)
 tmp = bvmat.adjoin_trait(new)
 
@@ -251,14 +251,14 @@ tmp = bvmat.delete_trait([0,1])
 ## insert examples
 ##
 
-# create a new genotype matrix to demonstrate
+# create a new breeding value matrix to demonstrate
 new = bvmat.deepcopy()
 
-# insert genotype matrix along the taxa axis before index 0
+# insert breeding value matrix along the taxa axis before index 0
 tmp = bvmat.insert(0, new, axis = bvmat.taxa_axis)
 tmp = bvmat.insert_taxa(0, new)
 
-# insert genotype matrix along the trait axis before index 0
+# insert breeding value matrix along the trait axis before index 0
 # tmp = bvmat.insert(0, new, axis = bvmat.trait_axis)
 # tmp = bvmat.insert_trait(0, new)
 
@@ -282,14 +282,14 @@ tmp = bvmat.select_trait([0,1])
 ## append examples
 ##
 
-# append genotype matrices along the taxa axis
+# append breeding value matrices along the taxa axis
 tmp = bvmat.deepcopy()                   # copy original
 tmp.append(bvmat, axis = tmp.taxa_axis)  # append original to copy
 
 tmp = bvmat.deepcopy()                   # copy original
 tmp.append_taxa(bvmat)                   # append original to copy
 
-# append genotype matrices along the trait axis
+# append breeding value matrices along the trait axis
 tmp = bvmat.deepcopy()                   # copy original
 tmp.append(bvmat, axis = tmp.trait_axis) # append original to copy
 
@@ -354,14 +354,14 @@ tmp.remove_trait([0,1])                          # remove from copy
 ## incorp examples
 ##
 
-# incorp genotype matrix along the taxa axis before index 0
+# incorp breeding value matrix along the taxa axis before index 0
 tmp = bvmat.deepcopy()                           # copy original
 tmp.incorp(0, bvmat, axis = bvmat.taxa_axis)     # incorporate into copy
 
 tmp = bvmat.deepcopy()                           # copy original
 tmp.incorp_taxa(0, bvmat)                        # incorporate into copy
 
-# incorp genotype matrix along the trait axis before index 0
+# incorp breeding value matrix along the trait axis before index 0
 # tmp = bvmat.deepcopy()                           # copy original
 # tmp.incorp(0, bvmat, axis = bvmat.trait_axis)    # incorporate into copy
 
@@ -479,7 +479,7 @@ tmp = bvmat.deepcopy()
 # taxa grouping example
 #
 
-# sort along taxa axis
+# sort and group along taxa axis
 tmp.group(axis = tmp.taxa_axis)
 tmp.group_taxa()
 
@@ -520,11 +520,27 @@ out = bvmat.unscale()
 
 ###
 ### Saving Breeding Value Matrices
-###
+### ==============================
 
-#
-# write to HDF5
-#
+## 
+## Exporting to Pandas DataFrame
+## -----------------------------
+
+# export to a pandas.DataFrame
+# use default column names to export
+df = bvmat.to_pandas()
+
+## 
+## Exporting to CSV
+## ----------------
+
+# export to a CSV
+# use default column names to export
+bvmat.to_csv("saved_breeding_values.csv")
+
+## 
+## Exporting to HDF5
+## -----------------
 
 # remove exported file if it exists
 if os.path.exists("saved_breeding_values.h5"):

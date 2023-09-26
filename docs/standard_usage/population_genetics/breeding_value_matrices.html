@@ -663,7 +663,7 @@
 </section>
 <section id="loading-breeding-value-matrices-from-hdf5-files">
 <h3>Loading breeding value matrices from HDF5 files<a class="headerlink" href="#loading-breeding-value-matrices-from-hdf5-files" title="Permalink to this heading">#</a></h3>
-<p>Most matrix object types in PyBrOpS allow for both the import and export of matrices into an HDF5 format. To read saved breeding value matrices from an HDF5 file, use the <code class="docutils literal notranslate"><span class="pre">from_hdf5</span></code> class method. The code below demonstrates the use of this function to load a breeding value matrix from an HDF5 file.</p>
+<p>Most matrix object types in PyBrOpS allow for both the import and export of matrices into an HDF5 format. To read saved breeding value matrices from an HDF5 file, use the <code class="docutils literal notranslate"><span class="pre">from_hdf5</span></code> class method. The code below demonstrates the use of this method to load a breeding value matrix from an HDF5 file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read a breeding value matrix from an HDF5 file</span>
 <span class="n">bvmat</span> <span class="o">=</span> <span class="n">DenseBreedingValueMatrix</span><span class="o">.</span><span class="n">from_hdf5</span><span class="p">(</span><span class="s2">&quot;sample_breeding_values.h5&quot;</span><span class="p">)</span>
 </pre></div>
@@ -694,16 +694,18 @@
 </section>
 <section id="copy-on-element-manipulation">
 <h2>Copy-On Element Manipulation<a class="headerlink" href="#copy-on-element-manipulation" title="Permalink to this heading">#</a></h2>
+<p>Breeding value matrices have several methods by which modifed copies of the original matrix can be made. These are called copy-on element manipulation methods. Matrices may have rows and/or columns adjoined, deleted, inserted, or selected. The following sections demonstrate the use of these method families.</p>
 <section id="adjoin-elements">
 <h3>Adjoin elements<a class="headerlink" href="#adjoin-elements" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new genotype matrix to demonstrate</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">adjoin</span></code> family of methods allows for rows (taxa) and columns (traits) of a breeding value matrix to be adjoined together, creating a new matrix in the process. Use of the <code class="docutils literal notranslate"><span class="pre">adjoin</span></code> method family is demonstrated in the code below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new breeding value matrix to demonstrate</span>
 <span class="n">new</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
 
-<span class="c1"># adjoin genotype matrices along the taxa axis</span>
+<span class="c1"># adjoin breeding value matrices along the taxa axis</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">adjoin</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">adjoin_taxa</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
 
-<span class="c1"># adjoin genotype matrices along the trait axis</span>
+<span class="c1"># adjoin breeding value matrices along the trait axis</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">adjoin</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">adjoin_trait</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
 </pre></div>
@@ -711,6 +713,7 @@
 </section>
 <section id="delete-elements">
 <h3>Delete elements<a class="headerlink" href="#delete-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">delete</span></code> family of methods allows for rows (taxa) and columns (traits) of a breeding value matrix to be removed in a copy of the original. Use of the <code class="docutils literal notranslate"><span class="pre">delete</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># delete taxa examples</span>
 <span class="c1">#</span>
@@ -747,14 +750,15 @@
 </section>
 <section id="insert-elements">
 <h3>Insert elements<a class="headerlink" href="#insert-elements" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new genotype matrix to demonstrate</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">insert</span></code> family of methods allows for rows (taxa) and columns (traits) of a breeding value matrix to be inserted into a copy of the original matrix. Use of the <code class="docutils literal notranslate"><span class="pre">insert</span></code> method family is demonstrated in the code below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new breeding value matrix to demonstrate</span>
 <span class="n">new</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
 
-<span class="c1"># insert genotype matrix along the taxa axis before index 0</span>
+<span class="c1"># insert breeding value matrix along the taxa axis before index 0</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">insert_taxa</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
 
-<span class="c1"># insert genotype matrix along the trait axis before index 0</span>
+<span class="c1"># insert breeding value matrix along the trait axis before index 0</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">insert_trait</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">new</span><span class="p">)</span>
 </pre></div>
@@ -762,6 +766,7 @@
 </section>
 <section id="select-elements">
 <h3>Select elements<a class="headerlink" href="#select-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">select</span></code> family of methods allows for rows (taxa) and columns (traits) of the breeding value matrix to be selected and extracted to a copy of the original matrix. Use of the <code class="docutils literal notranslate"><span class="pre">select</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># select first five taxa using a Sequence</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
@@ -775,16 +780,18 @@
 </section>
 <section id="in-place-element-manipulation">
 <h2>In-Place Element Manipulation<a class="headerlink" href="#in-place-element-manipulation" title="Permalink to this heading">#</a></h2>
+<p>Breeding value matrices have several methods which execute in-place element manipulations. These are called in-place element manipulation methods. Breeding value matrices may have taxa rows and/or trait columns appended, removed, incorporated, or concatenated. The following sections demonstrate the use of these method families.</p>
 <section id="append-elements">
 <h3>Append elements<a class="headerlink" href="#append-elements" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># append genotype matrices along the taxa axis</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">append</span></code> family of methods allows for new rows (taxa) and columns (traits) to be appended to the breeding value matrix. The code segment below demonstrates their use.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># append breeding value matrices along the taxa axis</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>                   <span class="c1"># copy original</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bvmat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>  <span class="c1"># append original to copy</span>
 
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>                   <span class="c1"># copy original</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">append_taxa</span><span class="p">(</span><span class="n">bvmat</span><span class="p">)</span>                   <span class="c1"># append original to copy</span>
 
-<span class="c1"># append genotype matrices along the trait axis</span>
+<span class="c1"># append breeding value matrices along the trait axis</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>                   <span class="c1"># copy original</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bvmat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">)</span> <span class="c1"># append original to copy</span>
 
@@ -795,6 +802,7 @@
 </section>
 <section id="remove-elements">
 <h3>Remove elements<a class="headerlink" href="#remove-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">remove</span></code> family of methods allows for rows (taxa) and columns (traits) to be removed from a breeding value matrix. A demonstration of their use can be seen below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># remove taxa examples</span>
 <span class="c1">#</span>
@@ -849,14 +857,15 @@
 </section>
 <section id="incorporate-elements">
 <h3>Incorporate elements<a class="headerlink" href="#incorporate-elements" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># incorp genotype matrix along the taxa axis before index 0</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">incorp</span></code> family of methods allows for new rows (taxa) and columns (traits) to be inserted at specific locations a breeding value matrix. Use of the <code class="docutils literal notranslate"><span class="pre">incorp</span></code> family is demonstrated in the code segment below below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># incorp breeding value matrix along the taxa axis before index 0</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>                           <span class="c1"># copy original</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">incorp</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">bvmat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>     <span class="c1"># incorporate into copy</span>
 
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>                           <span class="c1"># copy original</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">incorp_taxa</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">bvmat</span><span class="p">)</span>                        <span class="c1"># incorporate into copy</span>
 
-<span class="c1"># incorp genotype matrix along the trait axis before index 0</span>
+<span class="c1"># incorp breeding value matrix along the trait axis before index 0</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>                           <span class="c1"># copy original</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">incorp</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">bvmat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">)</span>    <span class="c1"># incorporate into copy</span>
 
@@ -867,6 +876,7 @@
 </section>
 <section id="concatenate-elements">
 <h3>Concatenate elements<a class="headerlink" href="#concatenate-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">concat</span></code> family of methods allows for multiple breeding value matrices to be concatenated to each other. The code segment below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># concatenate along the taxa axis</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">bvmat</span><span class="p">,</span> <span class="n">bvmat</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">concat_taxa</span><span class="p">([</span><span class="n">bvmat</span><span class="p">,</span> <span class="n">bvmat</span><span class="p">])</span>
@@ -880,8 +890,10 @@
 </section>
 <section id="grouping-and-sorting">
 <h2>Grouping and Sorting<a class="headerlink" href="#grouping-and-sorting" title="Permalink to this heading">#</a></h2>
+<p>Breeding value matrices in PyBrOpS have several sorting and grouping focused methods. Sorting methods can be used to reorder, sort, and group taxa alphanumerically, and reorder and sort traits alphanumerically. The following sections demonstrate the use of the <code class="docutils literal notranslate"><span class="pre">reorder</span></code>, <code class="docutils literal notranslate"><span class="pre">lexsort</span></code>, <code class="docutils literal notranslate"><span class="pre">sort</span></code>, and <code class="docutils literal notranslate"><span class="pre">group</span></code> method families.</p>
 <section id="reordering-elements">
 <h3>Reordering elements<a class="headerlink" href="#reordering-elements" title="Permalink to this heading">#</a></h3>
+<p>Taxa and traits in a breeding value matrix can be reordered using the <code class="docutils literal notranslate"><span class="pre">reorder</span></code> family of methods. Demonstrations of this method family are below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># taxa reordering example</span>
 <span class="c1">#</span>
@@ -913,6 +925,7 @@
 </section>
 <section id="lexsorting-elements">
 <h3>Lexsorting elements<a class="headerlink" href="#lexsorting-elements" title="Permalink to this heading">#</a></h3>
+<p>An indirect sort - or lexsort - for taxa and trait axes can be performed using the <code class="docutils literal notranslate"><span class="pre">lexsort</span></code> family of methods. The code segment below illustrates the use of this family of methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># taxa lexsort example</span>
 <span class="c1">#</span>
@@ -943,6 +956,7 @@
 </section>
 <section id="sorting-elements">
 <h3>Sorting elements<a class="headerlink" href="#sorting-elements" title="Permalink to this heading">#</a></h3>
+<p>Alphanumeric sorting along taxa and trait axes can be done using the <code class="docutils literal notranslate"><span class="pre">sort</span></code> family of methods. Sorting examples are illustrated below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make copy</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
 
@@ -966,6 +980,7 @@
 </section>
 <section id="grouping-elements">
 <h3>Grouping elements<a class="headerlink" href="#grouping-elements" title="Permalink to this heading">#</a></h3>
+<p>Grouping along only the taxa axis can be done using the <code class="docutils literal notranslate"><span class="pre">group</span></code> family of methods. The following code illustrates the use of the <code class="docutils literal notranslate"><span class="pre">group</span></code> method family along the taxa axis of a breeding value matrix.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make copy</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
 
@@ -973,7 +988,7 @@
 <span class="c1"># taxa grouping example</span>
 <span class="c1">#</span>
 
-<span class="c1"># sort along taxa axis</span>
+<span class="c1"># sort and group along taxa axis</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">group_taxa</span><span class="p">()</span>
 
@@ -986,30 +1001,36 @@
 </section>
 <section id="summary-statistics">
 <h2>Summary Statistics<a class="headerlink" href="#summary-statistics" title="Permalink to this heading">#</a></h2>
+<p>Various summary statistics can be calculated from breeding value matrices. PyBrOpS offers several common statistical routines which are described in the subsections below.</p>
 <section id="maximum-breeding-values-for-each-trait">
 <h3>Maximum breeding values for each trait<a class="headerlink" href="#maximum-breeding-values-for-each-trait" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the indices of the taxa having the maximum values for each trait</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">targmax</span><span class="p">()</span>
-</pre></div>
-</div>
+<p>The maximum breeding value for each trait may be calculated using the <code class="docutils literal notranslate"><span class="pre">tmax</span></code> method. The code below illustrates this method’s use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the maximum breeding values for each trait</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">tmax</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Row (taxa) indices of the individuals with the largest breeding values for each trait can be calculated using the <code class="docutils literal notranslate"><span class="pre">targmax</span></code> method. The code below illustrates this method’s use.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the indices of the taxa having the maximum values for each trait</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">targmax</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
 <section id="minimum-breeding-values-for-each-trait">
 <h3>Minimum breeding values for each trait<a class="headerlink" href="#minimum-breeding-values-for-each-trait" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the indices of the taxa having the minimum values for each trait</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">targmin</span><span class="p">()</span>
-</pre></div>
-</div>
+<p>The minimum breeding values for each trait may be calculated using the <code class="docutils literal notranslate"><span class="pre">tmax</span></code> method. The code below illustrates this method’s use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the minimum breeding values for each trait</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">tmin</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Row (taxa) indices of the individuals with the smallest breeding values for each trait can be calculated using the <code class="docutils literal notranslate"><span class="pre">targmax</span></code> method. The code below illustrates this method’s use.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the indices of the taxa having the minimum values for each trait</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">targmin</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
 <section id="mean-breeding-values-for-each-trait">
 <h3>Mean breeding values for each trait<a class="headerlink" href="#mean-breeding-values-for-each-trait" title="Permalink to this heading">#</a></h3>
+<p>The mean breeding value for each trait may be calculated using the <code class="docutils literal notranslate"><span class="pre">tmean</span></code> method. The code below illustrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the mean breeding values for each trait</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">tmean</span><span class="p">()</span>
 </pre></div>
@@ -1017,6 +1038,7 @@
 </section>
 <section id="breeding-value-ranges-for-each-trait">
 <h3>Breeding value ranges for each trait<a class="headerlink" href="#breeding-value-ranges-for-each-trait" title="Permalink to this heading">#</a></h3>
+<p>The breeding value range for each trait may be calculated using the <code class="docutils literal notranslate"><span class="pre">trange</span></code> method. The code below illustrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the breeding value ranges for each trait</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">trange</span><span class="p">()</span>
 </pre></div>
@@ -1024,6 +1046,7 @@
 </section>
 <section id="breeding-value-standard-deviations-for-each-trait">
 <h3>Breeding value standard deviations for each trait<a class="headerlink" href="#breeding-value-standard-deviations-for-each-trait" title="Permalink to this heading">#</a></h3>
+<p>The breeding value standard deviation for each trait may be calculated using the <code class="docutils literal notranslate"><span class="pre">trange</span></code> method. The code below illustrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the breeding value standard deviations for each trait</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">tstd</span><span class="p">()</span>
 </pre></div>
@@ -1031,13 +1054,15 @@
 </section>
 <section id="breeding-value-variances-for-each-trait">
 <h3>Breeding value variances for each trait<a class="headerlink" href="#breeding-value-variances-for-each-trait" title="Permalink to this heading">#</a></h3>
+<p>The breeding value variance for each trait may be calculated using the <code class="docutils literal notranslate"><span class="pre">trange</span></code> method. The code below illustrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the breeding value variances for each trait</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">tvar</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
-<section id="de-scaling-and-de-centering-breeding-values">
-<h3>De-scaling and de-centering breeding values<a class="headerlink" href="#de-scaling-and-de-centering-breeding-values" title="Permalink to this heading">#</a></h3>
+<section id="unscaling-and-de-centering-breeding-values">
+<h3>Unscaling and de-centering breeding values<a class="headerlink" href="#unscaling-and-de-centering-breeding-values" title="Permalink to this heading">#</a></h3>
+<p>A de-transformed (unscaled and de-centered) breeding value matrix may be calculated using the <code class="docutils literal notranslate"><span class="pre">unscale</span></code> method. The code below illustrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># de-transform a breeding value matrix</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
 </pre></div>
@@ -1046,8 +1071,28 @@
 </section>
 <section id="saving-breeding-value-matrices">
 <h2>Saving Breeding Value Matrices<a class="headerlink" href="#saving-breeding-value-matrices" title="Permalink to this heading">#</a></h2>
+<p>Breeding value matrices may be exported to multiple formats including Pandas DataFrames, CSV files, and HDF5 files. The following subsections provide export examples.</p>
+<section id="exporting-to-pandas-dataframe">
+<h3>Exporting to Pandas DataFrame<a class="headerlink" href="#exporting-to-pandas-dataframe" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">to_pandas</span></code> method can be used to export a breeding value matrix to a Pandas DataFrame. Column names may be optionally provided to override default column names.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># export to a pandas.DataFrame</span>
+<span class="c1"># use default column names to export</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="exporting-to-csv">
+<h3>Exporting to CSV<a class="headerlink" href="#exporting-to-csv" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">to_csv</span></code> method can be used to export a breeding value matrix to a CSV file. Column names may be optionally provided to override default column names.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># export to a CSV</span>
+<span class="c1"># use default column names to export</span>
+<span class="n">bvmat</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;saved_breeding_values.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="exporting-to-hdf5">
 <h3>Exporting to HDF5<a class="headerlink" href="#exporting-to-hdf5" title="Permalink to this heading">#</a></h3>
+<p>Most matrix object types in PyBrOpS allow for the export of matrices into an HDF5 format. To write breeding value matrices to an HDF5 file, use the <code class="docutils literal notranslate"><span class="pre">to_hdf5</span></code> method. The code below demonstrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># write a breeding value matrix to an HDF5 file</span>
 <span class="n">bvmat</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_breeding_values.h5&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1292,8 +1337,8 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#de-scaling-and-de-centering-breeding-values">
-     De-scaling and de-centering breeding values
+    <a class="reference internal nav-link" href="#unscaling-and-de-centering-breeding-values">
+     Unscaling and de-centering breeding values
     </a>
    </li>
   </ul>
@@ -1303,6 +1348,16 @@
    Saving Breeding Value Matrices
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exporting-to-pandas-dataframe">
+     Exporting to Pandas DataFrame
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exporting-to-csv">
+     Exporting to CSV
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#exporting-to-hdf5">
      Exporting to HDF5

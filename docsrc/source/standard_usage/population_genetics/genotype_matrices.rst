@@ -557,7 +557,7 @@ Sorting along taxa and marker variant axes can be done using the ``sort`` family
 Grouping elements
 -----------------
 
-Grouping along taxa and marker variant axes can be done using the ``sort`` family of methods.
+Grouping along taxa and marker variant axes can be done using the ``group`` family of methods.
 
 .. code-block:: python
 

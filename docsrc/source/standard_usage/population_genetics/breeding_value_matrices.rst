@@ -240,7 +240,7 @@ Breeding value matrices can be read from CSV files. To read a breeding value mat
 Loading breeding value matrices from HDF5 files
 -----------------------------------------------
 
-Most matrix object types in PyBrOpS allow for both the import and export of matrices into an HDF5 format. To read saved breeding value matrices from an HDF5 file, use the ``from_hdf5`` class method. The code below demonstrates the use of this function to load a breeding value matrix from an HDF5 file.
+Most matrix object types in PyBrOpS allow for both the import and export of matrices into an HDF5 format. To read saved breeding value matrices from an HDF5 file, use the ``from_hdf5`` class method. The code below demonstrates the use of this method to load a breeding value matrix from an HDF5 file.
 
 .. code-block:: python
 
@@ -285,24 +285,30 @@ In deep copying, data in a ``BreedingValueMatrix`` is recursively copied to a ne
 Copy-On Element Manipulation
 ============================
 
+Breeding value matrices have several methods by which modifed copies of the original matrix can be made. These are called copy-on element manipulation methods. Matrices may have rows and/or columns adjoined, deleted, inserted, or selected. The following sections demonstrate the use of these method families.
+
 Adjoin elements
 ---------------
 
+The ``adjoin`` family of methods allows for rows (taxa) and columns (traits) of a breeding value matrix to be adjoined together, creating a new matrix in the process. Use of the ``adjoin`` method family is demonstrated in the code below.
+
 .. code-block:: python
 
-    # create a new genotype matrix to demonstrate
+    # create a new breeding value matrix to demonstrate
     new = bvmat.deepcopy()
 
-    # adjoin genotype matrices along the taxa axis
+    # adjoin breeding value matrices along the taxa axis
     tmp = bvmat.adjoin(new, axis = bvmat.taxa_axis)
     tmp = bvmat.adjoin_taxa(new)
 
-    # adjoin genotype matrices along the trait axis
+    # adjoin breeding value matrices along the trait axis
     tmp = bvmat.adjoin(new, axis = bvmat.trait_axis)
     tmp = bvmat.adjoin_trait(new)
 
 Delete elements
 ---------------
+
+The ``delete`` family of methods allows for rows (taxa) and columns (traits) of a breeding value matrix to be removed in a copy of the original. Use of the ``delete`` method family is demonstrated in the code below.
 
 .. code-block:: python
 
@@ -341,21 +347,25 @@ Delete elements
 Insert elements
 ---------------
 
+The ``insert`` family of methods allows for rows (taxa) and columns (traits) of a breeding value matrix to be inserted into a copy of the original matrix. Use of the ``insert`` method family is demonstrated in the code below.
+
 .. code-block:: python
 
-    # create a new genotype matrix to demonstrate
+    # create a new breeding value matrix to demonstrate
     new = bvmat.deepcopy()
 
-    # insert genotype matrix along the taxa axis before index 0
+    # insert breeding value matrix along the taxa axis before index 0
     tmp = bvmat.insert(0, new, axis = bvmat.taxa_axis)
     tmp = bvmat.insert_taxa(0, new)
 
-    # insert genotype matrix along the trait axis before index 0
+    # insert breeding value matrix along the trait axis before index 0
     tmp = bvmat.insert(0, new, axis = bvmat.trait_axis)
     tmp = bvmat.insert_trait(0, new)
 
 Select elements
 ---------------
+
+The ``select`` family of methods allows for rows (taxa) and columns (traits) of the breeding value matrix to be selected and extracted to a copy of the original matrix. Use of the ``select`` method family is demonstrated in the code below.
 
 .. code-block:: python
 
@@ -370,19 +380,23 @@ Select elements
 In-Place Element Manipulation
 =============================
 
+Breeding value matrices have several methods which execute in-place element manipulations. These are called in-place element manipulation methods. Breeding value matrices may have taxa rows and/or trait columns appended, removed, incorporated, or concatenated. The following sections demonstrate the use of these method families.
+
 Append elements
 ---------------
 
+The ``append`` family of methods allows for new rows (taxa) and columns (traits) to be appended to the breeding value matrix. The code segment below demonstrates their use. 
+
 .. code-block:: python
 
-    # append genotype matrices along the taxa axis
+    # append breeding value matrices along the taxa axis
     tmp = bvmat.deepcopy()                   # copy original
     tmp.append(bvmat, axis = tmp.taxa_axis)  # append original to copy
 
     tmp = bvmat.deepcopy()                   # copy original
     tmp.append_taxa(bvmat)                   # append original to copy
 
-    # append genotype matrices along the trait axis
+    # append breeding value matrices along the trait axis
     tmp = bvmat.deepcopy()                   # copy original
     tmp.append(bvmat, axis = tmp.trait_axis) # append original to copy
 
@@ -391,6 +405,8 @@ Append elements
 
 Remove elements
 ---------------
+
+The ``remove`` family of methods allows for rows (taxa) and columns (traits) to be removed from a breeding value matrix. A demonstration of their use can be seen below. 
 
 .. code-block:: python
 
@@ -447,16 +463,18 @@ Remove elements
 Incorporate elements
 --------------------
 
+The ``incorp`` family of methods allows for new rows (taxa) and columns (traits) to be inserted at specific locations a breeding value matrix. Use of the ``incorp`` family is demonstrated in the code segment below below. 
+
 .. code-block:: python
 
-    # incorp genotype matrix along the taxa axis before index 0
+    # incorp breeding value matrix along the taxa axis before index 0
     tmp = bvmat.deepcopy()                           # copy original
     tmp.incorp(0, bvmat, axis = bvmat.taxa_axis)     # incorporate into copy
 
     tmp = bvmat.deepcopy()                           # copy original
     tmp.incorp_taxa(0, bvmat)                        # incorporate into copy
 
-    # incorp genotype matrix along the trait axis before index 0
+    # incorp breeding value matrix along the trait axis before index 0
     tmp = bvmat.deepcopy()                           # copy original
     tmp.incorp(0, bvmat, axis = bvmat.trait_axis)    # incorporate into copy
 
@@ -465,6 +483,8 @@ Incorporate elements
 
 Concatenate elements
 --------------------
+
+The ``concat`` family of methods allows for multiple breeding value matrices to be concatenated to each other. The code segment below demonstrates their use. 
 
 .. code-block:: python
 
@@ -476,12 +496,15 @@ Concatenate elements
     tmp = bvmat.concat([bvmat, bvmat], axis = bvmat.trait_axis)
     tmp = bvmat.concat_trait([bvmat, bvmat])
 
-
 Grouping and Sorting
 ====================
 
+Breeding value matrices in PyBrOpS have several sorting and grouping focused methods. Sorting methods can be used to reorder, sort, and group taxa alphanumerically, and reorder and sort traits alphanumerically. The following sections demonstrate the use of the ``reorder``, ``lexsort``, ``sort``, and ``group`` method families.
+
 Reordering elements
 -------------------
+
+Taxa and traits in a breeding value matrix can be reordered using the ``reorder`` family of methods. Demonstrations of this method family are below.
 
 .. code-block:: python
 
@@ -515,6 +538,8 @@ Reordering elements
 Lexsorting elements
 -------------------
 
+An indirect sort - or lexsort - for taxa and trait axes can be performed using the ``lexsort`` family of methods. The code segment below illustrates the use of this family of methods.
+
 .. code-block:: python
 
     #
@@ -546,6 +571,8 @@ Lexsorting elements
 Sorting elements
 ----------------
 
+Alphanumeric sorting along taxa and trait axes can be done using the ``sort`` family of methods. Sorting examples are illustrated below.
+
 .. code-block:: python
 
     # make copy
@@ -570,6 +597,8 @@ Sorting elements
 Grouping elements
 -----------------
 
+Grouping along only the taxa axis can be done using the ``group`` family of methods. The following code illustrates the use of the ``group`` method family along the taxa axis of a breeding value matrix.
+
 .. code-block:: python
 
     # make copy
@@ -579,7 +608,7 @@ Grouping elements
     # taxa grouping example
     #
 
-    # sort along taxa axis
+    # sort and group along taxa axis
     tmp.group(axis = tmp.taxa_axis)
     tmp.group_taxa()
 
@@ -591,34 +620,46 @@ Grouping elements
 Summary Statistics
 ==================
 
+Various summary statistics can be calculated from breeding value matrices. PyBrOpS offers several common statistical routines which are described in the subsections below.
+
 Maximum breeding values for each trait
 --------------------------------------
 
-.. code-block:: python
-
-    # get the indices of the taxa having the maximum values for each trait
-    out = bvmat.targmax()
+The maximum breeding value for each trait may be calculated using the ``tmax`` method. The code below illustrates this method's use.
 
 .. code-block:: python
 
     # get the maximum breeding values for each trait
     out = bvmat.tmax()
 
-Minimum breeding values for each trait
---------------------------------------
+Row (taxa) indices of the individuals with the largest breeding values for each trait can be calculated using the ``targmax`` method. The code below illustrates this method's use.
 
 .. code-block:: python
 
-    # get the indices of the taxa having the minimum values for each trait
-    out = bvmat.targmin()
+    # get the indices of the taxa having the maximum values for each trait
+    out = bvmat.targmax()
+
+Minimum breeding values for each trait
+--------------------------------------
+
+The minimum breeding values for each trait may be calculated using the ``tmax`` method. The code below illustrates this method's use.
 
 .. code-block:: python
 
     # get the minimum breeding values for each trait
     out = bvmat.tmin()
 
+Row (taxa) indices of the individuals with the smallest breeding values for each trait can be calculated using the ``targmax`` method. The code below illustrates this method's use.
+
+.. code-block:: python
+
+    # get the indices of the taxa having the minimum values for each trait
+    out = bvmat.targmin()
+
 Mean breeding values for each trait
 -----------------------------------
+
+The mean breeding value for each trait may be calculated using the ``tmean`` method. The code below illustrates the use of this method.
 
 .. code-block:: python
 
@@ -628,6 +669,8 @@ Mean breeding values for each trait
 Breeding value ranges for each trait
 ------------------------------------
 
+The breeding value range for each trait may be calculated using the ``trange`` method. The code below illustrates the use of this method.
+
 .. code-block:: python
 
     # get the breeding value ranges for each trait
@@ -635,6 +678,8 @@ Breeding value ranges for each trait
 
 Breeding value standard deviations for each trait
 -------------------------------------------------
+
+The breeding value standard deviation for each trait may be calculated using the ``trange`` method. The code below illustrates the use of this method.
 
 .. code-block:: python
 
@@ -644,13 +689,17 @@ Breeding value standard deviations for each trait
 Breeding value variances for each trait
 ---------------------------------------
 
+The breeding value variance for each trait may be calculated using the ``trange`` method. The code below illustrates the use of this method.
+
 .. code-block:: python
 
     # get the breeding value variances for each trait
     out = bvmat.tvar()
 
-De-scaling and de-centering breeding values
--------------------------------------------
+Unscaling and de-centering breeding values
+------------------------------------------
+
+A de-transformed (unscaled and de-centered) breeding value matrix may be calculated using the ``unscale`` method. The code below illustrates the use of this method.
 
 .. code-block:: python
 
@@ -660,8 +709,36 @@ De-scaling and de-centering breeding values
 Saving Breeding Value Matrices
 ==============================
 
+Breeding value matrices may be exported to multiple formats including Pandas DataFrames, CSV files, and HDF5 files. The following subsections provide export examples.
+
+Exporting to Pandas DataFrame
+-----------------------------
+
+The ``to_pandas`` method can be used to export a breeding value matrix to a Pandas DataFrame. Column names may be optionally provided to override default column names.
+
+.. code-block:: python
+
+    # export to a pandas.DataFrame
+    # use default column names to export
+    df = bvmat.to_pandas()
+
+
+Exporting to CSV
+----------------
+
+The ``to_csv`` method can be used to export a breeding value matrix to a CSV file. Column names may be optionally provided to override default column names.
+
+.. code-block:: python
+
+    # export to a CSV
+    # use default column names to export
+    bvmat.to_csv("saved_breeding_values.csv")
+
+
 Exporting to HDF5
 -----------------
+
+Most matrix object types in PyBrOpS allow for the export of matrices into an HDF5 format. To write breeding value matrices to an HDF5 file, use the ``to_hdf5`` method. The code below demonstrates the use of this method.
 
 .. code-block:: python
 
