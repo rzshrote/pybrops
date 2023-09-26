@@ -287,7 +287,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         check_is_array_like(indices, "indices")
 
         # get values
-        mat = self.descale()        # get descaled values
+        mat = self.unscale()        # get unscaled values
         taxa = self._taxa
         taxa_grp = self._taxa_grp
 
@@ -350,14 +350,14 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         out = self._mat.argmin(axis = self.taxa_axis)    # get argument minimum
         return out
 
-    def tmax(self, descale: bool = False) -> numpy.ndarray:
+    def tmax(self, unscale: bool = False) -> numpy.ndarray:
         """
         Return the maximum for each trait column (along the taxa axis).
 
         Parameters
         ----------
-        descale : bool, default = False
-            Whether to transform results to their de-scaled values.
+        unscale : bool, default = False
+            Whether to transform results to their unscaled values.
 
         Returns
         -------
@@ -370,19 +370,19 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             - ``t`` is the number of traits.
         """
         out = self._mat.max(axis = self.taxa_axis)   # get maximum
-        if descale:
+        if unscale:
             out *= self._scale
             out += self._location
         return out
 
-    def tmean(self, descale: bool = False) -> numpy.ndarray:
+    def tmean(self, unscale: bool = False) -> numpy.ndarray:
         """
         Return the mean for each trait column (along the taxa axis).
 
         Parameters
         ----------
-        descale : bool, default = False
-            Whether to transform results to their de-scaled values.
+        unscale : bool, default = False
+            Whether to transform results to their unscaled values.
 
         Returns
         -------
@@ -394,17 +394,17 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 
             - ``t`` is the number of traits.
         """
-        out = self._location if descale else self._mat.mean(axis = self.taxa_axis) # get mean
+        out = self._location if unscale else self._mat.mean(axis = self.taxa_axis) # get mean
         return out
 
-    def tmin(self, descale: bool = False) -> numpy.ndarray:
+    def tmin(self, unscale: bool = False) -> numpy.ndarray:
         """
         Return the minimum for each trait column (along the taxa axis).
 
         Parameters
         ----------
-        descale : bool, default = False
-            Whether to transform results to their de-scaled values.
+        unscale : bool, default = False
+            Whether to transform results to their unscaled values.
 
         Returns
         -------
@@ -417,19 +417,19 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             - ``t`` is the number of traits.
         """
         out = self._mat.min(axis = self.taxa_axis)   # get minimum
-        if descale:
+        if unscale:
             out *= self._scale
             out += self._location
         return out
 
-    def trange(self, descale: bool = False) -> numpy.ndarray:
+    def trange(self, unscale: bool = False) -> numpy.ndarray:
         """
         Return the range for each trait column (along the taxa axis).
 
         Parameters
         ----------
-        descale : bool, default = False
-            Whether to transform results to their de-scaled values.
+        unscale : bool, default = False
+            Whether to transform results to their unscaled values.
 
         Returns
         -------
@@ -442,18 +442,18 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             - ``t`` is the number of traits.
         """
         out = numpy.ptp(self._mat, axis = self.taxa_axis)    # get range
-        if descale:
+        if unscale:
             out *= self._scale
         return out
 
-    def tstd(self, descale: bool = False) -> numpy.ndarray:
+    def tstd(self, unscale: bool = False) -> numpy.ndarray:
         """
         Return the standard deviation for each trait column (along the taxa axis).
 
         Parameters
         ----------
-        descale : bool, default = False
-            whether to transform results to their de-scaled values.
+        unscale : bool, default = False
+            whether to transform results to their unscaled values.
 
         Returns
         -------
@@ -465,17 +465,17 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 
             - ``t`` is the number of traits.
         """
-        out = self._scale if descale else self._mat.std(axis = self.taxa_axis) # get standard deviation
+        out = self._scale if unscale else self._mat.std(axis = self.taxa_axis) # get standard deviation
         return out
 
-    def tvar(self, descale: bool = False) -> numpy.ndarray:
+    def tvar(self, unscale: bool = False) -> numpy.ndarray:
         """
         Return the variance for each trait column (along the taxa axis).
 
         Parameters
         ----------
-        descale : bool, default = False
-            whether to transform results to their de-scaled values.
+        unscale : bool, default = False
+            whether to transform results to their unscaled values.
 
         Returns
         -------
@@ -487,18 +487,18 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 
             - ``t`` is the number of traits.
         """
-        out = self._scale**2 if descale else self._mat.var(axis = self.taxa_axis) # get variance
+        out = self._scale**2 if unscale else self._mat.var(axis = self.taxa_axis) # get variance
         return out
 
-    def descale(self) -> numpy.ndarray:
+    def unscale(self) -> numpy.ndarray:
         """
-        Transform values within the BreedingValueMatrix back to their de-scaled
+        Transform values within the BreedingValueMatrix back to their unscaled
         and de-centered values
 
         Returns
         -------
         out : numpy.ndarray
-            An array of shape ``(n,t)`` containing de-scaled and de-centered
+            An array of shape ``(n,t)`` containing unscaled and de-centered
             values.
 
             Where:
@@ -514,7 +514,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             taxa_col: Optional[str] = "taxa",
             taxa_grp_col: Optional[str] = "taxa_grp",
             trait_cols: Optional[Union[str,Sequence]] = "trait",
-            descale: bool = False,
+            unscale: bool = False,
             **kwargs: dict
         ) -> pandas.DataFrame:
         """
@@ -540,8 +540,8 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             the ``trait`` property.
             If ``None``, use numeric trait column names.
         
-        descale : bool, default = False
-            whether to transform breeding values to their de-scaled values.
+        unscale : bool, default = False
+            whether to transform breeding values to their unscaled values.
 
         kwargs : dict
             Additional keyword arguments to use for dictating export to a 
@@ -564,7 +564,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
                 check_len(trait_cols, "trait_cols", self.ntrait)
             else:
                 check_is_str_or_Sequence(trait_cols, "trait_cols")
-        check_is_bool(descale, "descale")
+        check_is_bool(unscale, "unscale")
 
         # construct dictionary for labels and data
         data_dict = {}
@@ -584,7 +584,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             trait_cols = numpy.arange(self.ntrait) if self.trait is None else self.trait
         
         # extract breeding values
-        bv = self.descale() if descale else self.mat
+        bv = self.unscale() if unscale else self.mat
         for i,trait in zip(range(self.ntrait),trait_cols):
             data_dict[trait] = bv[:,i]
         
@@ -599,7 +599,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             taxa_col: Optional[str] = "taxa",
             taxa_grp_col: Optional[str] = "taxa_grp",
             trait_cols: Optional[Union[str,Sequence]] = "trait",
-            descale: bool = False,
+            unscale: bool = False,
             sep: str = ',', 
             header: bool = True, 
             index: bool = False, 
@@ -631,8 +631,8 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             the ``trait`` property.
             If ``None``, use numeric trait column names.
         
-        descale : bool, default = False
-            whether to transform breeding values to their de-scaled values.
+        unscale : bool, default = False
+            whether to transform breeding values to their unscaled values.
         
         sep : str, default = ","
             Separator to use in the exported CSV file.
@@ -651,7 +651,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             taxa_col = taxa_col,
             taxa_grp_col = taxa_grp_col,
             trait_cols = trait_cols,
-            descale = descale,
+            unscale = unscale,
         )
 
         # export using pandas

@@ -288,8 +288,8 @@ class DummyBreedingValueMatrix(BreedingValueMatrix):
     @trait_axis.setter
     def trait_axis(self, value: object) -> None:
         super().trait_axis = value
-    def descale(self) -> ndarray:
-        return super().descale()
+    def unscale(self) -> ndarray:
+        return super().unscale()
     @property
     def location(self) -> object:
         return super().location
@@ -306,18 +306,18 @@ class DummyBreedingValueMatrix(BreedingValueMatrix):
         return super().targmax()
     def targmin(self) -> ndarray:
         return super().targmin()
-    def tmax(self, descale: bool) -> ndarray:
-        return super().tmax(descale)
-    def tmean(self, descale: bool) -> ndarray:
-        return super().tmean(descale)
-    def tmin(self, descale: bool) -> ndarray:
-        return super().tmin(descale)
-    def tstd(self, descale: bool) -> ndarray:
-        return super().tstd(descale)
-    def tvar(self, descale: bool) -> ndarray:
-        return super().tvar(descale)
-    def trange(self, descale: bool) -> ndarray:
-        return super().trange(descale)
+    def tmax(self, unscale: bool) -> ndarray:
+        return super().tmax(unscale)
+    def tmean(self, unscale: bool) -> ndarray:
+        return super().tmean(unscale)
+    def tmin(self, unscale: bool) -> ndarray:
+        return super().tmin(unscale)
+    def tstd(self, unscale: bool) -> ndarray:
+        return super().tstd(unscale)
+    def tvar(self, unscale: bool) -> ndarray:
+        return super().tvar(unscale)
+    def trange(self, unscale: bool) -> ndarray:
+        return super().trange(unscale)
     @property
     def trait(self) -> object:
         return super().trait

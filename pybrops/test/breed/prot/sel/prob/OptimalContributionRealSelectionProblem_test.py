@@ -60,7 +60,7 @@ def cmatfcty():
     yield DenseMolecularCoancestryMatrixFactory()
 
 @pytest.fixture
-def descale():
+def unscale():
     yield True
 
 @pytest.fixture
@@ -298,7 +298,7 @@ def test_latentfn(prob, ndecn, ebv, C):
 ############################## Test class methods ##############################
 ################################################################################
 def test_from_bvmat_gmat(
-        bvmat, gmat, cmatfcty, descale,
+        bvmat, gmat, cmatfcty, unscale,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
         nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
@@ -306,7 +306,7 @@ def test_from_bvmat_gmat(
     ):
     # construct problem
     ocsprob = OptimalContributionRealSelectionProblem.from_bvmat_gmat(
-        bvmat, gmat, cmatfcty, descale,
+        bvmat, gmat, cmatfcty, unscale,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
         nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 

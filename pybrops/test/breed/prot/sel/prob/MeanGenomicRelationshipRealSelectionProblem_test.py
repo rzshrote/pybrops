@@ -52,7 +52,7 @@ def cmatfcty():
     yield DenseMolecularCoancestryMatrixFactory()
 
 @pytest.fixture
-def descale():
+def unscale():
     yield True
 
 @pytest.fixture

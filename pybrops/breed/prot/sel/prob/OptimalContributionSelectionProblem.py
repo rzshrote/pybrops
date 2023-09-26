@@ -64,7 +64,7 @@ class OptimalContributionSelectionProblemMixin(metaclass=ABCMeta):
 
     ######################### Private Object Methods ###########################
     @staticmethod
-    def _calc_ebv(bvmat: BreedingValueMatrix, descale = True) -> numpy.ndarray:
+    def _calc_ebv(bvmat: BreedingValueMatrix, unscale = True) -> numpy.ndarray:
         """
         Construct a breeding value matrix for use by a Problem specification.
 
@@ -76,10 +76,10 @@ class OptimalContributionSelectionProblemMixin(metaclass=ABCMeta):
         Returns
         -------
         out : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. May be scaled or descaled.
+            A breeding value matrix of shape ``(n,t)``. May be scaled or unscaled.
         """
         # get breeding value matrix (n,t)
-        out = bvmat.descale() if descale else bvmat.mat
+        out = bvmat.unscale() if unscale else bvmat.mat
 
         return out
     
@@ -125,7 +125,7 @@ class OptimalContributionSelectionProblemMixin(metaclass=ABCMeta):
             bvmat: BreedingValueMatrix,
             gmat: GenotypeMatrix, 
             cmatfcty: CoancestryMatrixFactory,
-            descale: bool,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -340,7 +340,7 @@ class OptimalContributionSubsetSelectionProblem(OptimalContributionSelectionProb
             bvmat: BreedingValueMatrix,
             gmat: GenotypeMatrix, 
             cmatfcty: CoancestryMatrixFactory,
-            descale: bool,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -360,7 +360,7 @@ class OptimalContributionSubsetSelectionProblem(OptimalContributionSelectionProb
             **kwargs: dict
         ) -> "OptimalContributionSubsetSelectionProblem":
         # calculate estimated breeding values and relationships
-        ebv = cls._calc_ebv(bvmat, descale)
+        ebv = cls._calc_ebv(bvmat, unscale)
         C = cls._calc_C(gmat, cmatfcty)
 
         # construct class
@@ -586,7 +586,7 @@ class OptimalContributionRealSelectionProblem(OptimalContributionSelectionProble
             bvmat: BreedingValueMatrix,
             gmat: GenotypeMatrix, 
             cmatfcty: CoancestryMatrixFactory,
-            descale: bool,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -606,7 +606,7 @@ class OptimalContributionRealSelectionProblem(OptimalContributionSelectionProble
             **kwargs: dict
         ) -> "OptimalContributionRealSelectionProblem":
         # calculate estimated breeding values and relationships
-        ebv = cls._calc_ebv(bvmat, descale)
+        ebv = cls._calc_ebv(bvmat, unscale)
         C = cls._calc_C(gmat, cmatfcty)
 
         # construct class
@@ -832,7 +832,7 @@ class OptimalContributionIntegerSelectionProblem(OptimalContributionSelectionPro
             bvmat: BreedingValueMatrix,
             gmat: GenotypeMatrix, 
             cmatfcty: CoancestryMatrixFactory,
-            descale: bool,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -852,7 +852,7 @@ class OptimalContributionIntegerSelectionProblem(OptimalContributionSelectionPro
             **kwargs: dict
         ) -> "OptimalContributionIntegerSelectionProblem":
         # calculate estimated breeding values and relationships
-        ebv = cls._calc_ebv(bvmat, descale)
+        ebv = cls._calc_ebv(bvmat, unscale)
         C = cls._calc_C(gmat, cmatfcty)
 
         # construct class
@@ -1078,7 +1078,7 @@ class OptimalContributionBinarySelectionProblem(OptimalContributionSelectionProb
             bvmat: BreedingValueMatrix,
             gmat: GenotypeMatrix, 
             cmatfcty: CoancestryMatrixFactory,
-            descale: bool,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -1098,7 +1098,7 @@ class OptimalContributionBinarySelectionProblem(OptimalContributionSelectionProb
             **kwargs: dict
         ) -> "OptimalContributionBinarySelectionProblem":
         # calculate estimated breeding values and relationships
-        ebv = cls._calc_ebv(bvmat, descale)
+        ebv = cls._calc_ebv(bvmat, unscale)
         C = cls._calc_C(gmat, cmatfcty)
 
         # construct class

@@ -73,14 +73,14 @@ class OptimalContributionSelectionMixin(metaclass=ABCMeta):
         self._cmatfcty = value
 
     @property
-    def descale(self) -> bool:
-        """Whether to use descaled and decentered breeding values for optimization."""
-        return self._descale
-    @descale.setter
-    def descale(self, value: bool) -> None:
-        """Set descale."""
-        check_is_bool(value, "descale")
-        self._descale = value
+    def unscale(self) -> bool:
+        """Whether to use unscaled and decentered breeding values for optimization."""
+        return self._unscale
+    @unscale.setter
+    def unscale(self, value: bool) -> None:
+        """Set unscale."""
+        check_is_bool(value, "unscale")
+        self._unscale = value
 
     ######################### Private Object Methods ###########################
     def _calc_bv(self, bvmat: BreedingValueMatrix) -> numpy.ndarray:
@@ -95,10 +95,10 @@ class OptimalContributionSelectionMixin(metaclass=ABCMeta):
         Returns
         -------
         out : numpy.ndarray
-            A breeding value matrix of shape ``(n,t)``. May be scaled or descaled.
+            A breeding value matrix of shape ``(n,t)``. May be scaled or unscaled.
         """
         # get breeding value matrix (n,t)
-        out = bvmat.descale() if self.descale else bvmat.mat
+        out = bvmat.unscale() if self.unscale else bvmat.mat
 
         return out
     
@@ -145,7 +145,7 @@ class OptimalContributionBinarySelection(OptimalContributionSelectionMixin,Binar
             self, 
             ntrait: Integral,
             cmatfcty: CoancestryMatrixFactory,
-            descale: bool,
+            unscale: bool,
             ncross: Integral,
             nparent: Integral,
             nmating: Union[Integral,numpy.ndarray],
@@ -181,8 +181,8 @@ class OptimalContributionBinarySelection(OptimalContributionSelectionMixin,Binar
         cmatfcty : CoancestryMatrixFactory
             Coancestry matrix factory used to create coancestry matrices.
         
-        descale : bool
-            Whether to use descaled and decentered breeding values for optimization.
+        unscale : bool
+            Whether to use unscaled and decentered breeding values for optimization.
 
         ncross : Integral
             Number of cross configurations to consider.
@@ -438,7 +438,7 @@ class OptimalContributionBinarySelection(OptimalContributionSelectionMixin,Binar
         # make assignments from Mixin class first
         self.ntrait = ntrait
         self.cmatfcty = cmatfcty
-        self.descale = descale
+        self.unscale = unscale
         # make assignments from BinarySelectionProtocol second
         super(OptimalContributionBinarySelection, self).__init__(
             ncross = ncross,
@@ -526,7 +526,7 @@ class OptimalContributionBinarySelection(OptimalContributionSelectionMixin,Binar
             bvmat = bvmat,
             gmat = gmat,
             cmatfcty = self.cmatfcty,
-            descale = self.descale,
+            unscale = self.unscale,
             ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -566,7 +566,7 @@ class OptimalContributionIntegerSelection(OptimalContributionSelectionMixin,Inte
             self, 
             ntrait: Integral,
             cmatfcty: CoancestryMatrixFactory,
-            descale: bool,
+            unscale: bool,
             ncross: Integral,
             nparent: Integral,
             nmating: Union[Integral,numpy.ndarray],
@@ -602,8 +602,8 @@ class OptimalContributionIntegerSelection(OptimalContributionSelectionMixin,Inte
         cmatfcty : CoancestryMatrixFactory
             Coancestry matrix factory used to create coancestry matrices.
         
-        descale : bool
-            Whether to use descaled and decentered breeding values for optimization.
+        unscale : bool
+            Whether to use unscaled and decentered breeding values for optimization.
 
         ncross : Integral
             Number of cross configurations to consider.
@@ -859,7 +859,7 @@ class OptimalContributionIntegerSelection(OptimalContributionSelectionMixin,Inte
         # make assignments from Mixin class first
         self.ntrait = ntrait
         self.cmatfcty = cmatfcty
-        self.descale = descale
+        self.unscale = unscale
         # make assignments from IntegerSelectionProtocol second
         super(OptimalContributionIntegerSelection, self).__init__(
             ncross = ncross,
@@ -947,7 +947,7 @@ class OptimalContributionIntegerSelection(OptimalContributionSelectionMixin,Inte
             bvmat = bvmat,
             gmat = gmat,
             cmatfcty = self.cmatfcty,
-            descale = self.descale,
+            unscale = self.unscale,
             ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -987,7 +987,7 @@ class OptimalContributionRealSelection(OptimalContributionSelectionMixin,RealSel
             self, 
             ntrait: Integral,
             cmatfcty: CoancestryMatrixFactory,
-            descale: bool,
+            unscale: bool,
             ncross: Integral,
             nparent: Integral,
             nmating: Union[Integral,numpy.ndarray],
@@ -1023,8 +1023,8 @@ class OptimalContributionRealSelection(OptimalContributionSelectionMixin,RealSel
         cmatfcty : CoancestryMatrixFactory
             Coancestry matrix factory used to create coancestry matrices.
         
-        descale : bool
-            Whether to use descaled and decentered breeding values for optimization.
+        unscale : bool
+            Whether to use unscaled and decentered breeding values for optimization.
 
         ncross : Integral
             Number of cross configurations to consider.
@@ -1280,7 +1280,7 @@ class OptimalContributionRealSelection(OptimalContributionSelectionMixin,RealSel
         # make assignments from Mixin class first
         self.ntrait = ntrait
         self.cmatfcty = cmatfcty
-        self.descale = descale
+        self.unscale = unscale
         # make assignments from RealSelectionProtocol second
         super(OptimalContributionRealSelection, self).__init__(
             ncross = ncross,
@@ -1368,7 +1368,7 @@ class OptimalContributionRealSelection(OptimalContributionSelectionMixin,RealSel
             bvmat = bvmat,
             gmat = gmat,
             cmatfcty = self.cmatfcty,
-            descale = self.descale,
+            unscale = self.unscale,
             ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -1408,7 +1408,7 @@ class OptimalContributionSubsetSelection(OptimalContributionSelectionMixin,Subse
             self, 
             ntrait: Integral,
             cmatfcty: CoancestryMatrixFactory,
-            descale: bool,
+            unscale: bool,
             ncross: Integral,
             nparent: Integral,
             nmating: Union[Integral,numpy.ndarray],
@@ -1444,8 +1444,8 @@ class OptimalContributionSubsetSelection(OptimalContributionSelectionMixin,Subse
         cmatfcty : CoancestryMatrixFactory
             Coancestry matrix factory used to create coancestry matrices.
         
-        descale : bool
-            Whether to use descaled and decentered breeding values for optimization.
+        unscale : bool
+            Whether to use unscaled and decentered breeding values for optimization.
 
         ncross : Integral
             Number of cross configurations to consider.
@@ -1701,7 +1701,7 @@ class OptimalContributionSubsetSelection(OptimalContributionSelectionMixin,Subse
         # make assignments from Mixin class first
         self.ntrait = ntrait
         self.cmatfcty = cmatfcty
-        self.descale = descale
+        self.unscale = unscale
         # make assignments from SubsetSelectionProtocol second
         super(OptimalContributionSubsetSelection, self).__init__(
             ncross = ncross,
@@ -1789,7 +1789,7 @@ class OptimalContributionSubsetSelection(OptimalContributionSelectionMixin,Subse
             bvmat = bvmat,
             gmat = gmat,
             cmatfcty = self.cmatfcty,
-            descale = self.descale,
+            unscale = self.unscale,
             ndecn = self.nselindiv,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

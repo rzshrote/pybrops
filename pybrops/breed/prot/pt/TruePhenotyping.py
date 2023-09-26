@@ -107,7 +107,7 @@ class TruePhenotyping(PhenotypingProtocol):
         labels_df = pandas.DataFrame(labels_dict)
 
         # construct dataframe data values
-        mat = gvmat.descale()   # calculate descaled breeding values
+        mat = gvmat.unscale()   # calculate unscaled breeding values
         traitzfill = math.ceil(math.log10(gvmat.ntrait))+1
         cols = ["Trait"+str(i+1).zfill(traitzfill) for i in range(gvmat.ntrait)] if gvmat.trait is None else gvmat.trait
         values_df = pandas.DataFrame(

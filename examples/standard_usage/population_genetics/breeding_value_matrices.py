@@ -512,7 +512,7 @@ out = bvmat.tstd()
 out = bvmat.tvar()
 
 # de-transform a breeding value matrix 
-out = bvmat.descale()
+out = bvmat.unscale()
 
 ###
 ### Saving Breeding Value Matrices

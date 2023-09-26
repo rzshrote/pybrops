@@ -11,12 +11,12 @@ from pybrops.test.breed.prot.sel.common_fixtures_large import *
 def selmix(
         common_ntrait,
         common_cmatfcty,
-        common_descale
+        common_unscale
     ):
     out = OptimalContributionSelectionMixin()
     out.ntrait = common_ntrait
     out.cmatfcty = common_cmatfcty
-    out.descale = common_descale
+    out.unscale = common_unscale
     yield out
 
 ################### Test class abstract/concrete properties ####################
@@ -98,35 +98,35 @@ def test_cmatfcty_fdel(selmix):
     with pytest.raises(AttributeError):
         del selmix.cmatfcty
 
-### descale ###
-def test_OptimalContributionSelectionMixin_descale_is_concrete():
-    assert_concrete_property(OptimalContributionSelectionMixin, "descale")
+### unscale ###
+def test_OptimalContributionSelectionMixin_unscale_is_concrete():
+    assert_concrete_property(OptimalContributionSelectionMixin, "unscale")
 
-def test_descale_fget(selmix, common_descale):
-    assert isinstance(selmix.descale, bool)
-    assert selmix.descale == common_descale
+def test_unscale_fget(selmix, common_unscale):
+    assert isinstance(selmix.unscale, bool)
+    assert selmix.unscale == common_unscale
 
-def test_descale_fset(selmix, common_descale):
+def test_unscale_fset(selmix, common_unscale):
     with not_raises(Exception):
-        selmix.descale = common_descale
+        selmix.unscale = common_unscale
 
-def test_descale_fset_TypeError(selmix):
+def test_unscale_fset_TypeError(selmix):
     with pytest.raises(TypeError):
-        selmix.descale = object()
+        selmix.unscale = object()
     with pytest.raises(TypeError):
-        selmix.descale = None
+        selmix.unscale = None
     with pytest.raises(TypeError):
-        selmix.descale = "string"
+        selmix.unscale = "string"
     with pytest.raises(TypeError):
-        selmix.descale = []
+        selmix.unscale = []
     with pytest.raises(TypeError):
-        selmix.descale = {}
+        selmix.unscale = {}
     with pytest.raises(TypeError):
-        selmix.descale = numpy.array([], dtype=bool)
+        selmix.unscale = numpy.array([], dtype=bool)
 
-def test_descale_fdel(selmix):
+def test_unscale_fdel(selmix):
     with pytest.raises(AttributeError):
-        del selmix.descale
+        del selmix.unscale
 
 ############################## Test class methods ##############################
 def test_init(selmix):

@@ -604,7 +604,7 @@ class DenseAdditiveLinearGenomicModel(
         """
         # process ptobj
         if isinstance(ptobj, BreedingValueMatrix):
-            Y = ptobj.descale()
+            Y = ptobj.unscale()
         elif isinstance(ptobj, pandas.DataFrame):
             raise RuntimeError("not implmented yet")
         elif isinstance(ptobj, numpy.ndarray):
@@ -1098,7 +1098,7 @@ class DenseAdditiveLinearGenomicModel(
             self, 
             p: numpy.ndarray, 
             ploidy: Integral, 
-            descale: bool = False, 
+            unscale: bool = False, 
             **kwargs: dict
         ) -> numpy.ndarray:
         """
@@ -1140,8 +1140,8 @@ class DenseAdditiveLinearGenomicModel(
         # (p,t).sum[0] -> (t,)
         out = (float(ploidy) * self.u_a * uslgeno).sum(0)
 
-        # make descale adjustments if desired
-        if descale:
+        # make unscale adjustments if desired
+        if unscale:
             # construct contrast (X*) to take cell means assuming that the first
             # column in X is a corner (first fixed effect is the intercept)
 
@@ -1177,7 +1177,7 @@ class DenseAdditiveLinearGenomicModel(
             self, 
             gtobj: Union[GenotypeMatrix,numpy.ndarray], 
             ploidy: Optional[Integral] = None, 
-            descale: bool = False, 
+            unscale: bool = False, 
             **kwargs: dict
         ) -> numpy.ndarray:
         """
@@ -1213,7 +1213,7 @@ class DenseAdditiveLinearGenomicModel(
             raise TypeError("must be GenotypeMatrix, ndarray")
 
         # calculate genic variance
-        out = self.usl_numpy(p, ploidy, descale, **kwargs)
+        out = self.usl_numpy(p, ploidy, unscale, **kwargs)
 
         return out
 
@@ -1221,7 +1221,7 @@ class DenseAdditiveLinearGenomicModel(
             self, 
             p: numpy.ndarray, 
             ploidy: Integral, 
-            descale: bool = False, 
+            unscale: bool = False, 
             **kwargs: dict
         ) -> numpy.ndarray:
         """
@@ -1263,8 +1263,8 @@ class DenseAdditiveLinearGenomicModel(
         # (p,t).sum[0] -> (t,)
         out = (float(ploidy) * self.u_a * lslgeno).sum(0)
 
-        # make descale adjustments if desired
-        if descale:
+        # make unscale adjustments if desired
+        if unscale:
             # construct contrast (X*) to take cell means assuming that the first
             # column in X is a corner (first fixed effect is the intercept)
 
@@ -1300,7 +1300,7 @@ class DenseAdditiveLinearGenomicModel(
             self, 
             gtobj: Union[GenotypeMatrix,numpy.ndarray], 
             ploidy: Optional[Integral] = None, 
-            descale: bool = False, 
+            unscale: bool = False, 
             **kwargs: dict
         ) -> numpy.ndarray:
         """
@@ -1336,7 +1336,7 @@ class DenseAdditiveLinearGenomicModel(
             raise TypeError("must be GenotypeMatrix, ndarray")
 
         # calculate genic variance
-        out = self.lsl_numpy(p, ploidy, descale, **kwargs)
+        out = self.lsl_numpy(p, ploidy, unscale, **kwargs)
 
         return out
 

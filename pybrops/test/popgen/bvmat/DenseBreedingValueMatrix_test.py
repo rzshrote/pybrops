@@ -287,9 +287,9 @@ def test_to_pandas_col_rename(bvmat):
     for t in trait_cols:
         assert t in df.columns
 
-def test_to_pandas_descale(bvmat):
-    df1 = bvmat.to_pandas(descale = False)
-    df2 = bvmat.to_pandas(descale = True)
+def test_to_pandas_unscale(bvmat):
+    df1 = bvmat.to_pandas(unscale = False)
+    df2 = bvmat.to_pandas(unscale = True)
     assert numpy.any(df1 != df2)
 
 def test_to_pandas_TypeError(bvmat):

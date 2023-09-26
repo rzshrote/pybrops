@@ -74,7 +74,7 @@ def common_nbestfndr():
     yield 2
 
 @pytest.fixture
-def common_descale():
+def common_unscale():
     yield True
 
 ####################### Phased genotype matrix fixtures ########################

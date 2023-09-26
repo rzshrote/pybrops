@@ -75,14 +75,14 @@ class DummyGenomicModel(GenomicModel):
         return super().bulmer_numpy(Z, p, ploidy, **kwargs)
     def bulmer(self, gtobj: GenotypeMatrix, ploidy: int, **kwargs: dict) -> ndarray:
         return super().bulmer(gtobj, ploidy, **kwargs)
-    def usl_numpy(self, p: ndarray, ploidy: int, descale: bool, **kwargs: dict) -> ndarray:
-        return super().usl_numpy(p, ploidy, descale, **kwargs)
-    def usl(self, gtobj: GenotypeMatrix, ploidy: int, descale: bool, **kwargs: dict) -> ndarray:
-        return super().usl(gtobj, ploidy, descale, **kwargs)
-    def lsl_numpy(self, p: ndarray, ploidy: int, descale: bool, **kwargs: dict) -> ndarray:
-        return super().lsl_numpy(p, ploidy, descale, **kwargs)
-    def lsl(self, gtobj: GenotypeMatrix, ploidy: int, descale: bool, **kwargs: dict) -> ndarray:
-        return super().lsl(gtobj, ploidy, descale, **kwargs)
+    def usl_numpy(self, p: ndarray, ploidy: int, unscale: bool, **kwargs: dict) -> ndarray:
+        return super().usl_numpy(p, ploidy, unscale, **kwargs)
+    def usl(self, gtobj: GenotypeMatrix, ploidy: int, unscale: bool, **kwargs: dict) -> ndarray:
+        return super().usl(gtobj, ploidy, unscale, **kwargs)
+    def lsl_numpy(self, p: ndarray, ploidy: int, unscale: bool, **kwargs: dict) -> ndarray:
+        return super().lsl_numpy(p, ploidy, unscale, **kwargs)
+    def lsl(self, gtobj: GenotypeMatrix, ploidy: int, unscale: bool, **kwargs: dict) -> ndarray:
+        return super().lsl(gtobj, ploidy, unscale, **kwargs)
     def facount(self, gmat: GenotypeMatrix, dtype: dtype | None, **kwargs: dict) -> ndarray:
         return super().facount(gmat, dtype, **kwargs)
     def fafreq(self, gmat: GenotypeMatrix, dtype: ndarray | None, **kwargs: dict) -> ndarray:

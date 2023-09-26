@@ -322,19 +322,19 @@ class MyLogbook(Logbook):
         ################ candidate mean expected heterozygosity ################
         self.data["cand_meh"].append(genome["cand"].meh())
         ########################### candidate means ############################
-        tmp = bval["cand"].tmean(descale = True)
+        tmp = bval["cand"].tmean(unscale = True)
         self.data["cand_mean_syn1"].append(tmp[0])
         self.data["cand_mean_syn2"].append(tmp[1])
         ######################### candidate true means #########################
-        tmp = cand_bval_true.tmean(descale = True)
+        tmp = cand_bval_true.tmean(unscale = True)
         self.data["cand_true_mean_syn1"].append(tmp[0])
         self.data["cand_true_mean_syn2"].append(tmp[1])
         #################### candidate standard deviations #####################
-        tmp = bval["cand"].tstd(descale = True)
+        tmp = bval["cand"].tstd(unscale = True)
         self.data["cand_std_syn1"].append(tmp[0])
         self.data["cand_std_syn2"].append(tmp[1])
         ################## candidate true standard deviations ##################
-        tmp = cand_bval_true.tstd(descale = True)
+        tmp = cand_bval_true.tstd(unscale = True)
         self.data["cand_true_std_syn1"].append(tmp[0])
         self.data["cand_true_std_syn2"].append(tmp[1])
         ############### candidate true additive genetic variance ###############
@@ -350,30 +350,30 @@ class MyLogbook(Logbook):
         self.data["cand_true_bulmer_syn1"].append(tmp[0])
         self.data["cand_true_bulmer_syn2"].append(tmp[1])
         ################# candidate true upper selection limit #################
-        tmp = gpmod.usl(genome["cand"], descale = True)
+        tmp = gpmod.usl(genome["cand"], unscale = True)
         self.data["cand_true_usl_syn1"].append(tmp[0])
         self.data["cand_true_usl_syn2"].append(tmp[1])
         ################# candidate true lower selection limit #################
-        tmp = gpmod.lsl(genome["cand"], descale = True)
+        tmp = gpmod.lsl(genome["cand"], unscale = True)
         self.data["cand_true_lsl_syn1"].append(tmp[0])
         self.data["cand_true_lsl_syn2"].append(tmp[1])
         ########################################################################
         ################## main mean expected heterozygosity ###################
         self.data["main_meh"].append(genome["main"].meh())
         ############################## main means ##############################
-        tmp = bval["main"].tmean(descale = True)
+        tmp = bval["main"].tmean(unscale = True)
         self.data["main_mean_syn1"].append(tmp[0])
         self.data["main_mean_syn2"].append(tmp[1])
         ########################### main true means ############################
-        tmp = main_bval_true.tmean(descale = True)
+        tmp = main_bval_true.tmean(unscale = True)
         self.data["main_true_mean_syn1"].append(tmp[0])
         self.data["main_true_mean_syn2"].append(tmp[1])
         ####################### main standard deviations #######################
-        tmp = bval["main"].tstd(descale = True)
+        tmp = bval["main"].tstd(unscale = True)
         self.data["main_std_syn1"].append(tmp[0])
         self.data["main_std_syn2"].append(tmp[1])
         #################### main true standard deviations #####################
-        tmp = main_bval_true.tstd(descale = True)
+        tmp = main_bval_true.tstd(unscale = True)
         self.data["main_true_std_syn1"].append(tmp[0])
         self.data["main_true_std_syn2"].append(tmp[1])
         ##################### main true genetic variances ######################
@@ -389,11 +389,11 @@ class MyLogbook(Logbook):
         self.data["main_true_bulmer_syn1"].append(tmp[0])
         self.data["main_true_bulmer_syn2"].append(tmp[1])
         ################### main true lower selection limits ###################
-        tmp = gpmod.usl(genome["main"], descale = True)
+        tmp = gpmod.usl(genome["main"], unscale = True)
         self.data["main_true_usl_syn1"].append(tmp[0])
         self.data["main_true_usl_syn2"].append(tmp[1])
         ################### main true lower selection limits ###################
-        tmp = gpmod.lsl(genome["main"], descale = True)
+        tmp = gpmod.lsl(genome["main"], unscale = True)
         self.data["main_true_lsl_syn1"].append(tmp[0])
         self.data["main_true_lsl_syn2"].append(tmp[1])
     def log_pselect(self, mcfg, genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs):
@@ -416,19 +416,19 @@ class MyLogbook(Logbook):
         ################ candidate mean expected heterozygosity ################
         self.data["cand_meh"].append(genome["cand"].meh())
         ########################### candidate means ############################
-        tmp = bval["cand"].tmean(descale = True)
+        tmp = bval["cand"].tmean(unscale = True)
         self.data["cand_mean_syn1"].append(tmp[0])
         self.data["cand_mean_syn2"].append(tmp[1])
         ######################### candidate true means #########################
-        tmp = cand_bval_true.tmean(descale = True)
+        tmp = cand_bval_true.tmean(unscale = True)
         self.data["cand_true_mean_syn1"].append(tmp[0])
         self.data["cand_true_mean_syn2"].append(tmp[1])
         #################### candidate standard deviations #####################
-        tmp = bval["cand"].tstd(descale = True)
+        tmp = bval["cand"].tstd(unscale = True)
         self.data["cand_std_syn1"].append(tmp[0])
         self.data["cand_std_syn2"].append(tmp[1])
         ################## candidate true standard deviations ##################
-        tmp = cand_bval_true.tstd(descale = True)
+        tmp = cand_bval_true.tstd(unscale = True)
         self.data["cand_true_std_syn1"].append(tmp[0])
         self.data["cand_true_std_syn2"].append(tmp[1])
         ############### candidate true additive genetic variance ###############
@@ -444,30 +444,30 @@ class MyLogbook(Logbook):
         self.data["cand_true_bulmer_syn1"].append(tmp[0])
         self.data["cand_true_bulmer_syn2"].append(tmp[1])
         ################# candidate true upper selection limit #################
-        tmp = gpmod.usl(genome["cand"], descale = True)
+        tmp = gpmod.usl(genome["cand"], unscale = True)
         self.data["cand_true_usl_syn1"].append(tmp[0])
         self.data["cand_true_usl_syn2"].append(tmp[1])
         ################# candidate true lower selection limit #################
-        tmp = gpmod.lsl(genome["cand"], descale = True)
+        tmp = gpmod.lsl(genome["cand"], unscale = True)
         self.data["cand_true_lsl_syn1"].append(tmp[0])
         self.data["cand_true_lsl_syn2"].append(tmp[1])
         ########################################################################
         ################## main mean expected heterozygosity ###################
         self.data["main_meh"].append(genome["main"].meh())
         ############################## main means ##############################
-        tmp = bval["main"].tmean(descale = True)
+        tmp = bval["main"].tmean(unscale = True)
         self.data["main_mean_syn1"].append(tmp[0])
         self.data["main_mean_syn2"].append(tmp[1])
         ########################### main true means ############################
-        tmp = main_bval_true.tmean(descale = True)
+        tmp = main_bval_true.tmean(unscale = True)
         self.data["main_true_mean_syn1"].append(tmp[0])
         self.data["main_true_mean_syn2"].append(tmp[1])
         ####################### main standard deviations #######################
-        tmp = bval["main"].tstd(descale = True)
+        tmp = bval["main"].tstd(unscale = True)
         self.data["main_std_syn1"].append(tmp[0])
         self.data["main_std_syn2"].append(tmp[1])
         #################### main true standard deviations #####################
-        tmp = main_bval_true.tstd(descale = True)
+        tmp = main_bval_true.tstd(unscale = True)
         self.data["main_true_std_syn1"].append(tmp[0])
         self.data["main_true_std_syn2"].append(tmp[1])
         ##################### main true genetic variances ######################
@@ -483,11 +483,11 @@ class MyLogbook(Logbook):
         self.data["main_true_bulmer_syn1"].append(tmp[0])
         self.data["main_true_bulmer_syn2"].append(tmp[1])
         ################### main true lower selection limits ###################
-        tmp = gpmod.usl(genome["main"], descale = True)
+        tmp = gpmod.usl(genome["main"], unscale = True)
         self.data["main_true_usl_syn1"].append(tmp[0])
         self.data["main_true_usl_syn2"].append(tmp[1])
         ################### main true lower selection limits ###################
-        tmp = gpmod.lsl(genome["main"], descale = True)
+        tmp = gpmod.lsl(genome["main"], unscale = True)
         self.data["main_true_lsl_syn1"].append(tmp[0])
         self.data["main_true_lsl_syn2"].append(tmp[1])
     def reset(self):

@@ -490,7 +490,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         """
         # process ptobj
         if isinstance(ptobj, BreedingValueMatrix):
-            Y = ptobj.descale()
+            Y = ptobj.unscale()
         elif isinstance(ptobj, pandas.DataFrame):
             raise RuntimeError("not implmented yet")
         elif isinstance(ptobj, numpy.ndarray):

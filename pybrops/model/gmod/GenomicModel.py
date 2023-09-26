@@ -638,7 +638,7 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             self, 
             p: numpy.ndarray, 
             ploidy: int, 
-            descale: bool, 
+            unscale: bool, 
             **kwargs: dict
         ) -> numpy.ndarray:
         """
@@ -665,7 +665,7 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             self, 
             gtobj: GenotypeMatrix, 
             ploidy: int, 
-            descale: bool, 
+            unscale: bool, 
             **kwargs: dict
         ) -> numpy.ndarray:
         """
@@ -693,7 +693,7 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             self, 
             p: numpy.ndarray, 
             ploidy: int, 
-            descale: bool, 
+            unscale: bool, 
             **kwargs: dict
         ) -> numpy.ndarray:
         """
@@ -720,7 +720,7 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             self, 
             gtobj: GenotypeMatrix, 
             ploidy: int, 
-            descale: bool, 
+            unscale: bool, 
             **kwargs: dict
         ) -> numpy.ndarray:
         """

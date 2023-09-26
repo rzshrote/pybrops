@@ -248,8 +248,8 @@ class G_E_Phenotyping(PhenotypingProtocol):
         # calculate true genotypic values
         gvmat = self.gpmod.gegv(pgmat)
 
-        # (n,t) : calculate descaled genotypic values
-        mat = gvmat.descale()
+        # (n,t) : calculate unscaled genotypic values
+        mat = gvmat.unscale()
 
         # get the number of taxa in each replication
         ntaxa = gvmat.ntaxa

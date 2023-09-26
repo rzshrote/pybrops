@@ -637,7 +637,7 @@ De-scaling and de-centering breeding values
 .. code-block:: python
 
     # de-transform a breeding value matrix 
-    out = bvmat.descale()
+    out = bvmat.unscale()
 
 Saving Breeding Value Matrices
 ==============================

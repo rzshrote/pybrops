@@ -15,7 +15,7 @@ from pybrops.test.assert_python import assert_concrete_method
 def selprot_single(
         common_ntrait,
         common_cmatfcty,
-        common_descale,
+        common_unscale,
         common_ncross,
         common_nparent,
         common_nmating,
@@ -42,7 +42,7 @@ def selprot_single(
     out = OptimalContributionBinarySelection(
         ntrait = common_ntrait,
         cmatfcty = common_cmatfcty,
-        descale = common_descale,
+        unscale = common_unscale,
         ncross = common_ncross,
         nparent = common_nparent,
         nmating = common_nmating,
@@ -72,7 +72,7 @@ def selprot_single(
 def selprot_multi(
         common_ntrait,
         common_cmatfcty,
-        common_descale,
+        common_unscale,
         common_ncross,
         common_nparent,
         common_nmating,
@@ -99,7 +99,7 @@ def selprot_multi(
     out = OptimalContributionBinarySelection(
         ntrait = common_ntrait,
         cmatfcty = common_cmatfcty,
-        descale = common_descale,
+        unscale = common_unscale,
         ncross = common_ncross,
         nparent = common_nparent,
         nmating = common_nmating,

@@ -105,14 +105,14 @@ class BreedingValueMatrix(TaxaTraitMatrix,PandasInputOutput,CSVInputOutput,HDF5I
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def tmax(self, descale: bool) -> numpy.ndarray:
+    def tmax(self, unscale: bool) -> numpy.ndarray:
         """
         Return the maximum along the trait axis.
 
         Parameters
         ----------
-        descale : bool
-            whether to transform results to their de-scaled values.
+        unscale : bool
+            whether to transform results to their unscaled values.
 
         Returns
         -------
@@ -127,14 +127,14 @@ class BreedingValueMatrix(TaxaTraitMatrix,PandasInputOutput,CSVInputOutput,HDF5I
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def tmean(self, descale: bool) -> numpy.ndarray:
+    def tmean(self, unscale: bool) -> numpy.ndarray:
         """
         Return the mean along the trait axis.
 
         Parameters
         ----------
-        descale : bool
-            whether to transform results to their de-scaled values.
+        unscale : bool
+            whether to transform results to their unscaled values.
 
         Returns
         -------
@@ -149,14 +149,14 @@ class BreedingValueMatrix(TaxaTraitMatrix,PandasInputOutput,CSVInputOutput,HDF5I
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def tmin(self, descale: bool) -> numpy.ndarray:
+    def tmin(self, unscale: bool) -> numpy.ndarray:
         """
         Return the minimum along the trait axis.
 
         Parameters
         ----------
-        descale : bool
-            whether to transform results to their de-scaled values.
+        unscale : bool
+            whether to transform results to their unscaled values.
 
         Returns
         -------
@@ -171,14 +171,14 @@ class BreedingValueMatrix(TaxaTraitMatrix,PandasInputOutput,CSVInputOutput,HDF5I
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def trange(self, descale: bool) -> numpy.ndarray:
+    def trange(self, unscale: bool) -> numpy.ndarray:
         """
         Return the range along the trait axis.
 
         Parameters
         ----------
-        descale : bool
-            whether to transform results to their de-scaled values.
+        unscale : bool
+            whether to transform results to their unscaled values.
 
         Returns
         -------
@@ -193,14 +193,14 @@ class BreedingValueMatrix(TaxaTraitMatrix,PandasInputOutput,CSVInputOutput,HDF5I
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def tstd(self, descale: bool) -> numpy.ndarray:
+    def tstd(self, unscale: bool) -> numpy.ndarray:
         """
         Return the standard deviation along the trait axis.
 
         Parameters
         ----------
-        descale : bool
-            whether to transform results to their de-scaled values.
+        unscale : bool
+            whether to transform results to their unscaled values.
 
         Returns
         -------
@@ -215,14 +215,14 @@ class BreedingValueMatrix(TaxaTraitMatrix,PandasInputOutput,CSVInputOutput,HDF5I
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def tvar(self, descale: bool) -> numpy.ndarray:
+    def tvar(self, unscale: bool) -> numpy.ndarray:
         """
         Return the variance along the trait axis.
 
         Parameters
         ----------
-        descale : bool
-            whether to transform results to their de-scaled values.
+        unscale : bool
+            whether to transform results to their unscaled values.
 
         Returns
         -------
@@ -237,15 +237,15 @@ class BreedingValueMatrix(TaxaTraitMatrix,PandasInputOutput,CSVInputOutput,HDF5I
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def descale(self) -> numpy.ndarray:
+    def unscale(self) -> numpy.ndarray:
         """
-        Transform values within the BreedingValueMatrix back to their de-scaled
+        Transform values within the BreedingValueMatrix back to their unscaled
         and de-centered values.
 
         Returns
         -------
         out : numpy.ndarray
-            An array of shape ``(n,t)`` containing de-scaled and de-centered
+            An array of shape ``(n,t)`` containing unscaled and de-centered
             values.
 
             Where:

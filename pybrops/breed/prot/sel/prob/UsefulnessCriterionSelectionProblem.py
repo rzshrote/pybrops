@@ -111,8 +111,8 @@ class UsefulnessCriterionSelectionProblemMixin(metaclass=ABCMeta):
         # (p,)
         epgc = numpy.array(vmat_obj.epgc)
         
-        # extract decentered and descaled
-        bvmat = bvmat_obj.descale()     # (n,t)
+        # extract decentered and unscaled
+        bvmat = bvmat_obj.unscale()     # (n,t)
 
         # extract variances
         vmat = vmat_obj.mat             # (n,...,n,t)
