@@ -398,7 +398,7 @@
 <h1>Breeding Value Matrices<a class="headerlink" href="#breeding-value-matrices" title="Permalink to this heading">#</a></h1>
 <section id="class-family-overview">
 <h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> family of classes is used to represent breeding values as its name implies. <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> objects can be used in the estimation of genomic prediction models and to make selection decisions.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> family of classes is used to represent breeding values as its name implies. <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> objects can be used in the estimation of genomic prediction models and to make selection decisions. Since breeding values are typically mean-centered and sometimes scaled, breeding value matrices have <code class="docutils literal notranslate"><span class="pre">location</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code> properties to reconstitute un-scaled values. <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> objects store additional taxa and trait metadata which serve as labels for rows and columns, respectively.</p>
 </section>
 <section id="summary-of-breeding-value-matrix-classes">
 <h2>Summary of Breeding Value Matrix Classes<a class="headerlink" href="#summary-of-breeding-value-matrix-classes" title="Permalink to this heading">#</a></h2>
@@ -428,6 +428,112 @@
 </tbody>
 </table>
 </section>
+<section id="breeding-value-matrix-properties">
+<h2>Breeding Value Matrix Properties<a class="headerlink" href="#breeding-value-matrix-properties" title="Permalink to this heading">#</a></h2>
+<p>Breeding value matrices have numerous properties. These properties can be grouped into three main groupings: general properties, taxa properties, and trait properties. Tables summarizing these properties can be read below.</p>
+<section id="breeding-value-matrix-general-properties">
+<h3>Breeding value matrix general properties<a class="headerlink" href="#breeding-value-matrix-general-properties" title="Permalink to this heading">#</a></h3>
+<p>Breeding value matrices share several shape properties that are common to all <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> classes. In addition, breeding value matrices have <code class="docutils literal notranslate"><span class="pre">location</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code> properties which specify the trait mean and standard deviation, respectively. These properties are helpful if a breeding value matrix has been centered around zero and scaled to a unit standard deviation.</p>
+<table class="colwidths-given table" id="id2">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> general properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mat</span></code></p></td>
+<td><p>The raw breeding value matrix pointer</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mat_ndim</span></code></p></td>
+<td><p>The number of dimensions for the breeding value matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mat_shape</span></code></p></td>
+<td><p>The breeding value matrix shape</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">location</span></code></p></td>
+<td><p>The location of the breeding value matrix if it has been transformed</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">scale</span></code></p></td>
+<td><p>The scale of the breeding value matrix if it has been transformed</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="breeding-value-matrix-taxa-properties">
+<h3>Breeding value matrix taxa properties<a class="headerlink" href="#breeding-value-matrix-taxa-properties" title="Permalink to this heading">#</a></h3>
+<p>Breeding value matrices have several taxa related properties including taxa names, taxa group identities, and sorting metadata, which can be used for quick group access and sorting.</p>
+<table class="colwidths-given table" id="id3">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> taxa properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ntaxa</span></code></p></td>
+<td><p>The number of taxa represented by the breeding value matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa</span></code></p></td>
+<td><p>The names of the taxa</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_axis</span></code></p></td>
+<td><p>The matrix axis along which taxa are stored</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp</span></code></p></td>
+<td><p>An optional taxa group label</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_name</span></code></p></td>
+<td><p>If taxa are sorted by group: get the names of the groups</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_stix</span></code></p></td>
+<td><p>If taxa are sorted by group: get the start indices (inclusive) for each group</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_spix</span></code></p></td>
+<td><p>If taxa are sorted by group: get the stop indices (exclusive) for each group</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_len</span></code></p></td>
+<td><p>If taxa are sorted by group: get the length of each group</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="breeding-value-matrix-trait-properties">
+<h3>Breeding value matrix trait properties<a class="headerlink" href="#breeding-value-matrix-trait-properties" title="Permalink to this heading">#</a></h3>
+<p>Breeding value matrices have several trait related properties of which the most important is the trait names.</p>
+<table class="colwidths-given table" id="id4">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> trait properties</span><a class="headerlink" href="#id4" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ntrait</span></code></p></td>
+<td><p>The number of traits represented by the breeding value matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">trait</span></code></p></td>
+<td><p>The names of the traits</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">trait_axis</span></code></p></td>
+<td><p>The matrix axis along which traits are stored</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
 <section id="loading-breeding-value-matrix-modules">
 <h2>Loading Breeding Value Matrix Modules<a class="headerlink" href="#loading-breeding-value-matrix-modules" title="Permalink to this heading">#</a></h2>
 <p>Breeding value matrix classes can be imported as demonstrated in the code chunk below:</p>
@@ -441,7 +547,7 @@
 </section>
 <section id="creating-breeding-value-matrices">
 <h2>Creating Breeding Value Matrices<a class="headerlink" href="#creating-breeding-value-matrices" title="Permalink to this heading">#</a></h2>
-<p>Breeding value matrices can be created using several method including from raw NumPy arrays,</p>
+<p>Breeding value matrices can be created using several method including from raw NumPy arrays, from Pandas DataFrames, from CSV files, and from HDF5 files. The following subsections detail the creation or loading of breeding value matrices from these sources.</p>
 <section id="creating-breeding-value-matrices-from-numpy-arrays">
 <h3>Creating breeding value matrices from NumPy arrays<a class="headerlink" href="#creating-breeding-value-matrices-from-numpy-arrays" title="Permalink to this heading">#</a></h3>
 <p>Using the <code class="docutils literal notranslate"><span class="pre">DenseBreedingValueMatrix</span></code> constructor, one can create a breeding value matrix from NumPy arrays.</p>
@@ -514,120 +620,62 @@
 </pre></div>
 </div>
 </section>
+<section id="creating-breeding-value-matrices-from-pandas-dataframes">
+<h3>Creating breeding value matrices from Pandas DataFrames<a class="headerlink" href="#creating-breeding-value-matrices-from-pandas-dataframes" title="Permalink to this heading">#</a></h3>
+<p>Breeding value matrices can be created from Pandas DataFrames. To do this, use the <code class="docutils literal notranslate"><span class="pre">from_pandas</span></code> class method. The code block below demonstrates how to use the <code class="docutils literal notranslate"><span class="pre">from_pandas</span></code> method to accomplish this.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create dummy pandas dataframe</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;taxa&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Taxon&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">101</span><span class="p">)],</span>
+    <span class="s2">&quot;taxa_grp&quot;</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">repeat</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="s2">&quot;Trait1&quot;</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+    <span class="s2">&quot;Trait2&quot;</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+    <span class="s2">&quot;Trait3&quot;</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">100</span><span class="p">),</span>
+<span class="p">})</span>
+
+<span class="c1"># construct breeding value matrix from pandas dataframe</span>
+<span class="c1"># use explicit column name identifiers as method arguments</span>
+<span class="n">bvmat</span> <span class="o">=</span> <span class="n">DenseBreedingValueMatrix</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">,</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">taxa_col</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
+    <span class="n">taxa_grp_col</span> <span class="o">=</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span>
+    <span class="n">trait_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Trait1&quot;</span><span class="p">,</span><span class="s2">&quot;Trait2&quot;</span><span class="p">,</span><span class="s2">&quot;Trait3&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="loading-breeding-value-matrices-from-csv-files">
+<h3>Loading breeding value matrices from CSV files<a class="headerlink" href="#loading-breeding-value-matrices-from-csv-files" title="Permalink to this heading">#</a></h3>
+<p>Breeding value matrices can be read from CSV files. To read a breeding value matrix from a CSV file, use the <code class="docutils literal notranslate"><span class="pre">from_csv</span></code> class method. The following code illustrates the use of this method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read from a CSV file</span>
+<span class="c1"># use explicit column name identifiers as method arguments</span>
+<span class="n">bvmat</span> <span class="o">=</span> <span class="n">DenseBreedingValueMatrix</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;sample_breeding_values.csv&quot;</span><span class="p">,</span>
+    <span class="n">location</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">taxa_col</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
+    <span class="n">taxa_grp_col</span> <span class="o">=</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span>
+    <span class="n">trait_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Trait1&quot;</span><span class="p">,</span><span class="s2">&quot;Trait2&quot;</span><span class="p">,</span><span class="s2">&quot;Trait3&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="loading-breeding-value-matrices-from-hdf5-files">
 <h3>Loading breeding value matrices from HDF5 files<a class="headerlink" href="#loading-breeding-value-matrices-from-hdf5-files" title="Permalink to this heading">#</a></h3>
+<p>Most matrix object types in PyBrOpS allow for both the import and export of matrices into an HDF5 format. To read saved breeding value matrices from an HDF5 file, use the <code class="docutils literal notranslate"><span class="pre">from_hdf5</span></code> class method. The code below demonstrates the use of this function to load a breeding value matrix from an HDF5 file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read a breeding value matrix from an HDF5 file</span>
 <span class="n">bvmat</span> <span class="o">=</span> <span class="n">DenseBreedingValueMatrix</span><span class="o">.</span><span class="n">from_hdf5</span><span class="p">(</span><span class="s2">&quot;sample_breeding_values.h5&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 </section>
-<section id="breeding-value-matrix-properties">
-<h2>Breeding Value Matrix Properties<a class="headerlink" href="#breeding-value-matrix-properties" title="Permalink to this heading">#</a></h2>
-<section id="breeding-value-matrix-general-properties">
-<h3>Breeding value matrix general properties<a class="headerlink" href="#breeding-value-matrix-general-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id2">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> general properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mat</span></code></p></td>
-<td><p>The raw breeding value matrix pointer</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mat_ndim</span></code></p></td>
-<td><p>The number of dimensions for the breeding value matrix</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mat_shape</span></code></p></td>
-<td><p>The breeding value matrix shape</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">location</span></code></p></td>
-<td><p>The location of the breeding value matrix if it has been transformed</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">scale</span></code></p></td>
-<td><p>The scale of the breeding value matrix if it has been transformed</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="breeding-value-matrix-taxa-properties">
-<h3>Breeding value matrix taxa properties<a class="headerlink" href="#breeding-value-matrix-taxa-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id3">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> taxa properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ntaxa</span></code></p></td>
-<td><p>The number of taxa represented by the breeding value matrix</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa</span></code></p></td>
-<td><p>The names of the taxa</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_axis</span></code></p></td>
-<td><p>The matrix axis along which taxa are stored</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp</span></code></p></td>
-<td><p>An optional taxa group label</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_name</span></code></p></td>
-<td><p>If taxa are sorted by group: get the names of the groups</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_stix</span></code></p></td>
-<td><p>If taxa are sorted by group: get the start indices (inclusive) for each group</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_spix</span></code></p></td>
-<td><p>If taxa are sorted by group: get the stop indices (exclusive) for each group</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_len</span></code></p></td>
-<td><p>If taxa are sorted by group: get the length of each group</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="breeding-value-matrix-trait-properties">
-<h3>Breeding value matrix trait properties<a class="headerlink" href="#breeding-value-matrix-trait-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id4">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> trait properties</span><a class="headerlink" href="#id4" title="Permalink to this table">#</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ntrait</span></code></p></td>
-<td><p>The number of traits represented by the breeding value matrix</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">trait</span></code></p></td>
-<td><p>The names of the traits</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">trait_axis</span></code></p></td>
-<td><p>The matrix axis along which traits are stored</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
 <section id="copying-breeding-value-matrices">
 <h2>Copying Breeding Value Matrices<a class="headerlink" href="#copying-breeding-value-matrices" title="Permalink to this heading">#</a></h2>
+<p>Copying breeding value matrices can be accomplished using two different methods: by shallow copying or by deep copying.</p>
 <section id="shallow-copying">
 <h3>Shallow copying<a class="headerlink" href="#shallow-copying" title="Permalink to this heading">#</a></h3>
+<p>In shallow copying, references to a <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code>’s data are copied to a new breeding value matrix object. Copying is only one level deep which means that changes to the original object may affect data values in the copied object. The code below illustrates the use of the <code class="docutils literal notranslate"><span class="pre">copy</span></code> method bound to <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> objects and the base Python function <a class="reference external" href="https://docs.python.org/3/library/copy.html#copy.copy"><code class="docutils literal notranslate"><span class="pre">copy.copy</span></code></a> which can both be used to shallow copy a breeding value matrix object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># copy a breeding value matrix</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">bvmat</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -636,6 +684,7 @@
 </section>
 <section id="deep-copying">
 <h3>Deep copying<a class="headerlink" href="#deep-copying" title="Permalink to this heading">#</a></h3>
+<p>In deep copying, data in a <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> is recursively copied to a new breeding value matrix object. Copying occurs down to the deepest levels so that changes to the original object will not affect data values in the copied object. The code below illustrates the use of the <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code> method bound to <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> objects and the base Python function <a class="reference external" href="https://docs.python.org/3/library/copy.html#copy.deepcopy"><code class="docutils literal notranslate"><span class="pre">copy.deepcopy</span></code></a> which can both be used to deep copy a breeding value matrix object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># deep copy a breeding value matrix</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">bvmat</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
@@ -1056,28 +1105,6 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#loading-breeding-value-matrix-modules">
-   Loading Breeding Value Matrix Modules
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#creating-breeding-value-matrices">
-   Creating Breeding Value Matrices
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#creating-breeding-value-matrices-from-numpy-arrays">
-     Creating breeding value matrices from NumPy arrays
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#loading-breeding-value-matrices-from-hdf5-files">
-     Loading breeding value matrices from HDF5 files
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#breeding-value-matrix-properties">
    Breeding Value Matrix Properties
   </a>
@@ -1095,6 +1122,38 @@
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#breeding-value-matrix-trait-properties">
      Breeding value matrix trait properties
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#loading-breeding-value-matrix-modules">
+   Loading Breeding Value Matrix Modules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#creating-breeding-value-matrices">
+   Creating Breeding Value Matrices
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#creating-breeding-value-matrices-from-numpy-arrays">
+     Creating breeding value matrices from NumPy arrays
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#creating-breeding-value-matrices-from-pandas-dataframes">
+     Creating breeding value matrices from Pandas DataFrames
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#loading-breeding-value-matrices-from-csv-files">
+     Loading breeding value matrices from CSV files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#loading-breeding-value-matrices-from-hdf5-files">
+     Loading breeding value matrices from HDF5 files
     </a>
    </li>
   </ul>

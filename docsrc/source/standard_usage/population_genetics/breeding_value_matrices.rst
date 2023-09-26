@@ -28,8 +28,12 @@ Breeding value matrix classes in PyBrOpS are found in the ``pybrops.popgen.bvmat
 Breeding Value Matrix Properties
 ================================
 
+Breeding value matrices have numerous properties. These properties can be grouped into three main groupings: general properties, taxa properties, and trait properties. Tables summarizing these properties can be read below.
+
 Breeding value matrix general properties
 ----------------------------------------
+
+Breeding value matrices share several shape properties that are common to all ``Matrix`` classes. In addition, breeding value matrices have ``location`` and ``scale`` properties which specify the trait mean and standard deviation, respectively. These properties are helpful if a breeding value matrix has been centered around zero and scaled to a unit standard deviation.
 
 .. list-table:: Summary of ``BreedingValueMatrix`` general properties
     :widths: 25 50
@@ -50,6 +54,8 @@ Breeding value matrix general properties
 
 Breeding value matrix taxa properties
 -------------------------------------
+
+Breeding value matrices have several taxa related properties including taxa names, taxa group identities, and sorting metadata, which can be used for quick group access and sorting.
 
 .. list-table:: Summary of ``BreedingValueMatrix`` taxa properties
     :widths: 25 50
@@ -74,9 +80,10 @@ Breeding value matrix taxa properties
     * - ``taxa_grp_len``
       - If taxa are sorted by group: get the length of each group
 
-
 Breeding value matrix trait properties
 --------------------------------------
+
+Breeding value matrices have several trait related properties of which the most important is the trait names.
 
 .. list-table:: Summary of ``BreedingValueMatrix`` trait properties
     :widths: 25 50
@@ -90,7 +97,6 @@ Breeding value matrix trait properties
       - The names of the traits
     * - ``trait_axis``
       - The matrix axis along which traits are stored
-
 
 Loading Breeding Value Matrix Modules
 =====================================
@@ -108,7 +114,7 @@ Breeding value matrix classes can be imported as demonstrated in the code chunk 
 Creating Breeding Value Matrices
 ================================
 
-Breeding value matrices can be created using several method including from raw NumPy arrays, 
+Breeding value matrices can be created using several method including from raw NumPy arrays, from Pandas DataFrames, from CSV files, and from HDF5 files. The following subsections detail the creation or loading of breeding value matrices from these sources.
 
 Creating breeding value matrices from NumPy arrays
 --------------------------------------------------
@@ -245,8 +251,15 @@ Most matrix object types in PyBrOpS allow for both the import and export of matr
 Copying Breeding Value Matrices
 ===============================
 
+Copying breeding value matrices can be accomplished using two different methods: by shallow copying or by deep copying.
+
 Shallow copying
 ---------------
+
+.. |link_copy_copy| replace:: ``copy.copy``
+.. _link_copy_copy: https://docs.python.org/3/library/copy.html#copy.copy
+
+In shallow copying, references to a ``BreedingValueMatrix``'s data are copied to a new breeding value matrix object. Copying is only one level deep which means that changes to the original object may affect data values in the copied object. The code below illustrates the use of the ``copy`` method bound to ``BreedingValueMatrix`` objects and the base Python function |link_copy_copy|_ which can both be used to shallow copy a breeding value matrix object.
 
 .. code-block:: python
 
@@ -256,6 +269,11 @@ Shallow copying
 
 Deep copying
 ------------
+
+.. |link_copy_deepcopy| replace:: ``copy.deepcopy``
+.. _link_copy_deepcopy: https://docs.python.org/3/library/copy.html#copy.deepcopy
+
+In deep copying, data in a ``BreedingValueMatrix`` is recursively copied to a new breeding value matrix object. Copying occurs down to the deepest levels so that changes to the original object will not affect data values in the copied object. The code below illustrates the use of the ``deepcopy`` method bound to ``BreedingValueMatrix`` objects and the base Python function |link_copy_deepcopy|_ which can both be used to deep copy a breeding value matrix object.
 
 .. code-block:: python
 

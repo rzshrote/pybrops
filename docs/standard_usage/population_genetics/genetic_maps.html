@@ -578,7 +578,7 @@
 </section>
 <section id="deep-copying">
 <h3>Deep copying<a class="headerlink" href="#deep-copying" title="Permalink to this heading">#</a></h3>
-<p>In deep copying, data in a <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code>’s variant and spline data are recursively copyied. Copying occurs down to the deepest level making it so that changes to the data in the original object will not affect data values in the copied object.</p>
+<p>In deep copying, data in a <code class="docutils literal notranslate"><span class="pre">GeneticMap</span></code>’s variant and spline data are recursively copied. Copying occurs down to the deepest level making it so that changes to the data in the original object will not affect data values in the copied object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># deep copy the genetic map</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">gmap</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmap</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>

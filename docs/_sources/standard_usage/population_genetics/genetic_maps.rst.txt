@@ -161,7 +161,7 @@ In shallow copying, references to a ``GeneticMap``'s variant and spline data are
 Deep copying
 ------------
 
-In deep copying, data in a ``GeneticMap``'s variant and spline data are recursively copyied. Copying occurs down to the deepest level making it so that changes to the data in the original object will not affect data values in the copied object.
+In deep copying, data in a ``GeneticMap``'s variant and spline data are recursively copied. Copying occurs down to the deepest level making it so that changes to the data in the original object will not affect data values in the copied object.
 
 .. code-block:: python
 

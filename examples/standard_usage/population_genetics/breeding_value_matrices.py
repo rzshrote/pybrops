@@ -145,9 +145,13 @@ bvmat = DenseBreedingValueMatrix.from_csv(
 # read a breeding value matrix from an HDF5 file
 bvmat = DenseBreedingValueMatrix.from_hdf5("sample_breeding_values.h5")
 
+### 
+### Breeding Value Matrix Properties
+### ================================
+
 ###
 ### Breeding value matrix general properties
-###
+### ----------------------------------------
 
 tmp = bvmat.mat         # get the raw breeding value matrix pointer
 tmp = bvmat.mat_ndim    # get the number of dimensions for the breeding value matrix
@@ -157,7 +161,7 @@ tmp = bvmat.scale       # get the scale of the breeding value matrix if it has b
 
 ###
 ### Breeding value matrix taxa properties
-###
+### -------------------------------------
 
 tmp = bvmat.ntaxa           # get the number of taxa represented by the breeding value matrix
 tmp = bvmat.taxa            # get the names of the taxa
@@ -170,7 +174,7 @@ tmp = bvmat.taxa_grp_len    # if taxa are sorted by group: get the length of eac
 
 ###
 ### Breeding value matrix trait properties
-###
+### --------------------------------------
 
 tmp = bvmat.ntrait      # get the number of traits represented by the breeding value matrix
 tmp = bvmat.trait       # get the names of the traits
