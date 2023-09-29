@@ -643,8 +643,9 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
     def to_csv(
             self, 
             filename: str,
-            taxa_col: Optional[str] = "taxa",
+            taxa_col: str = "taxa",
             taxa_grp_col: Optional[str] = "taxa_grp",
+            taxa: Union[str,Sequence[Union[str,Integral]]] = "all",
             sep: str = ',', 
             header: bool = True, 
             index: bool = False, 
@@ -658,15 +659,19 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         filename : str
             CSV file name to which to write.
 
-        taxa_col : str, None, default = "taxa"
-            Name of the column to which to write taxa names.
-            If ``str``, the column is given the name in ``taxa_col``.
-            If ``None``, the column is not exported.
+        taxa_col : str, default = "taxa"
+            Name of the column to which to write taxa names. Cannot be ``None``.
         
         taxa_grp_col : str, None, default = "taxa_grp"
             Name of the column to which to write taxa group names.
             If ``str``, the column is given the name in ``taxa_grp_col``.
             If ``None``, the column is not exported.
+
+        taxa : str, Sequence, default = "all"
+            Name(s) of the taxa columns for which to write coancestry values.
+            If ``Sequence``, export the taxa names given by the string or 
+            integer value in the ``taxa`` Sequence.
+            If ``str``, must be equal to ``"all"``. Export all taxa names as is.
 
         sep : str, default = ","
             Separator to use in the exported CSV file.
@@ -684,6 +689,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         df = self.to_pandas(
             taxa_col = taxa_col,
             taxa_grp_col = taxa_grp_col,
+            taxa = taxa,
         )
 
         # export using pandas
@@ -753,7 +759,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         taxa_col : str, Integral, None, default = "taxa"
             Name of the column from which to read taxa names. Cannot be ``None``.
             This column is used to search for column names to extract coancestry values.
-            Elements in this column are interpreted as strings
+            Elements in this column are interpreted as strings.
             If of type ``str``, taxa names are read from the column named 
             defined by ``taxa_col``.
             If of type ``Integral``, taxa names are read from the column 
@@ -766,6 +772,13 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             If of type ``Integral``, taxa group names are read from the column 
             number defined by ``taxa_col``.
             If ``None``, taxa group names are not imported.
+
+        taxa : str, Sequence, default = "all"
+            Name(s) of the taxa columns for which to read coancestry values.
+            If ``Sequence``, read the taxa names given by the string or 
+            integer value in the ``taxa`` Sequence.
+            If ``str``, must be equal to ``"all"``. Import all taxa names as 
+            defined in the ``taxa_col`` column.
 
         kwargs : dict
             Additional keyword arguments to use for dictating importing from a 
@@ -893,6 +906,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             header: int = 0,
             taxa_col: Union[str,Integral] = "taxa",
             taxa_grp_col: Optional[Union[str,Integral]] = "taxa_grp",
+            taxa: Union[str,Sequence[Union[str,Integral]]] = "all",
             **kwargs: dict
         ) -> 'DenseCoancestryMatrix':
         """
@@ -912,6 +926,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         taxa_col : str, Integral, None, default = "taxa"
             Name of the column from which to read taxa names. Cannot be ``None``.
             This column is used to search for column names to extract coancestry values.
+            Elements in this column are interpreted as strings.
             If of type ``str``, taxa names are read from the column named 
             defined by ``taxa_col``.
             If of type ``Integral``, taxa names are read from the column 
@@ -924,6 +939,13 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             If of type ``Integral``, taxa group names are read from the column 
             number defined by ``taxa_col``.
             If ``None``, taxa group names are not imported.
+
+        taxa : str, Sequence, default = "all"
+            Name(s) of the taxa columns for which to read coancestry values.
+            If ``Sequence``, read the taxa names given by the string or 
+            integer value in the ``taxa`` Sequence.
+            If ``str``, must be equal to ``"all"``. Import all taxa names as 
+            defined in the ``taxa_col`` column.
 
         kwargs : dict
             Additional keyword arguments to use for dictating importing from a CSV.
@@ -949,6 +971,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             df = df,
             taxa_col = taxa_col, 
             taxa_grp_col = taxa_grp_col, 
+            taxa = taxa, 
             **kwargs
         )
 
