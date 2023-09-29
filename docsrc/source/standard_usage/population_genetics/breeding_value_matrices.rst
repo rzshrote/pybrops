@@ -706,8 +706,8 @@ A de-transformed (unscaled and de-centered) breeding value matrix may be calcula
     # de-transform a breeding value matrix 
     out = bvmat.unscale()
 
-Saving Breeding Value Matrices
-==============================
+Exporting Breeding Value Matrices
+=================================
 
 Breeding value matrices may be exported to multiple formats including Pandas DataFrames, CSV files, and HDF5 files. The following subsections provide export examples.
 
@@ -722,7 +722,6 @@ The ``to_pandas`` method can be used to export a breeding value matrix to a Pand
     # use default column names to export
     df = bvmat.to_pandas()
 
-
 Exporting to CSV
 ----------------
 
@@ -733,7 +732,6 @@ The ``to_csv`` method can be used to export a breeding value matrix to a CSV fil
     # export to a CSV
     # use default column names to export
     bvmat.to_csv("saved_breeding_values.csv")
-
 
 Exporting to HDF5
 -----------------

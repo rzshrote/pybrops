@@ -535,12 +535,10 @@ def test_from_csv(cmat):
     cmat.to_csv(filename)
     tmp = DummyDenseCoancestryMatrix.from_csv(filename)
     assert isinstance(tmp, DenseCoancestryMatrix)
-    
 
 ### from_hdf5
 def test_from_hdf5_is_concrete():
     assert_concrete_method(DenseCoancestryMatrix, "from_hdf5")
-
 
 ################################################################################
 ################### Test for conrete class utility functions ###################

@@ -56,9 +56,9 @@ cmat = DenseMolecularCoancestryMatrix(
     taxa_grp = taxa_grp
 )
 
-#
-# construct from a genotype matrix
-#
+### 
+### Creating coancestry matrices from GenotypeMatrix objects
+### --------------------------------------------------------
 
 # shape parameters for random genotypes
 ntaxa = 100
@@ -118,9 +118,37 @@ gmat.group_vrnt()
 # construct Coancestry Matrix from a Genotype Matrix
 cmat = DenseMolecularCoancestryMatrix.from_gmat(gmat = gmat)
 
-#
-# read from HDF5
-#
+# save for use in examples below
+df = cmat.to_pandas()
+cmat.to_csv("saved_coancestry_matrix.csv")
+
+## 
+## Creating coancestry matrices from Pandas DataFrames
+## ---------------------------------------------------
+
+# load from pandas.DataFrame
+tmp = DenseMolecularCoancestryMatrix.from_pandas(
+    df = df,
+    taxa_col = "taxa",          # column from which to load taxa
+    taxa_grp_col = "taxa_grp",  # column from which to load taxa groups
+    taxa = "all",               # load all taxa
+)
+
+### 
+### Loading coancestry matrices from CSV files
+### ------------------------------------------
+
+# load from pandas.DataFrame
+tmp = DenseMolecularCoancestryMatrix.from_csv(
+    filename = "saved_coancestry_matrix.csv",
+    taxa_col = "taxa",          # column from which to load taxa
+    taxa_grp_col = "taxa_grp",  # column from which to load taxa groups
+    taxa = "all",               # load all taxa
+)
+
+### 
+### Loading coancestry matrices from HDF5 files
+### -------------------------------------------
 
 # read from file
 cmat = DenseMolecularCoancestryMatrix.from_hdf5("sample_coancestry_matrix.h5")
@@ -368,18 +396,21 @@ out = tmp.is_grouped_taxa()
 #
 
 out = cmat.coancestry(0,0)
+out = cmat[0,0] # NOT guaranteed to be in correct format
 
 #
 # Get the kinship at a specific matrix coordinate
 #
 
 out = cmat.kinship(0,0)
+out = 0.5 * cmat[0,0] # NOT guaranteed to be in correct format
 
 #
 # Get the coancestry matrix as a specific format
 #
 
-cmat.mat_asformat(format = "kinship")
+out = cmat.mat_asformat(format = "kinship")
+out = cmat.mat_asformat(format = "coancestry")
 
 #
 # Determine if the coancestry matrix is positive semidefinite (convex)
@@ -398,7 +429,8 @@ out = cmat.apply_jitter()
 #
 
 out = cmat.max_inbreeding()
-out = cmat.min_inbreeding(format = "kinship")
+out = cmat.max_inbreeding(format = "kinship")
+out = cmat.max_inbreeding(format = "coancestry")
 
 #
 # Calculate the minimum attainable inbreeding after 1 generation
@@ -406,6 +438,7 @@ out = cmat.min_inbreeding(format = "kinship")
 
 out = cmat.min_inbreeding()
 out = cmat.min_inbreeding(format = "kinship")
+out = cmat.min_inbreeding(format = "coancestry")
 
 #
 # Calculate the inverse of the coancestry matrix
@@ -413,6 +446,7 @@ out = cmat.min_inbreeding(format = "kinship")
 
 out = cmat.inverse()
 out = cmat.inverse(format = "kinship")
+out = cmat.inverse(format = "coancestry")
 
 ###
 ### Summary Statistics
@@ -431,9 +465,25 @@ out = cmat.min()
 ### Saving Breeding Value Matrices
 ###
 
-#
-# write to HDF5
-#
+## 
+## Exporting to Pandas DataFrame
+## -----------------------------
+
+# export to a pandas.DataFrame
+# use default column names to export
+df = cmat.to_pandas()
+
+## 
+## Exporting to CSV
+## ----------------
+
+# export to a CSV
+# use default column names to export
+cmat.to_csv("saved_coancestry_matrix.csv")
+
+## 
+## Exporting to HDF5
+## -----------------
 
 # remove exported file if it exists
 if os.path.exists("saved_coancestry_matrix.h5"):
