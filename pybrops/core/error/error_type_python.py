@@ -95,7 +95,7 @@ def check_isinstance(v: object, vname: str, vtype: Union[type,tuple]) -> None:
 
 def check_is_bool(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``bool``. Raise error if not.
+    Check if a Python object is of type ``bool``. Raise error if not.
 
     Parameters
     ----------
@@ -107,11 +107,19 @@ def check_is_bool(v: object, vname: str) -> None:
     if not isinstance(v, bool):
         raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,bool.__name__,type(v).__name__))
 
-# def check_is_bytearray(v: object, vname: str) -> None:
-#     generic_check_isinstance(v, vname, bytearray)
+def check_is_bytes(v: object, vname: str) -> None:
+    """
+    Check if a Python object is of type ``bytes``. Raise error if not.
 
-# def check_is_bytes(v: object, vname: str) -> None:
-#     generic_check_isinstance(v, vname, bytes)
+    Parameters
+    ----------
+    v : object
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if not isinstance(v, bytes):
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,bytes.__name__,type(v).__name__))
 
 def check_is_class(v: object, vname: str) -> None:
     """
@@ -127,12 +135,9 @@ def check_is_class(v: object, vname: str) -> None:
     if not inspect.isclass(v):
         raise TypeError("variable '{0}' must be a class name".format(vname))
 
-# def check_is_complex(v: object, vname: str) -> None:
-#     generic_check_isinstance(v, vname, complex)
-
 def check_is_dict(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``dict``. Raise error if not.
+    Check if a Python object is of type ``dict``. Raise error if not.
 
     Parameters
     ----------
@@ -146,7 +151,7 @@ def check_is_dict(v: object, vname: str) -> None:
 
 def check_is_float(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``float``. Raise error if not.
+    Check if a Python object is of type ``float``. Raise error if not.
 
     Parameters
     ----------
@@ -158,12 +163,23 @@ def check_is_float(v: object, vname: str) -> None:
     if not isinstance(v, float):
         raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,float.__name__,type(v).__name__))
 
-# def check_is_frozenset(v: object, vname: str) -> None:
-#     generic_check_isinstance(v, vname, frozenset)
+def check_is_frozenset(v: object, vname: str) -> None:
+    """
+    Check if a Python object is of type ``frozenset``. Raise error if not.
+
+    Parameters
+    ----------
+    v : object
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if not isinstance(v, frozenset):
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,frozenset.__name__,type(v).__name__))
 
 def check_is_int(v: object, vname: str) -> None:
     """
-    Check if a Python object is an ``int``. Raise error if not.
+    Check if a Python object is of type ``int``. Raise error if not.
 
     Parameters
     ----------
@@ -175,37 +191,9 @@ def check_is_int(v: object, vname: str) -> None:
     if not isinstance(v, int):
         raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,int.__name__,type(v).__name__))
 
-def check_is_int_or_inf(v: object, vname: str) -> None:
-    """
-    Check if a Python object is an ``int`` or if it is infinite. Raise error if not.
-
-    Parameters
-    ----------
-    v : object
-        Python object to check.
-    vname : str
-        Name associated with the Python object.
-    """
-    if (v != math.inf) and (not isinstance(v, int)):
-        raise TypeError("variable '{0}' must be of type 'int' or be infinite".format(vname))
-
-def check_is_int_or_None(v: object, vname: str) -> None:
-    """
-    Check if a Python object is an ``int`` or if it is ``None``. Raise error if not.
-
-    Parameters
-    ----------
-    v : object
-        Python object to check.
-    vname : str
-        Name associated with the Python object.
-    """
-    if (not isinstance(v, int)) and (v is not None):
-        raise TypeError("variable '{0}' must be of type 'int' or None".format(vname))
-
 def check_is_list(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``list``. Raise error if not.
+    Check if a Python object is of type ``list``. Raise error if not.
 
     Parameters
     ----------
@@ -217,12 +205,9 @@ def check_is_list(v: object, vname: str) -> None:
     if not isinstance(v, list):
         raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,list.__name__,type(v).__name__))
 
-# def check_is_memoryview(v: object, vname: str) -> None:
-#     generic_check_isinstance(v, vname, memoryview)
-
 def check_is_range(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``range``. Raise error if not.
+    Check if a Python object is of type ``range``. Raise error if not.
 
     Parameters
     ----------
@@ -236,7 +221,7 @@ def check_is_range(v: object, vname: str) -> None:
 
 def check_is_set(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``set``. Raise error if not.
+    Check if a Python object is of type ``set``. Raise error if not.
 
     Parameters
     ----------
@@ -250,7 +235,7 @@ def check_is_set(v: object, vname: str) -> None:
 
 def check_is_str(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``str``. Raise error if not.
+    Check if a Python object is of type ``str``. Raise error if not.
 
     Parameters
     ----------
@@ -264,7 +249,7 @@ def check_is_str(v: object, vname: str) -> None:
 
 def check_is_tuple(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``tuple``. Raise error if not.
+    Check if a Python object is of type ``tuple``. Raise error if not.
 
     Parameters
     ----------
@@ -278,7 +263,7 @@ def check_is_tuple(v: object, vname: str) -> None:
 
 def check_is_type(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``type``. Raise error if not.
+    Check if a Python object is of type ``type``. Raise error if not.
 
     Parameters
     ----------
@@ -295,7 +280,7 @@ def check_is_type(v: object, vname: str) -> None:
 ################################################################################
 def check_is_Complex(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``numbers.Complex``. Raise error if not.
+    Check if a Python object is of type ``numbers.Complex``. Raise error if not.
 
     Parameters
     ----------
@@ -309,7 +294,7 @@ def check_is_Complex(v: object, vname: str) -> None:
 
 def check_is_Integral(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``numbers.Integral``. Raise error if not.
+    Check if a Python object is of type ``numbers.Integral``. Raise error if not.
 
     Parameters
     ----------
@@ -321,37 +306,9 @@ def check_is_Integral(v: object, vname: str) -> None:
     if not isinstance(v, Integral):
         raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,Integral.__name__,type(v).__name__))
 
-def check_is_Integral_or_inf(v: object, vname: str) -> None:
-    """
-    Check if a Python object is a ``numbers.Integral`` or infinite. Raise error if not.
-
-    Parameters
-    ----------
-    v : object
-        Python object to check.
-    vname : str
-        Name associated with the Python object.
-    """
-    if (v != math.inf) and (not isinstance(v, Integral)):
-        raise TypeError("variable '{0}' must be of type '{1}' or the value 'math.inf' but received type '{2}'".format(vname,Integral.__name__,type(v).__name__))
-
-def check_is_Integral_or_None(v: object, vname: str) -> None:
-    """
-    Check if a Python object is a ``numbers.Integral`` or ``None``. Raise error if not.
-
-    Parameters
-    ----------
-    v : object
-        Python object to check.
-    vname : str
-        Name associated with the Python object.
-    """
-    if (v is not None) and (not isinstance(v, Integral)):
-        raise TypeError("variable '{0}' must be of type '{1}' or the value 'None' but received type '{2}'".format(vname,Integral.__name__,type(v).__name__))
-
 def check_is_Number(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``numbers.Number``. Raise error if not.
+    Check if a Python object is of type ``numbers.Number``. Raise error if not.
 
     Parameters
     ----------
@@ -365,7 +322,7 @@ def check_is_Number(v: object, vname: str) -> None:
 
 def check_is_Real(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``numbers.Real``. Raise error if not.
+    Check if a Python object is of type ``numbers.Real``. Raise error if not.
 
     Parameters
     ----------
@@ -382,7 +339,7 @@ def check_is_Real(v: object, vname: str) -> None:
 ################################################################################
 def check_is_Callable(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``typing.Callable``. Raise error if not.
+    Check if a Python object is of type ``typing.Callable``. Raise error if not.
 
     Parameters
     ----------
@@ -396,7 +353,7 @@ def check_is_Callable(v: object, vname: str) -> None:
 
 def check_is_Container(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``typing.Container``. Raise error if not.
+    Check if a Python object is of type ``typing.Container``. Raise error if not.
 
     Parameters
     ----------
@@ -410,7 +367,7 @@ def check_is_Container(v: object, vname: str) -> None:
 
 def check_is_Sequence(v: object, vname: str) -> None:
     """
-    Check if a Python object is a ``typing.Sequence``. Raise error if not.
+    Check if a Python object is of type ``typing.Sequence``. Raise error if not.
 
     Parameters
     ----------
@@ -509,6 +466,73 @@ def check_is_str_or_Sequence(v: object, vname: str) -> None:
                 str.__name__,
                 Sequence.__name__,
                 type(v).__name__
+            )
+        )
+
+def check_is_int_or_inf(v: object, vname: str) -> None:
+    """
+    Check if a Python object is an ``int`` or if it is infinite. Raise error if not.
+
+    Parameters
+    ----------
+    v : object
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if (v != math.inf) and (not isinstance(v, int)):
+        raise TypeError("variable '{0}' must be of type 'int' or be infinite".format(vname))
+
+def check_is_int_or_None(v: object, vname: str) -> None:
+    """
+    Check if a Python object is an ``int`` or if it is ``None``. Raise error if not.
+
+    Parameters
+    ----------
+    v : object
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if (not isinstance(v, int)) and (v is not None):
+        raise TypeError("variable '{0}' must be of type 'int' or None".format(vname))
+
+def check_is_Integral_or_inf(v: object, vname: str) -> None:
+    """
+    Check if a Python object is a ``numbers.Integral`` or infinite. Raise error if not.
+
+    Parameters
+    ----------
+    v : object
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if (v != math.inf) and (not isinstance(v, Integral)):
+        raise TypeError("variable '{0}' must be of type '{1}' or the value 'math.inf' but received type '{2}'".format(vname,Integral.__name__,type(v).__name__))
+
+def check_is_Integral_or_None(v: object, vname: str) -> None:
+    """
+    Check if a Python object is a ``numbers.Integral`` or ``None``. Raise error if not.
+
+    Parameters
+    ----------
+    v : object
+        Python object to check.
+    vname : str
+        Name associated with the Python object.
+    """
+    if (v is not None) and (not isinstance(v, Integral)):
+        raise TypeError("variable '{0}' must be of type '{1}' or the value 'None' but received type '{2}'".format(vname,Integral.__name__,type(v).__name__))
+
+### Iterating type checks ###
+
+def check_Sequence_all_type(v: Sequence, vname: str, vtype: Union[type,tuple]) -> None:
+    if not all(isinstance(e, vtype) for e in v):
+        raise TypeError(
+            "Sequence '{0}' must have values all of type '{1}'".format(
+                vname,
+                vtype.__name__
             )
         )
 

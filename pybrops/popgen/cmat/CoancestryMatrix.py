@@ -12,10 +12,20 @@ from numbers import Real
 from typing import Optional, Union
 import numpy
 from numpy.typing import DTypeLike
+import pandas
+from pybrops.core.io.CSVInputOutput import CSVInputOutput
+from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
+from pybrops.core.io.PandasInputOutput import PandasInputOutput
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class CoancestryMatrix(SquareTaxaMatrix,metaclass=ABCMeta):
+class CoancestryMatrix(
+    SquareTaxaMatrix,
+    PandasInputOutput,
+    CSVInputOutput,
+    HDF5InputOutput,
+    metaclass=ABCMeta,
+):
     """
     An abstract class for coancestry matrices. Coancestry matrices are square.
     Coancestry matrices are related to kinship matrices in the following manner:
@@ -309,7 +319,143 @@ class CoancestryMatrix(SquareTaxaMatrix,metaclass=ABCMeta):
         """
         raise NotImplementedError("method is abstract")
 
+    ###################### Matrix I/O ######################
+    @abstractmethod
+    def to_pandas(
+            self, 
+            **kwargs: dict
+        ) -> pandas.DataFrame:
+        """
+        Export a ``CoancestryMatrix`` to a ``pandas.DataFrame``.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a 
+            ``pandas.DataFrame``.
+        
+        Returns
+        -------
+        out : pandas.DataFrame
+            An output dataframe.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def to_csv(
+            self, 
+            filename: str,
+            **kwargs: dict
+        ) -> None:
+        """
+        Write an object to a CSV file.
+
+        Parameters
+        ----------
+        filename : str
+            CSV file name to which to write.
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a CSV.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def to_hdf5(
+            self, 
+            filename: str, 
+            groupname: Optional[str]
+        ) -> None:
+        """
+        Write an object to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name to which to write.
+        groupname : str or None
+            HDF5 group name under which object data is stored.
+            If None, object is written to the base HDF5 group.
+        """
+        raise NotImplementedError("method is abstract")
+
     ############################## Class Methods ###############################
+
+    ###################### Matrix I/O ######################
+    @classmethod
+    @abstractmethod
+    def from_pandas(
+            cls, 
+            df: pandas.DataFrame,
+            **kwargs: dict
+        ) -> 'CoancestryMatrix':
+        """
+        Read a ``CoancestryMatrix`` from a ``pandas.DataFrame``.
+
+        Parameters
+        ----------
+        df : pandas.DataFrame
+            Pandas dataframe from which to read.
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a 
+            ``pandas.DataFrame``.
+
+        Returns
+        -------
+        out : PandasInputOutput
+            A ``CoancestryMatrix`` read from a ``pandas.DataFrame``.
+        """
+        raise NotImplementedError("class method is abstract")
+
+    @classmethod
+    @abstractmethod
+    def from_csv(
+            cls, 
+            filename: str,
+            **kwargs: dict
+        ) -> 'CoancestryMatrix':
+        """
+        Read a ``CoancestryMatrix`` from a CSV file.
+
+        Parameters
+        ----------
+        filename : str
+            CSV file name from which to read.
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a CSV.
+
+        Returns
+        -------
+        out : CoancestryMatrix
+            A ``CoancestryMatrix`` read from a CSV file.
+        """
+        raise NotImplementedError("class method is abstract")
+
+    @classmethod
+    @abstractmethod
+    def from_hdf5(
+            cls, 
+            filename: str, 
+            groupname: Optional[str]
+        ) -> 'CoancestryMatrix':
+        """
+        Read a ``CoancestryMatrix`` from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which object data is stored.
+            If None, object is read from base HDF5 group.
+
+        Returns
+        -------
+        out : CoancestryMatrix
+            A ``CoancestryMatrix`` read from an HDF5 file.
+        """
+        raise NotImplementedError("class method is abstract")
+
+    ################ Factory Class methods #################
     @classmethod
     @abstractmethod
     def from_gmat(

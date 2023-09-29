@@ -36,6 +36,9 @@ def test_init_is_concrete():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
+def test_mat_asformat_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "mat_asformat")
+
 def test_coancestry_is_abstract():
     assert_abstract_method(CoancestryMatrix, "coancestry")
 
@@ -47,6 +50,42 @@ def test_is_positive_semidefinite_is_abstract():
 
 def test_apply_jitter_is_abstract():
     assert_abstract_method(CoancestryMatrix, "apply_jitter")
+
+def test_max_inbreeding_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "max_inbreeding")
+
+def test_min_inbreeding_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "min_inbreeding")
+
+def test_inverse_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "inverse")
+
+def test_max_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "max")
+
+def test_mean_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "mean")
+
+def test_min_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "min")
+
+def test_to_pandas_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "to_pandas")
+
+def test_to_csv_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "to_csv")
+
+def test_to_hdf5_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "to_hdf5")
+
+def test_from_pandas_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "from_pandas")
+
+def test_from_csv_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "from_csv")
+
+def test_from_hdf5_is_abstract():
+    assert_abstract_method(CoancestryMatrix, "from_hdf5")
 
 def test_from_gmat_is_abstract():
     assert_abstract_method(CoancestryMatrix, "from_gmat")

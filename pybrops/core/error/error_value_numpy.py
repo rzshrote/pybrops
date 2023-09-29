@@ -37,6 +37,39 @@ from pybrops.core.error.error_generic_numpy import generic_check_ndarray_shape
 ############################### check functions ################################
 ################################################################################
 
+def check_ndarray_has_value(v: numpy.ndarray, vname: str, value: object) -> None:
+    """
+    Check if a ``numpy.ndarray`` contains a required value.
+
+    Parameters
+    ----------
+    v : numpy.ndarray
+        Input ``numpy.ndarray``.
+    vname : str
+        Name of the ``numpy.ndarray`` variable.
+    value : object
+        A required value that the ``numpy.ndarray`` must contain.
+    """
+    if value not in v:
+        raise ValueError("numpy.ndarray '{0}' must have value '{1}'".format(vname,value))
+
+def check_ndarray_has_values(v: numpy.ndarray, vname: str, *args: tuple[object]) -> None:
+    """
+    Check if a ``numpy.ndarray`` contains all required values.
+
+    Parameters
+    ----------
+    v : numpy.ndarray
+        Input ``numpy.ndarray``.
+    vname : str
+        Name of the ``numpy.ndarray`` variable.
+    args : tuple
+        A tuple of required values that the ``numpy.ndarray`` must contain.
+    """
+    for value in args:
+        if value not in v:
+            raise ValueError("numpy.ndarray '{0}' must have value '{1}'".format(vname,value))
+
 def check_ndarray_in_interval(v: numpy.ndarray, vname: str, vmin: Real, vmax: Real) -> None:
     """
     Check whether all values in a ``numpy.ndarray`` are in the interval ``[vmin, vmax]``.
@@ -53,7 +86,7 @@ def check_ndarray_in_interval(v: numpy.ndarray, vname: str, vmin: Real, vmax: Re
         Upper bound (inclusive).
     """
     if numpy.any(v < vmin) or numpy.any(v > vmax):
-        raise ValueError("ndarray '{0}' must ahve all values in the interval [{1}, {2}]".format(vname, vmin, vmax))
+        raise ValueError("numpy.ndarray '{0}' must ahve all values in the interval [{1}, {2}]".format(vname, vmin, vmax))
 
 def check_ndarray_all_gt(v: numpy.ndarray, vname: str, vmin: Real) -> None:
     """
@@ -69,7 +102,7 @@ def check_ndarray_all_gt(v: numpy.ndarray, vname: str, vmin: Real) -> None:
         Minimium value for elements in the array.
     """
     if numpy.any(v <= vmin):
-        raise ValueError("ndarray '{0}' must must have all values greater than {1}".format(vname,vmin))
+        raise ValueError("numpy.ndarray '{0}' must must have all values greater than {1}".format(vname,vmin))
 
 def check_ndarray_all_gteq(v: numpy.ndarray, vname: str, vmin: Real) -> None:
     """
@@ -85,7 +118,7 @@ def check_ndarray_all_gteq(v: numpy.ndarray, vname: str, vmin: Real) -> None:
         Minimium value for elements in the array.
     """
     if numpy.any(v < vmin):
-        raise ValueError("ndarray '{0}' must must have all values greater than or equal to {1}".format(vname,vmin))
+        raise ValueError("numpy.ndarray '{0}' must must have all values greater than or equal to {1}".format(vname,vmin))
 
 ################# check_ndarray_eq #################
 def check_ndarray_eq(v: numpy.ndarray, vname: str, w: numpy.ndarray, wname: str) -> None:
@@ -104,9 +137,9 @@ def check_ndarray_eq(v: numpy.ndarray, vname: str, w: numpy.ndarray, wname: str)
         Name assigned to the second input array.
     """
     if v.shape != w.shape:
-        raise ValueError("ndarrays '{0}' and '{1}' are not equal: must have same shape".format(vname, wname))
+        raise ValueError("numpy.ndarrays '{0}' and '{1}' are not equal: must have same shape".format(vname, wname))
     if numpy.any(v != w):
-        raise ValueError("ndarrays '{0}' and '{1}' are not equal: must have same values at all positions".format(vname,wname))
+        raise ValueError("numpy.ndarrays '{0}' and '{1}' are not equal: must have same values at all positions".format(vname,wname))
 
 def check_ndarray_is_binary(v: numpy.ndarray, vname: str) -> None:
     """
@@ -120,7 +153,7 @@ def check_ndarray_is_binary(v: numpy.ndarray, vname: str) -> None:
         Name assigned to input array.
     """
     if not numpy.all((v == 0) | (v == 1)):
-        raise ValueError("ndarray '{0}' must have values equal to 0 or 1".format(vname))
+        raise ValueError("numpy.ndarray '{0}' must have values equal to 0 or 1".format(vname))
 
 ################ check_ndarray_ndim ################
 def check_ndarray_ndim(v: numpy.ndarray, vname: str, vndim: int) -> None:
@@ -137,7 +170,7 @@ def check_ndarray_ndim(v: numpy.ndarray, vname: str, vndim: int) -> None:
         Expected number of dimensions for the array.
     """
     if v.ndim != vndim:
-        raise ValueError("ndarray '{0}' must have dimension equal to {1}".format(vname, vndim))
+        raise ValueError("numpy.ndarray '{0}' must have dimension equal to {1}".format(vname, vndim))
 
 def check_ndarray_ndim_gteq(v: numpy.ndarray, vname: str, vndim: int) -> None:
     """
@@ -153,7 +186,7 @@ def check_ndarray_ndim_gteq(v: numpy.ndarray, vname: str, vndim: int) -> None:
         Minimum number of dimensions for the array.
     """
     if v.ndim < vndim:
-        raise ValueError("ndarray '{0}' must have dimension greater than or equal to {1}".format(vname, vndim))
+        raise ValueError("numpy.ndarray '{0}' must have dimension greater than or equal to {1}".format(vname, vndim))
 
 ################ check_ndarray_size ################
 def check_ndarray_size(v: numpy.ndarray, vname: str, vsize: int) -> None:
@@ -170,7 +203,7 @@ def check_ndarray_size(v: numpy.ndarray, vname: str, vsize: int) -> None:
         Expected size of the array.
     """
     if v.size != vsize:
-        raise ValueError("ndarray '{0}' must have size equal to {1}".format(vname, vsize))
+        raise ValueError("numpy.ndarray '{0}' must have size equal to {1}".format(vname, vsize))
 
 ################ check_ndarray_sum #################
 def check_ndarray_sum(v: numpy.ndarray, vname: str, vsum: numpy.ndarray, vaxis: int) -> None:
@@ -189,7 +222,7 @@ def check_ndarray_sum(v: numpy.ndarray, vname: str, vsum: numpy.ndarray, vaxis: 
         Axis along which to calculate the sum of the input array.
     """
     if numpy.any(v.sum(vaxis) != vsum):
-        raise ValueError("ndarray '{0}' must have sum equal to {1} along axis {2}".format(vname, vsum, vaxis))
+        raise ValueError("numpy.ndarray '{0}' must have sum equal to {1} along axis {2}".format(vname, vsum, vaxis))
 
 def check_ndarray_mean_is_approx(v: numpy.ndarray, vname: str, vmean: Real, vaxis: int = None, rtol: float = 1e-5, atol: float = 1e-8) -> None:
     """
@@ -211,7 +244,7 @@ def check_ndarray_mean_is_approx(v: numpy.ndarray, vname: str, vmean: Real, vaxi
         The absolute tolerance parameter.
     """
     if not numpy.allclose(v.mean(vaxis), vmean, rtol = rtol, atol = atol):
-        raise ValueError("ndarray '{0}' must have a mean of {1} along axis {2}".format(vname,vmean,vaxis))
+        raise ValueError("numpy.ndarray '{0}' must have a mean of {1} along axis {2}".format(vname,vmean,vaxis))
 
 def check_ndarray_std_is_approx(v: numpy.ndarray, vname: str, vstd: Real, vaxis: int = None, rtol: float = 1e-5, atol: float = 1e-8) -> None:
     """
@@ -233,7 +266,7 @@ def check_ndarray_std_is_approx(v: numpy.ndarray, vname: str, vstd: Real, vaxis:
         The absolute tolerance parameter.
     """
     if not numpy.allclose(v.std(vaxis), vstd, rtol = rtol, atol = atol):
-        raise ValueError("ndarray '{0}' must have a standard deviation of {1} along axis {2}".format(vname,vstd,vaxis))
+        raise ValueError("numpy.ndarray '{0}' must have a standard deviation of {1} along axis {2}".format(vname,vstd,vaxis))
 
 ################ check_ndarray_len #################
 def check_ndarray_len_eq(v: numpy.ndarray, vname: str, vlen: int) -> None:
@@ -251,12 +284,7 @@ def check_ndarray_len_eq(v: numpy.ndarray, vname: str, vlen: int) -> None:
     """
     if len(v) != vlen:
         raise ValueError(
-            "ndarray '{0}' must have length equal to {1} but received length equal to {2}".format(
-                vname, 
-                vlen, 
-                len(v)
-            )
-        )
+            "numpy.ndarray '{0}' must have length == {1} but received length == {2}".format(vname,vlen,len(v)))
 
 def check_ndarray_len_gteq(v: numpy.ndarray, vname: str, vlen: int) -> None:
     """
@@ -272,13 +300,7 @@ def check_ndarray_len_gteq(v: numpy.ndarray, vname: str, vlen: int) -> None:
         Minimum length of the input array.
     """
     if len(v) < vlen:
-        raise ValueError(
-            "ndarray '{0}' must have length greater than or equal to {1} but received length equal to {2}".format(
-                vname, 
-                vlen,
-                len(v)
-            )
-        )
+        raise ValueError("numpy.ndarray '{0}' must have length >= {1} but received length == {2}".format(vname,vlen,len(v)))
 
 ############### generic_check_ndarray_shape ################
 def check_ndarray_shape_eq(v: numpy.ndarray, vname: str, vshape: tuple) -> None:
@@ -295,7 +317,7 @@ def check_ndarray_shape_eq(v: numpy.ndarray, vname: str, vshape: tuple) -> None:
         Expected shape of the input array.
     """
     if v.shape != vshape:
-        raise ValueError("ndarray '{0}' must have shape equal to {1}".format(vname, vshape))
+        raise ValueError("numpy.ndarray '{0}' must have shape equal to {1}".format(vname, vshape))
 
 def check_ndarray_axis_len(v: numpy.ndarray, vname: str, vaxis: int, vlen: int) -> None:
     """
@@ -330,7 +352,7 @@ def check_ndarray_axis_len_eq(v: numpy.ndarray, vname: str, vaxis: int, vaxislen
         Expected length of the input array along the provided axis.
     """
     if v.shape[vaxis] != vaxislen:
-        raise ValueError("ndarray '{0}' must have axis {1} equal to {2}".format(vname,vaxis,vaxislen))
+        raise ValueError("numpy.ndarray '{0}' must have axis {1} equal to {2}".format(vname,vaxis,vaxislen))
 
 def check_ndarray_axis_len_lt(v: numpy.ndarray, vname: str, vaxis: int, vaxislen: int) -> None:
     """
@@ -348,7 +370,7 @@ def check_ndarray_axis_len_lt(v: numpy.ndarray, vname: str, vaxis: int, vaxislen
         Maximum length of the input array along the provided axis.
     """
     if v.shape[vaxis] >= vaxislen:
-        raise ValueError("ndarray '{0}' must have axis {1} less than {2}".format(vname,vaxis,vaxislen))
+        raise ValueError("numpy.ndarray '{0}' must have axis {1} less than {2}".format(vname,vaxis,vaxislen))
 
 def check_ndarray_axis_len_lteq(v: numpy.ndarray, vname: str, vaxis: int, vaxislen: int) -> None:
     """
@@ -366,7 +388,7 @@ def check_ndarray_axis_len_lteq(v: numpy.ndarray, vname: str, vaxis: int, vaxisl
         Maximum length of the input array along the provided axis.
     """
     if v.shape[vaxis] > vaxislen:
-        raise ValueError("ndarray '{0}' must have axis {1} less than or equal to {2}".format(vname,vaxis,vaxislen))
+        raise ValueError("numpy.ndarray '{0}' must have axis {1} less than or equal to {2}".format(vname,vaxis,vaxislen))
 
 def check_ndarray_axis_len_gt(v: numpy.ndarray, vname: str, vaxis: int, vaxislen: int) -> None:
     """
@@ -384,7 +406,7 @@ def check_ndarray_axis_len_gt(v: numpy.ndarray, vname: str, vaxis: int, vaxislen
         Minimum length of the input array along the provided axis.
     """
     if v.shape[vaxis] <= vaxislen:
-        raise ValueError("ndarray '{0}' must have axis {1} greater than {2}".format(vname,vaxis,vaxislen))
+        raise ValueError("numpy.ndarray '{0}' must have axis {1} greater than {2}".format(vname,vaxis,vaxislen))
 
 def check_ndarray_axis_len_gteq(v: numpy.ndarray, vname: str, vaxis: int, vaxislen: int) -> None:
     """
@@ -402,7 +424,7 @@ def check_ndarray_axis_len_gteq(v: numpy.ndarray, vname: str, vaxis: int, vaxisl
         Minimum length of the input array along the provided axis.
     """
     if v.shape[vaxis] < vaxislen:
-        raise ValueError("ndarray '{0}' must have axis {1} greater than or equal to {2}".format(vname,vaxis,vaxislen))
+        raise ValueError("numpy.ndarray '{0}' must have axis {1} greater than or equal to {2}".format(vname,vaxis,vaxislen))
 
 ############# generic_check_ndarray_is_square ##############
 def check_ndarray_is_hypercube(v: numpy.ndarray, vname: str) -> None:
@@ -418,7 +440,7 @@ def check_ndarray_is_hypercube(v: numpy.ndarray, vname: str) -> None:
     """
     s = v.shape # get shape
     if any(s[0] != e for e in s):
-        raise ValueError("ndarray '{0}' must have equal lengths along all axes".format(vname))
+        raise ValueError("numpy.ndarray '{0}' must have equal lengths along all axes".format(vname))
 
 def check_ndarray_is_square(v: numpy.ndarray, vname: str) -> None:
     """
@@ -432,9 +454,9 @@ def check_ndarray_is_square(v: numpy.ndarray, vname: str) -> None:
         Name assigned to input array.
     """
     if v.ndim < 2:
-        raise ValueError("ndarray '{0}' must have at least two dimensions".format(vname))
+        raise ValueError("numpy.ndarray '{0}' must have at least two dimensions".format(vname))
     if v.shape[-2] != v.shape[-1]:
-        raise ValueError("ndarray '{0}' must have equal lengths along axes {1} and {2}".format(vname,-2 % v.ndim,-1 % v.ndim))
+        raise ValueError("numpy.ndarray '{0}' must have equal lengths along axes {1} and {2}".format(vname,-2 % v.ndim,-1 % v.ndim))
 
 def check_ndarray_is_triu(v: numpy.ndarray, vname: str) -> None:
     """
@@ -448,7 +470,7 @@ def check_ndarray_is_triu(v: numpy.ndarray, vname: str) -> None:
         Name assigned to input array.
     """
     if numpy.any(v != numpy.triu(v)):
-        raise ValueError("ndarray '{0}' must be an upper triangle matrix".format(vname))
+        raise ValueError("numpy.ndarray '{0}' must be an upper triangle matrix".format(vname))
 
 ############# check_ndarray_len_is_multiple_of #############
 def check_ndarray_len_is_multiple_of(v: numpy.ndarray, vname: str, m: int) -> None:

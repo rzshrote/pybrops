@@ -513,7 +513,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             self, 
             taxa_col: Optional[str] = "taxa",
             taxa_grp_col: Optional[str] = "taxa_grp",
-            trait_cols: Optional[Union[str,Sequence]] = "trait",
+            trait_cols: Optional[Union[str,Sequence]] = "all",
             unscale: bool = False,
             **kwargs: dict
         ) -> pandas.DataFrame:
@@ -536,8 +536,8 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             Names of the trait columns to which to write breeding values.
             If ``Sequence``, column names are given by the strings in the 
             ``trait_cols`` Sequence.
-            If ``str``, must be equal to ``"trait"``. Use trait names given in 
-            the ``trait`` property.
+            If ``str``, must be equal to ``"all"``. Use all trait names given 
+            in the ``trait`` property.
             If ``None``, use numeric trait column names.
         
         unscale : bool, default = False
@@ -559,7 +559,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             check_is_str(taxa_grp_col, "taxa_grp_col")
         if trait_cols is not None:
             if isinstance(trait_cols, str):
-                check_str_value(trait_cols, "trait_cols", "trait")
+                check_str_value(trait_cols, "trait_cols", "all")
             elif isinstance(trait_cols, Sequence):
                 check_len(trait_cols, "trait_cols", self.ntrait)
             else:
@@ -734,7 +734,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             ``(t,)`` filled with the provided value.
 
         taxa_col : str, Integral, None, default = "taxa"
-            Name of the column to which to read taxa names.
+            Name of the column from which to read taxa names.
             If of type ``str``, taxa names are read from the column named 
             defined by ``taxa_col``.
             If of type ``Integral``, taxa names are read from the column 
@@ -816,6 +816,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             taxa = taxa, 
             taxa_grp = taxa_grp, 
             trait = trait, 
+            **kwargs
         )
 
         return out
@@ -858,7 +859,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             ``(t,)`` filled with the provided value.
 
         taxa_col : str, Integral, None, default = "taxa"
-            Name of the column to which to read taxa names.
+            Name of the column from which to read taxa names.
             If of type ``str``, taxa names are read from the column named 
             defined by ``taxa_col``.
             If of type ``Integral``, taxa names are read from the column 
@@ -866,7 +867,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             If ``None``, taxa names are not imported.
         
         taxa_grp_col : str, None, default = "taxa_grp"
-            Name of the column to which to read taxa group names.
+            Name of the column from which to read taxa group names.
             If of type ``str``, taxa group names are read from the column named 
             defined by ``taxa_col``.
             If of type ``Integral``, taxa group names are read from the column 

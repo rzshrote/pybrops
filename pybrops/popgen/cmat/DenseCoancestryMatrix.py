@@ -7,22 +7,26 @@ __all__ = [
     "check_is_DenseCoancestryMatrix",
 ]
 
-from numbers import Real
-from typing import Optional, Union
+import math
+from numbers import Integral, Real
+from typing import Optional, Sequence, Union
 import numpy
 import warnings
 import h5py
 from numpy.typing import DTypeLike
+import pandas
 from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_value_python import check_all_equal
+from pybrops.core.error.error_type_pandas import check_Series_all_type, check_is_pandas_DataFrame
+from pybrops.core.error.error_value_pandas import check_DataFrame_has_column, check_DataFrame_has_column_index, check_DataFrame_has_column_indices, check_DataFrame_has_columns, check_Series_has_indices, check_Series_has_values
+from pybrops.core.error.error_value_python import check_Sequence_has_indices, check_Sequence_has_values, check_all_equal
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype
-from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_has_values, check_ndarray_ndim
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
-from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_type_python import check_Sequence_all_type, check_is_str, check_is_str_or_Integral, check_is_str_or_Sequence
 from pybrops.core.error.error_value_python import check_str_value
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
 from pybrops.core.util.h5py import save_dict_to_hdf5
@@ -166,7 +170,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             return 0.5 * self._mat
 
     ############## Coancestry/kinship Methods ##############
-    def coancestry(self, *args, **kwargs: dict):
+    def coancestry(self, *args: tuple, **kwargs: dict):
         """
         Retrieve the coancestry between individuals.
 
@@ -179,7 +183,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         """
         return self._mat[args]
 
-    def kinship(self, *args, **kwargs: dict):
+    def kinship(self, *args: tuple, **kwargs: dict):
         """
         Retrieve the kinship between individuals.
 
@@ -491,7 +495,206 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         
         return out
 
-    ################### Matrix File I/O ####################
+    ###################### Matrix I/O ######################
+    def to_pandas(
+            self, 
+            taxa_col: str = "taxa",
+            taxa_grp_col: Optional[str] = "taxa_grp",
+            taxa: Union[str,Sequence[Union[str,Integral]]] = "all",
+            **kwargs: dict
+        ) -> pandas.DataFrame:
+        """
+        Export a ``DenseCoancestryMatrix`` to a ``pandas.DataFrame``.
+
+        Parameters
+        ----------
+        taxa_col : str, default = "taxa"
+            Name of the column to which to write taxa names. Cannot be ``None``.
+        
+        taxa_grp_col : str, None, default = "taxa_grp"
+            Name of the column to which to write taxa group names.
+            If ``str``, the column is given the name in ``taxa_grp_col``.
+            If ``None``, the column is not exported.
+
+        taxa : str, Sequence, default = "all"
+            Name(s) of the taxa columns for which to write coancestry values.
+            If ``Sequence``, export the taxa names given by the string or 
+            integer value in the ``taxa`` Sequence.
+            If ``str``, must be equal to ``"all"``. Export all taxa names as is.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a 
+            ``pandas.DataFrame``.
+        
+        Returns
+        -------
+        out : pandas.DataFrame
+            An output dataframe.
+        """
+        ###
+        ### type checks
+        ###
+
+        ### taxa_col
+        check_is_str(taxa_col, "taxa_col")
+
+        ### taxa_grp_col
+        if taxa_grp_col is not None:
+            check_is_str(taxa_grp_col, "taxa_grp_col")
+
+        ### taxa
+        if isinstance(taxa, str):
+            check_str_value(taxa, "taxa", "all")
+        elif isinstance(taxa, Sequence):
+            # if no taxa labels present, check that taxa names are all indices 
+            if self.taxa is None:
+                check_Sequence_all_type(taxa, "taxa", Integral)
+            # if taxa labels present, check that taxa names are all str or indices
+            # for str values, make sure they are in the taxa labels
+            else:
+                check_Sequence_all_type(taxa, "taxa", (str,Integral))
+                taxa_str = tuple(e for e in taxa if isinstance(e,str))
+                check_ndarray_has_values(self.taxa, "CoancestryMatrix.taxa", *taxa_str)
+        else:
+            check_is_str_or_Sequence(taxa, "taxa")
+
+        ###
+        ### Vector extraction
+        ###
+
+        # construct taxa selection indices
+        taxaix = None
+        # if taxa is string, get all indices
+        if isinstance(taxa, str) and (taxa == "all"):
+            taxaix = numpy.arange(self.ntaxa)
+        # else taxa is Sequence, get select indices
+        else:
+            # if no taxa labels, then all taxa elements are indices
+            if self.taxa is None:
+                taxaix = numpy.array(taxa, dtype = int)
+            # else taxa labels, then convert string to indices
+            else:
+                # get first instance of string or index
+                taxaix = numpy.array(
+                    [numpy.argmax(self.taxa == t) if isinstance(t,str) else t for t in taxa], 
+                    dtype = int
+                )
+
+        # extract the central matrix
+        mat_data = None
+        # if taxa is string, get all values
+        if isinstance(taxa, str) and (taxa == "all"):
+            mat_data = self.mat
+        # else taxa is Sequence, get select indices
+        else:
+            mat_data = self.mat[taxaix,:][:,taxaix]
+
+        # extract taxa labels
+        taxa_data = None
+        # if taxa is string, get all taxa names
+        if isinstance(taxa, str) and (taxa == "all"):
+            if self.taxa is None:
+                taxa_data = [str(i) for i in range(self.ntaxa)]
+            else:
+                taxa_data = [str(e) for e in self.taxa]
+        # else taxa is Sequence, get select taxa names
+        else:
+            if self.taxa is None:
+                taxa_data = [str(i) for i in taxaix]
+            else:
+                taxa_data = [str(e) for e in self.taxa[taxaix]]
+
+        # extract taxa group labels
+        taxa_grp_data = None
+        if taxa_grp_col is not None:
+            # if taxa is string, get all taxa group labels
+            if isinstance(taxa, str) and (taxa == "all"):
+                if self.taxa_grp is None:
+                    taxa_grp_data = numpy.repeat(None, self.ntaxa)
+                else:
+                    taxa_grp_data = self.taxa_grp
+            # else taxa is Sequence, get select taxa group labels
+            else:
+                if self.taxa_grp is None:
+                    taxa_grp_data = numpy.repeat(None, len(taxaix))
+                else:
+                    taxa_grp_data = self.taxa_grp[taxaix]
+
+        ###
+        ### DataFrame construction
+        ###
+
+        # make dictionary for labels
+        labels_dict = {taxa_col: taxa_data}
+        if taxa_grp_col is not None:
+            labels_dict[taxa_grp_col] = taxa_grp_data
+        
+        # make dataframe for labels
+        labels_df = pandas.DataFrame(labels_dict)
+
+        # make dataframe for values
+        values_df = pandas.DataFrame(mat_data, columns = taxa_data)
+
+        # concatenate columns
+        out = pandas.concat([labels_df,values_df], axis = 1)
+
+        return out
+
+    def to_csv(
+            self, 
+            filename: str,
+            taxa_col: Optional[str] = "taxa",
+            taxa_grp_col: Optional[str] = "taxa_grp",
+            sep: str = ',', 
+            header: bool = True, 
+            index: bool = False, 
+            **kwargs: dict
+        ) -> None:
+        """
+        Write an object to a CSV file.
+
+        Parameters
+        ----------
+        filename : str
+            CSV file name to which to write.
+
+        taxa_col : str, None, default = "taxa"
+            Name of the column to which to write taxa names.
+            If ``str``, the column is given the name in ``taxa_col``.
+            If ``None``, the column is not exported.
+        
+        taxa_grp_col : str, None, default = "taxa_grp"
+            Name of the column to which to write taxa group names.
+            If ``str``, the column is given the name in ``taxa_grp_col``.
+            If ``None``, the column is not exported.
+
+        sep : str, default = ","
+            Separator to use in the exported CSV file.
+        
+        header : bool, default = True
+            Whether to save header names.
+        
+        index : bool, default = False
+            Whether to save a row index in the exported CSV file.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a CSV.
+        """
+        # construct dataframe
+        df = self.to_pandas(
+            taxa_col = taxa_col,
+            taxa_grp_col = taxa_grp_col,
+        )
+
+        # export using pandas
+        df.to_csv(
+            path_or_buf = filename,
+            sep = sep,
+            header = header,
+            index = index,
+            **kwargs
+        )
+
     def to_hdf5(
             self, 
             filename: str, 
@@ -529,7 +732,228 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
 
     ############################## Class Methods ###############################
 
-    ################### Matrix File I/O ####################
+    ###################### Matrix I/O ######################
+    @classmethod
+    def from_pandas(
+            cls, 
+            df: pandas.DataFrame,
+            taxa_col: Union[str,Integral] = "taxa",
+            taxa_grp_col: Optional[Union[str,Integral]] = "taxa_grp",
+            taxa: Union[str,Sequence[Union[str,Integral]]] = "all",
+            **kwargs: dict
+        ) -> 'DenseCoancestryMatrix':
+        """
+        Read a ``DenseCoancestryMatrix`` from a ``pandas.DataFrame``.
+
+        Parameters
+        ----------
+        df : pandas.DataFrame
+            Pandas dataframe from which to read.
+
+        taxa_col : str, Integral, None, default = "taxa"
+            Name of the column from which to read taxa names. Cannot be ``None``.
+            This column is used to search for column names to extract coancestry values.
+            Elements in this column are interpreted as strings
+            If of type ``str``, taxa names are read from the column named 
+            defined by ``taxa_col``.
+            If of type ``Integral``, taxa names are read from the column 
+            number defined by ``taxa_col``.
+        
+        taxa_grp_col : str, None, default = "taxa_grp"
+            Name of the column from which to read taxa group names.
+            If of type ``str``, taxa group names are read from the column named 
+            defined by ``taxa_col``.
+            If of type ``Integral``, taxa group names are read from the column 
+            number defined by ``taxa_col``.
+            If ``None``, taxa group names are not imported.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a 
+            ``pandas.DataFrame``.
+
+        Returns
+        -------
+        out : DenseCoancestryMatrix
+            A ``DenseCoancestryMatrix`` read from a ``pandas.DataFrame``.
+        """
+        ###
+        ### type checks
+        ###
+
+        ### df
+        check_is_pandas_DataFrame(df, "df")
+
+        # force conversion of column names to string
+        df.columns = df.columns.astype(str)
+
+        ### taxa_col
+        if isinstance(taxa_col, str):
+            check_DataFrame_has_column(df, "df", taxa_col)
+        elif isinstance(taxa_col, Integral):
+            check_DataFrame_has_column_index(df, "df", taxa_col)
+        else:
+            check_is_str_or_Integral(taxa_col, "taxa_col")
+
+        ### taxa_grp_col
+        if taxa_grp_col is not None:
+            if isinstance(taxa_grp_col, str):
+                check_DataFrame_has_column(df, "df", taxa_grp_col)
+                col = df[taxa_grp_col]
+            elif isinstance(taxa_grp_col, Integral):
+                check_DataFrame_has_column_index(df, "df", taxa_grp_col)
+                col = df.iloc[:,taxa_grp_col]
+                # if all entries are None, treat as though no taxa group column was provided
+                if all(e is None for e in col):
+                    taxa_grp_col = None
+            else:
+                check_is_str_or_Integral(taxa_grp_col, "taxa_grp_col")
+        # extract the taxa series for future use
+        taxa_col_pds = df[taxa_col] if isinstance(taxa_col,str) else df.iloc[:,taxa_col]
+
+        ### taxa
+        if isinstance(taxa, str):
+            check_str_value(taxa, "taxa", "all")
+            check_Series_all_type(taxa_col_pds, "df[taxa_col]", (str,Integral))
+            taxa_str = tuple(e for e in taxa_col_pds if isinstance(e,str))
+            taxa_int = tuple(e for e in taxa_col_pds if isinstance(e,Integral))
+            check_DataFrame_has_columns(df, "df", *taxa_str)
+            check_DataFrame_has_column_indices(df, "df", *taxa_int)
+        elif isinstance(taxa, Sequence):
+            check_Series_all_type(taxa, "taxa", (str,Integral))
+            taxa_str = tuple(e for e in taxa if isinstance(e,str))
+            taxa_int = tuple(e for e in taxa if isinstance(e,Integral))
+            check_DataFrame_has_columns(df, "df", *taxa_str)
+            check_DataFrame_has_column_indices(df, "df", *taxa_int)
+            check_Series_has_values(taxa_col_pds, "df[taxa_col]", *taxa_str)
+            check_Series_has_indices(taxa_col_pds, "df[taxa_col]", *taxa_int)
+        else:
+            check_is_str_or_Sequence(taxa, "taxa")
+
+        ### 
+        ### sanitize inputs
+        ### 
+
+        if taxa_grp_col is not None:
+            # calculate column index
+            colix = df.columns.get_loc(taxa_grp_col) if isinstance(taxa_grp_col,str) else taxa_grp_col
+            # get mask of where values are NA
+            mask = df.iloc[:,colix].isna()
+            # convert None to pandas.NA
+            df.iloc[mask,colix] = pandas.NA
+            # if all entries are None, treat as though no taxa group column was provided
+            if mask.all():
+                taxa_grp_col = None
+
+        ###
+        ### data extraction
+        ###
+
+        # calculate row indices from the taxa column index
+        rowix = None
+        if isinstance(taxa, str) and (taxa == "all"):
+            rowix = [i for i in range(len(taxa_col_pds))]
+        elif isinstance(taxa, Sequence):
+            taxa_col_pdi = pandas.Index(taxa_col_pds)
+            rowix = [taxa_col_pdi.get_loc(e) if isinstance(e,str) else e for e in taxa]
+        
+        # calculate column indices
+        colix = None
+        if isinstance(taxa, str) and (taxa == "all"):
+            colix = [df.columns.get_loc(str(e)) for e in taxa_col_pds]
+        elif isinstance(taxa, Sequence):
+            colix = [df.columns.get_loc(str(e)) for e in taxa]
+
+        # extract dataframe rows and columns for matrix construction
+        mat_data = df.iloc[rowix,:].iloc[:,colix].to_numpy(dtype = float, na_value = numpy.nan)
+        taxa_data = taxa_col_pds[rowix].to_numpy(dtype = object)
+        taxa_grp_data = None
+        if taxa_grp_col is not None:
+            taxa_grp_col_pds = df[taxa_grp_col] if isinstance(taxa_grp_col,str) else df.iloc[:,taxa_grp_col]
+            taxa_grp_data = taxa_grp_col_pds[rowix].to_numpy(dtype = int, na_value = -1)
+
+        ###
+        ### construct object
+        ###
+
+        # construct object
+        out = cls(
+            mat = mat_data,
+            taxa = taxa_data,
+            taxa_grp = taxa_grp_data,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def from_csv(
+            cls, 
+            filename: str,
+            sep: str = ',',
+            header: int = 0,
+            taxa_col: Union[str,Integral] = "taxa",
+            taxa_grp_col: Optional[Union[str,Integral]] = "taxa_grp",
+            **kwargs: dict
+        ) -> 'DenseCoancestryMatrix':
+        """
+        Read a ``DenseCoancestryMatrix`` from a CSV file.
+
+        Parameters
+        ----------
+        filename : str
+            CSV file name from which to read.
+        
+        sep : str, default = ','
+            CSV delimiter to use.
+        
+        header : int, list of int, default=0
+            Row number(s) to use as the column names, and the start of the data.
+
+        taxa_col : str, Integral, None, default = "taxa"
+            Name of the column from which to read taxa names. Cannot be ``None``.
+            This column is used to search for column names to extract coancestry values.
+            If of type ``str``, taxa names are read from the column named 
+            defined by ``taxa_col``.
+            If of type ``Integral``, taxa names are read from the column 
+            number defined by ``taxa_col``.
+        
+        taxa_grp_col : str, None, default = "taxa_grp"
+            Name of the column from which to read taxa group names.
+            If of type ``str``, taxa group names are read from the column named 
+            defined by ``taxa_col``.
+            If of type ``Integral``, taxa group names are read from the column 
+            number defined by ``taxa_col``.
+            If ``None``, taxa group names are not imported.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a CSV.
+
+        Returns
+        -------
+        out : DenseCoancestryMatrix
+            A ``DenseCoancestryMatrix`` read from a CSV file.
+        """
+        # type checks
+        check_is_str(sep, "sep")
+
+        # read file using pandas
+        df = pandas.read_csv(
+            filename,
+            sep = sep,
+            header = header,
+            **kwargs
+        )
+
+        # construct genetic map from pandas.DataFrame
+        out = cls.from_pandas(
+            df = df,
+            taxa_col = taxa_col, 
+            taxa_grp_col = taxa_grp_col, 
+            **kwargs
+        )
+
+        return out
+
     @classmethod
     def from_hdf5(
             cls, 
@@ -537,19 +961,19 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             groupname: Optional[str] = None
         ) -> 'DenseCoancestryMatrix':
         """
-        Read DenseMatrix from an HDF5 file.
+        Read a ``DenseCoancestryMatrix`` from an HDF5 file.
 
         Parameters
         ----------
         filename : str
             HDF5 file name which to read.
         groupname : str or None
-            HDF5 group name under which DenseMatrix data is stored.
-            If None, DenseMatrix is read from base HDF5 group.
+            HDF5 group name under which the ``DenseCoancestryMatrix`` data is stored.
+            If None, the ``DenseCoancestryMatrix`` is read from base HDF5 group.
 
         Returns
         -------
-        out : DenseMatrix
+        out : DenseCoancestryMatrix
             A dense matrix read from file.
         """
         check_file_exists(filename)                             # check file exists

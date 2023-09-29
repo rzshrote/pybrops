@@ -13,6 +13,7 @@ __all__ = [
     "error_type_numpy",
     "error_value_numpy",
     "error_type_pandas",
+    "error_value_pandas",
 ]
 
 # order dependent import
@@ -36,3 +37,4 @@ from pybrops.core.error import error_value_numpy
 
 # pandas errors
 from pybrops.core.error import error_type_pandas
+from pybrops.core.error import error_value_pandas

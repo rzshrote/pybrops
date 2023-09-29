@@ -2,6 +2,7 @@ from numbers import Real
 from typing import Sequence
 from numpy import ndarray
 from numpy.typing import ArrayLike, DTypeLike
+import pandas
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat import TaxaMatrix
 from pybrops.core.mat.Matrix import Matrix
@@ -293,6 +294,20 @@ class DummyCoancestryMatrix(CoancestryMatrix):
         return super().min(format, axis)
     def min_inbreeding(self, format: str) -> Real:
         return super().min_inbreeding(format)
+    def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
+        return super().to_pandas(**kwargs)
+    def to_csv(self, filename: str, **kwargs: dict) -> None:
+        return super().to_csv(filename, **kwargs)
+    @classmethod
+    def from_pandas(cls, df: pandas.DataFrame, **kwargs: dict) -> CoancestryMatrix:
+        return super().from_pandas(df, **kwargs)
+    @classmethod
+    def from_csv(cls, filename: str, **kwargs: dict) -> CoancestryMatrix:
+        return super().from_csv(filename, **kwargs)
+    def ungroup(self, axis: int, **kwargs: dict) -> None:
+        return super().ungroup(axis, **kwargs)
+    def ungroup_taxa(self, **kwargs: dict) -> None:
+        return super().ungroup_taxa(**kwargs)
 
 class DummyDenseCoancestryMatrix(DenseCoancestryMatrix):
     @classmethod
