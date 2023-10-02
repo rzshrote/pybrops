@@ -40,12 +40,12 @@ class PhenotypingProtocol(metaclass=ABCMeta):
     @property
     @abstractmethod
     def var_err(self) -> object:
-        """Error variance for each trait."""
+        """Pure error variance for each trait"""
         raise NotImplementedError("property is abstract")
     @var_err.setter
     @abstractmethod
     def var_err(self, value: object) -> None:
-        """Set error variance"""
+        """Set the pure error variance for each trait"""
         raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################
