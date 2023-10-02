@@ -4,8 +4,12 @@ Phenotyping Protocols
 Class Family Overview
 =====================
 
+The ``PhenotypingProtocol`` family of classes is used to simulate the phenotyping of a set of individuals across one or more environments. Phenotyping typically induces errors in genotypic values, leading to increased realism in a simulation. 
+
 Summary of Phenotyping Protocol Classes
 =======================================
+
+Phenotyping protocol classes are found in the ``pybrops.breed.prot.pt`` module in PyBrOpS. PyBrOpS provides several simple phenotyping protocols, but for more complex phenotyping scenarios, the user may implement his or her own custom phenotyping protocols using the ``PhenotypingProtocol`` interface. Phenotyping protocol classes are summarized in the table below.
 
 .. list-table:: Summary of classes in the ``pybrops.breed.prot.pt`` module
     :widths: 25 20 50
@@ -22,10 +26,45 @@ Summary of Phenotyping Protocol Classes
       - Class representing phenotyping done without error.
     * - ``G_E_Phenotyping``
       - Concrete
-      - Class representing phenotyping with environmental effects.
+      - Class representing phenotyping with environmental effects and **no** GxE interactions.
+
+Phenotyping Protocol Properties
+===============================
+
+Phenotyping protocols have a couple of properties that can be grouped into two groups: genomic model properties and error variance properties. Tables summarizing these properties are in the following two subsections.
+
+Genomic model properties
+------------------------
+
+All phenotyping protocols rely on a true genomic model to simulate phenotypes. This true genomic prediction model is accessed via the ``gpmod`` property.
+
+.. list-table:: Summary of ``PhenotypingProtocol`` genomic model properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``gpmod``
+      - The true genomic prediction model.
+
+Error variance properties
+-------------------------
+
+All phenotyping protocols also have a basic error variance property. This error variance property quantifies the amount of pure error to be added to phenotypes. This pure error variance may be accessed via the ``var_err`` property. Other phenotyping protocols may add additional sources of error, but this is implementation dependent and no required by the ``PhenotypingProtocol`` interface.
+
+.. list-table:: Summary of ``PhenotypingProtocol`` error variance properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``var_err``
+      - The pure error variance for each trait.
 
 Loading Class Modules
 =====================
+
+Phenotyping protocols may be imported as demonstrated in the code below.
 
 .. code-block:: python
 
@@ -40,6 +79,8 @@ Loading Class Modules
 
 Creating Phenotyping Protocols
 ==============================
+
+Phenotyping protocols may be created using their constructors. Constructor definitions are implmentation dependent, but the code below demonstrates the creation of a ``G_E_Phenotyping`` object using its constructor.
 
 .. code-block:: python
 
@@ -86,6 +127,8 @@ Creating Phenotyping Protocols
 
 Setting Trait Heritabilities
 ============================
+
+After phenotyping protocol object construction, it is generally required to set the heritability for each trait. This may be accomplished using the ``set_h2`` or ``set_H2`` methods which set narrow-sense and broad-sense heritabilities, respectively. A founder population is needed to use these methods. ``set_h2`` and ``set_H2`` method usage is demonstrated below.
 
 .. code-block:: python
 
@@ -149,6 +192,8 @@ Setting Trait Heritabilities
 
 Phenotyping Individuals
 =======================
+
+Individuals may be phenotyped using the ``phenotype`` method, which accepts a set of individual genomes and returns a phenotype ``pandas.DataFrame``. The use of this method is demonstrated below.
 
 .. code-block:: python
 

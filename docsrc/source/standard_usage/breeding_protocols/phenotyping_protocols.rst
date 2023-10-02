@@ -50,9 +50,9 @@ All phenotyping protocols rely on a true genomic model to simulate phenotypes. T
 Error variance properties
 -------------------------
 
-All phenotyping protocols also have a basic error variance property. This error variance property quantifies the amount of pure error to be added to phenotypes. This pure error variance may be accessed via the ``var_err`` propertey. Other phenotyping protocols may add additional sources of error, but this is implementation dependent and no required by the ``PhenotypingProtocol`` interface.
+All phenotyping protocols also have a basic error variance property. This error variance property quantifies the amount of pure error to be added to phenotypes. This pure error variance may be accessed via the ``var_err`` property. Other phenotyping protocols may add additional sources of error, but this is implementation dependent and no required by the ``PhenotypingProtocol`` interface.
 
-.. list-table:: Summary of ``PhenotypingProtocol`` genomic model properties
+.. list-table:: Summary of ``PhenotypingProtocol`` error variance properties
     :widths: 25 50
     :header-rows: 1
 

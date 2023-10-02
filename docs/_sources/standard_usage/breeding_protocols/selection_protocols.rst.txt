@@ -4,11 +4,23 @@ Selection Protocols
 Class Family Overview
 =====================
 
+The ``SelectionProtocol`` family of classes is the most expansive of the breeding protocol families. Selection protocols are responsible for creating optimization problem definitions for selection tasks, optimizing said optimization problems, and selecting sets of individuals based on the results of optimizations.
+
+Selection protocols within the ``SelectionProtocol`` family may represent non-mating or mating selection strategies. Non-mating selection strategies are selection strategies where the pairing of individuals for mating does not matter. Mating selection strategies are selection strategies where the pairing of individuals for mating does matter.
+
 Summary of Selection Protocol Classes
 =====================================
 
+The ``SelectionProtocol`` family of classes can be found in the ``pybrops.breed.prot.sel`` module. This family of classes can be broken into two major groups: abstract classes and concrete classes. The followed two subsections detail these groups.
+
 Abstract selection protocol classes
 -----------------------------------
+
+The ``SelectionProtocol`` abstract class defines the interface for all selection protocols (both non-mating and mating strategies). Derived from this interface is a ``MateSelectionProtocol`` abstract class which defines an additional interface for selection strategies where the pairing of individuals for mating does matter.
+
+Each major abstract class has binary, integer, real, and subset subtypes, representing selection protocols where the optimization problem is defined for binary, integer, real, and subset search spaces, respectively.
+
+All interfaces are summarized below.
 
 .. list-table:: Summary of abstract classes in the ``pybrops.breed.prot.sel`` module
     :widths: 25 20 50
@@ -38,6 +50,8 @@ Abstract selection protocol classes
 
 Concrete selection protocol classes
 -----------------------------------
+
+PyBrOpS has an extensive collection of selection protocols, each defining a different selection strategy. A summary of the available implemented selection protocols is in the table below.
 
 .. list-table:: Summary of concrete classes in the ``pybrops.breed.prot.sel`` module
     :widths: 25 20 50
@@ -197,8 +211,97 @@ Concrete implementation classes
     from pybrops.breed.prot.sel.WeightedGenomicSelection import WeightedGenomicRealSelection
     from pybrops.breed.prot.sel.WeightedGenomicSelection import WeightedGenomicSubsetSelection
 
+Selection Protocol Properties
+=============================
+
+Selection protocols share numerous properties with each other, as defined in the ``SelectionProtocol`` interface. These properties can be grouped into three categories: general properties, optimization problem properties, and optimization algorithm properties. These property groupings are summarized in the next three subsections.
+
+General properties
+------------------
+
+General properties for a selection protocol describe the number of crosses, parents, matings, and progenies for a selection protocol. These properties are essential for how selection configurations are created. 
+
+.. list-table:: Summary of ``SelectionProtocol`` general properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``nselindiv``
+      - Number of selected individuals.
+    * - ``ncross``
+      - Number of cross configurations to consider.
+    * - ``nparent``
+      - Number of parents per cross configuration.
+    * - ``nmating``
+      - Number of matings per cross configuration.
+    * - ``nprogeny``
+      - Number of progeny to derive from each mating event.
+
+Optimization problem properties
+-------------------------------
+
+Optimization problem properties help define how optimization problems are constructed for later optimization usage. 
+
+.. list-table:: Summary of ``SelectionProtocol`` optimization problem properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``nobj``
+      - Number of optimization objectives.
+    * - ``obj_wt``
+      - Objective function weights.
+    * - ``obj_trans``
+      - Function which transforms outputs from ``latentfn`` to objective function values.
+    * - ``obj_trans_kwargs``
+      - Keyword arguments for the latent space to objective space transformation function.
+    * - ``nineqcv``
+      - Number of inequality constraint violation functions.
+    * - ``ineqcv_wt``
+      - Inequality constraint violation function weights.
+    * - ``ineqcv_trans``
+      - Function which transforms outputs from ``latentfn`` to inequality constraint violation values.
+    * - ``ineqcv_trans_kwargs``
+      - Keyword arguments for the latent space to inequality constraint violation transformation function.
+    * - ``neqcv``
+      - Number of equality constraint violations.
+    * - ``eqcv_wt``
+      - Equality constraint violation function weights.
+    * - ``eqcv_trans``
+      - Function which transforms outputs from ``latentfn`` to equality constraint violation values.
+    * - ``eqcv_trans_kwargs``
+      - Keyword arguments for the latent space to equality constraint violation transformation function.
+    * - ``ndset_wt``
+      - Nondominated set weights.
+    * - ``ndset_trans``
+      - Nondominated set transformation function.
+    * - ``ndset_trans_kwargs``
+      - Nondominated set transformation function keyword arguments.
+
+Optimization algorithm properties
+---------------------------------
+
+Optimization algorithm properties store information required to perform optimizations. This includes random number generator sources and single- and multi-objective optimization algorithms.
+
+.. list-table:: Summary of ``SelectionProtocol`` optimization algorithm properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``rng``
+      - Random number generation source for optimization.
+    * - ``soalgo``
+      - Single-objective optimization algorithm.
+    * - ``moalgo``
+      - Multi-objective opimization algorithm.
+
 Creating Selection Protocol Classes
 ===================================
+
+Creating selection protocols is accomplished using the constructor for a given ``SelectionProtocol`` class. The code below demonstrates the construction of a selection protocol object for unconstrained selection based on GEBVs in a subset search space.
 
 .. code-block:: python
 
@@ -215,8 +318,12 @@ Creating Selection Protocol Classes
 Generating Selection Problems for Optimization
 ==============================================
 
+Selection problems can be generated from a selection protocol object using the ``problem`` method. The following examples demonstrate how to generate unconstrained and constrained selection problems for selection based on GEBVs.
+
 Setup for unconstrained optimization
 ------------------------------------
+
+Most constructors assume unconstrained optimization by default. To create an unconstrained selection problem, first construct an unconstrained selection protocol object using the selection protocol's constructor. In the example below, a selection protocol based on GEBVs is created. Here, there are two traits and two corresponding objectives for each of the traits. We manually specify the number of objectives to be 2, making this selection protocol multi-objective in nature.
 
 .. code-block:: python
 
@@ -232,6 +339,8 @@ Setup for unconstrained optimization
 
 Setup for constrained optimization
 ----------------------------------
+
+For a constrained optimization, suppose we wish to minimize the negated sum of GEBVs (equivalent to maximizing the sum of GEBVs) for our first trait, while using our second trait as a constraint. For the constraint on the second trait, suppose that we wish to identify solutions with a negated sum of GEBVs greater than or equal to -1 (equivalent to having a maximum sum of GEBVs at 1). To accomplish this task, we define ``obj_trans`` and ``ineqcv_trans`` functions and pass them as arguments in our ``GenomicEstimatedBreedingValueSubsetSelection`` constructor. Since our ``obj_trans`` function converts two latent trait GEBV values to a single objective, we manually specify the number of objectives to be 1, making the selection protocol single-objective in nature. The code below demonstrates this.
 
 .. code-block:: python
 
@@ -275,8 +384,6 @@ Setup for constrained optimization
         """
         A custom inequality constraint violation function.
 
-        Parameters
-        ----------
         Parameters
         ----------
         decnvec : numpy.ndarray
@@ -327,6 +434,8 @@ Setup for constrained optimization
 
 Generating the selection problem
 --------------------------------
+
+After constructing our unconstrained and constrained selection protocols, we can generate selection problems from them. To create selection problems, use the ``problem`` method as demonstrated in the code block below.
 
 .. code-block:: python
 
@@ -434,6 +543,10 @@ Generating the selection problem
         t_max = None,
     )
 
+After creating unconstrained and constrained selection problems, we can test their evaluation on a random solution, as demonstrated in the code below.
+
+.. code-block:: python
+
     # generate a random solution to test
     soln = numpy.random.choice(prob_constrained.decn_space, prob_constrained.ndecn)
 
@@ -445,6 +558,8 @@ Generating the selection problem
 
 Single-Objective Optimization
 =============================
+
+Since our constrained selection protocol above is also single-objective in nature, we can use the ``sosolve`` method to optimize. The ``sosolve`` method internally creates a selection problem and uses the algorithm defined in the ``soalgo`` property to optimize this selection problem. The results of the optimization are returned as a selection solution. The code below demonstrates single-objective optimization.
 
 .. code-block:: python
 
@@ -474,6 +589,8 @@ Single-Objective Optimization
 Multi-Objective Optimization
 ============================
 
+Since our unconstrained selection protocol above is multi-objective in nature, we can use the ``mosolve`` method to optimize for both objectives. The ``mosolve`` method internally creates a selection problem and uses the algorithm defined in the ``soalgo`` property to optimize this problem. The results of the optimization are returned. The code below demonstrates multi-objective optimization.
+
 .. code-block:: python
 
     # perform single-objective optimization using 
@@ -501,6 +618,8 @@ Multi-Objective Optimization
 
 Selection
 =========
+
+Selection of individuals or mating pairs (depending on the selection protocol type) can be accomplished using the ``select`` method. Internally, this method constructs an optimization problem from inputs, optimizes the problem using an appropriate algorithm, and selects individuals, returning a selection configuration object. Cross configurations can be extracted from the returned selection configuration object. If a selection protocol is multi-objective in nature, a solution from the non-dominated set is selected using the ``ndset_trans`` function, which scores solutions based on a user-defined method. If no ``ndset_trans`` function is provided, a default function is used which scores non-dominated solutions on their distance from a vector weighing each objective equally, invariant of the scales of the objectives. The code below demonstrates how to use the ``select`` method.
 
 .. code-block:: python
 

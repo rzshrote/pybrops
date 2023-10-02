@@ -398,11 +398,17 @@
 <h1>Selection Protocols<a class="headerlink" href="#selection-protocols" title="Permalink to this heading">#</a></h1>
 <section id="class-family-overview">
 <h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SelectionProtocol</span></code> family of classes is the most expansive of the breeding protocol families. Selection protocols are responsible for creating optimization problem definitions for selection tasks, optimizing said optimization problems, and selecting sets of individuals based on the results of optimizations.</p>
+<p>Selection protocols within the <code class="docutils literal notranslate"><span class="pre">SelectionProtocol</span></code> family may represent non-mating or mating selection strategies. Non-mating selection strategies are selection strategies where the pairing of individuals for mating does not matter. Mating selection strategies are selection strategies where the pairing of individuals for mating does matter.</p>
 </section>
 <section id="summary-of-selection-protocol-classes">
 <h2>Summary of Selection Protocol Classes<a class="headerlink" href="#summary-of-selection-protocol-classes" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SelectionProtocol</span></code> family of classes can be found in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.prot.sel</span></code> module. This family of classes can be broken into two major groups: abstract classes and concrete classes. The followed two subsections detail these groups.</p>
 <section id="abstract-selection-protocol-classes">
 <h3>Abstract selection protocol classes<a class="headerlink" href="#abstract-selection-protocol-classes" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">SelectionProtocol</span></code> abstract class defines the interface for all selection protocols (both non-mating and mating strategies). Derived from this interface is a <code class="docutils literal notranslate"><span class="pre">MateSelectionProtocol</span></code> abstract class which defines an additional interface for selection strategies where the pairing of individuals for mating does matter.</p>
+<p>Each major abstract class has binary, integer, real, and subset subtypes, representing selection protocols where the optimization problem is defined for binary, integer, real, and subset search spaces, respectively.</p>
+<p>All interfaces are summarized below.</p>
 <table class="colwidths-given table" id="id1">
 <caption><span class="caption-text">Summary of abstract classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.prot.sel</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
 <colgroup>
@@ -456,6 +462,7 @@
 </section>
 <section id="concrete-selection-protocol-classes">
 <h3>Concrete selection protocol classes<a class="headerlink" href="#concrete-selection-protocol-classes" title="Permalink to this heading">#</a></h3>
+<p>PyBrOpS has an extensive collection of selection protocols, each defining a different selection strategy. A summary of the available implemented selection protocols is in the table below.</p>
 <table class="colwidths-given table" id="id2">
 <caption><span class="caption-text">Summary of concrete classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.prot.sel</span></code> module</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
 <colgroup>
@@ -665,8 +672,136 @@
 </div>
 </section>
 </section>
+<section id="selection-protocol-properties">
+<h2>Selection Protocol Properties<a class="headerlink" href="#selection-protocol-properties" title="Permalink to this heading">#</a></h2>
+<p>Selection protocols share numerous properties with each other, as defined in the <code class="docutils literal notranslate"><span class="pre">SelectionProtocol</span></code> interface. These properties can be grouped into three categories: general properties, optimization problem properties, and optimization algorithm properties. These property groupings are summarized in the next three subsections.</p>
+<section id="general-properties">
+<h3>General properties<a class="headerlink" href="#general-properties" title="Permalink to this heading">#</a></h3>
+<p>General properties for a selection protocol describe the number of crosses, parents, matings, and progenies for a selection protocol. These properties are essential for how selection configurations are created.</p>
+<table class="colwidths-given table" id="id3">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">SelectionProtocol</span></code> general properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nselindiv</span></code></p></td>
+<td><p>Number of selected individuals.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ncross</span></code></p></td>
+<td><p>Number of cross configurations to consider.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nparent</span></code></p></td>
+<td><p>Number of parents per cross configuration.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nmating</span></code></p></td>
+<td><p>Number of matings per cross configuration.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nprogeny</span></code></p></td>
+<td><p>Number of progeny to derive from each mating event.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="optimization-problem-properties">
+<h3>Optimization problem properties<a class="headerlink" href="#optimization-problem-properties" title="Permalink to this heading">#</a></h3>
+<p>Optimization problem properties help define how optimization problems are constructed for later optimization usage.</p>
+<table class="colwidths-given table" id="id4">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">SelectionProtocol</span></code> optimization problem properties</span><a class="headerlink" href="#id4" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nobj</span></code></p></td>
+<td><p>Number of optimization objectives.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">obj_wt</span></code></p></td>
+<td><p>Objective function weights.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">obj_trans</span></code></p></td>
+<td><p>Function which transforms outputs from <code class="docutils literal notranslate"><span class="pre">latentfn</span></code> to objective function values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">obj_trans_kwargs</span></code></p></td>
+<td><p>Keyword arguments for the latent space to objective space transformation function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nineqcv</span></code></p></td>
+<td><p>Number of inequality constraint violation functions.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ineqcv_wt</span></code></p></td>
+<td><p>Inequality constraint violation function weights.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ineqcv_trans</span></code></p></td>
+<td><p>Function which transforms outputs from <code class="docutils literal notranslate"><span class="pre">latentfn</span></code> to inequality constraint violation values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ineqcv_trans_kwargs</span></code></p></td>
+<td><p>Keyword arguments for the latent space to inequality constraint violation transformation function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">neqcv</span></code></p></td>
+<td><p>Number of equality constraint violations.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">eqcv_wt</span></code></p></td>
+<td><p>Equality constraint violation function weights.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">eqcv_trans</span></code></p></td>
+<td><p>Function which transforms outputs from <code class="docutils literal notranslate"><span class="pre">latentfn</span></code> to equality constraint violation values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">eqcv_trans_kwargs</span></code></p></td>
+<td><p>Keyword arguments for the latent space to equality constraint violation transformation function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ndset_wt</span></code></p></td>
+<td><p>Nondominated set weights.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ndset_trans</span></code></p></td>
+<td><p>Nondominated set transformation function.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ndset_trans_kwargs</span></code></p></td>
+<td><p>Nondominated set transformation function keyword arguments.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="optimization-algorithm-properties">
+<h3>Optimization algorithm properties<a class="headerlink" href="#optimization-algorithm-properties" title="Permalink to this heading">#</a></h3>
+<p>Optimization algorithm properties store information required to perform optimizations. This includes random number generator sources and single- and multi-objective optimization algorithms.</p>
+<table class="colwidths-given table" id="id5">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">SelectionProtocol</span></code> optimization algorithm properties</span><a class="headerlink" href="#id5" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rng</span></code></p></td>
+<td><p>Random number generation source for optimization.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">soalgo</span></code></p></td>
+<td><p>Single-objective optimization algorithm.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">moalgo</span></code></p></td>
+<td><p>Multi-objective opimization algorithm.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
 <section id="creating-selection-protocol-classes">
 <h2>Creating Selection Protocol Classes<a class="headerlink" href="#creating-selection-protocol-classes" title="Permalink to this heading">#</a></h2>
+<p>Creating selection protocols is accomplished using the constructor for a given <code class="docutils literal notranslate"><span class="pre">SelectionProtocol</span></code> class. The code below demonstrates the construction of a selection protocol object for unconstrained selection based on GEBVs in a subset search space.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create standard GEBV selection protocol in subset decision space</span>
 <span class="n">selprot</span> <span class="o">=</span> <span class="n">GenomicEstimatedBreedingValueSubsetSelection</span><span class="p">(</span>
     <span class="n">ntrait</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
@@ -681,8 +816,10 @@
 </section>
 <section id="generating-selection-problems-for-optimization">
 <h2>Generating Selection Problems for Optimization<a class="headerlink" href="#generating-selection-problems-for-optimization" title="Permalink to this heading">#</a></h2>
+<p>Selection problems can be generated from a selection protocol object using the <code class="docutils literal notranslate"><span class="pre">problem</span></code> method. The following examples demonstrate how to generate unconstrained and constrained selection problems for selection based on GEBVs.</p>
 <section id="setup-for-unconstrained-optimization">
 <h3>Setup for unconstrained optimization<a class="headerlink" href="#setup-for-unconstrained-optimization" title="Permalink to this heading">#</a></h3>
+<p>Most constructors assume unconstrained optimization by default. To create an unconstrained selection problem, first construct an unconstrained selection protocol object using the selection protocol’s constructor. In the example below, a selection protocol based on GEBVs is created. Here, there are two traits and two corresponding objectives for each of the traits. We manually specify the number of objectives to be 2, making this selection protocol multi-objective in nature.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create the selection protocol for 10 two-way crosses</span>
 <span class="n">selprot_unconstrained</span> <span class="o">=</span> <span class="n">GenomicEstimatedBreedingValueSubsetSelection</span><span class="p">(</span>
     <span class="n">ntrait</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
@@ -697,6 +834,7 @@
 </section>
 <section id="setup-for-constrained-optimization">
 <h3>Setup for constrained optimization<a class="headerlink" href="#setup-for-constrained-optimization" title="Permalink to this heading">#</a></h3>
+<p>For a constrained optimization, suppose we wish to minimize the negated sum of GEBVs (equivalent to maximizing the sum of GEBVs) for our first trait, while using our second trait as a constraint. For the constraint on the second trait, suppose that we wish to identify solutions with a negated sum of GEBVs greater than or equal to -1 (equivalent to having a maximum sum of GEBVs at 1). To accomplish this task, we define <code class="docutils literal notranslate"><span class="pre">obj_trans</span></code> and <code class="docutils literal notranslate"><span class="pre">ineqcv_trans</span></code> functions and pass them as arguments in our <code class="docutils literal notranslate"><span class="pre">GenomicEstimatedBreedingValueSubsetSelection</span></code> constructor. Since our <code class="docutils literal notranslate"><span class="pre">obj_trans</span></code> function converts two latent trait GEBV values to a single objective, we manually specify the number of objectives to be 1, making the selection protocol single-objective in nature. The code below demonstrates this.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># suppose we desire to minimize the negated GEBV of our first trait,</span>
 <span class="c1"># using our second trait as a constraint</span>
 
@@ -737,8 +875,6 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A custom inequality constraint violation function.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    decnvec : numpy.ndarray</span>
@@ -791,6 +927,7 @@
 </section>
 <section id="generating-the-selection-problem">
 <h3>Generating the selection problem<a class="headerlink" href="#generating-the-selection-problem" title="Permalink to this heading">#</a></h3>
+<p>After constructing our unconstrained and constrained selection protocols, we can generate selection problems from them. To create selection problems, use the <code class="docutils literal notranslate"><span class="pre">problem</span></code> method as demonstrated in the code block below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># Creating a genomic model</span>
 <span class="c1">#</span>
@@ -894,8 +1031,10 @@
     <span class="n">t_cur</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">t_max</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span>
-
-<span class="c1"># generate a random solution to test</span>
+</pre></div>
+</div>
+<p>After creating unconstrained and constrained selection problems, we can test their evaluation on a random solution, as demonstrated in the code below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># generate a random solution to test</span>
 <span class="n">soln</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">prob_constrained</span><span class="o">.</span><span class="n">decn_space</span><span class="p">,</span> <span class="n">prob_constrained</span><span class="o">.</span><span class="n">ndecn</span><span class="p">)</span>
 
 <span class="c1"># evaluate the solution in the unconstrained problem</span>
@@ -909,6 +1048,7 @@
 </section>
 <section id="single-objective-optimization">
 <h2>Single-Objective Optimization<a class="headerlink" href="#single-objective-optimization" title="Permalink to this heading">#</a></h2>
+<p>Since our constrained selection protocol above is also single-objective in nature, we can use the <code class="docutils literal notranslate"><span class="pre">sosolve</span></code> method to optimize. The <code class="docutils literal notranslate"><span class="pre">sosolve</span></code> method internally creates a selection problem and uses the algorithm defined in the <code class="docutils literal notranslate"><span class="pre">soalgo</span></code> property to optimize this selection problem. The results of the optimization are returned as a selection solution. The code below demonstrates single-objective optimization.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># perform single-objective optimization using</span>
 <span class="n">soln_constrained</span> <span class="o">=</span> <span class="n">selprot_constrained</span><span class="o">.</span><span class="n">sosolve</span><span class="p">(</span>
     <span class="n">pgmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -936,6 +1076,7 @@
 </section>
 <section id="multi-objective-optimization">
 <h2>Multi-Objective Optimization<a class="headerlink" href="#multi-objective-optimization" title="Permalink to this heading">#</a></h2>
+<p>Since our unconstrained selection protocol above is multi-objective in nature, we can use the <code class="docutils literal notranslate"><span class="pre">mosolve</span></code> method to optimize for both objectives. The <code class="docutils literal notranslate"><span class="pre">mosolve</span></code> method internally creates a selection problem and uses the algorithm defined in the <code class="docutils literal notranslate"><span class="pre">soalgo</span></code> property to optimize this problem. The results of the optimization are returned. The code below demonstrates multi-objective optimization.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># perform single-objective optimization using</span>
 <span class="n">soln_unconstrained</span> <span class="o">=</span> <span class="n">selprot_unconstrained</span><span class="o">.</span><span class="n">mosolve</span><span class="p">(</span>
     <span class="n">pgmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -963,6 +1104,7 @@
 </section>
 <section id="selection">
 <h2>Selection<a class="headerlink" href="#selection" title="Permalink to this heading">#</a></h2>
+<p>Selection of individuals or mating pairs (depending on the selection protocol type) can be accomplished using the <code class="docutils literal notranslate"><span class="pre">select</span></code> method. Internally, this method constructs an optimization problem from inputs, optimizes the problem using an appropriate algorithm, and selects individuals, returning a selection configuration object. Cross configurations can be extracted from the returned selection configuration object. If a selection protocol is multi-objective in nature, a solution from the non-dominated set is selected using the <code class="docutils literal notranslate"><span class="pre">ndset_trans</span></code> function, which scores solutions based on a user-defined method. If no <code class="docutils literal notranslate"><span class="pre">ndset_trans</span></code> function is provided, a default function is used which scores non-dominated solutions on their distance from a vector weighing each objective equally, invariant of the scales of the objectives. The code below demonstrates how to use the <code class="docutils literal notranslate"><span class="pre">select</span></code> method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Select individuals for the constrained problem formulation. In this selection,</span>
 <span class="c1"># the best solution from a single-objective optimization is selected to</span>
 <span class="c1"># determine the selection.</span>
@@ -1074,6 +1216,28 @@
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#concrete-implementation-classes">
      Concrete implementation classes
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#selection-protocol-properties">
+   Selection Protocol Properties
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#general-properties">
+     General properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimization-problem-properties">
+     Optimization problem properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimization-algorithm-properties">
+     Optimization algorithm properties
     </a>
    </li>
   </ul>

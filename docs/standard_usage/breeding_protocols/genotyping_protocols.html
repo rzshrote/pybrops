@@ -398,9 +398,11 @@
 <h1>Genotyping Protocols<a class="headerlink" href="#genotyping-protocols" title="Permalink to this heading">#</a></h1>
 <section id="class-family-overview">
 <h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">GenotypingProtocol</span></code> family of classes is used to simulate the genotyping of individuals. <code class="docutils literal notranslate"><span class="pre">GenotypeProtocol</span></code> classes take a set of phased genomes (represented by a <code class="docutils literal notranslate"><span class="pre">PhasedGenotypeMatrix</span></code>) and return a (typically unphased) genotype matrix of the individuals in the input.</p>
 </section>
 <section id="summary-of-genotyping-protocol-classes">
 <h2>Summary of Genotyping Protocol Classes<a class="headerlink" href="#summary-of-genotyping-protocol-classes" title="Permalink to this heading">#</a></h2>
+<p>Genotyping protocols can be found in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.prot.gt</span></code> module. PyBrOpS currently only has a single implemented class in this family, the <code class="docutils literal notranslate"><span class="pre">DenseUnphasedGenotyping</span></code> class, which represents flawless, whole-genome unphased genotyping. The genotyping protocols module is deliberately left open for users to implement their own classes if so desired.</p>
 <table class="colwidths-given table" id="id1">
 <caption><span class="caption-text">Summary of classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.prot.gt</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
 <colgroup>
@@ -426,8 +428,13 @@
 </tbody>
 </table>
 </section>
+<section id="genotyping-protocol-properties">
+<h2>Genotyping Protocol Properties<a class="headerlink" href="#genotyping-protocol-properties" title="Permalink to this heading">#</a></h2>
+<p>Genotyping protocols do not have any required properties defined in their interface.</p>
+</section>
 <section id="loading-class-modules">
 <h2>Loading Class Modules<a class="headerlink" href="#loading-class-modules" title="Permalink to this heading">#</a></h2>
+<p>Genotyping protocols may be imported as illustrated below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the GenotypingProtocol class (an abstract interface class)</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.gt.GenotypingProtocol</span> <span class="kn">import</span> <span class="n">GenotypingProtocol</span>
 
@@ -438,6 +445,7 @@
 </section>
 <section id="creating-genotyping-protocols">
 <h2>Creating Genotyping Protocols<a class="headerlink" href="#creating-genotyping-protocols" title="Permalink to this heading">#</a></h2>
+<p>Genotyping protocol class construction is entirely implementation dependent. Below is an example of how to construct a <code class="docutils literal notranslate"><span class="pre">DenseUnphasedGenotyping</span></code> object, which takes no arguments for its construction.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># object creation takes no arguments</span>
 <span class="n">gtprot</span> <span class="o">=</span> <span class="n">DenseUnphasedGenotyping</span><span class="p">()</span>
 </pre></div>
@@ -445,6 +453,7 @@
 </section>
 <section id="genotyping-individuals-from-their-genomes">
 <h2>Genotyping Individuals from their Genomes<a class="headerlink" href="#genotyping-individuals-from-their-genomes" title="Permalink to this heading">#</a></h2>
+<p>Individuals may be genotyped using the <code class="docutils literal notranslate"><span class="pre">genotype</span></code> method. This method takes a set of individual genomes (represented using a <code class="docutils literal notranslate"><span class="pre">PhasedGenotypeMatrix</span></code>) and returns a <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> representing genotyped individuals. A demonstration of how to use the <code class="docutils literal notranslate"><span class="pre">genotype</span></code> method is shown below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># Construct random genomes</span>
 <span class="c1">#</span>
@@ -548,6 +557,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#summary-of-genotyping-protocol-classes">
    Summary of Genotyping Protocol Classes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#genotyping-protocol-properties">
+   Genotyping Protocol Properties
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">

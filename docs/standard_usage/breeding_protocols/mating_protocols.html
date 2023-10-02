@@ -398,9 +398,11 @@
 <h1>Mating Protocols<a class="headerlink" href="#mating-protocols" title="Permalink to this heading">#</a></h1>
 <section id="class-family-overview">
 <h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">MatingProtocol</span></code> family of classes is used to simulate mating for a set of parents. All <code class="docutils literal notranslate"><span class="pre">MatingProtocol</span></code> classes take a set of genomes and array specifying a mating configuration and use this data to simulate recombination and produce a set of offspring genomes.</p>
 </section>
 <section id="summary-of-mating-protocol-classes">
 <h2>Summary of Mating Protocol Classes<a class="headerlink" href="#summary-of-mating-protocol-classes" title="Permalink to this heading">#</a></h2>
+<p>There are multiple pre-built mating protocol classes available in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.prot.mate</span></code> module in PyBrOpS. PyBrOpS provides implementations of self, two-way, three-way, and four-way crosses. The classes in this module are summarized below.</p>
 <table class="colwidths-given table" id="id1">
 <caption><span class="caption-text">Summary of classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.prot.mate</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
 <colgroup>
@@ -450,8 +452,34 @@
 </tbody>
 </table>
 </section>
+<section id="mating-protocol-properties">
+<h2>Mating Protocol Properties<a class="headerlink" href="#mating-protocol-properties" title="Permalink to this heading">#</a></h2>
+<p>Mating protocols share some common properties in addition to any implementation-specific properties they may have. These properties are summarized in the next subsection.</p>
+<section id="general-properties">
+<h3>General properties<a class="headerlink" href="#general-properties" title="Permalink to this heading">#</a></h3>
+<p>Mating protocols are only required to share one general property in common: <code class="docutils literal notranslate"><span class="pre">nparent</span></code>. This property is summarized in the table below. Some mating protocols may have counters for automatic naming of progenies, but this is not a feature required by the <code class="docutils literal notranslate"><span class="pre">MatingProtocol</span></code> interface.</p>
+<table class="colwidths-given table" id="id2">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">MatingProtocol</span></code> general properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nparent</span></code></p></td>
+<td><p>The number of parents required by the mating protocol.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
 <section id="loading-class-modules">
 <h2>Loading Class Modules<a class="headerlink" href="#loading-class-modules" title="Permalink to this heading">#</a></h2>
+<p>Mating protocols may be imported as demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># abstract interface classes</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.mate.MatingProtocol</span> <span class="kn">import</span> <span class="n">MatingProtocol</span>
 
@@ -468,6 +496,7 @@
 </section>
 <section id="creating-mating-protocols">
 <h2>Creating Mating Protocols<a class="headerlink" href="#creating-mating-protocols" title="Permalink to this heading">#</a></h2>
+<p>Creating mating protocol objects is straightforward. Most mating protocol implementations do not require any arguments for their construction, but they may optionally take counter arguments. Mating protocol object construction is illustrated below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># initialize mating operators with line and family counters at zero</span>
 <span class="n">mate_self</span> <span class="o">=</span> <span class="n">SelfCross</span><span class="p">()</span>
 <span class="n">mate_2w</span>   <span class="o">=</span> <span class="n">TwoWayCross</span><span class="p">()</span>
@@ -491,31 +520,9 @@
 </pre></div>
 </div>
 </section>
-<section id="mating-protocol-properties">
-<h2>Mating Protocol Properties<a class="headerlink" href="#mating-protocol-properties" title="Permalink to this heading">#</a></h2>
-<section id="mating-protocol-general-properties">
-<h3>Mating protocol general properties<a class="headerlink" href="#mating-protocol-general-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id2">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">MatingProtocol</span></code> general properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nparent</span></code></p></td>
-<td><p>The number of parents required by the mating protocol.</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
 <section id="simulating-mating-and-progeny-generation">
 <h2>Simulating Mating and Progeny Generation<a class="headerlink" href="#simulating-mating-and-progeny-generation" title="Permalink to this heading">#</a></h2>
+<p>Matings between parents can be simulated using the <code class="docutils literal notranslate"><span class="pre">mate</span></code> method. This method accepts a set of genomes for parents, an array of indices of the parents, and some additional progeny number parameters. A demonstration of how to use the <code class="docutils literal notranslate"><span class="pre">mate</span></code> method is below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># Construct random genomes</span>
 <span class="c1">#</span>
@@ -635,6 +642,18 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#mating-protocol-properties">
+   Mating Protocol Properties
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#general-properties">
+     General properties
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#loading-class-modules">
    Loading Class Modules
   </a>
@@ -643,18 +662,6 @@
   <a class="reference internal nav-link" href="#creating-mating-protocols">
    Creating Mating Protocols
   </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#mating-protocol-properties">
-   Mating Protocol Properties
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#mating-protocol-general-properties">
-     Mating protocol general properties
-    </a>
-   </li>
-  </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#simulating-mating-and-progeny-generation">

@@ -4,8 +4,12 @@ Breeding Value Estimation Protocols
 Class Family Overview
 =====================
 
+The ``BreedingValueProtocol`` family of classes is used to estimate breeding values of individuals from phenotypes.
+
 Summary of Breeding Value Protocol Classes
 ==========================================
+
+Breeding value protocols can be found in the ``pybrops.breed.prot.bv`` module. PyBrOpS provides several simple breeding value estimation protocols, but for more complex scenarios, the user may implement his or her own custom breeding value estimation protocols using the ``BreedingValueProtocol`` interface. Breeding value estimation protocol classes are summarized in the table below.
 
 .. list-table:: Summary of classes in the ``pybrops.breed.prot.bv`` module
     :widths: 25 20 50
@@ -24,6 +28,10 @@ Summary of Breeding Value Protocol Classes
       - Concrete
       - Class representing breeding value estimation using simple means calculation.
 
+Breeding Value Protocol Properties
+==================================
+
+Breeding values protocols do not have any required properties defined in their interface.
 
 Loading Class Modules
 =====================
@@ -42,6 +50,8 @@ Loading Class Modules
 Creating Breeding Value Estimation Protocols
 ============================================
 
+Breeding value estimation protocol class construction is entirely implementation dependent. Below is an example of how to construct a ``MeanPhenotypicBreedingValue`` object, which takes taxa and trait column names as its arguments.
+
 .. code-block:: python
 
     bvprot = MeanPhenotypicBreedingValue(
@@ -51,6 +61,8 @@ Creating Breeding Value Estimation Protocols
 
 Estimating Breeding Values
 ==========================
+
+Breeding values may be estimated using the ``estimate`` method. The code below demonstrates its use.
 
 .. code-block:: python
 

@@ -398,9 +398,11 @@
 <h1>Breeding Value Estimation Protocols<a class="headerlink" href="#breeding-value-estimation-protocols" title="Permalink to this heading">#</a></h1>
 <section id="class-family-overview">
 <h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">BreedingValueProtocol</span></code> family of classes is used to estimate breeding values of individuals from phenotypes.</p>
 </section>
 <section id="summary-of-breeding-value-protocol-classes">
 <h2>Summary of Breeding Value Protocol Classes<a class="headerlink" href="#summary-of-breeding-value-protocol-classes" title="Permalink to this heading">#</a></h2>
+<p>Breeding value protocols can be found in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.prot.bv</span></code> module. PyBrOpS provides several simple breeding value estimation protocols, but for more complex scenarios, the user may implement his or her own custom breeding value estimation protocols using the <code class="docutils literal notranslate"><span class="pre">BreedingValueProtocol</span></code> interface. Breeding value estimation protocol classes are summarized in the table below.</p>
 <table class="colwidths-given table" id="id1">
 <caption><span class="caption-text">Summary of classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.prot.bv</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
 <colgroup>
@@ -430,6 +432,10 @@
 </tbody>
 </table>
 </section>
+<section id="breeding-value-protocol-properties">
+<h2>Breeding Value Protocol Properties<a class="headerlink" href="#breeding-value-protocol-properties" title="Permalink to this heading">#</a></h2>
+<p>Breeding values protocols do not have any required properties defined in their interface.</p>
+</section>
 <section id="loading-class-modules">
 <h2>Loading Class Modules<a class="headerlink" href="#loading-class-modules" title="Permalink to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the BreedingValueProtocol class (an abstract interface class)</span>
@@ -445,6 +451,7 @@
 </section>
 <section id="creating-breeding-value-estimation-protocols">
 <h2>Creating Breeding Value Estimation Protocols<a class="headerlink" href="#creating-breeding-value-estimation-protocols" title="Permalink to this heading">#</a></h2>
+<p>Breeding value estimation protocol class construction is entirely implementation dependent. Below is an example of how to construct a <code class="docutils literal notranslate"><span class="pre">MeanPhenotypicBreedingValue</span></code> object, which takes taxa and trait column names as its arguments.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bvprot</span> <span class="o">=</span> <span class="n">MeanPhenotypicBreedingValue</span><span class="p">(</span>
     <span class="n">taxa_col</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
     <span class="n">trait_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Trait01&quot;</span><span class="p">,</span><span class="s2">&quot;Trait02&quot;</span><span class="p">]</span>
@@ -454,6 +461,7 @@
 </section>
 <section id="estimating-breeding-values">
 <h2>Estimating Breeding Values<a class="headerlink" href="#estimating-breeding-values" title="Permalink to this heading">#</a></h2>
+<p>Breeding values may be estimated using the <code class="docutils literal notranslate"><span class="pre">estimate</span></code> method. The code below demonstrates its use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># Creating a true genomic model</span>
 <span class="c1">#</span>
@@ -611,6 +619,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#summary-of-breeding-value-protocol-classes">
    Summary of Breeding Value Protocol Classes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#breeding-value-protocol-properties">
+   Breeding Value Protocol Properties
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">

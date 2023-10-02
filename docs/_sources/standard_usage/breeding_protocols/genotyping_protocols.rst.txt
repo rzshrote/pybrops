@@ -4,8 +4,12 @@ Genotyping Protocols
 Class Family Overview
 =====================
 
+The ``GenotypingProtocol`` family of classes is used to simulate the genotyping of individuals. ``GenotypeProtocol`` classes take a set of phased genomes (represented by a ``PhasedGenotypeMatrix``) and return a (typically unphased) genotype matrix of the individuals in the input.
+
 Summary of Genotyping Protocol Classes
 ======================================
+
+Genotyping protocols can be found in the ``pybrops.breed.prot.gt`` module. PyBrOpS currently only has a single implemented class in this family, the ``DenseUnphasedGenotyping`` class, which represents flawless, whole-genome unphased genotyping. The genotyping protocols module is deliberately left open for users to implement their own classes if so desired.
 
 .. list-table:: Summary of classes in the ``pybrops.breed.prot.gt`` module
     :widths: 25 20 50
@@ -21,8 +25,15 @@ Summary of Genotyping Protocol Classes
       - Concrete
       - Class representing whole-genome genotyping which produces a dense unphased genotype matrix.
 
+Genotyping Protocol Properties
+==============================
+
+Genotyping protocols do not have any required properties defined in their interface.
+
 Loading Class Modules
 =====================
+
+Genotyping protocols may be imported as illustrated below.
 
 .. code-block:: python
 
@@ -35,6 +46,8 @@ Loading Class Modules
 Creating Genotyping Protocols
 =============================
 
+Genotyping protocol class construction is entirely implementation dependent. Below is an example of how to construct a ``DenseUnphasedGenotyping`` object, which takes no arguments for its construction.
+
 .. code-block:: python
 
     # object creation takes no arguments
@@ -42,6 +55,8 @@ Creating Genotyping Protocols
 
 Genotyping Individuals from their Genomes
 =========================================
+
+Individuals may be genotyped using the ``genotype`` method. This method takes a set of individual genomes (represented using a ``PhasedGenotypeMatrix``) and returns a ``GenotypeMatrix`` representing genotyped individuals. A demonstration of how to use the ``genotype`` method is shown below.
 
 .. code-block:: python
 
