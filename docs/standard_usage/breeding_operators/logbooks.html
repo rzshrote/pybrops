@@ -396,6 +396,383 @@
               
   <section id="logbooks">
 <h1>Logbooks<a class="headerlink" href="#logbooks" title="Permalink to this heading">#</a></h1>
+<section id="class-family-overview">
+<h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="summary-of-logbook-classes">
+<h2>Summary of Logbook Classes<a class="headerlink" href="#summary-of-logbook-classes" title="Permalink to this heading">#</a></h2>
+<p>Logbook classes can be found in the <code class="docutils literal notranslate"><span class="pre">pybropos.breed.op.log</span></code> module.</p>
+<table class="colwidths-given table" id="id1">
+<caption><span class="caption-text">Summary of classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.op.log</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 21%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Class Name</p></th>
+<th class="head"><p>Class Type</p></th>
+<th class="head"><p>Class Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Logbook</span></code></p></td>
+<td><p>Abstract</p></td>
+<td><p>Interface for all logbook classes.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="logbook-properties">
+<h2>Logbook Properties<a class="headerlink" href="#logbook-properties" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="loading-class-modules">
+<h2>Loading Class Modules<a class="headerlink" href="#loading-class-modules" title="Permalink to this heading">#</a></h2>
+<p>Logbooks can be imported as demonstrated in the code below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the Logbook class (an abstract interface class)</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.op.log.Logbook</span> <span class="kn">import</span> <span class="n">Logbook</span>
+</pre></div>
+</div>
+</section>
+<section id="defining-logbooks">
+<h2>Defining Logbooks<a class="headerlink" href="#defining-logbooks" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyLogbook</span><span class="p">(</span><span class="n">Logbook</span><span class="p">):</span>
+    <span class="c1">################ Special Object Methods ################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for custom Logbook</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        args : tuple</span>
+<span class="sd">            Any user defined arguments.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Any user defined keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># user defined code</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rep</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1">################## Object Properties ###################</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Logbook data.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
+    <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set logbook data.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rep</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Replicate number.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rep</span>
+    <span class="nd">@rep</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">rep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Set replicate number.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rep</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="c1">#################### Object Methods ####################</span>
+    <span class="k">def</span> <span class="nf">log_initialize</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">genome</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">geno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">pheno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">bval</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">gmod</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">t_cur</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">t_max</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Record information directly after &#39;InitializationOperator.initialize&#39;</span>
+<span class="sd">        is called.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        genome : dict</span>
+<span class="sd">            Dictionary of genomes for the breeding program.</span>
+<span class="sd">        geno : dict</span>
+<span class="sd">            Dictionary of genotypes for the breeding program.</span>
+<span class="sd">        pheno : dict</span>
+<span class="sd">            Dictionary of phenotypes for the breeding program.</span>
+<span class="sd">        bval : dict</span>
+<span class="sd">            Dictionary of breeding values for the breeding program.</span>
+<span class="sd">        gmod : dict</span>
+<span class="sd">            Dictionary of genomic models for the breeding program.</span>
+<span class="sd">        t_cur : int</span>
+<span class="sd">            Current time in the breeding program.</span>
+<span class="sd">        t_max : int</span>
+<span class="sd">            Deadline time for the breeding program.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># user defined code</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">log_pselect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">mcfg</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">genome</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">geno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">pheno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">bval</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">gmod</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">t_cur</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">t_max</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Record information directly after &#39;ParentSelectionOperator.pselect&#39;</span>
+<span class="sd">        is called.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mcfg : dict</span>
+<span class="sd">            Dictionary of mating configurations for the breeding program.</span>
+<span class="sd">        genome : dict</span>
+<span class="sd">            Dictionary of genomes for the breeding program.</span>
+<span class="sd">        geno : dict</span>
+<span class="sd">            Dictionary of genotypes for the breeding program.</span>
+<span class="sd">        pheno : dict</span>
+<span class="sd">            Dictionary of phenotypes for the breeding program.</span>
+<span class="sd">        bval : dict</span>
+<span class="sd">            Dictionary of breeding values for the breeding program.</span>
+<span class="sd">        gmod : dict</span>
+<span class="sd">            Dictionary of genomic models for the breeding program.</span>
+<span class="sd">        t_cur : int</span>
+<span class="sd">            Current time in the breeding program.</span>
+<span class="sd">        t_max : int</span>
+<span class="sd">            Deadline time for the breeding program.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># user defined code</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">log_mate</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">genome</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">geno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">pheno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">bval</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">gmod</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">t_cur</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">t_max</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># user defined code</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Record information directly after &#39;MatingOperator.mate&#39; is called.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        genome : dict</span>
+<span class="sd">            Dictionary of genomes for the breeding program.</span>
+<span class="sd">        geno : dict</span>
+<span class="sd">            Dictionary of genotypes for the breeding program.</span>
+<span class="sd">        pheno : dict</span>
+<span class="sd">            Dictionary of phenotypes for the breeding program.</span>
+<span class="sd">        bval : dict</span>
+<span class="sd">            Dictionary of breeding values for the breeding program.</span>
+<span class="sd">        gmod : dict</span>
+<span class="sd">            Dictionary of genomic models for the breeding program.</span>
+<span class="sd">        t_cur : int</span>
+<span class="sd">            Current time in the breeding program.</span>
+<span class="sd">        t_max : int</span>
+<span class="sd">            Deadline time for the breeding program.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">log_evaluate</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">genome</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">geno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">pheno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">bval</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">gmod</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">t_cur</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">t_max</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Record information directly after &#39;EvaluationOperator.evaluate&#39; is</span>
+<span class="sd">        called.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        genome : dict</span>
+<span class="sd">            Dictionary of genomes for the breeding program.</span>
+<span class="sd">        geno : dict</span>
+<span class="sd">            Dictionary of genotypes for the breeding program.</span>
+<span class="sd">        pheno : dict</span>
+<span class="sd">            Dictionary of phenotypes for the breeding program.</span>
+<span class="sd">        bval : dict</span>
+<span class="sd">            Dictionary of breeding values for the breeding program.</span>
+<span class="sd">        gmod : dict</span>
+<span class="sd">            Dictionary of genomic models for the breeding program.</span>
+<span class="sd">        t_cur : int</span>
+<span class="sd">            Current time in the breeding program.</span>
+<span class="sd">        t_max : int</span>
+<span class="sd">            Deadline time for the breeding program.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># user defined code</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">log_sselect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">genome</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">geno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">pheno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">bval</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">gmod</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">t_cur</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">t_max</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Record information directly after &#39;SurvivorSelectionOperator.sselect&#39;</span>
+<span class="sd">        is called.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        genome : dict</span>
+<span class="sd">            Dictionary of genomes for the breeding program.</span>
+<span class="sd">        geno : dict</span>
+<span class="sd">            Dictionary of genotypes for the breeding program.</span>
+<span class="sd">        pheno : dict</span>
+<span class="sd">            Dictionary of phenotypes for the breeding program.</span>
+<span class="sd">        bval : dict</span>
+<span class="sd">            Dictionary of breeding values for the breeding program.</span>
+<span class="sd">        gmod : dict</span>
+<span class="sd">            Dictionary of genomic models for the breeding program.</span>
+<span class="sd">        t_cur : int</span>
+<span class="sd">            Current time in the breeding program.</span>
+<span class="sd">        t_max : int</span>
+<span class="sd">            Deadline time for the breeding program.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># user defined code</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset Logbook internals.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rep</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write Logbook to file</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            File name to which to write file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># user defined code</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-logbooks">
+<h2>Creating Logbooks<a class="headerlink" href="#creating-logbooks" title="Permalink to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new logbook</span>
+<span class="n">lbook</span> <span class="o">=</span> <span class="n">MyLogbook</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="logging-states-in-a-breeding-program">
+<h2>Logging States in a Breeding Program<a class="headerlink" href="#logging-states-in-a-breeding-program" title="Permalink to this heading">#</a></h2>
+<section id="logging-after-breeding-program-initialization">
+<h3>Logging after breeding program initialization<a class="headerlink" href="#logging-after-breeding-program-initialization" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># gather data after breeding program initialization</span>
+<span class="n">lbook</span><span class="o">.</span><span class="n">log_initialize</span><span class="p">(</span>
+    <span class="n">genome</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">geno</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">pheno</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">bval</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">gmod</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="logging-after-breeding-program-parent-selection">
+<h3>Logging after breeding program parent selection<a class="headerlink" href="#logging-after-breeding-program-parent-selection" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># gather data after breeding program parent selection</span>
+<span class="n">lbook</span><span class="o">.</span><span class="n">log_pselect</span><span class="p">(</span>
+    <span class="n">mcfg</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">genome</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">geno</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">pheno</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">bval</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">gmod</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="logging-after-breeding-program-mating">
+<h3>Logging after breeding program mating<a class="headerlink" href="#logging-after-breeding-program-mating" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># gather data after breeding program mating</span>
+<span class="n">lbook</span><span class="o">.</span><span class="n">log_mate</span><span class="p">(</span>
+    <span class="n">genome</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">geno</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">pheno</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">bval</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">gmod</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="logging-after-breeding-program-evaluation">
+<h3>Logging after breeding program evaluation<a class="headerlink" href="#logging-after-breeding-program-evaluation" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># gather data after breeding program evaluation</span>
+<span class="n">lbook</span><span class="o">.</span><span class="n">log_evaluate</span><span class="p">(</span>
+    <span class="n">genome</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">geno</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">pheno</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">bval</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">gmod</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="logging-after-breeding-program-survivor-selection">
+<h3>Logging after breeding program survivor selection<a class="headerlink" href="#logging-after-breeding-program-survivor-selection" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># gather data after breeding program survivor selection</span>
+<span class="n">lbook</span><span class="o">.</span><span class="n">log_sselect</span><span class="p">(</span>
+    <span class="n">genome</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">geno</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">pheno</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">bval</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">gmod</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="resetting-a-logbook">
+<h3>Resetting a logbook<a class="headerlink" href="#resetting-a-logbook" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># reset logbook internals</span>
+<span class="n">lbook</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="writing-a-logbook-to-file">
+<h3>Writing a logbook to file<a class="headerlink" href="#writing-a-logbook-to-file" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># write logbook to file</span>
+<span class="n">lbook</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;filename.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
 </section>
 
 
@@ -429,6 +806,90 @@
           
             <div class="bd-sidebar-secondary bd-toc">
               
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#class-family-overview">
+   Class Family Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary-of-logbook-classes">
+   Summary of Logbook Classes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#logbook-properties">
+   Logbook Properties
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#loading-class-modules">
+   Loading Class Modules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#defining-logbooks">
+   Defining Logbooks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#creating-logbooks">
+   Creating Logbooks
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#logging-states-in-a-breeding-program">
+   Logging States in a Breeding Program
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#logging-after-breeding-program-initialization">
+     Logging after breeding program initialization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#logging-after-breeding-program-parent-selection">
+     Logging after breeding program parent selection
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#logging-after-breeding-program-mating">
+     Logging after breeding program mating
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#logging-after-breeding-program-evaluation">
+     Logging after breeding program evaluation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#logging-after-breeding-program-survivor-selection">
+     Logging after breeding program survivor selection
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#resetting-a-logbook">
+     Resetting a logbook
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#writing-a-logbook-to-file">
+     Writing a logbook to file
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+</nav>
+</div>
+
 <div class="toc-item">
   
 <div id="searchbox"></div>

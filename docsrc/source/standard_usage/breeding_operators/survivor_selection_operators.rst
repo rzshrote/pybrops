@@ -40,7 +40,7 @@ Survivor selection operators can be imported as demonstrated in the code below.
 Defining Survivor Selection Operators
 =====================================
 
-Since breeding programs are incredibly diverse, it is the job of the user to define a survivor selection operator for his or her breeding program simulation. To do this, extend the ``SurvivorSelectionOperator`` base abstract class and override the ``sselect`` abstract method with the code defining the breeding program. Below is an example of how to override the ``SurvivorSelectionOperator`` class. For the purpose of this example, method code is left empty.
+Since breeding programs are incredibly diverse, it is the job of the user to define a survivor selection operator for his or her breeding program simulation. To do this, extend the ``SurvivorSelectionOperator`` base abstract class and override the ``sselect`` abstract method with the code defining the surivor selection operation. Below is an example of how to override the ``SurvivorSelectionOperator`` class. For the purpose of this example, method code is left empty.
 
 .. code-block:: python
 

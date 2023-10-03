@@ -1,30 +1,33 @@
-"""
-Module defining interfaces and associated error checking routines for
-breeding program evaluation operators.
-"""
+#!/usr/bin/env python3
 
-__all__ = [
-    "EvaluationOperator",
-    "check_is_EvaluationOperator",
-]
-
-from abc import ABCMeta, abstractmethod
 from typing import Optional
 
+###
+### Loading Class Modules
+### =====================
 
-class EvaluationOperator(metaclass=ABCMeta):
-    """
-    Abstract class defining interfaces for the evaluation of an entire breeding
-    program.
+# import the EvaluationOperator class (an abstract interface class)
+from pybrops.breed.op.eval.EvaluationOperator import EvaluationOperator
 
-    The purpose of this abstract class is to provide functionality for:
-        1) Evaluation of an entire breeding program.
-    """
+###
+### Defining Evaluation Operators
+### =============================
 
-    ########################## Special Object Methods ##########################
+class MyEvaluationOperator(EvaluationOperator):
+    def __init__(self, *args: tuple, **kwargs: dict) -> None:
+        """
+        Constructor for custom EvaluationOperator
 
-    ############################## Object Methods ##############################
-    @abstractmethod
+        Parameters
+        ----------
+        args : tuple
+            Any user defined arguments.
+        
+        kwargs : dict
+            Any user defined keyword arguments.
+        """
+        # user defined code
+        pass
     def evaluate(
             self, 
             genome: dict, 
@@ -34,7 +37,7 @@ class EvaluationOperator(metaclass=ABCMeta):
             gmod: dict, 
             t_cur: int, 
             t_max: int, 
-            miscout: Optional[dict], 
+            miscout: Optional[dict] = None, 
             **kwargs: dict
         ) -> tuple:
         """
@@ -76,21 +79,27 @@ class EvaluationOperator(metaclass=ABCMeta):
             - ``bval`` is a ``dict`` of breeding values for the breeding program.
             - ``gmod`` is a ``dict`` of genomic models for the breeding program.
         """
-        raise NotImplementedError("method is abstract")
+        # user defined code
+        return {}, {}, {}, {}, {}
 
+###
+### Creating Evaluation Operators
+### =============================
 
+# create an evaluation operator using constructor
+evalop = MyEvaluationOperator()
 
-################################## Utilities ###################################
-def check_is_EvaluationOperator(v: object, vname: str) -> None:
-    """
-    Check if object is of type EvaluationOperator. Otherwise raise TypeError.
+###
+### Evaluation of Individuals in a Breeding Program
+### ===============================================
 
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    vname : str
-        Name of variable to print in TypeError message.
-    """
-    if not isinstance(v, EvaluationOperator):
-        raise TypeError("'%s' must be a EvaluationOperator." % vname)
+# evaluate a breeding program
+genome, geno, pheno, bval, gmod = evalop.evaluate(
+    genome = {}, 
+    geno = {}, 
+    pheno = {}, 
+    bval = {}, 
+    gmod = {}, 
+    t_cur = 0, 
+    t_max = 0, 
+)

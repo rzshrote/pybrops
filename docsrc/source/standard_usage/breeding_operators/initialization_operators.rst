@@ -40,7 +40,7 @@ Initialization operators can be imported as demonstrated in the code below.
 Defining Initialization Operators
 =================================
 
-Since breeding programs are incredibly diverse, it is the job of the user to define an initialization operator for his or her breeding program simulation. To do this, extend the ``InitializationOperator`` base abstract class and override the ``initialize`` abstract method with the code defining the breeding program. Below is an example of how to override the ``InitializationOperator`` class. For the purpose of this example, method code is left empty.
+Since breeding programs are incredibly diverse, it is the job of the user to define an initialization operator for his or her breeding program simulation. To do this, extend the ``InitializationOperator`` base abstract class and override the ``initialize`` abstract method with the code defining the initialization operation. Below is an example of how to override the ``InitializationOperator`` class. For the purpose of this example, method code is left empty.
 
 .. code-block:: python
 

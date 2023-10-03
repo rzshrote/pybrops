@@ -1,53 +1,51 @@
-"""
-Module defining interfaces and associated error checking routines for
-breeding program logbook operators.
-"""
+#!/usr/bin/env python3
 
-__all__ = [
-    "Logbook",
-    "check_is_Logbook",
-]
+###
+### Loading Class Modules
+### =====================
 
+# import the Logbook class (an abstract interface class)
+from pybrops.breed.op.log.Logbook import Logbook
 
-from abc import ABCMeta, abstractmethod
+###
+### Defining Logbooks
+### =================
 
+class MyLogbook(Logbook):
+    ################ Special Object Methods ################
+    def __init__(self, *args: tuple, **kwargs: dict) -> None:
+        """
+        Constructor for custom Logbook
 
-class Logbook(metaclass=ABCMeta):
-    """
-    Abstract class defining interfaces for logging statistics about an entire
-    breeding program.
-
-    The purpose of this abstract class is to provide functionality for:
-        1) Logging data on an entire breeding program.
-    """
-
-    ########################## Special Object Methods ##########################
-
-    ############################ Object Properties #############################
+        Parameters
+        ----------
+        args : tuple
+            Any user defined arguments.
+        
+        kwargs : dict
+            Any user defined keyword arguments.
+        """
+        # user defined code
+        self.data = {}
+        self.rep = 1
+    ################## Object Properties ###################
     @property
-    @abstractmethod
-    def data(self) -> object:
+    def data(self) -> dict:
         """Logbook data."""
-        raise NotImplementedError("property is abstract")
+        return self._data
     @data.setter
-    @abstractmethod
-    def data(self, value: object) -> None:
+    def data(self, value: dict) -> None:
         """Set logbook data."""
-        raise NotImplementedError("property is abstract")
-
+        self._data = value
     @property
-    @abstractmethod
     def rep(self) -> int:
         """Replicate number."""
-        raise NotImplementedError("property is abstract")
+        return self._rep
     @rep.setter
-    @abstractmethod
     def rep(self, value: int) -> None:
         """Set replicate number."""
-        raise NotImplementedError("property is abstract")
-
-    ############################## Object Methods ##############################
-    @abstractmethod
+        self._rep = value
+    #################### Object Methods ####################
     def log_initialize(
             self, 
             genome: dict, 
@@ -82,9 +80,8 @@ class Logbook(metaclass=ABCMeta):
         kwargs : dict
             Additional keyword arguments.
         """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
+        # user defined code
+        pass
     def log_pselect(
             self, 
             mcfg: dict, 
@@ -122,9 +119,8 @@ class Logbook(metaclass=ABCMeta):
         kwargs : dict
             Additional keyword arguments.
         """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
+        # user defined code
+        pass
     def log_mate(
             self, 
             genome: dict, 
@@ -136,6 +132,7 @@ class Logbook(metaclass=ABCMeta):
             t_max: int, 
             **kwargs: dict
         ) -> None:
+        # user defined code
         """
         Record information directly after 'MatingOperator.mate' is called.
 
@@ -158,9 +155,7 @@ class Logbook(metaclass=ABCMeta):
         kwargs : dict
             Additional keyword arguments.
         """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
+        pass
     def log_evaluate(
             self, 
             genome: dict, 
@@ -195,9 +190,8 @@ class Logbook(metaclass=ABCMeta):
         kwargs : dict
             Additional keyword arguments.
         """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
+        # user defined code
+        pass
     def log_sselect(
             self, 
             genome: dict, 
@@ -232,22 +226,15 @@ class Logbook(metaclass=ABCMeta):
         kwargs : dict
             Additional keyword arguments.
         """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def reset(
-            self
-        ) -> None:
+        # user defined code
+        pass
+    def reset(self) -> None:
         """
         Reset Logbook internals.
         """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def write(
-            self, 
-            filename: str
-        ) -> None:
+        self.data = {}
+        self.rep = 1
+    def write(self, filename: str) -> None:
         """
         Write Logbook to file
 
@@ -256,21 +243,106 @@ class Logbook(metaclass=ABCMeta):
         filename : str
             File name to which to write file.
         """
-        raise NotImplementedError("method is abstract")
+        # user defined code
+        pass
+    
+###
+### Creating Logbooks
+### =================
 
+# create a new logbook
+lbook = MyLogbook()
 
+###
+### Logging States in a Breeding Program
+### ====================================
 
-################################## Utilities ###################################
-def check_is_Logbook(v: object, vname: str) -> None:
-    """
-    Check if object is of type Logbook. Otherwise raise TypeError.
+##
+## Logging after breeding program initialization
+## ---------------------------------------------
 
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    vname : str
-        Name of variable to print in TypeError message.
-    """
-    if not isinstance(v, Logbook):
-        raise TypeError("'%s' must be a Logbook." % vname)
+# gather data after breeding program initialization
+lbook.log_initialize(
+    genome = {},
+    geno = {},
+    pheno = {},
+    bval = {},
+    gmod = {},
+    t_cur = 0,
+    t_max = 0,
+)
+
+##
+## Logging after breeding program parent selection
+## -----------------------------------------------
+
+# gather data after breeding program parent selection
+lbook.log_pselect(
+    mcfg = {},
+    genome = {},
+    geno = {},
+    pheno = {},
+    bval = {},
+    gmod = {},
+    t_cur = 0,
+    t_max = 0,
+)
+
+##
+## Logging after breeding program mating
+## -------------------------------------
+
+# gather data after breeding program mating
+lbook.log_mate(
+    genome = {},
+    geno = {},
+    pheno = {},
+    bval = {},
+    gmod = {},
+    t_cur = 0,
+    t_max = 0,
+)
+
+##
+## Logging after breeding program evaluation
+## -----------------------------------------
+
+# gather data after breeding program evaluation
+lbook.log_evaluate(
+    genome = {},
+    geno = {},
+    pheno = {},
+    bval = {},
+    gmod = {},
+    t_cur = 0,
+    t_max = 0,
+)
+
+##
+## Logging after breeding program survivor selection
+## -------------------------------------------------
+
+# gather data after breeding program survivor selection
+lbook.log_sselect(
+    genome = {},
+    geno = {},
+    pheno = {},
+    bval = {},
+    gmod = {},
+    t_cur = 0,
+    t_max = 0,
+)
+
+## 
+## Resetting a logbook
+## -------------------
+
+# reset logbook internals
+lbook.reset()
+
+## 
+## Writing a logbook to file
+## -------------------------
+
+# write logbook to file
+lbook.write("filename.csv")

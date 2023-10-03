@@ -1,30 +1,33 @@
-"""
-Module defining interfaces and associated error checking routines for
-breeding program mating operators.
-"""
+#!/usr/bin/env python3
 
-__all__ = [
-    "MatingOperator",
-    "check_is_MatingOperator",
-]
-
-from abc import ABCMeta, abstractmethod
 from typing import Optional
 
+###
+### Loading Class Modules
+### =====================
 
-class MatingOperator(metaclass=ABCMeta):
-    """
-    Abstract class defining interfaces for the mating of an entire breeding
-    program.
+# import the MatingOperator class (an abstract interface class)
+from pybrops.breed.op.mate.MatingOperator import MatingOperator
 
-    The purpose of this abstract class is to provide functionality for:
-        1) Mating of an entire breeding program.
-    """
+###
+### Defining Mating Operators
+### =========================
 
-    ########################## Special Object Methods ##########################
+class MyMatingOperator(MatingOperator):
+    def __init__(self, *args: tuple, **kwargs: dict) -> None:
+        """
+        Constructor for custom MatingOperator
 
-    ############################## Object Methods ##############################
-    @abstractmethod
+        Parameters
+        ----------
+        args : tuple
+            Any user defined arguments.
+        
+        kwargs : dict
+            Any user defined keyword arguments.
+        """
+        # user defined code
+        pass
     def mate(
             self, 
             mcfg: dict, 
@@ -79,21 +82,28 @@ class MatingOperator(metaclass=ABCMeta):
             - ``bval`` is a ``dict`` of breeding values for the breeding program.
             - ``gmod`` is a ``dict`` of genomic models for the breeding program.
         """
-        raise NotImplementedError("method is abstract")
+        # user defined code
+        return {}, {}, {}, {}, {}
 
+###
+### Creating Mating Operators
+### =========================
 
+# create a mating operator using constructor
+mateop = MyMatingOperator()
 
-################################## Utilities ###################################
-def check_is_MatingOperator(v: object, vname: str) -> None:
-    """
-    Check if object is of type MatingOperator. Otherwise raise TypeError.
+###
+### Mating Individiuals in a Breeding Program
+### =========================================
 
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    vname : str
-        Name of variable to print in TypeError message.
-    """
-    if not isinstance(v, MatingOperator):
-        raise TypeError("'%s' must be a MatingOperator." % vname)
+# mate individuals in a breeding program
+genome, geno, pheno, bval, gmod = mateop.mate(
+    mcfg = {},
+    genome = {}, 
+    geno = {}, 
+    pheno = {}, 
+    bval = {}, 
+    gmod = {}, 
+    t_cur = 0, 
+    t_max = 0, 
+)
