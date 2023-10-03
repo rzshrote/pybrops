@@ -36,6 +36,8 @@ Breeding values protocols do not have any required properties defined in their i
 Loading Class Modules
 =====================
 
+Breeding value protocols can be imported using the following statements:
+
 .. code-block:: python
 
     # import the BreedingValueProtocol class (an abstract interface class)

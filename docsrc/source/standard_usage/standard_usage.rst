@@ -1,6 +1,8 @@
 Standard PyBrOpS Usage
 ######################
 
+Below are links to examples of standard usage. Each webpage has a corresponding Python script which can be found in the `standard usage directory <https://github.com/rzshrote/pybrops/tree/main/examples/standard_usage>`_ in the examples in the main source repository.
+
 .. toctree::
     :maxdepth: 1
     :caption: Core Infrastructure Usage:

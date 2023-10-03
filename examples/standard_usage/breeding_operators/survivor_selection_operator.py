@@ -1,30 +1,33 @@
-"""
-Module defining interfaces and associated error checking routines for
-breeding program survivor selection operators.
-"""
+#!/usr/bin/env python3
 
-__all__ = [
-    "SurvivorSelectionOperator",
-    "check_is_SurvivorSelectionOperator",
-]
-
-from abc import ABCMeta, abstractmethod
 from typing import Optional
 
+###
+### Loading Class Modules
+### =====================
 
-class SurvivorSelectionOperator(metaclass=ABCMeta):
-    """
-    Abstract class defining interfaces for survivor selection within an entire
-    breeding program.
+# import the SurvivorSelectionOperator class (an abstract interface class)
+from pybrops.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOperator
 
-    The purpose of this abstract class is to provide functionality for:
-        1) Survivor selection for an entire breeding program.
-    """
+###
+### Defining Survivor Selection Operators
+### =====================================
 
-    ########################## Special Object Methods ##########################
+class MySurvivorSelectionOperator(SurvivorSelectionOperator):
+    def __init__(self, *args: tuple, **kwargs: dict) -> None:
+        """
+        Constructor for custom SurvivorSelectionOperator
 
-    ############################## Object Methods ##############################
-    @abstractmethod
+        Parameters
+        ----------
+        args : tuple
+            Any user defined arguments.
+        
+        kwargs : dict
+            Any user defined keyword arguments.
+        """
+        # user defined code
+        pass
     def sselect(
             self, 
             genome: dict, 
@@ -34,7 +37,7 @@ class SurvivorSelectionOperator(metaclass=ABCMeta):
             gmod: dict, 
             t_cur: int, 
             t_max: int, 
-            miscout: Optional[dict], 
+            miscout: Optional[dict] = None, 
             **kwargs: dict
         ) -> tuple:
         """
@@ -76,21 +79,27 @@ class SurvivorSelectionOperator(metaclass=ABCMeta):
             - ``bval`` is a ``dict`` of breeding values for the breeding program.
             - ``gmod`` is a ``dict`` of genomic models for the breeding program.
         """
-        raise NotImplementedError("method is abstract")
+        # user defined code
+        return {}, {}, {}, {}, {}
 
+###
+### Creating Survivor Selection Operators
+### =====================================
 
+# create a survivor selection operator using constructor
+sselop = MySurvivorSelectionOperator()
 
-################################## Utilities ###################################
-def check_is_SurvivorSelectionOperator(v: object, vname: str) -> None:
-    """
-    Check if object is of type SurvivorSelectionOperator. Otherwise raise TypeError.
+###
+### Survivor Selection for a Breeding Program
+### =========================================
 
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    vname : str
-        Name of variable to print in TypeError message.
-    """
-    if not isinstance(v, SurvivorSelectionOperator):
-        raise TypeError("'%s' must be a SurvivorSelectionOperator." % vname)
+# select survivors for a breeding program
+genome, geno, pheno, bval, gmod = sselop.sselect(
+    genome = {}, 
+    geno = {}, 
+    pheno = {}, 
+    bval = {}, 
+    gmod = {}, 
+    t_cur = 0, 
+    t_max = 0, 
+)

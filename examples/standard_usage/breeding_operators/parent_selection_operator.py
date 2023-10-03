@@ -1,31 +1,34 @@
-"""
-Module defining interfaces and associated error checking routines for
-breeding program survivor selection operators.
-"""
+#!/usr/bin/env python3
 
-__all__ = [
-    "SurvivorSelectionOperator",
-    "check_is_SurvivorSelectionOperator",
-]
-
-from abc import ABCMeta, abstractmethod
 from typing import Optional
 
+###
+### Loading Class Modules
+### =====================
 
-class SurvivorSelectionOperator(metaclass=ABCMeta):
-    """
-    Abstract class defining interfaces for survivor selection within an entire
-    breeding program.
+# import the ParentSelectionOperator class (an abstract interface class)
+from pybrops.breed.op.psel.ParentSelectionOperator import ParentSelectionOperator
 
-    The purpose of this abstract class is to provide functionality for:
-        1) Survivor selection for an entire breeding program.
-    """
+###
+### Defining Parent Selection Operators
+### ===================================
 
-    ########################## Special Object Methods ##########################
+class MyParentSelectionOperator(ParentSelectionOperator):
+    def __init__(self, *args: tuple, **kwargs: dict) -> None:
+        """
+        Constructor for custom ParentSelectionOperator
 
-    ############################## Object Methods ##############################
-    @abstractmethod
-    def sselect(
+        Parameters
+        ----------
+        args : tuple
+            Any user defined arguments.
+        
+        kwargs : dict
+            Any user defined keyword arguments.
+        """
+        # user defined code
+        pass
+    def pselect(
             self, 
             genome: dict, 
             geno: dict, 
@@ -34,11 +37,11 @@ class SurvivorSelectionOperator(metaclass=ABCMeta):
             gmod: dict, 
             t_cur: int, 
             t_max: int, 
-            miscout: Optional[dict], 
+            miscout: Optional[dict] = None, 
             **kwargs: dict
         ) -> tuple:
         """
-        Select progeny survivors in a breeding program.
+        Select individuals to serve as parents in a breeding program.
 
         Parameters
         ----------
@@ -66,31 +69,38 @@ class SurvivorSelectionOperator(metaclass=ABCMeta):
         Returns
         -------
         out : tuple
-            A tuple of length 5: ``(genome, geno, pheno, bval, gmod)``
+            A tuple of length 6: ``(mcfg, genome, geno, pheno, bval, gmod)``
 
             Where:
 
+            - ``mcfg`` is a ``dict`` of mating configurations for the breeding program.
             - ``genome`` is a ``dict`` of genomes for the breeding program.
             - ``geno`` is a ``dict`` of genotypes for the breeding program.
             - ``pheno`` is a ``dict`` of phenotypes for the breeding program.
             - ``bval`` is a ``dict`` of breeding values for the breeding program.
             - ``gmod`` is a ``dict`` of genomic models for the breeding program.
         """
-        raise NotImplementedError("method is abstract")
+        # user defined code
+        return {}, {}, {}, {}, {}, {}
 
+###
+### Creating Parent Selection Operators
+### =================================
 
+# create a parent selection operator using constructor
+pselop = MyParentSelectionOperator()
 
-################################## Utilities ###################################
-def check_is_SurvivorSelectionOperator(v: object, vname: str) -> None:
-    """
-    Check if object is of type SurvivorSelectionOperator. Otherwise raise TypeError.
+###
+### Parental Selection for a Breeding Program
+### =========================================
 
-    Parameters
-    ----------
-    v : object
-        Any Python object to test.
-    vname : str
-        Name of variable to print in TypeError message.
-    """
-    if not isinstance(v, SurvivorSelectionOperator):
-        raise TypeError("'%s' must be a SurvivorSelectionOperator." % vname)
+# select parents for a breeding program
+mcfg, genome, geno, pheno, bval, gmod = pselop.pselect(
+    genome = {}, 
+    geno = {}, 
+    pheno = {}, 
+    bval = {}, 
+    gmod = {}, 
+    t_cur = 0, 
+    t_max = 0, 
+)

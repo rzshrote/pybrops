@@ -32,8 +32,3 @@ The example below illustrates the creation of multiple PRNG streams.
 
     # create five new PRNG streams
     prng_list = spawn(5)
-
-Example Script
-==============
-
-An extended example script exhibiting PRNG usage may be found in the ``examples`` directory in the ``pybrops`` repository.

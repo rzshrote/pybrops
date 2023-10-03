@@ -396,6 +396,144 @@
               
   <section id="survivor-selection-operators">
 <h1>Survivor Selection Operators<a class="headerlink" href="#survivor-selection-operators" title="Permalink to this heading">#</a></h1>
+<section id="class-family-overview">
+<h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">SurvivorSelectionOperator</span></code> family of classes is used to select desired progenies and discard undesired progenies in a breeding program in the survivor selection step of the universal breeding algorithm. Survivor selection is extremely diverse. It may involve the selection of progenies based on phenotypes, genotypes, or combinations of the two. Additionally, there may be one or more traits under selection.</p>
+</section>
+<section id="summary-of-survivor-selection-operators">
+<h2>Summary of Survivor Selection Operators<a class="headerlink" href="#summary-of-survivor-selection-operators" title="Permalink to this heading">#</a></h2>
+<p>Survivor selection operators can be found in the <code class="docutils literal notranslate"><span class="pre">pybropos.breed.op.ssel</span></code> module.</p>
+<table class="colwidths-given table" id="id1">
+<caption><span class="caption-text">Summary of classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.breed.op.ssel</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 26%" />
+<col style="width: 21%" />
+<col style="width: 53%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Class Name</p></th>
+<th class="head"><p>Class Type</p></th>
+<th class="head"><p>Class Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SurvivorSelectionOperator</span></code></p></td>
+<td><p>Abstract</p></td>
+<td><p>Interface for all survivor selection operator classes.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="survivor-selection-operator-properties">
+<h2>Survivor Selection Operator Properties<a class="headerlink" href="#survivor-selection-operator-properties" title="Permalink to this heading">#</a></h2>
+<p>Survivor selection operators do not have any required properties defined in the <code class="docutils literal notranslate"><span class="pre">SurvivorSelectionOperator</span></code> interface.</p>
+</section>
+<section id="loading-class-modules">
+<h2>Loading Class Modules<a class="headerlink" href="#loading-class-modules" title="Permalink to this heading">#</a></h2>
+<p>Survivor selection operators can be imported as demonstrated in the code below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the SurvivorSelectionOperator class (an abstract interface class)</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.op.ssel.SurvivorSelectionOperator</span> <span class="kn">import</span> <span class="n">SurvivorSelectionOperator</span>
+</pre></div>
+</div>
+</section>
+<section id="defining-survivor-selection-operators">
+<h2>Defining Survivor Selection Operators<a class="headerlink" href="#defining-survivor-selection-operators" title="Permalink to this heading">#</a></h2>
+<p>Since breeding programs are incredibly diverse, it is the job of the user to define a survivor selection operator for his or her breeding program simulation. To do this, extend the <code class="docutils literal notranslate"><span class="pre">SurvivorSelectionOperator</span></code> base abstract class and override the <code class="docutils literal notranslate"><span class="pre">sselect</span></code> abstract method with the code defining the breeding program. Below is an example of how to override the <code class="docutils literal notranslate"><span class="pre">SurvivorSelectionOperator</span></code> class. For the purpose of this example, method code is left empty.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MySurvivorSelectionOperator</span><span class="p">(</span><span class="n">SurvivorSelectionOperator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for custom SurvivorSelectionOperator</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        args : tuple</span>
+<span class="sd">            Any user defined arguments.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Any user defined keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># user defined code</span>
+        <span class="k">pass</span>
+    <span class="k">def</span> <span class="nf">sselect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">genome</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">geno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">pheno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">bval</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">gmod</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+            <span class="n">t_cur</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">t_max</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">miscout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select progeny survivors in a breeding program.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        genome : dict</span>
+<span class="sd">            Dictionary of genomes for the breeding program.</span>
+<span class="sd">        geno : dict</span>
+<span class="sd">            Dictionary of genotypes for the breeding program.</span>
+<span class="sd">        pheno : dict</span>
+<span class="sd">            Dictionary of phenotypes for the breeding program.</span>
+<span class="sd">        bval : dict</span>
+<span class="sd">            Dictionary of breeding values for the breeding program.</span>
+<span class="sd">        gmod : dict</span>
+<span class="sd">            Dictionary of genomic models for the breeding program.</span>
+<span class="sd">        t_cur : int</span>
+<span class="sd">            Current time in the breeding program.</span>
+<span class="sd">        t_max : int</span>
+<span class="sd">            Deadline time for the breeding program.</span>
+<span class="sd">        miscout : dict, None</span>
+<span class="sd">            Pointer to a dictionary for miscellaneous user defined output.</span>
+<span class="sd">            If ``dict``, write to dict (may overwrite previously defined fields).</span>
+<span class="sd">            If ``None``, user defined output is not calculated or stored.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : tuple</span>
+<span class="sd">            A tuple of length 5: ``(genome, geno, pheno, bval, gmod)``</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``genome`` is a ``dict`` of genomes for the breeding program.</span>
+<span class="sd">            - ``geno`` is a ``dict`` of genotypes for the breeding program.</span>
+<span class="sd">            - ``pheno`` is a ``dict`` of phenotypes for the breeding program.</span>
+<span class="sd">            - ``bval`` is a ``dict`` of breeding values for the breeding program.</span>
+<span class="sd">            - ``gmod`` is a ``dict`` of genomic models for the breeding program.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># user defined code</span>
+        <span class="k">return</span> <span class="p">{},</span> <span class="p">{},</span> <span class="p">{},</span> <span class="p">{},</span> <span class="p">{}</span>
+</pre></div>
+</div>
+</section>
+<section id="creating-survivor-selection-operators">
+<h2>Creating Survivor Selection Operators<a class="headerlink" href="#creating-survivor-selection-operators" title="Permalink to this heading">#</a></h2>
+<p>Since <code class="docutils literal notranslate"><span class="pre">SurvivorSelectionOperator</span></code> classes are entirely user defined, object construction is entirely implementation dependent. There are no restrictions on how an <code class="docutils literal notranslate"><span class="pre">SurvivorSelectionOperator</span></code> must be constructed and any number of arguments or keyword arguments may be used in the constructor. Below demonstrates the construction of the <code class="docutils literal notranslate"><span class="pre">SurvivorSelectionOperator</span></code> defined above.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a survivor selection operator using constructor</span>
+<span class="n">sselop</span> <span class="o">=</span> <span class="n">MySurvivorSelectionOperator</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="survivor-selection-for-a-breeding-program">
+<h2>Survivor Selection for a Breeding Program<a class="headerlink" href="#survivor-selection-for-a-breeding-program" title="Permalink to this heading">#</a></h2>
+<p>To select survivors from a breeding program, use the <code class="docutils literal notranslate"><span class="pre">sselect</span></code> method, which returns dictionaries of genomes, genotypes, phenotypes, breeding values, and genomic models for use in a breeding program simulation. The code below demonstrates the use of this method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># select survivors for a breeding program</span>
+<span class="n">genome</span><span class="p">,</span> <span class="n">geno</span><span class="p">,</span> <span class="n">pheno</span><span class="p">,</span> <span class="n">bval</span><span class="p">,</span> <span class="n">gmod</span> <span class="o">=</span> <span class="n">sselop</span><span class="o">.</span><span class="n">sselect</span><span class="p">(</span>
+    <span class="n">genome</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">geno</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">pheno</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">bval</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">gmod</span> <span class="o">=</span> <span class="p">{},</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -429,6 +567,53 @@
           
             <div class="bd-sidebar-secondary bd-toc">
               
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#class-family-overview">
+   Class Family Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#summary-of-survivor-selection-operators">
+   Summary of Survivor Selection Operators
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#survivor-selection-operator-properties">
+   Survivor Selection Operator Properties
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#loading-class-modules">
+   Loading Class Modules
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#defining-survivor-selection-operators">
+   Defining Survivor Selection Operators
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#creating-survivor-selection-operators">
+   Creating Survivor Selection Operators
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#survivor-selection-for-a-breeding-program">
+   Survivor Selection for a Breeding Program
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
 <div class="toc-item">
   
 <div id="searchbox"></div>
