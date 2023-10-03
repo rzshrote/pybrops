@@ -398,6 +398,7 @@
 <h1>Logbooks<a class="headerlink" href="#logbooks" title="Permalink to this heading">#</a></h1>
 <section id="class-family-overview">
 <h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
+<p>The purpose of the <code class="docutils literal notranslate"><span class="pre">Logbook</span></code> family of classes is to calculate and store simulation metrics. Simulation records may be examined and/or saved after the simulation is complete.</p>
 </section>
 <section id="summary-of-logbook-classes">
 <h2>Summary of Logbook Classes<a class="headerlink" href="#summary-of-logbook-classes" title="Permalink to this heading">#</a></h2>
@@ -425,6 +426,27 @@
 </section>
 <section id="logbook-properties">
 <h2>Logbook Properties<a class="headerlink" href="#logbook-properties" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Logbook</span></code> objects have two properties: a <code class="docutils literal notranslate"><span class="pre">data</span></code> property storing simulation records and a <code class="docutils literal notranslate"><span class="pre">rep</span></code> property storing the simulation replicate number.</p>
+<table class="colwidths-given table" id="id2">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">Logbook</span></code> properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">data</span></code></p></td>
+<td><p>The record data stored in the logbook.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rep</span></code></p></td>
+<td><p>The replicate number for the given simulation. Useful for simulations with multiple replicates.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="loading-class-modules">
 <h2>Loading Class Modules<a class="headerlink" href="#loading-class-modules" title="Permalink to this heading">#</a></h2>
@@ -436,6 +458,7 @@
 </section>
 <section id="defining-logbooks">
 <h2>Defining Logbooks<a class="headerlink" href="#defining-logbooks" title="Permalink to this heading">#</a></h2>
+<p>Logbooks must be defined by the user since the number of metrics one could collect is extensive. To create a custom logbook class, extend the <code class="docutils literal notranslate"><span class="pre">Logbook</span></code> base abstract class and override its abstract properties and methods. Below is an example of how to define a custom logbook class. For the purpose of this example, method code is left empty.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyLogbook</span><span class="p">(</span><span class="n">Logbook</span><span class="p">):</span>
     <span class="c1">################ Special Object Methods ################</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -675,6 +698,7 @@
 </section>
 <section id="creating-logbooks">
 <h2>Creating Logbooks<a class="headerlink" href="#creating-logbooks" title="Permalink to this heading">#</a></h2>
+<p>To create a <code class="docutils literal notranslate"><span class="pre">Logbook</span></code> object, use the corresponding class’s constructor. There are no restrictions on how a <code class="docutils literal notranslate"><span class="pre">Logbook</span></code> constructor must operate, so object construction is entirely implementation dependent. Below demonstrates the construction of the <code class="docutils literal notranslate"><span class="pre">Logbook</span></code> class defined above.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new logbook</span>
 <span class="n">lbook</span> <span class="o">=</span> <span class="n">MyLogbook</span><span class="p">()</span>
 </pre></div>
@@ -682,8 +706,10 @@
 </section>
 <section id="logging-states-in-a-breeding-program">
 <h2>Logging States in a Breeding Program<a class="headerlink" href="#logging-states-in-a-breeding-program" title="Permalink to this heading">#</a></h2>
+<p>Logbooks have several methods to record data. These recording methods correspond to steps in the universal breeding algorithm.</p>
 <section id="logging-after-breeding-program-initialization">
 <h3>Logging after breeding program initialization<a class="headerlink" href="#logging-after-breeding-program-initialization" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">log_initialize</span></code> method can be used to record simulation statistics directly following the initialization step in the universal breeding algorithm. The code below demonstrates its use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># gather data after breeding program initialization</span>
 <span class="n">lbook</span><span class="o">.</span><span class="n">log_initialize</span><span class="p">(</span>
     <span class="n">genome</span> <span class="o">=</span> <span class="p">{},</span>
@@ -699,6 +725,7 @@
 </section>
 <section id="logging-after-breeding-program-parent-selection">
 <h3>Logging after breeding program parent selection<a class="headerlink" href="#logging-after-breeding-program-parent-selection" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">log_pselect</span></code> method can be used to record simulation statistics directly following the parent selection step in the universal breeding algorithm. The code below demonstrates its use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># gather data after breeding program parent selection</span>
 <span class="n">lbook</span><span class="o">.</span><span class="n">log_pselect</span><span class="p">(</span>
     <span class="n">mcfg</span> <span class="o">=</span> <span class="p">{},</span>
@@ -715,6 +742,7 @@
 </section>
 <section id="logging-after-breeding-program-mating">
 <h3>Logging after breeding program mating<a class="headerlink" href="#logging-after-breeding-program-mating" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">log_mate</span></code> method can be used to record simulation statistics directly following the mating step in the universal breeding algorithm. The code below demonstrates its use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># gather data after breeding program mating</span>
 <span class="n">lbook</span><span class="o">.</span><span class="n">log_mate</span><span class="p">(</span>
     <span class="n">genome</span> <span class="o">=</span> <span class="p">{},</span>
@@ -730,6 +758,7 @@
 </section>
 <section id="logging-after-breeding-program-evaluation">
 <h3>Logging after breeding program evaluation<a class="headerlink" href="#logging-after-breeding-program-evaluation" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">log_evaluate</span></code> method can be used to record simulation statistics directly following the evaluation step in the universal breeding algorithm. The code below demonstrates its use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># gather data after breeding program evaluation</span>
 <span class="n">lbook</span><span class="o">.</span><span class="n">log_evaluate</span><span class="p">(</span>
     <span class="n">genome</span> <span class="o">=</span> <span class="p">{},</span>
@@ -745,6 +774,7 @@
 </section>
 <section id="logging-after-breeding-program-survivor-selection">
 <h3>Logging after breeding program survivor selection<a class="headerlink" href="#logging-after-breeding-program-survivor-selection" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">log_sselect</span></code> method can be used to record simulation statistics directly following the survivor selection step in the universal breeding algorithm. The code below demonstrates its use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># gather data after breeding program survivor selection</span>
 <span class="n">lbook</span><span class="o">.</span><span class="n">log_sselect</span><span class="p">(</span>
     <span class="n">genome</span> <span class="o">=</span> <span class="p">{},</span>
@@ -758,20 +788,22 @@
 </pre></div>
 </div>
 </section>
+</section>
 <section id="resetting-a-logbook">
-<h3>Resetting a logbook<a class="headerlink" href="#resetting-a-logbook" title="Permalink to this heading">#</a></h3>
+<h2>Resetting a Logbook<a class="headerlink" href="#resetting-a-logbook" title="Permalink to this heading">#</a></h2>
+<p>Logbooks can be reset and their data erased using the <code class="docutils literal notranslate"><span class="pre">reset</span></code> method, demonstrated below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># reset logbook internals</span>
 <span class="n">lbook</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
-<section id="writing-a-logbook-to-file">
-<h3>Writing a logbook to file<a class="headerlink" href="#writing-a-logbook-to-file" title="Permalink to this heading">#</a></h3>
+<section id="writing-a-logbook-to-a-file">
+<h2>Writing a Logbook to a File<a class="headerlink" href="#writing-a-logbook-to-a-file" title="Permalink to this heading">#</a></h2>
+<p>Logbook data can be exported to a file using the <code class="docutils literal notranslate"><span class="pre">write</span></code> method, demonstrated below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># write logbook to file</span>
 <span class="n">lbook</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;filename.csv&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
 </section>
 </section>
 
@@ -873,17 +905,17 @@
      Logging after breeding program survivor selection
     </a>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#resetting-a-logbook">
-     Resetting a logbook
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#writing-a-logbook-to-file">
-     Writing a logbook to file
-    </a>
-   </li>
   </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#resetting-a-logbook">
+   Resetting a Logbook
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#writing-a-logbook-to-a-file">
+   Writing a Logbook to a File
+  </a>
  </li>
 </ul>
 
