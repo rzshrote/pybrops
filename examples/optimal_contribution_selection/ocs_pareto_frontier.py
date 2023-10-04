@@ -61,7 +61,7 @@ dalgmod = DenseAdditiveLinearGenomicModel(  # create model
     u_a = mkreffect,                        # random marker effects
     trait = numpy.object_(["syn1","syn2"]), # trait names
     model_name = "synthetic_model",         # name of the model
-    params = None                           # model parameters
+    hyperparams = None                           # model parameters
 )
 
 ################### Construct OCS object ###################

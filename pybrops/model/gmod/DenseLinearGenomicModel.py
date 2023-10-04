@@ -60,7 +60,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             u: numpy.ndarray, 
             trait: Optional[numpy.ndarray] = None, 
             model_name: Optional[str] = None, 
-            params: Optional[dict] = None, 
+            hyperparams: Optional[dict] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -94,7 +94,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             - ``t`` is the number of traits.
         model_name : str, None
             Name of the model.
-        params : dict, None
+        hyperparams : dict, None
             Model parameters.
         kwargs : dict
             Used for cooperative inheritance. Dictionary passing unused
@@ -107,7 +107,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         self.u = u
         self.trait = trait
         self.model_name = model_name
-        self.params = params
+        self.hyperparams = hyperparams
 
     def __repr__(
             self
@@ -143,7 +143,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             u = copy.copy(self.u),
             trait = copy.copy(self.trait),
             model_name = copy.copy(self.model_name),
-            params = copy.copy(self.params)
+            hyperparams = copy.copy(self.hyperparams)
         )
 
         return out
@@ -169,14 +169,19 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             u = copy.deepcopy(self.u),
             trait = copy.deepcopy(self.trait),
             model_name = copy.deepcopy(self.model_name),
-            params = copy.deepcopy(self.params)
+            hyperparams = copy.deepcopy(self.hyperparams)
         )
 
         return out
 
     ############################ Object Properties #############################
 
-    ############## Linear Genomic Model Data ###############
+    ########### Linear Genomic Model Parameters ############
+    @property
+    def nparam_beta(self) -> Integral:
+        """Number of fixed effect parameters."""
+        return self._beta.size
+
     @property
     def beta(self) -> numpy.ndarray:
         """Fixed effect regression coefficients."""
@@ -188,6 +193,11 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         check_ndarray_ndim(value, "beta", 2)
         check_ndarray_dtype_is_float64(value, "beta")
         self._beta = value
+
+    @property
+    def nparam_u(self) -> Integral:
+        """Number of random effect parameters."""
+        return self._u.size
 
     @property
     def u(self) -> numpy.ndarray:
@@ -215,15 +225,15 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         self._model_name = value
     
     @property
-    def params(self) -> dict:
+    def hyperparams(self) -> dict:
         """Model parameters."""
         return self._params
-    @params.setter
-    def params(self, value: Union[dict,None]) -> None:
+    @hyperparams.setter
+    def hyperparams(self, value: Union[dict,None]) -> None:
         """Set model parameters."""
         if value is None:
             value = {}
-        check_is_dict(value, "params")
+        check_is_dict(value, "hyperparams")
         self._params = value
 
     @property
@@ -1480,7 +1490,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             "u": self.u,
             "trait": self.trait,
             "model_name": self.model_name,
-            "params": self.params
+            "hyperparams": self.hyperparams
         }
         save_dict_to_hdf5(h5file, groupname, data_dict)         # write data
         ######################################################### write conclusion
@@ -1533,7 +1543,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
             "u" : None,
             "trait": None,
             "model_name": None,
-            "params": None
+            "hyperparams": None
         }
         data_dict["beta"] = h5file[groupname + "beta"][()]      # read beta array
         data_dict["u"] = h5file[groupname + "u"][()]            # read u array
@@ -1547,12 +1557,12 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         if fieldname in h5file:                                 # if "groupname/model_name" in hdf5
             data_dict["model_name"] = h5file[fieldname][()]     # read string (as bytes); convert to utf-8
             data_dict["model_name"] = data_dict["model_name"].decode("utf-8")
-        fieldname = groupname + "params"                        # construct "groupname/params"
-        if fieldname in h5file:                                 # if "groupname/params" in hdf5
-            data_dict["params"] = {}                            # create empty dictionary
+        fieldname = groupname + "hyperparams"                        # construct "groupname/hyperparams"
+        if fieldname in h5file:                                 # if "groupname/hyperparams" in hdf5
+            data_dict["hyperparams"] = {}                            # create empty dictionary
             view = h5file[fieldname]                            # get view of dataset
             for key in view.keys():                             # for each field
-                data_dict["params"][key] = view[key][()]        # extract data
+                data_dict["hyperparams"][key] = view[key][()]        # extract data
         ######################################################### read conclusion
         h5file.close()                                          # close file
         ######################################################### create object

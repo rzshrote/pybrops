@@ -14,7 +14,7 @@ from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_float64
 from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
-from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_ndim
 from pybrops.core.error.error_type_python import check_is_dict, check_is_str_or_Sequence
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
@@ -91,7 +91,7 @@ class DenseAdditiveLinearGenomicModel(
             u_a: Union[numpy.ndarray,None], 
             trait: Optional[numpy.ndarray] = None, 
             model_name: Optional[str] = None, 
-            params: Optional[dict] = None, 
+            hyperparams: Optional[dict] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -140,7 +140,7 @@ class DenseAdditiveLinearGenomicModel(
         model_name : str, None
             Name of the model.
         
-        params : dict, None
+        hyperparams : dict, None
             Model parameters.
         
         kwargs : dict
@@ -153,7 +153,7 @@ class DenseAdditiveLinearGenomicModel(
         self.u_a = u_a
         self.trait = trait
         self.model_name = model_name
-        self.params = params
+        self.hyperparams = hyperparams
 
     def __repr__(
             self
@@ -191,7 +191,7 @@ class DenseAdditiveLinearGenomicModel(
             u_a        = copy.copy(self.u_a),
             trait      = copy.copy(self.trait),
             model_name = copy.copy(self.model_name),
-            params     = copy.copy(self.params),
+            hyperparams     = copy.copy(self.hyperparams),
         )
 
         return out
@@ -219,47 +219,35 @@ class DenseAdditiveLinearGenomicModel(
             u_a        = copy.deepcopy(self.u_a, memo),
             trait      = copy.deepcopy(self.trait, memo),
             model_name = copy.deepcopy(self.model_name, memo),
-            params     = copy.deepcopy(self.params, memo),
+            hyperparams     = copy.deepcopy(self.hyperparams, memo),
         )
 
         return out
 
     ############################ Object Properties #############################
 
-    #################### Model copying #####################
-    def copy(
-            self
-        ) -> 'DenseAdditiveLinearGenomicModel':
-        """
-        Make a shallow copy of the GenomicModel.
+    ############### Genomic Model Parameters ###############
+    @property
+    def nexplan(self) -> Integral:
+        """Number of explanatory variables required by the model."""
+        return self.nexplan_beta + self.nexplan_u
 
-        Returns
-        -------
-        out : GenomicModel
-            A shallow copy of the original GenomicModel
-        """
-        return copy.copy(self)
+    @property
+    def nparam(self) -> Integral:
+        """Number of model parameters."""
+        return self.nparam_beta + self.nparam_u
 
-    def deepcopy(
-            self,
-            memo: Optional[dict] = None
-        ) -> 'DenseAdditiveLinearGenomicModel':
-        """
-        Make a deep copy of the GenomicModel.
+    ########### Linear Genomic Model Parameters ############
+    @property
+    def nexplan_beta(self) -> Integral:
+        """Number of fixed effect explanatory variables required by the model."""
+        return self._beta.shape[0]
 
-        Parameters
-        ----------
-        memo : dict
-            Dictionary of memo metadata.
+    @property
+    def nparam_beta(self) -> Integral:
+        """Number of fixed effect parameters."""
+        return self._beta.size
 
-        Returns
-        -------
-        out : GenomicModel
-            A deep copy of the original GenomicModel
-        """
-        return copy.deepcopy(self, memo)
-
-    ############## Linear Genomic Model Data ###############
     @property
     def beta(self) -> numpy.ndarray:
         """Fixed effect regression coefficients."""
@@ -273,17 +261,36 @@ class DenseAdditiveLinearGenomicModel(
         self._beta = value
 
     @property
+    def nexplan_u(self) -> Integral:
+        """Number of random effect explanatory variables required by the model."""
+        return self.nexplan_u_misc + self.nexplan_u_a
+
+    @property
+    def nparam_u(self) -> Integral:
+        """Number of random effect parameters."""
+        return self.nparam_u_misc + self.nparam_u_a
+
+    @property
     def u(self) -> numpy.ndarray:
         """Random effect regression coefficients."""
-        out = numpy.concatenate(        # concatenate matrices
-            [self.u_misc, self.u_a],    # get random effects
-            axis = 0                    # concatenate along compatible axes
-        )
+        # get random effects and concatenate along compatible axes
+        out = numpy.concatenate([self.u_misc, self.u_a], axis = 0)
         return out
     @u.setter
     def u(self, value: numpy.ndarray) -> None:
         """Set random effect regression coefficients"""
         raise AttributeError("variable 'u' is read-only; use 'u_misc' and 'u_a' to modify 'u'.")
+
+    ####### Additive Linear Genomic Model Parameters #######
+    @property
+    def nexplan_u_misc(self) -> Integral:
+        """Number of miscellaneous random effect explanatory variables required by the model."""
+        return self._u_misc.shape[0]
+
+    @property
+    def nparam_u_misc(self) -> Integral:
+        """Number of miscellaneous random effect parameters."""
+        return self._u_misc.size
 
     @property
     def u_misc(self) -> numpy.ndarray:
@@ -299,6 +306,16 @@ class DenseAdditiveLinearGenomicModel(
         check_ndarray_ndim(value, "u_misc", 2)
         check_ndarray_dtype_is_float64(value, "u_misc")
         self._u_misc = value
+
+    @property
+    def nexplan_u_a(self) -> Integral:
+        """Number of additive genomic marker explanatory variables required by the model."""
+        return self._u_a.shape[0]
+
+    @property
+    def nparam_u_a(self) -> Integral:
+        """Number of additive genomic marker parameters."""
+        return self._u_a.size
 
     @property
     def u_a(self) -> numpy.ndarray:
@@ -329,15 +346,15 @@ class DenseAdditiveLinearGenomicModel(
         self._model_name = value
     
     @property
-    def params(self) -> dict:
-        """Description for property params."""
+    def hyperparams(self) -> dict:
+        """Description for property hyperparams."""
         return self._params
-    @params.setter
-    def params(self, value: Union[dict,None]) -> None:
-        """Set data for property params."""
+    @hyperparams.setter
+    def hyperparams(self, value: Union[dict,None]) -> None:
+        """Set data for property hyperparams."""
         if value is None:
             value = {}
-        check_is_dict(value, "params")
+        check_is_dict(value, "hyperparams")
         self._params = value
     
     @property
@@ -363,6 +380,39 @@ class DenseAdditiveLinearGenomicModel(
         error_readonly("ntrait")
 
     ############################## Object Methods ##############################
+
+    #################### Model copying #####################
+    def copy(
+            self
+        ) -> 'DenseAdditiveLinearGenomicModel':
+        """
+        Make a shallow copy of the GenomicModel.
+
+        Returns
+        -------
+        out : GenomicModel
+            A shallow copy of the original GenomicModel
+        """
+        return self.__copy__()
+
+    def deepcopy(
+            self,
+            memo: Optional[dict] = None
+        ) -> 'DenseAdditiveLinearGenomicModel':
+        """
+        Make a deep copy of the GenomicModel.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : GenomicModel
+            A deep copy of the original GenomicModel
+        """
+        return self.__deepcopy__(memo)
 
     ####### methods for model fitting and prediction #######
     def fit_numpy(
@@ -656,8 +706,13 @@ class DenseAdditiveLinearGenomicModel(
         gebv_hat : numpy.ndarray
             A matrix of genomic estimated breeding values.
         """
+        # type checks
+        check_is_ndarray(Z, "Z")
+        check_ndarray_ndim(Z, "Z", 2)
+        check_ndarray_axis_len_eq(Z, "Z", 1, self.nexplan_u_a)
+
         # Y = Zu
-        gebv_hat = (Z @ self.u)
+        gebv_hat = (Z @ self.u_a)
 
         return gebv_hat
 
@@ -1777,27 +1832,30 @@ class DenseAdditiveLinearGenomicModel(
         )
 
         # export to CSV using pandas
-        df_dict["beta"].to_csv(
-            path_or_buf = filenames["beta"],
-            sep = sep,
-            header = header,
-            index = index,
-            **kwargs
-        )
-        df_dict["u_misc"].to_csv(
-            path_or_buf = filenames["u_misc"],
-            sep = sep,
-            header = header,
-            index = index,
-            **kwargs
-        )
-        df_dict["u_a"].to_csv(
-            path_or_buf = filenames["u_a"],
-            sep = sep,
-            header = header,
-            index = index,
-            **kwargs
-        )
+        if filenames["beta"] is not None:
+            df_dict["beta"].to_csv(
+                path_or_buf = filenames["beta"],
+                sep = sep,
+                header = header,
+                index = index,
+                **kwargs
+            )
+        if filenames["u_misc"] is not None:
+            df_dict["u_misc"].to_csv(
+                path_or_buf = filenames["u_misc"],
+                sep = sep,
+                header = header,
+                index = index,
+                **kwargs
+            )
+        if filenames["u_a"] is not None:
+            df_dict["u_a"].to_csv(
+                path_or_buf = filenames["u_a"],
+                sep = sep,
+                header = header,
+                index = index,
+                **kwargs
+            )
 
     def to_hdf5(
             self, 
@@ -1831,7 +1889,7 @@ class DenseAdditiveLinearGenomicModel(
             "u_a": self.u_a,
             "trait": self.trait,
             "model_name": self.model_name,
-            "params": self.params
+            "hyperparams": self.hyperparams
         }
         save_dict_to_hdf5(h5file, groupname, data_dict)         # write data
         ######################################################### write conclusion
@@ -1846,7 +1904,7 @@ class DenseAdditiveLinearGenomicModel(
             dic: Dict[str,pandas.DataFrame],
             trait_cols: Optional[Union[str,Sequence]] = "infer",
             model_name: Optional[str] = None, 
-            params: Optional[dict] = None, 
+            hyperparams: Optional[dict] = None, 
             **kwargs: dict
         ) -> 'DenseAdditiveLinearGenomicModel':
         """
@@ -1875,7 +1933,7 @@ class DenseAdditiveLinearGenomicModel(
         model_name : str, None
             Name of the model.
 
-        params : dict, None
+        hyperparams : dict, None
             Model parameters.
 
         kwargs : dict
@@ -1930,7 +1988,11 @@ class DenseAdditiveLinearGenomicModel(
         if dic["u_a"] is not None:
             df = dic["u_a"]
             ix = [] if trait is None else [df.columns.get_loc(e) if isinstance(e,str) else e for e in trait]
-            u_misc = df.iloc[:,ix].to_numpy(dtype = float)
+            u_a = df.iloc[:,ix].to_numpy(dtype = float)
+
+        print(beta)
+        print(u_misc)
+        print(u_a)
 
         # create output object
         out = cls(
@@ -1939,7 +2001,7 @@ class DenseAdditiveLinearGenomicModel(
             u_a = u_a,
             trait = trait,
             model_name = model_name,
-            params = params,
+            hyperparams = hyperparams,
         )
 
         return out
@@ -1952,7 +2014,7 @@ class DenseAdditiveLinearGenomicModel(
             header: int = 0,
             trait_cols: Optional[Union[str,Sequence]] = "infer",
             model_name: Optional[str] = None, 
-            params: Optional[dict] = None, 
+            hyperparams: Optional[dict] = None, 
             **kwargs: dict
         ) -> 'DenseAdditiveLinearGenomicModel':
         """
@@ -1990,7 +2052,7 @@ class DenseAdditiveLinearGenomicModel(
         model_name : str, None
             Name of the model.
 
-        params : dict, None
+        hyperparams : dict, None
             Model parameters.
 
         kwargs : dict
@@ -2027,7 +2089,7 @@ class DenseAdditiveLinearGenomicModel(
             dic = dic, 
             trait_cols = trait_cols, 
             model_name = model_name, 
-            params = params, 
+            hyperparams = hyperparams, 
         )
 
         return out
@@ -2077,7 +2139,7 @@ class DenseAdditiveLinearGenomicModel(
             "u_a" : None,
             "trait": None,
             "model_name": None,
-            "params": None
+            "hyperparams": None
         }
         data_dict["beta"] = h5file[groupname + "beta"][()]      # read beta array
         data_dict["u_misc"] = h5file[groupname + "u_misc"][()]  # read u array
@@ -2092,12 +2154,12 @@ class DenseAdditiveLinearGenomicModel(
         if fieldname in h5file:                                 # if "groupname/model_name" in hdf5
             data_dict["model_name"] = h5file[fieldname][()]     # read string (as bytes); convert to utf-8
             data_dict["model_name"] = data_dict["model_name"].decode("utf-8")
-        fieldname = groupname + "params"                        # construct "groupname/params"
-        if fieldname in h5file:                                 # if "groupname/params" in hdf5
-            data_dict["params"] = {}                            # create empty dictionary
+        fieldname = groupname + "hyperparams"                        # construct "groupname/hyperparams"
+        if fieldname in h5file:                                 # if "groupname/hyperparams" in hdf5
+            data_dict["hyperparams"] = {}                            # create empty dictionary
             view = h5file[fieldname]                            # get view of dataset
             for key in view.keys():                             # for each field
-                data_dict["params"][key] = view[key][()]        # extract data
+                data_dict["hyperparams"][key] = view[key][()]        # extract data
         ######################################################### read conclusion
         h5file.close()                                          # close file
         ######################################################### create object

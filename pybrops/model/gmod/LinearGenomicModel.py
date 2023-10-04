@@ -4,6 +4,7 @@ are linear in nature.
 """
 
 from abc import ABCMeta, abstractmethod
+from numbers import Integral
 from pybrops.model.gmod.GenomicModel import GenomicModel
 
 class LinearGenomicModel(GenomicModel,metaclass=ABCMeta):
@@ -39,7 +40,19 @@ class LinearGenomicModel(GenomicModel,metaclass=ABCMeta):
 
     ############################ Object Properties #############################
 
-    ############## Linear Genomic Model Data ###############
+    ########### Linear Genomic Model Parameters ############
+    @property
+    @abstractmethod
+    def nexplan_beta(self) -> Integral:
+        """Number of fixed effect explanatory variables required by the model."""
+        raise NotImplementedError("property is abstract")
+
+    @property
+    @abstractmethod
+    def nparam_beta(self) -> Integral:
+        """Number of fixed effect parameters."""
+        raise NotImplementedError("property is abstract")
+
     @property
     @abstractmethod
     def beta(self) -> object:
@@ -49,6 +62,18 @@ class LinearGenomicModel(GenomicModel,metaclass=ABCMeta):
     @abstractmethod
     def beta(self, value: object) -> None:
         """Set fixed effect regression coefficients"""
+        raise NotImplementedError("property is abstract")
+
+    @property
+    @abstractmethod
+    def nexplan_u(self) -> Integral:
+        """Number of random effect explanatory variables required by the model."""
+        raise NotImplementedError("property is abstract")
+
+    @property
+    @abstractmethod
+    def nparam_u(self) -> Integral:
+        """Number of random effect parameters."""
         raise NotImplementedError("property is abstract")
 
     @property

@@ -26,11 +26,11 @@ class DummyGenomicModel(GenomicModel):
     def model_name(self, value: object) -> None:
         super().model_name = value
     @property
-    def params(self) -> object:
-        return super().params
-    @params.setter
-    def params(self, value: object) -> None:
-        super().params = value
+    def hyperparams(self) -> object:
+        return super().hyperparams
+    @hyperparams.setter
+    def hyperparams(self, value: object) -> None:
+        super().hyperparams = value
     @property
     def trait(self) -> object:
         return super().trait

@@ -205,14 +205,14 @@ def common_algmod(common_nvrnt, common_ntrait):
     u_a = numpy.random.normal(0, 1, (common_nvrnt,common_ntrait))
     trait = numpy.array(["Trait"+str(i).zfill(2) for i in range(1,common_ntrait+1)], dtype=object)
     model_name = "test_dalgmod"
-    params = {"a" : 0, "b" : 1}
+    hyperparams = {"a" : 0, "b" : 1}
     out = DenseAdditiveLinearGenomicModel(
         beta = beta,
         u_misc = u_misc,
         u_a = u_a,
         trait = trait,
         model_name = model_name,
-        params = params
+        hyperparams = hyperparams
     )
     yield out
 

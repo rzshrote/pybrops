@@ -405,7 +405,7 @@ gmod_true = DenseAdditiveLinearGenomicModel(                    # create model
     u_a = pybrops.core.random.normal(0, 0.01, (dpgmat.nvrnt,1)),# random marker effects
     trait = numpy.object_(["yield"]),                           # trait names
     model_name = "yield_model",                                 # name of the model
-    params = None
+    hyperparams = None
 )
 
 ################### Founding parameters ####################

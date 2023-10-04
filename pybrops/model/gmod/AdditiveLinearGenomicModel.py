@@ -4,6 +4,7 @@ models that incorporate genomic additive effects.
 """
 
 from abc import ABCMeta, abstractmethod
+from numbers import Integral
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 
 class AdditiveLinearGenomicModel(LinearGenomicModel,metaclass=ABCMeta):
@@ -60,6 +61,20 @@ class AdditiveLinearGenomicModel(LinearGenomicModel,metaclass=ABCMeta):
     ########################## Special Object Methods ##########################
 
     ############################ Object Properties #############################
+
+    ####### Additive Linear Genomic Model Parameters #######
+    @property
+    @abstractmethod
+    def nexplan_u_misc(self) -> Integral:
+        """Number of miscellaneous random effect explanatory variables required by the model."""
+        raise NotImplementedError("property is abstract")
+
+    @property
+    @abstractmethod
+    def nparam_u_misc(self) -> Integral:
+        """Number of miscellaneous random effect parameters."""
+        raise NotImplementedError("property is abstract")
+
     @property
     @abstractmethod
     def u_misc(self) -> object:
@@ -69,6 +84,18 @@ class AdditiveLinearGenomicModel(LinearGenomicModel,metaclass=ABCMeta):
     @abstractmethod
     def u_misc(self, value: object) -> None:
         """Set miscellaneous random effects"""
+        raise NotImplementedError("property is abstract")
+
+    @property
+    @abstractmethod
+    def nexplan_u_a(self) -> Integral:
+        """Number of additive genomic marker explanatory variables required by the model."""
+        raise NotImplementedError("property is abstract")
+
+    @property
+    @abstractmethod
+    def nparam_u_a(self) -> Integral:
+        """Number of additive genomic marker parameters."""
         raise NotImplementedError("property is abstract")
 
     @property

@@ -47,7 +47,7 @@ algmod = DenseAdditiveLinearGenomicModel(
     u_a = u_a,
     trait = trait,
     model_name = "example",
-    params = None
+    hyperparams = None
 )
 
 ###
@@ -112,7 +112,7 @@ gmat = DenseGenotypeMatrix(
 
 # general properties
 tmp = algmod.model_name
-tmp = algmod.params
+tmp = algmod.hyperparams
 
 # model properties
 tmp = algmod.beta

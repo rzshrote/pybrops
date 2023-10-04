@@ -96,7 +96,7 @@ Creating genomic models from NumPy arrays
         u_a = u_a,
         trait = trait,
         model_name = "example",
-        params = None
+        hyperparams = None
     )
 
 Genomic Model Properties
@@ -113,7 +113,7 @@ General properties
       - Description
     * - ``model_name``
       - Name assigned to the genomic model
-    * - ``params``
+    * - ``hyperparams``
       - Model hyperparameters (e.g. for fitting)
 
 Model coefficient properties

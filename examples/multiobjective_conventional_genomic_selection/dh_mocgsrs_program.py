@@ -594,7 +594,7 @@ gmod_true = DenseAdditiveLinearGenomicModel(    # create model
     u_a = mkreffect,                            # random marker effects
     trait = numpy.object_(["syn1","syn2"]),     # trait names
     model_name = "yield_model",                 # name of the model
-    params = None
+    hyperparams = None
 )
 
 ################### Founding parameters ####################

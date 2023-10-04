@@ -462,7 +462,7 @@ After constructing our unconstrained and constrained selection protocols, we can
         u_a = u_a,
         trait = trait,
         model_name = "example",
-        params = None
+        hyperparams = None
     )
 
     #

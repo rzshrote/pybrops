@@ -54,18 +54,18 @@ def model_name():
     yield "test_dalgmod"
 
 @pytest.fixture
-def params():
+def hyperparams():
     yield {"a" : 0, "b" : 1}
 
 @pytest.fixture
-def dalgmod(mat_beta, mat_u_misc, mat_u_a, mat_trait, model_name, params):
+def dalgmod(mat_beta, mat_u_misc, mat_u_a, mat_trait, model_name, hyperparams):
     yield DenseAdditiveLinearGenomicModel(
         beta = mat_beta,
         u_misc = mat_u_misc,
         u_a = mat_u_a,
         trait = mat_trait,
         model_name = model_name,
-        params = params
+        hyperparams = hyperparams
     )
 
 ############################################################

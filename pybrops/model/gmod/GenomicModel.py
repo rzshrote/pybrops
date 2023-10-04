@@ -4,6 +4,7 @@ Module defining basal interfaces and error checking routines for genomic models.
 
 from abc import ABCMeta, abstractmethod
 import copy
+from numbers import Integral
 from typing import Optional, Union
 import numpy
 import pandas
@@ -61,6 +62,19 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
 
     ############################ Object Properties #############################
 
+    ############### Genomic Model Parameters ###############
+    @property
+    @abstractmethod
+    def nexplan(self) -> Integral:
+        """Number of explanatory variables required by the model."""
+        raise NotImplementedError("property is abstract")
+
+    @property
+    @abstractmethod
+    def nparam(self) -> Integral:
+        """Number of model parameters."""
+        raise NotImplementedError("property is abstract")
+
     ################## Genomic Model Data ##################
     @property
     @abstractmethod
@@ -75,12 +89,12 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def params(self) -> dict:
+    def hyperparams(self) -> dict:
         """Model parameters."""
         raise NotImplementedError("property is abstract")
-    @params.setter
+    @hyperparams.setter
     @abstractmethod
-    def params(self, value: dict) -> None:
+    def hyperparams(self, value: dict) -> None:
         """Set the model parameters"""
         raise NotImplementedError("property is abstract")
 
