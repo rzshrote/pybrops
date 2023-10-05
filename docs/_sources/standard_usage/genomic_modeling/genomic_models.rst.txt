@@ -4,17 +4,19 @@ Genomic Models
 Class Family Overview
 =====================
 
-The ``GenomicModel`` family of classes allow for the representation of any type of genomic model. The purpose of this family of classes is primarily to provide functionality for fitting a genomic prediction model and estimating breeding values. ``GenomicModel`` classes also provide functionality for estimating population genetic, and genic variances, allele value metrics, and upper and lower selection limits.
+The ``GenomicModel`` family of classes allow for the representation of any type of genomic model. The purpose of this family of classes to provide functionality for fitting genomic prediction models and estimating breeding values. ``GenomicModel`` classes also provide functionality for estimating population genetic, and genic variances, allele value metrics, and upper and lower selection limits.
 
 Summary of Genomic Model Classes
 ================================
 
-There are many interfaces deriving from the main ``GenomicModel`` interface. Briefly, the ``GenomicModel`` family can be divided into ``LinearGenomicModel`` classes and ``NonlinearGenomicModel`` classes. As their names suggest, the former defines genomic models which are linear in nature, while the latter defines models which are non-linear in nature. The ``NonlinearGenomicModel`` interface may be useful for defining machine learning models.
+The central ``GenomicModel`` interface defines all basic genomic models operations. The ``GenomicModel`` interface is intended to be extremely broad as there are many modeling methods by which genetic values may be estimated and modeled. Deriving from this interface are two broad categories: linear genomic models and non-linear genomic models. Linear and non-linear genomic model behaviors are defined by the ``LinearGenomicModel`` and ``NonlinearGenomicModel`` interfaces, respectively. As their names suggest, the former defines genomic models which are linear in nature, while the latter defines models which are non-linear in nature. The ``NonlinearGenomicModel`` interface may be useful for defining machine learning models.
 
-Deriving from the ``LinearGenomicModel`` interface are several subtypes of linear genomic models. Derivative interfaces are summarized below:
+Deriving from the ``LinearGenomicModel`` interface are several subtypes of linear genomic models. Derivatives include additive genomic models, additive-dominance genomic models, and additive-dominance-epistasis genomic models. Additive genomic models are models where genomic marker effects are assumed to be strictly additive in nature. The behavior or additive genomic models is defined by the ``AddititiveLinearGenomicModel`` interface. Additive-dominance genomic models are models where genomic markers exhibit additive and dominance effects. The behavior of these types of models is defined by the ``AdditiveDominanceLinearGenomicModel``. Finally, additive-dominance-epistasis genomic models are models where genomic markers exhibit additive, dominance, and epistatic effects. The behavior of these types of models is defined by the ``AdditiveDominanceEpistaticLinearGenomicModel``.
 
-.. list-table:: Summary of classes in ``pybrops.model.gmod`` module
-    :widths: 25 20 50
+Below is a summary of the genomic model abstract interfaces present in PyBrOpS.
+
+.. list-table:: Summary of abstract classes in the ``pybrops.model.gmod`` module
+    :widths: 25 15 50
     :header-rows: 1
 
     * - Class Name
@@ -35,12 +37,21 @@ Deriving from the ``LinearGenomicModel`` interface are several subtypes of linea
     * - ``AdditiveLinearGenomicModel``
       - Abstract
       - Interface for genomic models which assume strictly additive allelic effects.
-    * - ``AdditiveDominanceLinearGenomicModel``
+    * - | ``AdditiveDominance``
+        | ``LinearGenomicModel``
       - Abstract
       - Interface for genomic models which assume additive and dominance allelic effects.
-    * - ``AdditiveDominanceEpistaticLinearGenomicModel``
+    * - | ``AdditiveDominanceEpistatic``
+        | ``LinearGenomicModel``
       - Abstract
       - Interface for genomic models which assume additive, dominance, and epistatic allelic effects.
+
+PyBrOpS implements several generic linear genomic model classes since these model types are common. Below is a summary of implemented genomic model classes in PyBrOpS.
+
+.. list-table:: Summary of concrete classes in the ``pybrops.model.gmod`` module
+    :widths: 25 15 50
+    :header-rows: 1
+
     * - ``DenseLinearGenomicModel``
       - Concrete
       - Class representing a generic linear genomic model.
@@ -48,8 +59,149 @@ Deriving from the ``LinearGenomicModel`` interface are several subtypes of linea
       - Concrete
       - Class representing a generic additive linear genomic model.
 
+Genomic Model Properties
+========================
+
+Genomic models share several properties in common. These properties can be categorized into three groups: general properties, model properties, and trait properties. These property groupings are summarized in the following three subsections. 
+
+In addition to base ``GenomicModel`` properties, derivatives of the ``GenomicModel`` interface may define extra properties as in the case of the ``LinearGenomicModel`` family of classes. The subsections following the ``GenomicModel`` subsections detail properties which have been added to classes in the ``LinearGenomicModel`` class family.
+
+Genomic Models: General properties
+----------------------------------
+
+All genomic models share a set of general, basic properties. These properties are the name of the model and any hyperparameters that the model may have. General genomic model properties are summarized below.
+
+.. list-table:: Summary of ``GenomicModel`` general properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``model_name``
+      - Name assigned to the genomic model
+    * - ``hyperparams``
+      - Model hyperparameters (e.g. for fitting)
+
+Genomic Models: Model properties
+--------------------------------
+
+All genomic models also share a set of model properties pertaining to the dimensionality of the model. These include the number of explanatory variables that the model uses as predictors and the number of parameters of the model. These model properties are intensionally very basic because of the broad diversity of modeling techniques which may be used to model genotypic values.
+
+.. list-table:: Summary of ``GenomicModel`` model properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``nexplan``
+      - Number of explanatory variables required by the model
+    * - ``nparam``
+      - Number of model parameters
+
+Genomic Models: Trait properties
+--------------------------------
+
+Genomic models also contain the names of traits for which the model predicts. Trait related properties are summarized in the table below.
+
+.. list-table:: Summary of ``GenomicModel`` trait properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``ntrait``
+      - Number of traits for which the model predicts
+    * - ``trait``
+      - Names of traits for which the model predicts
+
+Linear Genomic Models: Additional model properties
+--------------------------------------------------
+
+For ``LinearGenomicModel`` s, additional fixed and random effect model properties are added on top of the properties in the base ``GenomicModel`` class. These additional properties pertain to the number of explanatory variables, number of model parameters, and regression coefficients for the linear mixed model. Below summarizes the additional model properties.
+
+.. list-table:: Summary of ``LinearGenomicModel`` additional model properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``nexplan_beta``
+      - Number of fixed effect explanatory variables required by the model
+    * - ``nparam_beta``
+      - Number of fixed effect parameters
+    * - ``beta``
+      - Coefficients for fixed effects
+    * - ``nexplan_u``
+      - Number of random effect explanatory variables required by the model
+    * - ``nparam_u``
+      - Number of random effect parameters
+    * - ``u``
+      - Coefficients for random effects
+
+Additive Linear Genomic Models: Additional model properties
+-----------------------------------------------------------
+
+For ``AdditiveLinearGenomicModel`` s, the random effects properties of the ``LinearGenomicModel`` class are subdivided into miscellaneous random effects and additive genomic marker effects. The ``AdditiveLinearGenomicModel`` interface adds additional properties to access these random effect subdivisions. Below summarizes model properties which are added.
+
+.. list-table:: Summary of ``AdditiveLinearGenomicModel`` additional model properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``nexplan_u_misc``
+      - Number of miscellaneous random effect explanatory variables required by the model
+    * - ``nparam_u_misc``
+      - Number of miscellaneous random effect parameters
+    * - ``u_misc``
+      - Coefficients for miscellaneous random effects
+    * - ``nexplan_u_a``
+      - Number of additive genomic marker explanatory variables required by the model
+    * - ``nparam_u_a``
+      - Number of additive genomic marker parameters
+    * - ``u_a``
+      - Coefficients for additive genomic marker effects
+
+Additive Dominance Linear Genomic Models: Additional model properties
+---------------------------------------------------------------------
+
+For the ``AdditiveDominanceLinearGenomicModel`` class family, an additional set of dominance random effect properties is added on top of the base ``AdditiveLinearGenomicModel`` class. Below summarizes the dominance model properties which are added.
+
+.. list-table:: Summary of ``AdditiveDominanceLinearGenomicModel`` additional model properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``nexplan_u_d``
+      - Number of dominance genomic marker explanatory variables required by the model
+    * - ``nparam_u_d``
+      - Number of dominance genomic marker parameters
+    * - ``u_d``
+      - Coefficients for dominance genomic marker effects
+
+Additive Dominance Epistatic Linear Genomic Models: Model coefficient properties
+--------------------------------------------------------------------------------
+
+For the ``AdditiveDominanceEpistaticLinearGenomicModel`` class family, an additional set of epistatic random effect properties is added on top of the base ``AdditiveDominanceLinearGenomicModel`` class. Below summarizes the epistatic model properties which are added.
+
+.. list-table:: Summary of ``AdditiveDominanceEpistaticLinearGenomicModel`` model coefficient properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``nexplan_u_i``
+      - Number of epistatic genomic marker explanatory variables required by the model
+    * - ``nparam_u_i``
+      - Number of epistatic genomic marker parameters
+    * - ``u_i``
+      - Coefficients for epistatic genomic marker effects
+
 Loading Genomic Model Modules
 =============================
+
+Genomic model classes can be loaded from the ``pybrops.model.gmod`` module using the import statements in the code below.
 
 .. code-block:: python
 
@@ -69,8 +221,12 @@ Loading Genomic Model Modules
 Creating Genomic Models
 =======================
 
-Creating genomic models from NumPy arrays
------------------------------------------
+Genomic models can be created using multiple methods. All genomic models can be created from raw NumPy arrays using the class constructor or loaded from HDF5 files. In addition, ``LinearGenomicModel`` classes can be loaded from Pandas DataFrames or from CSV files. The sections below demonstrate how to load a ``DenseAdditiveLinearGenomicModel`` using all four of the aforementioned creation mechanisms.
+
+Creating genomic models from raw NumPy arrays
+---------------------------------------------
+
+The code example below demonstrates how to create a dense additive linear genomic model from raw NumPy arrays using the class constructor. Most genomic model class constructors accept NumPy arrays for their arguments since this is the lowest common denominator. This said, the genomic model interface defined by PyBrOpS does not require that a class adhere to this norm. A genomic model constructor is implementation dependent, allowing for freedom in cases where construction from NumPy arrays is impractical or undesirable.
 
 .. code-block:: python
 
@@ -96,57 +252,65 @@ Creating genomic models from NumPy arrays
         u_a = u_a,
         trait = trait,
         model_name = "example",
-        hyperparams = None
+        params = None
     )
 
-Genomic Model Properties
-========================
+Loading linear genomic models from dictionaries of Pandas DataFrames
+--------------------------------------------------------------------
 
-General properties
-------------------
+``LinearGenomicModel`` s can be loaded from dictionaries of Pandas DataFrames. Below demonstrates how the ``from_pandas_dict`` can be used to load a model from multiple Pandas DataFrames.
 
-.. list-table:: Summary of ``GenotypeMatrix`` general properties
-    :widths: 25 50
-    :header-rows: 1
+.. code-block:: python
 
-    * - Property
-      - Description
-    * - ``model_name``
-      - Name assigned to the genomic model
-    * - ``hyperparams``
-      - Model hyperparameters (e.g. for fitting)
+    nfixed = 1      # number of fixed effects
+    ntrait = 2      # number of traits
+    nmisc = 0       # number of miscellaneous random effects
+    nadditive = 50  # number of additive marker effects
 
-Model coefficient properties
-----------------------------
+    # create dummy values
+    beta = numpy.random.random((nfixed,ntrait))
+    u_misc = numpy.random.random((nmisc,ntrait))
+    u_a = numpy.random.random((nadditive,ntrait))
+    trait = numpy.array(["Trait"+str(i+1) for i in range(ntrait)], dtype=object)
 
-.. list-table:: Summary of ``GenotypeMatrix`` taxa properties
-    :widths: 25 50
-    :header-rows: 1
+    # create dictionary with dataframes
+    # need required fields of "beta", "u_misc", "u_a" for this class
+    df_dict = {
+        "beta": pandas.DataFrame(beta, columns = trait),
+        "u_misc": pandas.DataFrame(u_misc, columns = trait),
+        "u_a": pandas.DataFrame(u_a, columns = trait)
+    }
 
-    * - Property
-      - Description
-    * - ``beta``
-      - Coefficients for fixed effects
-    * - ``u``
-      - Coefficients for all random effects
-    * - ``u_a``
-      - Coefficients for additive marker random effects
-    * - ``u_misc``
-      - Coefficients for miscellaneous random effects
+    # construct model from dictionary of pandas dataframes
+    mod = DenseAdditiveLinearGenomicModel.from_pandas_dict(df_dict)
 
-Trait properties
-----------------
+Loading linear genomic models from dictionaries of CSV file names
+-----------------------------------------------------------------
 
-.. list-table:: Summary of ``GenotypeMatrix`` marker variant properties
-    :widths: 25 50
-    :header-rows: 1
+CSV files may be used to load linear genomic models in a similar manner to loading from Pandas DataFrames. The code below demonstrates how to load a linear genomic model from multiple CSV files containing different sets of marker coefficients.
 
-    * - Property
-      - Description
-    * - ``ntrait``
-      - Number of traits for which the model predicts
-    * - ``trait``
-      - Names of traits for which the model predicts
+.. code-block:: python
+
+    # create dictionary with filenames
+    # need required fields of "beta", "u_misc", "u_a" for this class
+    dic = {
+        "beta": "beta.csv",
+        "u_misc": "u_misc.csv",
+        "u_a": "u_a.csv",
+    }
+
+    # construct model from dictionary of pandas dataframes
+    mod = DenseAdditiveLinearGenomicModel.from_csv_dict(dic)
+
+Loading genomic models HDF5 files
+---------------------------------
+
+All genomic models may be saved and reloaded from HDF5 files. The code below demonstrates how to read a ``GenomicModel`` from an HDF5 file.
+
+.. code-block:: python
+
+    # load from HDF5 file
+    mod = DenseAdditiveLinearGenomicModel.from_hdf5("gmod.h5")
 
 Copying Genomic Models
 ======================
@@ -335,13 +499,37 @@ Calculating deleterious allele metrics
     # calculate deleterious allele fixation at loci in a population
     out = algmod.dafixed(gmat)
 
-Reading and writing a genomic model
-===================================
+Exporting Genomic Models
+========================
+
+Exporting to dictionaries of Pandas DataFrames
+----------------------------------------------
+
+.. code-block:: python
+
+    # export all trait columns
+    out = algmod.to_pandas_dict()
+
+Exporting to CSV files
+----------------------
+
+.. code-block:: python
+
+    # create dictionary with filenames
+    # need required fields of "beta", "u_misc", "u_a" for this class
+    dic = {
+        "beta": "beta.csv",
+        "u_misc": "u_misc.csv",
+        "u_a": "u_a.csv",
+    }
+
+    # export all trait columns to csv files
+    algmod.to_csv_dict(dic)
+
+Exporting to HDF5
+-----------------
 
 .. code-block:: python
 
     # writing a genomic model to a file
     algmod.to_hdf5("saved_algmod.h5")
-
-    # reading a genomic model from a file
-    out = DenseAdditiveLinearGenomicModel.from_hdf5("saved_algmod.h5")

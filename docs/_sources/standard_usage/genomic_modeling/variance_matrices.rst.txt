@@ -189,7 +189,7 @@ Creating variance matrices from genomic models
         u_a = u_a,
         trait = trait,
         model_name = "example",
-        hyperparams = None
+        params = None
     )
 
     # shape parameters for random genotypes

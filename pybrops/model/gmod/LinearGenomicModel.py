@@ -5,9 +5,16 @@ are linear in nature.
 
 from abc import ABCMeta, abstractmethod
 from numbers import Integral
+from pybrops.core.io.CSVDictInputOutput import CSVDictInputOutput
+from pybrops.core.io.PandasDictInputOutput import PandasDictInputOutput
 from pybrops.model.gmod.GenomicModel import GenomicModel
 
-class LinearGenomicModel(GenomicModel,metaclass=ABCMeta):
+class LinearGenomicModel(
+        GenomicModel,
+        PandasDictInputOutput,
+        CSVDictInputOutput,
+        metaclass = ABCMeta,
+    ):
     """
     The LinearGenomicModel class represents a Multivariate Multiple Linear
     Regression model.

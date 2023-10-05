@@ -4,6 +4,7 @@ models that incorporate genomic additive, dominance, and epistatic effects.
 """
 
 from abc import ABCMeta, abstractmethod
+from numbers import Integral
 from pybrops.model.gmod.AdditiveDominanceLinearGenomicModel import AdditiveDominanceLinearGenomicModel
 
 class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomicModel,metaclass=ABCMeta):
@@ -66,6 +67,18 @@ class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomi
     ########################## Special Object Methods ##########################
 
     ############################ Object Properties #############################
+    @property
+    @abstractmethod
+    def nexplan_u_i(self) -> Integral:
+        """Number of epistatic genomic marker explanatory variables required by the model."""
+        raise NotImplementedError("property is abstract")
+    
+    @property
+    @abstractmethod
+    def nparam_u_i(self) -> Integral:
+        """Number of epistatic genomic marker parameters."""
+        raise NotImplementedError("property is abstract")
+    
     @property
     @abstractmethod
     def u_i(self) -> object:

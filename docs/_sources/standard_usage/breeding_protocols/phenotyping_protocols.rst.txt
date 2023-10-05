@@ -107,7 +107,7 @@ Phenotyping protocols may be created using their constructors. Constructor defin
         u_a = u_a,
         trait = trait,
         model_name = "example",
-        hyperparams = None
+        params = None
     )
 
     #
