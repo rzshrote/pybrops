@@ -787,8 +787,10 @@
 </section>
 <section id="copying-genomic-models">
 <h2>Copying Genomic Models<a class="headerlink" href="#copying-genomic-models" title="Permalink to this heading">#</a></h2>
+<p>Genomic models may be copied using either shallow copying or deep copying. The subsections below demonstrate both copying methods.</p>
 <section id="shallow-copying">
 <h3>Shallow copying<a class="headerlink" href="#shallow-copying" title="Permalink to this heading">#</a></h3>
+<p>In shallow copying, references for a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> s internal data are copied to a new object. Copying may be accomplished using the <code class="docutils literal notranslate"><span class="pre">copy</span></code> method or the base Python function <a class="reference external" href="https://docs.python.org/3/library/copy.html#copy.copy"><code class="docutils literal notranslate"><span class="pre">copy.copy</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># copy a genomic model</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">algmod</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -797,6 +799,7 @@
 </section>
 <section id="deep-copying">
 <h3>Deep copying<a class="headerlink" href="#deep-copying" title="Permalink to this heading">#</a></h3>
+<p>In deep copying, a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code>’s internal data is recursively copied to a new object. Deep copying may be accomplished using the <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code> method or the base Python function <a class="reference external" href="https://docs.python.org/3/library/copy.html#copy.deepcopy"><code class="docutils literal notranslate"><span class="pre">copy.deepcopy</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># deep copy a genomic model</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">algmod</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
@@ -806,6 +809,7 @@
 </section>
 <section id="model-prediction-methods">
 <h2>Model prediction methods<a class="headerlink" href="#model-prediction-methods" title="Permalink to this heading">#</a></h2>
+<p>Phenotypic predictions can be made with <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> objects using the <code class="docutils literal notranslate"><span class="pre">predict_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">predict</span></code> methods. The former method accepts raw NumPy arrays, while the latter method accepts raw NumPy arrays and other object classes such as <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> classes. The code below demonstrates the use of these methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create random genotypes to test</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">ntaxa</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">Z</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ploidy</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">ntaxa</span><span class="p">,</span><span class="n">nvrnt</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int8&quot;</span><span class="p">)</span>
@@ -820,6 +824,7 @@
 </section>
 <section id="score-model-prediction-accuracy">
 <h2>Score model prediction accuracy<a class="headerlink" href="#score-model-prediction-accuracy" title="Permalink to this heading">#</a></h2>
+<p>The prediction accuracy of a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> can be assessed using the <code class="docutils literal notranslate"><span class="pre">predict_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">predict</span></code> methods. The former method accepts raw NumPy arrays, while the latter method accepts raw NumPy arrays and other object classes such as <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> classes. The code below demonstrates the use of these methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create some dummy matrices for input</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">ntaxa</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">B</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">beta</span>
@@ -839,6 +844,7 @@
 </section>
 <section id="predicting-genomic-estimated-breeding-values">
 <h2>Predicting genomic estimated breeding values<a class="headerlink" href="#predicting-genomic-estimated-breeding-values" title="Permalink to this heading">#</a></h2>
+<p>Genomic estimated breeding values (GEBVs) can be estimated by a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> object using the <code class="docutils literal notranslate"><span class="pre">gebv_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">gebv</span></code> methods. The former method accepts raw NumPy arrays, while the latter method accepts raw NumPy arrays and <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> classes. The code below demonstrates the use of these methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># predict GEBVs using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">gebv_numpy</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
 
@@ -847,10 +853,23 @@
 </pre></div>
 </div>
 </section>
+<section id="predicting-genomic-estimated-genotypic-values">
+<h2>Predicting genomic estimated genotypic values<a class="headerlink" href="#predicting-genomic-estimated-genotypic-values" title="Permalink to this heading">#</a></h2>
+<p>Genomic estimated genotypic values (GEGVs) can be estimated by a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> object using the <code class="docutils literal notranslate"><span class="pre">gegv_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">gegv</span></code> methods. The former method accepts raw NumPy arrays, while the latter method accepts raw NumPy arrays and <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> classes. The code below demonstrates the use of these methods.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># predict GEGVs using numpy arrays</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">gegv_numpy</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+
+<span class="c1"># predict GEGVs using objects</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">gegv</span><span class="p">(</span><span class="n">gmat</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="calculating-population-genetic-variance-terms">
 <h2>Calculating population genetic variance terms<a class="headerlink" href="#calculating-population-genetic-variance-terms" title="Permalink to this heading">#</a></h2>
+<p>Genomic models may be used to calculate various population genetic variance statistics. These statistics include genetic variance, additive genetic variance, additive genic variance, and the Bulmer effect for a population. The subsections detail the calculation of these metrics.</p>
 <section id="predicting-genetic-variance">
 <h3>Predicting genetic variance<a class="headerlink" href="#predicting-genetic-variance" title="Permalink to this heading">#</a></h3>
+<p>Population genetic variance can be calculated using the <code class="docutils literal notranslate"><span class="pre">var_G_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">var_G</span></code> methods. The code below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># predict Var(G) using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">var_G_numpy</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
 
@@ -861,6 +880,7 @@
 </section>
 <section id="predicting-additive-genetic-variance">
 <h3>Predicting additive genetic variance<a class="headerlink" href="#predicting-additive-genetic-variance" title="Permalink to this heading">#</a></h3>
+<p>Population additive genetic variance can be calculated using the <code class="docutils literal notranslate"><span class="pre">var_A_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">var_A</span></code> methods. The code below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># predict Var(A) using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">var_A_numpy</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
 
@@ -871,6 +891,7 @@
 </section>
 <section id="predicting-additive-genic-variance">
 <h3>Predicting additive genic variance<a class="headerlink" href="#predicting-additive-genic-variance" title="Permalink to this heading">#</a></h3>
+<p>Population additive genic variance (the genetic variance assuming complete linkage equilibrium) can be calculated using the <code class="docutils literal notranslate"><span class="pre">var_a_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">var_a</span></code> methods. The code below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># predict Var(a) using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">var_a_numpy</span><span class="p">(</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">afreq</span><span class="p">(),</span>
@@ -884,6 +905,7 @@
 </section>
 <section id="predicting-the-bulmer-effect">
 <h3>Predicting the Bulmer effect<a class="headerlink" href="#predicting-the-bulmer-effect" title="Permalink to this heading">#</a></h3>
+<p>The Bulmer effect for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">bulmer_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">bulmer</span></code> methods. The code below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># predict Bulmer effect using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">bulmer_numpy</span><span class="p">(</span>
     <span class="n">Z</span><span class="p">,</span>
@@ -899,8 +921,10 @@
 </section>
 <section id="calculating-population-selection-limits">
 <h2>Calculating population selection limits<a class="headerlink" href="#calculating-population-selection-limits" title="Permalink to this heading">#</a></h2>
+<p>Population selection limits are an important measure of how much valuable genetic variation can be extracted from a given population. <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> classes provide both upper and lower selection limit calculations which are detailed below.</p>
 <section id="upper-selection-limit">
 <h3>Upper selection limit<a class="headerlink" href="#upper-selection-limit" title="Permalink to this heading">#</a></h3>
+<p>Upper selection limits (USLs) can be calculated using the <code class="docutils literal notranslate"><span class="pre">usl_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">usl</span></code> methods. The upper selection limit represents the maximum breeding value achieved by the fixation of all favorable alleles in a given population. The code below demonstrates how to calculate the USL.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># upper selection limit using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">usl_numpy</span><span class="p">(</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">afreq</span><span class="p">(),</span>
@@ -914,6 +938,7 @@
 </section>
 <section id="lower-selection-limit">
 <h3>Lower selection limit<a class="headerlink" href="#lower-selection-limit" title="Permalink to this heading">#</a></h3>
+<p>Lower selection limits (USLs) can be calculated using the <code class="docutils literal notranslate"><span class="pre">lsl_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">lsl</span></code> methods. The lower selection limit represents the minimum breeding value achieved by the fixation of all deleterious alleles in a given population. The code below demonstrates how to calculate the LSL.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># lower selection limit using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">lsl_numpy</span><span class="p">(</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">afreq</span><span class="p">(),</span>
@@ -928,6 +953,7 @@
 </section>
 <section id="calculating-favorable-allele-metrics">
 <h2>Calculating favorable allele metrics<a class="headerlink" href="#calculating-favorable-allele-metrics" title="Permalink to this heading">#</a></h2>
+<p>Metrics on the favorable alleles within a population may be of importance when conducting breeding simulations. The favorable allele count across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">facount</span></code> method. The favorable allele frequency across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">fafreq</span></code> method. A mask of the favorable allele availability across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">faavail</span></code> method. Finally, a mask of the favorable allele fixation across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">fafixed</span></code> method. The code below demonstrates the use of these four methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate favorable allele counts</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">facount</span><span class="p">(</span><span class="n">gmat</span><span class="p">)</span>
 
@@ -944,6 +970,7 @@
 </section>
 <section id="calculating-deleterious-allele-metrics">
 <h2>Calculating deleterious allele metrics<a class="headerlink" href="#calculating-deleterious-allele-metrics" title="Permalink to this heading">#</a></h2>
+<p>Metrics on the deleterious alleles within a population may be of importance when conducting breeding simulations. The deleterious allele count across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">facount</span></code> method. The deleterious allele frequency across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">fafreq</span></code> method. A mask of the deleterious allele availability across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">faavail</span></code> method. Finally, a mask of the deleterious allele fixation across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">fafixed</span></code> method. The code below demonstrates the use of these four methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate deleterious allele counts</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">dacount</span><span class="p">(</span><span class="n">gmat</span><span class="p">)</span>
 
@@ -960,8 +987,10 @@
 </section>
 <section id="exporting-genomic-models">
 <h2>Exporting Genomic Models<a class="headerlink" href="#exporting-genomic-models" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> objects can be exported for later use or import into another program. All <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> objects can be saved as an HDF5 file. <code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> objects may also be exported to Pandas DataFrames and CSV files.</p>
 <section id="exporting-to-dictionaries-of-pandas-dataframes">
 <h3>Exporting to dictionaries of Pandas DataFrames<a class="headerlink" href="#exporting-to-dictionaries-of-pandas-dataframes" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> objects can be exported to a dictionary of Pandas DataFrames using the <code class="docutils literal notranslate"><span class="pre">to_pandas_dict</span></code> method. The code below demonstrates the use of this function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># export all trait columns</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">to_pandas_dict</span><span class="p">()</span>
 </pre></div>
@@ -969,6 +998,7 @@
 </section>
 <section id="exporting-to-csv-files">
 <h3>Exporting to CSV files<a class="headerlink" href="#exporting-to-csv-files" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> objects can be also be exported to a set of CSV files using the <code class="docutils literal notranslate"><span class="pre">to_csv_dict</span></code> method. The code below demonstrates the use of this function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create dictionary with filenames</span>
 <span class="c1"># need required fields of &quot;beta&quot;, &quot;u_misc&quot;, &quot;u_a&quot; for this class</span>
 <span class="n">dic</span> <span class="o">=</span> <span class="p">{</span>
@@ -984,6 +1014,7 @@
 </section>
 <section id="exporting-to-hdf5">
 <h3>Exporting to HDF5<a class="headerlink" href="#exporting-to-hdf5" title="Permalink to this heading">#</a></h3>
+<p>Finally, all <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> objects can be saved to an HDF5 file for later reloading into PyBrOpS. The code below demonstrates how to export a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> to an HDF5 file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># writing a genomic model to a file</span>
 <span class="n">algmod</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_algmod.h5&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1144,6 +1175,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#predicting-genomic-estimated-breeding-values">
    Predicting genomic estimated breeding values
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#predicting-genomic-estimated-genotypic-values">
+   Predicting genomic estimated genotypic values
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">

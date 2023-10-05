@@ -315,8 +315,15 @@ All genomic models may be saved and reloaded from HDF5 files. The code below dem
 Copying Genomic Models
 ======================
 
+Genomic models may be copied using either shallow copying or deep copying. The subsections below demonstrate both copying methods.
+
 Shallow copying
 ---------------
+
+.. |link_copy_copy| replace:: ``copy.copy``
+.. _link_copy_copy: https://docs.python.org/3/library/copy.html#copy.copy
+
+In shallow copying, references for a ``GenomicModel`` s internal data are copied to a new object. Copying may be accomplished using the ``copy`` method or the base Python function |link_copy_copy|_.
 
 .. code-block:: python
 
@@ -327,15 +334,21 @@ Shallow copying
 Deep copying
 ------------
 
+.. |link_copy_deepcopy| replace:: ``copy.deepcopy``
+.. _link_copy_deepcopy: https://docs.python.org/3/library/copy.html#copy.deepcopy
+
+In deep copying, a ``GenomicModel``'s internal data is recursively copied to a new object. Deep copying may be accomplished using the ``deepcopy`` method or the base Python function |link_copy_deepcopy|_.
+
 .. code-block:: python
 
     # deep copy a genomic model
     tmp = copy.deepcopy(algmod)
     tmp = algmod.deepcopy()
 
-
 Model prediction methods
 ========================
+
+Phenotypic predictions can be made with ``GenomicModel`` objects using the ``predict_numpy`` and ``predict`` methods. The former method accepts raw NumPy arrays, while the latter method accepts raw NumPy arrays and other object classes such as ``GenotypeMatrix`` classes. The code below demonstrates the use of these methods.
 
 .. code-block:: python
 
@@ -351,6 +364,8 @@ Model prediction methods
 
 Score model prediction accuracy
 ===============================
+
+The prediction accuracy of a ``GenomicModel`` can be assessed using the ``predict_numpy`` and ``predict`` methods. The former method accepts raw NumPy arrays, while the latter method accepts raw NumPy arrays and other object classes such as ``GenotypeMatrix`` classes. The code below demonstrates the use of these methods.
 
 .. code-block:: python
 
@@ -372,6 +387,8 @@ Score model prediction accuracy
 Predicting genomic estimated breeding values
 ============================================
 
+Genomic estimated breeding values (GEBVs) can be estimated by a ``GenomicModel`` object using the ``gebv_numpy`` and ``gebv`` methods. The former method accepts raw NumPy arrays, while the latter method accepts raw NumPy arrays and ``GenotypeMatrix`` classes. The code below demonstrates the use of these methods.
+
 .. code-block:: python
 
     # predict GEBVs using numpy arrays
@@ -380,11 +397,29 @@ Predicting genomic estimated breeding values
     # predict GEBVs using objects
     out = algmod.gebv(gmat)
 
+Predicting genomic estimated genotypic values
+=============================================
+
+Genomic estimated genotypic values (GEGVs) can be estimated by a ``GenomicModel`` object using the ``gegv_numpy`` and ``gegv`` methods. The former method accepts raw NumPy arrays, while the latter method accepts raw NumPy arrays and ``GenotypeMatrix`` classes. The code below demonstrates the use of these methods.
+
+.. code-block:: python
+
+    # predict GEGVs using numpy arrays
+    out = algmod.gegv_numpy(Z)
+
+    # predict GEGVs using objects
+    out = algmod.gegv(gmat)
+
+
 Calculating population genetic variance terms
 =============================================
 
+Genomic models may be used to calculate various population genetic variance statistics. These statistics include genetic variance, additive genetic variance, additive genic variance, and the Bulmer effect for a population. The subsections detail the calculation of these metrics.
+
 Predicting genetic variance
 ---------------------------
+
+Population genetic variance can be calculated using the ``var_G_numpy`` and ``var_G`` methods. The code below demonstrates their use.
 
 .. code-block:: python
 
@@ -397,6 +432,8 @@ Predicting genetic variance
 Predicting additive genetic variance
 ------------------------------------
 
+Population additive genetic variance can be calculated using the ``var_A_numpy`` and ``var_A`` methods. The code below demonstrates their use.
+
 .. code-block:: python
 
     # predict Var(A) using numpy arrays
@@ -407,6 +444,8 @@ Predicting additive genetic variance
 
 Predicting additive genic variance
 ----------------------------------
+
+Population additive genic variance (the genetic variance assuming complete linkage equilibrium) can be calculated using the ``var_a_numpy`` and ``var_a`` methods. The code below demonstrates their use.
 
 .. code-block:: python
 
@@ -421,6 +460,8 @@ Predicting additive genic variance
 
 Predicting the Bulmer effect
 ----------------------------
+
+The Bulmer effect for a population can be calculated using the ``bulmer_numpy`` and ``bulmer`` methods. The code below demonstrates their use.
 
 .. code-block:: python
 
@@ -437,8 +478,12 @@ Predicting the Bulmer effect
 Calculating population selection limits
 =======================================
 
+Population selection limits are an important measure of how much valuable genetic variation can be extracted from a given population. ``GenomicModel`` classes provide both upper and lower selection limit calculations which are detailed below.
+
 Upper selection limit
 ---------------------
+
+Upper selection limits (USLs) can be calculated using the ``usl_numpy`` and ``usl`` methods. The upper selection limit represents the maximum breeding value achieved by the fixation of all favorable alleles in a given population. The code below demonstrates how to calculate the USL.
 
 .. code-block:: python
 
@@ -454,6 +499,8 @@ Upper selection limit
 Lower selection limit
 ---------------------
 
+Lower selection limits (USLs) can be calculated using the ``lsl_numpy`` and ``lsl`` methods. The lower selection limit represents the minimum breeding value achieved by the fixation of all deleterious alleles in a given population. The code below demonstrates how to calculate the LSL.
+
 .. code-block:: python
 
     # lower selection limit using numpy arrays
@@ -467,6 +514,8 @@ Lower selection limit
 
 Calculating favorable allele metrics
 ====================================
+
+Metrics on the favorable alleles within a population may be of importance when conducting breeding simulations. The favorable allele count across each locus for a population can be calculated using the ``facount`` method. The favorable allele frequency across each locus for a population can be calculated using the ``fafreq`` method. A mask of the favorable allele availability across each locus for a population can be calculated using the ``faavail`` method. Finally, a mask of the favorable allele fixation across each locus for a population can be calculated using the ``fafixed`` method. The code below demonstrates the use of these four methods.
 
 .. code-block:: python
 
@@ -485,6 +534,8 @@ Calculating favorable allele metrics
 Calculating deleterious allele metrics
 ======================================
 
+Metrics on the deleterious alleles within a population may be of importance when conducting breeding simulations. The deleterious allele count across each locus for a population can be calculated using the ``facount`` method. The deleterious allele frequency across each locus for a population can be calculated using the ``fafreq`` method. A mask of the deleterious allele availability across each locus for a population can be calculated using the ``faavail`` method. Finally, a mask of the deleterious allele fixation across each locus for a population can be calculated using the ``fafixed`` method. The code below demonstrates the use of these four methods.
+
 .. code-block:: python
 
     # calculate deleterious allele counts
@@ -502,8 +553,12 @@ Calculating deleterious allele metrics
 Exporting Genomic Models
 ========================
 
+``GenomicModel`` objects can be exported for later use or import into another program. All ``GenomicModel`` objects can be saved as an HDF5 file. ``LinearGenomicModel`` objects may also be exported to Pandas DataFrames and CSV files.
+
 Exporting to dictionaries of Pandas DataFrames
 ----------------------------------------------
+
+``LinearGenomicModel`` objects can be exported to a dictionary of Pandas DataFrames using the ``to_pandas_dict`` method. The code below demonstrates the use of this function.
 
 .. code-block:: python
 
@@ -512,6 +567,8 @@ Exporting to dictionaries of Pandas DataFrames
 
 Exporting to CSV files
 ----------------------
+
+``LinearGenomicModel`` objects can be also be exported to a set of CSV files using the ``to_csv_dict`` method. The code below demonstrates the use of this function.
 
 .. code-block:: python
 
@@ -528,6 +585,8 @@ Exporting to CSV files
 
 Exporting to HDF5
 -----------------
+
+Finally, all ``GenomicModel`` objects can be saved to an HDF5 file for later reloading into PyBrOpS. The code below demonstrates how to export a ``GenomicModel`` to an HDF5 file.
 
 .. code-block:: python
 
