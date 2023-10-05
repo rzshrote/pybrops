@@ -892,7 +892,7 @@ class DenseAdditiveLinearGenomicModel(
         else:
             raise TypeError("must be GenotypeMatrix, ndarray")
 
-        out =self.var_G_numpy(Z, **kwargs)
+        out = self.var_G_numpy(Z, **kwargs)
 
         return out
 
@@ -964,7 +964,7 @@ class DenseAdditiveLinearGenomicModel(
         else:
             raise TypeError("must be GenotypeMatrix, ndarray")
 
-        out =self.var_A_numpy(Z, **kwargs)
+        out = self.var_A_numpy(Z, **kwargs)
 
         return out
 
@@ -1989,10 +1989,6 @@ class DenseAdditiveLinearGenomicModel(
             df = dic["u_a"]
             ix = [] if trait is None else [df.columns.get_loc(e) if isinstance(e,str) else e for e in trait]
             u_a = df.iloc[:,ix].to_numpy(dtype = float)
-
-        print(beta)
-        print(u_misc)
-        print(u_a)
 
         # create output object
         out = cls(

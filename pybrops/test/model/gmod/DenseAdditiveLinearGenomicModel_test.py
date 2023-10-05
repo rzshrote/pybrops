@@ -334,6 +334,22 @@ def test_gebv_numpy_ValueError(algmod):
 def test_gebv_is_concrete():
     assert_concrete_method(DenseAdditiveLinearGenomicModel, "gebv")
 
+def test_gebv(algmod, pgmat, pgmat_mat):
+    out = algmod.gebv(pgmat_mat.sum(0))
+    assert isinstance(out, BreedingValueMatrix)
+    out = algmod.gebv(pgmat)
+    assert isinstance(out, BreedingValueMatrix)
+
+def test_gebv_TypeError(algmod):
+    with pytest.raises(TypeError):
+        tmp = algmod.gebv(Z = object())
+
+def test_gebv_ValueError(algmod):
+    with pytest.raises(ValueError):
+        tmp = algmod.gebv_numpy(Z = numpy.ndarray((0,)))
+    with pytest.raises(ValueError):
+        tmp = algmod.gebv_numpy(Z = numpy.ndarray((0,0)))
+
 ### gegv_numpy
 def test_gegv_numpy_is_concrete():
     assert_concrete_method(DenseAdditiveLinearGenomicModel, "gegv_numpy")
@@ -357,11 +373,42 @@ def test_gegv_numpy_ValueError(algmod):
 def test_gegv_is_concrete():
     assert_concrete_method(DenseAdditiveLinearGenomicModel, "gegv")
 
+def test_gegv(algmod, pgmat, pgmat_mat):
+    out = algmod.gegv(pgmat_mat.sum(0))
+    assert isinstance(out, BreedingValueMatrix)
+    out = algmod.gegv(pgmat)
+    assert isinstance(out, BreedingValueMatrix)
+
+def test_gegv_TypeError(algmod):
+    with pytest.raises(TypeError):
+        tmp = algmod.gegv(Z = object())
+
+def test_gegv_ValueError(algmod):
+    with pytest.raises(ValueError):
+        tmp = algmod.gegv_numpy(Z = numpy.ndarray((0,)))
+    with pytest.raises(ValueError):
+        tmp = algmod.gegv_numpy(Z = numpy.ndarray((0,0)))
+
 ###### Variance calculation tests ######
 
 ### var_G_numpy
 def test_var_G_numpy_is_concrete():
     assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_G_numpy")
+
+def test_var_G_numpy(algmod, pgmat_mat):
+    geno = pgmat_mat.sum(0)
+    out = algmod.var_G_numpy(geno)
+    assert isinstance(out, numpy.ndarray)
+
+def test_var_G_numpy_TypeError(algmod):
+    with pytest.raises(TypeError):
+        tmp = algmod.var_G_numpy(Z = object())
+
+def test_var_G_numpy_ValueError(algmod):
+    with pytest.raises(ValueError):
+        tmp = algmod.var_G_numpy(Z = numpy.ndarray((0,)))
+    with pytest.raises(ValueError):
+        tmp = algmod.var_G_numpy(Z = numpy.ndarray((0,0)))
 
 ### var_G
 def test_var_G_is_concrete():
@@ -370,6 +417,21 @@ def test_var_G_is_concrete():
 ### var_A_numpy
 def test_var_A_numpy_is_concrete():
     assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_A_numpy")
+
+def test_var_A_numpy(algmod, pgmat_mat):
+    geno = pgmat_mat.sum(0)
+    out = algmod.var_A_numpy(geno)
+    assert isinstance(out, numpy.ndarray)
+
+def test_var_A_numpy_TypeError(algmod):
+    with pytest.raises(TypeError):
+        tmp = algmod.var_A_numpy(Z = object())
+
+def test_var_A_numpy_ValueError(algmod):
+    with pytest.raises(ValueError):
+        tmp = algmod.var_A_numpy(Z = numpy.ndarray((0,)))
+    with pytest.raises(ValueError):
+        tmp = algmod.var_A_numpy(Z = numpy.ndarray((0,0)))
 
 ### var_A
 def test_var_A_is_concrete():
@@ -520,6 +582,18 @@ def test_from_pandas_dict(algmod):
 ### from_csv_dict
 def test_from_csv_dict_is_concrete():
     assert_concrete_method(DenseAdditiveLinearGenomicModel, "from_csv_dict")
+
+def test_from_csv(algmod):
+    filenames = {
+        "beta": "saved_beta.csv",
+        "u_misc": "saved_u_misc.csv",
+        "u_a": "saved_u_a.csv",
+    }
+    algmod.to_csv_dict(filenames)
+    out = DenseAdditiveLinearGenomicModel.from_csv_dict(
+        filenames = filenames,
+    )
+    assert isinstance(out, DenseAdditiveLinearGenomicModel)
 
 ### from_hdf5
 def test_from_hdf5_is_concrete():
