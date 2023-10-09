@@ -1,8 +1,11 @@
 from typing import Optional, Sequence, Union
 from numpy import ndarray
 from numpy.typing import ArrayLike
+import pandas
 import pytest
+from pybrops.core.io.CSVInputOutput import CSVInputOutput
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
+from pybrops.core.io.PandasInputOutput import PandasInputOutput
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
@@ -332,7 +335,15 @@ class DummyGeneticVarianceMatrix(GeneticVarianceMatrix):
         return super().ungroup(axis, **kwargs)
     def ungroup_taxa(self, **kwargs: dict) -> None:
         return super().ungroup_taxa(**kwargs)
-
+    def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
+        return super().to_pandas(**kwargs)
+    @classmethod
+    def from_pandas(cls, df: pandas.DataFrame, **kwargs: dict) -> PandasInputOutput:
+        return super().from_pandas(df, **kwargs)
+    @classmethod
+    def from_csv(cls, filename: str, **kwargs: dict) -> CSVInputOutput:
+        return super().from_csv(filename, **kwargs)
+    
 class DummyAdditiveGeneticVarianceMatrix(DummyGeneticVarianceMatrix,AdditiveGeneticVarianceMatrix):
     @classmethod
     def from_algmod(cls, algmod: AdditiveLinearGenomicModel, pgmat: PhasedGenotypeMatrix, ncross: int, nprogeny: int, nself: int, gmapfn: GeneticMapFunction, mem: int, **kwargs: dict) -> AdditiveGeneticVarianceMatrix:
@@ -652,6 +663,14 @@ class DummyGenicVarianceMatrix(GenicVarianceMatrix):
         return super().ungroup(axis, **kwargs)
     def ungroup_taxa(self, **kwargs: dict) -> None:
         return super().ungroup_taxa(**kwargs)
+    def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
+        return super().to_pandas(**kwargs)
+    @classmethod
+    def from_pandas(cls, df: pandas.DataFrame, **kwargs: dict) -> PandasInputOutput:
+        return super().from_pandas(df, **kwargs)
+    @classmethod
+    def from_csv(cls, filename: str, **kwargs: dict) -> CSVInputOutput:
+        return super().from_csv(filename, **kwargs)
 
 class DummyAdditiveGenicVarianceMatrix(DummyGenicVarianceMatrix,AdditiveGenicVarianceMatrix):
     @classmethod
@@ -664,6 +683,14 @@ class DummyDenseGeneticVarianceMatrix(DenseGeneticVarianceMatrix):
         return super().from_gmod(gmod, pgmat, ncross, nprogeny, nself, gmapfn, **kwargs)
     def to_csv(self, fname: str) -> None:
         return super().to_csv(fname)
+    def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
+        return super().to_pandas(**kwargs)
+    @classmethod
+    def from_pandas(cls, df: pandas.DataFrame, **kwargs: dict) -> PandasInputOutput:
+        return super().from_pandas(df, **kwargs)
+    @classmethod
+    def from_csv(cls, filename: str, **kwargs: dict) -> CSVInputOutput:
+        return super().from_csv(filename, **kwargs)
 
 class DummyDenseAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix):
     @classmethod
@@ -674,3 +701,11 @@ class DummyDenseAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix
         return super().from_gmod(gmod, pgmat, ncross, nprogeny, nself, gmapfn, **kwargs)
     def to_csv(self, fname: str) -> None:
         return super().to_csv(fname)
+    def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
+        return super().to_pandas(**kwargs)
+    @classmethod
+    def from_pandas(cls, df: pandas.DataFrame, **kwargs: dict) -> PandasInputOutput:
+        return super().from_pandas(df, **kwargs)
+    @classmethod
+    def from_csv(cls, filename: str, **kwargs: dict) -> CSVInputOutput:
+        return super().from_csv(filename, **kwargs)

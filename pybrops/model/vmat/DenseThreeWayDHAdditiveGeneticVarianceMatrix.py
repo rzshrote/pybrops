@@ -129,43 +129,6 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         return 2
 
     ############################## Object Methods ##############################
-    def to_csv(
-            self, 
-            fname: str
-        ) -> None:
-        # calculate how much zero fill we need
-        taxazfill = math.ceil(math.log10(self.ntaxa))+1
-        traitzfill = math.ceil(math.log10(self.ntrait))+1
-
-        # get names for taxa and traits
-        taxa = ["Taxon"+str(e).zfill(taxazfill) for e in range(self.ntaxa)] if self.taxa is None else self.taxa
-        trait = ["Trait"+str(e).zfill(traitzfill) for e in range(self.ntrait)] if self.trait is None else self.trait
-
-        # make dictionary to store output columns
-        out_dict = {
-            "Recurrent": [],
-            "Female": [],
-            "Male": [],
-            "Trait": [],
-            "Variance": []
-        }
-
-        # construct columns element by element
-        for recurrix in range(self.mat_shape[0]):
-            for femaleix in range(self.mat_shape[1]):
-                for maleix in range(self.mat_shape[2]):
-                    for traitix in range(self.mat_shape[3]):
-                        out_dict["Recurrent"].append(taxa[recurrix])
-                        out_dict["Female"].append(taxa[femaleix])
-                        out_dict["Male"].append(taxa[maleix])
-                        out_dict["Trait"].append(trait[traitix])
-                        out_dict["Variance"].append(self[recurrix,femaleix,maleix,traitix])
-
-        # create a pandas DataFrame from the data
-        out_df = pandas.DataFrame(out_dict)
-
-        # write DataFrame to file
-        out_df.to_csv(fname, index = False)
 
     ###################### Matrix I/O ######################
     # TODO: make exporting of specific female, male, trait values, not just all
@@ -849,7 +812,7 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         return out
 
     ############# Matrix Factory Class Methods #############
-    # TODO: implement me
+    # TODO: provide support for non-linear models
     @classmethod
     def from_gmod(
             cls, 

@@ -3,7 +3,7 @@ import pandas
 import pytest
 import numpy
 import h5py
-from pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix import DenseDihybridDHAdditiveGeneticVarianceMatrix
+from pybrops.model.vmat.DenseThreeWayDHAdditiveGenicVarianceMatrix import DenseThreeWayDHAdditiveGenicVarianceMatrix
 
 from pybrops.test.assert_python import assert_concrete_property, not_raises
 from pybrops.test.assert_python import assert_docstring
@@ -18,7 +18,7 @@ from pybrops.test.model.vmat.common_fixtures import *
 ### shape fixtures
 @pytest.fixture
 def ntaxa():
-    yield 10
+    yield 5
 
 @pytest.fixture
 def ntrait():
@@ -32,7 +32,7 @@ def ngroup():
 
 @pytest.fixture
 def mat(ntaxa,ntrait):
-    out = numpy.random.random((ntaxa,ntaxa,ntrait))
+    out = numpy.random.random((ntaxa,ntaxa,ntaxa,ntrait))
     yield out
 
 @pytest.fixture
@@ -53,7 +53,7 @@ def trait(ntrait):
 
 @pytest.fixture
 def vmat(mat, taxa, taxa_grp, trait):
-    out = DenseDihybridDHAdditiveGeneticVarianceMatrix(
+    out = DenseThreeWayDHAdditiveGenicVarianceMatrix(
         mat = mat,
         taxa = taxa,
         taxa_grp = taxa_grp,
@@ -65,20 +65,20 @@ def vmat(mat, taxa, taxa_grp, trait):
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(DenseDihybridDHAdditiveGeneticVarianceMatrix)
+    assert_docstring(DenseThreeWayDHAdditiveGenicVarianceMatrix)
 
 ########################### Test concrete properties ###########################
 
 ### mat
 def test_mat_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "mat")
+    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "mat")
 
 def test_mat_fget(vmat):
     assert isinstance(vmat.mat, numpy.ndarray)
 
 def test_mat_fset(vmat):
     with not_raises(Exception):
-        vmat.mat = numpy.empty((0,0,0), dtype=float)
+        vmat.mat = numpy.empty((0,0,0,0), dtype=float)
 
 def test_mat_fset_TypeError(vmat):
     with pytest.raises(TypeError):
@@ -86,69 +86,83 @@ def test_mat_fset_TypeError(vmat):
 
 def test_mat_fset_ValueError(vmat):
     with pytest.raises(ValueError):
-        vmat.mat = numpy.empty((0,0), dtype=float)
+        vmat.mat = numpy.empty((0,0,0), dtype=float)
     with pytest.raises(ValueError):
-        vmat.mat = numpy.empty((0,0,0,0), dtype=float)
+        vmat.mat = numpy.empty((0,0,0,0,0), dtype=float)
 
 ### square_axes
 def test_square_axes_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "square_axes")
+    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "square_axes")
 
 ### trait_axis
 def test_trait_axis_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "trait_axis")
+    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "trait_axis")
 
 ### epgc
 def test_epgc_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "epgc")
+    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "epgc")
+
+### nrecurrent
+def test_nrecurrent_is_concrete():
+    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "nrecurrent")
+
+### recurrent_axis
+def test_recurrent_axis_is_concrete():
+    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "recurrent_axis")
 
 ### nfemale
 def test_nfemale_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "nfemale")
+    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "nfemale")
 
 ### female_axis
 def test_female_axis_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "female_axis")
+    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "female_axis")
 
 ### nmale
 def test_nmale_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "nmale")
+    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "nmale")
 
 ### male_axis
 def test_male_axis_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "male_axis")
+    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "male_axis")
 
 ############################# Test concrete methods ############################
 
 ### __init__
 def test___init___is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "__init__")
+    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "__init__")
 
 ### to_pandas
 def test_to_pandas_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "to_pandas")
+    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "to_pandas")
 
 def test_to_pandas(vmat):
     # define column names
-    female_col = "female_col"
-    female_grp_col = "female_grp_col"
-    male_col = "male_col"
-    male_grp_col = "male_grp_col"
-    trait_col = "trait_col"
-    variance_col = "variance_col"
+    recurrent_col     = "recurrent_col"
+    recurrent_grp_col = "recurrent_grp_col"
+    female_col        = "female_col"
+    female_grp_col    = "female_grp_col"
+    male_col          = "male_col"
+    male_grp_col      = "male_grp_col"
+    trait_col         = "trait_col"
+    variance_col      = "variance_col"
     # make dataframe
     df = vmat.to_pandas(
-        female_col = female_col,
-        female_grp_col = female_grp_col,
-        male_col = male_col,
-        male_grp_col = male_grp_col,
-        trait_col = trait_col,
-        variance_col = variance_col,
+        recurrent_col     = recurrent_col,
+        recurrent_grp_col = recurrent_grp_col,
+        female_col        = female_col,
+        female_grp_col    = female_grp_col,
+        male_col          = male_col,
+        male_grp_col      = male_grp_col,
+        trait_col         = trait_col,
+        variance_col      = variance_col,
     )
     # tests
     assert isinstance(df, pandas.DataFrame)
     assert len(df) == vmat.mat.size
-    assert len(df.columns) == 6
+    assert len(df.columns) == 8
+    assert recurrent_col in df.columns
+    assert recurrent_grp_col in df.columns
     assert female_col in df.columns
     assert female_grp_col in df.columns
     assert male_col in df.columns
@@ -157,25 +171,31 @@ def test_to_pandas(vmat):
     assert variance_col in df.columns
     
     # define column names
-    female_col = "female_col"
-    female_grp_col = None
-    male_col = "male_col"
-    male_grp_col = None
-    trait_col = "trait_col"
-    variance_col = "variance_col"
+    recurrent_col     = "recurrent_col"
+    recurrent_grp_col = None
+    female_col        = "female_col"
+    female_grp_col    = None
+    male_col          = "male_col"
+    male_grp_col      = None
+    trait_col         = "trait_col"
+    variance_col      = "variance_col"
     # make dataframe
     df = vmat.to_pandas(
-        female_col = female_col,
-        female_grp_col = female_grp_col,
-        male_col = male_col,
-        male_grp_col = male_grp_col,
-        trait_col = trait_col,
-        variance_col = variance_col,
+        recurrent_col     = recurrent_col,
+        recurrent_grp_col = recurrent_grp_col,
+        female_col        = female_col,
+        female_grp_col    = female_grp_col,
+        male_col          = male_col,
+        male_grp_col      = male_grp_col,
+        trait_col         = trait_col,
+        variance_col      = variance_col,
     )
     # tests
     assert isinstance(df, pandas.DataFrame)
     assert len(df) == vmat.mat.size
-    assert len(df.columns) == 4
+    assert len(df.columns) == 5
+    assert recurrent_col in df.columns
+    assert recurrent_grp_col not in df.columns
     assert female_col in df.columns
     assert female_grp_col not in df.columns
     assert male_col in df.columns
@@ -185,36 +205,40 @@ def test_to_pandas(vmat):
 
 ### to_csv
 def test_to_csv_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "to_csv")
+    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "to_csv")
 
 def test_to_csv(vmat):
-    filename = "test_dhdh_vmat.csv"
+    filename = "test_3dh_vmat.csv"
     # define column names
-    female_col = "female_col"
-    female_grp_col = "female_grp_col"
-    male_col = "male_col"
-    male_grp_col = "male_grp_col"
-    trait_col = "trait_col"
-    variance_col = "variance_col"
+    recurrent_col     = "recurrent_col"
+    recurrent_grp_col = "recurrent_grp_col"
+    female_col        = "female_col"
+    female_grp_col    = "female_grp_col"
+    male_col          = "male_col"
+    male_grp_col      = "male_grp_col"
+    trait_col         = "trait_col"
+    variance_col      = "variance_col"
     # write to file
     vmat.to_csv(
-        filename = filename,
-        female_col = female_col,
-        female_grp_col = female_grp_col,
-        male_col = male_col,
-        male_grp_col = male_grp_col,
-        trait_col = trait_col,
-        variance_col = variance_col,
+        filename          = filename,
+        recurrent_col     = recurrent_col,
+        recurrent_grp_col = recurrent_grp_col,
+        female_col        = female_col,
+        female_grp_col    = female_grp_col,
+        male_col          = male_col,
+        male_grp_col      = male_grp_col,
+        trait_col         = trait_col,
+        variance_col      = variance_col,
     )
     # tests
     assert os.path.isfile(filename)
 
 ### to_hdf5
 def test_to_hdf5_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "to_hdf5")
+    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "to_hdf5")
 
 def test_to_hdf5(vmat):
-    filename = "test_dhdh_vmat.h5"
+    filename = "test_3dh_vmat.h5"
     vmat.to_hdf5(filename)
     assert os.path.isfile(filename)
     # open the file
@@ -238,15 +262,15 @@ def test_to_hdf5(vmat):
 
 ### from_pandas
 def test_from_pandas_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "from_pandas")
+    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "from_pandas")
 
 def test_from_pandas(vmat, ntaxa, ntrait):
     # export
     df = vmat.to_pandas()
     
     # tests for recovery
-    out = DenseDihybridDHAdditiveGeneticVarianceMatrix.from_pandas(df)
-    assert isinstance(out, DenseDihybridDHAdditiveGeneticVarianceMatrix)
+    out = DenseThreeWayDHAdditiveGenicVarianceMatrix.from_pandas(df)
+    assert isinstance(out, DenseThreeWayDHAdditiveGenicVarianceMatrix)
     assert out.ntaxa == ntaxa
     assert out.ntrait == ntrait
     assert out.mat.shape == vmat.mat.shape
@@ -259,12 +283,13 @@ def test_from_pandas(vmat, ntaxa, ntrait):
     assert numpy.all(out.mat == vmat.mat)
 
     # tests for recovery without group columns
-    out = DenseDihybridDHAdditiveGeneticVarianceMatrix.from_pandas(
+    out = DenseThreeWayDHAdditiveGenicVarianceMatrix.from_pandas(
         df, 
-        female_grp_col=None, 
-        male_grp_col=None
+        recurrent_grp_col = None,
+        female_grp_col = None, 
+        male_grp_col = None,
     )
-    assert isinstance(out, DenseDihybridDHAdditiveGeneticVarianceMatrix)
+    assert isinstance(out, DenseThreeWayDHAdditiveGenicVarianceMatrix)
     out.sort_trait()
     out.group_taxa()
     assert out.ntaxa == ntaxa
@@ -278,39 +303,45 @@ def test_from_pandas(vmat, ntaxa, ntrait):
 
 ### from_csv
 def test_from_csv_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "from_csv")
+    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "from_csv")
 
 def test_from_csv(vmat, ntaxa, ntrait):
-    filename = "test_dhdh_vmat.csv"
+    filename = "test_3dh_vmat.csv"
     # define column names
-    female_col = "female_col"
-    female_grp_col = "female_grp_col"
-    male_col = "male_col"
-    male_grp_col = "male_grp_col"
-    trait_col = "trait_col"
-    variance_col = "variance_col"
+    recurrent_col     = "recurrent_col"
+    recurrent_grp_col = "recurrent_grp_col"
+    female_col        = "female_col"
+    female_grp_col    = "female_grp_col"
+    male_col          = "male_col"
+    male_grp_col      = "male_grp_col"
+    trait_col         = "trait_col"
+    variance_col      = "variance_col"
     # write to file
     vmat.to_csv(
-        filename = filename,
-        female_col = female_col,
-        female_grp_col = female_grp_col,
-        male_col = male_col,
-        male_grp_col = male_grp_col,
-        trait_col = trait_col,
-        variance_col = variance_col,
+        filename          = filename,
+        recurrent_col     = recurrent_col,
+        recurrent_grp_col = recurrent_grp_col,
+        female_col        = female_col,
+        female_grp_col    = female_grp_col,
+        male_col          = male_col,
+        male_grp_col      = male_grp_col,
+        trait_col         = trait_col,
+        variance_col      = variance_col,
     )
     # read from file
-    out = DenseDihybridDHAdditiveGeneticVarianceMatrix.from_csv(
-        filename = filename,
-        female_col = female_col,
-        female_grp_col = female_grp_col,
-        male_col = male_col,
-        male_grp_col = male_grp_col,
-        trait_col = trait_col,
-        variance_col = variance_col,
+    out = DenseThreeWayDHAdditiveGenicVarianceMatrix.from_csv(
+        filename          = filename,
+        recurrent_col     = recurrent_col,
+        recurrent_grp_col = recurrent_grp_col,
+        female_col        = female_col,
+        female_grp_col    = female_grp_col,
+        male_col          = male_col,
+        male_grp_col      = male_grp_col,
+        trait_col         = trait_col,
+        variance_col      = variance_col,
     )
     # tests
-    assert isinstance(out, DenseDihybridDHAdditiveGeneticVarianceMatrix)
+    assert isinstance(out, DenseThreeWayDHAdditiveGenicVarianceMatrix)
     out.sort_trait()
     out.group_taxa()
     assert out.ntaxa == ntaxa
@@ -326,12 +357,12 @@ def test_from_csv(vmat, ntaxa, ntrait):
 
 ### from_hdf5
 def test_from_hdf5_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "from_hdf5")
+    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "from_hdf5")
 
 def test_from_hdf5(vmat):
-    filename = "test_dhdh_vmat.h5"
+    filename = "test_3dh_vmat.h5"
     vmat.to_hdf5(filename)
-    tmp = DenseDihybridDHAdditiveGeneticVarianceMatrix.from_hdf5(filename)
+    tmp = DenseThreeWayDHAdditiveGenicVarianceMatrix.from_hdf5(filename)
     assert numpy.all(tmp.mat == vmat.mat)
     assert numpy.all(tmp.taxa == vmat.taxa)
     assert numpy.all(tmp.taxa_grp == vmat.taxa_grp)

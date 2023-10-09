@@ -102,6 +102,14 @@ def test_trait_axis_is_concrete():
 def test_epgc_is_concrete():
     assert_concrete_property(DenseThreeWayDHAdditiveGeneticVarianceMatrix, "epgc")
 
+### nrecurrent
+def test_nrecurrent_is_concrete():
+    assert_concrete_property(DenseThreeWayDHAdditiveGeneticVarianceMatrix, "nrecurrent")
+
+### recurrent_axis
+def test_recurrent_axis_is_concrete():
+    assert_concrete_property(DenseThreeWayDHAdditiveGeneticVarianceMatrix, "recurrent_axis")
+
 ### nfemale
 def test_nfemale_is_concrete():
     assert_concrete_property(DenseThreeWayDHAdditiveGeneticVarianceMatrix, "nfemale")
@@ -130,25 +138,31 @@ def test_to_pandas_is_concrete():
 
 def test_to_pandas(vmat):
     # define column names
-    female_col = "female_col"
-    female_grp_col = "female_grp_col"
-    male_col = "male_col"
-    male_grp_col = "male_grp_col"
-    trait_col = "trait_col"
-    variance_col = "variance_col"
+    recurrent_col     = "recurrent_col"
+    recurrent_grp_col = "recurrent_grp_col"
+    female_col        = "female_col"
+    female_grp_col    = "female_grp_col"
+    male_col          = "male_col"
+    male_grp_col      = "male_grp_col"
+    trait_col         = "trait_col"
+    variance_col      = "variance_col"
     # make dataframe
     df = vmat.to_pandas(
-        female_col = female_col,
-        female_grp_col = female_grp_col,
-        male_col = male_col,
-        male_grp_col = male_grp_col,
-        trait_col = trait_col,
-        variance_col = variance_col,
+        recurrent_col     = recurrent_col,
+        recurrent_grp_col = recurrent_grp_col,
+        female_col        = female_col,
+        female_grp_col    = female_grp_col,
+        male_col          = male_col,
+        male_grp_col      = male_grp_col,
+        trait_col         = trait_col,
+        variance_col      = variance_col,
     )
     # tests
     assert isinstance(df, pandas.DataFrame)
     assert len(df) == vmat.mat.size
     assert len(df.columns) == 8
+    assert recurrent_col in df.columns
+    assert recurrent_grp_col in df.columns
     assert female_col in df.columns
     assert female_grp_col in df.columns
     assert male_col in df.columns
@@ -157,25 +171,31 @@ def test_to_pandas(vmat):
     assert variance_col in df.columns
     
     # define column names
-    female_col = "female_col"
-    female_grp_col = None
-    male_col = "male_col"
-    male_grp_col = None
-    trait_col = "trait_col"
-    variance_col = "variance_col"
+    recurrent_col     = "recurrent_col"
+    recurrent_grp_col = None
+    female_col        = "female_col"
+    female_grp_col    = None
+    male_col          = "male_col"
+    male_grp_col      = None
+    trait_col         = "trait_col"
+    variance_col      = "variance_col"
     # make dataframe
     df = vmat.to_pandas(
-        female_col = female_col,
-        female_grp_col = female_grp_col,
-        male_col = male_col,
-        male_grp_col = male_grp_col,
-        trait_col = trait_col,
-        variance_col = variance_col,
+        recurrent_col     = recurrent_col,
+        recurrent_grp_col = recurrent_grp_col,
+        female_col        = female_col,
+        female_grp_col    = female_grp_col,
+        male_col          = male_col,
+        male_grp_col      = male_grp_col,
+        trait_col         = trait_col,
+        variance_col      = variance_col,
     )
     # tests
     assert isinstance(df, pandas.DataFrame)
     assert len(df) == vmat.mat.size
-    assert len(df.columns) == 6
+    assert len(df.columns) == 5
+    assert recurrent_col in df.columns
+    assert recurrent_grp_col not in df.columns
     assert female_col in df.columns
     assert female_grp_col not in df.columns
     assert male_col in df.columns
@@ -190,21 +210,25 @@ def test_to_csv_is_concrete():
 def test_to_csv(vmat):
     filename = "test_3dh_vmat.csv"
     # define column names
-    female_col = "female_col"
-    female_grp_col = "female_grp_col"
-    male_col = "male_col"
-    male_grp_col = "male_grp_col"
-    trait_col = "trait_col"
-    variance_col = "variance_col"
+    recurrent_col     = "recurrent_col"
+    recurrent_grp_col = "recurrent_grp_col"
+    female_col        = "female_col"
+    female_grp_col    = "female_grp_col"
+    male_col          = "male_col"
+    male_grp_col      = "male_grp_col"
+    trait_col         = "trait_col"
+    variance_col      = "variance_col"
     # write to file
     vmat.to_csv(
-        filename = filename,
-        female_col = female_col,
-        female_grp_col = female_grp_col,
-        male_col = male_col,
-        male_grp_col = male_grp_col,
-        trait_col = trait_col,
-        variance_col = variance_col,
+        filename          = filename,
+        recurrent_col     = recurrent_col,
+        recurrent_grp_col = recurrent_grp_col,
+        female_col        = female_col,
+        female_grp_col    = female_grp_col,
+        male_col          = male_col,
+        male_grp_col      = male_grp_col,
+        trait_col         = trait_col,
+        variance_col      = variance_col,
     )
     # tests
     assert os.path.isfile(filename)
@@ -261,9 +285,9 @@ def test_from_pandas(vmat, ntaxa, ntrait):
     # tests for recovery without group columns
     out = DenseThreeWayDHAdditiveGeneticVarianceMatrix.from_pandas(
         df, 
-        recurrent_grp_col=None,
-        female_grp_col=None, 
-        male_grp_col=None
+        recurrent_grp_col = None,
+        female_grp_col = None, 
+        male_grp_col = None,
     )
     assert isinstance(out, DenseThreeWayDHAdditiveGeneticVarianceMatrix)
     out.sort_trait()
@@ -284,31 +308,37 @@ def test_from_csv_is_concrete():
 def test_from_csv(vmat, ntaxa, ntrait):
     filename = "test_3dh_vmat.csv"
     # define column names
-    female_col = "female_col"
-    female_grp_col = "female_grp_col"
-    male_col = "male_col"
-    male_grp_col = "male_grp_col"
-    trait_col = "trait_col"
-    variance_col = "variance_col"
+    recurrent_col     = "recurrent_col"
+    recurrent_grp_col = "recurrent_grp_col"
+    female_col        = "female_col"
+    female_grp_col    = "female_grp_col"
+    male_col          = "male_col"
+    male_grp_col      = "male_grp_col"
+    trait_col         = "trait_col"
+    variance_col      = "variance_col"
     # write to file
     vmat.to_csv(
-        filename = filename,
-        female_col = female_col,
-        female_grp_col = female_grp_col,
-        male_col = male_col,
-        male_grp_col = male_grp_col,
-        trait_col = trait_col,
-        variance_col = variance_col,
+        filename          = filename,
+        recurrent_col     = recurrent_col,
+        recurrent_grp_col = recurrent_grp_col,
+        female_col        = female_col,
+        female_grp_col    = female_grp_col,
+        male_col          = male_col,
+        male_grp_col      = male_grp_col,
+        trait_col         = trait_col,
+        variance_col      = variance_col,
     )
     # read from file
     out = DenseThreeWayDHAdditiveGeneticVarianceMatrix.from_csv(
-        filename = filename,
-        female_col = female_col,
-        female_grp_col = female_grp_col,
-        male_col = male_col,
-        male_grp_col = male_grp_col,
-        trait_col = trait_col,
-        variance_col = variance_col,
+        filename          = filename,
+        recurrent_col     = recurrent_col,
+        recurrent_grp_col = recurrent_grp_col,
+        female_col        = female_col,
+        female_grp_col    = female_grp_col,
+        male_col          = male_col,
+        male_grp_col      = male_grp_col,
+        trait_col         = trait_col,
+        variance_col      = variance_col,
     )
     # tests
     assert isinstance(out, DenseThreeWayDHAdditiveGeneticVarianceMatrix)

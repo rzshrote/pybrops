@@ -3,7 +3,7 @@ import pandas
 import pytest
 import numpy
 import h5py
-from pybrops.model.vmat.DenseFourWayDHAdditiveGeneticVarianceMatrix import DenseFourWayDHAdditiveGeneticVarianceMatrix
+from pybrops.model.vmat.DenseFourWayDHAdditiveGenicVarianceMatrix import DenseFourWayDHAdditiveGenicVarianceMatrix
 
 from pybrops.test.assert_python import assert_concrete_property, not_raises
 from pybrops.test.assert_python import assert_docstring
@@ -53,7 +53,7 @@ def trait(ntrait):
 
 @pytest.fixture
 def vmat(mat, taxa, taxa_grp, trait):
-    out = DenseFourWayDHAdditiveGeneticVarianceMatrix(
+    out = DenseFourWayDHAdditiveGenicVarianceMatrix(
         mat = mat,
         taxa = taxa,
         taxa_grp = taxa_grp,
@@ -65,13 +65,13 @@ def vmat(mat, taxa, taxa_grp, trait):
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(DenseFourWayDHAdditiveGeneticVarianceMatrix)
+    assert_docstring(DenseFourWayDHAdditiveGenicVarianceMatrix)
 
 ########################### Test concrete properties ###########################
 
 ### mat
 def test_mat_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "mat")
+    assert_concrete_property(DenseFourWayDHAdditiveGenicVarianceMatrix, "mat")
 
 def test_mat_fget(vmat):
     assert isinstance(vmat.mat, numpy.ndarray)
@@ -92,57 +92,57 @@ def test_mat_fset_ValueError(vmat):
 
 ### square_axes
 def test_square_axes_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "square_axes")
+    assert_concrete_property(DenseFourWayDHAdditiveGenicVarianceMatrix, "square_axes")
 
 ### trait_axis
 def test_trait_axis_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "trait_axis")
+    assert_concrete_property(DenseFourWayDHAdditiveGenicVarianceMatrix, "trait_axis")
 
 ### epgc
 def test_epgc_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "epgc")
+    assert_concrete_property(DenseFourWayDHAdditiveGenicVarianceMatrix, "epgc")
 
 ### nfemale2
 def test_nfemale2_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "nfemale2")
+    assert_concrete_property(DenseFourWayDHAdditiveGenicVarianceMatrix, "nfemale2")
 
 ### female2_axis
 def test_female2_axis_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "female2_axis")
+    assert_concrete_property(DenseFourWayDHAdditiveGenicVarianceMatrix, "female2_axis")
 
 ### nmale2
 def test_nmale2_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "nmale2")
+    assert_concrete_property(DenseFourWayDHAdditiveGenicVarianceMatrix, "nmale2")
 
 ### male2_axis
 def test_male2_axis_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "male2_axis")
+    assert_concrete_property(DenseFourWayDHAdditiveGenicVarianceMatrix, "male2_axis")
 
 ### nfemale1
 def test_nfemale1_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "nfemale1")
+    assert_concrete_property(DenseFourWayDHAdditiveGenicVarianceMatrix, "nfemale1")
 
 ### female1_axis
 def test_female1_axis_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "female1_axis")
+    assert_concrete_property(DenseFourWayDHAdditiveGenicVarianceMatrix, "female1_axis")
 
 ### nmale1
 def test_nmale1_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "nmale1")
+    assert_concrete_property(DenseFourWayDHAdditiveGenicVarianceMatrix, "nmale1")
 
 ### male1_axis
 def test_male1_axis_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "male1_axis")
+    assert_concrete_property(DenseFourWayDHAdditiveGenicVarianceMatrix, "male1_axis")
 
 ############################# Test concrete methods ############################
 
 ### __init__
 def test___init___is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "__init__")
+    assert_concrete_method(DenseFourWayDHAdditiveGenicVarianceMatrix, "__init__")
 
 ### to_pandas
 def test_to_pandas_is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "to_pandas")
+    assert_concrete_method(DenseFourWayDHAdditiveGenicVarianceMatrix, "to_pandas")
 
 def test_to_pandas(vmat):
     # define column names
@@ -225,7 +225,7 @@ def test_to_pandas(vmat):
 
 ### to_csv
 def test_to_csv_is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "to_csv")
+    assert_concrete_method(DenseFourWayDHAdditiveGenicVarianceMatrix, "to_csv")
 
 def test_to_csv(vmat):
     filename = "test_4dh_vmat.csv"
@@ -259,7 +259,7 @@ def test_to_csv(vmat):
 
 ### to_hdf5
 def test_to_hdf5_is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "to_hdf5")
+    assert_concrete_method(DenseFourWayDHAdditiveGenicVarianceMatrix, "to_hdf5")
 
 def test_to_hdf5(vmat):
     filename = "test_4dh_vmat.h5"
@@ -286,15 +286,15 @@ def test_to_hdf5(vmat):
 
 ### from_pandas
 def test_from_pandas_is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_pandas")
+    assert_concrete_method(DenseFourWayDHAdditiveGenicVarianceMatrix, "from_pandas")
 
 def test_from_pandas(vmat, ntaxa, ntrait):
     # export
     df = vmat.to_pandas()
     
     # tests for recovery
-    out = DenseFourWayDHAdditiveGeneticVarianceMatrix.from_pandas(df)
-    assert isinstance(out, DenseFourWayDHAdditiveGeneticVarianceMatrix)
+    out = DenseFourWayDHAdditiveGenicVarianceMatrix.from_pandas(df)
+    assert isinstance(out, DenseFourWayDHAdditiveGenicVarianceMatrix)
     assert out.ntaxa == ntaxa
     assert out.ntrait == ntrait
     assert out.mat.shape == vmat.mat.shape
@@ -307,14 +307,14 @@ def test_from_pandas(vmat, ntaxa, ntrait):
     assert numpy.all(out.mat == vmat.mat)
 
     # tests for recovery without group columns
-    out = DenseFourWayDHAdditiveGeneticVarianceMatrix.from_pandas(
+    out = DenseFourWayDHAdditiveGenicVarianceMatrix.from_pandas(
         df, 
         female2_grp_col=None,
         male2_grp_col=None,
         female1_grp_col=None, 
         male1_grp_col=None
     )
-    assert isinstance(out, DenseFourWayDHAdditiveGeneticVarianceMatrix)
+    assert isinstance(out, DenseFourWayDHAdditiveGenicVarianceMatrix)
     out.sort_trait()
     out.group_taxa()
     assert out.ntaxa == ntaxa
@@ -328,7 +328,7 @@ def test_from_pandas(vmat, ntaxa, ntrait):
 
 ### from_csv
 def test_from_csv_is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_csv")
+    assert_concrete_method(DenseFourWayDHAdditiveGenicVarianceMatrix, "from_csv")
 
 def test_from_csv(vmat, ntaxa, ntrait):
     filename = "test_4dh_vmat.csv"
@@ -350,7 +350,7 @@ def test_from_csv(vmat, ntaxa, ntrait):
         variance_col = variance_col,
     )
     # read from file
-    out = DenseFourWayDHAdditiveGeneticVarianceMatrix.from_csv(
+    out = DenseFourWayDHAdditiveGenicVarianceMatrix.from_csv(
         filename = filename,
         female1_col = female1_col,
         female1_grp_col = female1_grp_col,
@@ -360,7 +360,7 @@ def test_from_csv(vmat, ntaxa, ntrait):
         variance_col = variance_col,
     )
     # tests
-    assert isinstance(out, DenseFourWayDHAdditiveGeneticVarianceMatrix)
+    assert isinstance(out, DenseFourWayDHAdditiveGenicVarianceMatrix)
     out.sort_trait()
     out.group_taxa()
     assert out.ntaxa == ntaxa
@@ -376,12 +376,12 @@ def test_from_csv(vmat, ntaxa, ntrait):
 
 ### from_hdf5
 def test_from_hdf5_is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_hdf5")
+    assert_concrete_method(DenseFourWayDHAdditiveGenicVarianceMatrix, "from_hdf5")
 
 def test_from_hdf5(vmat):
     filename = "test_4dh_vmat.h5"
     vmat.to_hdf5(filename)
-    tmp = DenseFourWayDHAdditiveGeneticVarianceMatrix.from_hdf5(filename)
+    tmp = DenseFourWayDHAdditiveGenicVarianceMatrix.from_hdf5(filename)
     assert numpy.all(tmp.mat == vmat.mat)
     assert numpy.all(tmp.taxa == vmat.taxa)
     assert numpy.all(tmp.taxa_grp == vmat.taxa_grp)
