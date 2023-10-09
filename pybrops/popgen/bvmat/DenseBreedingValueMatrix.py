@@ -21,10 +21,10 @@ from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_python import check_is_str_or_Integral
 from pybrops.core.error.error_type_python import check_is_str_or_Sequence
 from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
 from pybrops.core.error.error_value_numpy import check_ndarray_all_gteq
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_value_python import check_is_gteq
 from pybrops.core.error.error_value_python import check_len
@@ -764,7 +764,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         Returns
         -------
         out : DenseBreedingValueMatrix
-            An object read from a pandas.DataFrame.
+            A DenseBreedingValueMatrix read from a pandas.DataFrame.
         """
         # type checks
         check_is_pandas_DataFrame(df, "df")
@@ -825,13 +825,13 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
     def from_csv(
             cls,
             filename: str,
-            sep: str = ',',
-            header: int = 0,
             location: Union[numpy.ndarray,Real] = 0.0, 
             scale: Union[numpy.ndarray,Real] = 1.0, 
             taxa_col: Optional[Union[str,Integral]] = "taxa",
             taxa_grp_col: Optional[Union[str,Integral]] = "taxa_grp",
             trait_cols: Optional[Union[str,Sequence]] = "infer",
+            sep: str = ',',
+            header: int = 0,
             **kwargs: dict
         ) -> 'DenseBreedingValueMatrix':
         """
@@ -892,7 +892,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         """
         # read file using pandas
         df = pandas.read_csv(
-            filename,
+            filepath_or_buffer = filename,
             sep = sep,
             header = header,
             **kwargs
@@ -937,7 +937,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         h5file = h5py.File(filename, "r")                       # open HDF5 in read only
         ######################################################### process groupname argument
         if isinstance(groupname, str):                          # if we have a string
-            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
+            check_h5py_File_has_group(h5file, filename, groupname)    # check that group exists
             if groupname[-1] != '/':                            # if last character in string is not '/'
                 groupname += '/'                                # add '/' to end of string
         elif groupname is None:                                 # else if groupname is None
@@ -948,7 +948,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         required_fields = ["mat", "location", "scale"]          # all required arguments
         for field in required_fields:                           # for each required field
             fieldname = groupname + field                       # concatenate base groupname and field
-            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
+            check_h5py_File_has_group(h5file, filename, fieldname)    # check that group exists
         ######################################################### read data
         data_dict = {                                           # output dictionary
             "mat": None,

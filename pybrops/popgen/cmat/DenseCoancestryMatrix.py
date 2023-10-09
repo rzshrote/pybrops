@@ -15,18 +15,26 @@ import warnings
 import h5py
 from numpy.typing import DTypeLike
 import pandas
-from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_pandas import check_Series_all_type, check_is_pandas_DataFrame
-from pybrops.core.error.error_value_pandas import check_DataFrame_has_column, check_DataFrame_has_column_index, check_DataFrame_has_column_indices, check_DataFrame_has_columns, check_Series_has_indices, check_Series_has_values
-from pybrops.core.error.error_value_python import check_Sequence_has_indices, check_Sequence_has_values, check_all_equal
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column
+from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column_index
+from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column_indices
+from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_columns
+from pybrops.core.error.error_value_pandas import check_pandas_Series_has_indices
+from pybrops.core.error.error_value_pandas import check_pandas_Series_has_values
+from pybrops.core.error.error_value_python import check_all_equal
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.core.error.error_value_numpy import check_ndarray_has_values, check_ndarray_ndim
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
-from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
-from pybrops.core.error.error_type_python import check_Sequence_all_type, check_is_str, check_is_str_or_Integral, check_is_str_or_Sequence
+from pybrops.core.error.error_type_python import check_Sequence_all_type
+from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_type_python import check_is_str_or_Integral
+from pybrops.core.error.error_type_python import check_is_str_or_Sequence
 from pybrops.core.error.error_value_python import check_str_value
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
 from pybrops.core.util.h5py import save_dict_to_hdf5
@@ -801,19 +809,19 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
 
         ### taxa_col
         if isinstance(taxa_col, str):
-            check_DataFrame_has_column(df, "df", taxa_col)
+            check_pandas_DataFrame_has_column(df, "df", taxa_col)
         elif isinstance(taxa_col, Integral):
-            check_DataFrame_has_column_index(df, "df", taxa_col)
+            check_pandas_DataFrame_has_column_index(df, "df", taxa_col)
         else:
             check_is_str_or_Integral(taxa_col, "taxa_col")
 
         ### taxa_grp_col
         if taxa_grp_col is not None:
             if isinstance(taxa_grp_col, str):
-                check_DataFrame_has_column(df, "df", taxa_grp_col)
+                check_pandas_DataFrame_has_column(df, "df", taxa_grp_col)
                 col = df[taxa_grp_col]
             elif isinstance(taxa_grp_col, Integral):
-                check_DataFrame_has_column_index(df, "df", taxa_grp_col)
+                check_pandas_DataFrame_has_column_index(df, "df", taxa_grp_col)
                 col = df.iloc[:,taxa_grp_col]
                 # if all entries are None, treat as though no taxa group column was provided
                 if all(e is None for e in col):
@@ -829,16 +837,16 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             check_Series_all_type(taxa_col_pds, "df[taxa_col]", (str,Integral))
             taxa_str = tuple(e for e in taxa_col_pds if isinstance(e,str))
             taxa_int = tuple(e for e in taxa_col_pds if isinstance(e,Integral))
-            check_DataFrame_has_columns(df, "df", *taxa_str)
-            check_DataFrame_has_column_indices(df, "df", *taxa_int)
+            check_pandas_DataFrame_has_columns(df, "df", *taxa_str)
+            check_pandas_DataFrame_has_column_indices(df, "df", *taxa_int)
         elif isinstance(taxa, Sequence):
             check_Series_all_type(taxa, "taxa", (str,Integral))
             taxa_str = tuple(e for e in taxa if isinstance(e,str))
             taxa_int = tuple(e for e in taxa if isinstance(e,Integral))
-            check_DataFrame_has_columns(df, "df", *taxa_str)
-            check_DataFrame_has_column_indices(df, "df", *taxa_int)
-            check_Series_has_values(taxa_col_pds, "df[taxa_col]", *taxa_str)
-            check_Series_has_indices(taxa_col_pds, "df[taxa_col]", *taxa_int)
+            check_pandas_DataFrame_has_columns(df, "df", *taxa_str)
+            check_pandas_DataFrame_has_column_indices(df, "df", *taxa_int)
+            check_pandas_Series_has_values(taxa_col_pds, "df[taxa_col]", *taxa_str)
+            check_pandas_Series_has_indices(taxa_col_pds, "df[taxa_col]", *taxa_int)
         else:
             check_is_str_or_Sequence(taxa, "taxa")
 
@@ -1003,7 +1011,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         h5file = h5py.File(filename, "r")                       # open HDF5 in read only
         ######################################################### process groupname argument
         if isinstance(groupname, str):                          # if we have a string
-            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
+            check_h5py_File_has_group(h5file, filename, groupname)    # check that group exists
             if groupname[-1] != '/':                            # if last character in string is not '/'
                 groupname += '/'                                # add '/' to end of string
         elif groupname is None:                                 # else if groupname is None
@@ -1014,7 +1022,7 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
         required_fields = ["mat"]                               # all required arguments
         for field in required_fields:                           # for each required field
             fieldname = groupname + field                       # concatenate base groupname and field
-            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
+            check_h5py_File_has_group(h5file, filename, fieldname)    # check that group exists
         ######################################################### read data
         data_dict = {                                           # output dictionary
             "mat": None,

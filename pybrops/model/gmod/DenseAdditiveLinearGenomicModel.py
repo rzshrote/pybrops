@@ -10,16 +10,20 @@ import h5py
 import numpy
 import pandas
 from pybrops.core.error.error_io_python import check_file_exists
-from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_float64
 from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
-from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_ndim
-from pybrops.core.error.error_type_python import check_is_dict, check_is_str_or_Sequence
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_type_python import check_is_str_or_Sequence
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.error.error_value_python import check_dict_has_keys, check_len, check_str_value
+from pybrops.core.error.error_value_python import check_dict_has_keys
+from pybrops.core.error.error_value_python import check_len
+from pybrops.core.error.error_value_python import check_str_value
 from pybrops.core.io.CSVDictInputOutput import CSVDictInputOutput
 from pybrops.core.io.PandasDictInputOutput import PandasDictInputOutput
 from pybrops.core.util.h5py import save_dict_to_hdf5
@@ -2116,7 +2120,7 @@ class DenseAdditiveLinearGenomicModel(
         h5file = h5py.File(filename, "r")                       # open HDF5 in read only
         ######################################################### process groupname argument
         if isinstance(groupname, str):                          # if we have a string
-            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
+            check_h5py_File_has_group(h5file, filename, groupname)    # check that group exists
             if groupname[-1] != '/':                            # if last character in string is not '/'
                 groupname += '/'                                # add '/' to end of string
         elif groupname is None:                                 # else if groupname is None
@@ -2127,7 +2131,7 @@ class DenseAdditiveLinearGenomicModel(
         required_fields = ["beta", "u_misc", "u_a"]             # all required arguments
         for field in required_fields:                           # for each required field
             fieldname = groupname + field                       # concatenate base groupname and field
-            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
+            check_h5py_File_has_group(h5file, filename, fieldname)    # check that group exists
         ######################################################### read data
         data_dict = {                                           # output dictionary
             "beta": None,

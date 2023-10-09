@@ -326,7 +326,13 @@ class DummyGeneticVarianceMatrix(GeneticVarianceMatrix):
     @trait_axis.setter
     def trait_axis(self, value: object) -> None:
         super().trait_axis = value
-    
+    def to_csv(self, fname: str) -> None:
+        return super().to_csv(fname)
+    def ungroup(self, axis: int, **kwargs: dict) -> None:
+        return super().ungroup(axis, **kwargs)
+    def ungroup_taxa(self, **kwargs: dict) -> None:
+        return super().ungroup_taxa(**kwargs)
+
 class DummyAdditiveGeneticVarianceMatrix(DummyGeneticVarianceMatrix,AdditiveGeneticVarianceMatrix):
     @classmethod
     def from_algmod(cls, algmod: AdditiveLinearGenomicModel, pgmat: PhasedGenotypeMatrix, ncross: int, nprogeny: int, nself: int, gmapfn: GeneticMapFunction, mem: int, **kwargs: dict) -> AdditiveGeneticVarianceMatrix:
@@ -640,6 +646,12 @@ class DummyGenicVarianceMatrix(GenicVarianceMatrix):
     @trait_axis.setter
     def trait_axis(self, value: object) -> None:
         super().trait_axis = value
+    def to_csv(self, fname: str) -> None:
+        return super().to_csv(fname)
+    def ungroup(self, axis: int, **kwargs: dict) -> None:
+        return super().ungroup(axis, **kwargs)
+    def ungroup_taxa(self, **kwargs: dict) -> None:
+        return super().ungroup_taxa(**kwargs)
 
 class DummyAdditiveGenicVarianceMatrix(DummyGenicVarianceMatrix,AdditiveGenicVarianceMatrix):
     @classmethod
@@ -650,6 +662,8 @@ class DummyDenseGeneticVarianceMatrix(DenseGeneticVarianceMatrix):
     @classmethod
     def from_gmod(cls, gmod: GenomicModel, pgmat: PhasedGenotypeMatrix, ncross: int, nprogeny: int, nself: int, gmapfn: GeneticMapFunction, **kwargs: dict) -> GeneticVarianceMatrix:
         return super().from_gmod(gmod, pgmat, ncross, nprogeny, nself, gmapfn, **kwargs)
+    def to_csv(self, fname: str) -> None:
+        return super().to_csv(fname)
 
 class DummyDenseAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix):
     @classmethod
@@ -658,3 +672,5 @@ class DummyDenseAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix
     @classmethod
     def from_gmod(cls, gmod: GenomicModel, pgmat: PhasedGenotypeMatrix, ncross: int, nprogeny: int, nself: int, gmapfn: GeneticMapFunction, **kwargs: dict) -> GeneticVarianceMatrix:
         return super().from_gmod(gmod, pgmat, ncross, nprogeny, nself, gmapfn, **kwargs)
+    def to_csv(self, fname: str) -> None:
+        return super().to_csv(fname)
