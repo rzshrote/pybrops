@@ -188,7 +188,7 @@ def test_to_csv_is_concrete():
     assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "to_csv")
 
 def test_to_csv(vmat):
-    filename = "test_vmat.csv"
+    filename = "test_2dh_vmat.csv"
     # define column names
     female_col = "female_col"
     female_grp_col = "female_grp_col"
@@ -214,7 +214,7 @@ def test_to_hdf5_is_concrete():
     assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "to_hdf5")
 
 def test_to_hdf5(vmat):
-    filename = "test_vmat.h5"
+    filename = "test_2dh_vmat.h5"
     vmat.to_hdf5(filename)
     assert os.path.isfile(filename)
     # open the file
@@ -281,7 +281,7 @@ def test_from_csv_is_concrete():
     assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "from_csv")
 
 def test_from_csv(vmat, ntaxa, ntrait):
-    filename = "test_vmat.csv"
+    filename = "test_2dh_vmat.csv"
     # define column names
     female_col = "female_col"
     female_grp_col = "female_grp_col"
@@ -329,7 +329,7 @@ def test_from_hdf5_is_concrete():
     assert_concrete_method(DenseTwoWayDHAdditiveGeneticVarianceMatrix, "from_hdf5")
 
 def test_from_hdf5(vmat):
-    filename = "test_vmat.h5"
+    filename = "test_2dh_vmat.h5"
     vmat.to_hdf5(filename)
     tmp = DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_hdf5(filename)
     assert numpy.all(tmp.mat == vmat.mat)

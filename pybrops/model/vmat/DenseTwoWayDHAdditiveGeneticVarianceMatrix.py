@@ -207,8 +207,6 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         # calculate flattened array and corresponding axis indices
         flatmat, (femaleix, maleix, traitix) = flattenix(self.mat)
 
-        print(traitix.dtype)
-
         # make dictionary to store output columns in specific column ordering
         out_dict = {}
         out_dict.update({female_col: taxa[femaleix]})
@@ -321,10 +319,9 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         """
         ### type checks
         check_is_str(filename, "filename")
-        check_file_exists(filename)
 
         # open HDF5 in write mode
-        h5file = h5py.File(filename, "r+")
+        h5file = h5py.File(filename, "a")
 
         ############ process groupname argument ############
 
@@ -731,7 +728,6 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
 
         return out
 
-    
     ############# Matrix Factory Class Methods #############
     # TODO: provide support for non-linear models
     @classmethod
