@@ -3,6 +3,7 @@
 import copy
 import os
 import numpy
+import pandas
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
@@ -195,13 +196,86 @@ gvmat = DenseTwoWayDHAdditiveGenicVarianceMatrix.from_algmod(
     nprogeny = 10
 )
 
-# save example variance matrices to HDF5 files
-# vmat.to_hdf5("saved_vmat.h5")
-# gvmat.to_hdf5("saved_gvmat.h5")
+###
+### Creating variance matrices from Pandas DataFrames
+### -------------------------------------------------
+
+# create dummy pandas dataframe
+df = pandas.DataFrame({
+    "Female": ["A","A","B","B",],
+    "Female Group": [0,0,1,1,],
+    "Male": ["A","B","A","B",],
+    "Male Group": [0,0,1,1,],
+    "Trait": ["Yield","Yield","Yield","Yield",],
+    "Variance": [0.2,0.3,0.5,0.7],
+})
+
+# construct genetic variance matrix from pandas dataframe
+tmp_vmat = DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_pandas(
+    df = df,
+    female_col = "Female",
+    female_grp_col = "Female Group",
+    male_col = "Male",
+    male_grp_col = "Male Group",
+    trait_col = "Trait",
+    variance_col = "Variance",
+)
+
+# construct genic variance matrix from pandas dataframe
+tmp_gvmat = DenseTwoWayDHAdditiveGenicVarianceMatrix.from_pandas(
+    df = df,
+    female_col = "Female",
+    female_grp_col = "Female Group",
+    male_col = "Male",
+    male_grp_col = "Male Group",
+    trait_col = "Trait",
+    variance_col = "Variance",
+)
+
+###
+### Loading variance matrices from CSV files
+### ----------------------------------------
+
+# create dummy pandas dataframe and export as CSV
+df = pandas.DataFrame({
+    "Female": ["A","A","B","B",],
+    "Female Group": [0,0,1,1,],
+    "Male": ["A","B","A","B",],
+    "Male Group": [0,0,1,1,],
+    "Trait": ["Yield","Yield","Yield","Yield",],
+    "Variance": [0.2,0.3,0.5,0.7],
+})
+df.to_csv("saved_df.csv", index = False)
+
+# construct genetic variance matrix from csv
+tmp_vmat = DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_csv(
+    filename = "saved_df.csv",
+    female_col = "Female",
+    female_grp_col = "Female Group",
+    male_col = "Male",
+    male_grp_col = "Male Group",
+    trait_col = "Trait",
+    variance_col = "Variance",
+)
+
+# construct genic variance matrix from csv
+tmp_gvmat = DenseTwoWayDHAdditiveGenicVarianceMatrix.from_csv(
+    filename = "saved_df.csv",
+    female_col = "Female",
+    female_grp_col = "Female Group",
+    male_col = "Male",
+    male_grp_col = "Male Group",
+    trait_col = "Trait",
+    variance_col = "Variance",
+)
 
 ###
 ### Loading variance matrices from HDF5 files
 ### -----------------------------------------
+
+# save example variance matrices to HDF5 files for demo code below
+vmat.to_hdf5("saved_vmat.h5")
+gvmat.to_hdf5("saved_gvmat.h5")
 
 # read genetic variance matrix from HDF5 file
 vmat = DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_hdf5("saved_vmat.h5")
@@ -716,23 +790,16 @@ out = vmat.is_square()
 out = gvmat.is_square()
 
 ###
-### Saving Breeding Value Matrices
-### ==============================
+### Exporting Variance Matrices
+### ===========================
 
-#
-# Write to HDF5 file
-# ------------------
+# 
+# Exporting to Pandas DataFrame
+# -----------------------------
 
-# remove exported file if it exists
-if os.path.exists("saved_vmat.h5"):
-    os.remove("saved_vmat.h5")
-
-if os.path.exists("saved_gvmat.h5"):
-    os.remove("saved_gvmat.h5")
-
-# write variance matrices to an HDF5 file
-vmat.to_hdf5("saved_vmat.h5")
-gvmat.to_hdf5("saved_gvmat.h5")
+# write variance matrices to a pandas dataframe
+out_df = vmat.to_pandas()
+out_df = gvmat.to_pandas()
 
 #
 # Write to CSV file
@@ -748,3 +815,18 @@ if os.path.exists("saved_gvmat.csv"):
 # write variance matrices to a CSV file
 vmat.to_csv("saved_vmat.csv")
 gvmat.to_csv("saved_gvmat.csv")
+
+#
+# Write to HDF5 file
+# ------------------
+
+# remove exported file if it exists
+if os.path.exists("saved_vmat.h5"):
+    os.remove("saved_vmat.h5")
+
+if os.path.exists("saved_gvmat.h5"):
+    os.remove("saved_gvmat.h5")
+
+# write variance matrices to an HDF5 file
+vmat.to_hdf5("saved_vmat.h5")
+gvmat.to_hdf5("saved_gvmat.h5")

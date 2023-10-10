@@ -11,8 +11,12 @@ Deriving from the ``AdditiveGeneticVarianceMatrix`` interface are several implem
 Summary of Variance Matrix Classes
 ==================================
 
+Genetic and genic variance matrices are found in the ``pybrops.model.vmat`` module. The two subsections below summarize the genetic and genic variance matrices
+
 Genetic variance matrix classes
 -------------------------------
+
+Genetic variance matrices, which represent the expected progeny trait variances assuming linkage disequilibrium, are summarized in the table below.
 
 .. list-table:: Summary of genetic variance classes in the ``pybrops.model.vmat`` module
     :widths: 25 20 50
@@ -49,6 +53,8 @@ Genetic variance matrix classes
 Genic variance matrix classes
 -----------------------------
 
+Genic variance matrices, which represent the expected progeny trait variances assuming linkage equilibrium, are summarized in the table below.
+
 .. list-table:: Summary of genic variance classes in the ``pybrops.model.vmat`` module
     :widths: 25 20 50
     :header-rows: 1
@@ -81,11 +87,102 @@ Genic variance matrix classes
       - Concrete
       - Class representing genic variance matrices calculated from dihybrid crosses.
 
+Variance Matrix Properties
+==========================
+
+Both genetic and genic variance matrix classes share a common set of properties. These properties can be grouped into four categories: general properties, taxa properties, trait properties, and square properties. The following four subsections summarize these property categories.
+
+General properties
+------------------
+
+Genetic and genic variance matrices share several shape properties that are common to all ``Matrix`` classes. In addition, genetic and genic variance matrices have an ``epgc`` property which is used to indicate the expected parental genomic contribution of each parent corresponding to each parental axis. The table below summarizes variance matrix general properties.
+
+.. list-table:: Summary of ``GeneticVarianceMatrix`` and ``GenicVarianceMatrix`` general properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``mat``
+      - The raw genetic or genic variance matrix pointer
+    * - ``mat_ndim``
+      - The number of dimensions for the genetic or genic variance matrix
+    * - ``mat_shape``
+      - The genetic or genic variance matrix shape
+    * - ``epgc``
+      - The expected parental genomic contribution corresponding to each parental axis.
+
+Taxa properties
+---------------
+
+Genetic and genic variance matrices have several taxa related properties including taxa names, taxa group identities, and sorting metadata, which can be used for quick group access and sorting. The table below summarizes variance matrix taxa properties.
+
+.. list-table:: Summary of ``GeneticVarianceMatrix`` and ``GenicVarianceMatrix`` taxa properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``ntaxa``
+      - The number of taxa represented by the genetic or genic variance matrix
+    * - ``taxa``
+      - The names of the taxa
+    * - ``taxa_axis``
+      - The matrix axis along which taxa are stored
+    * - ``taxa_grp``
+      - An optional taxa group label
+    * - ``taxa_grp_name``
+      - If taxa are sorted by group: get the names of the groups
+    * - ``taxa_grp_stix``
+      - If taxa are sorted by group: get the start indices (inclusive) for each group
+    * - ``taxa_grp_spix``
+      - If taxa are sorted by group: get the stop indices (exclusive) for each group
+    * - ``taxa_grp_len``
+      - If taxa are sorted by group: get the length of each group
+
+Trait properties
+----------------
+
+Genetic and genic variance matrices have several trait related properties of which the most important is the trait names.
+
+.. list-table:: Summary of ``GeneticVarianceMatrix`` and ``GenicVarianceMatrix`` trait properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``ntrait``
+      - The number of traits represented by the genetic or genic variance matrix
+    * - ``trait``
+      - The names of the traits
+    * - ``trait_axis``
+      - The matrix axis along which traits are stored
+
+Square matrix properties
+------------------------
+
+Since genetic and genic matrices are square by nature, they also have several properties which extract data regarding their squareness. These properties are summarized below.
+
+.. list-table:: Summary of ``GeneticVarianceMatrix`` and ``GenicVarianceMatrix`` square matrix properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``nsquare``
+      - The number of square axes for the genetic or genic variance matrix
+    * - ``square_axes``
+      - The axes indices for the square axes for the genetic or genic variance matrix
+    * - ``square_axes_len``
+      - The lengths of the square axes for the genetic or genic variance matrix
+
 Loading Variance Matrix Modules
 ===============================
 
 Loading genetic variance matrix modules
 ---------------------------------------
+
+Importing genetic variance matrix classes can be accomplished using the following import statements:
 
 .. code-block:: python
 
@@ -106,6 +203,8 @@ Loading genetic variance matrix modules
 Loading genic variance matrix modules
 -------------------------------------
 
+Importing genic variance matrix classes can be accomplished using the following import statements:
+
 .. code-block:: python
 
     # import abstract interface classes
@@ -125,8 +224,12 @@ Loading genic variance matrix modules
 Creating Variance Matrices
 ==========================
 
+Genetic and genic variance matrices can be created using several method including from raw NumPy arrays, from genotype matrices and genomic models, from Pandas DataFrames, from CSV files, and from HDF5 files. The following subsections detail the creation or loading of genetic or genic variance matrices from their corresponding sources.
+
 Creating variance matrices from NumPy arrays
 --------------------------------------------
+
+Using the constructor of a ``GeneticVarianceMatrix`` or ``GenicVarianceMatrix`` class, one can create genetic and genic variance matrices, respectively, from NumPy arrays. The example below demonstrates the creation of a ``DenseTwoWayDHAdditiveGeneticVarianceMatrix`` and ``DenseTwoWayDHAdditiveGenicVarianceMatrix``` objects from raw NumPy arrays.
 
 .. code-block:: python
 
@@ -164,8 +267,10 @@ Creating variance matrices from NumPy arrays
         trait = trait
     )
 
-Creating variance matrices from genomic models
-----------------------------------------------
+Calculating variance matrices from genomic models
+-------------------------------------------------
+
+Genetic and genic variance matrices may also be calculated from a combination of ``PhasedGenotypeMatrix`` and ``GenomicModel`` objects. This can be accomplished using the ``from_gmod`` or ``from_algmod`` class methods. The code below demonstrates how to use this method to accomplish this task.
 
 .. code-block:: python
 
@@ -271,8 +376,89 @@ Creating variance matrices from genomic models
         nprogeny = 10
     )
 
+Creating variance matrices from Pandas DataFrames
+-------------------------------------------------
+
+Genetic and genic variance matrices may be read from Pandas DataFrames. The ``from_pandas`` class method may be used to read a ``GeneticVarianceMatrix`` or ``GenicVarianceMatrix`` from a Pandas DataFrame. The code example below demonstrates this method's usage.
+
+.. code-block:: python
+
+    # create dummy pandas dataframe
+    df = pandas.DataFrame({
+        "Female": ["A","A","B","B",],
+        "Female Group": [0,0,1,1,],
+        "Male": ["A","B","A","B",],
+        "Male Group": [0,0,1,1,],
+        "Trait": ["Yield","Yield","Yield","Yield",],
+        "Variance": [0.2,0.3,0.5,0.7],
+    })
+
+    # construct genetic variance matrix from pandas dataframe
+    tmp_vmat = DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_pandas(
+        df = df,
+        female_col = "Female",
+        female_grp_col = "Female Group",
+        male_col = "Male",
+        male_grp_col = "Male Group",
+        trait_col = "Trait",
+        variance_col = "Variance",
+    )
+
+    # construct genic variance matrix from pandas dataframe
+    tmp_gvmat = DenseTwoWayDHAdditiveGenicVarianceMatrix.from_pandas(
+        df = df,
+        female_col = "Female",
+        female_grp_col = "Female Group",
+        male_col = "Male",
+        male_grp_col = "Male Group",
+        trait_col = "Trait",
+        variance_col = "Variance",
+    )
+
+Loading variance matrices from CSV files
+----------------------------------------
+
+Genetic and genic variance matrices may also be read from CSV files in a manner similar to Pandas DataFrames. The ``from_csv`` class method may be used to load genetic or genic variance matrices from CSV files. The following code block demonstrates the usage of this method.
+
+.. code-block:: python
+
+    # create dummy pandas dataframe and export as CSV
+    df = pandas.DataFrame({
+        "Female": ["A","A","B","B",],
+        "Female Group": [0,0,1,1,],
+        "Male": ["A","B","A","B",],
+        "Male Group": [0,0,1,1,],
+        "Trait": ["Yield","Yield","Yield","Yield",],
+        "Variance": [0.2,0.3,0.5,0.7],
+    })
+    df.to_csv("saved_df.csv", index = False)
+
+    # construct genetic variance matrix from csv
+    tmp_vmat = DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_csv(
+        filename = "saved_df.csv",
+        female_col = "Female",
+        female_grp_col = "Female Group",
+        male_col = "Male",
+        male_grp_col = "Male Group",
+        trait_col = "Trait",
+        variance_col = "Variance",
+    )
+
+    # construct genic variance matrix from csv
+    tmp_gvmat = DenseTwoWayDHAdditiveGenicVarianceMatrix.from_csv(
+        filename = "saved_df.csv",
+        female_col = "Female",
+        female_grp_col = "Female Group",
+        male_col = "Male",
+        male_grp_col = "Male Group",
+        trait_col = "Trait",
+        variance_col = "Variance",
+    )
+
 Loading variance matrices from HDF5 files
 -----------------------------------------
+
+As with all classes in the ``Matrix`` family, ``GeneticVarianceMatrix`` or ``GenicVarianceMatrix`` objects may be imported and exported to an HDF5 format. To read saved genetic or genic variance matrices from an HDF5 file, use the ``from_hdf5`` class method. The code below demonstrates the use of this method.
 
 .. code-block:: python
 
@@ -280,87 +466,18 @@ Loading variance matrices from HDF5 files
     vmat = DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_hdf5("saved_vmat.h5")
     gvmat = DenseTwoWayDHAdditiveGenicVarianceMatrix.from_hdf5("saved_gvmat.h5")
 
-Variance matrix properties 
-==========================
+Copying Variance Matrices
+=========================
 
-General properties 
-------------------
+Genetic and genic variance matrices may be copied using two methods: shallow copying and deep copying.
 
-.. list-table:: Summary of ``GeneticVarianceMatrix`` and ``GenicVarianceMatrix`` general properties
-    :widths: 25 50
-    :header-rows: 1
-
-    * - Property
-      - Description
-    * - ``mat``
-      - The raw variance matrix pointer
-    * - ``mat_ndim``
-      - The number of dimensions for the variance matrix
-    * - ``mat_shape``
-      - The variance matrix shape
-    * - ``epgc``
-      - The expected parental genomic contribution for each parental axis
-
-Square properties
------------------
-
-.. list-table:: Summary of ``GeneticVarianceMatrix`` and ``GenicVarianceMatrix`` square matrix properties
-    :widths: 25 50
-    :header-rows: 1
-
-    * - Property
-      - Description
-    * - ``nsquare``
-      - The number of square axes for the variance matrix
-    * - ``square_axes``
-      - The axes indices for the square axes for the variance matrix
-    * - ``square_axes_len``
-      - The lengths of the square axes for the variance matrix
-
-Taxa properties
+Shallow copying
 ---------------
 
-.. list-table:: Summary of ``GeneticVarianceMatrix`` and ``GenicVarianceMatrix`` taxa properties
-    :widths: 25 50
-    :header-rows: 1
+.. |link_copy_copy| replace:: ``copy.copy``
+.. _link_copy_copy: https://docs.python.org/3/library/copy.html#copy.copy
 
-    * - Property
-      - Description
-    * - ``ntaxa``
-      - The number of taxa represented by the variance matrix
-    * - ``taxa``
-      - The names of the taxa
-    * - ``taxa_axis``
-      - The matrix axis along which taxa are stored
-    * - ``taxa_grp``
-      - An optional taxa group label
-    * - ``taxa_grp_name``
-      - If taxa are sorted by group: get the names of the groups
-    * - ``taxa_grp_stix``
-      - If taxa are sorted by group: get the start indices (inclusive) for each group
-    * - ``taxa_grp_spix``
-      - If taxa are sorted by group: get the stop indices (exclusive) for each group
-    * - ``taxa_grp_len``
-      - If taxa are sorted by group: get the length of each group
-
-Trait properties
-----------------
-
-.. list-table:: Summary of ``GeneticVarianceMatrix`` and ``GenicVarianceMatrix`` square matrix properties
-    :widths: 25 50
-    :header-rows: 1
-
-    * - Property
-      - Description
-    * - ``ntrait``
-      - The number of square axes for the variance matrix
-    * - ``trait``
-      - The names of the traits represented by the variance matrix
-    * - ``trait_axis``
-      - The trait axis for the variance matrix
-
-Copying
-=======
+In shallow copying, references to a ``GeneticVarianceMatrix`` or ``GenicVarianceMatrix``'s data are copied to a new genetic or genic variance matrix object. Copying is only one level deep which means that changes to the original object may affect data values in the copied object. The code below illustrates the use of the ``copy`` method bound to ``GeneticVarianceMatrix`` or ``GenicVarianceMatrix`` objects and the base Python function |link_copy_copy|_ which can both be used to shallow copy a genetic or genic variance matrix object.
 
 .. code-block:: python
 
@@ -372,6 +489,16 @@ Copying
     tmp = copy.copy(gvmat)
     tmp = gvmat.copy()
 
+Deep copying
+------------
+
+.. |link_copy_deepcopy| replace:: ``copy.deepcopy``
+.. _link_copy_deepcopy: https://docs.python.org/3/library/copy.html#copy.deepcopy
+
+In deep copying, data in a ``GeneticVarianceMatrix`` or ``GenicVarianceMatrix`` is recursively copied to a new genetic or genic variance matrix object. Copying occurs down to the deepest levels so that changes to the original object will not affect data values in the copied object. The code below illustrates the use of the ``deepcopy`` method bound to ``GeneticVarianceMatrix`` or ``GenicVarianceMatrix`` objects and the base Python function |link_copy_deepcopy|_ which can both be used to deep copy a genetic or genic variance matrix object.
+
+.. code-block:: python
+
     # deep copy a genetic variance matrix
     tmp = copy.deepcopy(vmat)
     tmp = vmat.deepcopy()
@@ -380,11 +507,15 @@ Copying
     tmp = copy.deepcopy(gvmat)
     tmp = gvmat.deepcopy()
 
-Variance Matrix Element Copy-On-Manipulation
-============================================
+Copy-On Element Manipulation
+============================
+
+Genetic or genic variance matrices have several methods by which modifed copies of the original matrix can be made. These are called copy-on element manipulation methods. Matrices may have taxa and trait axes adjoined, deleted, inserted, or selected. The following sections demonstrate the use of these method families.
 
 Adjoining elements
 ------------------
+
+The ``adjoin`` family of methods allows for taxa and trait axes of a genetic or genic variance matrix to be adjoined together, creating a new matrix in the process. Use of the ``adjoin`` method family is demonstrated in the code below.
 
 .. code-block:: python
 
@@ -407,11 +538,13 @@ Adjoining elements
 Deleting elements
 -----------------
 
-.. code-block:: python
+The ``delete`` family of methods allows for taxa and trait axes of a genetic or genic variance matrix to be removed in a copy of the original. Use of the ``delete`` method family is demonstrated in the code below.
 
-    #
-    # ``delete`` taxa examples
-    # ++++++++++++++++++++++++
+
+``delete`` taxa
++++++++++++++++
+
+.. code-block:: python
 
     # delete first taxon using an integer
     tmp = vmat.delete(0, axis = vmat.taxa_axis)
@@ -431,9 +564,10 @@ Deleting elements
     tmp = gvmat.delete([0,1,2,3,4], axis = gvmat.taxa_axis)
     tmp = gvmat.delete_taxa([0,1,2,3,4])
 
-    #
-    # ``delete`` traits examples
-    # ++++++++++++++++++++++++++
+``delete`` traits
++++++++++++++++++
+
+.. code-block:: python
 
     # delete first trait using an integer
     tmp = vmat.delete(0, axis = vmat.trait_axis)
@@ -456,6 +590,8 @@ Deleting elements
 Inserting elements
 ------------------
 
+The ``insert`` family of methods allows for taxa and trait axes of a genetic or genic variance matrix to be inserted into a copy of the original matrix. Use of the ``insert`` method family is demonstrated in the code below.
+
 .. code-block:: python
 
     # create a new variance matrix to demonstrate
@@ -477,6 +613,8 @@ Inserting elements
 Selecting elements
 ------------------
 
+The ``select`` family of methods allows for taxa and trait axes of the genetic or genic variance matrix to be selected and extracted to a copy of the original matrix. Use of the ``select`` method family is demonstrated in the code below.
+
 .. code-block:: python
 
     # select first five taxa using a Sequence
@@ -491,11 +629,15 @@ Selecting elements
     tmp = gvmat.select([0,1], axis = gvmat.trait_axis)
     tmp = gvmat.select_trait([0,1])
 
-Variance Matrix Element In-Place-Manipulation
-=============================================
+In-Place Element Manipulation
+=============================
+
+Genetic or genic variance matrices have several methods which execute in-place element manipulations. These are called in-place element manipulation methods. Genetic or genic variance matrices may have taxa and trait axes appended, removed, incorporated, or concatenated. The following sections demonstrate the use of these method families.
 
 Appending elements
 ------------------
+
+The ``append`` family of methods allows for new taxa and trait axes to be appended to the genetic or genic variance matrix. The code segment below demonstrates their use. 
 
 .. code-block:: python
 
@@ -523,6 +665,8 @@ Appending elements
 
 Removing elements
 -----------------
+
+The ``remove`` family of methods allows for taxa and trait axes to be removed from a genetic or genic variance matrix. A demonstration of their use can be seen below. 
 
 ``remove`` taxa
 +++++++++++++++
@@ -603,6 +747,8 @@ Removing elements
 Incorporating elements
 ----------------------
 
+The ``incorp`` family of methods allows for new taxa and trait axes to be inserted at specific locations in a genetic or genic variance matrix. Use of the ``incorp`` family is demonstrated in the code segment below below. 
+
 .. code-block:: python
 
     # incorp variance matrix along the taxa axis before index 0
@@ -630,6 +776,8 @@ Incorporating elements
 Concatenating matrices
 ----------------------
 
+The ``concat`` family of methods allows for multiple genetic or genic variance matrices to be concatenated to each other along taxa or trait axes. The code segment below demonstrates their use. 
+
 .. code-block:: python
 
     # concatenate along the taxa axis
@@ -644,11 +792,15 @@ Concatenating matrices
     tmp = gvmat.concat([gvmat, gvmat], axis = gvmat.trait_axis)
     tmp = gvmat.concat_trait([gvmat, gvmat])
 
-Grouping and sorting
+Grouping and Sorting
 ====================
 
-Reordering
-----------
+Genetic or genic variance matrices in PyBrOpS have several sorting and grouping focused methods. Sorting methods can be used to reorder, sort, and group taxa axes alphanumerically and reorder and sort trait axes.. The following sections demonstrate the use of the ``reorder``, ``lexsort``, ``sort``, and ``group`` method families.
+
+Reordering elements
+-------------------
+
+Taxa and trait axes in a genetic or genic variance matrix can be reordered using the ``reorder`` family of methods. Demonstrations of this method family are below.
 
 ``reorder`` taxa
 ++++++++++++++++
@@ -684,8 +836,10 @@ Reordering
     tmp.reorder(indices, axis = tmp.trait_axis)
     tmp.reorder_trait(indices)
 
-Lexsorting
-----------
+Lexsorting elements
+-------------------
+
+An indirect stable sort - or lexsort - for taxa or trait axes can be performed using the ``lexsort`` family of methods. The code segment below illustrates the use of this family of methods.
 
 ``lexsort`` taxa
 ++++++++++++++++
@@ -719,8 +873,10 @@ Lexsorting
     tmp = gvmat.lexsort((key2,key1), axis = gvmat.taxa_axis)
     tmp = gvmat.lexsort_taxa((key2,key1))
 
-Sorting
--------
+Sorting elements
+----------------
+
+Alphanumeric sorting along taxa and trait axes can be done using the ``sort`` family of methods. Sorting examples are illustrated below.
 
 ``sort`` taxa
 +++++++++++++
@@ -748,8 +904,10 @@ Sorting
     tmp.sort(axis = tmp.trait_axis)
     tmp.sort_trait()
 
-Grouping
---------
+Grouping elements
+-----------------
+
+Grouping along taxa axes can be done using the ``group`` family of methods. The following code illustrates the use of the ``group`` method family along the taxa axes of a genetic or genic variance matrix.
 
 .. code-block:: python
 
@@ -776,8 +934,12 @@ Grouping
 Square matrix functions
 =======================
 
+Since variance matrices are also inherently square, there are a methods dealing with the squareness of a variance matrix.
+
 Determine whether all square axes are of equal length
 -----------------------------------------------------
+
+The ``is_square`` method for genetic and genic variance matrices can be used to determine if a variance matrix is square.
 
 .. code-block:: python
 
@@ -785,23 +947,40 @@ Determine whether all square axes are of equal length
     out = vmat.is_square()
     out = gvmat.is_square()
 
-Saving Breeding Value Matrices
-==============================
+Exporting Variance Matrices
+===========================
 
-Write to HDF5 file
-------------------
+Genetic and genic variance matrices may be exported to multiple formats including Pandas DataFrames, CSV files, and HDF5 files. The following subsections provide export examples.
+
+Exporting to Pandas DataFrame
+-----------------------------
+
+The ``to_pandas`` method can be used to export a genetic or genic variance matrix to a Pandas DataFrame. Column names may be optionally provided to override default column names.
 
 .. code-block:: python
 
-    # write variance matrices to an HDF5 file
-    vmat.to_hdf5("saved_vmat.h5")
-    gvmat.to_hdf5("saved_gvmat.h5")
+    # write variance matrices to a pandas dataframe
+    out_df = vmat.to_pandas()
+    out_df = gvmat.to_pandas()
 
-Write to CSV file
------------------
+Exporting to CSV
+----------------
+
+The ``to_csv`` method can be used to export a genetic or genic variance matrix to a CSV file. Like the ``to_pandas`` method, column names may be optionally provided to override default column names.
 
 .. code-block:: python
 
     # write variance matrices to a CSV file
     vmat.to_csv("saved_vmat.csv")
     gvmat.to_csv("saved_gvmat.csv")
+
+Exporting to HDF5
+------------------
+
+Genetic and genic variance matrices can be written to an HDF5 file using the ``to_hdf5`` method. The code below demonstrates the use of this method.
+
+.. code-block:: python
+
+    # write variance matrices to an HDF5 file
+    vmat.to_hdf5("saved_vmat.h5")
+    gvmat.to_hdf5("saved_gvmat.h5")

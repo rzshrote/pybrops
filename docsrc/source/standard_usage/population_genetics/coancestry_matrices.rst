@@ -164,7 +164,7 @@ Using the constructor of a ``CoancestryMatrix`` class, one can create coancestry
 Creating coancestry matrices from GenotypeMatrix objects
 --------------------------------------------------------
 
-Coancestry matrices may also be constructed from ``GenotypeMatrix`` objects. This can be accomplished using the ``from_gmat`` class emthod. The code below demonstrates how to use this method to accomplish this task.
+Coancestry matrices may also be constructed from ``GenotypeMatrix`` objects. This can be accomplished using the ``from_gmat`` class method. The code below demonstrates how to use this method to accomplish this task.
 
 .. code-block:: python
 
