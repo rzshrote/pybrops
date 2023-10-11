@@ -1129,7 +1129,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
     @classmethod
     def from_vcf(
             cls, 
-            fname: str,
+            filename: str,
             auto_group_vrnt: bool = True
         ) -> 'DenseGenotypeMatrix':
         """
@@ -1137,7 +1137,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
         Parameters
         ----------
-        fname : str
+        filename : str
             Path to VCF file.
         auto_group_vrnt : bool
             Whether to group variants in returned genotype matrix.
@@ -1148,7 +1148,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             An unphased genotype matrix with associated metadata from VCF file.
         """
         # make VCF iterator
-        vcf = cyvcf2.VCF(fname)
+        vcf = cyvcf2.VCF(filename)
 
         # extract taxa names from vcf header
         taxa = numpy.object_(vcf.samples)

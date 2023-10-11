@@ -597,14 +597,14 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
     @classmethod
     def from_vcf(
             cls, 
-            fname: str,
+            filename: str,
             auto_group_vrnt: bool = True
         ) -> 'DensePhasedGenotypeMatrix':
         """
         Does not ensure that data is phased, just reads it as phased.
         """
         # make VCF iterator
-        vcf = cyvcf2.VCF(fname)
+        vcf = cyvcf2.VCF(filename)
 
         # extract taxa names from vcf header
         taxa = numpy.object_(vcf.samples)

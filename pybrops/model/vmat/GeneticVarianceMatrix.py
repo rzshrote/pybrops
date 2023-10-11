@@ -17,7 +17,7 @@ class GeneticVarianceMatrix(
         TraitMatrix,
         PandasInputOutput,
         CSVInputOutput,
-        metaclass = ABCMeta
+        metaclass = ABCMeta,
     ):
     """
     An abstract class for additive genetic variance matrices.
@@ -43,20 +43,6 @@ class GeneticVarianceMatrix(
         raise NotImplementedError("property is abstract")    
 
     ############################## Object Methods ##############################
-    @abstractmethod
-    def to_csv(
-            self, 
-            fname: str
-        ) -> None:
-        """
-        Write a genetic variance matrix to a CSV file.
-
-        Parameters
-        ----------
-        fname : str
-            Filename to which to write.
-        """
-        raise NotImplementedError("method is abstract")
 
     ############################## Class Methods ###############################
     @classmethod

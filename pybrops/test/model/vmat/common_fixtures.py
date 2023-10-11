@@ -329,8 +329,8 @@ class DummyGeneticVarianceMatrix(GeneticVarianceMatrix):
     @trait_axis.setter
     def trait_axis(self, value: object) -> None:
         super().trait_axis = value
-    def to_csv(self, fname: str) -> None:
-        return super().to_csv(fname)
+    def to_csv(self, filename: str) -> None:
+        return super().to_csv(filename)
     def ungroup(self, axis: int, **kwargs: dict) -> None:
         return super().ungroup(axis, **kwargs)
     def ungroup_taxa(self, **kwargs: dict) -> None:
@@ -657,8 +657,8 @@ class DummyGenicVarianceMatrix(GenicVarianceMatrix):
     @trait_axis.setter
     def trait_axis(self, value: object) -> None:
         super().trait_axis = value
-    def to_csv(self, fname: str) -> None:
-        return super().to_csv(fname)
+    def to_csv(self, filename: str) -> None:
+        return super().to_csv(filename)
     def ungroup(self, axis: int, **kwargs: dict) -> None:
         return super().ungroup(axis, **kwargs)
     def ungroup_taxa(self, **kwargs: dict) -> None:
@@ -681,8 +681,8 @@ class DummyDenseGeneticVarianceMatrix(DenseGeneticVarianceMatrix):
     @classmethod
     def from_gmod(cls, gmod: GenomicModel, pgmat: PhasedGenotypeMatrix, ncross: int, nprogeny: int, nself: int, gmapfn: GeneticMapFunction, **kwargs: dict) -> GeneticVarianceMatrix:
         return super().from_gmod(gmod, pgmat, ncross, nprogeny, nself, gmapfn, **kwargs)
-    def to_csv(self, fname: str) -> None:
-        return super().to_csv(fname)
+    def to_csv(self, filename: str) -> None:
+        return super().to_csv(filename)
     def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
         return super().to_pandas(**kwargs)
     @classmethod
@@ -699,8 +699,8 @@ class DummyDenseAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix
     @classmethod
     def from_gmod(cls, gmod: GenomicModel, pgmat: PhasedGenotypeMatrix, ncross: int, nprogeny: int, nself: int, gmapfn: GeneticMapFunction, **kwargs: dict) -> GeneticVarianceMatrix:
         return super().from_gmod(gmod, pgmat, ncross, nprogeny, nself, gmapfn, **kwargs)
-    def to_csv(self, fname: str) -> None:
-        return super().to_csv(fname)
+    def to_csv(self, filename: str) -> None:
+        return super().to_csv(filename)
     def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
         return super().to_pandas(**kwargs)
     @classmethod

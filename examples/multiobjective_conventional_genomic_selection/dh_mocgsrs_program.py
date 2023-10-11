@@ -539,10 +539,10 @@ class MyLogbook(Logbook):
             "frontier": [],
         }
         self.rep = 0
-    def write(self, fname):
+    def write(self, filename):
         pandas_df = pandas.DataFrame(self.data)
-        pandas_df.to_csv(fname, index = False)
-    def write_frontier(self, fname):
+        pandas_df.to_csv(filename, index = False)
+    def write_frontier(self, filename):
         tmp_df_ls = []
         for i in range(len(self.data_frontier["frontier"])):
             tmp_df = pandas.DataFrame(
@@ -552,7 +552,7 @@ class MyLogbook(Logbook):
             tmp_df["t_cur"] = self.data["t_cur"][i]
             tmp_df_ls.append(tmp_df)
         pandas_df = pandas.concat(tmp_df_ls)
-        pandas_df.to_csv(fname, index = False)
+        pandas_df.to_csv(filename, index = False)
 
 ################################################################################
 ################################################################################

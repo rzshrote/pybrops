@@ -373,9 +373,9 @@ class MyLogbook(Logbook):
             "main_true_lsl": [],
         }
         self.rep = 0
-    def write(self, fname):
+    def write(self, filename):
         pandas_df = pandas.DataFrame(self.data)
-        pandas_df.to_csv(fname, index = False)
+        pandas_df.to_csv(filename, index = False)
 
 ################################################################################
 ################################################################################
