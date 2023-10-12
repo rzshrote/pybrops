@@ -462,7 +462,8 @@ class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
         raise NotImplementedError("method is abstract")
 
     ### method required by PyMOO interface ###
-    @abstractmethod
+    # NOTE: originally this method was abstract, but it has been made concrete
+    #       so the user only has to override a single method: evalfn
     def _evaluate(
             self, 
             x: numpy.ndarray, 
@@ -486,7 +487,19 @@ class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
         kwargs : dict
             Additional keyword arguments.
         """
-        raise NotImplementedError("method is abstract")
+        # the PyMOO interface demands acceptance of 1d or 2d numpy.ndarrays
+        # this handles either case
+        # if x is a vector, score and update output dictionary
+        if x.ndim == 1:
+            vals = self.evalfn(x, *args, **kwargs)
+            out.update({key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0})
+        # if x is a matrix or other, score each row and update output dictionary
+        else:
+            vals = [self.evalfn(v *args, **kwargs) for v in x]  # evaluate each vector
+            obj = numpy.stack([e[0] for e in vals])             # extract objective function evaluations
+            ineqcv = numpy.stack([e[1] for e in vals])          # extract inequality constraint evaluations
+            eqcv = numpy.stack([e[2] for e in vals])            # extract equality constraint evaluations
+            out.update({key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0})
 
 
 

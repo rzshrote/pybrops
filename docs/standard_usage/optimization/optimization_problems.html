@@ -465,11 +465,11 @@
 <h2>Optimization Problem Properties<a class="headerlink" href="#optimization-problem-properties" title="Permalink to this heading">#</a></h2>
 <section id="pymoo-specific-properties">
 <h3>PyMOO specific properties<a class="headerlink" href="#pymoo-specific-properties" title="Permalink to this heading">#</a></h3>
-<p>All optimization problem definitions inherit from PyMOO’s Problem definition. For information regarding these properties, see <a class="reference external" href="https://pymoo.org/problems/definition.html">PyMOO’s Problem Definition</a> webpage.</p>
+<p>All optimization problem definitions inherit from PyMOO’s Problem definition. For information regarding these properties, see the <a class="reference external" href="https://pymoo.org/problems/definition.html">PyMOO’s Problem Definition</a> webpage.</p>
 </section>
 <section id="pybrops-specific-properties">
 <h3>PyBrOpS specific properties<a class="headerlink" href="#pybrops-specific-properties" title="Permalink to this heading">#</a></h3>
-<p>To create a more stable interface, PyBrOpS defines several properties within its Problem definition. These additional properties are summarized below.</p>
+<p>To create a more stable interface overlaying the PyMOO interface, PyBrOpS defines several properties within its Problem definition. These additional properties are summarized below.</p>
 <table class="colwidths-given table" id="id2">
 <caption><span class="caption-text">Summary of PyBrOpS specific <code class="docutils literal notranslate"><span class="pre">Problem</span></code> properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
 <colgroup>
@@ -518,7 +518,8 @@
 </section>
 <section id="deriving-problem-classes">
 <h2>Deriving Problem Classes<a class="headerlink" href="#deriving-problem-classes" title="Permalink to this heading">#</a></h2>
-<p>If one desires to create a new optimization problem, one must define a custom Problem class which implements two abstract methods: <code class="docutils literal notranslate"><span class="pre">evalfn</span></code> and <code class="docutils literal notranslate"><span class="pre">_evaluate</span></code>. The <code class="docutils literal notranslate"><span class="pre">evalfn</span></code> method is defined and utilized by PyBrOpS internals, while the <code class="docutils literal notranslate"><span class="pre">_evaluate</span></code> method is utilized by PyMOO internals. The PyMOO method has a more permissive set of parameters whereas the PyBrOpS method adheres to a more strict interface.</p>
+<p>To create a new optimization problem, one must define a custom <code class="docutils literal notranslate"><span class="pre">Problem</span></code> class which implements a single abstract method: <code class="docutils literal notranslate"><span class="pre">evalfn</span></code>. The <code class="docutils literal notranslate"><span class="pre">evalfn</span></code> method is responsible for evaluating a decision vector and returning a tuple of arrays corresponding to the objective function evaluation(s), inequality constraint violation(s), and equality constraint violation(s). The user must override this method to define a custom optimization problem.</p>
+<p>Since PyBrOpS <code class="docutils literal notranslate"><span class="pre">Problem</span></code> classes are derived from the PyMOO <code class="docutils literal notranslate"><span class="pre">Problem</span></code> class, PyBrOpS problem classes also have an <code class="docutils literal notranslate"><span class="pre">_evaluate</span></code> method, which must be overriden to use PyMOO optimization algorithms. PyBrOpS overrides this method with a default implementation that takes outputs from the <code class="docutils literal notranslate"><span class="pre">evalfn</span></code> method and converts them into a PyMOO compatible format. The <code class="docutils literal notranslate"><span class="pre">evalfn</span></code> method is defined and utilized by PyBrOpS internals, while the <code class="docutils literal notranslate"><span class="pre">_evaluate</span></code> method is utilized by PyMOO internals. More advanced users may override this method to perhaps achieve better decision vector evaluation performance.</p>
 <p>The following two examples illustrate the definition of single- and multi-objective optimization problems.</p>
 <section id="single-objective-problem-specification">
 <h3>Single objective problem specification<a class="headerlink" href="#single-objective-problem-specification" title="Permalink to this heading">#</a></h3>
@@ -574,59 +575,7 @@
         <span class="n">eqcv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eqcv_wt</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neqcv</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span><span class="p">,</span> <span class="n">ineqcv</span><span class="p">,</span> <span class="n">eqcv</span>
     <span class="c1">### method required by PyMOO interface ###</span>
-    <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-            <span class="n">out</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-            <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Evaluate a set of candidate solutions for the &quot;Sphere Problem&quot;.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        x : numpy.ndarray</span>
-<span class="sd">            A candidate solution vector of shape ``(nsoln,ndecn)``.</span>
-<span class="sd">            Where ``nsoln`` is the number of candidates solutions and ``ndecn``</span>
-<span class="sd">            is the number of decision variables.</span>
-<span class="sd">        out : dict</span>
-<span class="sd">            Dictionary to which to output function evaluations.</span>
-<span class="sd">        args : tuple</span>
-<span class="sd">            Additional arguments.</span>
-<span class="sd">        kwargs : dict</span>
-<span class="sd">            Additional keyword arguments.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># the PyMOO interface demands acceptance of 1d or 2d numpy.ndarrays</span>
-        <span class="c1"># this handles either case</span>
-        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="c1"># get evaluations</span>
-            <span class="n">vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evalfn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="c1"># create temporary dictionary</span>
-            <span class="n">tmp</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span><span class="n">val</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="s2">&quot;G&quot;</span><span class="p">,</span><span class="s2">&quot;H&quot;</span><span class="p">],</span><span class="n">vals</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
-            <span class="c1"># update output dictionary</span>
-            <span class="n">out</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># create lists for accumulating variables</span>
-            <span class="n">objs</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">ineqcvs</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">eqcvs</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="c1"># for each row in x</span>
-            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-                <span class="c1"># get evaluations</span>
-                <span class="n">obj</span><span class="p">,</span> <span class="n">ineqcv</span><span class="p">,</span> <span class="n">eqcv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evalfn</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                <span class="c1"># append values to lists</span>
-                <span class="n">objs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-                <span class="n">ineqcvs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ineqcv</span><span class="p">)</span>
-                <span class="n">eqcvs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eqcv</span><span class="p">)</span>
-            <span class="c1"># stack outputs</span>
-            <span class="n">objs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span>
-            <span class="n">ineqcvs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">ineqcvs</span><span class="p">)</span>
-            <span class="n">eqcvs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">eqcvs</span><span class="p">)</span>
-            <span class="c1"># create temporary dictionary</span>
-            <span class="n">tmp</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span><span class="n">val</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="s2">&quot;G&quot;</span><span class="p">,</span><span class="s2">&quot;H&quot;</span><span class="p">],[</span><span class="n">obj</span><span class="p">,</span><span class="n">ineqcv</span><span class="p">,</span><span class="n">eqcv</span><span class="p">])</span> <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
-            <span class="c1"># update output dictionary</span>
-            <span class="n">out</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+    <span class="c1"># default ``_evaluate`` method inherited from base Problem class</span>
 </pre></div>
 </div>
 </section>
@@ -683,57 +632,7 @@
         <span class="n">eqcv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">eqcv_wt</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">neqcv</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">obj</span><span class="p">,</span> <span class="n">ineqcv</span><span class="p">,</span> <span class="n">eqcv</span>
     <span class="c1">### method required by PyMOO interface ###</span>
-    <span class="k">def</span> <span class="nf">_evaluate</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
-            <span class="n">out</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-            <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Evaluate a set of candidate solutions for a Dual Sphere Problem.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        x : numpy.ndarray</span>
-<span class="sd">            A candidate solution vector of shape ``(nsoln,ndecn)``.</span>
-<span class="sd">            Where ``nsoln`` is the number of candidates solutions and ``ndecn``</span>
-<span class="sd">            is the number of decision variables.</span>
-<span class="sd">        out : dict</span>
-<span class="sd">            Dictionary to which to output function evaluations.</span>
-<span class="sd">        args : tuple</span>
-<span class="sd">            Additional arguments.</span>
-<span class="sd">        kwargs : dict</span>
-<span class="sd">            Additional keyword arguments.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="c1"># get evaluations</span>
-            <span class="n">vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evalfn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="c1"># create temporary dictionary</span>
-            <span class="n">tmp</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span><span class="n">val</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="s2">&quot;G&quot;</span><span class="p">,</span><span class="s2">&quot;H&quot;</span><span class="p">],</span><span class="n">vals</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
-            <span class="c1"># update output dictionary</span>
-            <span class="n">out</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># create lists for accumulating variables</span>
-            <span class="n">objs</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">ineqcvs</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">eqcvs</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="c1"># for each row in x</span>
-            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-                <span class="c1"># get evaluations</span>
-                <span class="n">obj</span><span class="p">,</span> <span class="n">ineqcv</span><span class="p">,</span> <span class="n">eqcv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evalfn</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                <span class="c1"># append values to lists</span>
-                <span class="n">objs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-                <span class="n">ineqcvs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ineqcv</span><span class="p">)</span>
-                <span class="n">eqcvs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">eqcv</span><span class="p">)</span>
-            <span class="c1"># stack outputs</span>
-            <span class="n">objs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span>
-            <span class="n">ineqcvs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">ineqcvs</span><span class="p">)</span>
-            <span class="n">eqcvs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">eqcvs</span><span class="p">)</span>
-            <span class="c1"># create temporary dictionary</span>
-            <span class="n">tmp</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span><span class="n">val</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span><span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s2">&quot;F&quot;</span><span class="p">,</span><span class="s2">&quot;G&quot;</span><span class="p">,</span><span class="s2">&quot;H&quot;</span><span class="p">],[</span><span class="n">obj</span><span class="p">,</span><span class="n">ineqcv</span><span class="p">,</span><span class="n">eqcv</span><span class="p">])</span> <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">}</span>
-            <span class="c1"># update output dictionary</span>
-            <span class="n">out</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+    <span class="c1"># default ``_evaluate`` method inherited from base Problem class</span>
 </pre></div>
 </div>
 </section>

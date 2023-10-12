@@ -165,43 +165,7 @@ class DiversityPanelReduction1(BinaryProblem):
         # return (2,), (1,), (0,)
         return obj, ineqcv, eqcv
     ### method required by PyMOO interface ###
-    def _evaluate(
-            self, 
-            x: numpy.ndarray, 
-            out: dict, 
-            *args: tuple, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Evaluate a set of candidate solutions for the given Problem.
-
-        Parameters
-        ----------
-        x : numpy.ndarray
-            A candidate solution vector of shape ``(nsoln,ndecn)``.
-            Where ``nsoln`` is the number of candidates solutions and ``ndecn``
-            is the number of decision variables.
-        out : dict
-            Dictionary to which to output function evaluations.
-            Fields are:
-
-            - ``"F"`` for objective evalutations.
-            - ``"G"`` for inequality constraint violations.
-            - ``"H"`` for equality constraint violations.
-        args : tuple
-            Additional arguments.
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        if x.ndim == 1:
-            vals = self.evalfn(x, *args, **kwargs)
-            out.update({key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0})
-        else:
-            vals = [self.evalfn(v *args, **kwargs) for v in x]
-            obj = numpy.stack([e[0] for e in vals])
-            ineqcv = numpy.stack([e[1] for e in vals])
-            eqcv = numpy.stack([e[2] for e in vals])
-            out.update({key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0})
+    # use default ``_evaluate`` method which uses the ``evalfn`` method
 
 # construct optimization problem
 prob = DiversityPanelReduction1(C.T)
@@ -257,7 +221,7 @@ class DiversityPanelReduction2(BinaryProblem):
             Genotype matrix of shape (nindiv,nmarker).
         """
         self.X = X
-        ndecn = len(C)
+        ndecn = len(X)
         decn_space_lower = numpy.repeat(0, ndecn)
         decn_space_upper = numpy.repeat(1, ndecn)
         decn_space = numpy.stack([decn_space_lower,decn_space_upper])
@@ -340,43 +304,7 @@ class DiversityPanelReduction2(BinaryProblem):
         # return (2,), (1,), (0,)
         return obj, ineqcv, eqcv
     ### method required by PyMOO interface ###
-    def _evaluate(
-            self, 
-            x: numpy.ndarray, 
-            out: dict, 
-            *args: tuple, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Evaluate a set of candidate solutions for the given Problem.
-
-        Parameters
-        ----------
-        x : numpy.ndarray
-            A candidate solution vector of shape ``(nsoln,ndecn)``.
-            Where ``nsoln`` is the number of candidates solutions and ``ndecn``
-            is the number of decision variables.
-        out : dict
-            Dictionary to which to output function evaluations.
-            Fields are:
-
-            - ``"F"`` for objective evalutations.
-            - ``"G"`` for inequality constraint violations.
-            - ``"H"`` for equality constraint violations.
-        args : tuple
-            Additional arguments.
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        if x.ndim == 1:
-            vals = self.evalfn(x, *args, **kwargs)
-            out.update({key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0})
-        else:
-            vals = [self.evalfn(v *args, **kwargs) for v in x]
-            obj = numpy.stack([e[0] for e in vals])
-            ineqcv = numpy.stack([e[1] for e in vals])
-            eqcv = numpy.stack([e[2] for e in vals])
-            out.update({key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0})
+    # use default ``_evaluate`` method which uses the ``evalfn`` method
 
 # construct optimization problem
 prob = DiversityPanelReduction2(X)

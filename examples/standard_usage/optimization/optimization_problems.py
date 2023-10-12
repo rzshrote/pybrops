@@ -76,59 +76,7 @@ class DummySingleObjectiveRealProblem(RealProblem):
         eqcv = self.eqcv_wt * numpy.zeros(self.neqcv)
         return obj, ineqcv, eqcv
     ### method required by PyMOO interface ###
-    def _evaluate(
-            self, 
-            x: numpy.ndarray, 
-            out: dict, 
-            *args: tuple, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Evaluate a set of candidate solutions for the "Sphere Problem".
-
-        Parameters
-        ----------
-        x : numpy.ndarray
-            A candidate solution vector of shape ``(nsoln,ndecn)``.
-            Where ``nsoln`` is the number of candidates solutions and ``ndecn``
-            is the number of decision variables.
-        out : dict
-            Dictionary to which to output function evaluations.
-        args : tuple
-            Additional arguments.
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        # the PyMOO interface demands acceptance of 1d or 2d numpy.ndarrays
-        # this handles either case
-        if x.ndim == 1:
-            # get evaluations
-            vals = self.evalfn(x, *args, **kwargs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
-            # update output dictionary
-            out.update(tmp)
-        else:
-            # create lists for accumulating variables
-            objs = []
-            ineqcvs = []
-            eqcvs = []
-            # for each row in x
-            for v in x:
-                # get evaluations
-                obj, ineqcv, eqcv = self.evalfn(v, *args, **kwargs)
-                # append values to lists
-                objs.append(obj)
-                ineqcvs.append(ineqcv)
-                eqcvs.append(eqcv)
-            # stack outputs
-            objs = numpy.stack(objs)
-            ineqcvs = numpy.stack(ineqcvs)
-            eqcvs = numpy.stack(eqcvs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
-            # update output dictionary
-            out.update(tmp)
+    # default ``_evaluate`` method inherited from base Problem class
 
 #
 # Multi-objective problem specification
@@ -182,57 +130,7 @@ class DummyMultiObjectiveRealProblem(RealProblem):
         eqcv = self.eqcv_wt * numpy.zeros(self.neqcv)
         return obj, ineqcv, eqcv
     ### method required by PyMOO interface ###
-    def _evaluate(
-            self, 
-            x: numpy.ndarray, 
-            out: dict, 
-            *args: tuple, 
-            **kwargs: dict
-        ) -> None:
-        """
-        Evaluate a set of candidate solutions for a Dual Sphere Problem.
-
-        Parameters
-        ----------
-        x : numpy.ndarray
-            A candidate solution vector of shape ``(nsoln,ndecn)``.
-            Where ``nsoln`` is the number of candidates solutions and ``ndecn``
-            is the number of decision variables.
-        out : dict
-            Dictionary to which to output function evaluations.
-        args : tuple
-            Additional arguments.
-        kwargs : dict
-            Additional keyword arguments.
-        """
-        if x.ndim == 1:
-            # get evaluations
-            vals = self.evalfn(x, *args, **kwargs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
-            # update output dictionary
-            out.update(tmp)
-        else:
-            # create lists for accumulating variables
-            objs = []
-            ineqcvs = []
-            eqcvs = []
-            # for each row in x
-            for v in x:
-                # get evaluations
-                obj, ineqcv, eqcv = self.evalfn(v, *args, **kwargs)
-                # append values to lists
-                objs.append(obj)
-                ineqcvs.append(ineqcv)
-                eqcvs.append(eqcv)
-            # stack outputs
-            objs = numpy.stack(objs)
-            ineqcvs = numpy.stack(ineqcvs)
-            eqcvs = numpy.stack(eqcvs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
-            # update output dictionary
-            out.update(tmp)
+    # default ``_evaluate`` method inherited from base Problem class
 
 ###
 ### Constructing a Problem
