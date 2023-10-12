@@ -4,15 +4,18 @@ Examples
 Pareto Frontier Visualization Examples
 ======================================
 
-Pre-built selection strategies
-------------------------------
+.. toctree::
+    :maxdepth: 1
+    :caption: Pre-built selection strategies
+    
+    Bi-Objective GEBV selection <pareto_frontier_visualization/biobjective_GEBV_pareto_frontier>
+    Optimal contribution selection
 
-Optimal contribution selection
-
-Custom-built selection strategies
----------------------------------
-
-Diversity panel reduction
+.. toctree::
+    :maxdepth: 1
+    :caption: Custom-built selection strategies
+    
+    Diversity panel reduction
 
 Breeding Program Simulation Examples
 ====================================

@@ -28,7 +28,7 @@ from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionPr
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_bool
 from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueBinarySelectionProblem
 from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueIntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueRealSelectionProblem
@@ -62,6 +62,16 @@ class GenomicEstimatedBreedingValueSelectionMixin(metaclass=ABCMeta):
         check_is_Integral(value, "ntrait")
         check_is_gt(value, "ntrait", 0)
         self._ntrait = value
+    
+    @property
+    def unscale(self) -> bool:
+        """Whether to unscale and uncenter breeding values."""
+        return self._unscale
+    @unscale.setter
+    def unscale(self, value: bool) -> None:
+        """Set whether to unscale and uncenter breeding values."""
+        check_is_bool(value, "unscale")
+        self._unscale = value
 
 class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValueSelectionMixin,BinarySelectionProtocol):
     """
@@ -71,6 +81,7 @@ class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValue
     def __init__(
             self, 
             ntrait: Integral,
+            unscale: bool,
             ncross: Integral,
             nparent: Integral,
             nmating: Union[Integral,numpy.ndarray],
@@ -102,6 +113,9 @@ class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValue
         ----------
         ntrait : Integral
             Number of traits to expect from GEBV matrix inputs.
+
+        unscale : bool
+            Whether to unscale and uncenter breeding values for optimization.
 
         ncross : Integral
             Number of cross configurations to consider.
@@ -356,6 +370,7 @@ class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValue
         # order dependent assignments
         # make assignments from Mixin class first
         self.ntrait = ntrait
+        self.unscale = unscale
         # make assignments from RealSelectionProtocol second
         super(GenomicEstimatedBreedingValueBinarySelection, self).__init__(
             ncross = ncross,
@@ -436,6 +451,7 @@ class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValue
         prob = GenomicEstimatedBreedingValueBinarySelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             gpmod = gpmod,
+            unscale = self.unscale,
             ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -473,6 +489,7 @@ class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValu
     def __init__(
             self, 
             ntrait: Integral,
+            unscale: bool,
             ncross: Integral,
             nparent: Integral,
             nmating: Union[Integral,numpy.ndarray],
@@ -504,6 +521,9 @@ class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValu
         ----------
         ntrait : Integral
             Number of traits to expect from GEBV matrix inputs.
+
+        unscale : bool
+            Whether to unscale and uncenter breeding values for optimization.
 
         ncross : Integral
             Number of cross configurations to consider.
@@ -758,6 +778,7 @@ class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValu
         # order dependent assignments
         # make assignments from Mixin class first
         self.ntrait = ntrait
+        self.unscale = unscale
         # make assignments from RealSelectionProtocol second
         super(GenomicEstimatedBreedingValueIntegerSelection, self).__init__(
             ncross = ncross,
@@ -838,6 +859,7 @@ class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValu
         prob = GenomicEstimatedBreedingValueIntegerSelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             gpmod = gpmod,
+            unscale = self.unscale,
             ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -875,6 +897,7 @@ class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueSe
     def __init__(
             self, 
             ntrait: Integral,
+            unscale: bool,
             ncross: Integral,
             nparent: Integral,
             nmating: Union[Integral,numpy.ndarray],
@@ -906,6 +929,9 @@ class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueSe
         ----------
         ntrait : Integral
             Number of traits to expect from GEBV matrix inputs.
+
+        unscale : bool
+            Whether to unscale and uncenter breeding values for optimization.
 
         ncross : Integral
             Number of cross configurations to consider.
@@ -1160,6 +1186,7 @@ class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueSe
         # order dependent assignments
         # make assignments from Mixin class first
         self.ntrait = ntrait
+        self.unscale = unscale
         # make assignments from RealSelectionProtocol second
         super(GenomicEstimatedBreedingValueRealSelection, self).__init__(
             ncross = ncross,
@@ -1240,6 +1267,7 @@ class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueSe
         prob = GenomicEstimatedBreedingValueRealSelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             gpmod = gpmod,
+            unscale = self.unscale,
             ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -1277,6 +1305,7 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
     def __init__(
             self, 
             ntrait: Integral,
+            unscale: bool,
             ncross: Integral,
             nparent: Integral,
             nmating: Union[Integral,numpy.ndarray],
@@ -1308,6 +1337,9 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
         ----------
         ntrait : Integral
             Number of traits to expect from GEBV matrix inputs.
+
+        unscale : bool
+            Whether to unscale and uncenter breeding values for optimization.
 
         ncross : Integral
             Number of cross configurations to consider.
@@ -1562,6 +1594,7 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
         # order dependent assignments
         # make assignments from Mixin class first
         self.ntrait = ntrait
+        self.unscale = unscale
         # make assignments from SubsetSelectionProtocol second
         super(GenomicEstimatedBreedingValueSubsetSelection, self).__init__(
             ncross = ncross,
@@ -1647,6 +1680,7 @@ class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValue
         prob = GenomicEstimatedBreedingValueSubsetSelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             gpmod = gpmod,
+            unscale = self.unscale,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
