@@ -15,11 +15,11 @@ from typing import Optional, Sequence, Union
 
 from numpy.typing import ArrayLike
 
-from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_python import check_is_array_like
 from pybrops.core.error.error_attr_python import check_is_iterable
 from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
@@ -1409,7 +1409,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         h5file = h5py.File(filename, "r")                       # open HDF5 in read only
         ######################################################### process groupname argument
         if isinstance(groupname, str):                          # if we have a string
-            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
+            check_h5py_File_has_group(h5file, filename, groupname)    # check that group exists
             if groupname[-1] != '/':                            # if last character in string is not '/'
                 groupname += '/'                                # add '/' to end of string
         elif groupname is None:                                 # else if groupname is None
@@ -1420,7 +1420,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         required_fields = ["mat"]                               # all required arguments
         for field in required_fields:                           # for each required field
             fieldname = groupname + field                       # concatenate base groupname and field
-            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
+            check_h5py_File_has_group(h5file, filename, fieldname)    # check that group exists
         ######################################################### read data
         data_dict = {                                           # output dictionary
             "mat": None,

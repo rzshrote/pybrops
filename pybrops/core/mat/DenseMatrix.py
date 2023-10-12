@@ -14,9 +14,10 @@ from typing import Optional, Sequence, Union
 from numpy.typing import ArrayLike
 
 from pybrops.core.error.error_io_python import check_file_exists
-from pybrops.core.error.error_io_h5py import check_group_in_hdf5
 from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.util.h5py import save_dict_to_hdf5
@@ -624,34 +625,68 @@ class DenseMatrix(Matrix):
         out : DenseMatrix
             A dense matrix read from file.
         """
-        check_file_exists(filename)                             # check file exists
-        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
-        ######################################################### process groupname argument
-        if isinstance(groupname, str):                          # if we have a string
-            check_group_in_hdf5(groupname, h5file, filename)    # check that group exists
-            if groupname[-1] != '/':                            # if last character in string is not '/'
-                groupname += '/'                                # add '/' to end of string
-        elif groupname is None:                                 # else if groupname is None
-            groupname = ""                                      # empty string
-        else:                                                   # else raise error
+        # type checks
+        check_is_str(filename, "filename")
+        
+        # check file exists
+        check_file_exists(filename)
+        
+        # open HDF5 in read only
+        h5file = h5py.File(filename, "r")
+        
+        ############ process groupname argument ############
+        
+        # if groupname is None, set to empty string
+        if groupname is None:
+            groupname = ""
+        
+        # if we have a string, check that group exists, add '/' to end if needed
+        elif isinstance(groupname, str):
+            check_h5py_File_has_group(h5file, filename, groupname)
+            if groupname[-1] != '/':
+                groupname += '/'
+        
+        # else raise error
+        else:
             raise TypeError("'groupname' must be of type str or None")
-        ######################################################### check that we have all required fields
-        required_fields = ["mat"]                               # all required arguments
-        for field in required_fields:                           # for each required field
-            fieldname = groupname + field                       # concatenate base groupname and field
-            check_group_in_hdf5(fieldname, h5file, filename)    # check that group exists
-        ######################################################### read data
-        data_dict = {                                           # output dictionary
+        
+        ###### check that we have all required fields ######
+        
+        # all required arguments
+        required_fields = ["mat"]
+        
+        # for each required field
+        for field in required_fields:
+            # concatenate base groupname and field
+            fieldname = groupname + field
+            # check that group exists
+            check_h5py_File_has_group(h5file, filename, fieldname)
+        
+        #################### read data #####################
+        # output dictionary
+        data = {
             "mat": None
         }
-        for field in data_dict.keys():                          # for each field
-            fieldname = groupname + field                       # concatenate base groupname and field
-            if fieldname in h5file:                             # if the field exists in the HDF5 file
-                data_dict[field] = h5file[fieldname][()]        # read array
-        ######################################################### read conclusion
-        h5file.close()                                          # close file
-        ######################################################### create object
-        mat = cls(**data_dict)                                  # create object from read data
+        
+        # for each field
+        for field in data.keys():
+            # concatenate base groupname and field
+            fieldname = groupname + field
+            # if the field exists in the HDF5 file
+            if fieldname in h5file:
+                # read array
+                data[field] = h5file[fieldname][()]
+        
+        ################# read conclusion ##################
+        # close file
+        h5file.close()
+        
+        ################## create object ###################
+        # create object from read data
+        mat = cls(
+            mat = data["mat"],
+        )
+
         return mat
 
 

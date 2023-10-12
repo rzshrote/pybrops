@@ -10,6 +10,9 @@ __all__ = [
     "sliceaxisix",
 ]
 
+import numpy
+
+
 def sqarrayix(n: int, k: int) -> list:
     """
     Generate lists containing indices for indexing square arrays.
@@ -163,3 +166,38 @@ def sliceaxisix(shape: tuple, axis: tuple) -> tuple:
                 yield from recurse(l, s, a)
                 l.pop()
     yield from recurse([],shape,axis)
+
+def flattenix(
+        arr: numpy.ndarray
+    ) -> tuple[numpy.ndarray,tuple[numpy.ndarray,...]]:
+    """
+    Flatten an array and return a tuple of axis indices corresponding to their 
+    position along that axis.
+
+    Parameters
+    ----------
+    arr : numpy.ndarray
+        An array to flatten and generate an axis index tuple.
+    
+    Returns
+    -------
+    out : tuple
+        A tuple of the flattened array and axis indices.
+        ``(flatarr, axisix)``
+    """
+    # generate a tuple of axis indices
+    xi = tuple(numpy.arange(e) for e in arr.shape)
+
+    # generate index meshgrid
+    ximesh = numpy.meshgrid(*xi, indexing='ij')
+
+    # flatten array
+    flatarr = arr.flatten('C')
+
+    # flatten index meshgrid
+    axisix = tuple(mesh.flatten('C') for mesh in ximesh)
+
+    # construct output tuple
+    out = (flatarr, axisix)
+
+    return out

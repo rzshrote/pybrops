@@ -4,6 +4,8 @@ Logbooks
 Class Family Overview
 =====================
 
+The purpose of the ``Logbook`` family of classes is to calculate and store simulation metrics. Simulation records may be examined and/or saved after the simulation is complete.
+
 Summary of Logbook Classes
 ==========================
 
@@ -23,6 +25,19 @@ Logbook classes can be found in the ``pybropos.breed.op.log`` module.
 Logbook Properties
 ==================
 
+``Logbook`` objects have two properties: a ``data`` property storing simulation records and a ``rep`` property storing the simulation replicate number.
+
+.. list-table:: Summary of ``Logbook`` properties
+    :widths: 25 50
+    :header-rows: 1
+
+    * - Property
+      - Description
+    * - ``data``
+      - The record data stored in the logbook.
+    * - ``rep``
+      - The replicate number for the given simulation. Useful for simulations with multiple replicates.
+
 Loading Class Modules
 =====================
 
@@ -35,6 +50,8 @@ Logbooks can be imported as demonstrated in the code below.
 
 Defining Logbooks
 =================
+
+Logbooks must be defined by the user since the number of metrics one could collect is extensive. To create a custom logbook class, extend the ``Logbook`` base abstract class and override its abstract properties and methods. Below is an example of how to define a custom logbook class. For the purpose of this example, method code is left empty.
 
 .. code-block:: python
 
@@ -276,6 +293,8 @@ Defining Logbooks
 Creating Logbooks
 =================
 
+To create a ``Logbook`` object, use the corresponding class's constructor. There are no restrictions on how a ``Logbook`` constructor must operate, so object construction is entirely implementation dependent. Below demonstrates the construction of the ``Logbook`` class defined above.
+
 .. code-block:: python
 
     # create a new logbook
@@ -284,8 +303,12 @@ Creating Logbooks
 Logging States in a Breeding Program
 ====================================
 
+Logbooks have several methods to record data. These recording methods correspond to steps in the universal breeding algorithm.
+
 Logging after breeding program initialization
 ---------------------------------------------
+
+The ``log_initialize`` method can be used to record simulation statistics directly following the initialization step in the universal breeding algorithm. The code below demonstrates its use.
 
 .. code-block:: python
 
@@ -302,6 +325,8 @@ Logging after breeding program initialization
 
 Logging after breeding program parent selection
 -----------------------------------------------
+
+The ``log_pselect`` method can be used to record simulation statistics directly following the parent selection step in the universal breeding algorithm. The code below demonstrates its use.
 
 .. code-block:: python
 
@@ -320,6 +345,8 @@ Logging after breeding program parent selection
 Logging after breeding program mating
 -------------------------------------
 
+The ``log_mate`` method can be used to record simulation statistics directly following the mating step in the universal breeding algorithm. The code below demonstrates its use.
+
 .. code-block:: python
 
     # gather data after breeding program mating
@@ -335,6 +362,8 @@ Logging after breeding program mating
 
 Logging after breeding program evaluation
 -----------------------------------------
+
+The ``log_evaluate`` method can be used to record simulation statistics directly following the evaluation step in the universal breeding algorithm. The code below demonstrates its use.
 
 .. code-block:: python
 
@@ -352,6 +381,8 @@ Logging after breeding program evaluation
 Logging after breeding program survivor selection
 -------------------------------------------------
 
+The ``log_sselect`` method can be used to record simulation statistics directly following the survivor selection step in the universal breeding algorithm. The code below demonstrates its use.
+
 .. code-block:: python
 
     # gather data after breeding program survivor selection
@@ -365,16 +396,20 @@ Logging after breeding program survivor selection
         t_max = 0,
     )
 
-Resetting a logbook
--------------------
+Resetting a Logbook
+===================
+
+Logbooks can be reset and their data erased using the ``reset`` method, demonstrated below.
 
 .. code-block:: python
 
     # reset logbook internals
     lbook.reset()
 
-Writing a logbook to file
--------------------------
+Writing a Logbook to a File
+===========================
+
+Logbook data can be exported to a file using the ``write`` method, demonstrated below.
 
 .. code-block:: python
 

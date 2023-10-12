@@ -6,12 +6,8 @@ storing dense genic variance estimates.
 import copy
 from typing import Optional
 import numpy
-import h5py
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.error.error_io_h5py import check_group_in_hdf5
-from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.mat.DenseSquareTaxaTraitMatrix import DenseSquareTaxaTraitMatrix
-from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
 
 class DenseGenicVarianceMatrix(DenseSquareTaxaTraitMatrix,GenicVarianceMatrix):

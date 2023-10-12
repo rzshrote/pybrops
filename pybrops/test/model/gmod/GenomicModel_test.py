@@ -37,7 +37,7 @@ def test_model_name_is_abstract():
     assert_abstract_property(GenomicModel, "model_name")
 
 def test_params_is_abstract():
-    assert_abstract_property(GenomicModel, "params")
+    assert_abstract_property(GenomicModel, "hyperparams")
 
 def test_trait_is_abstract():
     assert_abstract_property(GenomicModel, "trait")

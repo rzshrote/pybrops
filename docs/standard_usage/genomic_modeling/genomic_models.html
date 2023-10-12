@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Genomic Models &#8212; pybrops 1.0.0 documentation</title>
+    <title>Genomic Models &#8212; pybrops 0.9.0 documentation</title>
   
   
   
@@ -99,7 +99,7 @@
 
   
   
-    <p class="title logo__title">pybrops 1.0.0 documentation</p>
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
   
 </a>
     
@@ -398,18 +398,19 @@
 <h1>Genomic Models<a class="headerlink" href="#genomic-models" title="Permalink to this heading">#</a></h1>
 <section id="class-family-overview">
 <h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> family of classes allow for the representation of any type of genomic model. The purpose of this family of classes is primarily to provide functionality for fitting a genomic prediction model and estimating breeding values. <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> classes also provide functionality for estimating population genetic, and genic variances, allele value metrics, and upper and lower selection limits.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> family of classes allow for the representation of any type of genomic model. The purpose of this family of classes to provide functionality for fitting genomic prediction models and estimating breeding values. <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> classes also provide functionality for estimating population genetic, and genic variances, allele value metrics, and upper and lower selection limits.</p>
 </section>
 <section id="summary-of-genomic-model-classes">
 <h2>Summary of Genomic Model Classes<a class="headerlink" href="#summary-of-genomic-model-classes" title="Permalink to this heading">#</a></h2>
-<p>There are many interfaces deriving from the main <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> interface. Briefly, the <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> family can be divided into <code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> classes and <code class="docutils literal notranslate"><span class="pre">NonlinearGenomicModel</span></code> classes. As their names suggest, the former defines genomic models which are linear in nature, while the latter defines models which are non-linear in nature. The <code class="docutils literal notranslate"><span class="pre">NonlinearGenomicModel</span></code> interface may be useful for defining machine learning models.</p>
-<p>Deriving from the <code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> interface are several subtypes of linear genomic models. Derivative interfaces are summarized below:</p>
+<p>The central <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> interface defines all basic genomic models operations. The <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> interface is intended to be extremely broad as there are many modeling methods by which genetic values may be estimated and modeled. Deriving from this interface are two broad categories: linear genomic models and non-linear genomic models. Linear and non-linear genomic model behaviors are defined by the <code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> and <code class="docutils literal notranslate"><span class="pre">NonlinearGenomicModel</span></code> interfaces, respectively. As their names suggest, the former defines genomic models which are linear in nature, while the latter defines models which are non-linear in nature. The <code class="docutils literal notranslate"><span class="pre">NonlinearGenomicModel</span></code> interface may be useful for defining machine learning models.</p>
+<p>Deriving from the <code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> interface are several subtypes of linear genomic models. Derivatives include additive genomic models, additive-dominance genomic models, and additive-dominance-epistasis genomic models. Additive genomic models are models where genomic marker effects are assumed to be strictly additive in nature. The behavior or additive genomic models is defined by the <code class="docutils literal notranslate"><span class="pre">AddititiveLinearGenomicModel</span></code> interface. Additive-dominance genomic models are models where genomic markers exhibit additive and dominance effects. The behavior of these types of models is defined by the <code class="docutils literal notranslate"><span class="pre">AdditiveDominanceLinearGenomicModel</span></code>. Finally, additive-dominance-epistasis genomic models are models where genomic markers exhibit additive, dominance, and epistatic effects. The behavior of these types of models is defined by the <code class="docutils literal notranslate"><span class="pre">AdditiveDominanceEpistaticLinearGenomicModel</span></code>.</p>
+<p>Below is a summary of the genomic model abstract interfaces present in PyBrOpS.</p>
 <table class="colwidths-given table" id="id1">
-<caption><span class="caption-text">Summary of classes in <code class="docutils literal notranslate"><span class="pre">pybrops.model.gmod</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<caption><span class="caption-text">Summary of abstract classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.model.gmod</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
 <colgroup>
-<col style="width: 26%" />
-<col style="width: 21%" />
-<col style="width: 53%" />
+<col style="width: 28%" />
+<col style="width: 17%" />
+<col style="width: 56%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Class Name</p></th>
@@ -438,18 +439,39 @@
 <td><p>Abstract</p></td>
 <td><p>Interface for genomic models which assume strictly additive allelic effects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">AdditiveDominanceLinearGenomicModel</span></code></p></td>
+<tr class="row-odd"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">AdditiveDominance</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code></div>
+</div>
+</td>
 <td><p>Abstract</p></td>
 <td><p>Interface for genomic models which assume additive and dominance allelic effects.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">AdditiveDominanceEpistaticLinearGenomicModel</span></code></p></td>
+<tr class="row-even"><td><div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">AdditiveDominanceEpistatic</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code></div>
+</div>
+</td>
 <td><p>Abstract</p></td>
 <td><p>Interface for genomic models which assume additive, dominance, and epistatic allelic effects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DenseLinearGenomicModel</span></code></p></td>
-<td><p>Concrete</p></td>
-<td><p>Class representing a generic linear genomic model.</p></td>
+</tbody>
+</table>
+<p>PyBrOpS implements several generic linear genomic model classes since these model types are common. Below is a summary of implemented genomic model classes in PyBrOpS.</p>
+<table class="colwidths-given table" id="id2">
+<caption><span class="caption-text">Summary of concrete classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.model.gmod</span></code> module</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 28%" />
+<col style="width: 17%" />
+<col style="width: 56%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">DenseLinearGenomicModel</span></code></p></th>
+<th class="head"><p>Concrete</p></th>
+<th class="head"><p>Class representing a generic linear genomic model.</p></th>
 </tr>
+</thead>
+<tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DenseAdditiveLinearGenomicModel</span></code></p></td>
 <td><p>Concrete</p></td>
 <td><p>Class representing a generic additive linear genomic model.</p></td>
@@ -457,8 +479,212 @@
 </tbody>
 </table>
 </section>
+<section id="genomic-model-properties">
+<h2>Genomic Model Properties<a class="headerlink" href="#genomic-model-properties" title="Permalink to this heading">#</a></h2>
+<p>Genomic models share several properties in common. These properties can be categorized into three groups: general properties, model properties, and trait properties. These property groupings are summarized in the following three subsections.</p>
+<p>In addition to base <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> properties, derivatives of the <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> interface may define extra properties as in the case of the <code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> family of classes. The subsections following the <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> subsections detail properties which have been added to classes in the <code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> class family.</p>
+<section id="genomic-models-general-properties">
+<h3>Genomic Models: General properties<a class="headerlink" href="#genomic-models-general-properties" title="Permalink to this heading">#</a></h3>
+<p>All genomic models share a set of general, basic properties. These properties are the name of the model and any hyperparameters that the model may have. General genomic model properties are summarized below.</p>
+<table class="colwidths-given table" id="id3">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> general properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">model_name</span></code></p></td>
+<td><p>Name assigned to the genomic model</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hyperparams</span></code></p></td>
+<td><p>Model hyperparameters (e.g. for fitting)</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="genomic-models-model-properties">
+<h3>Genomic Models: Model properties<a class="headerlink" href="#genomic-models-model-properties" title="Permalink to this heading">#</a></h3>
+<p>All genomic models also share a set of model properties pertaining to the dimensionality of the model. These include the number of explanatory variables that the model uses as predictors and the number of parameters of the model. These model properties are intensionally very basic because of the broad diversity of modeling techniques which may be used to model genotypic values.</p>
+<table class="colwidths-given table" id="id4">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> model properties</span><a class="headerlink" href="#id4" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nexplan</span></code></p></td>
+<td><p>Number of explanatory variables required by the model</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nparam</span></code></p></td>
+<td><p>Number of model parameters</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="genomic-models-trait-properties">
+<h3>Genomic Models: Trait properties<a class="headerlink" href="#genomic-models-trait-properties" title="Permalink to this heading">#</a></h3>
+<p>Genomic models also contain the names of traits for which the model predicts. Trait related properties are summarized in the table below.</p>
+<table class="colwidths-given table" id="id5">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> trait properties</span><a class="headerlink" href="#id5" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ntrait</span></code></p></td>
+<td><p>Number of traits for which the model predicts</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">trait</span></code></p></td>
+<td><p>Names of traits for which the model predicts</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="linear-genomic-models-additional-model-properties">
+<h3>Linear Genomic Models: Additional model properties<a class="headerlink" href="#linear-genomic-models-additional-model-properties" title="Permalink to this heading">#</a></h3>
+<p>For <code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> s, additional fixed and random effect model properties are added on top of the properties in the base <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> class. These additional properties pertain to the number of explanatory variables, number of model parameters, and regression coefficients for the linear mixed model. Below summarizes the additional model properties.</p>
+<table class="colwidths-given table" id="id6">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> additional model properties</span><a class="headerlink" href="#id6" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nexplan_beta</span></code></p></td>
+<td><p>Number of fixed effect explanatory variables required by the model</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nparam_beta</span></code></p></td>
+<td><p>Number of fixed effect parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">beta</span></code></p></td>
+<td><p>Coefficients for fixed effects</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nexplan_u</span></code></p></td>
+<td><p>Number of random effect explanatory variables required by the model</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nparam_u</span></code></p></td>
+<td><p>Number of random effect parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">u</span></code></p></td>
+<td><p>Coefficients for random effects</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="additive-linear-genomic-models-additional-model-properties">
+<h3>Additive Linear Genomic Models: Additional model properties<a class="headerlink" href="#additive-linear-genomic-models-additional-model-properties" title="Permalink to this heading">#</a></h3>
+<p>For <code class="docutils literal notranslate"><span class="pre">AdditiveLinearGenomicModel</span></code> s, the random effects properties of the <code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> class are subdivided into miscellaneous random effects and additive genomic marker effects. The <code class="docutils literal notranslate"><span class="pre">AdditiveLinearGenomicModel</span></code> interface adds additional properties to access these random effect subdivisions. Below summarizes model properties which are added.</p>
+<table class="colwidths-given table" id="id7">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">AdditiveLinearGenomicModel</span></code> additional model properties</span><a class="headerlink" href="#id7" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nexplan_u_misc</span></code></p></td>
+<td><p>Number of miscellaneous random effect explanatory variables required by the model</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nparam_u_misc</span></code></p></td>
+<td><p>Number of miscellaneous random effect parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">u_misc</span></code></p></td>
+<td><p>Coefficients for miscellaneous random effects</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nexplan_u_a</span></code></p></td>
+<td><p>Number of additive genomic marker explanatory variables required by the model</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nparam_u_a</span></code></p></td>
+<td><p>Number of additive genomic marker parameters</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">u_a</span></code></p></td>
+<td><p>Coefficients for additive genomic marker effects</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="additive-dominance-linear-genomic-models-additional-model-properties">
+<h3>Additive Dominance Linear Genomic Models: Additional model properties<a class="headerlink" href="#additive-dominance-linear-genomic-models-additional-model-properties" title="Permalink to this heading">#</a></h3>
+<p>For the <code class="docutils literal notranslate"><span class="pre">AdditiveDominanceLinearGenomicModel</span></code> class family, an additional set of dominance random effect properties is added on top of the base <code class="docutils literal notranslate"><span class="pre">AdditiveLinearGenomicModel</span></code> class. Below summarizes the dominance model properties which are added.</p>
+<table class="colwidths-given table" id="id8">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">AdditiveDominanceLinearGenomicModel</span></code> additional model properties</span><a class="headerlink" href="#id8" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nexplan_u_d</span></code></p></td>
+<td><p>Number of dominance genomic marker explanatory variables required by the model</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nparam_u_d</span></code></p></td>
+<td><p>Number of dominance genomic marker parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">u_d</span></code></p></td>
+<td><p>Coefficients for dominance genomic marker effects</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="additive-dominance-epistatic-linear-genomic-models-model-coefficient-properties">
+<h3>Additive Dominance Epistatic Linear Genomic Models: Model coefficient properties<a class="headerlink" href="#additive-dominance-epistatic-linear-genomic-models-model-coefficient-properties" title="Permalink to this heading">#</a></h3>
+<p>For the <code class="docutils literal notranslate"><span class="pre">AdditiveDominanceEpistaticLinearGenomicModel</span></code> class family, an additional set of epistatic random effect properties is added on top of the base <code class="docutils literal notranslate"><span class="pre">AdditiveDominanceLinearGenomicModel</span></code> class. Below summarizes the epistatic model properties which are added.</p>
+<table class="colwidths-given table" id="id9">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">AdditiveDominanceEpistaticLinearGenomicModel</span></code> model coefficient properties</span><a class="headerlink" href="#id9" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nexplan_u_i</span></code></p></td>
+<td><p>Number of epistatic genomic marker explanatory variables required by the model</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">nparam_u_i</span></code></p></td>
+<td><p>Number of epistatic genomic marker parameters</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">u_i</span></code></p></td>
+<td><p>Coefficients for epistatic genomic marker effects</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
 <section id="loading-genomic-model-modules">
 <h2>Loading Genomic Model Modules<a class="headerlink" href="#loading-genomic-model-modules" title="Permalink to this heading">#</a></h2>
+<p>Genomic model classes can be loaded from the <code class="docutils literal notranslate"><span class="pre">pybrops.model.gmod</span></code> module using the import statements in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import GenomicModel classes (abstract interface classes)</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">GenomicModel</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.gmod.NonlinearGenomicModel</span> <span class="kn">import</span> <span class="n">NonlinearGenomicModel</span>
@@ -476,8 +702,10 @@
 </section>
 <section id="creating-genomic-models">
 <h2>Creating Genomic Models<a class="headerlink" href="#creating-genomic-models" title="Permalink to this heading">#</a></h2>
-<section id="creating-genomic-models-from-numpy-arrays">
-<h3>Creating genomic models from NumPy arrays<a class="headerlink" href="#creating-genomic-models-from-numpy-arrays" title="Permalink to this heading">#</a></h3>
+<p>Genomic models can be created using multiple methods. All genomic models can be created from raw NumPy arrays using the class constructor or loaded from HDF5 files. In addition, <code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> classes can be loaded from Pandas DataFrames or from CSV files. The sections below demonstrate how to load a <code class="docutils literal notranslate"><span class="pre">DenseAdditiveLinearGenomicModel</span></code> using all four of the aforementioned creation mechanisms.</p>
+<section id="creating-genomic-models-from-raw-numpy-arrays">
+<h3>Creating genomic models from raw NumPy arrays<a class="headerlink" href="#creating-genomic-models-from-raw-numpy-arrays" title="Permalink to this heading">#</a></h3>
+<p>The code example below demonstrates how to create a dense additive linear genomic model from raw NumPy arrays using the class constructor. Most genomic model class constructors accept NumPy arrays for their arguments since this is the lowest common denominator. This said, the genomic model interface defined by PyBrOpS does not require that a class adhere to this norm. A genomic model constructor is implementation dependent, allowing for freedom in cases where construction from NumPy arrays is impractical or undesirable.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># model parameters</span>
 <span class="n">nfixed</span> <span class="o">=</span> <span class="mi">1</span>      <span class="c1"># number of fixed effects</span>
 <span class="n">ntrait</span> <span class="o">=</span> <span class="mi">2</span>      <span class="c1"># number of traits</span>
@@ -505,89 +733,64 @@
 </pre></div>
 </div>
 </section>
+<section id="loading-linear-genomic-models-from-dictionaries-of-pandas-dataframes">
+<h3>Loading linear genomic models from dictionaries of Pandas DataFrames<a class="headerlink" href="#loading-linear-genomic-models-from-dictionaries-of-pandas-dataframes" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> s can be loaded from dictionaries of Pandas DataFrames. Below demonstrates how the <code class="docutils literal notranslate"><span class="pre">from_pandas_dict</span></code> can be used to load a model from multiple Pandas DataFrames.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nfixed</span> <span class="o">=</span> <span class="mi">1</span>      <span class="c1"># number of fixed effects</span>
+<span class="n">ntrait</span> <span class="o">=</span> <span class="mi">2</span>      <span class="c1"># number of traits</span>
+<span class="n">nmisc</span> <span class="o">=</span> <span class="mi">0</span>       <span class="c1"># number of miscellaneous random effects</span>
+<span class="n">nadditive</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># number of additive marker effects</span>
+
+<span class="c1"># create dummy values</span>
+<span class="n">beta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">nfixed</span><span class="p">,</span><span class="n">ntrait</span><span class="p">))</span>
+<span class="n">u_misc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">nmisc</span><span class="p">,</span><span class="n">ntrait</span><span class="p">))</span>
+<span class="n">u_a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">((</span><span class="n">nadditive</span><span class="p">,</span><span class="n">ntrait</span><span class="p">))</span>
+<span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;Trait&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntrait</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+<span class="c1"># create dictionary with dataframes</span>
+<span class="c1"># need required fields of &quot;beta&quot;, &quot;u_misc&quot;, &quot;u_a&quot; for this class</span>
+<span class="n">df_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;beta&quot;</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">beta</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">trait</span><span class="p">),</span>
+    <span class="s2">&quot;u_misc&quot;</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">u_misc</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">trait</span><span class="p">),</span>
+    <span class="s2">&quot;u_a&quot;</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">u_a</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">trait</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1"># construct model from dictionary of pandas dataframes</span>
+<span class="n">mod</span> <span class="o">=</span> <span class="n">DenseAdditiveLinearGenomicModel</span><span class="o">.</span><span class="n">from_pandas_dict</span><span class="p">(</span><span class="n">df_dict</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
-<section id="genomic-model-properties">
-<h2>Genomic Model Properties<a class="headerlink" href="#genomic-model-properties" title="Permalink to this heading">#</a></h2>
-<section id="general-properties">
-<h3>General properties<a class="headerlink" href="#general-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id2">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> general properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">model_name</span></code></p></td>
-<td><p>Name assigned to the genomic model</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">params</span></code></p></td>
-<td><p>Model hyperparameters (e.g. for fitting)</p></td>
-</tr>
-</tbody>
-</table>
+<section id="loading-linear-genomic-models-from-dictionaries-of-csv-file-names">
+<h3>Loading linear genomic models from dictionaries of CSV file names<a class="headerlink" href="#loading-linear-genomic-models-from-dictionaries-of-csv-file-names" title="Permalink to this heading">#</a></h3>
+<p>CSV files may be used to load linear genomic models in a similar manner to loading from Pandas DataFrames. The code below demonstrates how to load a linear genomic model from multiple CSV files containing different sets of marker coefficients.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create dictionary with filenames</span>
+<span class="c1"># need required fields of &quot;beta&quot;, &quot;u_misc&quot;, &quot;u_a&quot; for this class</span>
+<span class="n">dic</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;beta&quot;</span><span class="p">:</span> <span class="s2">&quot;beta.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;u_misc&quot;</span><span class="p">:</span> <span class="s2">&quot;u_misc.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;u_a&quot;</span><span class="p">:</span> <span class="s2">&quot;u_a.csv&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># construct model from dictionary of pandas dataframes</span>
+<span class="n">mod</span> <span class="o">=</span> <span class="n">DenseAdditiveLinearGenomicModel</span><span class="o">.</span><span class="n">from_csv_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
-<section id="model-coefficient-properties">
-<h3>Model coefficient properties<a class="headerlink" href="#model-coefficient-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id3">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> taxa properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">beta</span></code></p></td>
-<td><p>Coefficients for fixed effects</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">u</span></code></p></td>
-<td><p>Coefficients for all random effects</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">u_a</span></code></p></td>
-<td><p>Coefficients for additive marker random effects</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">u_misc</span></code></p></td>
-<td><p>Coefficients for miscellaneous random effects</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="trait-properties">
-<h3>Trait properties<a class="headerlink" href="#trait-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id4">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> marker variant properties</span><a class="headerlink" href="#id4" title="Permalink to this table">#</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ntrait</span></code></p></td>
-<td><p>Number of traits for which the model predicts</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">trait</span></code></p></td>
-<td><p>Names of traits for which the model predicts</p></td>
-</tr>
-</tbody>
-</table>
+<section id="loading-genomic-models-hdf5-files">
+<h3>Loading genomic models HDF5 files<a class="headerlink" href="#loading-genomic-models-hdf5-files" title="Permalink to this heading">#</a></h3>
+<p>All genomic models may be saved and reloaded from HDF5 files. The code below demonstrates how to read a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> from an HDF5 file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load from HDF5 file</span>
+<span class="n">mod</span> <span class="o">=</span> <span class="n">DenseAdditiveLinearGenomicModel</span><span class="o">.</span><span class="n">from_hdf5</span><span class="p">(</span><span class="s2">&quot;gmod.h5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="copying-genomic-models">
 <h2>Copying Genomic Models<a class="headerlink" href="#copying-genomic-models" title="Permalink to this heading">#</a></h2>
+<p>Genomic models may be copied using either shallow copying or deep copying. The subsections below demonstrate both copying methods.</p>
 <section id="shallow-copying">
 <h3>Shallow copying<a class="headerlink" href="#shallow-copying" title="Permalink to this heading">#</a></h3>
+<p>In shallow copying, references for a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> s internal data are copied to a new object. Copying may be accomplished using the <code class="docutils literal notranslate"><span class="pre">copy</span></code> method or the base Python function <a class="reference external" href="https://docs.python.org/3/library/copy.html#copy.copy"><code class="docutils literal notranslate"><span class="pre">copy.copy</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># copy a genomic model</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">algmod</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -596,6 +799,7 @@
 </section>
 <section id="deep-copying">
 <h3>Deep copying<a class="headerlink" href="#deep-copying" title="Permalink to this heading">#</a></h3>
+<p>In deep copying, a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code>’s internal data is recursively copied to a new object. Deep copying may be accomplished using the <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code> method or the base Python function <a class="reference external" href="https://docs.python.org/3/library/copy.html#copy.deepcopy"><code class="docutils literal notranslate"><span class="pre">copy.deepcopy</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># deep copy a genomic model</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">algmod</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
@@ -605,6 +809,7 @@
 </section>
 <section id="model-prediction-methods">
 <h2>Model prediction methods<a class="headerlink" href="#model-prediction-methods" title="Permalink to this heading">#</a></h2>
+<p>Phenotypic predictions can be made with <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> objects using the <code class="docutils literal notranslate"><span class="pre">predict_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">predict</span></code> methods. The former method accepts raw NumPy arrays, while the latter method accepts raw NumPy arrays and other object classes such as <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> classes. The code below demonstrates the use of these methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create random genotypes to test</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">ntaxa</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">Z</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ploidy</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">ntaxa</span><span class="p">,</span><span class="n">nvrnt</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int8&quot;</span><span class="p">)</span>
@@ -619,6 +824,7 @@
 </section>
 <section id="score-model-prediction-accuracy">
 <h2>Score model prediction accuracy<a class="headerlink" href="#score-model-prediction-accuracy" title="Permalink to this heading">#</a></h2>
+<p>The prediction accuracy of a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> can be assessed using the <code class="docutils literal notranslate"><span class="pre">predict_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">predict</span></code> methods. The former method accepts raw NumPy arrays, while the latter method accepts raw NumPy arrays and other object classes such as <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> classes. The code below demonstrates the use of these methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create some dummy matrices for input</span>
 <span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">ntaxa</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
 <span class="n">B</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">beta</span>
@@ -638,6 +844,7 @@
 </section>
 <section id="predicting-genomic-estimated-breeding-values">
 <h2>Predicting genomic estimated breeding values<a class="headerlink" href="#predicting-genomic-estimated-breeding-values" title="Permalink to this heading">#</a></h2>
+<p>Genomic estimated breeding values (GEBVs) can be estimated by a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> object using the <code class="docutils literal notranslate"><span class="pre">gebv_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">gebv</span></code> methods. The former method accepts raw NumPy arrays, while the latter method accepts raw NumPy arrays and <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> classes. The code below demonstrates the use of these methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># predict GEBVs using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">gebv_numpy</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
 
@@ -646,10 +853,23 @@
 </pre></div>
 </div>
 </section>
+<section id="predicting-genomic-estimated-genotypic-values">
+<h2>Predicting genomic estimated genotypic values<a class="headerlink" href="#predicting-genomic-estimated-genotypic-values" title="Permalink to this heading">#</a></h2>
+<p>Genomic estimated genotypic values (GEGVs) can be estimated by a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> object using the <code class="docutils literal notranslate"><span class="pre">gegv_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">gegv</span></code> methods. The former method accepts raw NumPy arrays, while the latter method accepts raw NumPy arrays and <code class="docutils literal notranslate"><span class="pre">GenotypeMatrix</span></code> classes. The code below demonstrates the use of these methods.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># predict GEGVs using numpy arrays</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">gegv_numpy</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+
+<span class="c1"># predict GEGVs using objects</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">gegv</span><span class="p">(</span><span class="n">gmat</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="calculating-population-genetic-variance-terms">
 <h2>Calculating population genetic variance terms<a class="headerlink" href="#calculating-population-genetic-variance-terms" title="Permalink to this heading">#</a></h2>
+<p>Genomic models may be used to calculate various population genetic variance statistics. These statistics include genetic variance, additive genetic variance, additive genic variance, and the Bulmer effect for a population. The subsections detail the calculation of these metrics.</p>
 <section id="predicting-genetic-variance">
 <h3>Predicting genetic variance<a class="headerlink" href="#predicting-genetic-variance" title="Permalink to this heading">#</a></h3>
+<p>Population genetic variance can be calculated using the <code class="docutils literal notranslate"><span class="pre">var_G_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">var_G</span></code> methods. The code below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># predict Var(G) using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">var_G_numpy</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
 
@@ -660,6 +880,7 @@
 </section>
 <section id="predicting-additive-genetic-variance">
 <h3>Predicting additive genetic variance<a class="headerlink" href="#predicting-additive-genetic-variance" title="Permalink to this heading">#</a></h3>
+<p>Population additive genetic variance can be calculated using the <code class="docutils literal notranslate"><span class="pre">var_A_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">var_A</span></code> methods. The code below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># predict Var(A) using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">var_A_numpy</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
 
@@ -670,6 +891,7 @@
 </section>
 <section id="predicting-additive-genic-variance">
 <h3>Predicting additive genic variance<a class="headerlink" href="#predicting-additive-genic-variance" title="Permalink to this heading">#</a></h3>
+<p>Population additive genic variance (the genetic variance assuming complete linkage equilibrium) can be calculated using the <code class="docutils literal notranslate"><span class="pre">var_a_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">var_a</span></code> methods. The code below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># predict Var(a) using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">var_a_numpy</span><span class="p">(</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">afreq</span><span class="p">(),</span>
@@ -683,6 +905,7 @@
 </section>
 <section id="predicting-the-bulmer-effect">
 <h3>Predicting the Bulmer effect<a class="headerlink" href="#predicting-the-bulmer-effect" title="Permalink to this heading">#</a></h3>
+<p>The Bulmer effect for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">bulmer_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">bulmer</span></code> methods. The code below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># predict Bulmer effect using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">bulmer_numpy</span><span class="p">(</span>
     <span class="n">Z</span><span class="p">,</span>
@@ -698,8 +921,10 @@
 </section>
 <section id="calculating-population-selection-limits">
 <h2>Calculating population selection limits<a class="headerlink" href="#calculating-population-selection-limits" title="Permalink to this heading">#</a></h2>
+<p>Population selection limits are an important measure of how much valuable genetic variation can be extracted from a given population. <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> classes provide both upper and lower selection limit calculations which are detailed below.</p>
 <section id="upper-selection-limit">
 <h3>Upper selection limit<a class="headerlink" href="#upper-selection-limit" title="Permalink to this heading">#</a></h3>
+<p>Upper selection limits (USLs) can be calculated using the <code class="docutils literal notranslate"><span class="pre">usl_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">usl</span></code> methods. The upper selection limit represents the maximum breeding value achieved by the fixation of all favorable alleles in a given population. The code below demonstrates how to calculate the USL.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># upper selection limit using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">usl_numpy</span><span class="p">(</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">afreq</span><span class="p">(),</span>
@@ -713,6 +938,7 @@
 </section>
 <section id="lower-selection-limit">
 <h3>Lower selection limit<a class="headerlink" href="#lower-selection-limit" title="Permalink to this heading">#</a></h3>
+<p>Lower selection limits (USLs) can be calculated using the <code class="docutils literal notranslate"><span class="pre">lsl_numpy</span></code> and <code class="docutils literal notranslate"><span class="pre">lsl</span></code> methods. The lower selection limit represents the minimum breeding value achieved by the fixation of all deleterious alleles in a given population. The code below demonstrates how to calculate the LSL.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># lower selection limit using numpy arrays</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">lsl_numpy</span><span class="p">(</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">afreq</span><span class="p">(),</span>
@@ -727,6 +953,7 @@
 </section>
 <section id="calculating-favorable-allele-metrics">
 <h2>Calculating favorable allele metrics<a class="headerlink" href="#calculating-favorable-allele-metrics" title="Permalink to this heading">#</a></h2>
+<p>Metrics on the favorable alleles within a population may be of importance when conducting breeding simulations. The favorable allele count across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">facount</span></code> method. The favorable allele frequency across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">fafreq</span></code> method. A mask of the favorable allele availability across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">faavail</span></code> method. Finally, a mask of the favorable allele fixation across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">fafixed</span></code> method. The code below demonstrates the use of these four methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate favorable allele counts</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">facount</span><span class="p">(</span><span class="n">gmat</span><span class="p">)</span>
 
@@ -743,6 +970,7 @@
 </section>
 <section id="calculating-deleterious-allele-metrics">
 <h2>Calculating deleterious allele metrics<a class="headerlink" href="#calculating-deleterious-allele-metrics" title="Permalink to this heading">#</a></h2>
+<p>Metrics on the deleterious alleles within a population may be of importance when conducting breeding simulations. The deleterious allele count across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">facount</span></code> method. The deleterious allele frequency across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">fafreq</span></code> method. A mask of the deleterious allele availability across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">faavail</span></code> method. Finally, a mask of the deleterious allele fixation across each locus for a population can be calculated using the <code class="docutils literal notranslate"><span class="pre">fafixed</span></code> method. The code below demonstrates the use of these four methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate deleterious allele counts</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">dacount</span><span class="p">(</span><span class="n">gmat</span><span class="p">)</span>
 
@@ -757,15 +985,41 @@
 </pre></div>
 </div>
 </section>
-<section id="reading-and-writing-a-genomic-model">
-<h2>Reading and writing a genomic model<a class="headerlink" href="#reading-and-writing-a-genomic-model" title="Permalink to this heading">#</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># writing a genomic model to a file</span>
-<span class="n">algmod</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_algmod.h5&quot;</span><span class="p">)</span>
-
-<span class="c1"># reading a genomic model from a file</span>
-<span class="n">out</span> <span class="o">=</span> <span class="n">DenseAdditiveLinearGenomicModel</span><span class="o">.</span><span class="n">from_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_algmod.h5&quot;</span><span class="p">)</span>
+<section id="exporting-genomic-models">
+<h2>Exporting Genomic Models<a class="headerlink" href="#exporting-genomic-models" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> objects can be exported for later use or import into another program. All <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> objects can be saved as an HDF5 file. <code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> objects may also be exported to Pandas DataFrames and CSV files.</p>
+<section id="exporting-to-dictionaries-of-pandas-dataframes">
+<h3>Exporting to dictionaries of Pandas DataFrames<a class="headerlink" href="#exporting-to-dictionaries-of-pandas-dataframes" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> objects can be exported to a dictionary of Pandas DataFrames using the <code class="docutils literal notranslate"><span class="pre">to_pandas_dict</span></code> method. The code below demonstrates the use of this function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># export all trait columns</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">to_pandas_dict</span><span class="p">()</span>
 </pre></div>
 </div>
+</section>
+<section id="exporting-to-csv-files">
+<h3>Exporting to CSV files<a class="headerlink" href="#exporting-to-csv-files" title="Permalink to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">LinearGenomicModel</span></code> objects can be also be exported to a set of CSV files using the <code class="docutils literal notranslate"><span class="pre">to_csv_dict</span></code> method. The code below demonstrates the use of this function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create dictionary with filenames</span>
+<span class="c1"># need required fields of &quot;beta&quot;, &quot;u_misc&quot;, &quot;u_a&quot; for this class</span>
+<span class="n">dic</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;beta&quot;</span><span class="p">:</span> <span class="s2">&quot;beta.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;u_misc&quot;</span><span class="p">:</span> <span class="s2">&quot;u_misc.csv&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;u_a&quot;</span><span class="p">:</span> <span class="s2">&quot;u_a.csv&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># export all trait columns to csv files</span>
+<span class="n">algmod</span><span class="o">.</span><span class="n">to_csv_dict</span><span class="p">(</span><span class="n">dic</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="exporting-to-hdf5">
+<h3>Exporting to HDF5<a class="headerlink" href="#exporting-to-hdf5" title="Permalink to this heading">#</a></h3>
+<p>Finally, all <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> objects can be saved to an HDF5 file for later reloading into PyBrOpS. The code below demonstrates how to export a <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> to an HDF5 file.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># writing a genomic model to a file</span>
+<span class="n">algmod</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_algmod.h5&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 
@@ -818,6 +1072,48 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#genomic-model-properties">
+   Genomic Model Properties
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#genomic-models-general-properties">
+     Genomic Models: General properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#genomic-models-model-properties">
+     Genomic Models: Model properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#genomic-models-trait-properties">
+     Genomic Models: Trait properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#linear-genomic-models-additional-model-properties">
+     Linear Genomic Models: Additional model properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#additive-linear-genomic-models-additional-model-properties">
+     Additive Linear Genomic Models: Additional model properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#additive-dominance-linear-genomic-models-additional-model-properties">
+     Additive Dominance Linear Genomic Models: Additional model properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#additive-dominance-epistatic-linear-genomic-models-model-coefficient-properties">
+     Additive Dominance Epistatic Linear Genomic Models: Model coefficient properties
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#loading-genomic-model-modules">
    Loading Genomic Model Modules
   </a>
@@ -828,30 +1124,23 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#creating-genomic-models-from-numpy-arrays">
-     Creating genomic models from NumPy arrays
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#genomic-model-properties">
-   Genomic Model Properties
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#general-properties">
-     General properties
+    <a class="reference internal nav-link" href="#creating-genomic-models-from-raw-numpy-arrays">
+     Creating genomic models from raw NumPy arrays
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#model-coefficient-properties">
-     Model coefficient properties
+    <a class="reference internal nav-link" href="#loading-linear-genomic-models-from-dictionaries-of-pandas-dataframes">
+     Loading linear genomic models from dictionaries of Pandas DataFrames
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#trait-properties">
-     Trait properties
+    <a class="reference internal nav-link" href="#loading-linear-genomic-models-from-dictionaries-of-csv-file-names">
+     Loading linear genomic models from dictionaries of CSV file names
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#loading-genomic-models-hdf5-files">
+     Loading genomic models HDF5 files
     </a>
    </li>
   </ul>
@@ -886,6 +1175,11 @@
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#predicting-genomic-estimated-breeding-values">
    Predicting genomic estimated breeding values
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#predicting-genomic-estimated-genotypic-values">
+   Predicting genomic estimated genotypic values
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -943,9 +1237,26 @@
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#reading-and-writing-a-genomic-model">
-   Reading and writing a genomic model
+  <a class="reference internal nav-link" href="#exporting-genomic-models">
+   Exporting Genomic Models
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exporting-to-dictionaries-of-pandas-dataframes">
+     Exporting to dictionaries of Pandas DataFrames
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exporting-to-csv-files">
+     Exporting to CSV files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exporting-to-hdf5">
+     Exporting to HDF5
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 

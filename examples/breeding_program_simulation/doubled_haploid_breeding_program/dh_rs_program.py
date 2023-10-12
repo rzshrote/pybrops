@@ -373,9 +373,9 @@ class MyLogbook(Logbook):
             "main_true_lsl": [],
         }
         self.rep = 0
-    def write(self, fname):
+    def write(self, filename):
         pandas_df = pandas.DataFrame(self.data)
-        pandas_df.to_csv(fname, index = False)
+        pandas_df.to_csv(filename, index = False)
 
 ################################################################################
 ################################################################################
@@ -405,7 +405,7 @@ gmod_true = DenseAdditiveLinearGenomicModel(                    # create model
     u_a = pybrops.core.random.normal(0, 0.01, (dpgmat.nvrnt,1)),# random marker effects
     trait = numpy.object_(["yield"]),                           # trait names
     model_name = "yield_model",                                 # name of the model
-    params = None
+    hyperparams = None
 )
 
 ################### Founding parameters ####################

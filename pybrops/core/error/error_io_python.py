@@ -24,7 +24,7 @@ def check_path_exists(path: str) -> None:
     if not exists(path):
         raise FileNotFoundError("{0} does not exist".format(path))
 
-def check_file_exists(fname: str) -> None:
+def check_file_exists(path: str) -> None:
     """
     Subroutine to check whether a given file exists.
     If the file does not exist, raise an FileNotFoundError with a custom error
@@ -35,8 +35,8 @@ def check_file_exists(fname: str) -> None:
     path : str, path-like object
         Path to check.
     """
-    if not isfile(fname):
-        raise FileNotFoundError("{0} does not exist".format(fname))
+    if not isfile(path):
+        raise FileNotFoundError("{0} does not exist".format(path))
 
 def check_directory_exists(path: str) -> None:
     """

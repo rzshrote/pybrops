@@ -53,17 +53,17 @@ def model_name():
     yield "test_glgmod"
 
 @pytest.fixture
-def params():
+def hyperparams():
     yield {"a" : 0, "b" : 1}
 
 @pytest.fixture
-def glgmod(mat_beta, mat_u, mat_trait, model_name, params):
+def glgmod(mat_beta, mat_u, mat_trait, model_name, hyperparams):
     yield DenseLinearGenomicModel(
         beta = mat_beta,
         u = mat_u,
         trait = mat_trait,
         model_name = model_name,
-        params = params
+        hyperparams = hyperparams
     )
 
 ############################################################
@@ -223,8 +223,8 @@ def test_trait_fget(glgmod, mat_trait):
 def test_model_name_fget(glgmod, model_name):
     assert glgmod.model_name == model_name
 
-def test_params_fget(glgmod, params):
-    assert glgmod.params == params
+def test_params_fget(glgmod, hyperparams):
+    assert glgmod.hyperparams == hyperparams
 
 ################################################################################
 ###################### Test concrete method functionality ######################
@@ -330,13 +330,13 @@ def test_to_from_hdf5(glgmod, shared_datadir):
     assert numpy.all(glgmod.u == glgmod1.u)
     assert numpy.all(glgmod.trait == glgmod1.trait)
     assert glgmod.model_name == glgmod1.model_name
-    assert glgmod.params == glgmod1.params
+    assert glgmod.hyperparams == glgmod1.hyperparams
 
     assert numpy.all(glgmod.beta == glgmod2.beta)
     assert numpy.all(glgmod.u == glgmod2.u)
     assert numpy.all(glgmod.trait == glgmod2.trait)
     assert glgmod.model_name == glgmod2.model_name
-    assert glgmod.params == glgmod2.params
+    assert glgmod.hyperparams == glgmod2.hyperparams
 
 ################################################################################
 ################### Test for conrete class utility functions ###################

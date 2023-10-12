@@ -26,6 +26,6 @@ class DummyLogbook(Logbook):
         return super().log_sselect(genome, geno, pheno, bval, gmod, t_cur, t_max, **kwargs)
     def reset(self) -> None:
         return super().reset()
-    def write(self, fname: str) -> None:
-        return super().write(fname)
+    def write(self, filename: str) -> None:
+        return super().write(filename)
     

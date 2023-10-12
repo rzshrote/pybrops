@@ -9,12 +9,20 @@ __all__ = [
 ]
 
 from abc import ABCMeta, abstractmethod
+from pybrops.core.io.CSVInputOutput import CSVInputOutput
+from pybrops.core.io.PandasInputOutput import PandasInputOutput
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class GenicVarianceMatrix(SquareTaxaMatrix,TraitMatrix,metaclass=ABCMeta):
+class GenicVarianceMatrix(
+        SquareTaxaMatrix,
+        TraitMatrix,
+        PandasInputOutput,
+        CSVInputOutput,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for additive genetic variance matrices.
 
@@ -39,20 +47,6 @@ class GenicVarianceMatrix(SquareTaxaMatrix,TraitMatrix,metaclass=ABCMeta):
         raise NotImplementedError("property is abstract")    
 
     ############################## Object Methods ##############################
-    @abstractmethod
-    def to_csv(
-            self, 
-            fname: str
-        ) -> None:
-        """
-        Write a genic variance matrix to a CSV file.
-
-        Parameters
-        ----------
-        fname : str
-            Filename to which to write.
-        """
-        raise NotImplementedError("method is abstract")
 
     ############################## Object Methods ##############################
     @classmethod

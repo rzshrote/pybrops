@@ -62,12 +62,12 @@ Optimization Problem Properties
 PyMOO specific properties
 -------------------------
 
-All optimization problem definitions inherit from PyMOO's Problem definition. For information regarding these properties, see `PyMOO's Problem Definition <https://pymoo.org/problems/definition.html>`_ webpage.
+All optimization problem definitions inherit from PyMOO's Problem definition. For information regarding these properties, see the `PyMOO's Problem Definition <https://pymoo.org/problems/definition.html>`_ webpage.
 
 PyBrOpS specific properties
 ---------------------------
 
-To create a more stable interface, PyBrOpS defines several properties within its Problem definition. These additional properties are summarized below.
+To create a more stable interface overlaying the PyMOO interface, PyBrOpS defines several properties within its Problem definition. These additional properties are summarized below.
 
 .. list-table:: Summary of PyBrOpS specific ``Problem`` properties
     :widths: 25 50
@@ -99,7 +99,9 @@ To create a more stable interface, PyBrOpS defines several properties within its
 Deriving Problem Classes
 ========================
 
-If one desires to create a new optimization problem, one must define a custom Problem class which implements two abstract methods: ``evalfn`` and ``_evaluate``. The ``evalfn`` method is defined and utilized by PyBrOpS internals, while the ``_evaluate`` method is utilized by PyMOO internals. The PyMOO method has a more permissive set of parameters whereas the PyBrOpS method adheres to a more strict interface.
+To create a new optimization problem, one must define a custom ``Problem`` class which implements a single abstract method: ``evalfn``. The ``evalfn`` method is responsible for evaluating a decision vector and returning a tuple of arrays corresponding to the objective function evaluation(s), inequality constraint violation(s), and equality constraint violation(s). The user must override this method to define a custom optimization problem.
+
+Since PyBrOpS ``Problem`` classes are derived from the PyMOO ``Problem`` class, PyBrOpS problem classes also have an ``_evaluate`` method, which must be overriden to use PyMOO optimization algorithms. PyBrOpS overrides this method with a default implementation that takes outputs from the ``evalfn`` method and converts them into a PyMOO compatible format. The ``evalfn`` method is defined and utilized by PyBrOpS internals, while the ``_evaluate`` method is utilized by PyMOO internals. More advanced users may override this method to perhaps achieve better decision vector evaluation performance.
 
 The following two examples illustrate the definition of single- and multi-objective optimization problems.
 
@@ -163,59 +165,7 @@ The class definition below defines an optimization problem for the sphere proble
             eqcv = self.eqcv_wt * numpy.zeros(self.neqcv)
             return obj, ineqcv, eqcv
         ### method required by PyMOO interface ###
-        def _evaluate(
-                self, 
-                x: numpy.ndarray, 
-                out: dict, 
-                *args: tuple, 
-                **kwargs: dict
-            ) -> None:
-            """
-            Evaluate a set of candidate solutions for the "Sphere Problem".
-
-            Parameters
-            ----------
-            x : numpy.ndarray
-                A candidate solution vector of shape ``(nsoln,ndecn)``.
-                Where ``nsoln`` is the number of candidates solutions and ``ndecn``
-                is the number of decision variables.
-            out : dict
-                Dictionary to which to output function evaluations.
-            args : tuple
-                Additional arguments.
-            kwargs : dict
-                Additional keyword arguments.
-            """
-            # the PyMOO interface demands acceptance of 1d or 2d numpy.ndarrays
-            # this handles either case
-            if x.ndim == 1:
-                # get evaluations
-                vals = self.evalfn(x, *args, **kwargs)
-                # create temporary dictionary
-                tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
-                # update output dictionary
-                out.update(tmp)
-            else:
-                # create lists for accumulating variables
-                objs = []
-                ineqcvs = []
-                eqcvs = []
-                # for each row in x
-                for v in x:
-                    # get evaluations
-                    obj, ineqcv, eqcv = self.evalfn(v, *args, **kwargs)
-                    # append values to lists
-                    objs.append(obj)
-                    ineqcvs.append(ineqcv)
-                    eqcvs.append(eqcv)
-                # stack outputs
-                objs = numpy.stack(objs)
-                ineqcvs = numpy.stack(ineqcvs)
-                eqcvs = numpy.stack(eqcvs)
-                # create temporary dictionary
-                tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
-                # update output dictionary
-                out.update(tmp)
+        # default ``_evaluate`` method inherited from base Problem class
 
 
 Multi-objective problem specification
@@ -279,57 +229,7 @@ The class definition below defines an optimization problem for a multi-objective
             eqcv = self.eqcv_wt * numpy.zeros(self.neqcv)
             return obj, ineqcv, eqcv
         ### method required by PyMOO interface ###
-        def _evaluate(
-                self, 
-                x: numpy.ndarray, 
-                out: dict, 
-                *args: tuple, 
-                **kwargs: dict
-            ) -> None:
-            """
-            Evaluate a set of candidate solutions for a Dual Sphere Problem.
-
-            Parameters
-            ----------
-            x : numpy.ndarray
-                A candidate solution vector of shape ``(nsoln,ndecn)``.
-                Where ``nsoln`` is the number of candidates solutions and ``ndecn``
-                is the number of decision variables.
-            out : dict
-                Dictionary to which to output function evaluations.
-            args : tuple
-                Additional arguments.
-            kwargs : dict
-                Additional keyword arguments.
-            """
-            if x.ndim == 1:
-                # get evaluations
-                vals = self.evalfn(x, *args, **kwargs)
-                # create temporary dictionary
-                tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
-                # update output dictionary
-                out.update(tmp)
-            else:
-                # create lists for accumulating variables
-                objs = []
-                ineqcvs = []
-                eqcvs = []
-                # for each row in x
-                for v in x:
-                    # get evaluations
-                    obj, ineqcv, eqcv = self.evalfn(v, *args, **kwargs)
-                    # append values to lists
-                    objs.append(obj)
-                    ineqcvs.append(ineqcv)
-                    eqcvs.append(eqcv)
-                # stack outputs
-                objs = numpy.stack(objs)
-                ineqcvs = numpy.stack(ineqcvs)
-                eqcvs = numpy.stack(eqcvs)
-                # create temporary dictionary
-                tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
-                # update output dictionary
-                out.update(tmp)
+        # default ``_evaluate`` method inherited from base Problem class
 
 Constructing Problems
 =====================

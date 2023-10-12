@@ -1404,8 +1404,6 @@ class StandardGeneticMap(GeneticMap):
     def from_csv(
             cls, 
             filename: str,
-            sep: str = ',', 
-            header: int = 0, 
             vrnt_chrgrp_col: Union[str,Integral] = "chr", 
             vrnt_phypos_col: Union[str,Integral] = "pos", 
             vrnt_genpos_col: Union[str,Integral] = "cM", 
@@ -1415,6 +1413,8 @@ class StandardGeneticMap(GeneticMap):
             vrnt_genpos_units: str = "M",
             auto_group: bool = True,
             auto_build_spline: bool = True,
+            sep: str = ',', 
+            header: int = 0, 
             **kwargs: dict
         ) -> 'StandardGeneticMap':
         """
@@ -1427,12 +1427,6 @@ class StandardGeneticMap(GeneticMap):
             http, ftp, s3, and file. For file URLs, a host is expected (see 
             pandas docs).
         
-        sep : str, default = ','
-            CSV delimiter to use.
-        
-        header : int, list of int, default=0
-            Row number(s) to use as the column names, and the start of the data.
-
         vrnt_chrgrp_col : str, Integral, default = "chr"
             Name or number of the chromosome/linkage group name column from 
             which to import.
@@ -1471,12 +1465,30 @@ class StandardGeneticMap(GeneticMap):
             argument meant to be used for both bounds as below,
             above = fill_value, fill_value.
 
+        vrnt_genpos_units : str, default = "M"
+            Units in which genetic positions in the ``vrnt_genpos`` array are 
+            stored. Options are listed below and are case-sensitive:
+            
+            - ``"M"`` - genetic position units are in Morgans
+            - ``"Morgans"`` - genetic position units are in Morgans
+            - ``"cM"`` - genetic position units are in centiMorgans
+            - ``"centiMorgans"`` - genetic position units are in centiMorgans
+            
+            Internally, all genetic positions are stored in Morgans. Providing 
+            the units of the input  
+
         auto_group : bool
             Whether to automatically sort and group variants into chromosome groups.
         
         auto_build_spline : bool
             Whether to automatically construct a spline on object construction.
             If ``spline`` is provided, then this spline is overwritten.
+
+        sep : str, default = ','
+            CSV delimiter to use.
+        
+        header : int, list of int, default=0
+            Row number(s) to use as the column names, and the start of the data.
 
         kwargs : dict
             Additional keyword arguments to use for dictating importing from a CSV.

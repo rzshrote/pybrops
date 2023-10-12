@@ -1,242 +1,342 @@
-import tempfile
-import numpy
+import os
+import pandas
 import pytest
+import numpy
+import h5py
+from pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix import DenseDihybridDHAdditiveGeneticVarianceMatrix
 
-from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_concrete_property, not_raises
 from pybrops.test.assert_python import assert_docstring
 from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
 
-from pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix import DenseDihybridDHAdditiveGeneticVarianceMatrix, check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix
-from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
-from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
+from pybrops.test.model.vmat.common_fixtures import *
 
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
 
-############################################################
-###################### Genomic model #######################
-############################################################
+### shape fixtures
 @pytest.fixture
-def mat_beta():
-    yield numpy.float64([
-        [1.4, 2.5, 7.2]
-    ])
+def ntaxa():
+    yield 10
 
 @pytest.fixture
-def mat_u_misc():
-    yield None
+def ntrait():
+    yield 3
 
 @pytest.fixture
-def mat_u_a():
-    yield numpy.float64([
-        [-0.33,  2.08, -2.42],
-        [-0.69, -1.87,  1.38],
-        [ 1.12,  1.38, -5.65],
-        [-1.44,  0.20,  4.22],
-        [ 0.88, -0.81,  1.55],
-        [ 1.23,  0.25,  5.13],
-        [ 0.19,  4.35,  0.15],
-        [-2.12,  0.73, -0.38],
-        [-0.87,  1.25,  2.38],
-        [ 0.06, -2.52,  2.48]
-    ])
+def ngroup():
+    yield 5
+
+### data for variance matrix
 
 @pytest.fixture
-def mat_trait():
-    yield numpy.object_(["protein", "yield", "quality"])
+def mat(ntaxa,ntrait):
+    out = numpy.random.random((ntaxa,ntaxa,ntrait))
+    yield out
 
 @pytest.fixture
-def model_name():
-    yield "test_dalgmod"
+def taxa(ntaxa):
+    out = numpy.array(["Taxon"+str(i).zfill(3) for i in range(ntaxa)], dtype=object)
+    yield out
 
 @pytest.fixture
-def params():
-    yield {"a" : 0, "b" : 1}
+def taxa_grp(ngroup,ntaxa):
+    out = numpy.random.randint(0, ngroup, ntaxa)
+    out.sort()
+    yield out
 
 @pytest.fixture
-def dalgmod(mat_beta, mat_u_misc, mat_u_a, mat_trait, model_name, params):
-    yield DenseAdditiveLinearGenomicModel(
-        beta = mat_beta,
-        u_misc = mat_u_misc,
-        u_a = mat_u_a,
-        trait = mat_trait,
-        model_name = model_name,
-        params = params
+def trait(ntrait):
+    out = numpy.array(["Trait"+str(i) for i in range(ntrait)], dtype=object)
+    yield out
+
+@pytest.fixture
+def vmat(mat, taxa, taxa_grp, trait):
+    out = DenseDihybridDHAdditiveGeneticVarianceMatrix(
+        mat = mat,
+        taxa = taxa,
+        taxa_grp = taxa_grp,
+        trait = trait,
     )
-
-############################################################
-######################## Genotypes #########################
-############################################################
-@pytest.fixture
-def mat_int8():
-    yield numpy.int8([
-       [[1, 0, 1, 0, 0, 0, 1, 0, 1, 1],
-        [1, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [1, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [1, 0, 1, 1, 1, 0, 0, 0, 1, 1],
-        [1, 0, 1, 0, 0, 1, 0, 0, 0, 1]],
-       [[0, 0, 1, 0, 1, 0, 0, 1, 0, 0],
-        [0, 0, 1, 0, 1, 0, 0, 1, 1, 0],
-        [0, 0, 1, 0, 0, 1, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0, 1, 1, 0, 0, 0],
-        [0, 0, 1, 1, 0, 0, 0, 0, 0, 0]]
-    ])
-
-@pytest.fixture
-def mat_chrgrp():
-    yield numpy.int64([1, 1, 2, 2, 3, 3, 4, 4, 5, 5])
-
-@pytest.fixture
-def mat_genpos():
-    yield numpy.array([0.5, 0.7, 0.1, 0.4, 0.2, 0.9, 0.4, 0.7, 0.2, 0.6], dtype = float)
-
-@pytest.fixture
-def mat_phypos():
-    yield numpy.int64([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-
-@pytest.fixture
-def mat_taxa():
-    yield numpy.object_(["Line1", "Line2", "Line3", "Line4", "Line5"])
-
-@pytest.fixture
-def mat_taxa_grp():
-    yield numpy.int64([1, 1, 2, 2, 2])
-
-@pytest.fixture
-def dpgmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_taxa, mat_taxa_grp):
-    out = DensePhasedGenotypeMatrix(
-        mat = mat_int8,
-        vrnt_chrgrp = mat_chrgrp,
-        vrnt_phypos = mat_phypos,
-        vrnt_genpos = mat_genpos,
-        taxa = mat_taxa,
-        taxa_grp = mat_taxa_grp
-    )
-    out.group_vrnt()
+    out.sort_trait()
     out.group_taxa()
     yield out
 
-############################################################
-##################### Variance Matrix ######################
-############################################################
-@pytest.fixture
-def mat_var():
-    out = numpy.random.random((5,5,3))
-    yield out
-
-@pytest.fixture
-def gmapfn():
-    yield HaldaneMapFunction()
-
-@pytest.fixture
-def vmat(mat_var, mat_taxa, mat_taxa_grp):
-    yield DenseDihybridDHAdditiveGeneticVarianceMatrix(
-        mat = mat_var,
-        taxa = mat_taxa,
-        taxa_grp = mat_taxa_grp
-    )
-
-################################################################################
 ############################## Test class docstring ############################
-################################################################################
 def test_class_docstring():
     assert_docstring(DenseDihybridDHAdditiveGeneticVarianceMatrix)
 
-################################################################################
 ########################### Test concrete properties ###########################
-################################################################################
-def test_mat_fget(vmat, mat_var):
-    assert numpy.all(vmat.mat == mat_var)
+
+### mat
+def test_mat_is_concrete():
+    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "mat")
+
+def test_mat_fget(vmat):
+    assert isinstance(vmat.mat, numpy.ndarray)
 
 def test_mat_fset(vmat):
+    with not_raises(Exception):
+        vmat.mat = numpy.empty((0,0,0), dtype=float)
+
+def test_mat_fset_TypeError(vmat):
+    with pytest.raises(TypeError):
+        vmat.mat = object()
+
+def test_mat_fset_ValueError(vmat):
     with pytest.raises(ValueError):
-        vmat.mat = numpy.random.random((5,))
+        vmat.mat = numpy.empty((0,0), dtype=float)
+    with pytest.raises(ValueError):
+        vmat.mat = numpy.empty((0,0,0,0), dtype=float)
 
-def test_mat_ndim_fget(vmat):
-    assert vmat.mat_ndim == 3
+### square_axes
+def test_square_axes_is_concrete():
+    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "square_axes")
 
-def test_mat_ndim_fset(vmat):
-    with pytest.raises(AttributeError):
-        vmat.mat_ndim = -1
+### trait_axis
+def test_trait_axis_is_concrete():
+    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "trait_axis")
 
-def test_mat_ndim_fdel(vmat):
-    with pytest.raises(AttributeError):
-        del vmat.mat_ndim
+### epgc
+def test_epgc_is_concrete():
+    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "epgc")
 
-def test_square_axes_fget(vmat):
-    assert vmat.square_axes == (0,1)
+### nfemale
+def test_nfemale_is_concrete():
+    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "nfemale")
 
-def test_square_axes_fset(vmat):
-    with pytest.raises(AttributeError):
-        vmat.square_axes = (1,2)
+### female_axis
+def test_female_axis_is_concrete():
+    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "female_axis")
 
-def test_square_axes_fdel(vmat):
-    with pytest.raises(AttributeError):
-        del vmat.square_axes
+### nmale
+def test_nmale_is_concrete():
+    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "nmale")
 
-################################################################################
+### male_axis
+def test_male_axis_is_concrete():
+    assert_concrete_property(DenseDihybridDHAdditiveGeneticVarianceMatrix, "male_axis")
+
 ############################# Test concrete methods ############################
-################################################################################
-def test_init_is_concrete():
+
+### __init__
+def test___init___is_concrete():
     assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "__init__")
 
+### to_pandas
+def test_to_pandas_is_concrete():
+    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "to_pandas")
+
+def test_to_pandas(vmat):
+    # define column names
+    female_col = "female_col"
+    female_grp_col = "female_grp_col"
+    male_col = "male_col"
+    male_grp_col = "male_grp_col"
+    trait_col = "trait_col"
+    variance_col = "variance_col"
+    # make dataframe
+    df = vmat.to_pandas(
+        female_col = female_col,
+        female_grp_col = female_grp_col,
+        male_col = male_col,
+        male_grp_col = male_grp_col,
+        trait_col = trait_col,
+        variance_col = variance_col,
+    )
+    # tests
+    assert isinstance(df, pandas.DataFrame)
+    assert len(df) == vmat.mat.size
+    assert len(df.columns) == 6
+    assert female_col in df.columns
+    assert female_grp_col in df.columns
+    assert male_col in df.columns
+    assert male_grp_col in df.columns
+    assert trait_col in df.columns
+    assert variance_col in df.columns
+    
+    # define column names
+    female_col = "female_col"
+    female_grp_col = None
+    male_col = "male_col"
+    male_grp_col = None
+    trait_col = "trait_col"
+    variance_col = "variance_col"
+    # make dataframe
+    df = vmat.to_pandas(
+        female_col = female_col,
+        female_grp_col = female_grp_col,
+        male_col = male_col,
+        male_grp_col = male_grp_col,
+        trait_col = trait_col,
+        variance_col = variance_col,
+    )
+    # tests
+    assert isinstance(df, pandas.DataFrame)
+    assert len(df) == vmat.mat.size
+    assert len(df.columns) == 4
+    assert female_col in df.columns
+    assert female_grp_col not in df.columns
+    assert male_col in df.columns
+    assert male_grp_col not in df.columns
+    assert trait_col in df.columns
+    assert variance_col in df.columns
+
+### to_csv
 def test_to_csv_is_concrete():
     assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "to_csv")
 
-def test_from_gmod_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "from_gmod")
-
-def test_from_algmod_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "from_algmod")
-
-################################################################################
-############################# Test object methods ##############################
-################################################################################
 def test_to_csv(vmat):
-    tmp = tempfile.TemporaryFile()
-    vmat.to_csv(tmp)
-    tmp.close()
-
-################################################################################
-############################## Test class methods ##############################
-################################################################################
-def test_from_gmod(dalgmod, dpgmat, gmapfn, mat_taxa, mat_taxa_grp):
-    vmat = DenseDihybridDHAdditiveGeneticVarianceMatrix.from_gmod(
-        gmod = dalgmod,
-        pgmat = dpgmat,
-        ncross = 1,
-        nprogeny = 40,
-        nself = 0,
-        gmapfn = gmapfn
+    filename = "test_dhdh_vmat.csv"
+    # define column names
+    female_col = "female_col"
+    female_grp_col = "female_grp_col"
+    male_col = "male_col"
+    male_grp_col = "male_grp_col"
+    trait_col = "trait_col"
+    variance_col = "variance_col"
+    # write to file
+    vmat.to_csv(
+        filename = filename,
+        female_col = female_col,
+        female_grp_col = female_grp_col,
+        male_col = male_col,
+        male_grp_col = male_grp_col,
+        trait_col = trait_col,
+        variance_col = variance_col,
     )
-    assert isinstance(vmat, DenseDihybridDHAdditiveGeneticVarianceMatrix)
-    assert numpy.all(vmat.taxa == mat_taxa)
-    assert numpy.all(vmat.taxa_grp == mat_taxa_grp)
+    # tests
+    assert os.path.isfile(filename)
 
-def test_from_algmod(dalgmod, dpgmat, gmapfn, mat_taxa, mat_taxa_grp):
-    vmat = DenseDihybridDHAdditiveGeneticVarianceMatrix.from_algmod(
-        algmod = dalgmod,
-        pgmat = dpgmat,
-        ncross = 1,
-        nprogeny = 40,
-        nself = 0,
-        gmapfn = gmapfn
+### to_hdf5
+def test_to_hdf5_is_concrete():
+    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "to_hdf5")
+
+def test_to_hdf5(vmat):
+    filename = "test_dhdh_vmat.h5"
+    vmat.to_hdf5(filename)
+    assert os.path.isfile(filename)
+    # open the file
+    h5file = h5py.File(filename, "r")
+    if vmat.mat is not None:
+        assert "mat" in h5file
+    if vmat.taxa is not None:
+        assert "taxa" in h5file
+    if vmat.taxa_grp is not None:
+        assert "taxa_grp" in h5file
+    if vmat.trait is not None:
+        assert "trait" in h5file
+    if vmat.taxa_grp_name is not None:
+        assert "taxa_grp_name" in h5file
+    if vmat.taxa_grp_stix is not None:
+        assert "taxa_grp_stix" in h5file
+    if vmat.taxa_grp_spix is not None:
+        assert "taxa_grp_spix" in h5file
+    if vmat.taxa_grp_len is not None:
+        assert "taxa_grp_len" in h5file
+
+### from_pandas
+def test_from_pandas_is_concrete():
+    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "from_pandas")
+
+def test_from_pandas(vmat, ntaxa, ntrait):
+    # export
+    df = vmat.to_pandas()
+    
+    # tests for recovery
+    out = DenseDihybridDHAdditiveGeneticVarianceMatrix.from_pandas(df)
+    assert isinstance(out, DenseDihybridDHAdditiveGeneticVarianceMatrix)
+    assert out.ntaxa == ntaxa
+    assert out.ntrait == ntrait
+    assert out.mat.shape == vmat.mat.shape
+    assert out.taxa is not None
+    assert all(e in out.taxa for e in vmat.taxa)
+    assert all(e in vmat.taxa for e in out.taxa)
+    assert out.taxa_grp is not None
+    assert all(e in out.taxa_grp for e in vmat.taxa_grp)
+    assert all(e in vmat.taxa_grp for e in out.taxa_grp)
+    assert numpy.all(out.mat == vmat.mat)
+
+    # tests for recovery without group columns
+    out = DenseDihybridDHAdditiveGeneticVarianceMatrix.from_pandas(
+        df, 
+        female_grp_col=None, 
+        male_grp_col=None
     )
-    assert isinstance(vmat, DenseDihybridDHAdditiveGeneticVarianceMatrix)
-    assert numpy.all(vmat.taxa == mat_taxa)
-    assert numpy.all(vmat.taxa_grp == mat_taxa_grp)
+    assert isinstance(out, DenseDihybridDHAdditiveGeneticVarianceMatrix)
+    out.sort_trait()
+    out.group_taxa()
+    assert out.ntaxa == ntaxa
+    assert out.ntrait == ntrait
+    assert out.mat.shape == vmat.mat.shape
+    assert out.taxa is not None
+    assert all(e in out.taxa for e in vmat.taxa)
+    assert all(e in vmat.taxa for e in out.taxa)
+    assert out.taxa_grp is None
+    assert numpy.all(numpy.isclose(out.mat, vmat.mat))
 
-################################################################################
-######################### Test class utility functions #########################
-################################################################################
-def test_check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix_is_concrete():
-    assert_concrete_function(check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix)
+### from_csv
+def test_from_csv_is_concrete():
+    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "from_csv")
 
-def test_check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix(vmat):
-    with not_raises(TypeError):
-        check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix(vmat, "vmat")
-    with pytest.raises(TypeError):
-        check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix(None, "vmat")
+def test_from_csv(vmat, ntaxa, ntrait):
+    filename = "test_dhdh_vmat.csv"
+    # define column names
+    female_col = "female_col"
+    female_grp_col = "female_grp_col"
+    male_col = "male_col"
+    male_grp_col = "male_grp_col"
+    trait_col = "trait_col"
+    variance_col = "variance_col"
+    # write to file
+    vmat.to_csv(
+        filename = filename,
+        female_col = female_col,
+        female_grp_col = female_grp_col,
+        male_col = male_col,
+        male_grp_col = male_grp_col,
+        trait_col = trait_col,
+        variance_col = variance_col,
+    )
+    # read from file
+    out = DenseDihybridDHAdditiveGeneticVarianceMatrix.from_csv(
+        filename = filename,
+        female_col = female_col,
+        female_grp_col = female_grp_col,
+        male_col = male_col,
+        male_grp_col = male_grp_col,
+        trait_col = trait_col,
+        variance_col = variance_col,
+    )
+    # tests
+    assert isinstance(out, DenseDihybridDHAdditiveGeneticVarianceMatrix)
+    out.sort_trait()
+    out.group_taxa()
+    assert out.ntaxa == ntaxa
+    assert out.ntrait == ntrait
+    assert out.mat.shape == vmat.mat.shape
+    assert out.taxa is not None
+    assert all(e in out.taxa for e in vmat.taxa)
+    assert all(e in vmat.taxa for e in out.taxa)
+    assert out.taxa_grp is not None
+    assert all(e in out.taxa_grp for e in vmat.taxa_grp)
+    assert all(e in vmat.taxa_grp for e in out.taxa_grp)
+    assert numpy.all(numpy.isclose(out.mat, vmat.mat))
+
+### from_hdf5
+def test_from_hdf5_is_concrete():
+    assert_concrete_method(DenseDihybridDHAdditiveGeneticVarianceMatrix, "from_hdf5")
+
+def test_from_hdf5(vmat):
+    filename = "test_dhdh_vmat.h5"
+    vmat.to_hdf5(filename)
+    tmp = DenseDihybridDHAdditiveGeneticVarianceMatrix.from_hdf5(filename)
+    assert numpy.all(tmp.mat == vmat.mat)
+    assert numpy.all(tmp.taxa == vmat.taxa)
+    assert numpy.all(tmp.taxa_grp == vmat.taxa_grp)
+    assert numpy.all(tmp.taxa_grp_name == vmat.taxa_grp_name)
+    assert numpy.all(tmp.taxa_grp_stix == vmat.taxa_grp_stix)
+    assert numpy.all(tmp.taxa_grp_spix == vmat.taxa_grp_spix)
+    assert numpy.all(tmp.taxa_grp_len == vmat.taxa_grp_len)
+

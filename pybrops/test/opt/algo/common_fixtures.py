@@ -133,34 +133,17 @@ class DummySingleObjectiveSummationBinaryProblem(BinaryProblem):
     ### method required by PyMOO interface ###
     def _evaluate(self, x, out, *args, **kwargs):
         """NA"""
+        # if x is a vector, score and update output dictionary
         if x.ndim == 1:
-            # get evaluations
             vals = self.evalfn(x, *args, **kwargs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
-            # update output dictionary
-            out.update(tmp)
+            out.update({key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0})
+        # if x is a matrix or other, score each row and update output dictionary
         else:
-            # create lists for accumulating variables
-            objs = []
-            ineqcvs = []
-            eqcvs = []
-            # for each row in x
-            for v in x:
-                # get evaluations
-                obj, ineqcv, eqcv = self.evalfn(v, *args, **kwargs)
-                # append values to lists
-                objs.append(obj)
-                ineqcvs.append(ineqcv)
-                eqcvs.append(eqcv)
-            # stack outputs
-            objs = numpy.stack(objs)
-            ineqcvs = numpy.stack(ineqcvs)
-            eqcvs = numpy.stack(eqcvs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
-            # update output dictionary
-            out.update(tmp)
+            vals = [self.evalfn(v *args, **kwargs) for v in x]  # evaluate each vector
+            obj = numpy.stack([e[0] for e in vals])             # extract objective function evaluations
+            ineqcv = numpy.stack([e[1] for e in vals])          # extract inequality constraint evaluations
+            eqcv = numpy.stack([e[2] for e in vals])            # extract equality constraint evaluations
+            out.update({key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0})
 
 class DummyMultiObjectiveSummationBinaryProblem(BinaryProblem):
     def __init__(
@@ -183,34 +166,17 @@ class DummyMultiObjectiveSummationBinaryProblem(BinaryProblem):
     ### method required by PyMOO interface ###
     def _evaluate(self, x, out, *args, **kwargs):
         """NA"""
+        # if x is a vector, score and update output dictionary
         if x.ndim == 1:
-            # get evaluations
             vals = self.evalfn(x, *args, **kwargs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
-            # update output dictionary
-            out.update(tmp)
+            out.update({key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0})
+        # if x is a matrix or other, score each row and update output dictionary
         else:
-            # create lists for accumulating variables
-            objs = []
-            ineqcvs = []
-            eqcvs = []
-            # for each row in x
-            for v in x:
-                # get evaluations
-                obj, ineqcv, eqcv = self.evalfn(v, *args, **kwargs)
-                # append values to lists
-                objs.append(obj)
-                ineqcvs.append(ineqcv)
-                eqcvs.append(eqcv)
-            # stack outputs
-            objs = numpy.stack(objs)
-            ineqcvs = numpy.stack(ineqcvs)
-            eqcvs = numpy.stack(eqcvs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
-            # update output dictionary
-            out.update(tmp)
+            vals = [self.evalfn(v *args, **kwargs) for v in x]  # evaluate each vector
+            obj = numpy.stack([e[0] for e in vals])             # extract objective function evaluations
+            ineqcv = numpy.stack([e[1] for e in vals])          # extract inequality constraint evaluations
+            eqcv = numpy.stack([e[2] for e in vals])            # extract equality constraint evaluations
+            out.update({key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0})
 
 @pytest.fixture
 def common_sum_prob_binary_single(
@@ -305,34 +271,17 @@ class DummySingleObjectiveSummationIntegerProblem(IntegerProblem):
     ### method required by PyMOO interface ###
     def _evaluate(self, x, out, *args, **kwargs):
         """NA"""
+        # if x is a vector, score and update output dictionary
         if x.ndim == 1:
-            # get evaluations
             vals = self.evalfn(x, *args, **kwargs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
-            # update output dictionary
-            out.update(tmp)
+            out.update({key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0})
+        # if x is a matrix or other, score each row and update output dictionary
         else:
-            # create lists for accumulating variables
-            objs = []
-            ineqcvs = []
-            eqcvs = []
-            # for each row in x
-            for v in x:
-                # get evaluations
-                obj, ineqcv, eqcv = self.evalfn(v, *args, **kwargs)
-                # append values to lists
-                objs.append(obj)
-                ineqcvs.append(ineqcv)
-                eqcvs.append(eqcv)
-            # stack outputs
-            objs = numpy.stack(objs)
-            ineqcvs = numpy.stack(ineqcvs)
-            eqcvs = numpy.stack(eqcvs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
-            # update output dictionary
-            out.update(tmp)
+            vals = [self.evalfn(v *args, **kwargs) for v in x]  # evaluate each vector
+            obj = numpy.stack([e[0] for e in vals])             # extract objective function evaluations
+            ineqcv = numpy.stack([e[1] for e in vals])          # extract inequality constraint evaluations
+            eqcv = numpy.stack([e[2] for e in vals])            # extract equality constraint evaluations
+            out.update({key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0})
 
 class DummyMultiObjectiveSummationIntegerProblem(IntegerProblem):
     def __init__(
@@ -355,34 +304,17 @@ class DummyMultiObjectiveSummationIntegerProblem(IntegerProblem):
     ### method required by PyMOO interface ###
     def _evaluate(self, x, out, *args, **kwargs):
         """NA"""
+        # if x is a vector, score and update output dictionary
         if x.ndim == 1:
-            # get evaluations
             vals = self.evalfn(x, *args, **kwargs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
-            # update output dictionary
-            out.update(tmp)
+            out.update({key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0})
+        # if x is a matrix or other, score each row and update output dictionary
         else:
-            # create lists for accumulating variables
-            objs = []
-            ineqcvs = []
-            eqcvs = []
-            # for each row in x
-            for v in x:
-                # get evaluations
-                obj, ineqcv, eqcv = self.evalfn(v, *args, **kwargs)
-                # append values to lists
-                objs.append(obj)
-                ineqcvs.append(ineqcv)
-                eqcvs.append(eqcv)
-            # stack outputs
-            objs = numpy.stack(objs)
-            ineqcvs = numpy.stack(ineqcvs)
-            eqcvs = numpy.stack(eqcvs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
-            # update output dictionary
-            out.update(tmp)
+            vals = [self.evalfn(v *args, **kwargs) for v in x]  # evaluate each vector
+            obj = numpy.stack([e[0] for e in vals])             # extract objective function evaluations
+            ineqcv = numpy.stack([e[1] for e in vals])          # extract inequality constraint evaluations
+            eqcv = numpy.stack([e[2] for e in vals])            # extract equality constraint evaluations
+            out.update({key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0})
 
 @pytest.fixture
 def common_sum_prob_integer_single(
@@ -477,34 +409,17 @@ class DummySingleObjectiveSummationRealProblem(RealProblem):
     ### method required by PyMOO interface ###
     def _evaluate(self, x, out, *args, **kwargs):
         """NA"""
+        # if x is a vector, score and update output dictionary
         if x.ndim == 1:
-            # get evaluations
             vals = self.evalfn(x, *args, **kwargs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
-            # update output dictionary
-            out.update(tmp)
+            out.update({key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0})
+        # if x is a matrix or other, score each row and update output dictionary
         else:
-            # create lists for accumulating variables
-            objs = []
-            ineqcvs = []
-            eqcvs = []
-            # for each row in x
-            for v in x:
-                # get evaluations
-                obj, ineqcv, eqcv = self.evalfn(v, *args, **kwargs)
-                # append values to lists
-                objs.append(obj)
-                ineqcvs.append(ineqcv)
-                eqcvs.append(eqcv)
-            # stack outputs
-            objs = numpy.stack(objs)
-            ineqcvs = numpy.stack(ineqcvs)
-            eqcvs = numpy.stack(eqcvs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
-            # update output dictionary
-            out.update(tmp)
+            vals = [self.evalfn(v *args, **kwargs) for v in x]  # evaluate each vector
+            obj = numpy.stack([e[0] for e in vals])             # extract objective function evaluations
+            ineqcv = numpy.stack([e[1] for e in vals])          # extract inequality constraint evaluations
+            eqcv = numpy.stack([e[2] for e in vals])            # extract equality constraint evaluations
+            out.update({key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0})
 
 class DummyMultiObjectiveSummationRealProblem(RealProblem):
     def __init__(
@@ -527,34 +442,17 @@ class DummyMultiObjectiveSummationRealProblem(RealProblem):
     ### method required by PyMOO interface ###
     def _evaluate(self, x, out, *args, **kwargs):
         """NA"""
+        # if x is a vector, score and update output dictionary
         if x.ndim == 1:
-            # get evaluations
             vals = self.evalfn(x, *args, **kwargs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
-            # update output dictionary
-            out.update(tmp)
+            out.update({key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0})
+        # if x is a matrix or other, score each row and update output dictionary
         else:
-            # create lists for accumulating variables
-            objs = []
-            ineqcvs = []
-            eqcvs = []
-            # for each row in x
-            for v in x:
-                # get evaluations
-                obj, ineqcv, eqcv = self.evalfn(v, *args, **kwargs)
-                # append values to lists
-                objs.append(obj)
-                ineqcvs.append(ineqcv)
-                eqcvs.append(eqcv)
-            # stack outputs
-            objs = numpy.stack(objs)
-            ineqcvs = numpy.stack(ineqcvs)
-            eqcvs = numpy.stack(eqcvs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
-            # update output dictionary
-            out.update(tmp)
+            vals = [self.evalfn(v *args, **kwargs) for v in x]  # evaluate each vector
+            obj = numpy.stack([e[0] for e in vals])             # extract objective function evaluations
+            ineqcv = numpy.stack([e[1] for e in vals])          # extract inequality constraint evaluations
+            eqcv = numpy.stack([e[2] for e in vals])            # extract equality constraint evaluations
+            out.update({key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0})
 
 @pytest.fixture
 def common_sum_prob_real_single(
@@ -649,34 +547,17 @@ class DummySingleObjectiveSummationSubsetProblem(SubsetProblem):
     ### method required by PyMOO interface ###
     def _evaluate(self, x, out, *args, **kwargs):
         """NA"""
+        # if x is a vector, score and update output dictionary
         if x.ndim == 1:
-            # get evaluations
             vals = self.evalfn(x, *args, **kwargs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
-            # update output dictionary
-            out.update(tmp)
+            out.update({key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0})
+        # if x is a matrix or other, score each row and update output dictionary
         else:
-            # create lists for accumulating variables
-            objs = []
-            ineqcvs = []
-            eqcvs = []
-            # for each row in x
-            for v in x:
-                # get evaluations
-                obj, ineqcv, eqcv = self.evalfn(v, *args, **kwargs)
-                # append values to lists
-                objs.append(obj)
-                ineqcvs.append(ineqcv)
-                eqcvs.append(eqcv)
-            # stack outputs
-            objs = numpy.stack(objs)
-            ineqcvs = numpy.stack(ineqcvs)
-            eqcvs = numpy.stack(eqcvs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
-            # update output dictionary
-            out.update(tmp)
+            vals = [self.evalfn(v *args, **kwargs) for v in x]  # evaluate each vector
+            obj = numpy.stack([e[0] for e in vals])             # extract objective function evaluations
+            ineqcv = numpy.stack([e[1] for e in vals])          # extract inequality constraint evaluations
+            eqcv = numpy.stack([e[2] for e in vals])            # extract equality constraint evaluations
+            out.update({key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0})
 
 class DummyMultiObjectiveSummationSubsetProblem(SubsetProblem):
     def __init__(
@@ -699,34 +580,17 @@ class DummyMultiObjectiveSummationSubsetProblem(SubsetProblem):
     ### method required by PyMOO interface ###
     def _evaluate(self, x, out, *args, **kwargs):
         """NA"""
+        # if x is a vector, score and update output dictionary
         if x.ndim == 1:
-            # get evaluations
             vals = self.evalfn(x, *args, **kwargs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0}
-            # update output dictionary
-            out.update(tmp)
+            out.update({key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0})
+        # if x is a matrix or other, score each row and update output dictionary
         else:
-            # create lists for accumulating variables
-            objs = []
-            ineqcvs = []
-            eqcvs = []
-            # for each row in x
-            for v in x:
-                # get evaluations
-                obj, ineqcv, eqcv = self.evalfn(v, *args, **kwargs)
-                # append values to lists
-                objs.append(obj)
-                ineqcvs.append(ineqcv)
-                eqcvs.append(eqcv)
-            # stack outputs
-            objs = numpy.stack(objs)
-            ineqcvs = numpy.stack(ineqcvs)
-            eqcvs = numpy.stack(eqcvs)
-            # create temporary dictionary
-            tmp = {key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0}
-            # update output dictionary
-            out.update(tmp)
+            vals = [self.evalfn(v *args, **kwargs) for v in x]  # evaluate each vector
+            obj = numpy.stack([e[0] for e in vals])             # extract objective function evaluations
+            ineqcv = numpy.stack([e[1] for e in vals])          # extract inequality constraint evaluations
+            eqcv = numpy.stack([e[2] for e in vals])            # extract equality constraint evaluations
+            out.update({key:val for key,val in zip(["F","G","H"],[obj,ineqcv,eqcv]) if val.shape[1] > 0})
 
 @pytest.fixture
 def common_sum_prob_subset_single(

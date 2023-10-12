@@ -10,5 +10,3 @@ This set of documents describes crucial data types, concepts, and architectural 
     Simulation Philosophy <simulation/philosophy>
     Software Architecture Philosophy <architecture/philosophy>
     Implemented Software Architecture <architecture/architecture>
-    Core Infrastructure <core_infrastructure/core_infrastructure>
-    Data Types <data_types/data_types>

@@ -1,8 +1,11 @@
 from typing import Optional, Sequence, Union
 from numpy import ndarray
 from numpy.typing import ArrayLike
+import pandas
 import pytest
+from pybrops.core.io.CSVInputOutput import CSVInputOutput
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
+from pybrops.core.io.PandasInputOutput import PandasInputOutput
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
@@ -326,6 +329,20 @@ class DummyGeneticVarianceMatrix(GeneticVarianceMatrix):
     @trait_axis.setter
     def trait_axis(self, value: object) -> None:
         super().trait_axis = value
+    def to_csv(self, filename: str) -> None:
+        return super().to_csv(filename)
+    def ungroup(self, axis: int, **kwargs: dict) -> None:
+        return super().ungroup(axis, **kwargs)
+    def ungroup_taxa(self, **kwargs: dict) -> None:
+        return super().ungroup_taxa(**kwargs)
+    def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
+        return super().to_pandas(**kwargs)
+    @classmethod
+    def from_pandas(cls, df: pandas.DataFrame, **kwargs: dict) -> PandasInputOutput:
+        return super().from_pandas(df, **kwargs)
+    @classmethod
+    def from_csv(cls, filename: str, **kwargs: dict) -> CSVInputOutput:
+        return super().from_csv(filename, **kwargs)
     
 class DummyAdditiveGeneticVarianceMatrix(DummyGeneticVarianceMatrix,AdditiveGeneticVarianceMatrix):
     @classmethod
@@ -640,6 +657,20 @@ class DummyGenicVarianceMatrix(GenicVarianceMatrix):
     @trait_axis.setter
     def trait_axis(self, value: object) -> None:
         super().trait_axis = value
+    def to_csv(self, filename: str) -> None:
+        return super().to_csv(filename)
+    def ungroup(self, axis: int, **kwargs: dict) -> None:
+        return super().ungroup(axis, **kwargs)
+    def ungroup_taxa(self, **kwargs: dict) -> None:
+        return super().ungroup_taxa(**kwargs)
+    def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
+        return super().to_pandas(**kwargs)
+    @classmethod
+    def from_pandas(cls, df: pandas.DataFrame, **kwargs: dict) -> PandasInputOutput:
+        return super().from_pandas(df, **kwargs)
+    @classmethod
+    def from_csv(cls, filename: str, **kwargs: dict) -> CSVInputOutput:
+        return super().from_csv(filename, **kwargs)
 
 class DummyAdditiveGenicVarianceMatrix(DummyGenicVarianceMatrix,AdditiveGenicVarianceMatrix):
     @classmethod
@@ -650,6 +681,16 @@ class DummyDenseGeneticVarianceMatrix(DenseGeneticVarianceMatrix):
     @classmethod
     def from_gmod(cls, gmod: GenomicModel, pgmat: PhasedGenotypeMatrix, ncross: int, nprogeny: int, nself: int, gmapfn: GeneticMapFunction, **kwargs: dict) -> GeneticVarianceMatrix:
         return super().from_gmod(gmod, pgmat, ncross, nprogeny, nself, gmapfn, **kwargs)
+    def to_csv(self, filename: str) -> None:
+        return super().to_csv(filename)
+    def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
+        return super().to_pandas(**kwargs)
+    @classmethod
+    def from_pandas(cls, df: pandas.DataFrame, **kwargs: dict) -> PandasInputOutput:
+        return super().from_pandas(df, **kwargs)
+    @classmethod
+    def from_csv(cls, filename: str, **kwargs: dict) -> CSVInputOutput:
+        return super().from_csv(filename, **kwargs)
 
 class DummyDenseAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix):
     @classmethod
@@ -658,3 +699,13 @@ class DummyDenseAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix
     @classmethod
     def from_gmod(cls, gmod: GenomicModel, pgmat: PhasedGenotypeMatrix, ncross: int, nprogeny: int, nself: int, gmapfn: GeneticMapFunction, **kwargs: dict) -> GeneticVarianceMatrix:
         return super().from_gmod(gmod, pgmat, ncross, nprogeny, nself, gmapfn, **kwargs)
+    def to_csv(self, filename: str) -> None:
+        return super().to_csv(filename)
+    def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
+        return super().to_pandas(**kwargs)
+    @classmethod
+    def from_pandas(cls, df: pandas.DataFrame, **kwargs: dict) -> PandasInputOutput:
+        return super().from_pandas(df, **kwargs)
+    @classmethod
+    def from_csv(cls, filename: str, **kwargs: dict) -> CSVInputOutput:
+        return super().from_csv(filename, **kwargs)

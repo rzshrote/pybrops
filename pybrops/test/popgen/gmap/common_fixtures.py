@@ -128,8 +128,8 @@ class DummyGeneticMap(GeneticMap):
         return super().select(indices, **kwargs)
     def sort(self, keys, **kwargs: dict) -> None:
         return super().sort(keys, **kwargs)
-    def to_csv(self, fname: str, sep: str, header: bool, index: bool | int, **kwargs: dict) -> None:
-        return super().to_csv(fname, sep, header, index, **kwargs)
+    def to_csv(self, filename: str, sep: str, header: bool, index: bool | int, **kwargs: dict) -> None:
+        return super().to_csv(filename, sep, header, index, **kwargs)
     def to_pandas(self) -> pandas.DataFrame:
         return super().to_pandas()
     def __copy__(self) -> GeneticMap:

@@ -77,7 +77,7 @@ Estimating Breeding Values
         u_a = u_a,
         trait = trait,
         model_name = "example",
-        params = None
+         = None
     )
 
     #

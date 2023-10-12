@@ -23,7 +23,6 @@ __all__ = [
     "UnconstrainedSteepestAscentSetHillClimber",
     "UnconstrainedStochasticAscentSetHillClimber",
     "UnconstrainedNSGA2SetGeneticAlgorithm",
-    "UnconstrainedNSGA3UnityConstraintGeneticAlgorithm",
 ]
 
 # order dependent imports
@@ -59,4 +58,3 @@ from pybrops.opt.algo import UnconstrainedOptimizationAlgorithm
 from pybrops.opt.algo import UnconstrainedSteepestAscentSetHillClimber
 from pybrops.opt.algo import UnconstrainedStochasticAscentSetHillClimber
 from pybrops.opt.algo import UnconstrainedNSGA2SetGeneticAlgorithm
-from pybrops.opt.algo import UnconstrainedNSGA3UnityConstraintGeneticAlgorithm

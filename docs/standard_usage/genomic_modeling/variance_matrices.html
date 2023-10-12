@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Variance Matrices &#8212; pybrops 1.0.0 documentation</title>
+    <title>Variance Matrices &#8212; pybrops 0.9.0 documentation</title>
   
   
   
@@ -99,7 +99,7 @@
 
   
   
-    <p class="title logo__title">pybrops 1.0.0 documentation</p>
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
   
 </a>
     
@@ -403,8 +403,10 @@
 </section>
 <section id="summary-of-variance-matrix-classes">
 <h2>Summary of Variance Matrix Classes<a class="headerlink" href="#summary-of-variance-matrix-classes" title="Permalink to this heading">#</a></h2>
+<p>Genetic and genic variance matrices are found in the <code class="docutils literal notranslate"><span class="pre">pybrops.model.vmat</span></code> module. The two subsections below summarize the genetic and genic variance matrices</p>
 <section id="genetic-variance-matrix-classes">
 <h3>Genetic variance matrix classes<a class="headerlink" href="#genetic-variance-matrix-classes" title="Permalink to this heading">#</a></h3>
+<p>Genetic variance matrices, which represent the expected progeny trait variances assuming linkage disequilibrium, are summarized in the table below.</p>
 <table class="colwidths-given table" id="id1">
 <caption><span class="caption-text">Summary of genetic variance classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.model.vmat</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
 <colgroup>
@@ -456,6 +458,7 @@
 </section>
 <section id="genic-variance-matrix-classes">
 <h3>Genic variance matrix classes<a class="headerlink" href="#genic-variance-matrix-classes" title="Permalink to this heading">#</a></h3>
+<p>Genic variance matrices, which represent the expected progeny trait variances assuming linkage equilibrium, are summarized in the table below.</p>
 <table class="colwidths-given table" id="id2">
 <caption><span class="caption-text">Summary of genic variance classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.model.vmat</span></code> module</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
 <colgroup>
@@ -506,10 +509,141 @@
 </table>
 </section>
 </section>
+<section id="variance-matrix-properties">
+<h2>Variance Matrix Properties<a class="headerlink" href="#variance-matrix-properties" title="Permalink to this heading">#</a></h2>
+<p>Both genetic and genic variance matrix classes share a common set of properties. These properties can be grouped into four categories: general properties, taxa properties, trait properties, and square properties. The following four subsections summarize these property categories.</p>
+<section id="general-properties">
+<h3>General properties<a class="headerlink" href="#general-properties" title="Permalink to this heading">#</a></h3>
+<p>Genetic and genic variance matrices share several shape properties that are common to all <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> classes. In addition, genetic and genic variance matrices have an <code class="docutils literal notranslate"><span class="pre">epgc</span></code> property which is used to indicate the expected parental genomic contribution of each parent corresponding to each parental axis. The table below summarizes variance matrix general properties.</p>
+<table class="colwidths-given table" id="id3">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> general properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mat</span></code></p></td>
+<td><p>The raw genetic or genic variance matrix pointer</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mat_ndim</span></code></p></td>
+<td><p>The number of dimensions for the genetic or genic variance matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mat_shape</span></code></p></td>
+<td><p>The genetic or genic variance matrix shape</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">epgc</span></code></p></td>
+<td><p>The expected parental genomic contribution corresponding to each parental axis.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="taxa-properties">
+<h3>Taxa properties<a class="headerlink" href="#taxa-properties" title="Permalink to this heading">#</a></h3>
+<p>Genetic and genic variance matrices have several taxa related properties including taxa names, taxa group identities, and sorting metadata, which can be used for quick group access and sorting. The table below summarizes variance matrix taxa properties.</p>
+<table class="colwidths-given table" id="id4">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> taxa properties</span><a class="headerlink" href="#id4" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ntaxa</span></code></p></td>
+<td><p>The number of taxa represented by the genetic or genic variance matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa</span></code></p></td>
+<td><p>The names of the taxa</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_axis</span></code></p></td>
+<td><p>The matrix axis along which taxa are stored</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp</span></code></p></td>
+<td><p>An optional taxa group label</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_name</span></code></p></td>
+<td><p>If taxa are sorted by group: get the names of the groups</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_stix</span></code></p></td>
+<td><p>If taxa are sorted by group: get the start indices (inclusive) for each group</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_spix</span></code></p></td>
+<td><p>If taxa are sorted by group: get the stop indices (exclusive) for each group</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_len</span></code></p></td>
+<td><p>If taxa are sorted by group: get the length of each group</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="trait-properties">
+<h3>Trait properties<a class="headerlink" href="#trait-properties" title="Permalink to this heading">#</a></h3>
+<p>Genetic and genic variance matrices have several trait related properties of which the most important is the trait names.</p>
+<table class="colwidths-given table" id="id5">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> trait properties</span><a class="headerlink" href="#id5" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ntrait</span></code></p></td>
+<td><p>The number of traits represented by the genetic or genic variance matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">trait</span></code></p></td>
+<td><p>The names of the traits</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">trait_axis</span></code></p></td>
+<td><p>The matrix axis along which traits are stored</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="square-matrix-properties">
+<h3>Square matrix properties<a class="headerlink" href="#square-matrix-properties" title="Permalink to this heading">#</a></h3>
+<p>Since genetic and genic matrices are square by nature, they also have several properties which extract data regarding their squareness. These properties are summarized below.</p>
+<table class="colwidths-given table" id="id6">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> square matrix properties</span><a class="headerlink" href="#id6" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 67%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Property</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nsquare</span></code></p></td>
+<td><p>The number of square axes for the genetic or genic variance matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">square_axes</span></code></p></td>
+<td><p>The axes indices for the square axes for the genetic or genic variance matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">square_axes_len</span></code></p></td>
+<td><p>The lengths of the square axes for the genetic or genic variance matrix</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
 <section id="loading-variance-matrix-modules">
 <h2>Loading Variance Matrix Modules<a class="headerlink" href="#loading-variance-matrix-modules" title="Permalink to this heading">#</a></h2>
 <section id="loading-genetic-variance-matrix-modules">
 <h3>Loading genetic variance matrix modules<a class="headerlink" href="#loading-genetic-variance-matrix-modules" title="Permalink to this heading">#</a></h3>
+<p>Importing genetic variance matrix classes can be accomplished using the following import statements:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import abstract interface classes</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.vmat.GeneticVarianceMatrix</span> <span class="kn">import</span> <span class="n">GeneticVarianceMatrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.vmat.AdditiveGeneticVarianceMatrix</span> <span class="kn">import</span> <span class="n">AdditiveGeneticVarianceMatrix</span>
@@ -528,6 +662,7 @@
 </section>
 <section id="loading-genic-variance-matrix-modules">
 <h3>Loading genic variance matrix modules<a class="headerlink" href="#loading-genic-variance-matrix-modules" title="Permalink to this heading">#</a></h3>
+<p>Importing genic variance matrix classes can be accomplished using the following import statements:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import abstract interface classes</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.vmat.GenicVarianceMatrix</span> <span class="kn">import</span> <span class="n">GenicVarianceMatrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.vmat.AdditiveGenicVarianceMatrix</span> <span class="kn">import</span> <span class="n">AdditiveGenicVarianceMatrix</span>
@@ -547,8 +682,10 @@
 </section>
 <section id="creating-variance-matrices">
 <h2>Creating Variance Matrices<a class="headerlink" href="#creating-variance-matrices" title="Permalink to this heading">#</a></h2>
+<p>Genetic and genic variance matrices can be created using several method including from raw NumPy arrays, from genotype matrices and genomic models, from Pandas DataFrames, from CSV files, and from HDF5 files. The following subsections detail the creation or loading of genetic or genic variance matrices from their corresponding sources.</p>
 <section id="creating-variance-matrices-from-numpy-arrays">
 <h3>Creating variance matrices from NumPy arrays<a class="headerlink" href="#creating-variance-matrices-from-numpy-arrays" title="Permalink to this heading">#</a></h3>
+<p>Using the constructor of a <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> or <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> class, one can create genetic and genic variance matrices, respectively, from NumPy arrays. The example below demonstrates the creation of a <code class="docutils literal notranslate"><span class="pre">DenseTwoWayDHAdditiveGeneticVarianceMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">DenseTwoWayDHAdditiveGenicVarianceMatrix`</span></code> objects from raw NumPy arrays.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># shape parameters for random genotypes</span>
 <span class="n">ntaxa</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">ntrait</span> <span class="o">=</span> <span class="mi">2</span>
@@ -585,8 +722,9 @@
 </pre></div>
 </div>
 </section>
-<section id="creating-variance-matrices-from-genomic-models">
-<h3>Creating variance matrices from genomic models<a class="headerlink" href="#creating-variance-matrices-from-genomic-models" title="Permalink to this heading">#</a></h3>
+<section id="calculating-variance-matrices-from-genomic-models">
+<h3>Calculating variance matrices from genomic models<a class="headerlink" href="#calculating-variance-matrices-from-genomic-models" title="Permalink to this heading">#</a></h3>
+<p>Genetic and genic variance matrices may also be calculated from a combination of <code class="docutils literal notranslate"><span class="pre">PhasedGenotypeMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">GenomicModel</span></code> objects. This can be accomplished using the <code class="docutils literal notranslate"><span class="pre">from_gmod</span></code> or <code class="docutils literal notranslate"><span class="pre">from_algmod</span></code> class methods. The code below demonstrates how to use this method to accomplish this task.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a dummy genomic model</span>
 <span class="c1"># model parameters</span>
 <span class="n">nfixed</span> <span class="o">=</span> <span class="mi">1</span>      <span class="c1"># number of fixed effects</span>
@@ -691,8 +829,84 @@
 </pre></div>
 </div>
 </section>
+<section id="creating-variance-matrices-from-pandas-dataframes">
+<h3>Creating variance matrices from Pandas DataFrames<a class="headerlink" href="#creating-variance-matrices-from-pandas-dataframes" title="Permalink to this heading">#</a></h3>
+<p>Genetic and genic variance matrices may be read from Pandas DataFrames. The <code class="docutils literal notranslate"><span class="pre">from_pandas</span></code> class method may be used to read a <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> or <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> from a Pandas DataFrame. The code example below demonstrates this method’s usage.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create dummy pandas dataframe</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;Female&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,],</span>
+    <span class="s2">&quot;Female Group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,],</span>
+    <span class="s2">&quot;Male&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,],</span>
+    <span class="s2">&quot;Male Group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,],</span>
+    <span class="s2">&quot;Trait&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Yield&quot;</span><span class="p">,</span><span class="s2">&quot;Yield&quot;</span><span class="p">,</span><span class="s2">&quot;Yield&quot;</span><span class="p">,</span><span class="s2">&quot;Yield&quot;</span><span class="p">,],</span>
+    <span class="s2">&quot;Variance&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.7</span><span class="p">],</span>
+<span class="p">})</span>
+
+<span class="c1"># construct genetic variance matrix from pandas dataframe</span>
+<span class="n">tmp_vmat</span> <span class="o">=</span> <span class="n">DenseTwoWayDHAdditiveGeneticVarianceMatrix</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">,</span>
+    <span class="n">female_col</span> <span class="o">=</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span>
+    <span class="n">female_grp_col</span> <span class="o">=</span> <span class="s2">&quot;Female Group&quot;</span><span class="p">,</span>
+    <span class="n">male_col</span> <span class="o">=</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span>
+    <span class="n">male_grp_col</span> <span class="o">=</span> <span class="s2">&quot;Male Group&quot;</span><span class="p">,</span>
+    <span class="n">trait_col</span> <span class="o">=</span> <span class="s2">&quot;Trait&quot;</span><span class="p">,</span>
+    <span class="n">variance_col</span> <span class="o">=</span> <span class="s2">&quot;Variance&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># construct genic variance matrix from pandas dataframe</span>
+<span class="n">tmp_gvmat</span> <span class="o">=</span> <span class="n">DenseTwoWayDHAdditiveGenicVarianceMatrix</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">,</span>
+    <span class="n">female_col</span> <span class="o">=</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span>
+    <span class="n">female_grp_col</span> <span class="o">=</span> <span class="s2">&quot;Female Group&quot;</span><span class="p">,</span>
+    <span class="n">male_col</span> <span class="o">=</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span>
+    <span class="n">male_grp_col</span> <span class="o">=</span> <span class="s2">&quot;Male Group&quot;</span><span class="p">,</span>
+    <span class="n">trait_col</span> <span class="o">=</span> <span class="s2">&quot;Trait&quot;</span><span class="p">,</span>
+    <span class="n">variance_col</span> <span class="o">=</span> <span class="s2">&quot;Variance&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="loading-variance-matrices-from-csv-files">
+<h3>Loading variance matrices from CSV files<a class="headerlink" href="#loading-variance-matrices-from-csv-files" title="Permalink to this heading">#</a></h3>
+<p>Genetic and genic variance matrices may also be read from CSV files in a manner similar to Pandas DataFrames. The <code class="docutils literal notranslate"><span class="pre">from_csv</span></code> class method may be used to load genetic or genic variance matrices from CSV files. The following code block demonstrates the usage of this method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create dummy pandas dataframe and export as CSV</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s2">&quot;Female&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,],</span>
+    <span class="s2">&quot;Female Group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,],</span>
+    <span class="s2">&quot;Male&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="s2">&quot;B&quot;</span><span class="p">,],</span>
+    <span class="s2">&quot;Male Group&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,],</span>
+    <span class="s2">&quot;Trait&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Yield&quot;</span><span class="p">,</span><span class="s2">&quot;Yield&quot;</span><span class="p">,</span><span class="s2">&quot;Yield&quot;</span><span class="p">,</span><span class="s2">&quot;Yield&quot;</span><span class="p">,],</span>
+    <span class="s2">&quot;Variance&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.7</span><span class="p">],</span>
+<span class="p">})</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;saved_df.csv&quot;</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># construct genetic variance matrix from csv</span>
+<span class="n">tmp_vmat</span> <span class="o">=</span> <span class="n">DenseTwoWayDHAdditiveGeneticVarianceMatrix</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;saved_df.csv&quot;</span><span class="p">,</span>
+    <span class="n">female_col</span> <span class="o">=</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span>
+    <span class="n">female_grp_col</span> <span class="o">=</span> <span class="s2">&quot;Female Group&quot;</span><span class="p">,</span>
+    <span class="n">male_col</span> <span class="o">=</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span>
+    <span class="n">male_grp_col</span> <span class="o">=</span> <span class="s2">&quot;Male Group&quot;</span><span class="p">,</span>
+    <span class="n">trait_col</span> <span class="o">=</span> <span class="s2">&quot;Trait&quot;</span><span class="p">,</span>
+    <span class="n">variance_col</span> <span class="o">=</span> <span class="s2">&quot;Variance&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># construct genic variance matrix from csv</span>
+<span class="n">tmp_gvmat</span> <span class="o">=</span> <span class="n">DenseTwoWayDHAdditiveGenicVarianceMatrix</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;saved_df.csv&quot;</span><span class="p">,</span>
+    <span class="n">female_col</span> <span class="o">=</span> <span class="s2">&quot;Female&quot;</span><span class="p">,</span>
+    <span class="n">female_grp_col</span> <span class="o">=</span> <span class="s2">&quot;Female Group&quot;</span><span class="p">,</span>
+    <span class="n">male_col</span> <span class="o">=</span> <span class="s2">&quot;Male&quot;</span><span class="p">,</span>
+    <span class="n">male_grp_col</span> <span class="o">=</span> <span class="s2">&quot;Male Group&quot;</span><span class="p">,</span>
+    <span class="n">trait_col</span> <span class="o">=</span> <span class="s2">&quot;Trait&quot;</span><span class="p">,</span>
+    <span class="n">variance_col</span> <span class="o">=</span> <span class="s2">&quot;Variance&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="loading-variance-matrices-from-hdf5-files">
 <h3>Loading variance matrices from HDF5 files<a class="headerlink" href="#loading-variance-matrices-from-hdf5-files" title="Permalink to this heading">#</a></h3>
+<p>As with all classes in the <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> family, <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> or <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> objects may be imported and exported to an HDF5 format. To read saved genetic or genic variance matrices from an HDF5 file, use the <code class="docutils literal notranslate"><span class="pre">from_hdf5</span></code> class method. The code below demonstrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read genetic variance matrix from HDF5 file</span>
 <span class="n">vmat</span> <span class="o">=</span> <span class="n">DenseTwoWayDHAdditiveGeneticVarianceMatrix</span><span class="o">.</span><span class="n">from_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_vmat.h5&quot;</span><span class="p">)</span>
 <span class="n">gvmat</span> <span class="o">=</span> <span class="n">DenseTwoWayDHAdditiveGenicVarianceMatrix</span><span class="o">.</span><span class="n">from_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_gvmat.h5&quot;</span><span class="p">)</span>
@@ -700,133 +914,12 @@
 </div>
 </section>
 </section>
-<section id="variance-matrix-properties">
-<h2>Variance matrix properties<a class="headerlink" href="#variance-matrix-properties" title="Permalink to this heading">#</a></h2>
-<section id="general-properties">
-<h3>General properties<a class="headerlink" href="#general-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id3">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> general properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mat</span></code></p></td>
-<td><p>The raw variance matrix pointer</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mat_ndim</span></code></p></td>
-<td><p>The number of dimensions for the variance matrix</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mat_shape</span></code></p></td>
-<td><p>The variance matrix shape</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">epgc</span></code></p></td>
-<td><p>The expected parental genomic contribution for each parental axis</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="square-properties">
-<h3>Square properties<a class="headerlink" href="#square-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id4">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> square matrix properties</span><a class="headerlink" href="#id4" title="Permalink to this table">#</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nsquare</span></code></p></td>
-<td><p>The number of square axes for the variance matrix</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">square_axes</span></code></p></td>
-<td><p>The axes indices for the square axes for the variance matrix</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">square_axes_len</span></code></p></td>
-<td><p>The lengths of the square axes for the variance matrix</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="taxa-properties">
-<h3>Taxa properties<a class="headerlink" href="#taxa-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id5">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> taxa properties</span><a class="headerlink" href="#id5" title="Permalink to this table">#</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ntaxa</span></code></p></td>
-<td><p>The number of taxa represented by the variance matrix</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa</span></code></p></td>
-<td><p>The names of the taxa</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_axis</span></code></p></td>
-<td><p>The matrix axis along which taxa are stored</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp</span></code></p></td>
-<td><p>An optional taxa group label</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_name</span></code></p></td>
-<td><p>If taxa are sorted by group: get the names of the groups</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_stix</span></code></p></td>
-<td><p>If taxa are sorted by group: get the start indices (inclusive) for each group</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_spix</span></code></p></td>
-<td><p>If taxa are sorted by group: get the stop indices (exclusive) for each group</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">taxa_grp_len</span></code></p></td>
-<td><p>If taxa are sorted by group: get the length of each group</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="trait-properties">
-<h3>Trait properties<a class="headerlink" href="#trait-properties" title="Permalink to this heading">#</a></h3>
-<table class="colwidths-given table" id="id6">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> and <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> square matrix properties</span><a class="headerlink" href="#id6" title="Permalink to this table">#</a></caption>
-<colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Property</p></th>
-<th class="head"><p>Description</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ntrait</span></code></p></td>
-<td><p>The number of square axes for the variance matrix</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">trait</span></code></p></td>
-<td><p>The names of the traits represented by the variance matrix</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">trait_axis</span></code></p></td>
-<td><p>The trait axis for the variance matrix</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="copying">
-<h2>Copying<a class="headerlink" href="#copying" title="Permalink to this heading">#</a></h2>
+<section id="copying-variance-matrices">
+<h2>Copying Variance Matrices<a class="headerlink" href="#copying-variance-matrices" title="Permalink to this heading">#</a></h2>
+<p>Genetic and genic variance matrices may be copied using two methods: shallow copying and deep copying.</p>
+<section id="shallow-copying">
+<h3>Shallow copying<a class="headerlink" href="#shallow-copying" title="Permalink to this heading">#</a></h3>
+<p>In shallow copying, references to a <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> or <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code>’s data are copied to a new genetic or genic variance matrix object. Copying is only one level deep which means that changes to the original object may affect data values in the copied object. The code below illustrates the use of the <code class="docutils literal notranslate"><span class="pre">copy</span></code> method bound to <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> or <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> objects and the base Python function <a class="reference external" href="https://docs.python.org/3/library/copy.html#copy.copy"><code class="docutils literal notranslate"><span class="pre">copy.copy</span></code></a> which can both be used to shallow copy a genetic or genic variance matrix object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># copy a genetic variance matrix</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">vmat</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -834,8 +927,13 @@
 <span class="c1"># copy a genic variance matrix</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">gvmat</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gvmat</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="c1"># deep copy a genetic variance matrix</span>
+</pre></div>
+</div>
+</section>
+<section id="deep-copying">
+<h3>Deep copying<a class="headerlink" href="#deep-copying" title="Permalink to this heading">#</a></h3>
+<p>In deep copying, data in a <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> or <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> is recursively copied to a new genetic or genic variance matrix object. Copying occurs down to the deepest levels so that changes to the original object will not affect data values in the copied object. The code below illustrates the use of the <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code> method bound to <code class="docutils literal notranslate"><span class="pre">GeneticVarianceMatrix</span></code> or <code class="docutils literal notranslate"><span class="pre">GenicVarianceMatrix</span></code> objects and the base Python function <a class="reference external" href="https://docs.python.org/3/library/copy.html#copy.deepcopy"><code class="docutils literal notranslate"><span class="pre">copy.deepcopy</span></code></a> which can both be used to deep copy a genetic or genic variance matrix object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># deep copy a genetic variance matrix</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">vmat</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
 
@@ -845,10 +943,13 @@
 </pre></div>
 </div>
 </section>
-<section id="variance-matrix-element-copy-on-manipulation">
-<h2>Variance Matrix Element Copy-On-Manipulation<a class="headerlink" href="#variance-matrix-element-copy-on-manipulation" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="copy-on-element-manipulation">
+<h2>Copy-On Element Manipulation<a class="headerlink" href="#copy-on-element-manipulation" title="Permalink to this heading">#</a></h2>
+<p>Genetic or genic variance matrices have several methods by which modifed copies of the original matrix can be made. These are called copy-on element manipulation methods. Matrices may have taxa and trait axes adjoined, deleted, inserted, or selected. The following sections demonstrate the use of these method families.</p>
 <section id="adjoining-elements">
 <h3>Adjoining elements<a class="headerlink" href="#adjoining-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">adjoin</span></code> family of methods allows for taxa and trait axes of a genetic or genic variance matrix to be adjoined together, creating a new matrix in the process. Use of the <code class="docutils literal notranslate"><span class="pre">adjoin</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new variance matrices to demonstrate</span>
 <span class="n">newvmat</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
 <span class="n">newgvmat</span> <span class="o">=</span> <span class="n">gvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
@@ -869,11 +970,10 @@
 </section>
 <section id="deleting-elements">
 <h3>Deleting elements<a class="headerlink" href="#deleting-elements" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
-<span class="c1"># ``delete`` taxa examples</span>
-<span class="c1"># ++++++++++++++++++++++++</span>
-
-<span class="c1"># delete first taxon using an integer</span>
+<p>The <code class="docutils literal notranslate"><span class="pre">delete</span></code> family of methods allows for taxa and trait axes of a genetic or genic variance matrix to be removed in a copy of the original. Use of the <code class="docutils literal notranslate"><span class="pre">delete</span></code> method family is demonstrated in the code below.</p>
+<section id="delete-taxa">
+<h4><code class="docutils literal notranslate"><span class="pre">delete</span></code> taxa<a class="headerlink" href="#delete-taxa" title="Permalink to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># delete first taxon using an integer</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">delete_taxa</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gvmat</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">gvmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
@@ -890,12 +990,12 @@
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">delete_taxa</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gvmat</span><span class="o">.</span><span class="n">delete</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">gvmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gvmat</span><span class="o">.</span><span class="n">delete_taxa</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
-
-<span class="c1">#</span>
-<span class="c1"># ``delete`` traits examples</span>
-<span class="c1"># ++++++++++++++++++++++++++</span>
-
-<span class="c1"># delete first trait using an integer</span>
+</pre></div>
+</div>
+</section>
+<section id="delete-traits">
+<h4><code class="docutils literal notranslate"><span class="pre">delete</span></code> traits<a class="headerlink" href="#delete-traits" title="Permalink to this heading">#</a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># delete first trait using an integer</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">delete_trait</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">gvmat</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">gvmat</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">)</span>
@@ -915,8 +1015,10 @@
 </pre></div>
 </div>
 </section>
+</section>
 <section id="inserting-elements">
 <h3>Inserting elements<a class="headerlink" href="#inserting-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">insert</span></code> family of methods allows for taxa and trait axes of a genetic or genic variance matrix to be inserted into a copy of the original matrix. Use of the <code class="docutils literal notranslate"><span class="pre">insert</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new variance matrix to demonstrate</span>
 <span class="n">newvmat</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
 <span class="n">newgvmat</span> <span class="o">=</span> <span class="n">gvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
@@ -937,6 +1039,7 @@
 </section>
 <section id="selecting-elements">
 <h3>Selecting elements<a class="headerlink" href="#selecting-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">select</span></code> family of methods allows for taxa and trait axes of the genetic or genic variance matrix to be selected and extracted to a copy of the original matrix. Use of the <code class="docutils literal notranslate"><span class="pre">select</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># select first five taxa using a Sequence</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">])</span>
@@ -952,10 +1055,12 @@
 </div>
 </section>
 </section>
-<section id="variance-matrix-element-in-place-manipulation">
-<h2>Variance Matrix Element In-Place-Manipulation<a class="headerlink" href="#variance-matrix-element-in-place-manipulation" title="Permalink to this heading">#</a></h2>
+<section id="in-place-element-manipulation">
+<h2>In-Place Element Manipulation<a class="headerlink" href="#in-place-element-manipulation" title="Permalink to this heading">#</a></h2>
+<p>Genetic or genic variance matrices have several methods which execute in-place element manipulations. These are called in-place element manipulation methods. Genetic or genic variance matrices may have taxa and trait axes appended, removed, incorporated, or concatenated. The following sections demonstrate the use of these method families.</p>
 <section id="appending-elements">
 <h3>Appending elements<a class="headerlink" href="#appending-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">append</span></code> family of methods allows for new taxa and trait axes to be appended to the genetic or genic variance matrix. The code segment below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># append variance matrices along the taxa axis</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>                   <span class="c1"># copy original</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vmat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>  <span class="c1"># append original to copy</span>
@@ -982,6 +1087,7 @@
 </section>
 <section id="removing-elements">
 <h3>Removing elements<a class="headerlink" href="#removing-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">remove</span></code> family of methods allows for taxa and trait axes to be removed from a genetic or genic variance matrix. A demonstration of their use can be seen below.</p>
 <section id="remove-taxa">
 <h4><code class="docutils literal notranslate"><span class="pre">remove</span></code> taxa<a class="headerlink" href="#remove-taxa" title="Permalink to this heading">#</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># remove first taxon using an integer</span>
@@ -1059,6 +1165,7 @@
 </section>
 <section id="incorporating-elements">
 <h3>Incorporating elements<a class="headerlink" href="#incorporating-elements" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">incorp</span></code> family of methods allows for new taxa and trait axes to be inserted at specific locations in a genetic or genic variance matrix. Use of the <code class="docutils literal notranslate"><span class="pre">incorp</span></code> family is demonstrated in the code segment below below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># incorp variance matrix along the taxa axis before index 0</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>                           <span class="c1"># copy original</span>
 <span class="n">tmp</span><span class="o">.</span><span class="n">incorp</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>      <span class="c1"># incorporate into copy</span>
@@ -1085,6 +1192,7 @@
 </section>
 <section id="concatenating-matrices">
 <h3>Concatenating matrices<a class="headerlink" href="#concatenating-matrices" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">concat</span></code> family of methods allows for multiple genetic or genic variance matrices to be concatenated to each other along taxa or trait axes. The code segment below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># concatenate along the taxa axis</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">vmat</span><span class="p">,</span> <span class="n">vmat</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">concat_taxa</span><span class="p">([</span><span class="n">vmat</span><span class="p">,</span> <span class="n">vmat</span><span class="p">])</span>
@@ -1101,9 +1209,11 @@
 </section>
 </section>
 <section id="grouping-and-sorting">
-<h2>Grouping and sorting<a class="headerlink" href="#grouping-and-sorting" title="Permalink to this heading">#</a></h2>
-<section id="reordering">
-<h3>Reordering<a class="headerlink" href="#reordering" title="Permalink to this heading">#</a></h3>
+<h2>Grouping and Sorting<a class="headerlink" href="#grouping-and-sorting" title="Permalink to this heading">#</a></h2>
+<p>Genetic or genic variance matrices in PyBrOpS have several sorting and grouping focused methods. Sorting methods can be used to reorder, sort, and group taxa axes alphanumerically and reorder and sort trait axes.. The following sections demonstrate the use of the <code class="docutils literal notranslate"><span class="pre">reorder</span></code>, <code class="docutils literal notranslate"><span class="pre">lexsort</span></code>, <code class="docutils literal notranslate"><span class="pre">sort</span></code>, and <code class="docutils literal notranslate"><span class="pre">group</span></code> method families.</p>
+<section id="reordering-elements">
+<h3>Reordering elements<a class="headerlink" href="#reordering-elements" title="Permalink to this heading">#</a></h3>
+<p>Taxa and trait axes in a genetic or genic variance matrix can be reordered using the <code class="docutils literal notranslate"><span class="pre">reorder</span></code> family of methods. Demonstrations of this method family are below.</p>
 <section id="reorder-taxa">
 <h4><code class="docutils literal notranslate"><span class="pre">reorder</span></code> taxa<a class="headerlink" href="#reorder-taxa" title="Permalink to this heading">#</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create reordering indices</span>
@@ -1137,8 +1247,9 @@
 </div>
 </section>
 </section>
-<section id="lexsorting">
-<h3>Lexsorting<a class="headerlink" href="#lexsorting" title="Permalink to this heading">#</a></h3>
+<section id="lexsorting-elements">
+<h3>Lexsorting elements<a class="headerlink" href="#lexsorting-elements" title="Permalink to this heading">#</a></h3>
+<p>An indirect stable sort - or lexsort - for taxa or trait axes can be performed using the <code class="docutils literal notranslate"><span class="pre">lexsort</span></code> family of methods. The code segment below illustrates the use of this family of methods.</p>
 <section id="lexsort-taxa">
 <h4><code class="docutils literal notranslate"><span class="pre">lexsort</span></code> taxa<a class="headerlink" href="#lexsort-taxa" title="Permalink to this heading">#</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create lexsort keys for taxa</span>
@@ -1170,8 +1281,9 @@
 </div>
 </section>
 </section>
-<section id="sorting">
-<h3>Sorting<a class="headerlink" href="#sorting" title="Permalink to this heading">#</a></h3>
+<section id="sorting-elements">
+<h3>Sorting elements<a class="headerlink" href="#sorting-elements" title="Permalink to this heading">#</a></h3>
+<p>Alphanumeric sorting along taxa and trait axes can be done using the <code class="docutils literal notranslate"><span class="pre">sort</span></code> family of methods. Sorting examples are illustrated below.</p>
 <section id="sort-taxa">
 <h4><code class="docutils literal notranslate"><span class="pre">sort</span></code> taxa<a class="headerlink" href="#sort-taxa" title="Permalink to this heading">#</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># sort along taxa axis</span>
@@ -1197,8 +1309,9 @@
 </div>
 </section>
 </section>
-<section id="grouping">
-<h3>Grouping<a class="headerlink" href="#grouping" title="Permalink to this heading">#</a></h3>
+<section id="grouping-elements">
+<h3>Grouping elements<a class="headerlink" href="#grouping-elements" title="Permalink to this heading">#</a></h3>
+<p>Grouping along taxa axes can be done using the <code class="docutils literal notranslate"><span class="pre">group</span></code> family of methods. The following code illustrates the use of the <code class="docutils literal notranslate"><span class="pre">group</span></code> method family along the taxa axes of a genetic or genic variance matrix.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># group taxa</span>
 <span class="c1"># ++++++++++</span>
@@ -1224,8 +1337,10 @@
 </section>
 <section id="square-matrix-functions">
 <h2>Square matrix functions<a class="headerlink" href="#square-matrix-functions" title="Permalink to this heading">#</a></h2>
+<p>Since variance matrices are also inherently square, there are a methods dealing with the squareness of a variance matrix.</p>
 <section id="determine-whether-all-square-axes-are-of-equal-length">
 <h3>Determine whether all square axes are of equal length<a class="headerlink" href="#determine-whether-all-square-axes-are-of-equal-length" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">is_square</span></code> method for genetic and genic variance matrices can be used to determine if a variance matrix is square.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># boolean value</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">gvmat</span><span class="o">.</span><span class="n">is_square</span><span class="p">()</span>
@@ -1233,21 +1348,33 @@
 </div>
 </section>
 </section>
-<section id="saving-breeding-value-matrices">
-<h2>Saving Breeding Value Matrices<a class="headerlink" href="#saving-breeding-value-matrices" title="Permalink to this heading">#</a></h2>
-<section id="write-to-hdf5-file">
-<h3>Write to HDF5 file<a class="headerlink" href="#write-to-hdf5-file" title="Permalink to this heading">#</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># write variance matrices to an HDF5 file</span>
-<span class="n">vmat</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_vmat.h5&quot;</span><span class="p">)</span>
-<span class="n">gvmat</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_gvmat.h5&quot;</span><span class="p">)</span>
+<section id="exporting-variance-matrices">
+<h2>Exporting Variance Matrices<a class="headerlink" href="#exporting-variance-matrices" title="Permalink to this heading">#</a></h2>
+<p>Genetic and genic variance matrices may be exported to multiple formats including Pandas DataFrames, CSV files, and HDF5 files. The following subsections provide export examples.</p>
+<section id="exporting-to-pandas-dataframe">
+<h3>Exporting to Pandas DataFrame<a class="headerlink" href="#exporting-to-pandas-dataframe" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">to_pandas</span></code> method can be used to export a genetic or genic variance matrix to a Pandas DataFrame. Column names may be optionally provided to override default column names.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># write variance matrices to a pandas dataframe</span>
+<span class="n">out_df</span> <span class="o">=</span> <span class="n">vmat</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
+<span class="n">out_df</span> <span class="o">=</span> <span class="n">gvmat</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>
 </pre></div>
 </div>
 </section>
-<section id="write-to-csv-file">
-<h3>Write to CSV file<a class="headerlink" href="#write-to-csv-file" title="Permalink to this heading">#</a></h3>
+<section id="exporting-to-csv">
+<h3>Exporting to CSV<a class="headerlink" href="#exporting-to-csv" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">to_csv</span></code> method can be used to export a genetic or genic variance matrix to a CSV file. Like the <code class="docutils literal notranslate"><span class="pre">to_pandas</span></code> method, column names may be optionally provided to override default column names.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># write variance matrices to a CSV file</span>
 <span class="n">vmat</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;saved_vmat.csv&quot;</span><span class="p">)</span>
 <span class="n">gvmat</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;saved_gvmat.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="exporting-to-hdf5">
+<h3>Exporting to HDF5<a class="headerlink" href="#exporting-to-hdf5" title="Permalink to this heading">#</a></h3>
+<p>Genetic and genic variance matrices can be written to an HDF5 file using the <code class="docutils literal notranslate"><span class="pre">to_hdf5</span></code> method. The code below demonstrates the use of this method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># write variance matrices to an HDF5 file</span>
+<span class="n">vmat</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_vmat.h5&quot;</span><span class="p">)</span>
+<span class="n">gvmat</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_gvmat.h5&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -1315,6 +1442,33 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#variance-matrix-properties">
+   Variance Matrix Properties
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#general-properties">
+     General properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#taxa-properties">
+     Taxa properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#trait-properties">
+     Trait properties
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#square-matrix-properties">
+     Square matrix properties
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#loading-variance-matrix-modules">
    Loading Variance Matrix Modules
   </a>
@@ -1342,8 +1496,18 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#creating-variance-matrices-from-genomic-models">
-     Creating variance matrices from genomic models
+    <a class="reference internal nav-link" href="#calculating-variance-matrices-from-genomic-models">
+     Calculating variance matrices from genomic models
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#creating-variance-matrices-from-pandas-dataframes">
+     Creating variance matrices from Pandas DataFrames
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#loading-variance-matrices-from-csv-files">
+     Loading variance matrices from CSV files
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -1354,40 +1518,25 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#variance-matrix-properties">
-   Variance matrix properties
+  <a class="reference internal nav-link" href="#copying-variance-matrices">
+   Copying Variance Matrices
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#general-properties">
-     General properties
+    <a class="reference internal nav-link" href="#shallow-copying">
+     Shallow copying
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#square-properties">
-     Square properties
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#taxa-properties">
-     Taxa properties
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#trait-properties">
-     Trait properties
+    <a class="reference internal nav-link" href="#deep-copying">
+     Deep copying
     </a>
    </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#copying">
-   Copying
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#variance-matrix-element-copy-on-manipulation">
-   Variance Matrix Element Copy-On-Manipulation
+  <a class="reference internal nav-link" href="#copy-on-element-manipulation">
+   Copy-On Element Manipulation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -1399,6 +1548,28 @@
     <a class="reference internal nav-link" href="#deleting-elements">
      Deleting elements
     </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#delete-taxa">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         delete
+        </span>
+       </code>
+       taxa
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#delete-traits">
+       <code class="docutils literal notranslate">
+        <span class="pre">
+         delete
+        </span>
+       </code>
+       traits
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#inserting-elements">
@@ -1413,8 +1584,8 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#variance-matrix-element-in-place-manipulation">
-   Variance Matrix Element In-Place-Manipulation
+  <a class="reference internal nav-link" href="#in-place-element-manipulation">
+   In-Place Element Manipulation
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
@@ -1463,12 +1634,12 @@
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#grouping-and-sorting">
-   Grouping and sorting
+   Grouping and Sorting
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#reordering">
-     Reordering
+    <a class="reference internal nav-link" href="#reordering-elements">
+     Reordering elements
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
@@ -1494,8 +1665,8 @@
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#lexsorting">
-     Lexsorting
+    <a class="reference internal nav-link" href="#lexsorting-elements">
+     Lexsorting elements
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
@@ -1521,8 +1692,8 @@
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#sorting">
-     Sorting
+    <a class="reference internal nav-link" href="#sorting-elements">
+     Sorting elements
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
@@ -1548,8 +1719,8 @@
     </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#grouping">
-     Grouping
+    <a class="reference internal nav-link" href="#grouping-elements">
+     Grouping elements
     </a>
    </li>
   </ul>
@@ -1567,18 +1738,23 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#saving-breeding-value-matrices">
-   Saving Breeding Value Matrices
+  <a class="reference internal nav-link" href="#exporting-variance-matrices">
+   Exporting Variance Matrices
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#write-to-hdf5-file">
-     Write to HDF5 file
+    <a class="reference internal nav-link" href="#exporting-to-pandas-dataframe">
+     Exporting to Pandas DataFrame
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#write-to-csv-file">
-     Write to CSV file
+    <a class="reference internal nav-link" href="#exporting-to-csv">
+     Exporting to CSV
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#exporting-to-hdf5">
+     Exporting to HDF5
     </a>
    </li>
   </ul>

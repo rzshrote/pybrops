@@ -253,7 +253,7 @@ algmod = DenseAdditiveLinearGenomicModel(
     u_a = u_a,
     trait = trait,
     model_name = "example",
-    params = None
+    hyperparams = None
 )
 
 #
