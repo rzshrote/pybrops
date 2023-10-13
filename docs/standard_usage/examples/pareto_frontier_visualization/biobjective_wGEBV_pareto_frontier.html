@@ -1,0 +1,676 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Bi-Objective Weighted Genomic Selection Pareto Frontier Visualization &#8212; pybrops 0.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/wider_borders.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'standard_usage/examples/pareto_frontier_visualization/biobjective_wGEBV_pareto_frontier';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Tri-Objective Optimal Contribution Selection Pareto Frontier Visualization" href="triobjective_OCS_pareto_frontier.html" />
+    <link rel="prev" title="Bi-Objective GEBV Selection Pareto Frontier Visualization" href="biobjective_GEBV_pareto_frontier.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="docsearch:language" content="en">
+  </head>
+  
+  
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <label class="overlay overlay-primary" for="__primary"></label>
+
+  
+  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+      
+<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+    </div>
+  </div>
+
+  
+  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+      <span class="fa-solid fa-bars"></span>
+  </label>
+  <div id="navbar-start">
+    
+    
+  
+
+
+<a class="navbar-brand logo" href="../../../index.html">
+
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
+  
+</a>
+    
+  </div>
+
+  
+  <div class="col-lg-9 navbar-header-items">
+    <div id="navbar-center" class="mr-auto">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+    </div>
+
+    <div id="navbar-end">
+      
+        <div class="navbar-end-item navbar-persistent--container">
+          
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+        </div>
+      
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+  </div>
+
+
+  
+  
+    <div class="navbar-persistent--mobile">
+<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
+  <i class="fa-solid fa-magnifying-glass"></i>
+</button>
+    </div>
+  
+
+  
+  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+      <span class="fa-solid fa-outdent"></span>
+  </label>
+  
+
+</div>
+  </nav>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+      
+      <div class="navbar-center-item">
+        <nav class="navbar-nav">
+    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
+        Site Navigation
+    </p>
+    <ul id="navbar-main-elements" class="navbar-nav">
+        
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+            <div class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </button>
+                <div class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+                </div>
+            </div>
+            
+    </ul>
+</nav>
+      </div>
+      
+      </div>
+    
+
+    
+    
+    <div class="sidebar-header-items__end">
+      
+      <div class="navbar-end-item">
+        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+</button>
+      </div>
+      
+      <div class="navbar-end-item">
+        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
+      </ul>
+      </div>
+      
+    </div>
+    
+  </div>
+
+  
+  <div class="sidebar-start-items sidebar-primary__section">
+    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">
+    Section Navigation
+  </p>
+  <div class="bd-toc-item navbar-nav">
+    <p aria-level="2" class="caption" role="heading"><span class="caption-text">Core Infrastructure Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../core_infrastructure/random_number_generation.html">Random Number Generation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Population Genetics Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../population_genetics/genetic_maps.html">Genetic Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../population_genetics/genetic_map_functions.html">Genetic Map Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../population_genetics/genotype_matrices.html">Genotype Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../population_genetics/phased_genotype_matrices.html">Phased Genotype Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../population_genetics/breeding_value_matrices.html">Breeding Value Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../population_genetics/coancestry_matrices.html">Coancestry Matrices</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../optimization/optimization_problems.html">Optimization Problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimization/optimization_solutions.html">Optimization Solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimization/optimization_algorithms.html">Optimization Algorithms</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Genomic Modeling Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../genomic_modeling/genomic_models.html">Genomic Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genomic_modeling/variance_matrices.html">Variance Matrices</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Breeding Protocol Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_protocols/genotyping_protocols.html">Genotyping Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_protocols/phenotyping_protocols.html">Phenotyping Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_protocols/breeding_value_protocols.html">Breeding Value Estimation Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_protocols/mating_protocols.html">Mating Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_protocols/selection_protocols.html">Selection Protocols</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Breeding Operator Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_operators/initialization_operators.html">Initialization Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_operators/parental_selection_operators.html">Parental Selection Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_operators/mating_operators.html">Mating Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_operators/evaluation_operators.html">Evaluation Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_operators/survivor_selection_operators.html">Survivor Selection Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_operators/logbooks.html">Logbooks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Breeding Program Simulation Examples:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="biobjective_GEBV_pareto_frontier.html">Bi-Objective GEBV selection</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Bi-Objective wGEBV selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triobjective_OCS_pareto_frontier.html">Tri-Objective Optimal Contribution selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="germplasm_panel_reduction.html">Germplasm panel reduction</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+</nav>
+    </div>
+  </div>
+  
+
+  
+  <div class="sidebar-end-items sidebar-primary__section">
+    <div class="sidebar-end-items__item">
+    </div>
+  </div>
+
+  
+  <div id="rtd-footer-container"></div>
+
+      </div>
+      <main id="main-content" class="bd-main">
+        
+        
+        <div class="bd-content">
+          <div class="bd-article-container">
+            
+            <div class="bd-header-article">
+                
+            </div>
+            
+            
+            <article class="bd-article" role="main">
+              
+  <section id="bi-objective-weighted-genomic-selection-pareto-frontier-visualization">
+<h1>Bi-Objective Weighted Genomic Selection Pareto Frontier Visualization<a class="headerlink" href="#bi-objective-weighted-genomic-selection-pareto-frontier-visualization" title="Permalink to this heading">#</a></h1>
+<p>Selection of individuals based on their weighted genomic estimated breeding values (wGEBVs) is a diversity preservation strategy that can be used in a breeding program implementing genomic selection. In this example, we demonstrate how to optimize and visualize an estimate of the Pareto frontier for a bi-objective weighted genomic selection problem in a subset search space. In the bi-objective weighted genomic selection problem, we seek to maximize the mean wGEBV of a selected subset of individuals from a set of candidates for two traits simultaneously.</p>
+<section id="loading-required-modules-and-seeding-the-global-random-number-generator">
+<h2>Loading Required Modules and Seeding the Global Random Number Generator<a class="headerlink" href="#loading-required-modules-and-seeding-the-global-random-number-generator" title="Permalink to this heading">#</a></h2>
+<p>To begin, we import the modules we will be using into the Python namespace. To make our simulation replicable, we set the seed for the simulation using the <code class="docutils literal notranslate"><span class="pre">seed</span></code> function in the <code class="docutils literal notranslate"><span class="pre">pybrops.core.random.prng</span></code> module. This seeds the Python <code class="docutils literal notranslate"><span class="pre">random</span></code> and NumPy <code class="docutils literal notranslate"><span class="pre">numpy.random</span></code> modules with a single seed.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import libraries</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span>
+<span class="kn">import</span> <span class="nn">pybrops</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.WeightedGenomicSelection</span> <span class="kn">import</span> <span class="n">WeightedGenomicSubsetSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm</span> <span class="kn">import</span> <span class="n">NSGA2SubsetGeneticAlgorithm</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.DenseAdditiveLinearGenomicModel</span> <span class="kn">import</span> <span class="n">DenseAdditiveLinearGenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.DenseGenotypeMatrix</span> <span class="kn">import</span> <span class="n">DenseGenotypeMatrix</span>
+
+<span class="c1"># seed python random and numpy random</span>
+<span class="n">pybrops</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">prng</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">23947952</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="loading-genotypic-data-from-a-vcf-file">
+<h2>Loading Genotypic Data from a VCF File<a class="headerlink" href="#loading-genotypic-data-from-a-vcf-file" title="Permalink to this heading">#</a></h2>
+<p>Next, we load our genotypic data from a VCF file named <code class="docutils literal notranslate"><span class="pre">&quot;widiv_2000SNPs.vcf.gz&quot;</span></code> using the <code class="docutils literal notranslate"><span class="pre">from_vcf</span></code> class method in the <code class="docutils literal notranslate"><span class="pre">DenseGenotypeMatrix</span></code> class. This creates an unphased genotype matrix with our SNPs coded as 0, 1, and 2. We automatically sort and group the genetic variants in the genotype matrix based on their chromosome assignments and physical positions using the <code class="docutils literal notranslate"><span class="pre">auto_group_vrnt</span> <span class="pre">=</span> <span class="pre">True</span></code> option.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read unphased genetic markers from a vcf file</span>
+<span class="n">gmat</span> <span class="o">=</span> <span class="n">DenseGenotypeMatrix</span><span class="o">.</span><span class="n">from_vcf</span><span class="p">(</span>
+    <span class="s2">&quot;widiv_2000SNPs.vcf.gz&quot;</span><span class="p">,</span> <span class="c1"># file name to load</span>
+    <span class="n">auto_group_vrnt</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># automatically sort and group variants</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="constructing-a-bi-trait-genomic-model">
+<h2>Constructing a Bi-Trait Genomic Model<a class="headerlink" href="#constructing-a-bi-trait-genomic-model" title="Permalink to this heading">#</a></h2>
+<p>Next, we construct a genomic model. The user may construct a genomic model by any means, including loading a model from file(s). Here, we simply construct a random bi-trait genomic model to represent two synthetic traits.</p>
+<p>Below, we draw marker effects from a bi-variate normal distribution with negative covariance. This in effect, creates two traits with pleiotrophic effects which are competing in nature.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make marker effects for two traits which are competing in nature</span>
+<span class="c1"># marker effects array is of shape (nvrnt, 2)</span>
+<span class="n">mkreffect</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span>
+    <span class="n">mean</span>    <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]),</span>
+    <span class="n">cov</span>     <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+                <span class="p">[</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.4</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">0.4</span><span class="p">,</span>  <span class="mf">1.0</span><span class="p">]</span>
+            <span class="p">]),</span>
+    <span class="n">size</span>    <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">nvrnt</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Below, we construct a genomic model from our randomly drawn marker effects to make the genomic model that we will use to calculate GEBVs.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create an additive linear genomic model to model traits</span>
+<span class="n">algmod</span> <span class="o">=</span> <span class="n">DenseAdditiveLinearGenomicModel</span><span class="p">(</span>
+    <span class="n">beta</span>    <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">([[</span><span class="mf">10.0</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">]]),</span> <span class="c1"># model intercepts</span>
+    <span class="n">u_misc</span>  <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>                          <span class="c1"># miscellaneous random effects</span>
+    <span class="n">u_a</span>     <span class="o">=</span> <span class="n">mkreffect</span><span class="p">,</span>                     <span class="c1"># random marker effects</span>
+    <span class="n">trait</span>   <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>                   <span class="c1"># trait names</span>
+                <span class="p">[</span><span class="s2">&quot;syn1&quot;</span><span class="p">,</span><span class="s2">&quot;syn2&quot;</span><span class="p">],</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span>
+            <span class="p">),</span>
+    <span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;synthetic_model&quot;</span><span class="p">,</span>          <span class="c1"># name of the model</span>
+    <span class="n">hyperparams</span> <span class="o">=</span> <span class="kc">None</span>                       <span class="c1"># model parameters</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="constructing-a-gebv-subset-selection-object">
+<h2>Constructing a GEBV Subset Selection object<a class="headerlink" href="#constructing-a-gebv-subset-selection-object" title="Permalink to this heading">#</a></h2>
+<p>After constructing a genomic model, our next step is to create a weighted genomic selection protocol that will construct selection problems and optimize them for use, given genotype matrix and genomic model inputs.</p>
+<p>Since the subset search space is large (there are 942 candidate individuals from which to choose), we’ll want to provide a multi-objective optimization algorithm different from the default that will be able to optimize our weighted genomic selection problem. We’ll make a slight variation on the default <code class="docutils literal notranslate"><span class="pre">NSGA2SubsetGeneticAlgorithm</span></code> and increase the number of algorithm generations from 250 to 1000.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create custom multi-objective algorithm for optimization</span>
+<span class="c1"># use NSGA-II and evolve for 1000 generations</span>
+<span class="n">moalgo</span> <span class="o">=</span> <span class="n">NSGA2SubsetGeneticAlgorithm</span><span class="p">(</span>
+    <span class="n">ngen</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>    <span class="c1"># number of generations to evolve</span>
+    <span class="n">pop_size</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># number of parents in population</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Next, we’ll construct a weighted genomic selection protocol object. For this example, we desire to select 10 pairs of individuals (20 individuals total) from the 942 candidates. The code below demonstrates how this object is constructed.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># construct a subset selection object for weighted genomic selection</span>
+<span class="n">selprot</span> <span class="o">=</span> <span class="n">WeightedGenomicSubsetSelection</span><span class="p">(</span>
+    <span class="n">ntrait</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>         <span class="c1"># number of traits to expect from GEBV matrix</span>
+    <span class="n">ncross</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>        <span class="c1"># number of breeding crosses to select</span>
+    <span class="n">nparent</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>        <span class="c1"># number of parents per breeding cross to select</span>
+    <span class="n">nmating</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>        <span class="c1"># number of times parents are mated per cross</span>
+    <span class="n">nprogeny</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>      <span class="c1"># number of progenies to derive from a mating event</span>
+    <span class="n">nobj</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>           <span class="c1"># number of objectives (ntrait)</span>
+    <span class="n">moalgo</span> <span class="o">=</span> <span class="n">moalgo</span><span class="p">,</span>    <span class="c1"># custom multi-objective algorithm</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="estimating-the-pareto-frontier">
+<h2>Estimating the Pareto Frontier<a class="headerlink" href="#estimating-the-pareto-frontier" title="Permalink to this heading">#</a></h2>
+<p>Using the GEBV selection protocol object we just constucted, we’ll use the <code class="docutils literal notranslate"><span class="pre">mosolve</span></code> method to perform a multi-objective optimization to maximize the mean GEBV for both of our synthetic traits in the selected subset of individuals. The <code class="docutils literal notranslate"><span class="pre">WeightedGenomicSubsetSelection.mosolve</span></code> method only requires two non-<code class="docutils literal notranslate"><span class="pre">None</span></code> arguments: <code class="docutils literal notranslate"><span class="pre">gmat</span></code> and <code class="docutils literal notranslate"><span class="pre">gpmod</span></code>. We pass our genotype matrix and genomic model objects as arguments for these two parameters, leaving the other arguments <code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># estimate pareto frontier using optimization algorithm</span>
+<span class="n">selsoln</span> <span class="o">=</span> <span class="n">selprot</span><span class="o">.</span><span class="n">mosolve</span><span class="p">(</span>
+    <span class="n">pgmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>       <span class="c1"># argument not utilized</span>
+    <span class="n">gmat</span> <span class="o">=</span> <span class="n">gmat</span><span class="p">,</span>        <span class="c1"># ``gmat`` argument required</span>
+    <span class="n">ptdf</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>        <span class="c1"># argument not utilized</span>
+    <span class="n">bvmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>       <span class="c1"># argument not utilized</span>
+    <span class="n">gpmod</span> <span class="o">=</span> <span class="n">algmod</span><span class="p">,</span>     <span class="c1"># ``gpmod`` argument required</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>          <span class="c1"># argument not utilized</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>          <span class="c1"># argument not utilized</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="visualizing-the-pareto-frontier-with-matplotlib">
+<h2>Visualizing the Pareto Frontier with <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code><a class="headerlink" href="#visualizing-the-pareto-frontier-with-matplotlib" title="Permalink to this heading">#</a></h2>
+<p>After optimizing the objectives, we can use <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> or any other plotting packages to visualize the results of the optimization. The code below creates a figure to visualize the estimated Pareto frontier.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the pareto frontier</span>
+<span class="c1"># negate the objectives to get the mean wGEBV since optimization problems are always minimizing</span>
+<span class="n">xdata</span> <span class="o">=</span> <span class="o">-</span><span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ydata</span> <span class="o">=</span> <span class="o">-</span><span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># create static figure</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">axes</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Bi-Objective Weighted Genomic Selection Pareto Frontier&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 1 Mean wGEBV&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 2 Mean wGEBV&quot;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;biobjective_wGEBV_pareto_frontier.png&quot;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">250</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Below is the image which was created by <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>.</p>
+<img alt="../../../_images/biobjective_wGEBV_pareto_frontier.png" src="../../../_images/biobjective_wGEBV_pareto_frontier.png" />
+</section>
+</section>
+
+
+            </article>
+            
+            
+            
+            <footer class="bd-footer-article">
+                <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+  <a class='left-prev' id="prev-link" href="biobjective_GEBV_pareto_frontier.html" title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+          <p class="prev-next-subtitle">previous</p>
+          <p class="prev-next-title">Bi-Objective GEBV Selection Pareto Frontier Visualization</p>
+      </div>
+  </a>
+  <a class='right-next' id="next-link" href="triobjective_OCS_pareto_frontier.html" title="next page">
+  <div class="prev-next-info">
+      <p class="prev-next-subtitle">next</p>
+      <p class="prev-next-title">Tri-Objective Optimal Contribution Selection Pareto Frontier Visualization</p>
+  </div>
+  <i class="fa-solid fa-angle-right"></i>
+  </a>
+</div>
+            </footer>
+            
+          </div>
+          
+          
+          
+            <div class="bd-sidebar-secondary bd-toc">
+              
+<div class="toc-item">
+  
+<div class="tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+</div>
+<nav id="bd-toc-nav" class="page-toc">
+    <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#loading-required-modules-and-seeding-the-global-random-number-generator">
+   Loading Required Modules and Seeding the Global Random Number Generator
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#loading-genotypic-data-from-a-vcf-file">
+   Loading Genotypic Data from a VCF File
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#constructing-a-bi-trait-genomic-model">
+   Constructing a Bi-Trait Genomic Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#constructing-a-gebv-subset-selection-object">
+   Constructing a GEBV Subset Selection object
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#estimating-the-pareto-frontier">
+   Estimating the Pareto Frontier
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#visualizing-the-pareto-frontier-with-matplotlib">
+   Visualizing the Pareto Frontier with
+   <code class="docutils literal notranslate">
+    <span class="pre">
+     matplotlib
+    </span>
+   </code>
+  </a>
+ </li>
+</ul>
+
+</nav>
+</div>
+
+<div class="toc-item">
+  
+<div id="searchbox"></div>
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+<div class="toc-item">
+  
+</div>
+
+            </div>
+          
+          
+        </div>
+        <footer class="bd-footer-content">
+          <div class="bd-footer-content__inner">
+            
+          </div>
+        </footer>
+        
+      </main>
+    </div>
+  </div>
+
+  
+    
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+
+  <footer class="bd-footer"><div class="bd-footer__inner container">
+  
+  <div class="footer-item">
+    
+<p class="copyright">
+
+    &copy; Copyright 2023, Robert Shrote.<br>
+
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    <p class="theme-version">
+    Built with the
+    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
+        PyData Sphinx Theme
+    </a>
+    0.12.0.
+</p>
+  </div>
+  
+  <div class="footer-item">
+    
+<p class="sphinx-version">
+Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
+</p>
+
+  </div>
+  
+</div>
+  </footer>
+  </body>
+</html>

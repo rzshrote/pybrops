@@ -215,6 +215,7 @@ class GenomicEstimatedBreedingValueSubsetSelectionProblem(GenomicEstimatedBreedi
     def from_bvmat(
             cls,
             bvmat: BreedingValueMatrix,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -234,7 +235,7 @@ class GenomicEstimatedBreedingValueSubsetSelectionProblem(GenomicEstimatedBreedi
             **kwargs: dict
         ) -> "GenomicEstimatedBreedingValueSubsetSelectionProblem":
         # extract EBVs for all individuals
-        gebv = bvmat.mat
+        gebv = bvmat.unscale() if unscale else bvmat.mat
 
         # construct class
         out = cls(
@@ -265,6 +266,7 @@ class GenomicEstimatedBreedingValueSubsetSelectionProblem(GenomicEstimatedBreedi
             cls,
             gmat: GenotypeMatrix, 
             gpmod: GenomicModel, 
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -289,6 +291,7 @@ class GenomicEstimatedBreedingValueSubsetSelectionProblem(GenomicEstimatedBreedi
         # construct class
         out = cls.from_bvmat(
             bvmat = gebvmat,
+            unscale = unscale,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -470,6 +473,7 @@ class GenomicEstimatedBreedingValueRealSelectionProblem(GenomicEstimatedBreeding
     def from_bvmat(
             cls,
             bvmat: BreedingValueMatrix,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -489,7 +493,7 @@ class GenomicEstimatedBreedingValueRealSelectionProblem(GenomicEstimatedBreeding
             **kwargs: dict
         ) -> "GenomicEstimatedBreedingValueRealSelectionProblem":
         # extract EBVs for all individuals
-        gebv = bvmat.mat
+        gebv = bvmat.unscale() if unscale else bvmat.mat
 
         # construct class
         out = cls(
@@ -520,6 +524,7 @@ class GenomicEstimatedBreedingValueRealSelectionProblem(GenomicEstimatedBreeding
             cls,
             gmat: GenotypeMatrix, 
             gpmod: GenomicModel, 
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -544,6 +549,7 @@ class GenomicEstimatedBreedingValueRealSelectionProblem(GenomicEstimatedBreeding
         # construct class
         out = cls.from_bvmat(
             bvmat = gebvmat,
+            unscale = unscale,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -725,6 +731,7 @@ class GenomicEstimatedBreedingValueIntegerSelectionProblem(GenomicEstimatedBreed
     def from_bvmat(
             cls,
             bvmat: BreedingValueMatrix,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -744,7 +751,7 @@ class GenomicEstimatedBreedingValueIntegerSelectionProblem(GenomicEstimatedBreed
             **kwargs: dict
         ) -> "GenomicEstimatedBreedingValueIntegerSelectionProblem":
         # extract EBVs for all individuals
-        gebv = bvmat.mat
+        gebv = bvmat.unscale() if unscale else bvmat.mat
 
         # construct class
         out = cls(
@@ -775,6 +782,7 @@ class GenomicEstimatedBreedingValueIntegerSelectionProblem(GenomicEstimatedBreed
             cls,
             gmat: GenotypeMatrix, 
             gpmod: GenomicModel, 
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -799,6 +807,7 @@ class GenomicEstimatedBreedingValueIntegerSelectionProblem(GenomicEstimatedBreed
         # construct class
         out = cls.from_bvmat(
             bvmat = gebvmat,
+            unscale = unscale,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -980,6 +989,7 @@ class GenomicEstimatedBreedingValueBinarySelectionProblem(GenomicEstimatedBreedi
     def from_bvmat(
             cls,
             bvmat: BreedingValueMatrix,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -999,7 +1009,7 @@ class GenomicEstimatedBreedingValueBinarySelectionProblem(GenomicEstimatedBreedi
             **kwargs: dict
         ) -> "GenomicEstimatedBreedingValueBinarySelectionProblem":
         # extract EBVs for all individuals
-        gebv = bvmat.mat
+        gebv = bvmat.unscale() if unscale else bvmat.mat
 
         # construct class
         out = cls(
@@ -1030,6 +1040,7 @@ class GenomicEstimatedBreedingValueBinarySelectionProblem(GenomicEstimatedBreedi
             cls,
             gmat: GenotypeMatrix, 
             gpmod: GenomicModel, 
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -1054,6 +1065,7 @@ class GenomicEstimatedBreedingValueBinarySelectionProblem(GenomicEstimatedBreedi
         # construct class
         out = cls.from_bvmat(
             bvmat = gebvmat,
+            unscale = unscale,
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

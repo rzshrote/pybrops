@@ -21,7 +21,6 @@ __all__ = [
 
     "UnconstrainedOptimizationAlgorithm",
     "UnconstrainedSteepestAscentSetHillClimber",
-    "UnconstrainedStochasticAscentSetHillClimber",
     "UnconstrainedNSGA2SetGeneticAlgorithm",
 ]
 
@@ -56,5 +55,4 @@ from pybrops.opt.algo import SteepestDescentSubsetHillClimber
 # old classes
 from pybrops.opt.algo import UnconstrainedOptimizationAlgorithm
 from pybrops.opt.algo import UnconstrainedSteepestAscentSetHillClimber
-from pybrops.opt.algo import UnconstrainedStochasticAscentSetHillClimber
 from pybrops.opt.algo import UnconstrainedNSGA2SetGeneticAlgorithm

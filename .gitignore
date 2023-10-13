@@ -95,3 +95,9 @@ venv.bak/
 *.7z
 *.mp4
 *.test.txt
+
+# exclude file types
+!docsrc/**/*.png
+!docsrc/**/*.gif
+!docs/**/*.png
+!docs/**/*.gif
