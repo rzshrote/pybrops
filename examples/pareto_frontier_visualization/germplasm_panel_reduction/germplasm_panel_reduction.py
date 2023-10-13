@@ -1,40 +1,29 @@
 #!/usr/bin/env python3
 
+###
+### Custom Bi-Objective Germplasm Panel Reduction Pareto Frontier Visualization
+### ###########################################################################
+
+##
+## Loading Required Modules and Seeding the global PRNG
+## ====================================================
+
+# import libraries
 from typing import Tuple
 import numpy
 from matplotlib import pyplot
-
 import pybrops
 from pybrops.opt.algo.NSGA2BinaryGeneticAlgorithm import NSGA2BinaryGeneticAlgorithm
 from pybrops.opt.prob.BinaryProblem import BinaryProblem
-from pybrops.popgen.gmap.StandardGeneticMap import StandardGeneticMap
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
-from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
 
 # seed python random and numpy random
 pybrops.core.random.prng.seed(194711822)
 
-##################### Read genetic map #####################
-
-# create a standard genetic map object by reading from a csv-type file
-gmap = StandardGeneticMap.from_csv(
-    "McMullen_2009_US_NAM.gmap", # genetic map file name
-    vrnt_chrgrp_col   = "chr",   # chromosome/linkage group column name
-    vrnt_phypos_col   = "pos",   # chromosome physical position column name
-    vrnt_genpos_col   = "cM",    # chromosome genetic position column
-    vrnt_genpos_units = "cM",    # chromosome genetic position column units
-    auto_group        = True,    # automatically sort and group markers within chromosome groups
-    auto_build_spline = True,    # automatically build interpolation spline
-    sep               = '\t',    # field delimiter for csv file format
-)
-
-############### Create genetic map function ################
-
-# create a Haldane mapping function for a basic scenario
-gmapfn = HaldaneMapFunction()
-
-################### Load genotypic data ####################
+##
+## Loading Genotypic Data from a VCF File
+## ======================================
 
 # read unphased genetic markers from a vcf file
 gmat = DenseGenotypeMatrix.from_vcf(
@@ -42,30 +31,19 @@ gmat = DenseGenotypeMatrix.from_vcf(
     auto_group_vrnt = True,  # automatically sort and group variants
 )
 
-# interpolate crossover probabilies for each locus using the genetic map and 
-# genetic map function created above
-gmat.interp_xoprob(gmap = gmap, gmapfn = gmapfn)
-
 # get the first 100 taxa to keep the problem small
 gmat_reduced = gmat.select_taxa(numpy.arange(100))
 
-################################################################################
-################################## Scenario 1 ##################################
-################################################################################
+###
+### Scenario 1: Minimize number of individuals and relatedness
+### ##########################################################
 
-########## Calculate molecular coancestry matrix ###########
+##
+## Defining a Custom Problem Class for Scenario 1
+## ==============================================
 
-# calculate identity by state coancestry
-cmat = DenseMolecularCoancestryMatrix.from_gmat(gmat_reduced)
-
-# extract kinship as numpy.ndarray
-K = cmat.mat_asformat("kinship")
-
-# calculate Cholesky decomposition of kinship matrix
-C = numpy.linalg.cholesky(K)
-
-# define diversity panel reduction problem definition class
-class DiversityPanelReduction1(BinaryProblem):
+# define germplasm panel reduction problem definition class
+class GermplasmPanelReduction1(BinaryProblem):
     # class constructor
     def __init__(
             self, 
@@ -73,7 +51,7 @@ class DiversityPanelReduction1(BinaryProblem):
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the diversity panel reduction problem:
+        Constructor for the germplasm panel reduction problem:
 
         Objective 1: minimize the number of individuals selected
         Objective 2: minimize the relatedness of individuals selected
@@ -167,41 +145,69 @@ class DiversityPanelReduction1(BinaryProblem):
     ### method required by PyMOO interface ###
     # use default ``_evaluate`` method which uses the ``evalfn`` method
 
+##
+## Calculating a Kinship Matrix and its Decomposition
+## ==================================================
+
+# calculate identity by state coancestry
+cmat = DenseMolecularCoancestryMatrix.from_gmat(gmat_reduced)
+
+# extract kinship as numpy.ndarray
+K = cmat.mat_asformat("kinship")
+
+# calculate Cholesky decomposition of kinship matrix
+C = numpy.linalg.cholesky(K)
+
+##
+## Constructing a Germplasm Panel Reduction Problem Object
+## =======================================================
+
 # construct optimization problem
-prob = DiversityPanelReduction1(C.T)
+# use C.T since C is a lower triangle matrix and we need an upper triangle matrix
+prob = GermplasmPanelReduction1(C.T)
+
+##
+## Constructing a Custom Genetic Algorithm Object
+## ==============================================
 
 # construct NSGA-II object
-# this problem is complex since there are >900 individuals from which to choose
+# this problem is complex and requires many generations
 moea = NSGA2BinaryGeneticAlgorithm(
     ngen = 2000,
     pop_size = 100,
 )
 
+##
+## Estimating the Pareto Frontier
+## ==============================
+
 # minimize the optimization problem
 soln = moea.minimize(prob)
 
-# extract pareto frontier
-frontier = soln.soln_obj
+##
+## Visualizing the Pareto Frontier with ``matplotlib``
+## ===================================================
 
 # create static figure
 fig = pyplot.figure()
 ax = pyplot.axes()
-ax.scatter(frontier[:,0], frontier[:,1])
+ax.scatter(soln.soln_obj[:,0], soln.soln_obj[:,1])
 ax.set_title("Pareto frontier for number of selected individuals and molecular diversity")
 ax.set_xlabel("Number of individuals")
 ax.set_ylabel("Mean molecular coancestry")
-pyplot.savefig("pareto_frontier1.png", dpi = 250)
+pyplot.savefig("germplasm_panel_reduction1.png", dpi = 250)
 pyplot.close(fig)
 
-################################################################################
-################################## Scenario 2 ##################################
-################################################################################
+###
+### Scenario 2: Minimize number of individuals and loss of alleles
+### ##############################################################
 
-# define objective function
-X = gmat_reduced.mat_asformat("{0,1,2}")                              # get genotype matrix
+##
+## Defining a Custom Problem Class for Scenario 2
+## ==============================================
 
-# define diversity panel reduction problem definition class
-class DiversityPanelReduction2(BinaryProblem):
+# define germplasm panel reduction problem definition class
+class GermplasmPanelReduction2(BinaryProblem):
     # class constructor
     def __init__(
             self, 
@@ -209,7 +215,7 @@ class DiversityPanelReduction2(BinaryProblem):
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the diversity panel reduction problem:
+        Constructor for the germplasm panel reduction problem:
 
         Objective 1: minimize the number of individuals selected
         Objective 2: minimize the number of fixed markers
@@ -306,28 +312,48 @@ class DiversityPanelReduction2(BinaryProblem):
     ### method required by PyMOO interface ###
     # use default ``_evaluate`` method which uses the ``evalfn`` method
 
+##
+## Extracting a Genotype Matrix as a NumPy Array
+## =============================================
+
+# get genotype matrix
+X = gmat_reduced.mat_asformat("{0,1,2}")
+
+##
+## Constructing a Germplasm Panel Reduction Problem Object
+## =======================================================
+
 # construct optimization problem
-prob = DiversityPanelReduction2(X)
+prob = GermplasmPanelReduction2(X)
+
+##
+## Constructing a Custom Genetic Algorithm Object
+## ==============================================
 
 # construct NSGA-II object
-# this problem is complex since there are >900 individuals from which to choose
+# this problem is complex and requires many generations
 moea = NSGA2BinaryGeneticAlgorithm(
     ngen = 2000,
     pop_size = 100,
 )
 
+##
+## Estimating the Pareto Frontier
+## ==============================
+
 # minimize the optimization problem
 soln = moea.minimize(prob)
 
-# extract pareto frontier
-frontier = soln.soln_obj
+##
+## Visualizing the Pareto Frontier with ``matplotlib``
+## ===================================================
 
 # create static figure
 fig = pyplot.figure()
 ax = pyplot.axes()
-ax.scatter(frontier[:,0], frontier[:,1])
+ax.scatter(soln.soln_obj[:,0], soln.soln_obj[:,1])
 ax.set_title("Pareto frontier for number of selected individuals and number of fixed alleles")
 ax.set_xlabel("Number of individuals")
 ax.set_ylabel("Number of alleles fixed")
-pyplot.savefig("pareto_frontier2.png", dpi = 250)
+pyplot.savefig("germplasm_panel_reduction2.png", dpi = 250)
 pyplot.close(fig)

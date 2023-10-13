@@ -16,7 +16,7 @@ Pareto Frontier Visualization Examples
     :maxdepth: 1
     :caption: Custom-built selection strategies
     
-    Diversity panel reduction
+    Germplasm panel reduction <pareto_frontier_visualization/germplasm_panel_reduction>
 
 Breeding Program Simulation Examples
 ====================================
