@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
 
+###
+### Bi-Objective Weighted Genomic Selection Pareto Frontier Visualization
+### #####################################################################
+
+##
+## Loading Required Modules and Seeding the global PRNG
+## ====================================================
+
+# import libraries
 import numpy
 from matplotlib import pyplot
-
 import pybrops
 from pybrops.breed.prot.sel.WeightedGenomicSelection import WeightedGenomicSubsetSelection
 from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
@@ -10,9 +18,11 @@ from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLine
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 
 # seed python random and numpy random
-pybrops.core.random.prng.seed(31621463)
+pybrops.core.random.prng.seed(23947952)
 
-################### Load genotypic data ####################
+##
+## Loading Genotypic Data from a VCF File
+## ======================================
 
 # read unphased genetic markers from a vcf file
 gmat = DenseGenotypeMatrix.from_vcf(
@@ -20,7 +30,9 @@ gmat = DenseGenotypeMatrix.from_vcf(
     auto_group_vrnt = True,  # automatically sort and group variants
 )
 
-################# Construct genomic model ##################
+##
+## Constructing a Bi-Trait Genomic Model
+## =====================================
 
 # make marker effects for two traits which are competing in nature
 # marker effects array is of shape (nvrnt, 2)
@@ -46,7 +58,9 @@ algmod = DenseAdditiveLinearGenomicModel(
     hyperparams = None                       # model parameters
 )
 
-############# Construct GEBV Selection object ##############
+##
+## Constructing a Weighted Genomic Subset Selection Object
+## =======================================================
 
 # create custom multi-objective algorithm for optimization
 # use NSGA-II and evolve for 1000 generations
@@ -66,6 +80,10 @@ selprot = WeightedGenomicSubsetSelection(
     moalgo = moalgo,    # custom multi-objective algorithm
 )
 
+##
+## Estimating the Pareto Frontier
+## ==============================
+
 # estimate pareto frontier using optimization algorithm
 selsoln = selprot.mosolve(
     pgmat = None,       # argument not utilized
@@ -77,21 +95,21 @@ selsoln = selprot.mosolve(
     t_max = 0,          # argument not utilized
 )
 
+##
+## Visualizing the Pareto Frontier with ``matplotlib``
+## ===================================================
+
 # get the pareto frontier
-# negate 
+# negate the objectives to get the mean wGEBV since optimization problems are always minimizing
 xdata = -selsoln.soln_obj[:,0]
 ydata = -selsoln.soln_obj[:,1]
-
-# establish axis labels
-xlabel = "Syn 1 Trait wGEBV Sum"
-ylabel = "Syn 2 Trait wGEBV Sum"
 
 # create static figure
 fig = pyplot.figure()
 ax = pyplot.axes()
 ax.scatter(xdata, ydata)
 ax.set_title("Bi-Objective Weighted Genomic Selection Pareto Frontier")
-ax.set_xlabel(xlabel)
-ax.set_ylabel(ylabel)
-pyplot.savefig("wGEBV_2d_frontier.png", dpi = 250)
+ax.set_xlabel("Synthetic Trait 1 Mean wGEBV")
+ax.set_ylabel("Synthetic Trait 2 Mean wGEBV")
+pyplot.savefig("biobjective_wGEBV_pareto_frontier.png", dpi = 250)
 pyplot.close(fig)

@@ -31,8 +31,8 @@ gmat = DenseGenotypeMatrix.from_vcf(
 )
 
 ##
-## Constructing a 2-Trait Genomic Model
-## ====================================
+## Constructing a Bi-Trait Genomic Model
+## =====================================
 
 # make marker effects for two traits which are competing in nature
 # marker effects array is of shape (nvrnt, 2)
@@ -59,7 +59,7 @@ algmod = DenseAdditiveLinearGenomicModel(
 )
 
 ##
-## Constructing a GEBV Subset Selection object
+## Constructing a GEBV Subset Selection Object
 ## ===========================================
 
 # create custom multi-objective algorithm for optimization

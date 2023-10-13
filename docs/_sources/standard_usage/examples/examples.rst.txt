@@ -9,6 +9,7 @@ Pareto Frontier Visualization Examples
     :caption: Pre-built selection strategies
     
     Bi-Objective GEBV selection <pareto_frontier_visualization/biobjective_GEBV_pareto_frontier>
+    Bi-Objective wGEBV selection <pareto_frontier_visualization/biobjective_wGEBV_pareto_frontier>
     Optimal contribution selection
 
 .. toctree::
