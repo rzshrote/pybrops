@@ -42,7 +42,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'standard_usage/examples/pareto_frontier_visualization/biobjective_wGEBV_pareto_frontier';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Advanced PyBrOpS Usage" href="../../../advanced_usage/advanced_usage.html" />
+    <link rel="next" title="Tri-Objective Optimal Contribution Selection Pareto Frontier Visualization" href="triobjective_OCS_pareto_frontier.html" />
     <link rel="prev" title="Bi-Objective GEBV Selection Pareto Frontier Visualization" href="biobjective_GEBV_pareto_frontier.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
@@ -365,6 +365,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="biobjective_GEBV_pareto_frontier.html">Bi-Objective GEBV selection</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Bi-Objective wGEBV selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triobjective_OCS_pareto_frontier.html">Tri-Objective Optimal Contribution selection</a></li>
 </ul>
 </li>
 </ul>
@@ -489,7 +490,7 @@
 </section>
 <section id="estimating-the-pareto-frontier">
 <h2>Estimating the Pareto Frontier<a class="headerlink" href="#estimating-the-pareto-frontier" title="Permalink to this heading">#</a></h2>
-<p>Using the GEBV selection protocol object we just constucted, we’ll use the <code class="docutils literal notranslate"><span class="pre">mosolve</span></code> method to perform a multi-objective optimization to maximize the mean GEBV for both of our synthetic traits in the selected subset of individuals. The <code class="docutils literal notranslate"><span class="pre">GenomicEstimatedBreedingValueSubsetSelection.mosolve</span></code> method only requires two non-<code class="docutils literal notranslate"><span class="pre">None</span></code> arguments: <code class="docutils literal notranslate"><span class="pre">gmat</span></code> and <code class="docutils literal notranslate"><span class="pre">gpmod</span></code>. We pass our genotype matrix and genomic model objects as arguments for these two parameters, leaving the other arguments <code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<p>Using the GEBV selection protocol object we just constucted, we’ll use the <code class="docutils literal notranslate"><span class="pre">mosolve</span></code> method to perform a multi-objective optimization to maximize the mean GEBV for both of our synthetic traits in the selected subset of individuals. The <code class="docutils literal notranslate"><span class="pre">WeightedGenomicSubsetSelection.mosolve</span></code> method only requires two non-<code class="docutils literal notranslate"><span class="pre">None</span></code> arguments: <code class="docutils literal notranslate"><span class="pre">gmat</span></code> and <code class="docutils literal notranslate"><span class="pre">gpmod</span></code>. We pass our genotype matrix and genomic model objects as arguments for these two parameters, leaving the other arguments <code class="docutils literal notranslate"><span class="pre">None</span></code> or <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># estimate pareto frontier using optimization algorithm</span>
 <span class="n">selsoln</span> <span class="o">=</span> <span class="n">selprot</span><span class="o">.</span><span class="n">mosolve</span><span class="p">(</span>
     <span class="n">pgmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>       <span class="c1"># argument not utilized</span>
@@ -542,10 +543,10 @@
           <p class="prev-next-title">Bi-Objective GEBV Selection Pareto Frontier Visualization</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../../../advanced_usage/advanced_usage.html" title="next page">
+  <a class='right-next' id="next-link" href="triobjective_OCS_pareto_frontier.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Advanced PyBrOpS Usage</p>
+      <p class="prev-next-title">Tri-Objective Optimal Contribution Selection Pareto Frontier Visualization</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>

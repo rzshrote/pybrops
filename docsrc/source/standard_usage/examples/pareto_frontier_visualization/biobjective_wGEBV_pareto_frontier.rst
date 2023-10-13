@@ -106,7 +106,7 @@ Next, we'll construct a weighted genomic selection protocol object. For this exa
 Estimating the Pareto Frontier
 ==============================
 
-Using the GEBV selection protocol object we just constucted, we'll use the ``mosolve`` method to perform a multi-objective optimization to maximize the mean GEBV for both of our synthetic traits in the selected subset of individuals. The ``GenomicEstimatedBreedingValueSubsetSelection.mosolve`` method only requires two non-``None`` arguments: ``gmat`` and ``gpmod``. We pass our genotype matrix and genomic model objects as arguments for these two parameters, leaving the other arguments ``None`` or ``0``.
+Using the GEBV selection protocol object we just constucted, we'll use the ``mosolve`` method to perform a multi-objective optimization to maximize the mean GEBV for both of our synthetic traits in the selected subset of individuals. The ``WeightedGenomicSubsetSelection.mosolve`` method only requires two non-``None`` arguments: ``gmat`` and ``gpmod``. We pass our genotype matrix and genomic model objects as arguments for these two parameters, leaving the other arguments ``None`` or ``0``.
 
 .. code-block:: python
 
