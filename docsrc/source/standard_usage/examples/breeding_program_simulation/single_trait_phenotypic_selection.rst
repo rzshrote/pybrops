@@ -390,8 +390,8 @@ The image below is the result of the code above.
 
 .. image:: true_breeding_values.png
 
-Visualizing True Breeding Values (TBVs)
----------------------------------------
+Visualizing Estimated Breeding Values (EBVs)
+--------------------------------------------
 
 To visualize how estimated breeding values evolved over the course of our simulation, we'll use ``matplotlib`` to plot the min, mean, and max estimated breeding values and compare them with the lower and upper selection limits. The code below demonstrates how to create this plot.
 
