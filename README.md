@@ -2,6 +2,10 @@
 Python Breeding Optimizer and Simulator: A Python library for simulating
 breeding programs and optimizing breeding-related problems.
 
+## Detailed Documentation
+A full website hosting all documentation can be found at [the project GitHub Pages website](https://rzshrote.github.io/pybrops/).
+Please consult the documentation to learn how to use PyBrOpS.
+
 ## General installation requirements
 1) `Python 3.8.0+`
 
@@ -29,10 +33,9 @@ PyBrOpS relies on several dependencies. They are:
 7) `pandas-1.4.1+` (data frames)
 8) `pytest-7.0.1+` (unit tests)
 9) `pytest-datadir-1.3.1+` (unit tests)
-10) `rpy2-3.4.5+` (interfacing with R)
-11) `scipy-1.8.0+` (miscellaneous numerical routines)
-12) `setuptools`
-13) `wheel`
+10) `scipy-1.8.0+` (miscellaneous numerical routines)
+11) `setuptools`
+12) `wheel`
 
 # Developmental version installation
 To install first `clone` the repository:

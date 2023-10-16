@@ -20,3 +20,14 @@ Pareto Frontier Visualization Examples
 
 Breeding Program Simulation Examples
 ====================================
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Simulation of Single-trait Breeding Programs
+    
+    Single-Trait Phenotypic Selection <breeding_program_simulation/single_trait_phenotypic_selection>
+
+.. toctree::
+    :maxdepth: 1
+    :caption: Simulation of Multi-trait Breeding Programs
+    
