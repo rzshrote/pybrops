@@ -2,14 +2,14 @@
 Module for estimating breeding values using the mean across all environments.
 """
 
-from typing import Iterable, Optional, Sequence, Union
+from typing import Iterable, Optional, Union
 import numpy
 import pandas
 
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
 from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
-from pybrops.core.error.error_type_python import check_is_array_like
 from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column, check_pandas_DataFrame_has_columns
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_GenotypeMatrix_has_taxa, check_is_GenotypeMatrix
@@ -24,6 +24,7 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
     def __init__(
             self, 
             taxa_col: str, 
+            taxa_grp_col: Union[str,None],
             trait_cols: Union[str,Iterable], 
             **kwargs: dict
         ) -> None:
@@ -43,6 +44,7 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
         """
         # assignments
         self.taxa_col = taxa_col
+        self.taxa_grp_col = taxa_grp_col
         self.trait_cols = trait_cols
 
     ############################ Object Properties #############################
@@ -55,6 +57,17 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
         """Set taxa_col."""
         check_is_str(value, "taxa_col")
         self._taxa_col = value
+
+    @property
+    def taxa_grp_col(self) -> Union[str,None]:
+        """taxa_grp_col."""
+        return self._taxa_grp_col
+    @taxa_grp_col.setter
+    def taxa_grp_col(self, value: Union[str,None]) -> None:
+        """Set taxa_grp_col."""
+        if value is not None:
+            check_is_str(value, "taxa_grp_col")
+        self._taxa_grp_col = value
 
     @property
     def trait_cols(self) -> list:
@@ -104,18 +117,36 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
         """
         # check arguments
         check_is_pandas_DataFrame(ptobj, "ptobj")
+        check_pandas_DataFrame_has_column(ptobj, "ptobj", self.taxa_col)
+        check_pandas_DataFrame_has_columns(ptobj, "ptobj", *self.trait_cols)
+        if self.taxa_grp_col is not None:
+            check_pandas_DataFrame_has_column(ptobj, "ptobj", self.taxa_grp_col)
+
+        # get the columns to groupby
+        by = [self.taxa_col]
+        if self.taxa_grp_col is not None:
+            by.append(self.taxa_grp_col)
 
         # take the means within each group for each trait
-        mean_ls = ["mean"] * len(self.trait_cols)
-        agg_df = ptobj.groupby(self.taxa_col, as_index=False).agg(dict(zip(self.trait_cols,mean_ls)))
+        agg_df = ptobj.groupby(
+            by, 
+            as_index = False, # do not use ``by`` as index
+        ).agg(
+            # generate ``trait: "mean"`` pairs
+            dict((trait,"mean") for trait in self.trait_cols)
+        )
 
         # if a Genotype matrix is not provided, then create matrix as-is
         if gtobj is None:
+            mat = agg_df[self.trait_cols].to_numpy(dtype=float)
+            taxa = agg_df[self.taxa_col].to_numpy(dtype=object)
+            taxa_grp = None if self.taxa_grp_col is None else agg_df[self.taxa_grp_col].to_numpy(dtype=int)
+            trait = numpy.array(self.trait_cols, dtype = object)
             out = DenseEstimatedBreedingValueMatrix.from_numpy(
-                mat = agg_df[self.trait_cols].to_numpy(),
-                taxa = agg_df[self.taxa_col].to_numpy(),
-                taxa_grp = None,
-                trait = numpy.array(self.trait_cols, dtype = object)
+                mat = mat,
+                taxa = taxa,
+                taxa_grp = taxa_grp,
+                trait = trait,
             )
             return out
 
@@ -153,5 +184,11 @@ class MeanPhenotypicBreedingValue(BreedingValueProtocol):
             taxa_grp = gtobj.taxa_grp,
             trait = numpy.array(self.trait_cols, dtype = object)
         )
+
+        # copy metadata
+        out.taxa_grp_name = gtobj.taxa_grp_name
+        out.taxa_grp_stix = gtobj.taxa_grp_stix
+        out.taxa_grp_spix = gtobj.taxa_grp_spix
+        out.taxa_grp_len  = gtobj.taxa_grp_len
 
         return out

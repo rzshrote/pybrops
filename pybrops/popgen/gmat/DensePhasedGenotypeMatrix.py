@@ -249,6 +249,39 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 
     ############################## Object Methods ##############################
 
+    #################### Matrix copying ####################
+    def copy(
+            self
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Make a shallow copy of the DensePhasedGenotypeMatrix.
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            A shallow copy of the original DensePhasedGenotypeMatrix.
+        """
+        return self.__copy__()
+
+    def deepcopy(
+            self, 
+            memo: Optional[dict] = None
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Make a deep copy of the DensePhasedGenotypeMatrix.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            A deep copy of the original DensePhasedGenotypeMatrix.
+        """
+        return self.__deepcopy__(memo)
+
     ################## Matrix conversion ###################
     def mat_asformat(
             self, 

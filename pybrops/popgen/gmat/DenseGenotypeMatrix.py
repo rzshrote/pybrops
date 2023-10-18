@@ -271,6 +271,39 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
 
     ############################## Object Methods ##############################
 
+    #################### Matrix copying ####################
+    def copy(
+            self
+        ) -> 'DenseGenotypeMatrix':
+        """
+        Make a shallow copy of the DenseGenotypeMatrix.
+
+        Returns
+        -------
+        out : DenseGenotypeMatrix
+            A shallow copy of the original DenseGenotypeMatrix.
+        """
+        return self.__copy__()
+
+    def deepcopy(
+            self, 
+            memo: Optional[dict] = None
+        ) -> 'DenseGenotypeMatrix':
+        """
+        Make a deep copy of the DenseGenotypeMatrix.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : DenseGenotypeMatrix
+            A deep copy of the original DenseGenotypeMatrix.
+        """
+        return self.__deepcopy__(memo)
+
     ######### Matrix element copy-on-manipulation ##########
     def adjoin_taxa(
             self, 

@@ -6,25 +6,28 @@ __all__ = [
     "SteepestDescentSubsetHillClimber",
 ]
 
-from typing import Optional, Union
+from typing import Optional
 import numpy
-from numpy.random import Generator, RandomState
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_dict
-from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_SubsetProblem_is_single_objective, check_is_SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
-class SteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
+class SortingSteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
     """
-    Steepest descent hill climber for subset search spaces.
+    A variant on the steepest descent hill climber for subset search spaces.
+    The hillclimber first tests each element in the decision space, identifies 
+    the best decision space variables, then iteratively improves the solution 
+    using a steepest descent algorithm to improve the score if any contraint 
+    violations exist.
+
+    The initial sorting component of the algorithm assumes a convex search space
+    where decision variables are additive.
     """
 
     ########################## Special Object Methods ##########################
     def __init__(
             self,
-            rng: Optional[Union[Generator,RandomState]] = None, 
             **kwargs: dict
         ) -> None:
         """
@@ -37,20 +40,9 @@ class SteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """
-        self.rng = rng
+        pass
 
     ############################ Object Properties #############################
-    @property
-    def rng(self) -> Union[Generator,RandomState]:
-        """Random number generator source."""
-        return self._rng
-    @rng.setter
-    def rng(self, value: Union[Generator,RandomState]) -> None:
-        """Set random number generator source."""
-        if value is None:
-            value = global_prng
-        check_is_Generator_or_RandomState(value, "rng")
-        self._rng = value
 
     ############################## Object Methods ##############################
     def minimize(
@@ -82,8 +74,33 @@ class SteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
         if miscout is not None:
             check_is_dict(miscout, "miscout")
 
-        # randomly initialize a solution
-        gbest_soln = self.rng.choice(prob.decn_space, prob.ndecn)
+        ### Phase 1: Solution by sorting
+        ### ============================
+
+        # evaluate each decision space element individually
+        evals = [prob.evalfn(numpy.array([e])) for e in prob.decn_space]
+
+        # unpack list of 3-tuples to a 3-tuple of Tuple[ndarray]
+        obj, ineqcv, eqcv = zip(*evals)
+
+        # convert Tuple[ndarray] to ndarray
+        obj = numpy.stack(obj)          # (n,1)
+        ineqcv = numpy.stack(ineqcv)    # (n,nineqcv)
+        eqcv = numpy.stack(eqcv)        # (n,neqcv)
+        
+        # we only care about the obj; disregard the constraint violations
+        # sort the objectives and get their indices
+        # (n,1)
+        ix = obj.argsort(0)
+
+        # get the top (lowest) ``prob.ndecn`` indices and their decision space values
+        gbest_ix = ix[0:prob.ndecn,0]
+
+        # construct an initial best solution from top elements
+        gbest_soln = prob.decn_space[gbest_ix]
+
+        ### Phase 2: Iteratively improve to reduce constraint violations
+        ### ============================================================
 
         # get search space elements not in current global best solution
         wrkss = prob.decn_space[numpy.logical_not(numpy.in1d(prob.decn_space, gbest_soln))]

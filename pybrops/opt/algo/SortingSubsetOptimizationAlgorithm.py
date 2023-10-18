@@ -7,20 +7,20 @@ __all__ = [
     "SortingSubsetOptimizationAlgorithm",
 ]
 
-from typing import Optional, Union
+from typing import Optional
 import numpy
-from numpy.random import Generator, RandomState
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_SubsetProblem_is_single_objective, check_is_SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
-from pybrops.core.random.prng import global_prng
 
 class SortingSubsetOptimizationAlgorithm(SubsetOptimizationAlgorithm):
     """
     Optimization algorithm class that scores individuals separate from each other,
     sorts to scores, and selects a solution from the sorted list.
+
+    Assumes a convex search space where decision variables are additive.
+    Ignores any and all constraint violations.
     """
 
     ########################## Special Object Methods ##########################

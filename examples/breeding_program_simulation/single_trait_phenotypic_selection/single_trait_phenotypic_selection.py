@@ -177,6 +177,7 @@ ptprot.set_h2(0.4, pgmat)
 # estimate breeding value using mean across environments for simplicity
 bvprot = MeanPhenotypicBreedingValue(
     taxa_col = "taxa",
+    taxa_grp_col = "taxa_grp",
     trait_cols = "Syn1",
 )
 
@@ -322,7 +323,7 @@ ax.set_title("Single-Trait Recurrent Phenotypic Selection")
 ax.set_xlabel("Generation")
 ax.set_ylabel("Synthetic Trait Breeding Value")
 ax.legend()
-pyplot.savefig("true_breeding_values.png", dpi = 300)
+pyplot.savefig("single_trait_phenotypic_selection_true_breeding_values.png", dpi = 300)
 pyplot.close(fig)
 
 #
@@ -341,5 +342,5 @@ ax.set_title("Single-Trait Recurrent Phenotypic Selection")
 ax.set_xlabel("Generation")
 ax.set_ylabel("Synthetic Trait Breeding Value")
 ax.legend()
-pyplot.savefig("estimated_breeding_values.png", dpi = 300)
+pyplot.savefig("single_trait_phenotypic_selection_estimated_breeding_values.png", dpi = 300)
 pyplot.close(fig)

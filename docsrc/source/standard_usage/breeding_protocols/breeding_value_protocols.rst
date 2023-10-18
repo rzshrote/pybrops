@@ -58,6 +58,7 @@ Breeding value estimation protocol class construction is entirely implementation
 
     bvprot = MeanPhenotypicBreedingValue(
         taxa_col = "taxa",
+        taxa_grp_col = "taxa_grp",
         trait_cols = ["Trait01","Trait02"]
     )
 
