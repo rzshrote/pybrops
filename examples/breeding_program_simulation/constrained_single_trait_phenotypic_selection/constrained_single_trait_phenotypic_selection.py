@@ -185,17 +185,19 @@ bvprot = MeanPhenotypicBreedingValue(
 ## =========================================
 
 # define function to do within family selection
-def within_family_selection(bvmat: DenseBreedingValueMatrix, nindiv: int):
-    order = bvmat.mat.argsort(0)[:,0]
-    mask = numpy.full(len(order), False, bool)
+def within_family_selection(bvmat: DenseBreedingValueMatrix, nindiv: int) -> numpy.ndarray:
+    order = numpy.arange(bvmat.ntaxa)
+    value = bvmat.mat[:,0] # get trait breeding values
+    indices = []
     groups = numpy.unique(bvmat.taxa_grp)
     for group in groups:
-        tmp = order[bvmat.taxa_grp == group]
-        tmp.sort()
-        ix = tmp[:nindiv]
-        for i in ix:
-            mask[order == i] = True
-    indices = numpy.flatnonzero(mask)
+        mask = bvmat.taxa_grp == group
+        tmp_order = order[mask]
+        tmp_value = value[mask]
+        value_argsort = tmp_value.argsort()
+        ix = value_argsort[::-1][:nindiv]
+        indices.append(tmp_order[ix])
+    indices = numpy.concatenate(indices)
     return indices
 
 ##
@@ -296,6 +298,7 @@ soalgo = SortingSubsetOptimizationAlgorithm()
 # create a selection protocol that selects based on EBVs with an inbreeding constraint
 unconstrained_selprot = EstimatedBreedingValueSubsetSelection(
     ntrait       = 1,            # number of expected traits
+    unscale      = True,         # unscale breeding values to human-readable format
     ncross       = 20,           # number of cross configurations
     nparent      = 2,            # number of parents per cross configuration
     nmating      = 1,            # number of matings per cross configuration
@@ -342,7 +345,7 @@ pheno_df = ptprot.phenotype(pgmat)
 bvmat = bvprot.estimate(pheno_df, pgmat)
 
 # get candidate indices using within family selection
-indices = within_family_selection(bvmat, 8) # select top 10%
+indices = within_family_selection(bvmat, 4) # select top 5%
 
 # get parental candidates
 cand_pgmat = pgmat.select_taxa(indices)
@@ -378,7 +381,7 @@ maxinb = numpy.linspace(0.77, 1.0, ngen+1)
 # simulate for ``ngen`` generations
 for gen in range(1,ngen+1):
     # get candidate mask using within family selection
-    indices = within_family_selection(bvmat, 8) # select top 10%
+    indices = within_family_selection(bvmat, 4) # select top 5%
     # get parental candidates
     cand_pgmat = pgmat.select_taxa(indices)
     cand_bvmat = bvmat.select_taxa(indices)
@@ -488,8 +491,8 @@ unconstrained_lbook["ebv_std_Syn1"].append(ebv.std(0)[0])
 print("Gen: {0}".format(0))
 
 #
-# Constrained Simulation Main Loop
-# --------------------------------
+# Unconstrained Simulation Main Loop
+# ----------------------------------
 
 # number of generations for which to simulate selection
 ngen = 60

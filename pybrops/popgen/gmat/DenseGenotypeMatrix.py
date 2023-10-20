@@ -666,12 +666,6 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             **kwargs
         )
 
-        # copy metadata from source
-        out.vrnt_chrgrp_name = mats[0].vrnt_chrgrp_name
-        out.vrnt_chrgrp_stix = mats[0].vrnt_chrgrp_stix
-        out.vrnt_chrgrp_spix = mats[0].vrnt_chrgrp_spix
-        out.vrnt_chrgrp_len = mats[0].vrnt_chrgrp_len
-
         return out
 
     @classmethod

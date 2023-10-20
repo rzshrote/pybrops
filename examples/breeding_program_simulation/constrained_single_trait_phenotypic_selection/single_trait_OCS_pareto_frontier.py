@@ -24,6 +24,7 @@ from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgor
 from pybrops.opt.algo.SortingSteepestDescentSubsetHillClimber import SortingSteepestDescentSubsetHillClimber
 from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 from pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory import DenseMolecularCoancestryMatrixFactory
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.popgen.gmap.StandardGeneticMap import StandardGeneticMap
@@ -215,17 +216,19 @@ selprot = OptimalContributionSubsetSelection(
 # Perform Within-Family Selection
 # ===============================
 
-def within_family_selection(bvmat: BreedingValueMatrix, nindiv: int):
-    order = bvmat.mat.argsort(0)[:,0]
-    mask = numpy.full(len(order), False, bool)
+def within_family_selection(bvmat: DenseBreedingValueMatrix, nindiv: int) -> numpy.ndarray:
+    order = numpy.arange(bvmat.ntaxa)
+    value = bvmat.mat[:,0] # get trait breeding values
+    indices = []
     groups = numpy.unique(bvmat.taxa_grp)
     for group in groups:
-        tmp = order[bvmat.taxa_grp == group]
-        tmp.sort()
-        ix = tmp[:nindiv]
-        for i in ix:
-            mask[order == i] = True
-    indices = numpy.flatnonzero(mask)
+        mask = bvmat.taxa_grp == group
+        tmp_order = order[mask]
+        tmp_value = value[mask]
+        value_argsort = tmp_value.argsort()
+        ix = value_argsort[::-1][:nindiv]
+        indices.append(tmp_order[ix])
+    indices = numpy.concatenate(indices)
     return indices
 
 # initial phenotyping
