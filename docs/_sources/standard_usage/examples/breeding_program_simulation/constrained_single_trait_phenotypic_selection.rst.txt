@@ -37,10 +37,27 @@ To begin, we import the various modules we will be used into the Python namespac
     # seed python random and numpy random
     pybrops.core.random.prng.seed(52347529)
 
+Simulation Parameters
+---------------------
+
+Next, we define a couple of simulation parameter constants.
+
+.. code-block:: python
+
+    nfndr = 40      # number of founder individuals
+    nqtl = 1000     # number of QTL
+    qlen = 6        # length of the queue
+    ncross = 20     # number of cross configurations
+    nparent = 2     # number of parents per cross configuration
+    nmating = 1     # number of times to perform cross configuration
+    nprogeny = 80   # number of progenies per cross attempt
+    nrandmate = 20  # number of random intermatings
+    nsimul = 60     # number of simulation generations
+
 Loading Genetic Map Data from a Text File
 -----------------------------------------
 
-Next, we load genetic map data from a CSV-like file. In this example, we are using the US NAM genetic map constructed by McMullen et al. in 2009. The code below demonstrates how these data are read into a ``StandardGeneticMap`` object using the ``from_csv`` class method.
+Then, we load genetic map data from a CSV-like file. In this example, we are using the US NAM genetic map constructed by McMullen et al. in 2009. The code below demonstrates how these data are read into a ``StandardGeneticMap`` object using the ``from_csv`` class method.
 
 .. code-block:: python
 
@@ -70,22 +87,30 @@ After loading our genetic map data, we want to create a genetic map function obj
 Loading Genome Data from a VCF File
 -----------------------------------
 
-Next, we load phased genetic markers from a VCF file. In this example, we are using a subset of genetic markers from the Wisconsin Maize Diversity Panel, which is composed of 942 individuals. 2000 SNPs with a minor allele frequency greater than 0.2 have been randomly selected to keep the dataset small.
+Next, we load phased genetic markers from a VCF file. In this example, we are using a subset of genetic markers from the Wisconsin Maize Diversity Panel, which is composed of 942 individuals. 2000 SNPs with a minor allele frequency greater than 0.2 have been randomly selected to keep the dataset small. From the original 942 individuals and 2000 SNPs, we randomly select 40 founders and 1000 SNPs to create a founding synthetic population.
 
 .. code-block:: python
 
     # read phased genetic markers from a vcf file
-    panel_pgmat = DensePhasedGenotypeMatrix.from_vcf(
-        "widiv_2000SNPs.vcf.gz", # file name to load
-        auto_group_vrnt = True,  # automatically sort and group variants
-    )
+    fndr_pgmat = DensePhasedGenotypeMatrix.from_vcf("widiv_2000SNPs.vcf.gz", auto_group_vrnt=False)
+
+    # randomly select ``nfndr`` from which to create a founding population
+    ix = numpy.random.choice(fndr_pgmat.ntaxa, nfndr, replace = False)
+    fndr_pgmat = fndr_pgmat.select_taxa(ix)
+
+    # randomly select ``nqtl`` markers from founders
+    ix = numpy.random.choice(fndr_pgmat.nvrnt, nqtl, replace = False)
+    fndr_pgmat = fndr_pgmat.select_vrnt(ix)
+
+    # sort and group variants
+    fndr_pgmat.group_vrnt()
 
 After loading the genetic markers, we interpolate the genetic map positions and the sequential marker crossover probabilities using the ``interp_xoprob`` method. We interpolate using the genetic map and genetic map function we have just created.
 
 .. code-block:: python
 
     # interpolate genetic map positions
-    panel_pgmat.interp_xoprob(gmap, gmapfn)
+    fndr_pgmat.interp_xoprob(gmap, gmapfn)
 
 Constructing a Single-Trait Genomic Model
 -----------------------------------------
@@ -100,8 +125,8 @@ Next, we want to construct a true genomic model that will model a single trait w
     # marker effects: (nvrnt,1)
     mkreffect = numpy.random.normal(
         loc = 0.0,
-        scale = 0.05,
-        size = (panel_pgmat.nvrnt,1)
+        scale = 0.01,
+        size = (fndr_pgmat.nvrnt,1)
     )
 
     # trait names: (ntrait,)
@@ -117,45 +142,43 @@ Next, we want to construct a true genomic model that will model a single trait w
         hyperparams = None                  # model parameters
     )
 
-Simulation Burn-in
-==================
+Build Founder Populations & Run Breeding Program Burn-In
+========================================================
 
-In this next major step, we'll perform a burn-in to create a breeding population from which to start our breeding simulations.
+In this next series of steps, we'll create a founder population by randomly intermating our 40 selected founders for 20 generations. Following random intermating, we'll create 6 cohorts of doubled haploid individuals, each cohort representing progenies produced in a single year. In this simulation, the oldest 3 cohorts will be aggregated into a ``"main"`` population to serve as selection candidates. The youngest 3 cohorts will be "in the pipeline" and will represent doubled haploid progenies which are being made. From the ``"main"`` population, the top 5% of individuals from each family will be selected to form a ``"cand"`` population. It is from this ``"cand"`` population that parents will be selected. The burn-in segment of the breeding program continues until the mean expected heterozygosity decreases to just under 0.3. After this point is reached, the simulated populations are ready for use in the main simulation.
 
-Select founders and randomly intermate for 20 generations
----------------------------------------------------------
+Randomly Intermate for ``nrandmate`` Generations
+------------------------------------------------
 
-Before we begin our simulation, we'll want to do a burn-in to create a randomly mating population from which to start. In the code below, we randomly select 40 founders from the individuals in the diversity panel and conduct random mating for 20 generations to simulate the creation of an open pollinated variety. After the 20 generations of random mating, we create doubled haploids from the population to serve as our starting breeding population for our simulation.
+To start our random mating scheme, we first randomly pair up our 40 founders and mate them to create hybrids. Each mating event creates 80 progenies. This creates a population of size 1600.
 
 .. code-block:: python
-
-    # founder population parameters
-    nfndr = 40          # number of random founders to select (must be even)
-    fndr_nmating = 1    # number of times to perform cross configuration (only needed for 3+ way crosses)
-    fndr_nprogeny = 80  # number of progenies to derive from cross configuration
-    fndr_nrandmate = 20 # number of random mating generations
 
     # create 2-way cross object
     mate2way = TwoWayCross()
 
-    # randomly select and pair ``nfndr`` founders
-    xconfig = numpy.random.choice(panel_pgmat.ntaxa,nfndr).reshape(nfndr//2,2)
+    # randomly select and pair founders
+    xconfig = numpy.random.choice(nfndr, nfndr, replace = False)
+    xconfig = xconfig.reshape(nfndr // 2, 2)
 
     # randomly intermate ``nfndr`` founders to create initial hybrids
     fndr_pgmat = mate2way.mate(
-        pgmat = panel_pgmat,
+        pgmat = fndr_pgmat,
         xconfig = xconfig,
-        nmating = fndr_nmating,
-        nprogeny = fndr_nprogeny,
+        nmating = nmating,
+        nprogeny = nprogeny,
     )
 
-    # randomly intermate for ``fndr_nrandmate`` generations
+Then, we take our hybrid progenies, randomly pair them up with each other, and mate them. Each mating event produces 1 progeny. We randomly intermate progenies for 20 generations to create a founding population.
+
+.. code-block:: python
+
+    # randomly intermate for ``nrandmate`` generations
     # each individual in the population is randomly mated with another individual
     # and creates a single progeny so that the population size is held constant
-    for _ in range(fndr_nrandmate):
-        # get the number of taxa
-        ntaxa = fndr_pgmat.ntaxa
+    for gen in range(1,nrandmate+1):
         # randomly select and pair ``ntaxa`` parents
+        ntaxa = fndr_pgmat.ntaxa
         xconfig = numpy.empty((ntaxa,2), dtype = int)
         xconfig[:,0] = numpy.random.choice(ntaxa, ntaxa, replace = False)
         xconfig[:,1] = numpy.random.choice(ntaxa, ntaxa, replace = False)
@@ -166,6 +189,14 @@ Before we begin our simulation, we'll want to do a burn-in to create a randomly 
             nmating = 1,
             nprogeny = 1,
         )
+        print("Random Intermating:", gen)
+
+Create Breeding Protocols for Burn-In
+-------------------------------------
+
+Next, we make a 2-way DH cross protocol for our burn-in stage.
+
+.. code-block:: python
 
     # create a 2-way DH cross object, use the counters from the 2-way cross object
     mate2waydh = TwoWayDHCross(
@@ -173,91 +204,200 @@ Before we begin our simulation, we'll want to do a burn-in to create a randomly 
         family_counter  = mate2way.family_counter,
     )
 
-    # get the number of taxa
-    ntaxa = fndr_pgmat.ntaxa
-
-    # randomly select and pair 20 parents
-    xconfig = numpy.random.choice(ntaxa, 40, replace = False).reshape(20,2)
-
-    # DH all individuals in the founder population to create our initial breeding population
-    fndr_pgmat = mate2waydh.mate(
-        pgmat = fndr_pgmat,
-        xconfig = xconfig,
-        nmating = 1,
-        nprogeny = 80,
-    )
-
-Simulation Setup
-================
-
-Create a Phenotyping Protocol Object
-------------------------------------
-
-After creating our starting breeding population, we'll create a phenotyping protocol object to phenotype the individuals in our population. We'll create a :math:`G + E` phenotyping protocol that simulates the phenotyping of individuals in multiple environments, without :math:`G \times E` interactions. In the example below, we create a ``G_E_Phenotyping`` object where we test genotypes in 4 environments, each environment having 1 replication.
+We also create a genotyping protocol that converts phased genotypes to unphased genotypes.
 
 .. code-block:: python
 
-    # create a phenotyping protocol object to simulate 4 environments with 1 rep each
-    ptprot = G_E_Phenotyping(gpmod = algmod, nenv = 4, nrep = 1)
+    # create a genotyping protocol
+    gtprot = DenseUnphasedGenotyping()
 
-To finalize construction of our phenotyping protocol object, we'll set the narrow sense heritability for a single observation using our starting breeding population.
+To simulate phenotypes, we create a simple :math:`G+E` phenotyping protocol that phenotypes individuals in 4 locations, 1 replication each location. We use the founding population we have just created with random mating to set the narrow sense heritability at the single plot level to 0.4. With 4 replications, this increases the heritability to approximately 0.7 to begin.
 
 .. code-block:: python
 
-    # set the trait heritability using the initial population
-    # initial population fits heritability assumptions of being randomly mated
+    # create a phenotyping protocol
+    ptprot = G_E_Phenotyping(algmod, 4, 1)
     ptprot.set_h2(0.4, fndr_pgmat)
 
-Create a Breeding Value Estimation Protocol Object
---------------------------------------------------
-
-Next, we'll create a breeding value estimation object to take phenotypes simulated by our ``G_E_Phenotyping`` object and transform them into estimated breeding values. For this example, we'll simply calculate breeding values using the mean phenotypic value since our individuals are all inbred and we have no :math:`G \times E` effects.
+Next, we create a breeding value estimation protocol that simply uses means to estimate breeding value.
 
 .. code-block:: python
 
-    # estimate breeding value using mean across environments for simplicity
-    bvprot = MeanPhenotypicBreedingValue(
-        taxa_col = "taxa",
-        taxa_grp_col = "taxa_grp",
-        trait_cols = "Syn1",
-    )
+    # create a breeding value estimation protocol
+    bvprot = MeanPhenotypicBreedingValue("taxa", "taxa_grp", trait)
 
 Create a Within-Family Selection Function
 -----------------------------------------
 
-For this simulation, we'll add a slight twist to our previous example. Instead of considering all individuals for selection, we'll select a top percentage from each family and then only consider those members as candidates for selection. This limits the number of individuals that a given family can contribute to the next generation. The function below selects the best individuals within each family and returns a set of indices which can be used to determine parental candidates.
+Next, we create a custom function to manually select individuals within families based on their breeding values. This function selects the top ``nindiv`` individuals within each family and outputs a set of indices corresponding to these individuals.
 
 .. code-block:: python
 
-    # define function to do within family selection
-    def within_family_selection(bvmat: DenseBreedingValueMatrix, nindiv: int):
-        order = bvmat.mat.argsort(0)[:,0]
-        mask = numpy.full(len(order), False, bool)
+    # define function to do within family selection based on yield
+    def within_family_selection(bvmat: DenseBreedingValueMatrix, nindiv: int) -> numpy.ndarray:
+        order = numpy.arange(bvmat.ntaxa)
+        value = bvmat.mat[:,0] # get yield breeding values
+        indices = []
         groups = numpy.unique(bvmat.taxa_grp)
         for group in groups:
-            tmp = order[bvmat.taxa_grp == group]
-            tmp.sort()
-            ix = tmp[:nindiv]
-            for i in ix:
-                mask[order == i] = True
-        indices = numpy.flatnonzero(mask)
+            mask = bvmat.taxa_grp == group
+            tmp_order = order[mask]
+            tmp_value = value[mask]
+            value_argsort = tmp_value.argsort()
+            ix = value_argsort[::-1][:nindiv]
+            indices.append(tmp_order[ix])
+        indices = numpy.concatenate(indices)
         return indices
+
+Create Cohort Structure
+-----------------------
+
+In the next step, we create a cohort structure as described at the beginning of this section. We utilize dictionaries to keep track of our cohorts and populations.
+
+.. code-block:: python
+
+    # create a dictionary to store founder individuals
+    fndr_genome = {"cand":None,   "main":None,   "queue":[]}
+    fndr_geno   = {"cand":None,   "main":None,   "queue":[]}
+    fndr_pheno  = {"cand":None,   "main":None}
+    fndr_bval   = {"cand":None,   "main":None}
+    fndr_gmod   = {"cand":algmod, "main":algmod, "true":algmod}
+
+In the code block below, we define a helper function to help us create initial cohorts of individuals from our starting randomly mated population.
+
+.. code-block:: python
+
+    # define a helper function to help make cohorts of individuals
+    def cohort(
+            mate2waydh: MatingProtocol, 
+            pgmat: DensePhasedGenotypeMatrix, 
+            ncross: int, 
+            nparent: int,
+            nmating: int, 
+            nprogeny: int
+        ) -> DensePhasedGenotypeMatrix:
+        # sample indicies of individuals and reshape for input into mating protocol
+        xconfix = numpy.random.choice(pgmat.ntaxa, ncross * nparent, replace = False)
+        xconfig = xconfix.reshape(ncross, nparent)
+        # mate individuals
+        out = mate2waydh.mate(pgmat, xconfig, nmating, nprogeny)
+        return out
+
+Next, we fill our cohort queue and construct the ``"main"`` and ``"cand"`` populations from the queue.
+
+.. code-block:: python
+
+    # fill queue with cohort genomes derived from randomly mating the founders
+    fndr_genome["queue"] = [cohort(mate2waydh, fndr_pgmat, ncross, nparent, nmating, nprogeny) for _ in range(qlen)]
+
+    # construct the main population genomes from the first three cohorts in the queue
+    fndr_genome["main"] = DensePhasedGenotypeMatrix.concat_taxa(fndr_genome["queue"][0:3])
+
+    # genotype individuals to fill the genotyping queue
+    fndr_geno["queue"] = [gtprot.genotype(genome) for genome in fndr_genome["queue"]]
+
+    # construct the main population genotypes from the first three cohorts in the queue
+    fndr_geno["main"] = DenseGenotypeMatrix.concat_taxa(fndr_geno["queue"][0:3])
+
+    # phenotype the main population
+    fndr_pheno["main"] = ptprot.phenotype(fndr_genome["main"])
+
+    # calculate breeding values for the main population
+    fndr_bval["main"] = bvprot.estimate(fndr_pheno["main"], fndr_geno["main"])
+
+    # calculate indices for within family selection to get parental candidates
+    ix = within_family_selection(fndr_bval["main"], 4) # select top 5%
+
+    # select parental candidates
+    fndr_genome["cand"] = fndr_genome["main"].select_taxa(ix)
+    fndr_geno["cand"]   = fndr_geno["main"].select_taxa(ix)
+    fndr_bval["cand"]   = fndr_bval["main"].select_taxa(ix)
+
+Create a Burn-In Selection Protocol Object
+------------------------------------------
+
+Next, we create a selection protocol for our burn-in loop. This selects individuals with the best breeding values for our synthetic trait.
+
+.. code-block:: python
+
+    # use a hillclimber for the single-objective optimization algorithm
+    soalgo = SortingSubsetOptimizationAlgorithm()
+
+    # create a selection protocol that selects based on EBVs with an inbreeding constraint
+    burnin_selprot = EstimatedBreedingValueSubsetSelection(
+        ntrait       = 1,            # number of expected traits
+        unscale      = True,         # unscale breeding values to human-readable format
+        ncross       = 20,           # number of cross configurations
+        nparent      = 2,            # number of parents per cross configuration
+        nmating      = 1,            # number of matings per cross configuration
+        nprogeny     = 80,           # number of progeny per mating event
+        nobj         = 1,            # number of objectives == 1 == yield
+        soalgo       = soalgo,       # use sorting algorithm to solve single-objective problem
+    )
+
+Running a Population Burn-in until MEH is slightly less than 0.30
+-----------------------------------------------------------------
+
+Finally, we perform selection on our populations until the mean expected heterozygosity of the ``"main"`` population reaches slightly less than 0.30. This in effect sets the starting genetic diversity for our simulations so that they are not as dependent on the set of founders that were initially randomly selected.
+
+.. code-block:: python
+
+    i = 0
+    while fndr_genome["main"].meh() > 0.30:
+        # parental selection: select parents from parental candidates
+        selcfg = burnin_selprot.select(
+            pgmat = fndr_genome["cand"],
+            gmat  = fndr_geno["cand"],
+            ptdf  = fndr_pheno["cand"],
+            bvmat = fndr_bval["cand"],
+            gpmod = fndr_gmod["cand"],
+            t_cur = 0,
+            t_max = 0,
+        )
+        # mate: create new genomes; discard oldest cohort; concat new main population
+        new_genome = mate2waydh.mate(
+            pgmat    = selcfg.pgmat,
+            xconfig  = selcfg.xconfig,
+            nmating  = selcfg.nmating,
+            nprogeny = selcfg.nprogeny,
+        )
+        fndr_genome["queue"].append(new_genome)
+        discard = fndr_genome["queue"].pop(0)
+        fndr_genome["main"] = DensePhasedGenotypeMatrix.concat_taxa(fndr_genome["queue"][0:3])
+        # evaluate: genotype new genomes; discard oldest cohort; concat new main population
+        new_geno = gtprot.genotype(new_genome)
+        fndr_geno["queue"].append(new_geno)
+        discard = fndr_geno["queue"].pop(0)
+        fndr_geno["main"] = DenseGenotypeMatrix.concat_taxa(fndr_geno["queue"][0:3])
+        # evaluate: phenotype main population
+        fndr_pheno["main"] = ptprot.phenotype(fndr_genome["main"])
+        # evaluate: calculate breeding values for the main population
+        fndr_bval["main"] = bvprot.estimate(fndr_pheno["main"], fndr_geno["main"])
+        # survivor selection: select parental candidate indices from main population
+        ix = within_family_selection(fndr_bval["main"], 4) # select top 5%
+        # survivor selection: select parental candidates from main population
+        fndr_genome["cand"] = fndr_genome["main"].select_taxa(ix)
+        fndr_geno["cand"] = fndr_geno["main"].select_taxa(ix)
+        fndr_bval["cand"] = fndr_bval["main"].select_taxa(ix)
+        print("Burn-in:", i+1)
+        i += 1
+
+    print("Starting MEH:", fndr_genome["main"].meh())
+
+Simulation Setup
+================
+
+In the sections above, we created the starting point for our simulations. In these next sections, we'll test two selection strategies: one constrained by inbreeding, and another unconstrained by inbreeding. We'll plot and compare the results of these simulations.
 
 Create a Constrained Selection Protocol Object
 ----------------------------------------------
 
-Next, we'll create a constrained selection protocol object. Since we want to constrain our selection using inbreeding as a constraint, we'll use the ``OptimalContributionSubsetSelection`` class to do this.
-
-The first thing that the optimal contribution selection protocol will need is a ``CoancestryMatrixFactory`` object from which it can construct the coancestry matrices required for optimization. We'll create an identity-by-state coancestry matrix factory using the ``DenseMolecularCoancestryMatrixFactory`` class.
+First, we'll define a selection protocol where individuals are selected on their breeding values subject to an inbreeding constraint specified by the user. We'll use the ``OptimalContributionSubsetSelection`` class to accomplish this task and provide objective and inequality constraint violation transformation functions to create such a scenario.
 
 .. code-block:: python
 
     # create a dense molecular coancestry matrix factory
     cmatfcty = DenseMolecularCoancestryMatrixFactory()
-
-Next, we need to create a transformation function which will convert the latent vector generated by the ``OptimalContributionSubsetSelectionProblem`` class into an objective vector. The latent function's return value is of the form: ``[kinship, trait1, ..., traitn]``. The transformation function defined below extracts the trait values from the latent function so that they can serve as objective value(s).
-
-.. code-block:: python
 
     # define an objective transformation function
     def obj_trans(
@@ -289,10 +429,6 @@ Next, we need to create a transformation function which will convert the latent 
         # extract trait(s) as objective(s)
         return latentvec[1:]
 
-Afterwards, we'll create a transformation function that will conver the latent vector generated by the problem class into an inequality constraint violation vector. We'll define a function that examines the inbreeding element of the latent vector and calculates a penalty if the value exceeds a provided maximum inbreeding value, ``maxinb``.
-
-.. code-block:: python
-
     # define an inequality constraint violation function
     def ineqcv_trans(
             decnvec: numpy.ndarray,
@@ -322,19 +458,11 @@ Afterwards, we'll create a transformation function that will conver the latent v
         # return inequality constraint violation array
         return out
 
-Next, we'll define a custom single-objective optimization algorithm different from the default of the ``OptimalContributionSubsetSelection`` class. We'll use a steepest descent hill climber algorithm for fast optimization. 
-
-.. code-block:: python
-
     # use a hillclimber for the single-objective optimization algorithm
     soalgo = SteepestDescentSubsetHillClimber()
 
-Finally, we'll construct a constrained selection protocol object using our inputs. For this simulation, we want to select the top 40 individuals and pair them into 20 two-way crosses. Each cross will generate 80 progenies.
-
-.. code-block:: python
-
     # create a selection protocol that selects based on EBVs with an inbreeding constraint
-    constrained_selprot = OptimalContributionSubsetSelection(
+    const_selprot = OptimalContributionSubsetSelection(
         ntrait       = 1,            # number of expected traits
         cmatfcty     = cmatfcty,     # coancestry/kinship matrix factory
         unscale      = True,         # unscale breeding values to human-readable format
@@ -355,7 +483,7 @@ Finally, we'll construct a constrained selection protocol object using our input
 Create an Unconstrained Selection Protocol Object
 -------------------------------------------------
 
-We want to compare the results of our constrained selection against the selection results for an unconstrained selection. Below, we create an unconstrained selection protocol that simply selects the top individuals using a sorting algorithm.
+Second, we'll define a selection protocol where individuals are selected solely on their breeding values. We'll use the ``EstimatedBreedingValueSubsetSelection`` to accomplish this task.
 
 .. code-block:: python
 
@@ -363,8 +491,9 @@ We want to compare the results of our constrained selection against the selectio
     soalgo = SortingSubsetOptimizationAlgorithm()
 
     # create a selection protocol that selects based on EBVs with an inbreeding constraint
-    unconstrained_selprot = EstimatedBreedingValueSubsetSelection(
+    unconst_selprot = EstimatedBreedingValueSubsetSelection(
         ntrait       = 1,            # number of expected traits
+        unscale      = True,         # unscale breeding values to human-readable format
         ncross       = 20,           # number of cross configurations
         nparent      = 2,            # number of parents per cross configuration
         nmating      = 1,            # number of matings per cross configuration
@@ -373,285 +502,275 @@ We want to compare the results of our constrained selection against the selectio
         soalgo       = soalgo,       # use sorting algorithm to solve single-objective problem
     )
 
-Simulate Constrained and Unconstrained Phenotypic Selection for 60 Generations
-==============================================================================
+Make a Statistics Recording Helper Function
+-------------------------------------------
 
-After creating our constrained and unconstrained selection objects, we'll want to simulate breeding using our founder population as a starting point for both simulations.
+To assist in record keeping, we'll create a function to help us record simulation metrics and store them into a dictionary.
 
-Constrained Simulation Logbooks
--------------------------------
+.. code-block:: python
 
-For the constrained selection simulations, we'll create a dictionary to serve as a logbook for our simulations.
+    # make recording helper function
+    def record(lbook: dict, gen: int, genome: dict, geno: dict, pheno: dict, bval: dict, gmod: dict) -> None:
+        lbook["gen"].append(gen)
+        lbook["main_meh"].append(genome["main"].meh())
+        ################### main true lower selection limits ###################
+        tmp = gmod["true"].lsl(genome["main"], unscale = True)
+        lbook["main_Syn1_lsl"].append(tmp[0])
+        ################### main true lower selection limits ###################
+        tmp = gmod["true"].usl(genome["main"], unscale = True)
+        lbook["main_Syn1_usl"].append(tmp[0])
+        ###################### main true breeding values #######################
+        tbv = gmod["true"].gebv(genome["main"])
+        ################## main true breeding value minimums ###################
+        tmp = tbv.tmin(unscale = True)
+        lbook["main_Syn1_tbv_min"].append(tmp[0])
+        #################### main true breeding value means ####################
+        tmp = tbv.tmean(unscale = True)
+        lbook["main_Syn1_tbv_mean"].append(tmp[0])
+        ################## main true breeding value maximums ###################
+        tmp = tbv.tmax(unscale = True)
+        lbook["main_Syn1_tbv_max"].append(tmp[0])
+        ############# main true breeding value standard deviations #############
+        tmp = tbv.tstd(unscale = True)
+        lbook["main_Syn1_tbv_std"].append(tmp[0])
+        ##################### main true genetic variances ######################
+        tmp = gmod["true"].var_A(genome["main"])
+        lbook["main_Syn1_tbv_var_A"].append(tmp[0])
+        ###################### main true genic variances #######################
+        tmp = gmod["true"].var_a(genome["main"])
+        lbook["main_Syn1_tbv_var_a"].append(tmp[0])
+        #################### main estimated breeding values ####################
+        ebv = bval["main"]
+        ################ main estimated breeding value minimums ################
+        tmp = ebv.tmin(unscale = True)
+        lbook["main_Syn1_ebv_min"].append(tmp[0])
+        #################### main true breeding value means ####################
+        tmp = ebv.tmean(unscale = True)
+        lbook["main_Syn1_ebv_mean"].append(tmp[0])
+        ################## main true breeding value maximums ###################
+        tmp = ebv.tmax(unscale = True)
+        lbook["main_Syn1_ebv_max"].append(tmp[0])
+        ############# main true breeding value standard deviations #############
+        tmp = ebv.tstd(unscale = True)
+        lbook["main_Syn1_ebv_std"].append(tmp[0])
+
+Simulate Constrained Phenotypic Selection for 60 Generations
+============================================================
+
+The next subsections detail simulations in the constrained scenario.
+
+Copy Founders
+-------------
+
+First we'll copy our founder populations so that we don't modify them and can use them for repeated simulations.
+
+.. code-block:: python
+
+    # deep copy founder populations, bvals, etc. so we can replicate if needed
+    simul_genome = copy.deepcopy(fndr_genome)
+    simul_geno   = copy.deepcopy(fndr_geno)
+    simul_pheno  = copy.deepcopy(fndr_pheno)
+    simul_bval   = copy.deepcopy(fndr_bval)
+    simul_gmod   = copy.deepcopy(fndr_gmod)
+
+Rudimentary Logbooks
+--------------------
+
+Then, we'll make a dictionary logbook to store simulation metrics.
 
 .. code-block:: python
 
     # make a dictionary logbook
-    constrained_lbook = {
-        "gen"           : [],
-        "meh"           : [],
-        "lsl"           : [],
-        "usl"           : [],
-        "tbv_min_Syn1"  : [],
-        "tbv_mean_Syn1" : [],
-        "tbv_max_Syn1"  : [],
-        "tbv_std_Syn1"  : [],
-        "ebv_min_Syn1"  : [],
-        "ebv_mean_Syn1" : [],
-        "ebv_max_Syn1"  : [],
-        "ebv_std_Syn1"  : [],
+    const_lbook = {
+        "gen"                   : [],
+        "main_meh"              : [],
+        "main_Syn1_lsl"         : [],
+        "main_Syn1_usl"         : [],
+        "main_Syn1_tbv_min"     : [],
+        "main_Syn1_tbv_mean"    : [],
+        "main_Syn1_tbv_max"     : [],
+        "main_Syn1_tbv_std"     : [],
+        "main_Syn1_tbv_var_A"   : [],
+        "main_Syn1_tbv_var_a"   : [],
+        "main_Syn1_ebv_min"     : [],
+        "main_Syn1_ebv_mean"    : [],
+        "main_Syn1_ebv_max"     : [],
+        "main_Syn1_ebv_std"     : [],
     }
 
-Constrained Simulation Initialization
--------------------------------------
+Simulation Main Loop
+--------------------
 
-Next, we'll deep copy our founder populations so we can reuse our founder populations in a simulation following the current constrained optimization.
-
-.. code-block:: python
-
-    # copy founder population
-    pgmat = fndr_pgmat.deepcopy()
-
-We'll phenotype and calculate breeding values for each individual.
+Next, we'll simulate our breeding program for 60 generations. We'll start at an inbreeding constraint of 0.84 or less to begin and gradually increase the maximum allowed inbreeding to 1.0 (complete homozygosity; zero genetic diversity) by the end of the simulation.
 
 .. code-block:: python
 
-    # initial phenotyping
-    pheno_df = ptprot.phenotype(pgmat)
+    # record initial statistics
+    record(const_lbook, 0, simul_genome, simul_geno, simul_pheno, simul_bval, simul_gmod)
 
-    # initial breeding value estimation
-    bvmat = bvprot.estimate(pheno_df, pgmat)
+    # create constraint change over time
+    # 0.84 manually determined from Pareto frontier examination
+    maxinb = numpy.linspace(0.84, 1, nsimul+1)
 
-Using our within family selection function, we'll select the top 10% of individuals in each family to serve as parental candidates. We'll select the genotypes and breeding values for these candidates to serve as inputs into our selection protocol's ``select`` method.
-
-.. code-block:: python
-
-    # get candidate indices using within family selection
-    indices = within_family_selection(bvmat, 8) # select top 10%
-
-    # get parental candidates
-    cand_pgmat = pgmat.select_taxa(indices)
-    cand_bvmat = bvmat.select_taxa(indices)
-
-Finally, we'll calculate and store some statistics into our logbook dictionary.
-
-.. code-block:: python
-
-    # log metrics
-    constrained_lbook["gen"].append(0)
-    constrained_lbook["meh"].append(pgmat.meh())
-    constrained_lbook["lsl"].append(algmod.lsl(pgmat)[0])
-    constrained_lbook["usl"].append(algmod.usl(pgmat)[0])
-    tbv = algmod.gebv(pgmat).unscale()
-    constrained_lbook["tbv_min_Syn1"].append(tbv.min(0)[0])
-    constrained_lbook["tbv_mean_Syn1"].append(tbv.mean(0)[0])
-    constrained_lbook["tbv_max_Syn1"].append(tbv.max(0)[0])
-    constrained_lbook["tbv_std_Syn1"].append(tbv.std(0)[0])
-    ebv = bvmat.unscale()
-    constrained_lbook["ebv_min_Syn1"].append(ebv.min(0)[0])
-    constrained_lbook["ebv_mean_Syn1"].append(ebv.mean(0)[0])
-    constrained_lbook["ebv_max_Syn1"].append(ebv.max(0)[0])
-    constrained_lbook["ebv_std_Syn1"].append(ebv.std(0)[0])
-    print("Gen: {0}".format(0))
-
-Constrained Simulation Main Loop
---------------------------------
-
-For our main simulation loop, we'll do similar things to what we did in the the initialization steps above. For our selection protocol, we'll gradually increase the maximum allowed inbreeding from 0.77 to 1.0 over the course of 60 generations. 
-
-.. code-block:: python
-
-    # number of generations for which to simulate selection
-    ngen = 60
-
-    # create evenly spaced maximum inbreeding allowed across ``ngen`` generations
-    maxinb = numpy.linspace(0.77, 1.0, ngen+1)
-
-    # simulate for ``ngen`` generations
-    for gen in range(1,ngen+1):
-        # get candidate mask using within family selection
-        indices = within_family_selection(bvmat, 8) # select top 10%
-        # get parental candidates
-        cand_pgmat = pgmat.select_taxa(indices)
-        cand_bvmat = bvmat.select_taxa(indices)
+    # main simulation loop
+    for gen in range(1,nsimul+1):
         # set the inbreeding constraint
-        constrained_selprot.ineqcv_trans_kwargs["maxinb"] = maxinb[gen]
-        # select individuals
-        selcfg = constrained_selprot.select(
-            pgmat   = cand_pgmat,   # genomes from which to build SelectionConfiguration
-            gmat    = cand_pgmat,   # genotypes (required)
-            ptdf    = None,         # not required by this selection protocol
-            bvmat   = cand_bvmat,   # breeding values (required)
-            gpmod   = None,         # not required by this selection protocol
-            t_cur   = 0,            # not required by this selection protocol
-            t_max   = 0,            # not required by this selection protocol
+        const_selprot.ineqcv_trans_kwargs["maxinb"] = maxinb[gen]
+        # parental selection: select parents from parental candidates
+        selcfg = const_selprot.select(
+            pgmat = simul_genome["cand"],
+            gmat  = simul_geno["cand"],
+            ptdf  = simul_pheno["cand"],
+            bvmat = simul_bval["cand"],
+            gpmod = simul_gmod["cand"],
+            t_cur = 0,
+            t_max = 0,
         )
-        # mate individuals
-        pgmat = mate2waydh.mate(
-            pgmat = selcfg.pgmat,
-            xconfig = selcfg.xconfig,
-            nmating = selcfg.nmating,
+        # mate: create new genomes; discard oldest cohort; concat new main population
+        new_genome = mate2waydh.mate(
+            pgmat    = selcfg.pgmat,
+            xconfig  = selcfg.xconfig,
+            nmating  = selcfg.nmating,
             nprogeny = selcfg.nprogeny,
         )
-        # phenotype progenies
-        pheno_df = ptprot.phenotype(pgmat)
-        # estimate breeding values for progenies and align to pgmat
-        bvmat = bvprot.estimate(pheno_df, pgmat)
-        # log metrics
-        constrained_lbook["gen"].append(gen)
-        constrained_lbook["meh"].append(pgmat.meh())
-        constrained_lbook["lsl"].append(algmod.lsl(pgmat)[0])
-        constrained_lbook["usl"].append(algmod.usl(pgmat)[0])
-        tbv = algmod.gebv(pgmat).unscale()
-        constrained_lbook["tbv_min_Syn1"].append(tbv.min(0)[0])
-        constrained_lbook["tbv_mean_Syn1"].append(tbv.mean(0)[0])
-        constrained_lbook["tbv_max_Syn1"].append(tbv.max(0)[0])
-        constrained_lbook["tbv_std_Syn1"].append(tbv.std(0)[0])
-        ebv = bvmat.unscale()
-        constrained_lbook["ebv_min_Syn1"].append(ebv.min(0)[0])
-        constrained_lbook["ebv_mean_Syn1"].append(ebv.mean(0)[0])
-        constrained_lbook["ebv_max_Syn1"].append(ebv.max(0)[0])
-        constrained_lbook["ebv_std_Syn1"].append(ebv.std(0)[0])
-        print("Gen: {0}".format(gen))
+        simul_genome["queue"].append(new_genome)
+        discard = simul_genome["queue"].pop(0)
+        simul_genome["main"] = DensePhasedGenotypeMatrix.concat_taxa(simul_genome["queue"][0:3])
+        # evaluate: genotype new genomes; discard oldest cohort; concat new main population
+        new_geno = gtprot.genotype(new_genome)
+        simul_geno["queue"].append(new_geno)
+        discard = simul_geno["queue"].pop(0)
+        simul_geno["main"] = DenseGenotypeMatrix.concat_taxa(simul_geno["queue"][0:3])
+        # evaluate: phenotype main population
+        simul_pheno["main"] = ptprot.phenotype(simul_genome["main"])
+        # evaluate: calculate breeding values for the main population
+        simul_bval["main"] = bvprot.estimate(simul_pheno["main"], simul_geno["main"])
+        # survivor selection: select parental candidate indices from main population
+        ix = within_family_selection(simul_bval["main"], 4) # select top 5%
+        # survivor selection: select parental candidates from main population
+        simul_genome["cand"] = simul_genome["main"].select_taxa(ix)
+        simul_geno["cand"] = simul_geno["main"].select_taxa(ix)
+        simul_bval["cand"] = simul_bval["main"].select_taxa(ix)
+        # record statistics
+        record(const_lbook, gen, simul_genome, simul_geno, simul_pheno, simul_bval, simul_gmod)
+        print("Generation:", gen)
 
-Saving Constrained Simulation Results to a File
------------------------------------------------
+Saving Results to a File
+------------------------
 
-Finally, we'll save the results of the constrained optimization to a CSV file for future analysis.
+Finally, we'll save the results of our simulation to a CSV file.
 
 .. code-block:: python
 
     # create output dataframe and save
-    constrained_lbook_df = pandas.DataFrame(constrained_lbook)
-    constrained_lbook_df.to_csv("constrained_lbook.csv", sep = ",", index = False)
+    const_lbook_df = pandas.DataFrame(const_lbook)
+    const_lbook_df.to_csv("const_lbook.csv", sep = ",", index = False)
 
-Unconstrained Simulation Logbook
---------------------------------
+Simulate Unconstrained Phenotypic Selection for 60 Generations
+==============================================================
 
-For our unconstrained simulations, we'll make another dictionary to serve as a rudimentary logbook.
+The next subsections detail simulations in the unconstrained scenario.
+
+Copy Founders
+-------------
+
+As before, we'll copy our founder populations so that we don't modify them and can use them for repeated simulations.
+
+.. code-block:: python
+
+    # deep copy founder populations, bvals, etc. so we can replicate if needed
+    simul_genome = copy.deepcopy(fndr_genome)
+    simul_geno   = copy.deepcopy(fndr_geno)
+    simul_pheno  = copy.deepcopy(fndr_pheno)
+    simul_bval   = copy.deepcopy(fndr_bval)
+    simul_gmod   = copy.deepcopy(fndr_gmod)
+
+Rudimentary Logbooks
+--------------------
+
+Then, we'll make a dictionary logbook to store simulation metrics.
 
 .. code-block:: python
 
     # make a dictionary logbook
-    unconstrained_lbook = {
-        "gen"           : [],
-        "meh"           : [],
-        "lsl"           : [],
-        "usl"           : [],
-        "tbv_min_Syn1"  : [],
-        "tbv_mean_Syn1" : [],
-        "tbv_max_Syn1"  : [],
-        "tbv_std_Syn1"  : [],
-        "ebv_min_Syn1"  : [],
-        "ebv_mean_Syn1" : [],
-        "ebv_max_Syn1"  : [],
-        "ebv_std_Syn1"  : [],
+    unconst_lbook = {
+        "gen"                   : [],
+        "main_meh"              : [],
+        "main_Syn1_lsl"         : [],
+        "main_Syn1_usl"         : [],
+        "main_Syn1_tbv_min"     : [],
+        "main_Syn1_tbv_mean"    : [],
+        "main_Syn1_tbv_max"     : [],
+        "main_Syn1_tbv_std"     : [],
+        "main_Syn1_tbv_var_A"   : [],
+        "main_Syn1_tbv_var_a"   : [],
+        "main_Syn1_ebv_min"     : [],
+        "main_Syn1_ebv_mean"    : [],
+        "main_Syn1_ebv_max"     : [],
+        "main_Syn1_ebv_std"     : [],
     }
 
-Unconstrained Simulation Initialization
----------------------------------------
+Simulation Main Loop
+--------------------
 
-To initialize our simulations, we'll do the same things as we did in the constrained simulation initialization setup.
-
-.. code-block:: python
-
-    # copy founder population
-    pgmat = fndr_pgmat.deepcopy()
-
-    # initial phenotyping
-    pheno_df = ptprot.phenotype(pgmat)
-
-    # initial breeding value estimation
-    bvmat = bvprot.estimate(pheno_df, pgmat)
-
-    # get candidate indices using within family selection
-    indices = within_family_selection(bvmat, 8) # select top 10%
-
-    # get parental candidates
-    cand_pgmat = pgmat.select_taxa(indices)
-    cand_bvmat = bvmat.select_taxa(indices)
-
-    # log metrics
-    unconstrained_lbook["gen"].append(0)
-    unconstrained_lbook["meh"].append(pgmat.meh())
-    unconstrained_lbook["lsl"].append(algmod.lsl(pgmat)[0])
-    unconstrained_lbook["usl"].append(algmod.usl(pgmat)[0])
-    tbv = algmod.gebv(pgmat).unscale()
-    unconstrained_lbook["tbv_min_Syn1"].append(tbv.min(0)[0])
-    unconstrained_lbook["tbv_mean_Syn1"].append(tbv.mean(0)[0])
-    unconstrained_lbook["tbv_max_Syn1"].append(tbv.max(0)[0])
-    unconstrained_lbook["tbv_std_Syn1"].append(tbv.std(0)[0])
-    ebv = bvmat.unscale()
-    unconstrained_lbook["ebv_min_Syn1"].append(ebv.min(0)[0])
-    unconstrained_lbook["ebv_mean_Syn1"].append(ebv.mean(0)[0])
-    unconstrained_lbook["ebv_max_Syn1"].append(ebv.max(0)[0])
-    unconstrained_lbook["ebv_std_Syn1"].append(ebv.std(0)[0])
-    print("Gen: {0}".format(0))
-
-Unconstrained Simulation Main Loop
-----------------------------------
-
-Our main simulation loop will be almost identical to that of the constrained scenario, except we will not have any inbreeding constraints to worry about.
+Next, we'll simulate our breeding program for 60 generations.
 
 .. code-block:: python
 
-    # number of generations for which to simulate selection
-    ngen = 60
+    # record initial statistics
+    record(unconst_lbook, 0, simul_genome, simul_geno, simul_pheno, simul_bval, simul_gmod)
 
-    # simulate for ``ngen`` generations
-    for gen in range(1,ngen+1):
-        # get candidate mask using within family selection
-        indices = within_family_selection(bvmat, 8) # select top 10%
-        # get parental candidates
-        cand_pgmat = pgmat.select_taxa(indices)
-        cand_bvmat = bvmat.select_taxa(indices)
-        # select individuals
-        selcfg = unconstrained_selprot.select(
-            pgmat   = cand_pgmat,   # genomes from which to build SelectionConfiguration
-            gmat    = cand_pgmat,   # genotypes (required)
-            ptdf    = None,         # not required by this selection protocol
-            bvmat   = cand_bvmat,   # breeding values (required)
-            gpmod   = None,         # not required by this selection protocol
-            t_cur   = 0,            # not required by this selection protocol
-            t_max   = 0,            # not required by this selection protocol
+    # main simulation loop
+    for gen in range(1,nsimul+1):
+        # parental selection: select parents from parental candidates
+        selcfg = unconst_selprot.select(
+            pgmat = simul_genome["cand"],
+            gmat  = simul_geno["cand"],
+            ptdf  = simul_pheno["cand"],
+            bvmat = simul_bval["cand"],
+            gpmod = simul_gmod["cand"],
+            t_cur = 0,
+            t_max = 0,
         )
-        # mate individuals
-        pgmat = mate2waydh.mate(
-            pgmat = selcfg.pgmat,
-            xconfig = selcfg.xconfig,
-            nmating = selcfg.nmating,
+        # mate: create new genomes; discard oldest cohort; concat new main population
+        new_genome = mate2waydh.mate(
+            pgmat    = selcfg.pgmat,
+            xconfig  = selcfg.xconfig,
+            nmating  = selcfg.nmating,
             nprogeny = selcfg.nprogeny,
         )
-        # phenotype progenies
-        pheno_df = ptprot.phenotype(pgmat)
-        # estimate breeding values for progenies and align to pgmat
-        bvmat = bvprot.estimate(pheno_df, pgmat)
-        # log metrics
-        unconstrained_lbook["gen"].append(gen)
-        unconstrained_lbook["meh"].append(pgmat.meh())
-        unconstrained_lbook["lsl"].append(algmod.lsl(pgmat)[0])
-        unconstrained_lbook["usl"].append(algmod.usl(pgmat)[0])
-        tbv = algmod.gebv(pgmat).unscale()
-        unconstrained_lbook["tbv_min_Syn1"].append(tbv.min(0)[0])
-        unconstrained_lbook["tbv_mean_Syn1"].append(tbv.mean(0)[0])
-        unconstrained_lbook["tbv_max_Syn1"].append(tbv.max(0)[0])
-        unconstrained_lbook["tbv_std_Syn1"].append(tbv.std(0)[0])
-        ebv = bvmat.unscale()
-        unconstrained_lbook["ebv_min_Syn1"].append(ebv.min(0)[0])
-        unconstrained_lbook["ebv_mean_Syn1"].append(ebv.mean(0)[0])
-        unconstrained_lbook["ebv_max_Syn1"].append(ebv.max(0)[0])
-        unconstrained_lbook["ebv_std_Syn1"].append(ebv.std(0)[0])
-        print("Gen: {0}".format(gen))
+        simul_genome["queue"].append(new_genome)
+        discard = simul_genome["queue"].pop(0)
+        simul_genome["main"] = DensePhasedGenotypeMatrix.concat_taxa(simul_genome["queue"][0:3])
+        # evaluate: genotype new genomes; discard oldest cohort; concat new main population
+        new_geno = gtprot.genotype(new_genome)
+        simul_geno["queue"].append(new_geno)
+        discard = simul_geno["queue"].pop(0)
+        simul_geno["main"] = DenseGenotypeMatrix.concat_taxa(simul_geno["queue"][0:3])
+        # evaluate: phenotype main population
+        simul_pheno["main"] = ptprot.phenotype(simul_genome["main"])
+        # evaluate: calculate breeding values for the main population
+        simul_bval["main"] = bvprot.estimate(simul_pheno["main"], simul_geno["main"])
+        # survivor selection: select parental candidate indices from main population
+        ix = within_family_selection(simul_bval["main"], 4) # select top 5%
+        # survivor selection: select parental candidates from main population
+        simul_genome["cand"] = simul_genome["main"].select_taxa(ix)
+        simul_geno["cand"] = simul_geno["main"].select_taxa(ix)
+        simul_bval["cand"] = simul_bval["main"].select_taxa(ix)
+        # record statistics
+        record(unconst_lbook, gen, simul_genome, simul_geno, simul_pheno, simul_bval, simul_gmod)
+        print("Generation:", gen)
 
-Saving Unconstrained Simulation Results to a File
--------------------------------------------------
+Saving Results to a File
+------------------------
 
-Finally, as before, we'll save the results to a CSV file for future analysis.
+Finally, we'll save the results of our simulation to a CSV file.
 
 .. code-block:: python
 
     # create output dataframe and save
-    unconstrained_lbook_df = pandas.DataFrame(unconstrained_lbook)
-    unconstrained_lbook_df.to_csv("unconstrained_lbook.csv", sep = ",", index = False)
+    unconst_lbook_df = pandas.DataFrame(unconst_lbook)
+    unconst_lbook_df.to_csv("unconst_lbook.csv", sep = ",", index = False)
 
 Visualizing Breeding Program Simulation Results with ``matplotlib``
 ===================================================================
@@ -666,12 +785,12 @@ Using the results, we'll visualize the population mean true breeding values for 
     # create static figure
     fig = pyplot.figure()
     ax = pyplot.axes()
-    ax.plot(constrained_lbook_df["gen"],   constrained_lbook_df["tbv_mean_Syn1"],   '-b',  label = "Const. Sel.: Mean Pop. TBV")
-    ax.plot(constrained_lbook_df["gen"],   constrained_lbook_df["lsl"],             ':b',  label = "Const. Sel.: LSL")
-    ax.plot(constrained_lbook_df["gen"],   constrained_lbook_df["usl"],             '--b', label = "Const. Sel.: USL")
-    ax.plot(unconstrained_lbook_df["gen"], unconstrained_lbook_df["tbv_mean_Syn1"], '-r',  label = "Unconst. Sel.: Mean Pop. TBV")
-    ax.plot(unconstrained_lbook_df["gen"], unconstrained_lbook_df["lsl"],           ':r',  label = "Unconst. Sel.: LSL")
-    ax.plot(unconstrained_lbook_df["gen"], unconstrained_lbook_df["usl"],           '--r', label = "Unconst. Sel.: USL")
+    ax.plot(const_lbook_df["gen"],   const_lbook_df["main_Syn1_tbv_mean"],   '-b',  label = "Const. Sel.: Mean Pop. TBV")
+    ax.plot(const_lbook_df["gen"],   const_lbook_df["main_Syn1_lsl"],   ':b',  label = "Const. Sel.: LSL")
+    ax.plot(const_lbook_df["gen"],   const_lbook_df["main_Syn1_usl"],   '--b', label = "Const. Sel.: USL")
+    ax.plot(unconst_lbook_df["gen"], unconst_lbook_df["main_Syn1_tbv_mean"], '-r',  label = "Unconst. Sel.: Mean Pop. TBV")
+    ax.plot(unconst_lbook_df["gen"], unconst_lbook_df["main_Syn1_lsl"], ':r',  label = "Unconst. Sel.: LSL")
+    ax.plot(unconst_lbook_df["gen"], unconst_lbook_df["main_Syn1_usl"], '--r', label = "Unconst. Sel.: USL")
     ax.set_title("Single-Trait Recurrent Phenotypic Selection")
     ax.set_xlabel("Generation")
     ax.set_ylabel("Synthetic Trait Breeding Value")
@@ -693,12 +812,12 @@ Next, we'll visualize the estimated breeding values.
     # create static figure
     fig = pyplot.figure()
     ax = pyplot.axes()
-    ax.plot(constrained_lbook_df["gen"],   constrained_lbook_df["ebv_mean_Syn1"],   '-b',  label = "Const. Sel.: Mean Pop. EBV")
-    ax.plot(constrained_lbook_df["gen"],   constrained_lbook_df["lsl"],             ':b',  label = "Const. Sel.: LSL")
-    ax.plot(constrained_lbook_df["gen"],   constrained_lbook_df["usl"],             '--b', label = "Const. Sel.: USL")
-    ax.plot(unconstrained_lbook_df["gen"], unconstrained_lbook_df["ebv_mean_Syn1"], '-r',  label = "Unconst. Sel.: Mean Pop. EBV")
-    ax.plot(unconstrained_lbook_df["gen"], unconstrained_lbook_df["lsl"],           ':r',  label = "Unconst. Sel.: LSL")
-    ax.plot(unconstrained_lbook_df["gen"], unconstrained_lbook_df["usl"],           '--r', label = "Unconst. Sel.: USL")
+    ax.plot(const_lbook_df["gen"],   const_lbook_df["main_Syn1_ebv_mean"],   '-b',  label = "Const. Sel.: Mean Pop. EBV")
+    ax.plot(const_lbook_df["gen"],   const_lbook_df["main_Syn1_lsl"],   ':b',  label = "Const. Sel.: LSL")
+    ax.plot(const_lbook_df["gen"],   const_lbook_df["main_Syn1_usl"],   '--b', label = "Const. Sel.: USL")
+    ax.plot(unconst_lbook_df["gen"], unconst_lbook_df["main_Syn1_ebv_mean"], '-r',  label = "Unconst. Sel.: Mean Pop. EBV")
+    ax.plot(unconst_lbook_df["gen"], unconst_lbook_df["main_Syn1_lsl"], ':r',  label = "Unconst. Sel.: LSL")
+    ax.plot(unconst_lbook_df["gen"], unconst_lbook_df["main_Syn1_usl"], '--r', label = "Unconst. Sel.: USL")
     ax.set_title("Single-Trait Recurrent Phenotypic Selection")
     ax.set_xlabel("Generation")
     ax.set_ylabel("Synthetic Trait Breeding Value")
@@ -720,8 +839,8 @@ Mean expected heterozygosity is a valuable diversity metric. We'll plot the chan
     # create static figure
     fig = pyplot.figure()
     ax = pyplot.axes()
-    ax.plot(constrained_lbook_df["gen"],   constrained_lbook_df["meh"],   '-b',  label = "Const. Sel.: Pop. MEH")
-    ax.plot(unconstrained_lbook_df["gen"], unconstrained_lbook_df["meh"], '-r',  label = "Unconst. Sel.: Pop. MEH")
+    ax.plot(const_lbook_df["gen"],   const_lbook_df["main_meh"],   '-b',  label = "Const. Sel.: Pop. MEH")
+    ax.plot(unconst_lbook_df["gen"], unconst_lbook_df["main_meh"], '-r',  label = "Unconst. Sel.: Pop. MEH")
     ax.set_title("Single-Trait Recurrent Phenotypic Selection")
     ax.set_xlabel("Generation")
     ax.set_ylabel("Mean Expected Heterozygosity")
@@ -743,8 +862,8 @@ Plotting the change in population breeding value variance is another important m
     # create static figure
     fig = pyplot.figure()
     ax = pyplot.axes()
-    ax.plot(constrained_lbook_df["gen"],   constrained_lbook_df["tbv_std_Syn1"],   '-b',  label = "Const. Sel.: Pop. TBV SD")
-    ax.plot(unconstrained_lbook_df["gen"], unconstrained_lbook_df["tbv_std_Syn1"], '-r',  label = "Unconst. Sel.: Pop. TBV SD")
+    ax.plot(const_lbook_df["gen"],   const_lbook_df["main_Syn1_tbv_std"],   '-b',  label = "Const. Sel.: Pop. TBV SD")
+    ax.plot(unconst_lbook_df["gen"], unconst_lbook_df["main_Syn1_tbv_std"], '-r',  label = "Unconst. Sel.: Pop. TBV SD")
     ax.set_title("Single-Trait Recurrent Phenotypic Selection")
     ax.set_xlabel("Generation")
     ax.set_ylabel("Synthetic Trait Breeding Value Standard Deviation")
@@ -766,8 +885,8 @@ We'll do the same thing as above but with estimated breeding values.
     # create static figure
     fig = pyplot.figure()
     ax = pyplot.axes()
-    ax.plot(constrained_lbook_df["gen"],   constrained_lbook_df["ebv_std_Syn1"],   '-b',  label = "Const. Sel.: Pop. EBV SD")
-    ax.plot(unconstrained_lbook_df["gen"], unconstrained_lbook_df["ebv_std_Syn1"], '-r',  label = "Unconst. Sel.: Pop. EBV SD")
+    ax.plot(const_lbook_df["gen"],   const_lbook_df["main_Syn1_ebv_std"],   '-b',  label = "Const. Sel.: Pop. EBV SD")
+    ax.plot(unconst_lbook_df["gen"], unconst_lbook_df["main_Syn1_ebv_std"], '-r',  label = "Unconst. Sel.: Pop. EBV SD")
     ax.set_title("Single-Trait Recurrent Phenotypic Selection")
     ax.set_xlabel("Generation")
     ax.set_ylabel("Synthetic Trait Breeding Value Standard Deviation")

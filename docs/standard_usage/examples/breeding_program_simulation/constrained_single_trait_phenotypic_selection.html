@@ -43,7 +43,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'standard_usage/examples/breeding_program_simulation/constrained_single_trait_phenotypic_selection';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Advanced PyBrOpS Usage" href="../../../advanced_usage/advanced_usage.html" />
+    <link rel="next" title="Constrained Bi-Trait Phenotypic Selection" href="constrained_bitrait_phenotypic_selection.html" />
     <link rel="prev" title="Single-Trait Phenotypic Selection" href="single_trait_phenotypic_selection.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="docsearch:language" content="en">
@@ -146,8 +146,8 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../contributing/contributing.html">
-                        Contributing
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
                       </a>
                     </li>
                 
@@ -157,6 +157,13 @@
                 </button>
                 <div class="dropdown-menu">
                     
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../../faq/faq.html">
                         Frequently Asked Questions
@@ -265,8 +272,8 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../contributing/contributing.html">
-                        Contributing
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
                       </a>
                     </li>
                 
@@ -276,6 +283,13 @@
                 </button>
                 <div class="dropdown-menu">
                     
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../../faq/faq.html">
                         Frequently Asked Questions
@@ -370,6 +384,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../pareto_frontier_visualization/germplasm_panel_reduction.html">Germplasm panel reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="single_trait_phenotypic_selection.html">Single-Trait Phenotypic Selection</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Constrained Single-Trait Phenotypic Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="constrained_bitrait_phenotypic_selection.html">Constrained Bi-Trait Phenotypic Selection</a></li>
 </ul>
 </li>
 </ul>
@@ -437,9 +452,24 @@
 </pre></div>
 </div>
 </section>
+<section id="simulation-parameters">
+<h3>Simulation Parameters<a class="headerlink" href="#simulation-parameters" title="Permalink to this heading">#</a></h3>
+<p>Next, we define a couple of simulation parameter constants.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nfndr</span> <span class="o">=</span> <span class="mi">40</span>      <span class="c1"># number of founder individuals</span>
+<span class="n">nqtl</span> <span class="o">=</span> <span class="mi">1000</span>     <span class="c1"># number of QTL</span>
+<span class="n">qlen</span> <span class="o">=</span> <span class="mi">6</span>        <span class="c1"># length of the queue</span>
+<span class="n">ncross</span> <span class="o">=</span> <span class="mi">20</span>     <span class="c1"># number of cross configurations</span>
+<span class="n">nparent</span> <span class="o">=</span> <span class="mi">2</span>     <span class="c1"># number of parents per cross configuration</span>
+<span class="n">nmating</span> <span class="o">=</span> <span class="mi">1</span>     <span class="c1"># number of times to perform cross configuration</span>
+<span class="n">nprogeny</span> <span class="o">=</span> <span class="mi">80</span>   <span class="c1"># number of progenies per cross attempt</span>
+<span class="n">nrandmate</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># number of random intermatings</span>
+<span class="n">nsimul</span> <span class="o">=</span> <span class="mi">60</span>     <span class="c1"># number of simulation generations</span>
+</pre></div>
+</div>
+</section>
 <section id="loading-genetic-map-data-from-a-text-file">
 <h3>Loading Genetic Map Data from a Text File<a class="headerlink" href="#loading-genetic-map-data-from-a-text-file" title="Permalink to this heading">#</a></h3>
-<p>Next, we load genetic map data from a CSV-like file. In this example, we are using the US NAM genetic map constructed by McMullen et al. in 2009. The code below demonstrates how these data are read into a <code class="docutils literal notranslate"><span class="pre">StandardGeneticMap</span></code> object using the <code class="docutils literal notranslate"><span class="pre">from_csv</span></code> class method.</p>
+<p>Then, we load genetic map data from a CSV-like file. In this example, we are using the US NAM genetic map constructed by McMullen et al. in 2009. The code below demonstrates how these data are read into a <code class="docutils literal notranslate"><span class="pre">StandardGeneticMap</span></code> object using the <code class="docutils literal notranslate"><span class="pre">from_csv</span></code> class method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read genetic map</span>
 <span class="n">gmap</span> <span class="o">=</span> <span class="n">StandardGeneticMap</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span>
     <span class="s2">&quot;McMullen_2009_US_NAM.gmap&quot;</span><span class="p">,</span>
@@ -465,17 +495,25 @@
 </section>
 <section id="loading-genome-data-from-a-vcf-file">
 <h3>Loading Genome Data from a VCF File<a class="headerlink" href="#loading-genome-data-from-a-vcf-file" title="Permalink to this heading">#</a></h3>
-<p>Next, we load phased genetic markers from a VCF file. In this example, we are using a subset of genetic markers from the Wisconsin Maize Diversity Panel, which is composed of 942 individuals. 2000 SNPs with a minor allele frequency greater than 0.2 have been randomly selected to keep the dataset small.</p>
+<p>Next, we load phased genetic markers from a VCF file. In this example, we are using a subset of genetic markers from the Wisconsin Maize Diversity Panel, which is composed of 942 individuals. 2000 SNPs with a minor allele frequency greater than 0.2 have been randomly selected to keep the dataset small. From the original 942 individuals and 2000 SNPs, we randomly select 40 founders and 1000 SNPs to create a founding synthetic population.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read phased genetic markers from a vcf file</span>
-<span class="n">panel_pgmat</span> <span class="o">=</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="o">.</span><span class="n">from_vcf</span><span class="p">(</span>
-    <span class="s2">&quot;widiv_2000SNPs.vcf.gz&quot;</span><span class="p">,</span> <span class="c1"># file name to load</span>
-    <span class="n">auto_group_vrnt</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>  <span class="c1"># automatically sort and group variants</span>
-<span class="p">)</span>
+<span class="n">fndr_pgmat</span> <span class="o">=</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="o">.</span><span class="n">from_vcf</span><span class="p">(</span><span class="s2">&quot;widiv_2000SNPs.vcf.gz&quot;</span><span class="p">,</span> <span class="n">auto_group_vrnt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># randomly select ``nfndr`` from which to create a founding population</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">fndr_pgmat</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">,</span> <span class="n">nfndr</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">fndr_pgmat</span> <span class="o">=</span> <span class="n">fndr_pgmat</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+
+<span class="c1"># randomly select ``nqtl`` markers from founders</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">fndr_pgmat</span><span class="o">.</span><span class="n">nvrnt</span><span class="p">,</span> <span class="n">nqtl</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">fndr_pgmat</span> <span class="o">=</span> <span class="n">fndr_pgmat</span><span class="o">.</span><span class="n">select_vrnt</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+
+<span class="c1"># sort and group variants</span>
+<span class="n">fndr_pgmat</span><span class="o">.</span><span class="n">group_vrnt</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>After loading the genetic markers, we interpolate the genetic map positions and the sequential marker crossover probabilities using the <code class="docutils literal notranslate"><span class="pre">interp_xoprob</span></code> method. We interpolate using the genetic map and genetic map function we have just created.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># interpolate genetic map positions</span>
-<span class="n">panel_pgmat</span><span class="o">.</span><span class="n">interp_xoprob</span><span class="p">(</span><span class="n">gmap</span><span class="p">,</span> <span class="n">gmapfn</span><span class="p">)</span>
+<span class="n">fndr_pgmat</span><span class="o">.</span><span class="n">interp_xoprob</span><span class="p">(</span><span class="n">gmap</span><span class="p">,</span> <span class="n">gmapfn</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -488,8 +526,8 @@
 <span class="c1"># marker effects: (nvrnt,1)</span>
 <span class="n">mkreffect</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span>
     <span class="n">loc</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
-    <span class="n">scale</span> <span class="o">=</span> <span class="mf">0.05</span><span class="p">,</span>
-    <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">panel_pgmat</span><span class="o">.</span><span class="n">nvrnt</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">fndr_pgmat</span><span class="o">.</span><span class="n">nvrnt</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="p">)</span>
 
 <span class="c1"># trait names: (ntrait,)</span>
@@ -508,39 +546,35 @@
 </div>
 </section>
 </section>
-<section id="simulation-burn-in">
-<h2>Simulation Burn-in<a class="headerlink" href="#simulation-burn-in" title="Permalink to this heading">#</a></h2>
-<p>In this next major step, we’ll perform a burn-in to create a breeding population from which to start our breeding simulations.</p>
-<section id="select-founders-and-randomly-intermate-for-20-generations">
-<h3>Select founders and randomly intermate for 20 generations<a class="headerlink" href="#select-founders-and-randomly-intermate-for-20-generations" title="Permalink to this heading">#</a></h3>
-<p>Before we begin our simulation, we’ll want to do a burn-in to create a randomly mating population from which to start. In the code below, we randomly select 40 founders from the individuals in the diversity panel and conduct random mating for 20 generations to simulate the creation of an open pollinated variety. After the 20 generations of random mating, we create doubled haploids from the population to serve as our starting breeding population for our simulation.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># founder population parameters</span>
-<span class="n">nfndr</span> <span class="o">=</span> <span class="mi">40</span>          <span class="c1"># number of random founders to select (must be even)</span>
-<span class="n">fndr_nmating</span> <span class="o">=</span> <span class="mi">1</span>    <span class="c1"># number of times to perform cross configuration (only needed for 3+ way crosses)</span>
-<span class="n">fndr_nprogeny</span> <span class="o">=</span> <span class="mi">80</span>  <span class="c1"># number of progenies to derive from cross configuration</span>
-<span class="n">fndr_nrandmate</span> <span class="o">=</span> <span class="mi">20</span> <span class="c1"># number of random mating generations</span>
-
-<span class="c1"># create 2-way cross object</span>
+<section id="build-founder-populations-run-breeding-program-burn-in">
+<h2>Build Founder Populations &amp; Run Breeding Program Burn-In<a class="headerlink" href="#build-founder-populations-run-breeding-program-burn-in" title="Permalink to this heading">#</a></h2>
+<p>In this next series of steps, we’ll create a founder population by randomly intermating our 40 selected founders for 20 generations. Following random intermating, we’ll create 6 cohorts of doubled haploid individuals, each cohort representing progenies produced in a single year. In this simulation, the oldest 3 cohorts will be aggregated into a <code class="docutils literal notranslate"><span class="pre">&quot;main&quot;</span></code> population to serve as selection candidates. The youngest 3 cohorts will be “in the pipeline” and will represent doubled haploid progenies which are being made. From the <code class="docutils literal notranslate"><span class="pre">&quot;main&quot;</span></code> population, the top 5% of individuals from each family will be selected to form a <code class="docutils literal notranslate"><span class="pre">&quot;cand&quot;</span></code> population. It is from this <code class="docutils literal notranslate"><span class="pre">&quot;cand&quot;</span></code> population that parents will be selected. The burn-in segment of the breeding program continues until the mean expected heterozygosity decreases to just under 0.3. After this point is reached, the simulated populations are ready for use in the main simulation.</p>
+<section id="randomly-intermate-for-nrandmate-generations">
+<h3>Randomly Intermate for <code class="docutils literal notranslate"><span class="pre">nrandmate</span></code> Generations<a class="headerlink" href="#randomly-intermate-for-nrandmate-generations" title="Permalink to this heading">#</a></h3>
+<p>To start our random mating scheme, we first randomly pair up our 40 founders and mate them to create hybrids. Each mating event creates 80 progenies. This creates a population of size 1600.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create 2-way cross object</span>
 <span class="n">mate2way</span> <span class="o">=</span> <span class="n">TwoWayCross</span><span class="p">()</span>
 
-<span class="c1"># randomly select and pair ``nfndr`` founders</span>
-<span class="n">xconfig</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">panel_pgmat</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">,</span><span class="n">nfndr</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nfndr</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># randomly select and pair founders</span>
+<span class="n">xconfig</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">nfndr</span><span class="p">,</span> <span class="n">nfndr</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">xconfig</span> <span class="o">=</span> <span class="n">xconfig</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">nfndr</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># randomly intermate ``nfndr`` founders to create initial hybrids</span>
 <span class="n">fndr_pgmat</span> <span class="o">=</span> <span class="n">mate2way</span><span class="o">.</span><span class="n">mate</span><span class="p">(</span>
-    <span class="n">pgmat</span> <span class="o">=</span> <span class="n">panel_pgmat</span><span class="p">,</span>
+    <span class="n">pgmat</span> <span class="o">=</span> <span class="n">fndr_pgmat</span><span class="p">,</span>
     <span class="n">xconfig</span> <span class="o">=</span> <span class="n">xconfig</span><span class="p">,</span>
-    <span class="n">nmating</span> <span class="o">=</span> <span class="n">fndr_nmating</span><span class="p">,</span>
-    <span class="n">nprogeny</span> <span class="o">=</span> <span class="n">fndr_nprogeny</span><span class="p">,</span>
+    <span class="n">nmating</span> <span class="o">=</span> <span class="n">nmating</span><span class="p">,</span>
+    <span class="n">nprogeny</span> <span class="o">=</span> <span class="n">nprogeny</span><span class="p">,</span>
 <span class="p">)</span>
-
-<span class="c1"># randomly intermate for ``fndr_nrandmate`` generations</span>
+</pre></div>
+</div>
+<p>Then, we take our hybrid progenies, randomly pair them up with each other, and mate them. Each mating event produces 1 progeny. We randomly intermate progenies for 20 generations to create a founding population.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># randomly intermate for ``nrandmate`` generations</span>
 <span class="c1"># each individual in the population is randomly mated with another individual</span>
 <span class="c1"># and creates a single progeny so that the population size is held constant</span>
-<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">fndr_nrandmate</span><span class="p">):</span>
-    <span class="c1"># get the number of taxa</span>
-    <span class="n">ntaxa</span> <span class="o">=</span> <span class="n">fndr_pgmat</span><span class="o">.</span><span class="n">ntaxa</span>
+<span class="k">for</span> <span class="n">gen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nrandmate</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
     <span class="c1"># randomly select and pair ``ntaxa`` parents</span>
+    <span class="n">ntaxa</span> <span class="o">=</span> <span class="n">fndr_pgmat</span><span class="o">.</span><span class="n">ntaxa</span>
     <span class="n">xconfig</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">ntaxa</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
     <span class="n">xconfig</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">ntaxa</span><span class="p">,</span> <span class="n">ntaxa</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
     <span class="n">xconfig</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">ntaxa</span><span class="p">,</span> <span class="n">ntaxa</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
@@ -551,87 +585,194 @@
         <span class="n">nmating</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
         <span class="n">nprogeny</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
     <span class="p">)</span>
-
-<span class="c1"># create a 2-way DH cross object, use the counters from the 2-way cross object</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Random Intermating:&quot;</span><span class="p">,</span> <span class="n">gen</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="create-breeding-protocols-for-burn-in">
+<h3>Create Breeding Protocols for Burn-In<a class="headerlink" href="#create-breeding-protocols-for-burn-in" title="Permalink to this heading">#</a></h3>
+<p>Next, we make a 2-way DH cross protocol for our burn-in stage.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a 2-way DH cross object, use the counters from the 2-way cross object</span>
 <span class="n">mate2waydh</span> <span class="o">=</span> <span class="n">TwoWayDHCross</span><span class="p">(</span>
     <span class="n">progeny_counter</span> <span class="o">=</span> <span class="n">mate2way</span><span class="o">.</span><span class="n">progeny_counter</span><span class="p">,</span>
     <span class="n">family_counter</span>  <span class="o">=</span> <span class="n">mate2way</span><span class="o">.</span><span class="n">family_counter</span><span class="p">,</span>
 <span class="p">)</span>
+</pre></div>
+</div>
+<p>We also create a genotyping protocol that converts phased genotypes to unphased genotypes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a genotyping protocol</span>
+<span class="n">gtprot</span> <span class="o">=</span> <span class="n">DenseUnphasedGenotyping</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>To simulate phenotypes, we create a simple <span class="math notranslate nohighlight">\(G+E\)</span> phenotyping protocol that phenotypes individuals in 4 locations, 1 replication each location. We use the founding population we have just created with random mating to set the narrow sense heritability at the single plot level to 0.4. With 4 replications, this increases the heritability to approximately 0.7 to begin.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a phenotyping protocol</span>
+<span class="n">ptprot</span> <span class="o">=</span> <span class="n">G_E_Phenotyping</span><span class="p">(</span><span class="n">algmod</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">ptprot</span><span class="o">.</span><span class="n">set_h2</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">fndr_pgmat</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Next, we create a breeding value estimation protocol that simply uses means to estimate breeding value.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a breeding value estimation protocol</span>
+<span class="n">bvprot</span> <span class="o">=</span> <span class="n">MeanPhenotypicBreedingValue</span><span class="p">(</span><span class="s2">&quot;taxa&quot;</span><span class="p">,</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span> <span class="n">trait</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="create-a-within-family-selection-function">
+<h3>Create a Within-Family Selection Function<a class="headerlink" href="#create-a-within-family-selection-function" title="Permalink to this heading">#</a></h3>
+<p>Next, we create a custom function to manually select individuals within families based on their breeding values. This function selects the top <code class="docutils literal notranslate"><span class="pre">nindiv</span></code> individuals within each family and outputs a set of indices corresponding to these individuals.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># define function to do within family selection based on yield</span>
+<span class="k">def</span> <span class="nf">within_family_selection</span><span class="p">(</span><span class="n">bvmat</span><span class="p">:</span> <span class="n">DenseBreedingValueMatrix</span><span class="p">,</span> <span class="n">nindiv</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">bvmat</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">mat</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># get yield breeding values</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">groups</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">bvmat</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">taxa_grp</span> <span class="o">==</span> <span class="n">group</span>
+        <span class="n">tmp_order</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="n">tmp_value</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+        <span class="n">value_argsort</span> <span class="o">=</span> <span class="n">tmp_value</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+        <span class="n">ix</span> <span class="o">=</span> <span class="n">value_argsort</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">][:</span><span class="n">nindiv</span><span class="p">]</span>
+        <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp_order</span><span class="p">[</span><span class="n">ix</span><span class="p">])</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">indices</span>
+</pre></div>
+</div>
+</section>
+<section id="create-cohort-structure">
+<h3>Create Cohort Structure<a class="headerlink" href="#create-cohort-structure" title="Permalink to this heading">#</a></h3>
+<p>In the next step, we create a cohort structure as described at the beginning of this section. We utilize dictionaries to keep track of our cohorts and populations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a dictionary to store founder individuals</span>
+<span class="n">fndr_genome</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cand&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span>   <span class="s2">&quot;main&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span>   <span class="s2">&quot;queue&quot;</span><span class="p">:[]}</span>
+<span class="n">fndr_geno</span>   <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cand&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span>   <span class="s2">&quot;main&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span>   <span class="s2">&quot;queue&quot;</span><span class="p">:[]}</span>
+<span class="n">fndr_pheno</span>  <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cand&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span>   <span class="s2">&quot;main&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">}</span>
+<span class="n">fndr_bval</span>   <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cand&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span>   <span class="s2">&quot;main&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">}</span>
+<span class="n">fndr_gmod</span>   <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cand&quot;</span><span class="p">:</span><span class="n">algmod</span><span class="p">,</span> <span class="s2">&quot;main&quot;</span><span class="p">:</span><span class="n">algmod</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">:</span><span class="n">algmod</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>In the code block below, we define a helper function to help us create initial cohorts of individuals from our starting randomly mated population.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># define a helper function to help make cohorts of individuals</span>
+<span class="k">def</span> <span class="nf">cohort</span><span class="p">(</span>
+        <span class="n">mate2waydh</span><span class="p">:</span> <span class="n">MatingProtocol</span><span class="p">,</span>
+        <span class="n">pgmat</span><span class="p">:</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span>
+        <span class="n">ncross</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">nparent</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">nmating</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">nprogeny</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="p">:</span>
+    <span class="c1"># sample indicies of individuals and reshape for input into mating protocol</span>
+    <span class="n">xconfix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">pgmat</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">,</span> <span class="n">ncross</span> <span class="o">*</span> <span class="n">nparent</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">xconfig</span> <span class="o">=</span> <span class="n">xconfix</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ncross</span><span class="p">,</span> <span class="n">nparent</span><span class="p">)</span>
+    <span class="c1"># mate individuals</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">mate2waydh</span><span class="o">.</span><span class="n">mate</span><span class="p">(</span><span class="n">pgmat</span><span class="p">,</span> <span class="n">xconfig</span><span class="p">,</span> <span class="n">nmating</span><span class="p">,</span> <span class="n">nprogeny</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span>
+</pre></div>
+</div>
+<p>Next, we fill our cohort queue and construct the <code class="docutils literal notranslate"><span class="pre">&quot;main&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;cand&quot;</span></code> populations from the queue.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># fill queue with cohort genomes derived from randomly mating the founders</span>
+<span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">cohort</span><span class="p">(</span><span class="n">mate2waydh</span><span class="p">,</span> <span class="n">fndr_pgmat</span><span class="p">,</span> <span class="n">ncross</span><span class="p">,</span> <span class="n">nparent</span><span class="p">,</span> <span class="n">nmating</span><span class="p">,</span> <span class="n">nprogeny</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">qlen</span><span class="p">)]</span>
 
-<span class="c1"># get the number of taxa</span>
-<span class="n">ntaxa</span> <span class="o">=</span> <span class="n">fndr_pgmat</span><span class="o">.</span><span class="n">ntaxa</span>
+<span class="c1"># construct the main population genomes from the first three cohorts in the queue</span>
+<span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="o">.</span><span class="n">concat_taxa</span><span class="p">(</span><span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
 
-<span class="c1"># randomly select and pair 20 parents</span>
-<span class="n">xconfig</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">ntaxa</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">replace</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># genotype individuals to fill the genotyping queue</span>
+<span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">gtprot</span><span class="o">.</span><span class="n">genotype</span><span class="p">(</span><span class="n">genome</span><span class="p">)</span> <span class="k">for</span> <span class="n">genome</span> <span class="ow">in</span> <span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]]</span>
 
-<span class="c1"># DH all individuals in the founder population to create our initial breeding population</span>
-<span class="n">fndr_pgmat</span> <span class="o">=</span> <span class="n">mate2waydh</span><span class="o">.</span><span class="n">mate</span><span class="p">(</span>
-    <span class="n">pgmat</span> <span class="o">=</span> <span class="n">fndr_pgmat</span><span class="p">,</span>
-    <span class="n">xconfig</span> <span class="o">=</span> <span class="n">xconfig</span><span class="p">,</span>
-    <span class="n">nmating</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">nprogeny</span> <span class="o">=</span> <span class="mi">80</span><span class="p">,</span>
+<span class="c1"># construct the main population genotypes from the first three cohorts in the queue</span>
+<span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DenseGenotypeMatrix</span><span class="o">.</span><span class="n">concat_taxa</span><span class="p">(</span><span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="c1"># phenotype the main population</span>
+<span class="n">fndr_pheno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ptprot</span><span class="o">.</span><span class="n">phenotype</span><span class="p">(</span><span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">])</span>
+
+<span class="c1"># calculate breeding values for the main population</span>
+<span class="n">fndr_bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bvprot</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">fndr_pheno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">],</span> <span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">])</span>
+
+<span class="c1"># calculate indices for within family selection to get parental candidates</span>
+<span class="n">ix</span> <span class="o">=</span> <span class="n">within_family_selection</span><span class="p">(</span><span class="n">fndr_bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span> <span class="c1"># select top 5%</span>
+
+<span class="c1"># select parental candidates</span>
+<span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+<span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+<span class="n">fndr_bval</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">]</span>   <span class="o">=</span> <span class="n">fndr_bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="create-a-burn-in-selection-protocol-object">
+<h3>Create a Burn-In Selection Protocol Object<a class="headerlink" href="#create-a-burn-in-selection-protocol-object" title="Permalink to this heading">#</a></h3>
+<p>Next, we create a selection protocol for our burn-in loop. This selects individuals with the best breeding values for our synthetic trait.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># use a hillclimber for the single-objective optimization algorithm</span>
+<span class="n">soalgo</span> <span class="o">=</span> <span class="n">SortingSubsetOptimizationAlgorithm</span><span class="p">()</span>
+
+<span class="c1"># create a selection protocol that selects based on EBVs with an inbreeding constraint</span>
+<span class="n">burnin_selprot</span> <span class="o">=</span> <span class="n">EstimatedBreedingValueSubsetSelection</span><span class="p">(</span>
+    <span class="n">ntrait</span>       <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>            <span class="c1"># number of expected traits</span>
+    <span class="n">unscale</span>      <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>         <span class="c1"># unscale breeding values to human-readable format</span>
+    <span class="n">ncross</span>       <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>           <span class="c1"># number of cross configurations</span>
+    <span class="n">nparent</span>      <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>            <span class="c1"># number of parents per cross configuration</span>
+    <span class="n">nmating</span>      <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>            <span class="c1"># number of matings per cross configuration</span>
+    <span class="n">nprogeny</span>     <span class="o">=</span> <span class="mi">80</span><span class="p">,</span>           <span class="c1"># number of progeny per mating event</span>
+    <span class="n">nobj</span>         <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>            <span class="c1"># number of objectives == 1 == yield</span>
+    <span class="n">soalgo</span>       <span class="o">=</span> <span class="n">soalgo</span><span class="p">,</span>       <span class="c1"># use sorting algorithm to solve single-objective problem</span>
 <span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="running-a-population-burn-in-until-meh-is-slightly-less-than-0-30">
+<h3>Running a Population Burn-in until MEH is slightly less than 0.30<a class="headerlink" href="#running-a-population-burn-in-until-meh-is-slightly-less-than-0-30" title="Permalink to this heading">#</a></h3>
+<p>Finally, we perform selection on our populations until the mean expected heterozygosity of the <code class="docutils literal notranslate"><span class="pre">&quot;main&quot;</span></code> population reaches slightly less than 0.30. This in effect sets the starting genetic diversity for our simulations so that they are not as dependent on the set of founders that were initially randomly selected.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">meh</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.30</span><span class="p">:</span>
+    <span class="c1"># parental selection: select parents from parental candidates</span>
+    <span class="n">selcfg</span> <span class="o">=</span> <span class="n">burnin_selprot</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="n">pgmat</span> <span class="o">=</span> <span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">gmat</span>  <span class="o">=</span> <span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">ptdf</span>  <span class="o">=</span> <span class="n">fndr_pheno</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">bvmat</span> <span class="o">=</span> <span class="n">fndr_bval</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">gpmod</span> <span class="o">=</span> <span class="n">fndr_gmod</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">t_cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">t_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># mate: create new genomes; discard oldest cohort; concat new main population</span>
+    <span class="n">new_genome</span> <span class="o">=</span> <span class="n">mate2waydh</span><span class="o">.</span><span class="n">mate</span><span class="p">(</span>
+        <span class="n">pgmat</span>    <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">pgmat</span><span class="p">,</span>
+        <span class="n">xconfig</span>  <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">xconfig</span><span class="p">,</span>
+        <span class="n">nmating</span>  <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">nmating</span><span class="p">,</span>
+        <span class="n">nprogeny</span> <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">nprogeny</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_genome</span><span class="p">)</span>
+    <span class="n">discard</span> <span class="o">=</span> <span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="o">.</span><span class="n">concat_taxa</span><span class="p">(</span><span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="c1"># evaluate: genotype new genomes; discard oldest cohort; concat new main population</span>
+    <span class="n">new_geno</span> <span class="o">=</span> <span class="n">gtprot</span><span class="o">.</span><span class="n">genotype</span><span class="p">(</span><span class="n">new_genome</span><span class="p">)</span>
+    <span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_geno</span><span class="p">)</span>
+    <span class="n">discard</span> <span class="o">=</span> <span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DenseGenotypeMatrix</span><span class="o">.</span><span class="n">concat_taxa</span><span class="p">(</span><span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="c1"># evaluate: phenotype main population</span>
+    <span class="n">fndr_pheno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ptprot</span><span class="o">.</span><span class="n">phenotype</span><span class="p">(</span><span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">])</span>
+    <span class="c1"># evaluate: calculate breeding values for the main population</span>
+    <span class="n">fndr_bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bvprot</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">fndr_pheno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">],</span> <span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">])</span>
+    <span class="c1"># survivor selection: select parental candidate indices from main population</span>
+    <span class="n">ix</span> <span class="o">=</span> <span class="n">within_family_selection</span><span class="p">(</span><span class="n">fndr_bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span> <span class="c1"># select top 5%</span>
+    <span class="c1"># survivor selection: select parental candidates from main population</span>
+    <span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+    <span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fndr_geno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+    <span class="n">fndr_bval</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fndr_bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Burn-in:&quot;</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Starting MEH:&quot;</span><span class="p">,</span> <span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">meh</span><span class="p">())</span>
 </pre></div>
 </div>
 </section>
 </section>
 <section id="simulation-setup">
 <h2>Simulation Setup<a class="headerlink" href="#simulation-setup" title="Permalink to this heading">#</a></h2>
-<section id="create-a-phenotyping-protocol-object">
-<h3>Create a Phenotyping Protocol Object<a class="headerlink" href="#create-a-phenotyping-protocol-object" title="Permalink to this heading">#</a></h3>
-<p>After creating our starting breeding population, we’ll create a phenotyping protocol object to phenotype the individuals in our population. We’ll create a <span class="math notranslate nohighlight">\(G + E\)</span> phenotyping protocol that simulates the phenotyping of individuals in multiple environments, without <span class="math notranslate nohighlight">\(G \times E\)</span> interactions. In the example below, we create a <code class="docutils literal notranslate"><span class="pre">G_E_Phenotyping</span></code> object where we test genotypes in 4 environments, each environment having 1 replication.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a phenotyping protocol object to simulate 4 environments with 1 rep each</span>
-<span class="n">ptprot</span> <span class="o">=</span> <span class="n">G_E_Phenotyping</span><span class="p">(</span><span class="n">gpmod</span> <span class="o">=</span> <span class="n">algmod</span><span class="p">,</span> <span class="n">nenv</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">nrep</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>To finalize construction of our phenotyping protocol object, we’ll set the narrow sense heritability for a single observation using our starting breeding population.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># set the trait heritability using the initial population</span>
-<span class="c1"># initial population fits heritability assumptions of being randomly mated</span>
-<span class="n">ptprot</span><span class="o">.</span><span class="n">set_h2</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">fndr_pgmat</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="create-a-breeding-value-estimation-protocol-object">
-<h3>Create a Breeding Value Estimation Protocol Object<a class="headerlink" href="#create-a-breeding-value-estimation-protocol-object" title="Permalink to this heading">#</a></h3>
-<p>Next, we’ll create a breeding value estimation object to take phenotypes simulated by our <code class="docutils literal notranslate"><span class="pre">G_E_Phenotyping</span></code> object and transform them into estimated breeding values. For this example, we’ll simply calculate breeding values using the mean phenotypic value since our individuals are all inbred and we have no <span class="math notranslate nohighlight">\(G \times E\)</span> effects.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># estimate breeding value using mean across environments for simplicity</span>
-<span class="n">bvprot</span> <span class="o">=</span> <span class="n">MeanPhenotypicBreedingValue</span><span class="p">(</span>
-    <span class="n">taxa_col</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
-    <span class="n">taxa_grp_col</span> <span class="o">=</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span>
-    <span class="n">trait_cols</span> <span class="o">=</span> <span class="s2">&quot;Syn1&quot;</span><span class="p">,</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="create-a-within-family-selection-function">
-<h3>Create a Within-Family Selection Function<a class="headerlink" href="#create-a-within-family-selection-function" title="Permalink to this heading">#</a></h3>
-<p>For this simulation, we’ll add a slight twist to our previous example. Instead of considering all individuals for selection, we’ll select a top percentage from each family and then only consider those members as candidates for selection. This limits the number of individuals that a given family can contribute to the next generation. The function below selects the best individuals within each family and returns a set of indices which can be used to determine parental candidates.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># define function to do within family selection</span>
-<span class="k">def</span> <span class="nf">within_family_selection</span><span class="p">(</span><span class="n">bvmat</span><span class="p">:</span> <span class="n">DenseBreedingValueMatrix</span><span class="p">,</span> <span class="n">nindiv</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-    <span class="n">order</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="mi">0</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">mask</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">order</span><span class="p">),</span> <span class="kc">False</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
-    <span class="n">groups</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">bvmat</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
-        <span class="n">tmp</span> <span class="o">=</span> <span class="n">order</span><span class="p">[</span><span class="n">bvmat</span><span class="o">.</span><span class="n">taxa_grp</span> <span class="o">==</span> <span class="n">group</span><span class="p">]</span>
-        <span class="n">tmp</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
-        <span class="n">ix</span> <span class="o">=</span> <span class="n">tmp</span><span class="p">[:</span><span class="n">nindiv</span><span class="p">]</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ix</span><span class="p">:</span>
-            <span class="n">mask</span><span class="p">[</span><span class="n">order</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="n">indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">indices</span>
-</pre></div>
-</div>
-</section>
+<p>In the sections above, we created the starting point for our simulations. In these next sections, we’ll test two selection strategies: one constrained by inbreeding, and another unconstrained by inbreeding. We’ll plot and compare the results of these simulations.</p>
 <section id="create-a-constrained-selection-protocol-object">
 <h3>Create a Constrained Selection Protocol Object<a class="headerlink" href="#create-a-constrained-selection-protocol-object" title="Permalink to this heading">#</a></h3>
-<p>Next, we’ll create a constrained selection protocol object. Since we want to constrain our selection using inbreeding as a constraint, we’ll use the <code class="docutils literal notranslate"><span class="pre">OptimalContributionSubsetSelection</span></code> class to do this.</p>
-<p>The first thing that the optimal contribution selection protocol will need is a <code class="docutils literal notranslate"><span class="pre">CoancestryMatrixFactory</span></code> object from which it can construct the coancestry matrices required for optimization. We’ll create an identity-by-state coancestry matrix factory using the <code class="docutils literal notranslate"><span class="pre">DenseMolecularCoancestryMatrixFactory</span></code> class.</p>
+<p>First, we’ll define a selection protocol where individuals are selected on their breeding values subject to an inbreeding constraint specified by the user. We’ll use the <code class="docutils literal notranslate"><span class="pre">OptimalContributionSubsetSelection</span></code> class to accomplish this task and provide objective and inequality constraint violation transformation functions to create such a scenario.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a dense molecular coancestry matrix factory</span>
 <span class="n">cmatfcty</span> <span class="o">=</span> <span class="n">DenseMolecularCoancestryMatrixFactory</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Next, we need to create a transformation function which will convert the latent vector generated by the <code class="docutils literal notranslate"><span class="pre">OptimalContributionSubsetSelectionProblem</span></code> class into an objective vector. The latent function’s return value is of the form: <code class="docutils literal notranslate"><span class="pre">[kinship,</span> <span class="pre">trait1,</span> <span class="pre">...,</span> <span class="pre">traitn]</span></code>. The transformation function defined below extracts the trait values from the latent function so that they can serve as objective value(s).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># define an objective transformation function</span>
+
+<span class="c1"># define an objective transformation function</span>
 <span class="k">def</span> <span class="nf">obj_trans</span><span class="p">(</span>
         <span class="n">decnvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">latentvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -660,10 +801,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># extract trait(s) as objective(s)</span>
     <span class="k">return</span> <span class="n">latentvec</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
-</pre></div>
-</div>
-<p>Afterwards, we’ll create a transformation function that will conver the latent vector generated by the problem class into an inequality constraint violation vector. We’ll define a function that examines the inbreeding element of the latent vector and calculates a penalty if the value exceeds a provided maximum inbreeding value, <code class="docutils literal notranslate"><span class="pre">maxinb</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># define an inequality constraint violation function</span>
+
+<span class="c1"># define an inequality constraint violation function</span>
 <span class="k">def</span> <span class="nf">ineqcv_trans</span><span class="p">(</span>
         <span class="n">decnvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="n">latentvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -691,16 +830,12 @@
     <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="n">latentvec</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">maxinb</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
     <span class="c1"># return inequality constraint violation array</span>
     <span class="k">return</span> <span class="n">out</span>
-</pre></div>
-</div>
-<p>Next, we’ll define a custom single-objective optimization algorithm different from the default of the <code class="docutils literal notranslate"><span class="pre">OptimalContributionSubsetSelection</span></code> class. We’ll use a steepest descent hill climber algorithm for fast optimization.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># use a hillclimber for the single-objective optimization algorithm</span>
+
+<span class="c1"># use a hillclimber for the single-objective optimization algorithm</span>
 <span class="n">soalgo</span> <span class="o">=</span> <span class="n">SteepestDescentSubsetHillClimber</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Finally, we’ll construct a constrained selection protocol object using our inputs. For this simulation, we want to select the top 40 individuals and pair them into 20 two-way crosses. Each cross will generate 80 progenies.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a selection protocol that selects based on EBVs with an inbreeding constraint</span>
-<span class="n">constrained_selprot</span> <span class="o">=</span> <span class="n">OptimalContributionSubsetSelection</span><span class="p">(</span>
+
+<span class="c1"># create a selection protocol that selects based on EBVs with an inbreeding constraint</span>
+<span class="n">const_selprot</span> <span class="o">=</span> <span class="n">OptimalContributionSubsetSelection</span><span class="p">(</span>
     <span class="n">ntrait</span>       <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>            <span class="c1"># number of expected traits</span>
     <span class="n">cmatfcty</span>     <span class="o">=</span> <span class="n">cmatfcty</span><span class="p">,</span>     <span class="c1"># coancestry/kinship matrix factory</span>
     <span class="n">unscale</span>      <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>         <span class="c1"># unscale breeding values to human-readable format</span>
@@ -722,13 +857,14 @@
 </section>
 <section id="create-an-unconstrained-selection-protocol-object">
 <h3>Create an Unconstrained Selection Protocol Object<a class="headerlink" href="#create-an-unconstrained-selection-protocol-object" title="Permalink to this heading">#</a></h3>
-<p>We want to compare the results of our constrained selection against the selection results for an unconstrained selection. Below, we create an unconstrained selection protocol that simply selects the top individuals using a sorting algorithm.</p>
+<p>Second, we’ll define a selection protocol where individuals are selected solely on their breeding values. We’ll use the <code class="docutils literal notranslate"><span class="pre">EstimatedBreedingValueSubsetSelection</span></code> to accomplish this task.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># use a sorting algorithm for the single-objective optimization algorithm</span>
 <span class="n">soalgo</span> <span class="o">=</span> <span class="n">SortingSubsetOptimizationAlgorithm</span><span class="p">()</span>
 
 <span class="c1"># create a selection protocol that selects based on EBVs with an inbreeding constraint</span>
-<span class="n">unconstrained_selprot</span> <span class="o">=</span> <span class="n">EstimatedBreedingValueSubsetSelection</span><span class="p">(</span>
+<span class="n">unconst_selprot</span> <span class="o">=</span> <span class="n">EstimatedBreedingValueSubsetSelection</span><span class="p">(</span>
     <span class="n">ntrait</span>       <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>            <span class="c1"># number of expected traits</span>
+    <span class="n">unscale</span>      <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>         <span class="c1"># unscale breeding values to human-readable format</span>
     <span class="n">ncross</span>       <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>           <span class="c1"># number of cross configurations</span>
     <span class="n">nparent</span>      <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>            <span class="c1"># number of parents per cross configuration</span>
     <span class="n">nmating</span>      <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>            <span class="c1"># number of matings per cross configuration</span>
@@ -739,260 +875,253 @@
 </pre></div>
 </div>
 </section>
+<section id="make-a-statistics-recording-helper-function">
+<h3>Make a Statistics Recording Helper Function<a class="headerlink" href="#make-a-statistics-recording-helper-function" title="Permalink to this heading">#</a></h3>
+<p>To assist in record keeping, we’ll create a function to help us record simulation metrics and store them into a dictionary.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make recording helper function</span>
+<span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="n">lbook</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">gen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">genome</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">geno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">pheno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">bval</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">gmod</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_meh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">meh</span><span class="p">())</span>
+    <span class="c1">################### main true lower selection limits ###################</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmod</span><span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lsl</span><span class="p">(</span><span class="n">genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">],</span> <span class="n">unscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_Syn1_lsl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">################### main true lower selection limits ###################</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmod</span><span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">usl</span><span class="p">(</span><span class="n">genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">],</span> <span class="n">unscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_Syn1_usl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">###################### main true breeding values #######################</span>
+    <span class="n">tbv</span> <span class="o">=</span> <span class="n">gmod</span><span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">gebv</span><span class="p">(</span><span class="n">genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">])</span>
+    <span class="c1">################## main true breeding value minimums ###################</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">tbv</span><span class="o">.</span><span class="n">tmin</span><span class="p">(</span><span class="n">unscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_Syn1_tbv_min&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">#################### main true breeding value means ####################</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">tbv</span><span class="o">.</span><span class="n">tmean</span><span class="p">(</span><span class="n">unscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_Syn1_tbv_mean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">################## main true breeding value maximums ###################</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">tbv</span><span class="o">.</span><span class="n">tmax</span><span class="p">(</span><span class="n">unscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_Syn1_tbv_max&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">############# main true breeding value standard deviations #############</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">tbv</span><span class="o">.</span><span class="n">tstd</span><span class="p">(</span><span class="n">unscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_Syn1_tbv_std&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">##################### main true genetic variances ######################</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmod</span><span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">var_A</span><span class="p">(</span><span class="n">genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">])</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_Syn1_tbv_var_A&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">###################### main true genic variances #######################</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">gmod</span><span class="p">[</span><span class="s2">&quot;true&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">var_a</span><span class="p">(</span><span class="n">genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">])</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_Syn1_tbv_var_a&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">#################### main estimated breeding values ####################</span>
+    <span class="n">ebv</span> <span class="o">=</span> <span class="n">bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span>
+    <span class="c1">################ main estimated breeding value minimums ################</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">ebv</span><span class="o">.</span><span class="n">tmin</span><span class="p">(</span><span class="n">unscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_Syn1_ebv_min&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">#################### main true breeding value means ####################</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">ebv</span><span class="o">.</span><span class="n">tmean</span><span class="p">(</span><span class="n">unscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_Syn1_ebv_mean&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">################## main true breeding value maximums ###################</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">ebv</span><span class="o">.</span><span class="n">tmax</span><span class="p">(</span><span class="n">unscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_Syn1_ebv_max&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="c1">############# main true breeding value standard deviations #############</span>
+    <span class="n">tmp</span> <span class="o">=</span> <span class="n">ebv</span><span class="o">.</span><span class="n">tstd</span><span class="p">(</span><span class="n">unscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="n">lbook</span><span class="p">[</span><span class="s2">&quot;main_Syn1_ebv_std&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
 </section>
-<section id="simulate-constrained-and-unconstrained-phenotypic-selection-for-60-generations">
-<h2>Simulate Constrained and Unconstrained Phenotypic Selection for 60 Generations<a class="headerlink" href="#simulate-constrained-and-unconstrained-phenotypic-selection-for-60-generations" title="Permalink to this heading">#</a></h2>
-<p>After creating our constrained and unconstrained selection objects, we’ll want to simulate breeding using our founder population as a starting point for both simulations.</p>
-<section id="constrained-simulation-logbooks">
-<h3>Constrained Simulation Logbooks<a class="headerlink" href="#constrained-simulation-logbooks" title="Permalink to this heading">#</a></h3>
-<p>For the constrained selection simulations, we’ll create a dictionary to serve as a logbook for our simulations.</p>
+</section>
+<section id="simulate-constrained-phenotypic-selection-for-60-generations">
+<h2>Simulate Constrained Phenotypic Selection for 60 Generations<a class="headerlink" href="#simulate-constrained-phenotypic-selection-for-60-generations" title="Permalink to this heading">#</a></h2>
+<p>The next subsections detail simulations in the constrained scenario.</p>
+<section id="copy-founders">
+<h3>Copy Founders<a class="headerlink" href="#copy-founders" title="Permalink to this heading">#</a></h3>
+<p>First we’ll copy our founder populations so that we don’t modify them and can use them for repeated simulations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># deep copy founder populations, bvals, etc. so we can replicate if needed</span>
+<span class="n">simul_genome</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fndr_genome</span><span class="p">)</span>
+<span class="n">simul_geno</span>   <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fndr_geno</span><span class="p">)</span>
+<span class="n">simul_pheno</span>  <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fndr_pheno</span><span class="p">)</span>
+<span class="n">simul_bval</span>   <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fndr_bval</span><span class="p">)</span>
+<span class="n">simul_gmod</span>   <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fndr_gmod</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="rudimentary-logbooks">
+<h3>Rudimentary Logbooks<a class="headerlink" href="#rudimentary-logbooks" title="Permalink to this heading">#</a></h3>
+<p>Then, we’ll make a dictionary logbook to store simulation metrics.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make a dictionary logbook</span>
-<span class="n">constrained_lbook</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;gen&quot;</span>           <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;meh&quot;</span>           <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;lsl&quot;</span>           <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;usl&quot;</span>           <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;tbv_min_Syn1&quot;</span>  <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;tbv_mean_Syn1&quot;</span> <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;tbv_max_Syn1&quot;</span>  <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;tbv_std_Syn1&quot;</span>  <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;ebv_min_Syn1&quot;</span>  <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;ebv_mean_Syn1&quot;</span> <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;ebv_max_Syn1&quot;</span>  <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;ebv_std_Syn1&quot;</span>  <span class="p">:</span> <span class="p">[],</span>
+<span class="n">const_lbook</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;gen&quot;</span>                   <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_meh&quot;</span>              <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_lsl&quot;</span>         <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_usl&quot;</span>         <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_tbv_min&quot;</span>     <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_tbv_mean&quot;</span>    <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_tbv_max&quot;</span>     <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_tbv_std&quot;</span>     <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_tbv_var_A&quot;</span>   <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_tbv_var_a&quot;</span>   <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_ebv_min&quot;</span>     <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_ebv_mean&quot;</span>    <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_ebv_max&quot;</span>     <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_ebv_std&quot;</span>     <span class="p">:</span> <span class="p">[],</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </section>
-<section id="constrained-simulation-initialization">
-<h3>Constrained Simulation Initialization<a class="headerlink" href="#constrained-simulation-initialization" title="Permalink to this heading">#</a></h3>
-<p>Next, we’ll deep copy our founder populations so we can reuse our founder populations in a simulation following the current constrained optimization.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># copy founder population</span>
-<span class="n">pgmat</span> <span class="o">=</span> <span class="n">fndr_pgmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>We’ll phenotype and calculate breeding values for each individual.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># initial phenotyping</span>
-<span class="n">pheno_df</span> <span class="o">=</span> <span class="n">ptprot</span><span class="o">.</span><span class="n">phenotype</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)</span>
+<section id="simulation-main-loop">
+<h3>Simulation Main Loop<a class="headerlink" href="#simulation-main-loop" title="Permalink to this heading">#</a></h3>
+<p>Next, we’ll simulate our breeding program for 60 generations. We’ll start at an inbreeding constraint of 0.84 or less to begin and gradually increase the maximum allowed inbreeding to 1.0 (complete homozygosity; zero genetic diversity) by the end of the simulation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># record initial statistics</span>
+<span class="n">record</span><span class="p">(</span><span class="n">const_lbook</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">simul_genome</span><span class="p">,</span> <span class="n">simul_geno</span><span class="p">,</span> <span class="n">simul_pheno</span><span class="p">,</span> <span class="n">simul_bval</span><span class="p">,</span> <span class="n">simul_gmod</span><span class="p">)</span>
 
-<span class="c1"># initial breeding value estimation</span>
-<span class="n">bvmat</span> <span class="o">=</span> <span class="n">bvprot</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">pheno_df</span><span class="p">,</span> <span class="n">pgmat</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Using our within family selection function, we’ll select the top 10% of individuals in each family to serve as parental candidates. We’ll select the genotypes and breeding values for these candidates to serve as inputs into our selection protocol’s <code class="docutils literal notranslate"><span class="pre">select</span></code> method.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get candidate indices using within family selection</span>
-<span class="n">indices</span> <span class="o">=</span> <span class="n">within_family_selection</span><span class="p">(</span><span class="n">bvmat</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="c1"># select top 10%</span>
+<span class="c1"># create constraint change over time</span>
+<span class="c1"># 0.84 manually determined from Pareto frontier examination</span>
+<span class="n">maxinb</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.84</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">nsimul</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># get parental candidates</span>
-<span class="n">cand_pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
-<span class="n">cand_bvmat</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Finally, we’ll calculate and store some statistics into our logbook dictionary.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># log metrics</span>
-<span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;meh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pgmat</span><span class="o">.</span><span class="n">meh</span><span class="p">())</span>
-<span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;lsl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">algmod</span><span class="o">.</span><span class="n">lsl</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;usl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">algmod</span><span class="o">.</span><span class="n">usl</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">tbv</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">gebv</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
-<span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_min_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_mean_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_max_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_std_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">ebv</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
-<span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_min_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_mean_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_max_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_std_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gen: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-</pre></div>
-</div>
-</section>
-<section id="constrained-simulation-main-loop">
-<h3>Constrained Simulation Main Loop<a class="headerlink" href="#constrained-simulation-main-loop" title="Permalink to this heading">#</a></h3>
-<p>For our main simulation loop, we’ll do similar things to what we did in the the initialization steps above. For our selection protocol, we’ll gradually increase the maximum allowed inbreeding from 0.77 to 1.0 over the course of 60 generations.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># number of generations for which to simulate selection</span>
-<span class="n">ngen</span> <span class="o">=</span> <span class="mi">60</span>
-
-<span class="c1"># create evenly spaced maximum inbreeding allowed across ``ngen`` generations</span>
-<span class="n">maxinb</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.77</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">ngen</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># simulate for ``ngen`` generations</span>
-<span class="k">for</span> <span class="n">gen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ngen</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-    <span class="c1"># get candidate mask using within family selection</span>
-    <span class="n">indices</span> <span class="o">=</span> <span class="n">within_family_selection</span><span class="p">(</span><span class="n">bvmat</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="c1"># select top 10%</span>
-    <span class="c1"># get parental candidates</span>
-    <span class="n">cand_pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
-    <span class="n">cand_bvmat</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+<span class="c1"># main simulation loop</span>
+<span class="k">for</span> <span class="n">gen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nsimul</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
     <span class="c1"># set the inbreeding constraint</span>
-    <span class="n">constrained_selprot</span><span class="o">.</span><span class="n">ineqcv_trans_kwargs</span><span class="p">[</span><span class="s2">&quot;maxinb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">maxinb</span><span class="p">[</span><span class="n">gen</span><span class="p">]</span>
-    <span class="c1"># select individuals</span>
-    <span class="n">selcfg</span> <span class="o">=</span> <span class="n">constrained_selprot</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
-        <span class="n">pgmat</span>   <span class="o">=</span> <span class="n">cand_pgmat</span><span class="p">,</span>   <span class="c1"># genomes from which to build SelectionConfiguration</span>
-        <span class="n">gmat</span>    <span class="o">=</span> <span class="n">cand_pgmat</span><span class="p">,</span>   <span class="c1"># genotypes (required)</span>
-        <span class="n">ptdf</span>    <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>         <span class="c1"># not required by this selection protocol</span>
-        <span class="n">bvmat</span>   <span class="o">=</span> <span class="n">cand_bvmat</span><span class="p">,</span>   <span class="c1"># breeding values (required)</span>
-        <span class="n">gpmod</span>   <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>         <span class="c1"># not required by this selection protocol</span>
-        <span class="n">t_cur</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>            <span class="c1"># not required by this selection protocol</span>
-        <span class="n">t_max</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>            <span class="c1"># not required by this selection protocol</span>
+    <span class="n">const_selprot</span><span class="o">.</span><span class="n">ineqcv_trans_kwargs</span><span class="p">[</span><span class="s2">&quot;maxinb&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">maxinb</span><span class="p">[</span><span class="n">gen</span><span class="p">]</span>
+    <span class="c1"># parental selection: select parents from parental candidates</span>
+    <span class="n">selcfg</span> <span class="o">=</span> <span class="n">const_selprot</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="n">pgmat</span> <span class="o">=</span> <span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">gmat</span>  <span class="o">=</span> <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">ptdf</span>  <span class="o">=</span> <span class="n">simul_pheno</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">bvmat</span> <span class="o">=</span> <span class="n">simul_bval</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">gpmod</span> <span class="o">=</span> <span class="n">simul_gmod</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">t_cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">t_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="c1"># mate individuals</span>
-    <span class="n">pgmat</span> <span class="o">=</span> <span class="n">mate2waydh</span><span class="o">.</span><span class="n">mate</span><span class="p">(</span>
-        <span class="n">pgmat</span> <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">pgmat</span><span class="p">,</span>
-        <span class="n">xconfig</span> <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">xconfig</span><span class="p">,</span>
-        <span class="n">nmating</span> <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">nmating</span><span class="p">,</span>
+    <span class="c1"># mate: create new genomes; discard oldest cohort; concat new main population</span>
+    <span class="n">new_genome</span> <span class="o">=</span> <span class="n">mate2waydh</span><span class="o">.</span><span class="n">mate</span><span class="p">(</span>
+        <span class="n">pgmat</span>    <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">pgmat</span><span class="p">,</span>
+        <span class="n">xconfig</span>  <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">xconfig</span><span class="p">,</span>
+        <span class="n">nmating</span>  <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">nmating</span><span class="p">,</span>
         <span class="n">nprogeny</span> <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">nprogeny</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="c1"># phenotype progenies</span>
-    <span class="n">pheno_df</span> <span class="o">=</span> <span class="n">ptprot</span><span class="o">.</span><span class="n">phenotype</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)</span>
-    <span class="c1"># estimate breeding values for progenies and align to pgmat</span>
-    <span class="n">bvmat</span> <span class="o">=</span> <span class="n">bvprot</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">pheno_df</span><span class="p">,</span> <span class="n">pgmat</span><span class="p">)</span>
-    <span class="c1"># log metrics</span>
-    <span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
-    <span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;meh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pgmat</span><span class="o">.</span><span class="n">meh</span><span class="p">())</span>
-    <span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;lsl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">algmod</span><span class="o">.</span><span class="n">lsl</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;usl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">algmod</span><span class="o">.</span><span class="n">usl</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">tbv</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">gebv</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
-    <span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_min_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_mean_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_max_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_std_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">ebv</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
-    <span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_min_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_mean_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_max_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">constrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_std_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gen: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span>
+    <span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_genome</span><span class="p">)</span>
+    <span class="n">discard</span> <span class="o">=</span> <span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="o">.</span><span class="n">concat_taxa</span><span class="p">(</span><span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="c1"># evaluate: genotype new genomes; discard oldest cohort; concat new main population</span>
+    <span class="n">new_geno</span> <span class="o">=</span> <span class="n">gtprot</span><span class="o">.</span><span class="n">genotype</span><span class="p">(</span><span class="n">new_genome</span><span class="p">)</span>
+    <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_geno</span><span class="p">)</span>
+    <span class="n">discard</span> <span class="o">=</span> <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DenseGenotypeMatrix</span><span class="o">.</span><span class="n">concat_taxa</span><span class="p">(</span><span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="c1"># evaluate: phenotype main population</span>
+    <span class="n">simul_pheno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ptprot</span><span class="o">.</span><span class="n">phenotype</span><span class="p">(</span><span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">])</span>
+    <span class="c1"># evaluate: calculate breeding values for the main population</span>
+    <span class="n">simul_bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bvprot</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">simul_pheno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">],</span> <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">])</span>
+    <span class="c1"># survivor selection: select parental candidate indices from main population</span>
+    <span class="n">ix</span> <span class="o">=</span> <span class="n">within_family_selection</span><span class="p">(</span><span class="n">simul_bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span> <span class="c1"># select top 5%</span>
+    <span class="c1"># survivor selection: select parental candidates from main population</span>
+    <span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+    <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+    <span class="n">simul_bval</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simul_bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+    <span class="c1"># record statistics</span>
+    <span class="n">record</span><span class="p">(</span><span class="n">const_lbook</span><span class="p">,</span> <span class="n">gen</span><span class="p">,</span> <span class="n">simul_genome</span><span class="p">,</span> <span class="n">simul_geno</span><span class="p">,</span> <span class="n">simul_pheno</span><span class="p">,</span> <span class="n">simul_bval</span><span class="p">,</span> <span class="n">simul_gmod</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generation:&quot;</span><span class="p">,</span> <span class="n">gen</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="saving-constrained-simulation-results-to-a-file">
-<h3>Saving Constrained Simulation Results to a File<a class="headerlink" href="#saving-constrained-simulation-results-to-a-file" title="Permalink to this heading">#</a></h3>
-<p>Finally, we’ll save the results of the constrained optimization to a CSV file for future analysis.</p>
+<section id="saving-results-to-a-file">
+<h3>Saving Results to a File<a class="headerlink" href="#saving-results-to-a-file" title="Permalink to this heading">#</a></h3>
+<p>Finally, we’ll save the results of our simulation to a CSV file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create output dataframe and save</span>
-<span class="n">constrained_lbook_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">constrained_lbook</span><span class="p">)</span>
-<span class="n">constrained_lbook_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;constrained_lbook.csv&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">const_lbook_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">const_lbook</span><span class="p">)</span>
+<span class="n">const_lbook_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;const_lbook.csv&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="unconstrained-simulation-logbook">
-<h3>Unconstrained Simulation Logbook<a class="headerlink" href="#unconstrained-simulation-logbook" title="Permalink to this heading">#</a></h3>
-<p>For our unconstrained simulations, we’ll make another dictionary to serve as a rudimentary logbook.</p>
+</section>
+<section id="simulate-unconstrained-phenotypic-selection-for-60-generations">
+<h2>Simulate Unconstrained Phenotypic Selection for 60 Generations<a class="headerlink" href="#simulate-unconstrained-phenotypic-selection-for-60-generations" title="Permalink to this heading">#</a></h2>
+<p>The next subsections detail simulations in the unconstrained scenario.</p>
+<section id="id1">
+<h3>Copy Founders<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<p>As before, we’ll copy our founder populations so that we don’t modify them and can use them for repeated simulations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># deep copy founder populations, bvals, etc. so we can replicate if needed</span>
+<span class="n">simul_genome</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fndr_genome</span><span class="p">)</span>
+<span class="n">simul_geno</span>   <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fndr_geno</span><span class="p">)</span>
+<span class="n">simul_pheno</span>  <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fndr_pheno</span><span class="p">)</span>
+<span class="n">simul_bval</span>   <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fndr_bval</span><span class="p">)</span>
+<span class="n">simul_gmod</span>   <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fndr_gmod</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="id2">
+<h3>Rudimentary Logbooks<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<p>Then, we’ll make a dictionary logbook to store simulation metrics.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make a dictionary logbook</span>
-<span class="n">unconstrained_lbook</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;gen&quot;</span>           <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;meh&quot;</span>           <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;lsl&quot;</span>           <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;usl&quot;</span>           <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;tbv_min_Syn1&quot;</span>  <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;tbv_mean_Syn1&quot;</span> <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;tbv_max_Syn1&quot;</span>  <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;tbv_std_Syn1&quot;</span>  <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;ebv_min_Syn1&quot;</span>  <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;ebv_mean_Syn1&quot;</span> <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;ebv_max_Syn1&quot;</span>  <span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">&quot;ebv_std_Syn1&quot;</span>  <span class="p">:</span> <span class="p">[],</span>
+<span class="n">unconst_lbook</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;gen&quot;</span>                   <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_meh&quot;</span>              <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_lsl&quot;</span>         <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_usl&quot;</span>         <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_tbv_min&quot;</span>     <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_tbv_mean&quot;</span>    <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_tbv_max&quot;</span>     <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_tbv_std&quot;</span>     <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_tbv_var_A&quot;</span>   <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_tbv_var_a&quot;</span>   <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_ebv_min&quot;</span>     <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_ebv_mean&quot;</span>    <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_ebv_max&quot;</span>     <span class="p">:</span> <span class="p">[],</span>
+    <span class="s2">&quot;main_Syn1_ebv_std&quot;</span>     <span class="p">:</span> <span class="p">[],</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </section>
-<section id="unconstrained-simulation-initialization">
-<h3>Unconstrained Simulation Initialization<a class="headerlink" href="#unconstrained-simulation-initialization" title="Permalink to this heading">#</a></h3>
-<p>To initialize our simulations, we’ll do the same things as we did in the constrained simulation initialization setup.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># copy founder population</span>
-<span class="n">pgmat</span> <span class="o">=</span> <span class="n">fndr_pgmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
+<section id="id3">
+<h3>Simulation Main Loop<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<p>Next, we’ll simulate our breeding program for 60 generations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># record initial statistics</span>
+<span class="n">record</span><span class="p">(</span><span class="n">unconst_lbook</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">simul_genome</span><span class="p">,</span> <span class="n">simul_geno</span><span class="p">,</span> <span class="n">simul_pheno</span><span class="p">,</span> <span class="n">simul_bval</span><span class="p">,</span> <span class="n">simul_gmod</span><span class="p">)</span>
 
-<span class="c1"># initial phenotyping</span>
-<span class="n">pheno_df</span> <span class="o">=</span> <span class="n">ptprot</span><span class="o">.</span><span class="n">phenotype</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)</span>
-
-<span class="c1"># initial breeding value estimation</span>
-<span class="n">bvmat</span> <span class="o">=</span> <span class="n">bvprot</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">pheno_df</span><span class="p">,</span> <span class="n">pgmat</span><span class="p">)</span>
-
-<span class="c1"># get candidate indices using within family selection</span>
-<span class="n">indices</span> <span class="o">=</span> <span class="n">within_family_selection</span><span class="p">(</span><span class="n">bvmat</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="c1"># select top 10%</span>
-
-<span class="c1"># get parental candidates</span>
-<span class="n">cand_pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
-<span class="n">cand_bvmat</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
-
-<span class="c1"># log metrics</span>
-<span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;meh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pgmat</span><span class="o">.</span><span class="n">meh</span><span class="p">())</span>
-<span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;lsl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">algmod</span><span class="o">.</span><span class="n">lsl</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;usl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">algmod</span><span class="o">.</span><span class="n">usl</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">tbv</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">gebv</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
-<span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_min_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_mean_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_max_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_std_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">ebv</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
-<span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_min_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_mean_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_max_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_std_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gen: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
-</pre></div>
-</div>
-</section>
-<section id="unconstrained-simulation-main-loop">
-<h3>Unconstrained Simulation Main Loop<a class="headerlink" href="#unconstrained-simulation-main-loop" title="Permalink to this heading">#</a></h3>
-<p>Our main simulation loop will be almost identical to that of the constrained scenario, except we will not have any inbreeding constraints to worry about.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># number of generations for which to simulate selection</span>
-<span class="n">ngen</span> <span class="o">=</span> <span class="mi">60</span>
-
-<span class="c1"># simulate for ``ngen`` generations</span>
-<span class="k">for</span> <span class="n">gen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">ngen</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
-    <span class="c1"># get candidate mask using within family selection</span>
-    <span class="n">indices</span> <span class="o">=</span> <span class="n">within_family_selection</span><span class="p">(</span><span class="n">bvmat</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span> <span class="c1"># select top 10%</span>
-    <span class="c1"># get parental candidates</span>
-    <span class="n">cand_pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
-    <span class="n">cand_bvmat</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
-    <span class="c1"># select individuals</span>
-    <span class="n">selcfg</span> <span class="o">=</span> <span class="n">unconstrained_selprot</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
-        <span class="n">pgmat</span>   <span class="o">=</span> <span class="n">cand_pgmat</span><span class="p">,</span>   <span class="c1"># genomes from which to build SelectionConfiguration</span>
-        <span class="n">gmat</span>    <span class="o">=</span> <span class="n">cand_pgmat</span><span class="p">,</span>   <span class="c1"># genotypes (required)</span>
-        <span class="n">ptdf</span>    <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>         <span class="c1"># not required by this selection protocol</span>
-        <span class="n">bvmat</span>   <span class="o">=</span> <span class="n">cand_bvmat</span><span class="p">,</span>   <span class="c1"># breeding values (required)</span>
-        <span class="n">gpmod</span>   <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>         <span class="c1"># not required by this selection protocol</span>
-        <span class="n">t_cur</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>            <span class="c1"># not required by this selection protocol</span>
-        <span class="n">t_max</span>   <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>            <span class="c1"># not required by this selection protocol</span>
+<span class="c1"># main simulation loop</span>
+<span class="k">for</span> <span class="n">gen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">nsimul</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="c1"># parental selection: select parents from parental candidates</span>
+    <span class="n">selcfg</span> <span class="o">=</span> <span class="n">unconst_selprot</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+        <span class="n">pgmat</span> <span class="o">=</span> <span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">gmat</span>  <span class="o">=</span> <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">ptdf</span>  <span class="o">=</span> <span class="n">simul_pheno</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">bvmat</span> <span class="o">=</span> <span class="n">simul_bval</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">gpmod</span> <span class="o">=</span> <span class="n">simul_gmod</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">],</span>
+        <span class="n">t_cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">t_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="c1"># mate individuals</span>
-    <span class="n">pgmat</span> <span class="o">=</span> <span class="n">mate2waydh</span><span class="o">.</span><span class="n">mate</span><span class="p">(</span>
-        <span class="n">pgmat</span> <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">pgmat</span><span class="p">,</span>
-        <span class="n">xconfig</span> <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">xconfig</span><span class="p">,</span>
-        <span class="n">nmating</span> <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">nmating</span><span class="p">,</span>
+    <span class="c1"># mate: create new genomes; discard oldest cohort; concat new main population</span>
+    <span class="n">new_genome</span> <span class="o">=</span> <span class="n">mate2waydh</span><span class="o">.</span><span class="n">mate</span><span class="p">(</span>
+        <span class="n">pgmat</span>    <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">pgmat</span><span class="p">,</span>
+        <span class="n">xconfig</span>  <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">xconfig</span><span class="p">,</span>
+        <span class="n">nmating</span>  <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">nmating</span><span class="p">,</span>
         <span class="n">nprogeny</span> <span class="o">=</span> <span class="n">selcfg</span><span class="o">.</span><span class="n">nprogeny</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="c1"># phenotype progenies</span>
-    <span class="n">pheno_df</span> <span class="o">=</span> <span class="n">ptprot</span><span class="o">.</span><span class="n">phenotype</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)</span>
-    <span class="c1"># estimate breeding values for progenies and align to pgmat</span>
-    <span class="n">bvmat</span> <span class="o">=</span> <span class="n">bvprot</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">pheno_df</span><span class="p">,</span> <span class="n">pgmat</span><span class="p">)</span>
-    <span class="c1"># log metrics</span>
-    <span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
-    <span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;meh&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pgmat</span><span class="o">.</span><span class="n">meh</span><span class="p">())</span>
-    <span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;lsl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">algmod</span><span class="o">.</span><span class="n">lsl</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;usl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">algmod</span><span class="o">.</span><span class="n">usl</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">tbv</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">gebv</span><span class="p">(</span><span class="n">pgmat</span><span class="p">)</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
-    <span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_min_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_mean_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_max_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;tbv_std_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbv</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">ebv</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
-    <span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_min_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_mean_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_max_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">unconstrained_lbook</span><span class="p">[</span><span class="s2">&quot;ebv_std_Syn1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ebv</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Gen: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">gen</span><span class="p">))</span>
+    <span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_genome</span><span class="p">)</span>
+    <span class="n">discard</span> <span class="o">=</span> <span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="o">.</span><span class="n">concat_taxa</span><span class="p">(</span><span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="c1"># evaluate: genotype new genomes; discard oldest cohort; concat new main population</span>
+    <span class="n">new_geno</span> <span class="o">=</span> <span class="n">gtprot</span><span class="o">.</span><span class="n">genotype</span><span class="p">(</span><span class="n">new_genome</span><span class="p">)</span>
+    <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_geno</span><span class="p">)</span>
+    <span class="n">discard</span> <span class="o">=</span> <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">DenseGenotypeMatrix</span><span class="o">.</span><span class="n">concat_taxa</span><span class="p">(</span><span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;queue&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+    <span class="c1"># evaluate: phenotype main population</span>
+    <span class="n">simul_pheno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ptprot</span><span class="o">.</span><span class="n">phenotype</span><span class="p">(</span><span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">])</span>
+    <span class="c1"># evaluate: calculate breeding values for the main population</span>
+    <span class="n">simul_bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bvprot</span><span class="o">.</span><span class="n">estimate</span><span class="p">(</span><span class="n">simul_pheno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">],</span> <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">])</span>
+    <span class="c1"># survivor selection: select parental candidate indices from main population</span>
+    <span class="n">ix</span> <span class="o">=</span> <span class="n">within_family_selection</span><span class="p">(</span><span class="n">simul_bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span> <span class="c1"># select top 5%</span>
+    <span class="c1"># survivor selection: select parental candidates from main population</span>
+    <span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simul_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+    <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simul_geno</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+    <span class="n">simul_bval</span><span class="p">[</span><span class="s2">&quot;cand&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simul_bval</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span><span class="n">ix</span><span class="p">)</span>
+    <span class="c1"># record statistics</span>
+    <span class="n">record</span><span class="p">(</span><span class="n">unconst_lbook</span><span class="p">,</span> <span class="n">gen</span><span class="p">,</span> <span class="n">simul_genome</span><span class="p">,</span> <span class="n">simul_geno</span><span class="p">,</span> <span class="n">simul_pheno</span><span class="p">,</span> <span class="n">simul_bval</span><span class="p">,</span> <span class="n">simul_gmod</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Generation:&quot;</span><span class="p">,</span> <span class="n">gen</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-<section id="saving-unconstrained-simulation-results-to-a-file">
-<h3>Saving Unconstrained Simulation Results to a File<a class="headerlink" href="#saving-unconstrained-simulation-results-to-a-file" title="Permalink to this heading">#</a></h3>
-<p>Finally, as before, we’ll save the results to a CSV file for future analysis.</p>
+<section id="id4">
+<h3>Saving Results to a File<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<p>Finally, we’ll save the results of our simulation to a CSV file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create output dataframe and save</span>
-<span class="n">unconstrained_lbook_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">unconstrained_lbook</span><span class="p">)</span>
-<span class="n">unconstrained_lbook_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;unconstrained_lbook.csv&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">unconst_lbook_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">unconst_lbook</span><span class="p">)</span>
+<span class="n">unconst_lbook_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;unconst_lbook.csv&quot;</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -1005,12 +1134,12 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create static figure</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">axes</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;tbv_mean_Syn1&quot;</span><span class="p">],</span>   <span class="s1">&#39;-b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: Mean Pop. TBV&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;lsl&quot;</span><span class="p">],</span>             <span class="s1">&#39;:b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: LSL&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;usl&quot;</span><span class="p">],</span>             <span class="s1">&#39;--b&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: USL&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;tbv_mean_Syn1&quot;</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: Mean Pop. TBV&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;lsl&quot;</span><span class="p">],</span>           <span class="s1">&#39;:r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: LSL&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;usl&quot;</span><span class="p">],</span>           <span class="s1">&#39;--r&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: USL&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_tbv_mean&quot;</span><span class="p">],</span>   <span class="s1">&#39;-b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: Mean Pop. TBV&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_lsl&quot;</span><span class="p">],</span>   <span class="s1">&#39;:b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: LSL&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_usl&quot;</span><span class="p">],</span>   <span class="s1">&#39;--b&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: USL&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_tbv_mean&quot;</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: Mean Pop. TBV&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_lsl&quot;</span><span class="p">],</span> <span class="s1">&#39;:r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: LSL&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_usl&quot;</span><span class="p">],</span> <span class="s1">&#39;--r&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: USL&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Single-Trait Recurrent Phenotypic Selection&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Generation&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait Breeding Value&quot;</span><span class="p">)</span>
@@ -1028,12 +1157,12 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create static figure</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">axes</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;ebv_mean_Syn1&quot;</span><span class="p">],</span>   <span class="s1">&#39;-b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: Mean Pop. EBV&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;lsl&quot;</span><span class="p">],</span>             <span class="s1">&#39;:b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: LSL&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;usl&quot;</span><span class="p">],</span>             <span class="s1">&#39;--b&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: USL&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;ebv_mean_Syn1&quot;</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: Mean Pop. EBV&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;lsl&quot;</span><span class="p">],</span>           <span class="s1">&#39;:r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: LSL&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;usl&quot;</span><span class="p">],</span>           <span class="s1">&#39;--r&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: USL&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_ebv_mean&quot;</span><span class="p">],</span>   <span class="s1">&#39;-b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: Mean Pop. EBV&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_lsl&quot;</span><span class="p">],</span>   <span class="s1">&#39;:b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: LSL&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_usl&quot;</span><span class="p">],</span>   <span class="s1">&#39;--b&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: USL&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_ebv_mean&quot;</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: Mean Pop. EBV&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_lsl&quot;</span><span class="p">],</span> <span class="s1">&#39;:r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: LSL&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_usl&quot;</span><span class="p">],</span> <span class="s1">&#39;--r&#39;</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: USL&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Single-Trait Recurrent Phenotypic Selection&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Generation&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait Breeding Value&quot;</span><span class="p">)</span>
@@ -1051,8 +1180,8 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create static figure</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">axes</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;meh&quot;</span><span class="p">],</span>   <span class="s1">&#39;-b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: Pop. MEH&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;meh&quot;</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: Pop. MEH&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_meh&quot;</span><span class="p">],</span>   <span class="s1">&#39;-b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: Pop. MEH&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_meh&quot;</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: Pop. MEH&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Single-Trait Recurrent Phenotypic Selection&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Generation&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Mean Expected Heterozygosity&quot;</span><span class="p">)</span>
@@ -1070,8 +1199,8 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create static figure</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">axes</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;tbv_std_Syn1&quot;</span><span class="p">],</span>   <span class="s1">&#39;-b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: Pop. TBV SD&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;tbv_std_Syn1&quot;</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: Pop. TBV SD&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_tbv_std&quot;</span><span class="p">],</span>   <span class="s1">&#39;-b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: Pop. TBV SD&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_tbv_std&quot;</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: Pop. TBV SD&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Single-Trait Recurrent Phenotypic Selection&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Generation&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait Breeding Value Standard Deviation&quot;</span><span class="p">)</span>
@@ -1089,8 +1218,8 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create static figure</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">axes</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">constrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;ebv_std_Syn1&quot;</span><span class="p">],</span>   <span class="s1">&#39;-b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: Pop. EBV SD&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconstrained_lbook_df</span><span class="p">[</span><span class="s2">&quot;ebv_std_Syn1&quot;</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: Pop. EBV SD&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span>   <span class="n">const_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_ebv_std&quot;</span><span class="p">],</span>   <span class="s1">&#39;-b&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Const. Sel.: Pop. EBV SD&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;gen&quot;</span><span class="p">],</span> <span class="n">unconst_lbook_df</span><span class="p">[</span><span class="s2">&quot;main_Syn1_ebv_std&quot;</span><span class="p">],</span> <span class="s1">&#39;-r&#39;</span><span class="p">,</span>  <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;Unconst. Sel.: Pop. EBV SD&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Single-Trait Recurrent Phenotypic Selection&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Generation&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait Breeding Value Standard Deviation&quot;</span><span class="p">)</span>
@@ -1120,10 +1249,10 @@
           <p class="prev-next-title">Single-Trait Phenotypic Selection</p>
       </div>
   </a>
-  <a class='right-next' id="next-link" href="../../../advanced_usage/advanced_usage.html" title="next page">
+  <a class='right-next' id="next-link" href="constrained_bitrait_phenotypic_selection.html" title="next page">
   <div class="prev-next-info">
       <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Advanced PyBrOpS Usage</p>
+      <p class="prev-next-title">Constrained Bi-Trait Phenotypic Selection</p>
   </div>
   <i class="fa-solid fa-angle-right"></i>
   </a>
@@ -1154,6 +1283,11 @@
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#simulation-parameters">
+     Simulation Parameters
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#loading-genetic-map-data-from-a-text-file">
      Loading Genetic Map Data from a Text File
     </a>
@@ -1176,13 +1310,44 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#simulation-burn-in">
-   Simulation Burn-in
+  <a class="reference internal nav-link" href="#build-founder-populations-run-breeding-program-burn-in">
+   Build Founder Populations &amp; Run Breeding Program Burn-In
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#select-founders-and-randomly-intermate-for-20-generations">
-     Select founders and randomly intermate for 20 generations
+    <a class="reference internal nav-link" href="#randomly-intermate-for-nrandmate-generations">
+     Randomly Intermate for
+     <code class="docutils literal notranslate">
+      <span class="pre">
+       nrandmate
+      </span>
+     </code>
+     Generations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-breeding-protocols-for-burn-in">
+     Create Breeding Protocols for Burn-In
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-within-family-selection-function">
+     Create a Within-Family Selection Function
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-cohort-structure">
+     Create Cohort Structure
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#create-a-burn-in-selection-protocol-object">
+     Create a Burn-In Selection Protocol Object
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#running-a-population-burn-in-until-meh-is-slightly-less-than-0-30">
+     Running a Population Burn-in until MEH is slightly less than 0.30
     </a>
    </li>
   </ul>
@@ -1193,21 +1358,6 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-a-phenotyping-protocol-object">
-     Create a Phenotyping Protocol Object
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-a-breeding-value-estimation-protocol-object">
-     Create a Breeding Value Estimation Protocol Object
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-a-within-family-selection-function">
-     Create a Within-Family Selection Function
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#create-a-constrained-selection-protocol-object">
      Create a Constrained Selection Protocol Object
     </a>
@@ -1217,51 +1367,63 @@
      Create an Unconstrained Selection Protocol Object
     </a>
    </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#make-a-statistics-recording-helper-function">
+     Make a Statistics Recording Helper Function
+    </a>
+   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#simulate-constrained-and-unconstrained-phenotypic-selection-for-60-generations">
-   Simulate Constrained and Unconstrained Phenotypic Selection for 60 Generations
+  <a class="reference internal nav-link" href="#simulate-constrained-phenotypic-selection-for-60-generations">
+   Simulate Constrained Phenotypic Selection for 60 Generations
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#constrained-simulation-logbooks">
-     Constrained Simulation Logbooks
+    <a class="reference internal nav-link" href="#copy-founders">
+     Copy Founders
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#constrained-simulation-initialization">
-     Constrained Simulation Initialization
+    <a class="reference internal nav-link" href="#rudimentary-logbooks">
+     Rudimentary Logbooks
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#constrained-simulation-main-loop">
-     Constrained Simulation Main Loop
+    <a class="reference internal nav-link" href="#simulation-main-loop">
+     Simulation Main Loop
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#saving-constrained-simulation-results-to-a-file">
-     Saving Constrained Simulation Results to a File
+    <a class="reference internal nav-link" href="#saving-results-to-a-file">
+     Saving Results to a File
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#simulate-unconstrained-phenotypic-selection-for-60-generations">
+   Simulate Unconstrained Phenotypic Selection for 60 Generations
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     Copy Founders
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#unconstrained-simulation-logbook">
-     Unconstrained Simulation Logbook
+    <a class="reference internal nav-link" href="#id2">
+     Rudimentary Logbooks
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#unconstrained-simulation-initialization">
-     Unconstrained Simulation Initialization
+    <a class="reference internal nav-link" href="#id3">
+     Simulation Main Loop
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#unconstrained-simulation-main-loop">
-     Unconstrained Simulation Main Loop
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#saving-unconstrained-simulation-results-to-a-file">
-     Saving Unconstrained Simulation Results to a File
+    <a class="reference internal nav-link" href="#id4">
+     Saving Results to a File
     </a>
    </li>
   </ul>

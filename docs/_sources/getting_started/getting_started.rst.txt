@@ -32,11 +32,11 @@ The following additional packages are also required for the developmental instal
 Release version installation
 ----------------------------
 
-To install PyBrOpS, use ``pip3``:
+PyBrOpS is not currently on ``pip`` just yet. In the future, it will be possible to install PyBrOpS using ``pip``.
 
 .. code-block:: console
 
-    $ pip3 install pybrops
+    $ pip install pybrops
 
 Basic Programming Knowledge Prerequisites
 =========================================

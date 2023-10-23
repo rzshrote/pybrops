@@ -2,7 +2,7 @@
 
 ###
 ### Constrained Bi-Trait Phenotypic Selection
-### =========================================
+### #########################################
 
 ##
 ## Simulation Preliminaries
@@ -37,9 +37,9 @@ from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMat
 # seed python random and numpy random
 pybrops.core.random.prng.seed(82651560)
 
-##
-## Simulation Parameters
-## ---------------------
+#
+# Simulation Parameters
+# ---------------------
 
 nfndr = 40      # number of founder individuals
 nqtl = 1000     # number of QTL
@@ -49,12 +49,11 @@ nparent = 2     # number of parents per cross configuration
 nmating = 1     # number of times to perform cross configuration
 nprogeny = 80   # number of progenies per cross attempt
 nrandmate = 20  # number of random intermatings
-nburnin = 20    # number of burnin generations
 nsimul = 60     # number of simulation generations
 
-##
-## Loading Genetic Map Data from a Text File
-## -----------------------------------------
+#
+# Loading Genetic Map Data from a Text File
+# -----------------------------------------
 
 # read genetic map
 gmap = StandardGeneticMap.from_csv(
@@ -69,16 +68,16 @@ gmap = StandardGeneticMap.from_csv(
     header              = 0,     # use first line as header
 )
 
-##
-## Creating a Genetic Map Function
-## -------------------------------
+#
+# Creating a Genetic Map Function
+# -------------------------------
 
 # use Haldane map function to calculate crossover probabilities
 gmapfn = HaldaneMapFunction()
 
-##
-## Loading Genome Data from a VCF File
-## -----------------------------------
+#
+# Loading Genome Data from a VCF File
+# -----------------------------------
 
 # read phased genetic markers from a vcf file
 fndr_pgmat = DensePhasedGenotypeMatrix.from_vcf("widiv_2000SNPs.vcf.gz", auto_group_vrnt=False)
@@ -97,9 +96,9 @@ fndr_pgmat.group_vrnt()
 # interpolate genetic map positions
 fndr_pgmat.interp_xoprob(gmap, gmapfn)
 
-##
-## Constructing a Bi-Trait Genomic Model
-## -------------------------------------
+#
+# Constructing a Bi-Trait Genomic Model
+# -------------------------------------
 
 # model intercepts: (1,ntrait=2)
 beta = numpy.array([[100.0, 50.0]], dtype = float)
@@ -140,8 +139,8 @@ algmod = DenseAdditiveLinearGenomicModel(
 )
 
 ##
-## Build Founder Populations
-## =========================
+## Build Founder Populations & Run Breeding Program Burn-In
+## ========================================================
 
 #
 # Randomly Intermate for ``nrandmate`` Generations
@@ -268,17 +267,17 @@ fndr_pheno["main"] = ptprot.phenotype(fndr_genome["main"])
 # calculate breeding values for the main population
 fndr_bval["main"] = bvprot.estimate(fndr_pheno["main"], fndr_geno["main"])
 
-# # calculate indices for within family selection to get parental candidates
+# calculate indices for within family selection to get parental candidates
 ix = within_family_selection(fndr_bval["main"], 4) # select top 5%
 
-# # select parental candidates
+# select parental candidates
 fndr_genome["cand"] = fndr_genome["main"].select_taxa(ix)
 fndr_geno["cand"]   = fndr_geno["main"].select_taxa(ix)
 fndr_bval["cand"]   = fndr_bval["main"].select_taxa(ix)
 
 ##
 ## Create a Burn-In Selection Protocol Object
-## ==========================================
+## ------------------------------------------
 
 # define an objective transformation function
 def obj_trans(
@@ -292,8 +291,8 @@ def obj_trans(
 
     Where::
     
-        - -BV1 is the nth negated mean yield breeding value for the subset.
-        - -BV2 is the nth negated mean earht breeding value for the subset.
+        - -BV1 is the negated mean yield breeding value for the subset.
+        - -BV2 is the negated mean earht breeding value for the subset.
 
     Parameters
     ----------
@@ -327,8 +326,8 @@ burnin_selprot = EstimatedBreedingValueSubsetSelection(
 )
 
 ##
-## Running a Population Burn-in until MEH is slightly less than 0.25
-## =================================================================
+## Running a Population Burn-in until MEH is slightly less than 0.30
+## -----------------------------------------------------------------
 
 i = 0
 while fndr_genome["main"].meh() > 0.30:
@@ -373,8 +372,12 @@ while fndr_genome["main"].meh() > 0.30:
 print("Starting MEH:", fndr_genome["main"].meh())
 
 ##
-## Constructing a Constrained EBV Subset Selection Object
-## ======================================================
+## Simulation Setup
+## ================
+
+#
+# Constructing a Constrained EBV Subset Selection Object
+# ------------------------------------------------------
 
 # define an objective transformation function
 def obj_trans(
@@ -388,8 +391,8 @@ def obj_trans(
 
     Where::
     
-        - -BV1 is the nth negated mean yield breeding value for the subset.
-        - -BV2 is the nth negated mean earht breeding value for the subset.
+        - -BV1 is the negated mean yield breeding value for the subset.
+        - -BV2 is the negated mean earht breeding value for the subset.
 
     Parameters
     ----------
@@ -418,8 +421,8 @@ def ineqcv_trans(
 
     Where::
     
-        - -BV1 is the nth negated mean yield breeding value for the subset.
-        - -BV2 is the nth negated mean earht breeding value for the subset.
+        - -BV1 is the negated mean yield breeding value for the subset.
+        - -BV2 is the negated mean earht breeding value for the subset.
         - CV2 is the constrain violation for a earht breeding value that exceeds 50.0.
 
     Parameters
@@ -457,9 +460,9 @@ const_selprot = EstimatedBreedingValueSubsetSelection(
     soalgo       = soalgo,       # use sorting algorithm to solve single-objective problem
 )
 
-##
-## Create an Unconstrained Selection Protocol Object
-## =================================================
+#
+# Create an Unconstrained Selection Protocol Object
+# -------------------------------------------------
 
 # define an objective transformation function
 def obj_trans(
@@ -473,8 +476,8 @@ def obj_trans(
 
     Where::
     
-        - -BV1 is the nth negated mean yield breeding value for the subset.
-        - -BV2 is the nth negated mean earht breeding value for the subset.
+        - -BV1 is the negated mean yield breeding value for the subset.
+        - -BV2 is the negated mean earht breeding value for the subset.
 
     Parameters
     ----------
@@ -507,9 +510,9 @@ unconst_selprot = EstimatedBreedingValueSubsetSelection(
     soalgo       = soalgo,       # use sorting algorithm to solve single-objective problem
 )
 
-##
-## Make a Statistics Recording Helper Function
-## ===========================================
+#
+# Make a Statistics Recording Helper Function
+# -------------------------------------------
 
 # make recording helper function
 def record(lbook: dict, gen: int, genome: dict, geno: dict, pheno: dict, bval: dict, gmod: dict) -> None:
@@ -726,6 +729,10 @@ unconst_lbook = {
     "main_earht_ebv_std"  : [],
 }
 
+#
+# Simulation Main Loop
+# --------------------
+
 # record initial statistics
 record(unconst_lbook, 0, simul_genome, simul_geno, simul_pheno, simul_bval, simul_gmod)
 
@@ -880,7 +887,7 @@ pyplot.close(fig)
 
 #
 # Visualizing Mean Expected Heterozygosity (MEH)
-# ==============================================
+# ----------------------------------------------
 
 # create static figure
 fig = pyplot.figure()
@@ -896,7 +903,7 @@ pyplot.close(fig)
 
 #
 # Visualizing True Breeding Value Standard Deviations
-# ===================================================
+# ---------------------------------------------------
 
 # create static figure
 fig = pyplot.figure()
@@ -914,7 +921,7 @@ pyplot.close(fig)
 
 #
 # Visualizing Estimated Breeding Value Standard Deviations
-# ========================================================
+# --------------------------------------------------------
 
 # create static figure
 fig = pyplot.figure()
@@ -932,7 +939,7 @@ pyplot.close(fig)
 
 #
 # Visualizing Genetic and Genic Variance
-# ======================================
+# --------------------------------------
 
 # create static figure
 fig = pyplot.figure()

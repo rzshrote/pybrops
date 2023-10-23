@@ -40,9 +40,9 @@ from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMat
 # seed python random and numpy random
 pybrops.core.random.prng.seed(52347529)
 
-##
-## Simulation Parameters
-## ---------------------
+#
+# Simulation Parameters
+# ---------------------
 
 nfndr = 40      # number of founder individuals
 nqtl = 1000     # number of QTL
@@ -52,12 +52,11 @@ nparent = 2     # number of parents per cross configuration
 nmating = 1     # number of times to perform cross configuration
 nprogeny = 80   # number of progenies per cross attempt
 nrandmate = 20  # number of random intermatings
-nburnin = 20    # number of burnin generations
 nsimul = 60     # number of simulation generations
 
-##
-## Loading Genetic Map Data from a Text File
-## -----------------------------------------
+#
+# Loading Genetic Map Data from a Text File
+# -----------------------------------------
 
 # read genetic map
 gmap = StandardGeneticMap.from_csv(
@@ -72,16 +71,16 @@ gmap = StandardGeneticMap.from_csv(
     header              = 0,
 )
 
-##
-## Creating a Genetic Map Function
-## -------------------------------
+#
+# Creating a Genetic Map Function
+# -------------------------------
 
 # use Haldane map function to calculate crossover probabilities
 gmapfn = HaldaneMapFunction()
 
-##
-## Loading Genome Data from a VCF File
-## -----------------------------------
+#
+# Loading Genome Data from a VCF File
+# -----------------------------------
 
 # read phased genetic markers from a vcf file
 fndr_pgmat = DensePhasedGenotypeMatrix.from_vcf("widiv_2000SNPs.vcf.gz", auto_group_vrnt=False)
@@ -100,9 +99,9 @@ fndr_pgmat.group_vrnt()
 # interpolate genetic map positions
 fndr_pgmat.interp_xoprob(gmap, gmapfn)
 
-##
-## Constructing a Single-Trait Genomic Model
-## -----------------------------------------
+#
+# Constructing a Single-Trait Genomic Model
+# -----------------------------------------
 
 # model intercepts: (1,ntrait)
 beta = numpy.array([[0.0]], dtype = float)
@@ -128,8 +127,8 @@ algmod = DenseAdditiveLinearGenomicModel(
 )
 
 ##
-## Build Founder Populations
-## =========================
+## Build Founder Populations & Run Breeding Program Burn-In
+## ========================================================
 
 #
 # Randomly Intermate for ``nrandmate`` Generations
@@ -273,9 +272,9 @@ fndr_genome["cand"] = fndr_genome["main"].select_taxa(ix)
 fndr_geno["cand"]   = fndr_geno["main"].select_taxa(ix)
 fndr_bval["cand"]   = fndr_bval["main"].select_taxa(ix)
 
-##
-## Create a Burn-In Selection Protocol Object
-## ==========================================
+#
+# Create a Burn-In Selection Protocol Object
+# ------------------------------------------
 
 # use a hillclimber for the single-objective optimization algorithm
 soalgo = SortingSubsetOptimizationAlgorithm()
@@ -292,9 +291,9 @@ burnin_selprot = EstimatedBreedingValueSubsetSelection(
     soalgo       = soalgo,       # use sorting algorithm to solve single-objective problem
 )
 
-##
-## Running a Population Burn-in until MEH is slightly less than 0.25
-## =================================================================
+#
+# Running a Population Burn-in until MEH is slightly less than 0.30
+# -----------------------------------------------------------------
 
 i = 0
 while fndr_genome["main"].meh() > 0.30:
@@ -339,8 +338,12 @@ while fndr_genome["main"].meh() > 0.30:
 print("Starting MEH:", fndr_genome["main"].meh())
 
 ##
-## Create a Constrained Selection Protocol Object
-## ==============================================
+## Simulation Setup
+## ================
+
+#
+# Create a Constrained Selection Protocol Object
+# ----------------------------------------------
 
 # create a dense molecular coancestry matrix factory
 cmatfcty = DenseMolecularCoancestryMatrixFactory()
@@ -426,9 +429,9 @@ const_selprot = OptimalContributionSubsetSelection(
     soalgo       = soalgo,       # use hillclimber to solve single-objective problem
 )
 
-##
-## Create an Unconstrained Selection Protocol Object
-## =================================================
+#
+# Create an Unconstrained Selection Protocol Object
+# -------------------------------------------------
 
 # use a sorting algorithm for the single-objective optimization algorithm
 soalgo = SortingSubsetOptimizationAlgorithm()
@@ -445,9 +448,9 @@ unconst_selprot = EstimatedBreedingValueSubsetSelection(
     soalgo       = soalgo,       # use sorting algorithm to solve single-objective problem
 )
 
-##
-## Make a Statistics Recording Helper Function
-## ===========================================
+#
+# Make a Statistics Recording Helper Function
+# -------------------------------------------
 
 # make recording helper function
 def record(lbook: dict, gen: int, genome: dict, geno: dict, pheno: dict, bval: dict, gmod: dict) -> None:
@@ -732,7 +735,7 @@ pyplot.close(fig)
 
 #
 # Visualizing Mean Expected Heterozygosity (MEH)
-# ==============================================
+# ----------------------------------------------
 
 # create static figure
 fig = pyplot.figure()
@@ -748,7 +751,7 @@ pyplot.close(fig)
 
 #
 # Visualizing True Breeding Value Standard Deviations
-# ===================================================
+# ---------------------------------------------------
 
 # create static figure
 fig = pyplot.figure()
@@ -764,7 +767,7 @@ pyplot.close(fig)
 
 #
 # Visualizing Estimated Breeding Value Standard Deviations
-# ========================================================
+# --------------------------------------------------------
 
 # create static figure
 fig = pyplot.figure()
