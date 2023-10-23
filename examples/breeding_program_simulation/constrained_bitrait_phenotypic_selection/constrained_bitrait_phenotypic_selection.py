@@ -38,8 +38,8 @@ from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMat
 pybrops.core.random.prng.seed(82651560)
 
 ##
-## Simulation Constants
-## --------------------
+## Simulation Parameters
+## ---------------------
 
 nfndr = 40      # number of founder individuals
 nqtl = 1000     # number of QTL
@@ -165,7 +165,7 @@ fndr_pgmat = mate2way.mate(
 # randomly intermate for ``nrandmate`` generations
 # each individual in the population is randomly mated with another individual
 # and creates a single progeny so that the population size is held constant
-for _ in range(nrandmate):
+for gen in range(1,nrandmate+1):
     # randomly select and pair ``ntaxa`` parents
     ntaxa = fndr_pgmat.ntaxa
     xconfig = numpy.empty((ntaxa,2), dtype = int)
@@ -178,6 +178,7 @@ for _ in range(nrandmate):
         nmating = 1,
         nprogeny = 1,
     )
+    print("Random Intermating:", gen)
 
 #
 # Create Breeding Protocols for Burn-In
@@ -201,6 +202,26 @@ ptprot.set_h2(numpy.array([0.4, 0.8]), fndr_pgmat)
 
 # create a breeding value estimation protocol
 bvprot = MeanPhenotypicBreedingValue("taxa", "taxa_grp", trait)
+
+#
+# Create a Within-Family Selection Function
+# -----------------------------------------
+
+# define function to do within family selection based on yield
+def within_family_selection(bvmat: DenseBreedingValueMatrix, nindiv: int) -> numpy.ndarray:
+    order = numpy.arange(bvmat.ntaxa)
+    value = bvmat.mat[:,0] # get yield breeding values
+    indices = []
+    groups = numpy.unique(bvmat.taxa_grp)
+    for group in groups:
+        mask = bvmat.taxa_grp == group
+        tmp_order = order[mask]
+        tmp_value = value[mask]
+        value_argsort = tmp_value.argsort()
+        ix = value_argsort[::-1][:nindiv]
+        indices.append(tmp_order[ix])
+    indices = numpy.concatenate(indices)
+    return indices
 
 #
 # Create Cohort Structure
@@ -246,22 +267,6 @@ fndr_pheno["main"] = ptprot.phenotype(fndr_genome["main"])
 
 # calculate breeding values for the main population
 fndr_bval["main"] = bvprot.estimate(fndr_pheno["main"], fndr_geno["main"])
-
-# define function to do within family selection based on yield
-def within_family_selection(bvmat: DenseBreedingValueMatrix, nindiv: int) -> numpy.ndarray:
-    order = numpy.arange(bvmat.ntaxa)
-    value = bvmat.mat[:,0] # get yield breeding values
-    indices = []
-    groups = numpy.unique(bvmat.taxa_grp)
-    for group in groups:
-        mask = bvmat.taxa_grp == group
-        tmp_order = order[mask]
-        tmp_value = value[mask]
-        value_argsort = tmp_value.argsort()
-        ix = value_argsort[::-1][:nindiv]
-        indices.append(tmp_order[ix])
-    indices = numpy.concatenate(indices)
-    return indices
 
 # # calculate indices for within family selection to get parental candidates
 ix = within_family_selection(fndr_bval["main"], 4) # select top 5%
@@ -326,7 +331,7 @@ burnin_selprot = EstimatedBreedingValueSubsetSelection(
 ## =================================================================
 
 i = 0
-while fndr_genome["main"].meh() > 0.25:
+while fndr_genome["main"].meh() > 0.30:
     # parental selection: select parents from parental candidates
     selcfg = burnin_selprot.select(
         pgmat = fndr_genome["cand"],
@@ -613,6 +618,10 @@ const_lbook = {
     "main_earht_ebv_max"  : [],
     "main_earht_ebv_std"  : [],
 }
+
+#
+# Simulation Main Loop
+# --------------------
 
 # record initial statistics
 record(const_lbook, 0, simul_genome, simul_geno, simul_pheno, simul_bval, simul_gmod)
