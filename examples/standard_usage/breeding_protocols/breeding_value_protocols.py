@@ -24,6 +24,7 @@ from pybrops.breed.prot.bv.MeanPhenotypicBreedingValue import MeanPhenotypicBree
 
 bvprot = MeanPhenotypicBreedingValue(
     taxa_col = "taxa",
+    taxa_grp_col = "taxa_grp",
     trait_cols = ["Trait01","Trait02"]
 )
 

@@ -28,7 +28,7 @@ from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionPr
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_Integral, check_is_bool
 from pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem import EstimatedBreedingValueBinarySelectionProblem
 from pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem import EstimatedBreedingValueIntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem import EstimatedBreedingValueRealSelectionProblem
@@ -62,6 +62,16 @@ class EstimatedBreedingValueSelectionMixin(metaclass=ABCMeta):
         check_is_Integral(value, "ntrait")
         check_is_gt(value, "ntrait", 0)
         self._ntrait = value
+    
+    @property
+    def unscale(self) -> bool:
+        """Whether to unscale and uncenter breeding values."""
+        return self._unscale
+    @unscale.setter
+    def unscale(self, value: bool) -> None:
+        """Set whether to unscale and uncenter breeding values."""
+        check_is_bool(value, "unscale")
+        self._unscale = value
 
 class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin,BinarySelectionProtocol):
     """
@@ -71,6 +81,7 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin
     def __init__(
             self, 
             ntrait: Integral,
+            unscale: bool,
             ncross: Integral,
             nparent: Integral,
             nmating: Union[Integral,numpy.ndarray],
@@ -102,6 +113,9 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin
         ----------
         ntrait : Integral
             Number of traits to expect from estimated breeding value matrix inputs.
+
+        unscale : bool
+            Whether to unscale and uncenter breeding values for optimization.
 
         ncross : Integral
             Number of cross configurations to consider.
@@ -356,6 +370,7 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin
         # order dependent assignments
         # make assignments from Mixin class first
         self.ntrait = ntrait
+        self.unscale = unscale
         # make assignments from BinarySelectionProtocol second
         super(EstimatedBreedingValueBinarySelection, self).__init__(
             ncross = ncross,
@@ -440,6 +455,7 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin
         # construct problem
         prob = EstimatedBreedingValueBinarySelectionProblem.from_bvmat(
             bvmat = bvmat,
+            unscale = self.unscale,
             ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -477,6 +493,7 @@ class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixi
     def __init__(
             self, 
             ntrait: Integral,
+            unscale: bool,
             ncross: Integral,
             nparent: Integral,
             nmating: Union[Integral,numpy.ndarray],
@@ -509,6 +526,9 @@ class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixi
         ntrait : Integral
             Number of traits to expect from estimated breeding value matrix inputs.
         
+        unscale : bool
+            Whether to unscale and uncenter breeding values for optimization.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -762,6 +782,7 @@ class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixi
         # order dependent assignments
         # make assignments from Mixin class first
         self.ntrait = ntrait
+        self.unscale = unscale
         # make assignments from IntegerSelectionProtocol second
         super(EstimatedBreedingValueIntegerSelection, self).__init__(
             ncross = ncross,
@@ -843,6 +864,7 @@ class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixi
         # construct problem
         prob = EstimatedBreedingValueIntegerSelectionProblem.from_bvmat(
             bvmat = bvmat,
+            unscale = self.unscale,
             ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -880,6 +902,7 @@ class EstimatedBreedingValueRealSelection(EstimatedBreedingValueSelectionMixin,R
     def __init__(
             self, 
             ntrait: Integral,
+            unscale: bool,
             ncross: Integral,
             nparent: Integral,
             nmating: Union[Integral,numpy.ndarray],
@@ -912,6 +935,9 @@ class EstimatedBreedingValueRealSelection(EstimatedBreedingValueSelectionMixin,R
         ntrait : Integral
             Number of traits to expect from estimated breeding value matrix inputs.
         
+        unscale : bool
+            Whether to unscale and uncenter breeding values for optimization.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -1165,6 +1191,7 @@ class EstimatedBreedingValueRealSelection(EstimatedBreedingValueSelectionMixin,R
         # order dependent assignments
         # make assignments from Mixin class first
         self.ntrait = ntrait
+        self.unscale = unscale
         # make assignments from RealSelectionProtocol second
         super(EstimatedBreedingValueRealSelection, self).__init__(
             ncross = ncross,
@@ -1246,6 +1273,7 @@ class EstimatedBreedingValueRealSelection(EstimatedBreedingValueSelectionMixin,R
         # construct problem
         prob = EstimatedBreedingValueRealSelectionProblem.from_bvmat(
             bvmat = bvmat,
+            unscale = self.unscale,
             ndecn = ntaxa,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -1283,6 +1311,7 @@ class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueSelectionMixin
     def __init__(
             self, 
             ntrait: Integral,
+            unscale: bool,
             ncross: Integral,
             nparent: Integral,
             nmating: Union[Integral,numpy.ndarray],
@@ -1315,6 +1344,9 @@ class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueSelectionMixin
         ntrait : Integral
             Number of traits to expect from estimated breeding value matrix inputs.
         
+        unscale : bool
+            Whether to unscale and uncenter breeding values for optimization.
+
         ncross : Integral
             Number of cross configurations to consider.
         
@@ -1568,6 +1600,7 @@ class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueSelectionMixin
         # order dependent assignments
         # make assignments from Mixin class first
         self.ntrait = ntrait
+        self.unscale = unscale
         # make assignments from SubsetSelectionProtocol second
         super(EstimatedBreedingValueSubsetSelection, self).__init__(
             ncross = ncross,
@@ -1649,6 +1682,7 @@ class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueSelectionMixin
         # construct problem
         prob = EstimatedBreedingValueSubsetSelectionProblem.from_bvmat(
             bvmat = bvmat,
+            unscale = self.unscale,
             ndecn = self.nselindiv,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,

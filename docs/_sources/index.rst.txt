@@ -17,6 +17,8 @@ Built using the SOLID software architecture principles, PyBrOpS is a modular and
 
 PyBrOpS adopts a script-based framework, offering breeders maximum flexibility in simulating their breeding programs. This approach allows users to specify and control various aspects of their simulations through easy-to-write scripts, enabling precise customization and fine-tuning.
 
+PyBrOpS can be found on `GitHub <https://github.com/rzshrote/pybrops>`_!
+
 PyBrOpS User Guide
 ==================
 
@@ -30,12 +32,12 @@ This guide is an overview and explains the important features PyBrOpS offers.
     Fundamentals <fundamentals/fundamentals>
     Standard Usage <standard_usage/standard_usage>
     Advanced Usage <advanced_usage/advanced_usage>
+    Examples <standard_usage/examples/examples>
     Contributing <contributing/contributing>
     Frequently Asked Questions <faq/faq>
 
 
 .. API reference <_autosummary/pybrops>
-.. Examples <examples>
 
 
 Indices and tables

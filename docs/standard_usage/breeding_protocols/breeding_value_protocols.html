@@ -145,8 +145,8 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../contributing/contributing.html">
-                        Contributing
+                      <a class="nav-link nav-internal" href="../examples/examples.html">
+                        Examples
                       </a>
                     </li>
                 
@@ -156,6 +156,13 @@
                 </button>
                 <div class="dropdown-menu">
                     
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../faq/faq.html">
                         Frequently Asked Questions
@@ -264,8 +271,8 @@
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../contributing/contributing.html">
-                        Contributing
+                      <a class="nav-link nav-internal" href="../examples/examples.html">
+                        Examples
                       </a>
                     </li>
                 
@@ -275,6 +282,13 @@
                 </button>
                 <div class="dropdown-menu">
                     
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../faq/faq.html">
                         Frequently Asked Questions
@@ -368,6 +382,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../examples/pareto_frontier_visualization/triobjective_OCS_pareto_frontier.html">Tri-Objective Optimal Contribution selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/pareto_frontier_visualization/germplasm_panel_reduction.html">Germplasm panel reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../examples/breeding_program_simulation/single_trait_phenotypic_selection.html">Single-Trait Phenotypic Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/breeding_program_simulation/constrained_single_trait_phenotypic_selection.html">Constrained Single-Trait Phenotypic Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../examples/breeding_program_simulation/constrained_bitrait_phenotypic_selection.html">Constrained Bi-Trait Phenotypic Selection</a></li>
 </ul>
 </li>
 </ul>
@@ -462,6 +478,7 @@
 <p>Breeding value estimation protocol class construction is entirely implementation dependent. Below is an example of how to construct a <code class="docutils literal notranslate"><span class="pre">MeanPhenotypicBreedingValue</span></code> object, which takes taxa and trait column names as its arguments.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">bvprot</span> <span class="o">=</span> <span class="n">MeanPhenotypicBreedingValue</span><span class="p">(</span>
     <span class="n">taxa_col</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
+    <span class="n">taxa_grp_col</span> <span class="o">=</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span>
     <span class="n">trait_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Trait01&quot;</span><span class="p">,</span><span class="s2">&quot;Trait02&quot;</span><span class="p">]</span>
 <span class="p">)</span>
 </pre></div>

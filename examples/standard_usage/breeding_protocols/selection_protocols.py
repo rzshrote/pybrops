@@ -178,8 +178,6 @@ def ineqcv_trans(
 
     Parameters
     ----------
-    Parameters
-    ----------
     decnvec : numpy.ndarray
         A decision space vector of shape (ndecn,)
     latentvec : numpy.ndarray

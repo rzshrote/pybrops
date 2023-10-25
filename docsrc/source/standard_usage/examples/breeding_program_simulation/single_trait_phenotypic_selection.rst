@@ -217,6 +217,7 @@ Next, we'll create a breeding value estimation object to take phenotypes simulat
     # estimate breeding value using mean across environments for simplicity
     bvprot = MeanPhenotypicBreedingValue(
         taxa_col = "taxa",
+        taxa_grp_col = "taxa_grp",
         trait_cols = "Syn1",
     )
 
@@ -383,12 +384,12 @@ To visualize how true breeding values evolved over the course of our simulation,
     ax.set_xlabel("Generation")
     ax.set_ylabel("Synthetic Trait Breeding Value")
     ax.legend()
-    pyplot.savefig("true_breeding_values.png", dpi = 300)
+    pyplot.savefig("single_trait_phenotypic_selection_true_breeding_values.png", dpi = 300)
     pyplot.close(fig)
 
 The image below is the result of the code above.
 
-.. image:: true_breeding_values.png
+.. image:: single_trait_phenotypic_selection_true_breeding_values.png
 
 Visualizing Estimated Breeding Values (EBVs)
 --------------------------------------------
@@ -409,9 +410,9 @@ To visualize how estimated breeding values evolved over the course of our simula
     ax.set_xlabel("Generation")
     ax.set_ylabel("Synthetic Trait Breeding Value")
     ax.legend()
-    pyplot.savefig("estimated_breeding_values.png", dpi = 300)
+    pyplot.savefig("single_trait_phenotypic_selection_estimated_breeding_values.png", dpi = 300)
     pyplot.close(fig)
 
 The image below is the result of the code above.
 
-.. image:: estimated_breeding_values.png
+.. image:: single_trait_phenotypic_selection_estimated_breeding_values.png

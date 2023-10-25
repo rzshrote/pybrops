@@ -18,7 +18,7 @@ from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
 class SteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
     """
-    docstring for ConstrainedSteepestDescentSubsetHillClimber.
+    Steepest descent hill climber for subset search spaces.
     """
 
     ########################## Special Object Methods ##########################

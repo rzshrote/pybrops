@@ -58,6 +58,7 @@ class EstimatedBreedingValueSelectionProblemMixin(metaclass=ABCMeta):
     def from_bvmat(
             cls,
             bvmat: BreedingValueMatrix,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -239,6 +240,7 @@ class EstimatedBreedingValueSubsetSelectionProblem(EstimatedBreedingValueSelecti
     def from_bvmat(
             cls,
             bvmat: BreedingValueMatrix,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -258,7 +260,7 @@ class EstimatedBreedingValueSubsetSelectionProblem(EstimatedBreedingValueSelecti
             **kwargs: dict
         ) -> "EstimatedBreedingValueSubsetSelectionProblem":
         # extract EBVs for all individuals
-        ebv = bvmat.mat
+        ebv = bvmat.unscale() if unscale else bvmat.mat
 
         # construct class
         out = cls(
@@ -444,6 +446,7 @@ class EstimatedBreedingValueRealSelectionProblem(EstimatedBreedingValueSelection
     def from_bvmat(
             cls,
             bvmat: BreedingValueMatrix,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -463,7 +466,7 @@ class EstimatedBreedingValueRealSelectionProblem(EstimatedBreedingValueSelection
             **kwargs: dict
         ) -> "EstimatedBreedingValueRealSelectionProblem":
         # extract EBVs for all individuals
-        ebv = bvmat.mat
+        ebv = bvmat.unscale() if unscale else bvmat.mat
 
         # construct class
         out = cls(
@@ -649,6 +652,7 @@ class EstimatedBreedingValueIntegerSelectionProblem(EstimatedBreedingValueSelect
     def from_bvmat(
             cls,
             bvmat: BreedingValueMatrix,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -668,7 +672,7 @@ class EstimatedBreedingValueIntegerSelectionProblem(EstimatedBreedingValueSelect
             **kwargs: dict
         ) -> "EstimatedBreedingValueIntegerSelectionProblem":
         # extract EBVs for all individuals
-        ebv = bvmat.mat
+        ebv = bvmat.unscale() if unscale else bvmat.mat
 
         # construct class
         out = cls(
@@ -856,6 +860,7 @@ class EstimatedBreedingValueBinarySelectionProblem(EstimatedBreedingValueSelecti
     def from_bvmat(
             cls,
             bvmat: BreedingValueMatrix,
+            unscale: bool,
             ndecn: Integral,
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
@@ -875,7 +880,7 @@ class EstimatedBreedingValueBinarySelectionProblem(EstimatedBreedingValueSelecti
             **kwargs: dict
         ) -> "EstimatedBreedingValueBinarySelectionProblem":
         # extract EBVs for all individuals
-        ebv = bvmat.mat
+        ebv = bvmat.unscale() if unscale else bvmat.mat
 
         # construct class
         out = cls(

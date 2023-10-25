@@ -5,20 +5,26 @@ associated error checking routines.
 
 import copy
 from numbers import Real
-from typing import Optional
+from typing import Optional, Sequence, Union
+
 import cyvcf2
 import numpy
-from numpy.typing import DTypeLike
+from numpy.typing import DTypeLike, ArrayLike
 
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_int8
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.mat.DensePhasedTaxaVariantMatrix import DensePhasedTaxaVariantMatrix
+from pybrops.core.mat.Matrix import Matrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix,PhasedGenotypeMatrix):
+class DensePhasedGenotypeMatrix(
+        DenseGenotypeMatrix,
+        DensePhasedTaxaVariantMatrix,
+        PhasedGenotypeMatrix
+    ):
     """
     A concrete class for phased genoypte matrix objects.
 
@@ -249,6 +255,39 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
 
     ############################## Object Methods ##############################
 
+    #################### Matrix copying ####################
+    def copy(
+            self
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Make a shallow copy of the DensePhasedGenotypeMatrix.
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            A shallow copy of the original DensePhasedGenotypeMatrix.
+        """
+        return self.__copy__()
+
+    def deepcopy(
+            self, 
+            memo: Optional[dict] = None
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Make a deep copy of the DensePhasedGenotypeMatrix.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            A deep copy of the original DensePhasedGenotypeMatrix.
+        """
+        return self.__deepcopy__(memo)
+
     ################## Matrix conversion ###################
     def mat_asformat(
             self, 
@@ -284,6 +323,397 @@ class DensePhasedGenotypeMatrix(DenseGenotypeMatrix,DensePhasedTaxaVariantMatrix
             return out
         else:
             raise ValueError('Format not recognized. Options are "{0,1,2}", "{-1,0,1}", "{-1,m,1}".')
+
+    ######### Matrix element copy-on-manipulation ##########
+    def adjoin_taxa(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Add additional elements to the end of the DensePhasedGenotypeMatrix along the taxa axis.
+
+        Parameters
+        ----------
+        values : Matrix, numpy.ndarray
+            Values are appended to adjoin to the DensePhasedGenotypeMatrix.
+        taxa : numpy.ndarray
+            Taxa names to adjoin to the DensePhasedGenotypeMatrix.
+            If values is a DenseHaplotypeMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to adjoin to the DensePhasedGenotypeMatrix.
+            If values is a DenseHaplotypeMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A copy of mat with values appended to axis. Note that adjoin does
+            not occur in-place: a new Matrix is allocated and filled.
+        """
+        out = super(DensePhasedGenotypeMatrix, self).adjoin_taxa(
+            values = values,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            **kwargs
+        )
+
+        return out
+
+    def adjoin_vrnt(
+            self, 
+            values: Union[Matrix,numpy.ndarray], 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Add additional elements to the end of the DensePhasedGenotypeMatrix along the variant axis.
+
+        Parameters
+        ----------
+        values : Matrix, numpy.ndarray
+            Values are appended to adjoin to the DensePhasedGenotypeMatrix.
+        vrnt_chrgrp : numpy.ndarray
+            Variant chromosome groups to adjoin to the DensePhasedGenotypeMatrix.
+        vrnt_phypos : numpy.ndarray
+            Variant chromosome physical positions to adjoin to the DensePhasedGenotypeMatrix.
+        vrnt_name : numpy.ndarray
+            Variant names to adjoin to the DensePhasedGenotypeMatrix.
+        vrnt_genpos : numpy.ndarray
+            Variant chromosome genetic positions to adjoin to the DensePhasedGenotypeMatrix.
+        vrnt_xoprob : numpy.ndarray
+            Sequential variant crossover probabilities to adjoin to the DensePhasedGenotypeMatrix.
+        vrnt_hapgrp : numpy.ndarray
+            Variant haplotype labels to adjoin to the DensePhasedGenotypeMatrix.
+        vrnt_hapalt : numpy.ndarray
+            Variant haplotype sequence.
+        vrnt_hapref : numpy.ndarray
+            Variant haplotype reference sequence.
+        vrnt_mask : numpy.ndarray
+            Variant mask to adjoin to the DensePhasedGenotypeMatrix.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : Matrix
+            A copy of mat with values appended to axis. Note that adjoin does
+            not occur in-place: a new Matrix is allocated and filled.
+        """
+        out = super(DensePhasedGenotypeMatrix, self).adjoin_vrnt(
+            values = values,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_hapalt = vrnt_hapalt,
+            vrnt_hapref = vrnt_hapref,
+            vrnt_mask = vrnt_mask,
+            **kwargs
+        )
+
+        return out
+
+    def delete_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Delete sub-arrays along the taxa axis.
+
+        Parameters
+        ----------
+        obj : int, slice, or Sequence of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix with deleted elements. Note that concat does not occur
+            in-place: a new DensePhasedGenotypeMatrix is allocated and filled.
+        """
+        out = super(DensePhasedGenotypeMatrix, self).delete_taxa(
+            obj = obj,
+            **kwargs
+        )
+
+        return out
+
+    def delete_vrnt(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Delete sub-arrays along the variant axis.
+
+        Parameters
+        ----------
+        obj : int, slice, or Sequence of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix with deleted elements. Note that concat does not occur
+            in-place: a new DensePhasedGenotypeMatrix is allocated and filled.
+        """
+        out = super(DensePhasedGenotypeMatrix, self).delete_vrnt(
+            obj = obj,
+            **kwargs
+        )
+
+        return out
+
+    def insert_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Insert values along the taxa axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or Sequence of ints
+            Object that defines the index or indices before which values is
+            inserted.
+        values : Matrix, numpy.ndarray
+            Values to insert into the matrix.
+        taxa : numpy.ndarray
+            Taxa names to insert into the DensePhasedGenotypeMatrix.
+        taxa_grp : numpy.ndarray
+            Taxa groups to insert into the DensePhasedGenotypeMatrix.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix with values inserted. Note that insert does not occur
+            in-place: a new DensePhasedGenotypeMatrix is allocated and filled.
+        """
+        # create output
+        out = super(DensePhasedGenotypeMatrix, self).insert_taxa(
+            obj = obj,
+            values = values,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            **kwargs
+        )
+
+        return out
+
+    def insert_vrnt(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[Matrix,numpy.ndarray], 
+            vrnt_chrgrp: Optional[numpy.ndarray] = None, 
+            vrnt_phypos: Optional[numpy.ndarray] = None, 
+            vrnt_name: Optional[numpy.ndarray] = None, 
+            vrnt_genpos: Optional[numpy.ndarray] = None, 
+            vrnt_xoprob: Optional[numpy.ndarray] = None, 
+            vrnt_hapgrp: Optional[numpy.ndarray] = None, 
+            vrnt_hapalt: Optional[numpy.ndarray] = None, 
+            vrnt_hapref: Optional[numpy.ndarray] = None, 
+            vrnt_mask: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Insert values along the variant axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or Sequence of ints
+            Object that defines the index or indices before which values is
+            inserted.
+        values : array_like
+            Values to insert into the matrix.
+        vrnt_chrgrp : numpy.ndarray
+            Variant chromosome groups to insert into the DensePhasedGenotypeMatrix.
+        vrnt_phypos : numpy.ndarray
+            Variant chromosome physical positions to insert into the DensePhasedGenotypeMatrix.
+        vrnt_name : numpy.ndarray
+            Variant names to insert into the DensePhasedGenotypeMatrix.
+        vrnt_genpos : numpy.ndarray
+            Variant chromosome genetic positions to insert into the DensePhasedGenotypeMatrix.
+        vrnt_xoprob : numpy.ndarray
+            Sequential variant crossover probabilities to insert into the DensePhasedGenotypeMatrix.
+        vrnt_hapgrp : numpy.ndarray
+            Variant haplotype labels to insert into the DensePhasedGenotypeMatrix.
+        vrnt_mask : numpy.ndarray
+            Variant mask to insert into the DensePhasedGenotypeMatrix.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            A DensePhasedGenotypeMatrix with values inserted. Note that insert does not occur
+            in-place: a new DensePhasedGenotypeMatrix is allocated and filled.
+        """
+        # create output
+        out = super(DensePhasedGenotypeMatrix, self).insert_vrnt(
+            obj = obj,
+            values = values,
+            vrnt_chrgrp = vrnt_chrgrp,
+            vrnt_phypos = vrnt_phypos,
+            vrnt_name = vrnt_name,
+            vrnt_genpos = vrnt_genpos,
+            vrnt_xoprob = vrnt_xoprob,
+            vrnt_hapgrp = vrnt_hapgrp,
+            vrnt_hapalt = vrnt_hapalt,
+            vrnt_hapref = vrnt_hapref,
+            vrnt_mask = vrnt_mask,
+            **kwargs
+        )
+
+        return out
+
+    def select_taxa(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Select certain values from the DensePhasedGenotypeMatrix along the taxa axis.
+
+        Parameters
+        ----------
+        indices : array_like (Nj, ...)
+            The indices of the values to select.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            The output DensePhasedGenotypeMatrix with values selected. 
+            Note that select does not occur in-place: a new DensePhasedGenotypeMatrix is allocated and filled.
+        """
+        out = super(DensePhasedGenotypeMatrix, self).select_taxa(
+            indices = indices,
+            **kwargs
+        )
+
+        return out
+
+    def select_vrnt(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Select certain values from the DensePhasedGenotypeMatrix along the variant axis.
+
+        Parameters
+        ----------
+        indices : array_like (Nj, ...)
+            The indices of the values to select.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            The output DensePhasedGenotypeMatrix with values selected. Note that select does not
+            occur in-place: a new DensePhasedGenotypeMatrix is allocated and filled.
+        """
+        out = super(DensePhasedGenotypeMatrix, self).select_vrnt(
+            indices = indices,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
+    def concat_taxa(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Concatenate list of DensePhasedGenotypeMatrix together along the taxa axis.
+
+        Parameters
+        ----------
+        mats : Sequence of DensePhasedGenotypeMatrix
+            List of DensePhasedGenotypeMatrix to concatenate. The matrices must have the same
+            shape, except in the dimension corresponding to axis.
+        kwargs : dict
+            Additional keyword arguments
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            The concatenated DensePhasedGenotypeMatrix. Note that concat does not occur in-place:
+            a new DensePhasedGenotypeMatrix is allocated and filled.
+        """
+        out = super(DensePhasedGenotypeMatrix, cls).concat_taxa(
+            mats = mats,
+            **kwargs
+        )
+
+        # copy metadata from source
+        out.vrnt_chrgrp_name = mats[0].vrnt_chrgrp_name
+        out.vrnt_chrgrp_stix = mats[0].vrnt_chrgrp_stix
+        out.vrnt_chrgrp_spix = mats[0].vrnt_chrgrp_spix
+        out.vrnt_chrgrp_len = mats[0].vrnt_chrgrp_len
+
+        return out
+
+    @classmethod
+    def concat_vrnt(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'DensePhasedGenotypeMatrix':
+        """
+        Concatenate list of DensePhasedGenotypeMatrix together along the variant axis.
+
+        Parameters
+        ----------
+        mats : Sequence of DensePhasedGenotypeMatrix
+            List of DensePhasedGenotypeMatrix to concatenate. The matrices must have the same
+            shape, except in the dimension corresponding to axis.
+        kwargs : dict
+            Additional keyword arguments
+
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            The concatenated matrix. Note that concat does not occur in-place:
+            a new DensePhasedGenotypeMatrix is allocated and filled.
+        """
+        out = super(DensePhasedGenotypeMatrix, cls).concat_vrnt(
+            mats = mats,
+            **kwargs
+        )
+
+        return out
 
     ############## Matrix summary statistics ###############
     def tacount(
