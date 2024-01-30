@@ -188,9 +188,6 @@ class DummyCoancestryMatrix(CoancestryMatrix):
     @property
     def nsquare(self) -> object:
         return super().nsquare
-    @nsquare.setter
-    def nsquare(self, value: object) -> None:
-        super().nsquare = value
     @property
     def ntaxa(self) -> object:
         return super().ntaxa

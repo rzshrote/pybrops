@@ -245,9 +245,6 @@ class DummyGenotypeMatrix(GenotypeMatrix):
     @property
     def nvrnt(self) -> object:
         return super().nvrnt
-    @nvrnt.setter
-    def nvrnt(self, value: object) -> None:
-        super().nvrnt = value
     @property
     def ploidy(self) -> object:
         return super().ploidy
@@ -627,9 +624,6 @@ class DummyHaplotypeMatrix(HaplotypeMatrix):
     @property
     def nvrnt(self) -> object:
         return super().nvrnt
-    @nvrnt.setter
-    def nvrnt(self, value: object) -> None:
-        super().nvrnt = value
     @property
     def ploidy(self) -> object:
         return super().ploidy

@@ -158,6 +158,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         Parameters
         ----------
         memo : dict
+            Dictionary of memo metadata.
 
         Returns
         -------

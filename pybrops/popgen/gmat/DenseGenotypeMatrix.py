@@ -183,6 +183,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         Parameters
         ----------
         memo : dict
+            Dictionary of memo metadata.
 
         Returns
         -------

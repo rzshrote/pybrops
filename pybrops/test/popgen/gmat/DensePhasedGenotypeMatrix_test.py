@@ -147,7 +147,7 @@ def test_adjoin_vrnt(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
 def test_delete_axis_1(dpgmat, mat_int8, mat_taxa):
     mat_taxa_grp = numpy.arange(len(dpgmat.taxa))
     dpgmat.taxa_grp = mat_taxa_grp
-    ix = numpy.int0([1])
+    ix = numpy.intp([1])
 
     out = dpgmat.delete(ix, axis = 1)
 
@@ -161,7 +161,7 @@ def test_delete_axis_1(dpgmat, mat_int8, mat_taxa):
 
 def test_delete_axis_2(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
     dpgmat.vrnt_genpos = mat_genpos
-    ix = numpy.int0([1,2])
+    ix = numpy.intp([1,2])
 
     out = dpgmat.delete(ix, axis = 2)
 
@@ -178,7 +178,7 @@ def test_delete_axis_2(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
 def test_delete_taxa(dpgmat, mat_int8, mat_taxa):
     mat_taxa_grp = numpy.arange(len(dpgmat.taxa))
     dpgmat.taxa_grp = mat_taxa_grp
-    ix = numpy.int0([1])
+    ix = numpy.intp([1])
 
     out = dpgmat.delete_taxa(ix)
 
@@ -192,7 +192,7 @@ def test_delete_taxa(dpgmat, mat_int8, mat_taxa):
 
 def test_delete_vrnt(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
     dpgmat.vrnt_genpos = mat_genpos
-    ix = numpy.int0([1,2])
+    ix = numpy.intp([1,2])
 
     out = dpgmat.delete_vrnt(ix)
 
@@ -209,7 +209,7 @@ def test_delete_vrnt(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
 def test_insert_axis_1(dpgmat, mat_int8, mat_taxa):
     mat_taxa_grp = numpy.arange(len(dpgmat.taxa))
     dpgmat.taxa_grp = mat_taxa_grp
-    ix = numpy.int0([1])
+    ix = numpy.intp([1])
 
     out = dpgmat.insert(ix, dpgmat, axis = 1)
 
@@ -223,7 +223,7 @@ def test_insert_axis_1(dpgmat, mat_int8, mat_taxa):
 
 def test_insert_axis_2(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
     dpgmat.vrnt_genpos = mat_genpos
-    ix = numpy.int0([1])
+    ix = numpy.intp([1])
 
     out = dpgmat.insert(ix, dpgmat, axis = 2)
 
@@ -240,7 +240,7 @@ def test_insert_axis_2(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
 def test_insert_taxa(dpgmat, mat_int8, mat_taxa):
     mat_taxa_grp = numpy.arange(len(dpgmat.taxa))
     dpgmat.taxa_grp = mat_taxa_grp
-    ix = numpy.int0([1])
+    ix = numpy.intp([1])
 
     out = dpgmat.insert_taxa(ix, dpgmat)
 
@@ -254,7 +254,7 @@ def test_insert_taxa(dpgmat, mat_int8, mat_taxa):
 
 def test_insert_vrnt(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
     dpgmat.vrnt_genpos = mat_genpos
-    ix = numpy.int0([1])
+    ix = numpy.intp([1])
 
     out = dpgmat.insert_vrnt(ix, dpgmat)
 
@@ -271,7 +271,7 @@ def test_insert_vrnt(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
 def test_select_axis_1(dpgmat, mat_int8, mat_taxa):
     mat_taxa_grp = numpy.arange(len(dpgmat.taxa))
     dpgmat.taxa_grp = mat_taxa_grp
-    ix = numpy.int0([1,2])
+    ix = numpy.intp([1,2])
 
     out = dpgmat.select(ix, axis = 1)
 
@@ -285,7 +285,7 @@ def test_select_axis_1(dpgmat, mat_int8, mat_taxa):
 
 def test_select_axis_2(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
     dpgmat.vrnt_genpos = mat_genpos
-    ix = numpy.int0([1,2])
+    ix = numpy.intp([1,2])
 
     out = dpgmat.select(ix, axis = 2)
 
@@ -302,7 +302,7 @@ def test_select_axis_2(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
 def test_select_taxa(dpgmat, mat_int8, mat_taxa):
     mat_taxa_grp = numpy.arange(len(dpgmat.taxa))
     dpgmat.taxa_grp = mat_taxa_grp
-    ix = numpy.int0([1,2])
+    ix = numpy.intp([1,2])
 
     out = dpgmat.select_taxa(ix)
 
@@ -316,7 +316,7 @@ def test_select_taxa(dpgmat, mat_int8, mat_taxa):
 
 def test_select_vrnt(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
     dpgmat.vrnt_genpos = mat_genpos
-    ix = numpy.int0([1,2])
+    ix = numpy.intp([1,2])
 
     out = dpgmat.select_vrnt(ix)
 
@@ -452,7 +452,7 @@ def test_append_vrnt(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
 def test_remove_axis_1(dpgmat, mat_int8, mat_taxa):
     mat_taxa_grp = numpy.arange(len(dpgmat.taxa))
     dpgmat.taxa_grp = mat_taxa_grp
-    ix = numpy.int0([1])
+    ix = numpy.intp([1])
 
     dpgmat.remove(ix, axis = 1)
 
@@ -466,7 +466,7 @@ def test_remove_axis_1(dpgmat, mat_int8, mat_taxa):
 
 def test_remove_axis_2(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
     dpgmat.vrnt_genpos = mat_genpos
-    ix = numpy.int0([1,2])
+    ix = numpy.intp([1,2])
 
     dpgmat.remove(ix, axis = 2)
 
@@ -483,7 +483,7 @@ def test_remove_axis_2(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
 def test_remove_taxa(dpgmat, mat_int8, mat_taxa):
     mat_taxa_grp = numpy.arange(len(dpgmat.taxa))
     dpgmat.taxa_grp = mat_taxa_grp
-    ix = numpy.int0([1])
+    ix = numpy.intp([1])
 
     dpgmat.remove_taxa(ix)
 
@@ -497,7 +497,7 @@ def test_remove_taxa(dpgmat, mat_int8, mat_taxa):
 
 def test_remove_vrnt(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
     dpgmat.vrnt_genpos = mat_genpos
-    ix = numpy.int0([1,2])
+    ix = numpy.intp([1,2])
 
     dpgmat.remove_vrnt(ix)
 
@@ -514,7 +514,7 @@ def test_remove_vrnt(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
 def test_incorp_axis_1(dpgmat, mat_int8, mat_taxa):
     mat_taxa_grp = numpy.arange(len(dpgmat.taxa))
     dpgmat.taxa_grp = mat_taxa_grp
-    ix = numpy.int0([1])
+    ix = numpy.intp([1])
 
     dpgmat.incorp(ix, dpgmat, axis = 1)
 
@@ -528,7 +528,7 @@ def test_incorp_axis_1(dpgmat, mat_int8, mat_taxa):
 
 def test_incorp_axis_2(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
     dpgmat.vrnt_genpos = mat_genpos
-    ix = numpy.int0([1])
+    ix = numpy.intp([1])
 
     dpgmat.incorp(ix, dpgmat, axis = 2)
 
@@ -545,7 +545,7 @@ def test_incorp_axis_2(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
 def test_incorp_taxa(dpgmat, mat_int8, mat_taxa):
     mat_taxa_grp = numpy.arange(len(dpgmat.taxa))
     dpgmat.taxa_grp = mat_taxa_grp
-    ix = numpy.int0([1])
+    ix = numpy.intp([1])
 
     dpgmat.incorp_taxa(ix, dpgmat)
 
@@ -559,7 +559,7 @@ def test_incorp_taxa(dpgmat, mat_int8, mat_taxa):
 
 def test_incorp_vrnt(dpgmat, mat_int8, mat_chrgrp, mat_phypos, mat_genpos):
     dpgmat.vrnt_genpos = mat_genpos
-    ix = numpy.int0([1])
+    ix = numpy.intp([1])
 
     dpgmat.incorp_vrnt(ix, dpgmat)
 

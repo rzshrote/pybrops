@@ -964,11 +964,13 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
                 data_dict[field] = h5file[fieldname][:]         # read array
         ######################################################### read conclusion
         h5file.close()                                          # close file
-        data_dict["taxa"] = numpy.object_(                      # convert taxa strings from byte to utf-8
-            [s.decode("utf-8") for s in data_dict["taxa"]]
+        data_dict["taxa"] = numpy.array(                        # convert taxa strings from byte to utf-8
+            [s.decode("utf-8") for s in data_dict["taxa"]],
+            dtype = object
         )
-        data_dict["trait"] = numpy.object_(                     # convert trait string from byte to utf-8
-            [s.decode("utf-8") for s in data_dict["trait"]]
+        data_dict["trait"] = numpy.array(                       # convert trait string from byte to utf-8
+            [s.decode("utf-8") for s in data_dict["trait"]],
+            dtype = object
         )
         ######################################################### create object
         gmat = cls(**data_dict)                                 # create object from read data

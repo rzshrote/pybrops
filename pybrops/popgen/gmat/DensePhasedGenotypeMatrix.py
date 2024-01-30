@@ -1037,7 +1037,7 @@ class DensePhasedGenotypeMatrix(
         vcf = cyvcf2.VCF(filename)
 
         # extract taxa names from vcf header
-        taxa = numpy.object_(vcf.samples)
+        taxa = numpy.array(vcf.samples, dtype = object)
 
         # make empty lists to store extracted values
         mat = []
@@ -1072,7 +1072,7 @@ class DensePhasedGenotypeMatrix(
         # convert to numpy.ndarray
         vrnt_chrgrp = numpy.int64(vrnt_chrgrp)  # convert to int64 array
         vrnt_phypos = numpy.int64(vrnt_phypos)  # convert to int64 array
-        vrnt_name = numpy.object_(vrnt_name)    # convert to object array
+        vrnt_name = numpy.array(vrnt_name, dtype = object)    # convert to object array
 
         out = cls(
             mat = mat,
