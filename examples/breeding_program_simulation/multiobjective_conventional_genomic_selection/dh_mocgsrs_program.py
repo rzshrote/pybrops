@@ -592,7 +592,7 @@ gmod_true = DenseAdditiveLinearGenomicModel(    # create model
     beta = numpy.float64([[10.0, 25.0]]),       # model intercepts
     u_misc = None,                              # miscellaneous random effects
     u_a = mkreffect,                            # random marker effects
-    trait = numpy.object_(["syn1","syn2"]),     # trait names
+    trait = numpy.array(["syn1","syn2"], dtype = object),     # trait names
     model_name = "yield_model",                 # name of the model
     hyperparams = None
 )
