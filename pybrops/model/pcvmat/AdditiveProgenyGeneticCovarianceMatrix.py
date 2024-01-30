@@ -1,61 +1,53 @@
 """
-Module defining interfaces and error checking routines for matrices storing progeny genetic covariance-covariance estimates.
+Module defining interfaces and associated error checking routines for matrices
+storing additive genetic covariance estimates.
 """
 
 from abc import ABCMeta, abstractmethod
-from pybrops.core.io.CSVInputOutput import CSVInputOutput
-from pybrops.core.io.PandasInputOutput import PandasInputOutput
-from pybrops.core.mat.SquareTaxaSquareTraitMatrix import SquareTaxaSquareTraitMatrix
-from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybrops.model.pcvmat.ProgenyGeneticCovarianceMatrix import ProgenyGeneticCovarianceMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class ProgenyGeneticCovarianceMatrix(
-        SquareTaxaSquareTraitMatrix,
-        PandasInputOutput,
-        CSVInputOutput,
+class AdditiveProgenyGeneticCovarianceMatrix(
+        ProgenyGeneticCovarianceMatrix,
         metaclass = ABCMeta,
     ):
     """
-    An abstract class for matrices storing progeny covariances for specific crosses.
+    An abstract class for additive genetic covariance matrices.
 
     The purpose of this abstract interface is to provide functionality for:
-        1) Estimation of genetic covariances from a genomic model.
+        1) Estimation of additive genetic covariance from an additive linear
+           genomic model.
     """
 
     ########################## Special Object Methods ##########################
 
     ############################ Object Properties #############################
 
-    ######## Expected parental genome contributions ########
-    @property
-    @abstractmethod
-    def epgc(self) -> tuple:
-        """Expected parental genome contribution to the offspring from each parent."""
-        raise NotImplementedError("property is abstract")
-
     ############################## Object Methods ##############################
 
     ############################## Class Methods ###############################
     @classmethod
     @abstractmethod
-    def from_gmod(
+    def from_algmod(
             cls, 
-            gmod: GenomicModel, 
+            algmod: AdditiveLinearGenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
             ncross: int, 
             nprogeny: int, 
             nself: int, 
             gmapfn: GeneticMapFunction, 
+            mem: int,
             **kwargs: dict
-        ) -> 'ProgenyGeneticCovarianceMatrix':
+        ) -> 'AdditiveProgenyGeneticCovarianceMatrix':
         """
         Estimate genetic variances from a GenomicModel.
 
         Parameters
         ----------
-        gmod : GenomicModel
-            GenomicModel with which to estimate genetic variances.
+        algmod : AdditiveLinearGenomicModel
+            AdditiveLinearGenomicModel with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
         ncross : int
@@ -68,25 +60,26 @@ class ProgenyGeneticCovarianceMatrix(
             Number of selfing generations post-cross pattern before 'nprogeny'
             individuals are simulated.
         gmapfn : GeneticMapFunction
-            Genetic map function with which to calculate recombination probabilities.
+            GeneticMapFunction to use to estimate covariance induced by
+            recombination.
+        mem : int
+            Memory chunk size to use during matrix operations.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         out : ProgenyGeneticCovarianceMatrix
-            A matrix of genetic covariance estimations.
+            A matrix of additive genetic covariance estimations.
         """
         raise NotImplementedError("method is abstract")
-
-    ############################## Static Methods ##############################
 
 
 
 ################################## Utilities ###################################
-def check_is_ProgenyGeneticCovarianceMatrix(v: object, vname: str) -> None:
+def check_is_AdditiveProgenyGeneticCovarianceMatrix(v: object, vname: str) -> None:
     """
-    Check if object is of type ``ProgenyGeneticCovarianceMatrix``. Otherwise raise ``TypeError``.
+    Check if object is of type ``AdditiveProgenyGeneticCovarianceMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
@@ -95,5 +88,5 @@ def check_is_ProgenyGeneticCovarianceMatrix(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(v, ProgenyGeneticCovarianceMatrix):
-        raise TypeError("'{0}' must be a ProgenyGeneticCovarianceMatrix".format(vname))
+    if not isinstance(v, AdditiveProgenyGeneticCovarianceMatrix):
+        raise TypeError("'{0}' must be a AdditiveProgenyGeneticCovarianceMatrix".format(vname))
