@@ -58,21 +58,11 @@ class TaxaMatrix(GroupableMatrix,metaclass=ABCMeta):
     def ntaxa(self) -> int:
         """Number of taxa."""
         raise NotImplementedError("property is abstract")
-    @ntaxa.setter
-    @abstractmethod
-    def ntaxa(self, value: int) -> None:
-        """Set number of taxa"""
-        raise NotImplementedError("property is abstract")
     
     @property
     @abstractmethod
     def taxa_axis(self) -> int:
         """Axis along which taxa are stored."""
-        raise NotImplementedError("property is abstract")
-    @taxa_axis.setter
-    @abstractmethod
-    def taxa_axis(self, value: int) -> None:
-        """Set taxa axis number"""
         raise NotImplementedError("property is abstract")
     
     @property

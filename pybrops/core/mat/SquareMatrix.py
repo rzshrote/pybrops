@@ -30,8 +30,9 @@ class SquareMatrix(Matrix,metaclass=ABCMeta):
              +-------+
 
     The purpose of this abstract class is to provide base functionality for:
-        1) Square matrix axis metadata.
-        2) Determination of square matrix conformity.
+
+        1. Square matrix axis metadata.
+        2. Determination of square matrix conformity.
     """
 
     ########################## Special Object Methods ##########################
@@ -44,32 +45,17 @@ class SquareMatrix(Matrix,metaclass=ABCMeta):
     def nsquare(self) -> int:
         """Number of axes that are square."""
         raise NotImplementedError("property is abstract")
-    @nsquare.setter
-    @abstractmethod
-    def nsquare(self, value: int) -> None:
-        """Set the number of axes that are square"""
-        raise NotImplementedError("property is abstract")
     
     @property
     @abstractmethod
     def square_axes(self) -> tuple:
         """Axis indices for axes that are square."""
         raise NotImplementedError("property is abstract")
-    @square_axes.setter
-    @abstractmethod
-    def square_axes(self, value: tuple) -> None:
-        """Set axis indices for axes that are square"""
-        raise NotImplementedError("property is abstract")
     
     @property
     @abstractmethod
     def square_axes_len(self) -> tuple:
         """Axis lengths for axes that are square."""
-        raise NotImplementedError("property is abstract")
-    @square_axes_len.setter
-    @abstractmethod
-    def square_axes_len(self, value: tuple) -> None:
-        """Set axis lengths for axes that are square"""
         raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################
@@ -80,7 +66,7 @@ class SquareMatrix(Matrix,metaclass=ABCMeta):
             self
         ) -> bool:
         """
-        Determine whether the axis lengths for the square axes are identical.
+        Determine whether the axes lengths for the square axes are identical.
 
         Returns
         -------

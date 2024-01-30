@@ -11,12 +11,14 @@ __all__ = [
 import numpy
 
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim_gteq
 from pybrops.core.mat.DenseMatrix import DenseMatrix
 from pybrops.core.mat.SquareMatrix import SquareMatrix
 
-class DenseSquareMatrix(DenseMatrix,SquareMatrix):
+class DenseSquareMatrix(
+        DenseMatrix,
+        SquareMatrix,
+    ):
     """
     A concrete class for dense square matrices. A "square matrix" is defined as
     a matrix that has the same axis metadata associated with two or more axes.
@@ -35,8 +37,9 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
              +-------+
 
     The purpose of this concrete class is to implement base functionality for:
-        1) Square matrix axis metadata.
-        2) Determination of square matrix conformity.
+
+        1. Square matrix axis metadata.
+        2. Determination of square matrix conformity.
     """
 
     ########################## Special Object Methods ##########################
@@ -74,28 +77,16 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
     def nsquare(self) -> int:
         """Number of axes that are square."""
         return len(self.square_axes)
-    @nsquare.setter
-    def nsquare(self, value: int) -> None:
-        """Set the number of axes that are square"""
-        error_readonly("nsquare")
 
     @property
     def square_axes(self) -> tuple:
         """Axis indices for axes that are square."""
         return (0,1)
-    @square_axes.setter
-    def square_axes(self, value: tuple) -> None:
-        """Set axis indices for axes that are square"""
-        error_readonly("square_axes")
 
     @property
     def square_axes_len(self) -> tuple:
         """Axis lengths for axes that are square."""
         return tuple(self.mat_shape[ix] for ix in self.square_axes)
-    @square_axes_len.setter
-    def square_axes_len(self, value: tuple) -> None:
-        """Set axis lengths for axes that are square"""
-        error_readonly("square_axes_len")
 
     ################### Fill data lookup ###################
     # map dtypes to fill values
@@ -106,15 +97,15 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         "int16": numpy.int16(numpy.iinfo("int16").min),     # -32768
         "int32": numpy.int32(numpy.iinfo("int32").min),     # -2147483648
         "int64": numpy.int64(numpy.iinfo("int64").min),     # -9223372036854775808
-        "int": numpy.int0(numpy.iinfo("int").min),          # system dependent
-        "int0": numpy.int0(numpy.iinfo("int0").min),        # system dependent
+        "int": numpy.intp(numpy.iinfo("int").min),          # system dependent
+        "intp": numpy.intp(numpy.iinfo("intp").min),        # system dependent
 
         "uint8": numpy.uint8(numpy.iinfo("uint8").max),     # 255
         "uint16": numpy.uint16(numpy.iinfo("uint16").max),  # 65535
         "uint32": numpy.uint32(numpy.iinfo("uint32").max),  # 4294967295
         "uint64": numpy.uint64(numpy.iinfo("uint64").max),  # 18446744073709551615
-        "uint": numpy.uint0(numpy.iinfo("uint").max),       # system dependent
-        "uint0": numpy.uint0(numpy.iinfo("uint0").max),     # system dependent
+        "uint": numpy.uintp(numpy.iinfo("uint").max),       # system dependent
+        "uintp": numpy.uintp(numpy.iinfo("uintp").max),     # system dependent
 
         "float16": numpy.float16(numpy.nan),                # NaN
         "float32": numpy.float32(numpy.nan),                # NaN
@@ -127,15 +118,15 @@ class DenseSquareMatrix(DenseMatrix,SquareMatrix):
         numpy.dtype("int16"): numpy.int16(numpy.iinfo("int16").min),    # -32768
         numpy.dtype("int32"): numpy.int32(numpy.iinfo("int32").min),    # -2147483648
         numpy.dtype("int64"): numpy.int64(numpy.iinfo("int64").min),    # -9223372036854775808
-        numpy.dtype("int"): numpy.int0(numpy.iinfo("int").min),         # system dependent
-        numpy.dtype("int0"): numpy.int0(numpy.iinfo("int0").min),       # system dependent
+        numpy.dtype("int"): numpy.intp(numpy.iinfo("int").min),         # system dependent
+        numpy.dtype("intp"): numpy.intp(numpy.iinfo("intp").min),       # system dependent
 
         numpy.dtype("uint8"): numpy.uint8(numpy.iinfo("uint8").max),    # 255
         numpy.dtype("uint16"): numpy.uint16(numpy.iinfo("uint16").max), # 65535
         numpy.dtype("uint32"): numpy.uint32(numpy.iinfo("uint32").max), # 4294967295
         numpy.dtype("uint64"): numpy.uint64(numpy.iinfo("uint64").max), # 18446744073709551615
-        numpy.dtype("uint"): numpy.uint0(numpy.iinfo("uint").max),      # system dependent
-        numpy.dtype("uint0"): numpy.uint0(numpy.iinfo("uint0").max),    # system dependent
+        numpy.dtype("uint"): numpy.uintp(numpy.iinfo("uint").max),      # system dependent
+        numpy.dtype("uintp"): numpy.uintp(numpy.iinfo("uintp").max),    # system dependent
 
         numpy.dtype("float16"): numpy.float16(numpy.nan),               # NaN
         numpy.dtype("float32"): numpy.float32(numpy.nan),               # NaN

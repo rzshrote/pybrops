@@ -26,6 +26,8 @@ __all__ = [
     "DenseTaxaMatrix",
     "DenseVariantMatrix",
     "DenseSquareTaxaMatrix",
+    "DenseSquareTraitMatrix",
+    "DenseSquareTaxaSquareTraitMatrix",
     "DenseTaxaTraitMatrix",
     "DenseTaxaVariantMatrix",
     "DensePhasedTaxaVariantMatrix",
@@ -83,6 +85,8 @@ from pybrops.core.mat import DenseVariantMatrix   # order 0
 
 # level 4 implementation
 from pybrops.core.mat import DenseSquareTaxaMatrix
+from pybrops.core.mat import DenseSquareTraitMatrix
+from pybrops.core.mat import DenseSquareTaxaSquareTraitMatrix
 from pybrops.core.mat import DenseTaxaTraitMatrix         # order 0
 from pybrops.core.mat import DenseTaxaVariantMatrix       # order 0
 from pybrops.core.mat import DensePhasedTaxaVariantMatrix # order 1

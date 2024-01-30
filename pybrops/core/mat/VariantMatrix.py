@@ -135,21 +135,11 @@ class VariantMatrix(GroupableMatrix,metaclass=ABCMeta):
     def nvrnt(self) -> int:
         """Number of variants."""
         raise NotImplementedError("property is abstract")
-    @nvrnt.setter
-    @abstractmethod
-    def nvrnt(self, value: int) -> None:
-        """Set number of variants"""
-        raise NotImplementedError("property is abstract")
     
     @property
     @abstractmethod
     def vrnt_axis(self) -> int:
         """Axis along which variants are stored."""
-        raise NotImplementedError("property is abstract")
-    @vrnt_axis.setter
-    @abstractmethod
-    def vrnt_axis(self, value: int) -> None:
-        """Set variant axis"""
         raise NotImplementedError("property is abstract")
     
     @property

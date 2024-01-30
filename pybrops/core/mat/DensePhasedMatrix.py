@@ -81,6 +81,7 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
         Parameters
         ----------
         memo : dict
+            Dictionary of memo metadata.
 
         Returns
         -------
@@ -100,19 +101,11 @@ class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
     def nphase(self) -> int:
         """Number of chromosome phases represented by the matrix."""
         return self._mat.shape[self.phase_axis]
-    @nphase.setter
-    def nphase(self, value: int) -> None:
-        """Set number of phases"""
-        error_readonly("nphase")
     
     @property
     def phase_axis(self) -> int:
         """Axis along which phases are stored."""
         return 0
-    @phase_axis.setter
-    def phase_axis(self, value: int) -> None:
-        """Set phase axis number"""
-        error_readonly("phase_axis")
 
     ############################## Object Methods ##############################
 

@@ -35,10 +35,20 @@ def test_init_is_concrete():
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
+def test_nsquare_taxa_is_abstract():
+    assert_abstract_property(SquareTaxaMatrix, "nsquare_taxa")
+
+def test_square_taxa_axes_is_abstract():
+    assert_abstract_property(SquareTaxaMatrix, "square_taxa_axes")
+
+def test_square_taxa_axes_len_is_abstract():
+    assert_abstract_property(SquareTaxaMatrix, "square_taxa_axes_len")
 
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
+def test_is_square_taxa_is_abstract():
+    assert_abstract_method(SquareTaxaMatrix, "is_square_taxa")
 
 ################################################################################
 ######################### Test class utility functions #########################

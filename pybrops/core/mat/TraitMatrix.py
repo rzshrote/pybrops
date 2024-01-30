@@ -47,21 +47,11 @@ class TraitMatrix(SortableMatrix,metaclass=ABCMeta):
     def ntrait(self) -> int:
         """Number of traits."""
         raise NotImplementedError("property is abstract")
-    @ntrait.setter
-    @abstractmethod
-    def ntrait(self, value: int) -> None:
-        """Set number of traits"""
-        raise NotImplementedError("property is abstract")
     
     @property
     @abstractmethod
     def trait_axis(self) -> int:
         """Axis along which traits are stored."""
-        raise NotImplementedError("property is abstract")
-    @trait_axis.setter
-    @abstractmethod
-    def trait_axis(self, value: int) -> None:
-        """Set trait axis number"""
         raise NotImplementedError("property is abstract")
     
     ############################## Object Methods ##############################

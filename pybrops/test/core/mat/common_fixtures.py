@@ -12,6 +12,8 @@ from pybrops.core.mat.PhasedMatrix import PhasedMatrix
 from pybrops.core.mat.PrunableMatrix import PrunableMatrix
 from pybrops.core.mat.SquareMatrix import SquareMatrix
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
+from pybrops.core.mat.SquareTaxaSquareTraitMatrix import SquareTaxaSquareTraitMatrix
+from pybrops.core.mat.SquareTraitMatrix import SquareTraitMatrix
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
@@ -229,9 +231,6 @@ class DummySquareMatrix(DummyMatrix,SquareMatrix):
     @property
     def nsquare(self) -> object:
         return super().nsquare
-    @nsquare.setter
-    def nsquare(self, value: object) -> None:
-        super().nsquare = value
     @property
     def square_axes(self) -> object:
         return super().square_axes
@@ -427,15 +426,9 @@ class DummyVariantMatrix(DummyGroupableMatrix,VariantMatrix):
     @property
     def nvrnt(self) -> object:
         return super().nvrnt
-    @nvrnt.setter
-    def nvrnt(self, value: object) -> None:
-        super().nvrnt = value
     @property
     def vrnt_axis(self) -> object:
         return super().vrnt_axis
-    @vrnt_axis.setter
-    def vrnt_axis(self, value: object) -> None:
-        super().vrnt_axis = value
     @property
     def vrnt_chrgrp_name(self) -> object:
         return super().vrnt_chrgrp_name
@@ -497,6 +490,32 @@ class DummyTaxaVariantMatrix(DummyTaxaMatrix,DummyVariantMatrix,TaxaVariantMatri
     pass
 
 class DummySquareTaxaMatrix(DummySquareMatrix,DummyTaxaMatrix,SquareTaxaMatrix):
+    @property
+    def nsquare_taxa(self) -> object:
+        return super().nsquare_taxa
+    @property
+    def square_taxa_axes(self) -> object:
+        return super().square_taxa_axes
+    @property
+    def square_taxa_axes_len(self) -> object:
+        return super().square_taxa_axes_len
+    def is_square_taxa(self) -> bool:
+        return super().is_square_taxa()
+
+class DummySquareTraitMatrix(DummySquareMatrix,DummyTraitMatrix,SquareTraitMatrix):
+    @property
+    def nsquare_trait(self) -> object:
+        return super().nsquare_trait
+    @property
+    def square_trait_axes(self) -> object:
+        return super().square_trait_axes
+    @property
+    def square_trait_axes_len(self) -> object:
+        return super().square_trait_axes_len
+    def is_square_trait(self) -> bool:
+        return super().is_square_trait()
+
+class DummySquareTaxaSquareTraitMatrix(DummySquareTaxaMatrix,DummySquareTraitMatrix,SquareTaxaSquareTraitMatrix):
     pass
 
 class DummyPhasedTaxaVariantMatrix(DummyTaxaVariantMatrix,DummyPhasedMatrix,PhasedTaxaVariantMatrix):

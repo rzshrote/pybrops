@@ -113,6 +113,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         Parameters
         ----------
         memo : dict
+            Dictionary of memo metadata.
 
         Returns
         -------
@@ -177,19 +178,11 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
     def ntaxa(self) -> int:
         """Number of taxa"""
         return self._mat.shape[self.taxa_axis]
-    @ntaxa.setter
-    def ntaxa(self, value: int) -> None:
-        """Set number of taxa"""
-        error_readonly("ntaxa")
     
     @property
     def taxa_axis(self) -> int:
         """Axis along which taxa are stored"""
         return 0
-    @taxa_axis.setter
-    def taxa_axis(self, value: int) -> None:
-        """Set taxa axis number"""
-        error_readonly("taxa_axis")
     
     @property
     def taxa_grp_name(self) -> Union[numpy.ndarray,None]:

@@ -322,19 +322,11 @@ class DenseVariantMatrix(DenseMutableMatrix,VariantMatrix):
     def nvrnt(self) -> int:
         """Number of variants."""
         return self._mat.shape[self.vrnt_axis]
-    @nvrnt.setter
-    def nvrnt(self, value: int) -> None:
-        """Set number of variants"""
-        error_readonly("nvrnt")
 
     @property
     def vrnt_axis(self) -> int:
         """Axis along which variants are stored."""
         return 0
-    @vrnt_axis.setter
-    def vrnt_axis(self, value: int) -> None:
-        """Set variant axis"""
-        error_readonly("vrnt_axis")
 
     @property
     def vrnt_chrgrp_name(self) -> Union[numpy.ndarray,None]:

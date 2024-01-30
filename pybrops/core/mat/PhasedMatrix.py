@@ -35,21 +35,11 @@ class PhasedMatrix(MutableMatrix,metaclass=ABCMeta):
     def nphase(self) -> int:
         """Number of chromosome phases represented by the matrix."""
         raise NotImplementedError("property is abstract")
-    @nphase.setter
-    @abstractmethod
-    def nphase(self, value: int) -> None:
-        """Set number of phases"""
-        raise NotImplementedError("property is abstract")
     
     @property
     @abstractmethod
     def phase_axis(self) -> int:
         """Axis along which phases are stored."""
-        raise NotImplementedError("property is abstract")
-    @phase_axis.setter
-    @abstractmethod
-    def phase_axis(self, value: int) -> None:
-        """Set phase axis number"""
         raise NotImplementedError("property is abstract")
     
     ############################## Object Methods ##############################

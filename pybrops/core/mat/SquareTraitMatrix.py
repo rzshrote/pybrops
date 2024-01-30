@@ -1,29 +1,29 @@
 """
 Module defining interfaces and associated error checking routines for matrices
-with axes that are square and with taxa metadata.
+with axes that are square and with trait metadata.
 """
 
 __all__ = [
-    "SquareTaxaMatrix",
-    "check_is_SquareTaxaMatrix",
+    "SquareTraitMatrix",
+    "check_is_SquareTraitMatrix",
 ]
 
 from abc import ABCMeta, abstractmethod
 from pybrops.core.mat.SquareMatrix import SquareMatrix
-from pybrops.core.mat.TaxaMatrix import TaxaMatrix
+from pybrops.core.mat.TraitMatrix import TraitMatrix
 
-class SquareTaxaMatrix(
+class SquareTraitMatrix(
         SquareMatrix,
-        TaxaMatrix,
+        TraitMatrix,
         metaclass = ABCMeta,
     ):
     """
-    An abstract class for matrix wrapper objects with square taxa metadata.
+    An abstract class for matrix wrapper objects with square axes and trait metadata.
 
     The purpose of this abstract class is to merge the following interfaces:
 
         1. SquareMatrix
-        2. TaxaMatrix
+        2. TraitMatrix
     """
 
     ########################## Special Object Methods ##########################
@@ -33,19 +33,19 @@ class SquareTaxaMatrix(
     ############## Square Metadata Properties ##############
     @property
     @abstractmethod
-    def nsquare_taxa(self) -> int:
-        """Number of taxa axes that are square."""
+    def nsquare_trait(self) -> int:
+        """Number of trait axes that are square."""
         raise NotImplementedError("property is abstract")
     
     @property
     @abstractmethod
-    def square_taxa_axes(self) -> tuple:
-        """Axis indices for taxa axes that are square."""
+    def square_trait_axes(self) -> tuple:
+        """Axis indices for trait axes that are square."""
         raise NotImplementedError("property is abstract")
     
     @property
     @abstractmethod
-    def square_taxa_axes_len(self) -> tuple:
+    def square_trait_axes_len(self) -> tuple:
         """Axis lengths for axes that are square."""
         raise NotImplementedError("property is abstract")
 
@@ -53,26 +53,26 @@ class SquareTaxaMatrix(
 
     #################### Square Methods ####################
     @abstractmethod
-    def is_square_taxa(
+    def is_square_trait(
             self
         ) -> bool:
         """
-        Determine whether the taxa axes lengths for the square axes are identical.
+        Determine whether the trait axes lengths for the square axes are identical.
 
         Returns
         -------
         out : bool
-            ``True`` if all square taxa axes are the same length.
-            ``False`` if not all square taxa axes are the same length.
+            ``True`` if all square trait axes are the same length.
+            ``False`` if not all square trait axes are the same length.
         """
         raise NotImplementedError("method is abstract")
 
 
 
 ################################## Utilities ###################################
-def check_is_SquareTaxaMatrix(v: object, vname: str) -> None:
+def check_is_SquareTraitMatrix(v: object, vname: str) -> None:
     """
-    Check if object is of type ``SquareTaxaMatrix``. Otherwise raise ``TypeError``.
+    Check if object is of type ``SquareTraitMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
@@ -81,5 +81,5 @@ def check_is_SquareTaxaMatrix(v: object, vname: str) -> None:
     vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(v, SquareTaxaMatrix):
-        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,SquareTaxaMatrix.__name__,type(v).__name__))
+    if not isinstance(v, SquareTraitMatrix):
+        raise TypeError("variable '{0}' must be a of type '{1}' but received type '{2}'".format(vname,SquareTraitMatrix.__name__,type(v).__name__))
