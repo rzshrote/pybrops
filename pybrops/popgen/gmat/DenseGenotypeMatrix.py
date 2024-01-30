@@ -1133,20 +1133,24 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         ######################################################### read conclusion
         h5file.close()                                          # close file
         if data_dict["taxa"] is not None:
-            data_dict["taxa"] = numpy.object_(                  # convert taxa strings from byte to utf-8
-                [s.decode("utf-8") for s in data_dict["taxa"]]
+            data_dict["taxa"] = numpy.array(                    # convert taxa strings from byte to utf-8
+                [s.decode("utf-8") for s in data_dict["taxa"]],
+                dtype = object
             )
         if data_dict["vrnt_name"] is not None:
-            data_dict["vrnt_name"] = numpy.object_(             # convert vrnt_name string from byte to utf-8
-                [s.decode("utf-8") for s in data_dict["vrnt_name"]]
+            data_dict["vrnt_name"] = numpy.array(               # convert vrnt_name string from byte to utf-8
+                [s.decode("utf-8") for s in data_dict["vrnt_name"]],
+                dtype = object
             )
         if data_dict["vrnt_hapgrp"] is not None:
-            data_dict["vrnt_hapgrp"] = numpy.object_(           # convert vrnt_hapgrp string from byte to utf-8
-                [s.decode("utf-8") for s in data_dict["vrnt_hapgrp"]]
+            data_dict["vrnt_hapgrp"] = numpy.array(             # convert vrnt_hapgrp string from byte to utf-8
+                [s.decode("utf-8") for s in data_dict["vrnt_hapgrp"]],
+                dtype = object
             )
         if data_dict["vrnt_hapalt"] is not None:
-            data_dict["vrnt_hapalt"] = numpy.object_(           # convert vrnt_hapalt string from byte to utf-8
-                [s.decode("utf-8") for s in data_dict["vrnt_hapalt"]]
+            data_dict["vrnt_hapalt"] = numpy.array(             # convert vrnt_hapalt string from byte to utf-8
+                [s.decode("utf-8") for s in data_dict["vrnt_hapalt"]],
+                dtype = object
             )
         if data_dict["ploidy"] is not None:
             data_dict["ploidy"] = int(data_dict["ploidy"])      # convert to int, from numpy.int64
@@ -1179,7 +1183,7 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         vcf = cyvcf2.VCF(filename)
 
         # extract taxa names from vcf header
-        taxa = numpy.object_(vcf.samples)
+        taxa = numpy.array(vcf.samples, dtype = object)
 
         # make empty lists to store extracted values
         mat = []
@@ -1220,9 +1224,9 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
         mat = mat.sum(0, dtype = 'int8')
 
         # convert to numpy.ndarray
-        vrnt_chrgrp = numpy.int64(vrnt_chrgrp)  # convert to int64 array
-        vrnt_phypos = numpy.int64(vrnt_phypos)  # convert to int64 array
-        vrnt_name = numpy.object_(vrnt_name)    # convert to object array
+        vrnt_chrgrp = numpy.int64(vrnt_chrgrp)              # convert to int64 array
+        vrnt_phypos = numpy.int64(vrnt_phypos)              # convert to int64 array
+        vrnt_name = numpy.array(vrnt_name, dtype = object)  # convert to object array
 
         out = cls(
             mat = mat,

@@ -88,12 +88,12 @@ def mat_genpos():
 
 @pytest.fixture
 def mat_taxa():
-    yield numpy.object_([
+    yield numpy.array([
         'Line01', 'Line02', 'Line03', 'Line04', 'Line05',
         'Line06', 'Line07', 'Line08', 'Line09', 'Line10',
         'Line11', 'Line12', 'Line13', 'Line14', 'Line15',
         'Line16', 'Line17', 'Line18', 'Line19', 'Line20'
-    ])
+    ], dtype = object)
 
 @pytest.fixture
 def mat_taxa_grp():
@@ -162,7 +162,7 @@ def mat_u_a():
 
 @pytest.fixture
 def trait():
-    yield numpy.object_(["protein", "yield"])
+    yield numpy.array(["protein", "yield"], dtype = object)
 
 @pytest.fixture
 def model_name():

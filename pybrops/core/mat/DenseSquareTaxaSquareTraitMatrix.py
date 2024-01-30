@@ -11,12 +11,16 @@ __all__ = [
 import copy
 from typing import Optional, Sequence, Union
 import numpy
+import h5py
 from numpy.typing import ArrayLike
+from pybrops.core.error.error_io_python import check_file_exists
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
 from pybrops.core.mat.DenseSquareTraitMatrix import DenseSquareTraitMatrix
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.SquareTaxaSquareTraitMatrix import SquareTaxaSquareTraitMatrix
 from pybrops.core.mat.util import get_axis
+from pybrops.core.util.h5py import save_dict_to_hdf5
 
 class DenseSquareTaxaSquareTraitMatrix(
         DenseSquareTaxaMatrix,
@@ -748,7 +752,109 @@ class DenseSquareTaxaSquareTraitMatrix(
 
     # is_grouped_taxa is unaltered
 
+    ################### Matrix File I/O ####################
+    def to_hdf5(
+            self, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> None:
+        """
+        Write DenseSquareTaxaSquareTraitMatrix to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name to which to write.
+        groupname : str or None
+            HDF5 group name under which the ``DenseSquareTaxaSquareTraitMatrix`` data is stored.
+            If ``None``, the ``DenseSquareTaxaSquareTraitMatrix`` is written to the base HDF5 group.
+        """
+        h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### populate HDF5 file
+        data_dict = {                                           # data dictionary
+            "mat"       : self.mat,
+            "taxa"      : self.taxa,
+            "taxa_grp"  : self.taxa_grp,
+            "trait"     : self.trait
+        }
+        save_dict_to_hdf5(h5file, groupname, data_dict)         # save data
+        ######################################################### write conclusion
+        h5file.close()                                          # close the file
+
     ############################## Class Methods ###############################
+
+    ################### Matrix File I/O ####################
+    @classmethod
+    def from_hdf5(
+            cls, 
+            filename: str, 
+            groupname: Optional[str] = None
+        ) -> 'DenseSquareTaxaSquareTraitMatrix':
+        """
+        Read DenseSquareTaxaSquareTraitMatrix from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str
+            HDF5 file name which to read.
+        groupname : str or None
+            HDF5 group name under which DenseSquareTaxaSquareTraitMatrix data is stored.
+            If None, DenseSquareTaxaSquareTraitMatrix is read from base HDF5 group.
+
+        Returns
+        -------
+        out : DenseSquareTaxaSquareTraitMatrix
+            A dense matrix read from file.
+        """
+        check_file_exists(filename)                             # check file exists
+        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
+        ######################################################### process groupname argument
+        if isinstance(groupname, str):                          # if we have a string
+            check_h5py_File_has_group(h5file, filename, groupname)    # check that group exists
+            if groupname[-1] != '/':                            # if last character in string is not '/'
+                groupname += '/'                                # add '/' to end of string
+        elif groupname is None:                                 # else if groupname is None
+            groupname = ""                                      # empty string
+        else:                                                   # else raise error
+            raise TypeError("'groupname' must be of type str or None")
+        ######################################################### check that we have all required fields
+        required_fields = ["mat"]                               # all required arguments
+        for field in required_fields:                           # for each required field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            check_h5py_File_has_group(h5file, filename, fieldname)    # check that group exists
+        ######################################################### read data
+        data_dict = {                                           # output dictionary
+            "mat"       : None,
+            "taxa"      : None,
+            "taxa_grp"  : None,
+            "trait"     : None
+        }
+        for field in data_dict.keys():                          # for each field
+            fieldname = groupname + field                       # concatenate base groupname and field
+            if fieldname in h5file:                             # if the field exists in the HDF5 file
+                data_dict[field] = h5file[fieldname][()]        # read array
+        ######################################################### read conclusion
+        h5file.close()                                          # close file
+        ######################################################### convert data types
+        str_fields = ["taxa","trait"]                           # string array fields
+        for field in str_fields:                                # for each field
+            if data_dict[field] is not None:                    # if the field is not None
+                arr = data_dict[field]                          # extract pointer to field
+                for i in range(len(arr)):                       # for each element in field
+                    if isinstance(arr[i], bytes):               # if element is bytes
+                        arr[i] = arr[i].decode("utf-8")         # convert bytes element to str
+                data_dict[field] = arr                          # store pointer
+        ######################################################### create object
+        mat = cls(**data_dict)                                  # create object from read data
+        return mat
 
     ############################## Static Methods ##############################
 

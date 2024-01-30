@@ -2147,8 +2147,9 @@ class DenseAdditiveLinearGenomicModel(
         fieldname = groupname + "trait"                         # construct "groupname/trait"
         if fieldname in h5file:                                 # if "groupname/trait" in hdf5
             data_dict["trait"] = h5file[fieldname][()]          # read trait array
-            data_dict["trait"] = numpy.object_(                 # convert trait string from byte to utf-8
-                [s.decode("utf-8") for s in data_dict["trait"]]
+            data_dict["trait"] = numpy.array(                   # convert trait string from byte to utf-8
+                [s.decode("utf-8") for s in data_dict["trait"]],
+                dtype = object
             )
         fieldname = groupname + "model_name"                    # construct "groupname/model_name"
         if fieldname in h5file:                                 # if "groupname/model_name" in hdf5

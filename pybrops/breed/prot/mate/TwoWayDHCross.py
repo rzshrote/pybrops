@@ -229,8 +229,9 @@ class TwoWayDHCross(MatingProtocol):
             self.progeny_counter,               # start progeny number (inclusive)
             self.progeny_counter + progcnt      # stop progeny number (exclusive)
         )
-        taxa = numpy.object_(                   # create taxa names
-            ["dh"+str(i).zfill(7) for i in riter]
+        taxa = numpy.array(                     # create taxa names
+            ["dh"+str(i).zfill(7) for i in riter],
+            dtype = object
         )
         self.progeny_counter += progcnt         # increment counter
 
