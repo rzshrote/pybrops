@@ -598,7 +598,7 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             filename: str,
             taxa_col: Optional[str] = "taxa",
             taxa_grp_col: Optional[str] = "taxa_grp",
-            trait_cols: Optional[Union[str,Sequence]] = "trait",
+            trait_cols: Optional[Union[str,Sequence]] = "all",
             unscale: bool = False,
             sep: str = ',', 
             header: bool = True, 
@@ -623,11 +623,11 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
             If ``str``, the column is given the name in ``taxa_grp_col``.
             If ``None``, the column is not exported.
 
-        trait_cols : Sequence, str, None, default = "trait"
+        trait_cols : Sequence, str, None, default = "all"
             Names of the trait columns to which to write breeding values.
             If ``Sequence``, column names are given by the strings in the 
             ``trait_cols`` Sequence.
-            If ``str``, must be equal to ``"trait"``. Use trait names given in 
+            If ``str``, must be equal to ``"all"``. Use trait names given in 
             the ``trait`` property.
             If ``None``, use numeric trait column names.
         

@@ -123,7 +123,7 @@ def check_ndarray_all_gteq(v: numpy.ndarray, vname: str, vmin: Real) -> None:
 ################# check_ndarray_eq #################
 def check_ndarray_eq(v: numpy.ndarray, vname: str, w: numpy.ndarray, wname: str) -> None:
     """
-    Check if two ``numpy.ndarray``s are equal to each other.
+    Check if two ``numpy.ndarray`` values are equal to each other.
     
     Parameters
     ----------

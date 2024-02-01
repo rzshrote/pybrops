@@ -1920,10 +1920,10 @@ class DenseAdditiveLinearGenomicModel(
             Python dictionary containing ``pandas.DataFrame`` from which to read.
             Must have the following fields::
 
-            - ``"beta"`` - ``pandas.DataFrame`` containing fixed effects.
-            - ``"u_misc"`` - ``None`` or ``pandas.DataFrame`` containing 
+            - ``"beta"`` is a ``pandas.DataFrame`` containing fixed effects.
+            - ``"u_misc"`` is ``None`` or ``pandas.DataFrame`` containing 
               miscellaneous random effects.
-            - ``"u_a"`` - ``None`` or ``pandas.DataFrame`` containing additive 
+            - ``"u_a"`` is ``None`` or a ``pandas.DataFrame`` containing additive 
               genetic marker random effects.
 
         trait_cols : Sequence, str, None, default = "trait"
@@ -2024,12 +2024,13 @@ class DenseAdditiveLinearGenomicModel(
         ----------
         filename : str
             Dictionary of CSV file names from which to read.
+            
             Must have the following fields::
 
-            - ``"beta"`` - ``str`` containing fixed effects.
-            - ``"u_misc"`` - ``None`` or ``str`` of CSV file path containing 
+            - ``"beta"`` is a ``str`` containing fixed effects.
+            - ``"u_misc"`` is ``None`` or a ``str`` of CSV file path containing 
               miscellaneous random effects.
-            - ``"u_a"`` - ``None`` or ``str`` of CSV file path containing additive 
+            - ``"u_a"`` is ``None`` or a ``str`` of CSV file path containing additive 
               genetic marker random effects.
 
         sep : str, default = ','

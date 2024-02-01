@@ -657,7 +657,7 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             female2_grp_data = df.iloc[:,female2_grp_colix].to_numpy(dtype = int)
             for i,taxon in enumerate(taxa):
                 if taxon in female2_taxa:
-                    ix = female2_taxaix[female2_taxa == taxon]
+                    ix = female2_taxaix[female2_taxa == taxon][0]
                     taxa_grp[i] = female2_grp_data[ix]
         if male2_grp_col is not None:
             if taxa_grp is None:
@@ -665,7 +665,7 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             male2_grp_data = df.iloc[:,male2_grp_colix].to_numpy(dtype = int)
             for i,taxon in enumerate(taxa):
                 if taxon in male2_taxa:
-                    ix = male2_taxaix[male2_taxa == taxon]
+                    ix = male2_taxaix[male2_taxa == taxon][0]
                     taxa_grp[i] = male2_grp_data[ix]
         if female1_grp_col is not None:
             if taxa_grp is None:
@@ -673,7 +673,7 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             female1_grp_data = df.iloc[:,female1_grp_colix].to_numpy(dtype = int)
             for i,taxon in enumerate(taxa):
                 if taxon in female1_taxa:
-                    ix = female1_taxaix[female1_taxa == taxon]
+                    ix = female1_taxaix[female1_taxa == taxon][0]
                     taxa_grp[i] = female1_grp_data[ix]
         if male1_grp_col is not None:
             if taxa_grp is None:
@@ -681,7 +681,7 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             male1_grp_data = df.iloc[:,male1_grp_colix].to_numpy(dtype = int)
             for i,taxon in enumerate(taxa):
                 if taxon in male1_taxa:
-                    ix = male1_taxaix[male1_taxa == taxon]
+                    ix = male1_taxaix[male1_taxa == taxon][0]
                     taxa_grp[i] = male1_grp_data[ix]
 
         # get array dimensions

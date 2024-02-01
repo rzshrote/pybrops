@@ -584,7 +584,7 @@ class DenseThreeWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgeny
             recurrent_grp_data = df.iloc[:,recurrent_grp_colix].to_numpy(dtype = int)
             for i,taxon in enumerate(taxa):
                 if taxon in recurrent_taxa:
-                    ix = recurrent_taxaix[recurrent_taxa == taxon]
+                    ix = recurrent_taxaix[recurrent_taxa == taxon][0]
                     taxa_grp[i] = recurrent_grp_data[ix]
         if female_grp_col is not None:
             if taxa_grp is None:
@@ -592,7 +592,7 @@ class DenseThreeWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgeny
             female_grp_data = df.iloc[:,female_grp_colix].to_numpy(dtype = int)
             for i,taxon in enumerate(taxa):
                 if taxon in female_taxa:
-                    ix = female_taxaix[female_taxa == taxon]
+                    ix = female_taxaix[female_taxa == taxon][0]
                     taxa_grp[i] = female_grp_data[ix]
         if male_grp_col is not None:
             if taxa_grp is None:
@@ -600,7 +600,7 @@ class DenseThreeWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgeny
             male_grp_data = df.iloc[:,male_grp_colix].to_numpy(dtype = int)
             for i,taxon in enumerate(taxa):
                 if taxon in male_taxa:
-                    ix = male_taxaix[male_taxa == taxon]
+                    ix = male_taxaix[male_taxa == taxon][0]
                     taxa_grp[i] = male_grp_data[ix]
 
         # get array dimensions

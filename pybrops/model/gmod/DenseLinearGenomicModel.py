@@ -1568,7 +1568,7 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         ######################################################### read conclusion
         h5file.close()                                          # close file
         ######################################################### create object
-        glgmod = DenseLinearGenomicModel(**data_dict)         # create object from read data
+        glgmod = cls(**data_dict)         # create object from read data
         return glgmod
 
 
