@@ -1,0 +1,44 @@
+RealSelectionSolution
+=====================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.RealSelectionSolution
+
+.. autoclass:: RealSelectionSolution
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RealSelectionSolution.decn_space
+      ~RealSelectionSolution.decn_space_lower
+      ~RealSelectionSolution.decn_space_upper
+      ~RealSelectionSolution.eqcv_wt
+      ~RealSelectionSolution.ineqcv_wt
+      ~RealSelectionSolution.ndecn
+      ~RealSelectionSolution.neqcv
+      ~RealSelectionSolution.nineqcv
+      ~RealSelectionSolution.nobj
+      ~RealSelectionSolution.nsoln
+      ~RealSelectionSolution.obj_wt
+      ~RealSelectionSolution.soln_decn
+      ~RealSelectionSolution.soln_eqcv
+      ~RealSelectionSolution.soln_ineqcv
+      ~RealSelectionSolution.soln_obj
+   
+   

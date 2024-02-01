@@ -1,0 +1,45 @@
+SubsetMateSelectionSolution
+===========================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.SubsetMateSelectionSolution
+
+.. autoclass:: SubsetMateSelectionSolution
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SubsetMateSelectionSolution.decn_space
+      ~SubsetMateSelectionSolution.decn_space_lower
+      ~SubsetMateSelectionSolution.decn_space_upper
+      ~SubsetMateSelectionSolution.decn_space_xmap
+      ~SubsetMateSelectionSolution.eqcv_wt
+      ~SubsetMateSelectionSolution.ineqcv_wt
+      ~SubsetMateSelectionSolution.ndecn
+      ~SubsetMateSelectionSolution.neqcv
+      ~SubsetMateSelectionSolution.nineqcv
+      ~SubsetMateSelectionSolution.nobj
+      ~SubsetMateSelectionSolution.nsoln
+      ~SubsetMateSelectionSolution.obj_wt
+      ~SubsetMateSelectionSolution.soln_decn
+      ~SubsetMateSelectionSolution.soln_eqcv
+      ~SubsetMateSelectionSolution.soln_ineqcv
+      ~SubsetMateSelectionSolution.soln_obj
+   
+   

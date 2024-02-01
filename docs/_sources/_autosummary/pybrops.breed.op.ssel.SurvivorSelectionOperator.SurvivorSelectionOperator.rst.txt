@@ -1,0 +1,25 @@
+SurvivorSelectionOperator
+=========================
+
+.. currentmodule:: pybrops.breed.op.ssel.SurvivorSelectionOperator
+
+.. autoclass:: SurvivorSelectionOperator
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SurvivorSelectionOperator.sselect
+   
+   
+
+   
+   
+   

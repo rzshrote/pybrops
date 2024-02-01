@@ -1,0 +1,45 @@
+DenseSquareMatrix
+=================
+
+.. currentmodule:: pybrops.core.mat.DenseSquareMatrix
+
+.. autoclass:: DenseSquareMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseSquareMatrix.adjoin
+      ~DenseSquareMatrix.concat
+      ~DenseSquareMatrix.copy
+      ~DenseSquareMatrix.deepcopy
+      ~DenseSquareMatrix.delete
+      ~DenseSquareMatrix.from_hdf5
+      ~DenseSquareMatrix.insert
+      ~DenseSquareMatrix.is_square
+      ~DenseSquareMatrix.select
+      ~DenseSquareMatrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseSquareMatrix.mat
+      ~DenseSquareMatrix.mat_ndim
+      ~DenseSquareMatrix.mat_shape
+      ~DenseSquareMatrix.nsquare
+      ~DenseSquareMatrix.square_axes
+      ~DenseSquareMatrix.square_axes_len
+   
+   

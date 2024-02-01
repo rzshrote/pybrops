@@ -1,0 +1,35 @@
+bvmat
+=====
+
+.. automodule:: pybrops.popgen.bvmat
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.popgen.bvmat.BreedingValueMatrix
+   pybrops.popgen.bvmat.DenseBreedingValueMatrix
+   pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix
+   pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix
+

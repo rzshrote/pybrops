@@ -1,0 +1,6 @@
+trans\_inbmax\_penalty
+======================
+
+.. currentmodule:: pybrops.breed.prot.sel.transfn
+
+.. autofunction:: trans_inbmax_penalty

@@ -1,0 +1,41 @@
+SubsetSelectionProtocol
+=======================
+
+.. automodule:: pybrops.breed.prot.sel.SubsetSelectionProtocol
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      SubsetSelectionProtocol
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_SubsetSelectionProtocol
+   
+   
+
+   
+   
+   
+
+
+

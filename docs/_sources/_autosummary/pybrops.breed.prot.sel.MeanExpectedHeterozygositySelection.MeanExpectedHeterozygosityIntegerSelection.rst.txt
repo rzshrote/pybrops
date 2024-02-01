@@ -1,0 +1,56 @@
+MeanExpectedHeterozygosityIntegerSelection
+==========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.MeanExpectedHeterozygositySelection
+
+.. autoclass:: MeanExpectedHeterozygosityIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanExpectedHeterozygosityIntegerSelection.mosolve
+      ~MeanExpectedHeterozygosityIntegerSelection.problem
+      ~MeanExpectedHeterozygosityIntegerSelection.select
+      ~MeanExpectedHeterozygosityIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanExpectedHeterozygosityIntegerSelection.eqcv_trans
+      ~MeanExpectedHeterozygosityIntegerSelection.eqcv_trans_kwargs
+      ~MeanExpectedHeterozygosityIntegerSelection.eqcv_wt
+      ~MeanExpectedHeterozygosityIntegerSelection.ineqcv_trans
+      ~MeanExpectedHeterozygosityIntegerSelection.ineqcv_trans_kwargs
+      ~MeanExpectedHeterozygosityIntegerSelection.ineqcv_wt
+      ~MeanExpectedHeterozygosityIntegerSelection.moalgo
+      ~MeanExpectedHeterozygosityIntegerSelection.ncross
+      ~MeanExpectedHeterozygosityIntegerSelection.ndset_trans
+      ~MeanExpectedHeterozygosityIntegerSelection.ndset_trans_kwargs
+      ~MeanExpectedHeterozygosityIntegerSelection.ndset_wt
+      ~MeanExpectedHeterozygosityIntegerSelection.neqcv
+      ~MeanExpectedHeterozygosityIntegerSelection.nineqcv
+      ~MeanExpectedHeterozygosityIntegerSelection.nmating
+      ~MeanExpectedHeterozygosityIntegerSelection.nobj
+      ~MeanExpectedHeterozygosityIntegerSelection.nparent
+      ~MeanExpectedHeterozygosityIntegerSelection.nprogeny
+      ~MeanExpectedHeterozygosityIntegerSelection.nselindiv
+      ~MeanExpectedHeterozygosityIntegerSelection.obj_trans
+      ~MeanExpectedHeterozygosityIntegerSelection.obj_trans_kwargs
+      ~MeanExpectedHeterozygosityIntegerSelection.obj_wt
+      ~MeanExpectedHeterozygosityIntegerSelection.rng
+      ~MeanExpectedHeterozygosityIntegerSelection.soalgo
+   
+   

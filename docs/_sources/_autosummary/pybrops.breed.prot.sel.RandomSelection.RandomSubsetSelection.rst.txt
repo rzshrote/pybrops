@@ -1,0 +1,57 @@
+RandomSubsetSelection
+=====================
+
+.. currentmodule:: pybrops.breed.prot.sel.RandomSelection
+
+.. autoclass:: RandomSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RandomSubsetSelection.mosolve
+      ~RandomSubsetSelection.problem
+      ~RandomSubsetSelection.select
+      ~RandomSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RandomSubsetSelection.eqcv_trans
+      ~RandomSubsetSelection.eqcv_trans_kwargs
+      ~RandomSubsetSelection.eqcv_wt
+      ~RandomSubsetSelection.ineqcv_trans
+      ~RandomSubsetSelection.ineqcv_trans_kwargs
+      ~RandomSubsetSelection.ineqcv_wt
+      ~RandomSubsetSelection.moalgo
+      ~RandomSubsetSelection.ncross
+      ~RandomSubsetSelection.ndset_trans
+      ~RandomSubsetSelection.ndset_trans_kwargs
+      ~RandomSubsetSelection.ndset_wt
+      ~RandomSubsetSelection.neqcv
+      ~RandomSubsetSelection.nineqcv
+      ~RandomSubsetSelection.nmating
+      ~RandomSubsetSelection.nobj
+      ~RandomSubsetSelection.nparent
+      ~RandomSubsetSelection.nprogeny
+      ~RandomSubsetSelection.nselindiv
+      ~RandomSubsetSelection.ntrait
+      ~RandomSubsetSelection.obj_trans
+      ~RandomSubsetSelection.obj_trans_kwargs
+      ~RandomSubsetSelection.obj_wt
+      ~RandomSubsetSelection.rng
+      ~RandomSubsetSelection.soalgo
+   
+   

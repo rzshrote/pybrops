@@ -1,0 +1,96 @@
+DenseCoancestryMatrix
+=====================
+
+.. currentmodule:: pybrops.popgen.cmat.DenseCoancestryMatrix
+
+.. autoclass:: DenseCoancestryMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseCoancestryMatrix.adjoin
+      ~DenseCoancestryMatrix.adjoin_taxa
+      ~DenseCoancestryMatrix.append
+      ~DenseCoancestryMatrix.append_taxa
+      ~DenseCoancestryMatrix.apply_jitter
+      ~DenseCoancestryMatrix.coancestry
+      ~DenseCoancestryMatrix.concat
+      ~DenseCoancestryMatrix.concat_taxa
+      ~DenseCoancestryMatrix.copy
+      ~DenseCoancestryMatrix.deepcopy
+      ~DenseCoancestryMatrix.delete
+      ~DenseCoancestryMatrix.delete_taxa
+      ~DenseCoancestryMatrix.from_csv
+      ~DenseCoancestryMatrix.from_gmat
+      ~DenseCoancestryMatrix.from_hdf5
+      ~DenseCoancestryMatrix.from_pandas
+      ~DenseCoancestryMatrix.group
+      ~DenseCoancestryMatrix.group_taxa
+      ~DenseCoancestryMatrix.incorp
+      ~DenseCoancestryMatrix.incorp_taxa
+      ~DenseCoancestryMatrix.insert
+      ~DenseCoancestryMatrix.insert_taxa
+      ~DenseCoancestryMatrix.inverse
+      ~DenseCoancestryMatrix.is_grouped
+      ~DenseCoancestryMatrix.is_grouped_taxa
+      ~DenseCoancestryMatrix.is_positive_semidefinite
+      ~DenseCoancestryMatrix.is_square
+      ~DenseCoancestryMatrix.is_square_taxa
+      ~DenseCoancestryMatrix.kinship
+      ~DenseCoancestryMatrix.lexsort
+      ~DenseCoancestryMatrix.lexsort_taxa
+      ~DenseCoancestryMatrix.mat_asformat
+      ~DenseCoancestryMatrix.max
+      ~DenseCoancestryMatrix.max_inbreeding
+      ~DenseCoancestryMatrix.mean
+      ~DenseCoancestryMatrix.min
+      ~DenseCoancestryMatrix.min_inbreeding
+      ~DenseCoancestryMatrix.remove
+      ~DenseCoancestryMatrix.remove_taxa
+      ~DenseCoancestryMatrix.reorder
+      ~DenseCoancestryMatrix.reorder_taxa
+      ~DenseCoancestryMatrix.select
+      ~DenseCoancestryMatrix.select_taxa
+      ~DenseCoancestryMatrix.sort
+      ~DenseCoancestryMatrix.sort_taxa
+      ~DenseCoancestryMatrix.to_csv
+      ~DenseCoancestryMatrix.to_hdf5
+      ~DenseCoancestryMatrix.to_pandas
+      ~DenseCoancestryMatrix.ungroup
+      ~DenseCoancestryMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseCoancestryMatrix.mat
+      ~DenseCoancestryMatrix.mat_ndim
+      ~DenseCoancestryMatrix.mat_shape
+      ~DenseCoancestryMatrix.nsquare
+      ~DenseCoancestryMatrix.nsquare_taxa
+      ~DenseCoancestryMatrix.ntaxa
+      ~DenseCoancestryMatrix.square_axes
+      ~DenseCoancestryMatrix.square_axes_len
+      ~DenseCoancestryMatrix.square_taxa_axes
+      ~DenseCoancestryMatrix.square_taxa_axes_len
+      ~DenseCoancestryMatrix.taxa
+      ~DenseCoancestryMatrix.taxa_axis
+      ~DenseCoancestryMatrix.taxa_grp
+      ~DenseCoancestryMatrix.taxa_grp_len
+      ~DenseCoancestryMatrix.taxa_grp_name
+      ~DenseCoancestryMatrix.taxa_grp_spix
+      ~DenseCoancestryMatrix.taxa_grp_stix
+   
+   

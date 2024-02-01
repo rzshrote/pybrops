@@ -1,0 +1,6 @@
+check\_dict\_has\_keys
+======================
+
+.. currentmodule:: pybrops.core.error.error_value_python
+
+.. autofunction:: check_dict_has_keys

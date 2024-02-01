@@ -1,0 +1,101 @@
+DenseAdditiveGenicVarianceMatrix
+================================
+
+.. currentmodule:: pybrops.model.vmat.DenseAdditiveGenicVarianceMatrix
+
+.. autoclass:: DenseAdditiveGenicVarianceMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseAdditiveGenicVarianceMatrix.adjoin
+      ~DenseAdditiveGenicVarianceMatrix.adjoin_taxa
+      ~DenseAdditiveGenicVarianceMatrix.adjoin_trait
+      ~DenseAdditiveGenicVarianceMatrix.append
+      ~DenseAdditiveGenicVarianceMatrix.append_taxa
+      ~DenseAdditiveGenicVarianceMatrix.append_trait
+      ~DenseAdditiveGenicVarianceMatrix.concat
+      ~DenseAdditiveGenicVarianceMatrix.concat_taxa
+      ~DenseAdditiveGenicVarianceMatrix.concat_trait
+      ~DenseAdditiveGenicVarianceMatrix.copy
+      ~DenseAdditiveGenicVarianceMatrix.deepcopy
+      ~DenseAdditiveGenicVarianceMatrix.delete
+      ~DenseAdditiveGenicVarianceMatrix.delete_taxa
+      ~DenseAdditiveGenicVarianceMatrix.delete_trait
+      ~DenseAdditiveGenicVarianceMatrix.from_algmod
+      ~DenseAdditiveGenicVarianceMatrix.from_csv
+      ~DenseAdditiveGenicVarianceMatrix.from_gmod
+      ~DenseAdditiveGenicVarianceMatrix.from_hdf5
+      ~DenseAdditiveGenicVarianceMatrix.from_pandas
+      ~DenseAdditiveGenicVarianceMatrix.group
+      ~DenseAdditiveGenicVarianceMatrix.group_taxa
+      ~DenseAdditiveGenicVarianceMatrix.incorp
+      ~DenseAdditiveGenicVarianceMatrix.incorp_taxa
+      ~DenseAdditiveGenicVarianceMatrix.incorp_trait
+      ~DenseAdditiveGenicVarianceMatrix.insert
+      ~DenseAdditiveGenicVarianceMatrix.insert_taxa
+      ~DenseAdditiveGenicVarianceMatrix.insert_trait
+      ~DenseAdditiveGenicVarianceMatrix.is_grouped
+      ~DenseAdditiveGenicVarianceMatrix.is_grouped_taxa
+      ~DenseAdditiveGenicVarianceMatrix.is_square
+      ~DenseAdditiveGenicVarianceMatrix.is_square_taxa
+      ~DenseAdditiveGenicVarianceMatrix.lexsort
+      ~DenseAdditiveGenicVarianceMatrix.lexsort_taxa
+      ~DenseAdditiveGenicVarianceMatrix.lexsort_trait
+      ~DenseAdditiveGenicVarianceMatrix.remove
+      ~DenseAdditiveGenicVarianceMatrix.remove_taxa
+      ~DenseAdditiveGenicVarianceMatrix.remove_trait
+      ~DenseAdditiveGenicVarianceMatrix.reorder
+      ~DenseAdditiveGenicVarianceMatrix.reorder_taxa
+      ~DenseAdditiveGenicVarianceMatrix.reorder_trait
+      ~DenseAdditiveGenicVarianceMatrix.select
+      ~DenseAdditiveGenicVarianceMatrix.select_taxa
+      ~DenseAdditiveGenicVarianceMatrix.select_trait
+      ~DenseAdditiveGenicVarianceMatrix.sort
+      ~DenseAdditiveGenicVarianceMatrix.sort_taxa
+      ~DenseAdditiveGenicVarianceMatrix.sort_trait
+      ~DenseAdditiveGenicVarianceMatrix.to_csv
+      ~DenseAdditiveGenicVarianceMatrix.to_hdf5
+      ~DenseAdditiveGenicVarianceMatrix.to_pandas
+      ~DenseAdditiveGenicVarianceMatrix.ungroup
+      ~DenseAdditiveGenicVarianceMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseAdditiveGenicVarianceMatrix.epgc
+      ~DenseAdditiveGenicVarianceMatrix.mat
+      ~DenseAdditiveGenicVarianceMatrix.mat_ndim
+      ~DenseAdditiveGenicVarianceMatrix.mat_shape
+      ~DenseAdditiveGenicVarianceMatrix.nsquare
+      ~DenseAdditiveGenicVarianceMatrix.nsquare_taxa
+      ~DenseAdditiveGenicVarianceMatrix.ntaxa
+      ~DenseAdditiveGenicVarianceMatrix.ntrait
+      ~DenseAdditiveGenicVarianceMatrix.square_axes
+      ~DenseAdditiveGenicVarianceMatrix.square_axes_len
+      ~DenseAdditiveGenicVarianceMatrix.square_taxa_axes
+      ~DenseAdditiveGenicVarianceMatrix.square_taxa_axes_len
+      ~DenseAdditiveGenicVarianceMatrix.taxa
+      ~DenseAdditiveGenicVarianceMatrix.taxa_axis
+      ~DenseAdditiveGenicVarianceMatrix.taxa_grp
+      ~DenseAdditiveGenicVarianceMatrix.taxa_grp_len
+      ~DenseAdditiveGenicVarianceMatrix.taxa_grp_name
+      ~DenseAdditiveGenicVarianceMatrix.taxa_grp_spix
+      ~DenseAdditiveGenicVarianceMatrix.taxa_grp_stix
+      ~DenseAdditiveGenicVarianceMatrix.trait
+      ~DenseAdditiveGenicVarianceMatrix.trait_axis
+   
+   

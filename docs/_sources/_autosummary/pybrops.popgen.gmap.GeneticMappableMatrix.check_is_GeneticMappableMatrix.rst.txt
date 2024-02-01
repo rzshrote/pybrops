@@ -1,0 +1,6 @@
+check\_is\_GeneticMappableMatrix
+================================
+
+.. currentmodule:: pybrops.popgen.gmap.GeneticMappableMatrix
+
+.. autofunction:: check_is_GeneticMappableMatrix

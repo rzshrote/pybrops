@@ -1,0 +1,6 @@
+check\_is\_DensePhasedTaxaVariantMatrix
+=======================================
+
+.. currentmodule:: pybrops.core.mat.DensePhasedTaxaVariantMatrix
+
+.. autofunction:: check_is_DensePhasedTaxaVariantMatrix

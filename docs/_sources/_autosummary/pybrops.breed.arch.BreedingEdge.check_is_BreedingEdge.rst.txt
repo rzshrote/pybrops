@@ -1,0 +1,6 @@
+check\_is\_BreedingEdge
+=======================
+
+.. currentmodule:: pybrops.breed.arch.BreedingEdge
+
+.. autofunction:: check_is_BreedingEdge

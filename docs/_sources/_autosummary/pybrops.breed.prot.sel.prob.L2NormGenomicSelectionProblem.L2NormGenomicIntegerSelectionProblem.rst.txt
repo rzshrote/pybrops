@@ -1,0 +1,77 @@
+L2NormGenomicIntegerSelectionProblem
+====================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.L2NormGenomicSelectionProblem
+
+.. autoclass:: L2NormGenomicIntegerSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~L2NormGenomicIntegerSelectionProblem.bounds
+      ~L2NormGenomicIntegerSelectionProblem.do
+      ~L2NormGenomicIntegerSelectionProblem.evalfn
+      ~L2NormGenomicIntegerSelectionProblem.evaluate
+      ~L2NormGenomicIntegerSelectionProblem.from_gmat
+      ~L2NormGenomicIntegerSelectionProblem.has_bounds
+      ~L2NormGenomicIntegerSelectionProblem.has_constraints
+      ~L2NormGenomicIntegerSelectionProblem.ideal_point
+      ~L2NormGenomicIntegerSelectionProblem.latentfn
+      ~L2NormGenomicIntegerSelectionProblem.nadir_point
+      ~L2NormGenomicIntegerSelectionProblem.name
+      ~L2NormGenomicIntegerSelectionProblem.pareto_front
+      ~L2NormGenomicIntegerSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~L2NormGenomicIntegerSelectionProblem.C
+      ~L2NormGenomicIntegerSelectionProblem.callback
+      ~L2NormGenomicIntegerSelectionProblem.data
+      ~L2NormGenomicIntegerSelectionProblem.decn_space
+      ~L2NormGenomicIntegerSelectionProblem.decn_space_lower
+      ~L2NormGenomicIntegerSelectionProblem.decn_space_upper
+      ~L2NormGenomicIntegerSelectionProblem.elementwise
+      ~L2NormGenomicIntegerSelectionProblem.elementwise_func
+      ~L2NormGenomicIntegerSelectionProblem.elementwise_runner
+      ~L2NormGenomicIntegerSelectionProblem.eqcv_trans
+      ~L2NormGenomicIntegerSelectionProblem.eqcv_trans_kwargs
+      ~L2NormGenomicIntegerSelectionProblem.eqcv_wt
+      ~L2NormGenomicIntegerSelectionProblem.exclude_from_serialization
+      ~L2NormGenomicIntegerSelectionProblem.ineqcv_trans
+      ~L2NormGenomicIntegerSelectionProblem.ineqcv_trans_kwargs
+      ~L2NormGenomicIntegerSelectionProblem.ineqcv_wt
+      ~L2NormGenomicIntegerSelectionProblem.n_constr
+      ~L2NormGenomicIntegerSelectionProblem.n_eq_constr
+      ~L2NormGenomicIntegerSelectionProblem.n_ieq_constr
+      ~L2NormGenomicIntegerSelectionProblem.n_obj
+      ~L2NormGenomicIntegerSelectionProblem.n_var
+      ~L2NormGenomicIntegerSelectionProblem.ndecn
+      ~L2NormGenomicIntegerSelectionProblem.neqcv
+      ~L2NormGenomicIntegerSelectionProblem.nineqcv
+      ~L2NormGenomicIntegerSelectionProblem.nlatent
+      ~L2NormGenomicIntegerSelectionProblem.nobj
+      ~L2NormGenomicIntegerSelectionProblem.obj_trans
+      ~L2NormGenomicIntegerSelectionProblem.obj_trans_kwargs
+      ~L2NormGenomicIntegerSelectionProblem.obj_wt
+      ~L2NormGenomicIntegerSelectionProblem.replace_nan_values_by
+      ~L2NormGenomicIntegerSelectionProblem.strict
+      ~L2NormGenomicIntegerSelectionProblem.vars
+      ~L2NormGenomicIntegerSelectionProblem.vtype
+      ~L2NormGenomicIntegerSelectionProblem.xl
+      ~L2NormGenomicIntegerSelectionProblem.xu
+   
+   

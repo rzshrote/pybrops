@@ -1,0 +1,77 @@
+ExpectedMaximumBreedingValueIntegerSelectionProblem
+===================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem
+
+.. autoclass:: ExpectedMaximumBreedingValueIntegerSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.bounds
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.do
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.evalfn
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.evaluate
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.from_pgmat_gpmod
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.has_bounds
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.has_constraints
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.ideal_point
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.latentfn
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.nadir_point
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.name
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.pareto_front
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.callback
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.data
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.decn_space
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.decn_space_lower
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.decn_space_upper
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.elementwise
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.elementwise_func
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.elementwise_runner
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.embv
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.eqcv_trans
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.eqcv_trans_kwargs
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.eqcv_wt
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.exclude_from_serialization
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.ineqcv_trans
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.ineqcv_trans_kwargs
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.ineqcv_wt
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.n_constr
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.n_eq_constr
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.n_ieq_constr
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.n_obj
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.n_var
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.ndecn
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.neqcv
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.nineqcv
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.nlatent
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.nobj
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.obj_trans
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.obj_trans_kwargs
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.obj_wt
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.replace_nan_values_by
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.strict
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.vars
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.vtype
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.xl
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.xu
+   
+   

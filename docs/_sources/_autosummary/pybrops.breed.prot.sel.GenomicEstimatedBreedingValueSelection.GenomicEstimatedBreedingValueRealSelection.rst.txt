@@ -1,0 +1,58 @@
+GenomicEstimatedBreedingValueRealSelection
+==========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection
+
+.. autoclass:: GenomicEstimatedBreedingValueRealSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GenomicEstimatedBreedingValueRealSelection.mosolve
+      ~GenomicEstimatedBreedingValueRealSelection.problem
+      ~GenomicEstimatedBreedingValueRealSelection.select
+      ~GenomicEstimatedBreedingValueRealSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenomicEstimatedBreedingValueRealSelection.eqcv_trans
+      ~GenomicEstimatedBreedingValueRealSelection.eqcv_trans_kwargs
+      ~GenomicEstimatedBreedingValueRealSelection.eqcv_wt
+      ~GenomicEstimatedBreedingValueRealSelection.ineqcv_trans
+      ~GenomicEstimatedBreedingValueRealSelection.ineqcv_trans_kwargs
+      ~GenomicEstimatedBreedingValueRealSelection.ineqcv_wt
+      ~GenomicEstimatedBreedingValueRealSelection.moalgo
+      ~GenomicEstimatedBreedingValueRealSelection.ncross
+      ~GenomicEstimatedBreedingValueRealSelection.ndset_trans
+      ~GenomicEstimatedBreedingValueRealSelection.ndset_trans_kwargs
+      ~GenomicEstimatedBreedingValueRealSelection.ndset_wt
+      ~GenomicEstimatedBreedingValueRealSelection.neqcv
+      ~GenomicEstimatedBreedingValueRealSelection.nineqcv
+      ~GenomicEstimatedBreedingValueRealSelection.nmating
+      ~GenomicEstimatedBreedingValueRealSelection.nobj
+      ~GenomicEstimatedBreedingValueRealSelection.nparent
+      ~GenomicEstimatedBreedingValueRealSelection.nprogeny
+      ~GenomicEstimatedBreedingValueRealSelection.nselindiv
+      ~GenomicEstimatedBreedingValueRealSelection.ntrait
+      ~GenomicEstimatedBreedingValueRealSelection.obj_trans
+      ~GenomicEstimatedBreedingValueRealSelection.obj_trans_kwargs
+      ~GenomicEstimatedBreedingValueRealSelection.obj_wt
+      ~GenomicEstimatedBreedingValueRealSelection.rng
+      ~GenomicEstimatedBreedingValueRealSelection.soalgo
+      ~GenomicEstimatedBreedingValueRealSelection.unscale
+   
+   

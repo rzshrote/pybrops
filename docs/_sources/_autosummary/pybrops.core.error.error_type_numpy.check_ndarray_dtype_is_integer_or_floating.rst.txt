@@ -1,0 +1,6 @@
+check\_ndarray\_dtype\_is\_integer\_or\_floating
+================================================
+
+.. currentmodule:: pybrops.core.error.error_type_numpy
+
+.. autofunction:: check_ndarray_dtype_is_integer_or_floating

@@ -1,0 +1,80 @@
+FamilyEstimatedBreedingValueRealSelectionProblem
+================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem
+
+.. autoclass:: FamilyEstimatedBreedingValueRealSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.bounds
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.do
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.evalfn
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.evaluate
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.from_bvmat
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.has_bounds
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.has_constraints
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.ideal_point
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.latentfn
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.nadir_point
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.name
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.pareto_front
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.callback
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.data
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.decn_space
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.decn_space_lower
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.decn_space_upper
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.ebv
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.elementwise
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.elementwise_func
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.elementwise_runner
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.eqcv_trans
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.eqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.eqcv_wt
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.exclude_from_serialization
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.family
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.familyid
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.familyix
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.ineqcv_trans
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.ineqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.ineqcv_wt
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.n_constr
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.n_eq_constr
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.n_ieq_constr
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.n_obj
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.n_var
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.ndecn
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.neqcv
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.nineqcv
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.nlatent
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.nobj
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.obj_trans
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.obj_trans_kwargs
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.obj_wt
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.replace_nan_values_by
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.strict
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.vars
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.vtype
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.xl
+      ~FamilyEstimatedBreedingValueRealSelectionProblem.xu
+   
+   

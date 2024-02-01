@@ -1,0 +1,32 @@
+UnconstrainedGeneralized1NormGenomicSelection
+=============================================
+
+.. automodule:: pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      Generalized1NormGenomicSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

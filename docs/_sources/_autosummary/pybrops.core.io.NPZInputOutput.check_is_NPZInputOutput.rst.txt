@@ -1,0 +1,6 @@
+check\_is\_NPZInputOutput
+=========================
+
+.. currentmodule:: pybrops.core.io.NPZInputOutput
+
+.. autofunction:: check_is_NPZInputOutput

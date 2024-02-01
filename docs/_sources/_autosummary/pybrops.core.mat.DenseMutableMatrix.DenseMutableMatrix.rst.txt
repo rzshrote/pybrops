@@ -1,0 +1,44 @@
+DenseMutableMatrix
+==================
+
+.. currentmodule:: pybrops.core.mat.DenseMutableMatrix
+
+.. autoclass:: DenseMutableMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseMutableMatrix.adjoin
+      ~DenseMutableMatrix.append
+      ~DenseMutableMatrix.concat
+      ~DenseMutableMatrix.copy
+      ~DenseMutableMatrix.deepcopy
+      ~DenseMutableMatrix.delete
+      ~DenseMutableMatrix.from_hdf5
+      ~DenseMutableMatrix.incorp
+      ~DenseMutableMatrix.insert
+      ~DenseMutableMatrix.remove
+      ~DenseMutableMatrix.select
+      ~DenseMutableMatrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseMutableMatrix.mat
+      ~DenseMutableMatrix.mat_ndim
+      ~DenseMutableMatrix.mat_shape
+   
+   

@@ -1,0 +1,6 @@
+check\_is\_DenseVariantMatrix
+=============================
+
+.. currentmodule:: pybrops.core.mat.DenseVariantMatrix
+
+.. autofunction:: check_is_DenseVariantMatrix

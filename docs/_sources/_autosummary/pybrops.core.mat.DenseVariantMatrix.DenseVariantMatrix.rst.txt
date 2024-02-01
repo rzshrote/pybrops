@@ -1,0 +1,79 @@
+DenseVariantMatrix
+==================
+
+.. currentmodule:: pybrops.core.mat.DenseVariantMatrix
+
+.. autoclass:: DenseVariantMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseVariantMatrix.adjoin
+      ~DenseVariantMatrix.adjoin_vrnt
+      ~DenseVariantMatrix.append
+      ~DenseVariantMatrix.append_vrnt
+      ~DenseVariantMatrix.concat
+      ~DenseVariantMatrix.concat_vrnt
+      ~DenseVariantMatrix.copy
+      ~DenseVariantMatrix.deepcopy
+      ~DenseVariantMatrix.delete
+      ~DenseVariantMatrix.delete_vrnt
+      ~DenseVariantMatrix.from_hdf5
+      ~DenseVariantMatrix.group
+      ~DenseVariantMatrix.group_vrnt
+      ~DenseVariantMatrix.incorp
+      ~DenseVariantMatrix.incorp_vrnt
+      ~DenseVariantMatrix.insert
+      ~DenseVariantMatrix.insert_vrnt
+      ~DenseVariantMatrix.is_grouped
+      ~DenseVariantMatrix.is_grouped_vrnt
+      ~DenseVariantMatrix.lexsort
+      ~DenseVariantMatrix.lexsort_vrnt
+      ~DenseVariantMatrix.remove
+      ~DenseVariantMatrix.remove_vrnt
+      ~DenseVariantMatrix.reorder
+      ~DenseVariantMatrix.reorder_vrnt
+      ~DenseVariantMatrix.select
+      ~DenseVariantMatrix.select_vrnt
+      ~DenseVariantMatrix.sort
+      ~DenseVariantMatrix.sort_vrnt
+      ~DenseVariantMatrix.to_hdf5
+      ~DenseVariantMatrix.ungroup
+      ~DenseVariantMatrix.ungroup_vrnt
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseVariantMatrix.mat
+      ~DenseVariantMatrix.mat_ndim
+      ~DenseVariantMatrix.mat_shape
+      ~DenseVariantMatrix.nvrnt
+      ~DenseVariantMatrix.vrnt_axis
+      ~DenseVariantMatrix.vrnt_chrgrp
+      ~DenseVariantMatrix.vrnt_chrgrp_len
+      ~DenseVariantMatrix.vrnt_chrgrp_name
+      ~DenseVariantMatrix.vrnt_chrgrp_spix
+      ~DenseVariantMatrix.vrnt_chrgrp_stix
+      ~DenseVariantMatrix.vrnt_genpos
+      ~DenseVariantMatrix.vrnt_hapalt
+      ~DenseVariantMatrix.vrnt_hapgrp
+      ~DenseVariantMatrix.vrnt_hapref
+      ~DenseVariantMatrix.vrnt_mask
+      ~DenseVariantMatrix.vrnt_name
+      ~DenseVariantMatrix.vrnt_phypos
+      ~DenseVariantMatrix.vrnt_xoprob
+   
+   

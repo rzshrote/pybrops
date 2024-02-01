@@ -1,0 +1,40 @@
+mate
+====
+
+.. automodule:: pybrops.breed.prot.mate
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.prot.mate.FourWayCross
+   pybrops.breed.prot.mate.FourWayDHCross
+   pybrops.breed.prot.mate.MatingProtocol
+   pybrops.breed.prot.mate.SelfCross
+   pybrops.breed.prot.mate.ThreeWayCross
+   pybrops.breed.prot.mate.ThreeWayDHCross
+   pybrops.breed.prot.mate.TwoWayCross
+   pybrops.breed.prot.mate.TwoWayDHCross
+   pybrops.breed.prot.mate.util
+

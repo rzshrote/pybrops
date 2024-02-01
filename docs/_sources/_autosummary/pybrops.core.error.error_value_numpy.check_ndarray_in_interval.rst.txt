@@ -1,0 +1,6 @@
+check\_ndarray\_in\_interval
+============================
+
+.. currentmodule:: pybrops.core.error.error_value_numpy
+
+.. autofunction:: check_ndarray_in_interval

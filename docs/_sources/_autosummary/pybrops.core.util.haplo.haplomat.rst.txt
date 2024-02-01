@@ -1,0 +1,6 @@
+haplomat
+========
+
+.. currentmodule:: pybrops.core.util.haplo
+
+.. autofunction:: haplomat

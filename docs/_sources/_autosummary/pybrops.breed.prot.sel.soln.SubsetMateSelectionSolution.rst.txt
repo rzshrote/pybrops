@@ -1,0 +1,41 @@
+SubsetMateSelectionSolution
+===========================
+
+.. automodule:: pybrops.breed.prot.sel.soln.SubsetMateSelectionSolution
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      SubsetMateSelectionSolution
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_SubsetMateSelectionSolution
+   
+   
+
+   
+   
+   
+
+
+

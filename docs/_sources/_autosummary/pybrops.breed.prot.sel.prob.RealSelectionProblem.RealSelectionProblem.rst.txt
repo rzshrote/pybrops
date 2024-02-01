@@ -1,0 +1,75 @@
+RealSelectionProblem
+====================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.RealSelectionProblem
+
+.. autoclass:: RealSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RealSelectionProblem.bounds
+      ~RealSelectionProblem.do
+      ~RealSelectionProblem.evalfn
+      ~RealSelectionProblem.evaluate
+      ~RealSelectionProblem.has_bounds
+      ~RealSelectionProblem.has_constraints
+      ~RealSelectionProblem.ideal_point
+      ~RealSelectionProblem.latentfn
+      ~RealSelectionProblem.nadir_point
+      ~RealSelectionProblem.name
+      ~RealSelectionProblem.pareto_front
+      ~RealSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RealSelectionProblem.callback
+      ~RealSelectionProblem.data
+      ~RealSelectionProblem.decn_space
+      ~RealSelectionProblem.decn_space_lower
+      ~RealSelectionProblem.decn_space_upper
+      ~RealSelectionProblem.elementwise
+      ~RealSelectionProblem.elementwise_func
+      ~RealSelectionProblem.elementwise_runner
+      ~RealSelectionProblem.eqcv_trans
+      ~RealSelectionProblem.eqcv_trans_kwargs
+      ~RealSelectionProblem.eqcv_wt
+      ~RealSelectionProblem.exclude_from_serialization
+      ~RealSelectionProblem.ineqcv_trans
+      ~RealSelectionProblem.ineqcv_trans_kwargs
+      ~RealSelectionProblem.ineqcv_wt
+      ~RealSelectionProblem.n_constr
+      ~RealSelectionProblem.n_eq_constr
+      ~RealSelectionProblem.n_ieq_constr
+      ~RealSelectionProblem.n_obj
+      ~RealSelectionProblem.n_var
+      ~RealSelectionProblem.ndecn
+      ~RealSelectionProblem.neqcv
+      ~RealSelectionProblem.nineqcv
+      ~RealSelectionProblem.nlatent
+      ~RealSelectionProblem.nobj
+      ~RealSelectionProblem.obj_trans
+      ~RealSelectionProblem.obj_trans_kwargs
+      ~RealSelectionProblem.obj_wt
+      ~RealSelectionProblem.replace_nan_values_by
+      ~RealSelectionProblem.strict
+      ~RealSelectionProblem.vars
+      ~RealSelectionProblem.vtype
+      ~RealSelectionProblem.xl
+      ~RealSelectionProblem.xu
+   
+   

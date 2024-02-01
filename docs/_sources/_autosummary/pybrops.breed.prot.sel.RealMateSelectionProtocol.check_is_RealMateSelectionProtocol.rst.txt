@@ -1,0 +1,6 @@
+check\_is\_RealMateSelectionProtocol
+====================================
+
+.. currentmodule:: pybrops.breed.prot.sel.RealMateSelectionProtocol
+
+.. autofunction:: check_is_RealMateSelectionProtocol

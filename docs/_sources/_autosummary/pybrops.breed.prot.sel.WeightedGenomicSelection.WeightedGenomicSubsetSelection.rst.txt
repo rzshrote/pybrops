@@ -1,0 +1,58 @@
+WeightedGenomicSubsetSelection
+==============================
+
+.. currentmodule:: pybrops.breed.prot.sel.WeightedGenomicSelection
+
+.. autoclass:: WeightedGenomicSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~WeightedGenomicSubsetSelection.mosolve
+      ~WeightedGenomicSubsetSelection.problem
+      ~WeightedGenomicSubsetSelection.select
+      ~WeightedGenomicSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~WeightedGenomicSubsetSelection.alpha
+      ~WeightedGenomicSubsetSelection.eqcv_trans
+      ~WeightedGenomicSubsetSelection.eqcv_trans_kwargs
+      ~WeightedGenomicSubsetSelection.eqcv_wt
+      ~WeightedGenomicSubsetSelection.ineqcv_trans
+      ~WeightedGenomicSubsetSelection.ineqcv_trans_kwargs
+      ~WeightedGenomicSubsetSelection.ineqcv_wt
+      ~WeightedGenomicSubsetSelection.moalgo
+      ~WeightedGenomicSubsetSelection.ncross
+      ~WeightedGenomicSubsetSelection.ndset_trans
+      ~WeightedGenomicSubsetSelection.ndset_trans_kwargs
+      ~WeightedGenomicSubsetSelection.ndset_wt
+      ~WeightedGenomicSubsetSelection.neqcv
+      ~WeightedGenomicSubsetSelection.nineqcv
+      ~WeightedGenomicSubsetSelection.nmating
+      ~WeightedGenomicSubsetSelection.nobj
+      ~WeightedGenomicSubsetSelection.nparent
+      ~WeightedGenomicSubsetSelection.nprogeny
+      ~WeightedGenomicSubsetSelection.nselindiv
+      ~WeightedGenomicSubsetSelection.ntrait
+      ~WeightedGenomicSubsetSelection.obj_trans
+      ~WeightedGenomicSubsetSelection.obj_trans_kwargs
+      ~WeightedGenomicSubsetSelection.obj_wt
+      ~WeightedGenomicSubsetSelection.rng
+      ~WeightedGenomicSubsetSelection.soalgo
+   
+   

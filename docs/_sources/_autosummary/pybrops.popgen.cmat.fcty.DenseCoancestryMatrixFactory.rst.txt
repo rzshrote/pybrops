@@ -1,0 +1,41 @@
+DenseCoancestryMatrixFactory
+============================
+
+.. automodule:: pybrops.popgen.cmat.fcty.DenseCoancestryMatrixFactory
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseCoancestryMatrixFactory
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseCoancestryMatrixFactory
+   
+   
+
+   
+   
+   
+
+
+

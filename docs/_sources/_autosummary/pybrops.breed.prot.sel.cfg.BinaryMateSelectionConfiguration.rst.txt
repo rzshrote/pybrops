@@ -1,0 +1,32 @@
+BinaryMateSelectionConfiguration
+================================
+
+.. automodule:: pybrops.breed.prot.sel.cfg.BinaryMateSelectionConfiguration
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      BinaryMateSelectionConfiguration
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

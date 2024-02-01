@@ -1,0 +1,42 @@
+PrunableMatrix
+==============
+
+.. currentmodule:: pybrops.core.mat.PrunableMatrix
+
+.. autoclass:: PrunableMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PrunableMatrix.adjoin
+      ~PrunableMatrix.concat
+      ~PrunableMatrix.copy
+      ~PrunableMatrix.deepcopy
+      ~PrunableMatrix.delete
+      ~PrunableMatrix.from_hdf5
+      ~PrunableMatrix.insert
+      ~PrunableMatrix.prune
+      ~PrunableMatrix.select
+      ~PrunableMatrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PrunableMatrix.mat
+      ~PrunableMatrix.mat_ndim
+      ~PrunableMatrix.mat_shape
+   
+   

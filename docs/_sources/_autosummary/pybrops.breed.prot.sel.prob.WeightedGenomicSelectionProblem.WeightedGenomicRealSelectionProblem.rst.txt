@@ -1,0 +1,78 @@
+WeightedGenomicRealSelectionProblem
+===================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.WeightedGenomicSelectionProblem
+
+.. autoclass:: WeightedGenomicRealSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~WeightedGenomicRealSelectionProblem.bounds
+      ~WeightedGenomicRealSelectionProblem.do
+      ~WeightedGenomicRealSelectionProblem.evalfn
+      ~WeightedGenomicRealSelectionProblem.evaluate
+      ~WeightedGenomicRealSelectionProblem.from_gmat_algpmod
+      ~WeightedGenomicRealSelectionProblem.from_numpy
+      ~WeightedGenomicRealSelectionProblem.has_bounds
+      ~WeightedGenomicRealSelectionProblem.has_constraints
+      ~WeightedGenomicRealSelectionProblem.ideal_point
+      ~WeightedGenomicRealSelectionProblem.latentfn
+      ~WeightedGenomicRealSelectionProblem.nadir_point
+      ~WeightedGenomicRealSelectionProblem.name
+      ~WeightedGenomicRealSelectionProblem.pareto_front
+      ~WeightedGenomicRealSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~WeightedGenomicRealSelectionProblem.callback
+      ~WeightedGenomicRealSelectionProblem.data
+      ~WeightedGenomicRealSelectionProblem.decn_space
+      ~WeightedGenomicRealSelectionProblem.decn_space_lower
+      ~WeightedGenomicRealSelectionProblem.decn_space_upper
+      ~WeightedGenomicRealSelectionProblem.elementwise
+      ~WeightedGenomicRealSelectionProblem.elementwise_func
+      ~WeightedGenomicRealSelectionProblem.elementwise_runner
+      ~WeightedGenomicRealSelectionProblem.eqcv_trans
+      ~WeightedGenomicRealSelectionProblem.eqcv_trans_kwargs
+      ~WeightedGenomicRealSelectionProblem.eqcv_wt
+      ~WeightedGenomicRealSelectionProblem.exclude_from_serialization
+      ~WeightedGenomicRealSelectionProblem.gwgebv
+      ~WeightedGenomicRealSelectionProblem.ineqcv_trans
+      ~WeightedGenomicRealSelectionProblem.ineqcv_trans_kwargs
+      ~WeightedGenomicRealSelectionProblem.ineqcv_wt
+      ~WeightedGenomicRealSelectionProblem.n_constr
+      ~WeightedGenomicRealSelectionProblem.n_eq_constr
+      ~WeightedGenomicRealSelectionProblem.n_ieq_constr
+      ~WeightedGenomicRealSelectionProblem.n_obj
+      ~WeightedGenomicRealSelectionProblem.n_var
+      ~WeightedGenomicRealSelectionProblem.ndecn
+      ~WeightedGenomicRealSelectionProblem.neqcv
+      ~WeightedGenomicRealSelectionProblem.nineqcv
+      ~WeightedGenomicRealSelectionProblem.nlatent
+      ~WeightedGenomicRealSelectionProblem.nobj
+      ~WeightedGenomicRealSelectionProblem.obj_trans
+      ~WeightedGenomicRealSelectionProblem.obj_trans_kwargs
+      ~WeightedGenomicRealSelectionProblem.obj_wt
+      ~WeightedGenomicRealSelectionProblem.replace_nan_values_by
+      ~WeightedGenomicRealSelectionProblem.strict
+      ~WeightedGenomicRealSelectionProblem.vars
+      ~WeightedGenomicRealSelectionProblem.vtype
+      ~WeightedGenomicRealSelectionProblem.xl
+      ~WeightedGenomicRealSelectionProblem.xu
+   
+   

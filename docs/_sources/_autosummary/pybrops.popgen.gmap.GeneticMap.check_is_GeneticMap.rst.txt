@@ -1,0 +1,6 @@
+check\_is\_GeneticMap
+=====================
+
+.. currentmodule:: pybrops.popgen.gmap.GeneticMap
+
+.. autofunction:: check_is_GeneticMap

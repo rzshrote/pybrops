@@ -1,0 +1,6 @@
+check\_is\_LinearGenomicModel
+=============================
+
+.. currentmodule:: pybrops.model.gmod.LinearGenomicModel
+
+.. autofunction:: check_is_LinearGenomicModel

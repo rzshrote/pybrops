@@ -1,0 +1,38 @@
+IntegerSelectionConfiguration
+=============================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.IntegerSelectionConfiguration
+
+.. autoclass:: IntegerSelectionConfiguration
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~IntegerSelectionConfiguration.sample_xconfig
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~IntegerSelectionConfiguration.ncross
+      ~IntegerSelectionConfiguration.nmating
+      ~IntegerSelectionConfiguration.nparent
+      ~IntegerSelectionConfiguration.nprogeny
+      ~IntegerSelectionConfiguration.pgmat
+      ~IntegerSelectionConfiguration.rng
+      ~IntegerSelectionConfiguration.xconfig
+      ~IntegerSelectionConfiguration.xconfig_decn
+   
+   

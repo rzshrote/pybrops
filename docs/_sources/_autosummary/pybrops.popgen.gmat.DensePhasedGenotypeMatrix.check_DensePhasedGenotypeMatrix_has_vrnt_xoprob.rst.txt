@@ -1,0 +1,6 @@
+check\_DensePhasedGenotypeMatrix\_has\_vrnt\_xoprob
+===================================================
+
+.. currentmodule:: pybrops.popgen.gmat.DensePhasedGenotypeMatrix
+
+.. autofunction:: check_DensePhasedGenotypeMatrix_has_vrnt_xoprob

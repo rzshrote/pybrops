@@ -1,0 +1,77 @@
+RandomBinarySelectionProblem
+============================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.RandomSelectionProblem
+
+.. autoclass:: RandomBinarySelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RandomBinarySelectionProblem.bounds
+      ~RandomBinarySelectionProblem.do
+      ~RandomBinarySelectionProblem.evalfn
+      ~RandomBinarySelectionProblem.evaluate
+      ~RandomBinarySelectionProblem.from_object
+      ~RandomBinarySelectionProblem.has_bounds
+      ~RandomBinarySelectionProblem.has_constraints
+      ~RandomBinarySelectionProblem.ideal_point
+      ~RandomBinarySelectionProblem.latentfn
+      ~RandomBinarySelectionProblem.nadir_point
+      ~RandomBinarySelectionProblem.name
+      ~RandomBinarySelectionProblem.pareto_front
+      ~RandomBinarySelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RandomBinarySelectionProblem.callback
+      ~RandomBinarySelectionProblem.data
+      ~RandomBinarySelectionProblem.decn_space
+      ~RandomBinarySelectionProblem.decn_space_lower
+      ~RandomBinarySelectionProblem.decn_space_upper
+      ~RandomBinarySelectionProblem.elementwise
+      ~RandomBinarySelectionProblem.elementwise_func
+      ~RandomBinarySelectionProblem.elementwise_runner
+      ~RandomBinarySelectionProblem.eqcv_trans
+      ~RandomBinarySelectionProblem.eqcv_trans_kwargs
+      ~RandomBinarySelectionProblem.eqcv_wt
+      ~RandomBinarySelectionProblem.exclude_from_serialization
+      ~RandomBinarySelectionProblem.ineqcv_trans
+      ~RandomBinarySelectionProblem.ineqcv_trans_kwargs
+      ~RandomBinarySelectionProblem.ineqcv_wt
+      ~RandomBinarySelectionProblem.n_constr
+      ~RandomBinarySelectionProblem.n_eq_constr
+      ~RandomBinarySelectionProblem.n_ieq_constr
+      ~RandomBinarySelectionProblem.n_obj
+      ~RandomBinarySelectionProblem.n_var
+      ~RandomBinarySelectionProblem.ndecn
+      ~RandomBinarySelectionProblem.neqcv
+      ~RandomBinarySelectionProblem.nineqcv
+      ~RandomBinarySelectionProblem.nlatent
+      ~RandomBinarySelectionProblem.nobj
+      ~RandomBinarySelectionProblem.obj_trans
+      ~RandomBinarySelectionProblem.obj_trans_kwargs
+      ~RandomBinarySelectionProblem.obj_wt
+      ~RandomBinarySelectionProblem.rbv
+      ~RandomBinarySelectionProblem.replace_nan_values_by
+      ~RandomBinarySelectionProblem.strict
+      ~RandomBinarySelectionProblem.vars
+      ~RandomBinarySelectionProblem.vtype
+      ~RandomBinarySelectionProblem.xl
+      ~RandomBinarySelectionProblem.xu
+   
+   

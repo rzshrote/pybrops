@@ -1,0 +1,6 @@
+check\_is\_RealSolution
+=======================
+
+.. currentmodule:: pybrops.opt.soln.RealSolution
+
+.. autofunction:: check_is_RealSolution

@@ -1,0 +1,58 @@
+EstimatedBreedingValueIntegerSelection
+======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.EstimatedBreedingValueSelection
+
+.. autoclass:: EstimatedBreedingValueIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~EstimatedBreedingValueIntegerSelection.mosolve
+      ~EstimatedBreedingValueIntegerSelection.problem
+      ~EstimatedBreedingValueIntegerSelection.select
+      ~EstimatedBreedingValueIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EstimatedBreedingValueIntegerSelection.eqcv_trans
+      ~EstimatedBreedingValueIntegerSelection.eqcv_trans_kwargs
+      ~EstimatedBreedingValueIntegerSelection.eqcv_wt
+      ~EstimatedBreedingValueIntegerSelection.ineqcv_trans
+      ~EstimatedBreedingValueIntegerSelection.ineqcv_trans_kwargs
+      ~EstimatedBreedingValueIntegerSelection.ineqcv_wt
+      ~EstimatedBreedingValueIntegerSelection.moalgo
+      ~EstimatedBreedingValueIntegerSelection.ncross
+      ~EstimatedBreedingValueIntegerSelection.ndset_trans
+      ~EstimatedBreedingValueIntegerSelection.ndset_trans_kwargs
+      ~EstimatedBreedingValueIntegerSelection.ndset_wt
+      ~EstimatedBreedingValueIntegerSelection.neqcv
+      ~EstimatedBreedingValueIntegerSelection.nineqcv
+      ~EstimatedBreedingValueIntegerSelection.nmating
+      ~EstimatedBreedingValueIntegerSelection.nobj
+      ~EstimatedBreedingValueIntegerSelection.nparent
+      ~EstimatedBreedingValueIntegerSelection.nprogeny
+      ~EstimatedBreedingValueIntegerSelection.nselindiv
+      ~EstimatedBreedingValueIntegerSelection.ntrait
+      ~EstimatedBreedingValueIntegerSelection.obj_trans
+      ~EstimatedBreedingValueIntegerSelection.obj_trans_kwargs
+      ~EstimatedBreedingValueIntegerSelection.obj_wt
+      ~EstimatedBreedingValueIntegerSelection.rng
+      ~EstimatedBreedingValueIntegerSelection.soalgo
+      ~EstimatedBreedingValueIntegerSelection.unscale
+   
+   

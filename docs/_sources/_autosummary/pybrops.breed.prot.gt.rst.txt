@@ -1,0 +1,33 @@
+gt
+==
+
+.. automodule:: pybrops.breed.prot.gt
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.prot.gt.DenseUnphasedGenotyping
+   pybrops.breed.prot.gt.GenotypingProtocol
+

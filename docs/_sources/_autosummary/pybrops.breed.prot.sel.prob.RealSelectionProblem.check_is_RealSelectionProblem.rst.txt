@@ -1,0 +1,6 @@
+check\_is\_RealSelectionProblem
+===============================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.RealSelectionProblem
+
+.. autofunction:: check_is_RealSelectionProblem

@@ -1,0 +1,6 @@
+check\_is\_BreedingValueProtocol
+================================
+
+.. currentmodule:: pybrops.breed.prot.bv.BreedingValueProtocol
+
+.. autofunction:: check_is_BreedingValueProtocol

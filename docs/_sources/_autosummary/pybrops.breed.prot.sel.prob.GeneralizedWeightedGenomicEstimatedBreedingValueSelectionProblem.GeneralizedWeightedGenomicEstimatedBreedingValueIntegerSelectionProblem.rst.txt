@@ -1,0 +1,78 @@
+GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem
+=======================================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem
+
+.. autoclass:: GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.bounds
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.do
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.evalfn
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.evaluate
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.from_gmat_algpmod
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.from_numpy
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.has_bounds
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.has_constraints
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.ideal_point
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.latentfn
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.nadir_point
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.name
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.pareto_front
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.callback
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.data
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.decn_space
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.decn_space_lower
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.decn_space_upper
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.elementwise
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.elementwise_func
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.elementwise_runner
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.eqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.eqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.eqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.exclude_from_serialization
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.gwgebv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.ineqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.ineqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.ineqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.n_constr
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.n_eq_constr
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.n_ieq_constr
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.n_obj
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.n_var
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.ndecn
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.neqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.nineqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.nlatent
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.nobj
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.obj_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.obj_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.obj_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.replace_nan_values_by
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.strict
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.vars
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.vtype
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.xl
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.xu
+   
+   

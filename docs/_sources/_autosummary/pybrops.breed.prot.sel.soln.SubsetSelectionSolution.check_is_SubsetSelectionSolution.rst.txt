@@ -1,0 +1,6 @@
+check\_is\_SubsetSelectionSolution
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.SubsetSelectionSolution
+
+.. autofunction:: check_is_SubsetSelectionSolution

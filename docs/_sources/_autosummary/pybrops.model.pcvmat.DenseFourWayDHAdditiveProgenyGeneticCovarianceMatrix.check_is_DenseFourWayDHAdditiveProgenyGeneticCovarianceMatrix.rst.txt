@@ -1,0 +1,6 @@
+check\_is\_DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix
+===============================================================
+
+.. currentmodule:: pybrops.model.pcvmat.DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix
+
+.. autofunction:: check_is_DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix

@@ -1,0 +1,41 @@
+PandasDictInputOutput
+=====================
+
+.. automodule:: pybrops.core.io.PandasDictInputOutput
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      PandasDictInputOutput
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_PandasDictInputOutput
+   
+   
+
+   
+   
+   
+
+
+

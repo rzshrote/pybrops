@@ -1,0 +1,67 @@
+RealProblem
+===========
+
+.. currentmodule:: pybrops.opt.prob.RealProblem
+
+.. autoclass:: RealProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RealProblem.bounds
+      ~RealProblem.do
+      ~RealProblem.evalfn
+      ~RealProblem.evaluate
+      ~RealProblem.has_bounds
+      ~RealProblem.has_constraints
+      ~RealProblem.ideal_point
+      ~RealProblem.nadir_point
+      ~RealProblem.name
+      ~RealProblem.pareto_front
+      ~RealProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RealProblem.callback
+      ~RealProblem.data
+      ~RealProblem.decn_space
+      ~RealProblem.decn_space_lower
+      ~RealProblem.decn_space_upper
+      ~RealProblem.elementwise
+      ~RealProblem.elementwise_func
+      ~RealProblem.elementwise_runner
+      ~RealProblem.eqcv_wt
+      ~RealProblem.exclude_from_serialization
+      ~RealProblem.ineqcv_wt
+      ~RealProblem.n_constr
+      ~RealProblem.n_eq_constr
+      ~RealProblem.n_ieq_constr
+      ~RealProblem.n_obj
+      ~RealProblem.n_var
+      ~RealProblem.ndecn
+      ~RealProblem.neqcv
+      ~RealProblem.nineqcv
+      ~RealProblem.nobj
+      ~RealProblem.obj_wt
+      ~RealProblem.replace_nan_values_by
+      ~RealProblem.strict
+      ~RealProblem.vars
+      ~RealProblem.vtype
+      ~RealProblem.xl
+      ~RealProblem.xu
+   
+   

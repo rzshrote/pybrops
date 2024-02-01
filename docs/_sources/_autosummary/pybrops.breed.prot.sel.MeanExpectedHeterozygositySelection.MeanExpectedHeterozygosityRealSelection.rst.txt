@@ -1,0 +1,56 @@
+MeanExpectedHeterozygosityRealSelection
+=======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.MeanExpectedHeterozygositySelection
+
+.. autoclass:: MeanExpectedHeterozygosityRealSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanExpectedHeterozygosityRealSelection.mosolve
+      ~MeanExpectedHeterozygosityRealSelection.problem
+      ~MeanExpectedHeterozygosityRealSelection.select
+      ~MeanExpectedHeterozygosityRealSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanExpectedHeterozygosityRealSelection.eqcv_trans
+      ~MeanExpectedHeterozygosityRealSelection.eqcv_trans_kwargs
+      ~MeanExpectedHeterozygosityRealSelection.eqcv_wt
+      ~MeanExpectedHeterozygosityRealSelection.ineqcv_trans
+      ~MeanExpectedHeterozygosityRealSelection.ineqcv_trans_kwargs
+      ~MeanExpectedHeterozygosityRealSelection.ineqcv_wt
+      ~MeanExpectedHeterozygosityRealSelection.moalgo
+      ~MeanExpectedHeterozygosityRealSelection.ncross
+      ~MeanExpectedHeterozygosityRealSelection.ndset_trans
+      ~MeanExpectedHeterozygosityRealSelection.ndset_trans_kwargs
+      ~MeanExpectedHeterozygosityRealSelection.ndset_wt
+      ~MeanExpectedHeterozygosityRealSelection.neqcv
+      ~MeanExpectedHeterozygosityRealSelection.nineqcv
+      ~MeanExpectedHeterozygosityRealSelection.nmating
+      ~MeanExpectedHeterozygosityRealSelection.nobj
+      ~MeanExpectedHeterozygosityRealSelection.nparent
+      ~MeanExpectedHeterozygosityRealSelection.nprogeny
+      ~MeanExpectedHeterozygosityRealSelection.nselindiv
+      ~MeanExpectedHeterozygosityRealSelection.obj_trans
+      ~MeanExpectedHeterozygosityRealSelection.obj_trans_kwargs
+      ~MeanExpectedHeterozygosityRealSelection.obj_wt
+      ~MeanExpectedHeterozygosityRealSelection.rng
+      ~MeanExpectedHeterozygosityRealSelection.soalgo
+   
+   

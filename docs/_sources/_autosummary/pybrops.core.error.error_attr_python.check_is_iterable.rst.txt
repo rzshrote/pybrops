@@ -1,0 +1,6 @@
+check\_is\_iterable
+===================
+
+.. currentmodule:: pybrops.core.error.error_attr_python
+
+.. autofunction:: check_is_iterable

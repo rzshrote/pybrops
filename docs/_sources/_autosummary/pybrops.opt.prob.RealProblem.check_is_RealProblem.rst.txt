@@ -1,0 +1,6 @@
+check\_is\_RealProblem
+======================
+
+.. currentmodule:: pybrops.opt.prob.RealProblem
+
+.. autofunction:: check_is_RealProblem

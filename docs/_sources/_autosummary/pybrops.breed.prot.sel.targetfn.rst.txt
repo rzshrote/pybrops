@@ -1,0 +1,34 @@
+targetfn
+========
+
+.. automodule:: pybrops.breed.prot.sel.targetfn
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      target_negative
+      target_positive
+      target_stabilizing
+   
+   
+
+   
+   
+   
+
+
+

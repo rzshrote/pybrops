@@ -1,0 +1,6 @@
+check\_is\_array\_like
+======================
+
+.. currentmodule:: pybrops.core.error.error_type_python
+
+.. autofunction:: check_is_array_like

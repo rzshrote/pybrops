@@ -1,0 +1,76 @@
+BinaryMateSelectionProblem
+==========================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.BinaryMateSelectionProblem
+
+.. autoclass:: BinaryMateSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BinaryMateSelectionProblem.bounds
+      ~BinaryMateSelectionProblem.do
+      ~BinaryMateSelectionProblem.evalfn
+      ~BinaryMateSelectionProblem.evaluate
+      ~BinaryMateSelectionProblem.has_bounds
+      ~BinaryMateSelectionProblem.has_constraints
+      ~BinaryMateSelectionProblem.ideal_point
+      ~BinaryMateSelectionProblem.latentfn
+      ~BinaryMateSelectionProblem.nadir_point
+      ~BinaryMateSelectionProblem.name
+      ~BinaryMateSelectionProblem.pareto_front
+      ~BinaryMateSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BinaryMateSelectionProblem.callback
+      ~BinaryMateSelectionProblem.data
+      ~BinaryMateSelectionProblem.decn_space
+      ~BinaryMateSelectionProblem.decn_space_lower
+      ~BinaryMateSelectionProblem.decn_space_upper
+      ~BinaryMateSelectionProblem.decn_space_xmap
+      ~BinaryMateSelectionProblem.elementwise
+      ~BinaryMateSelectionProblem.elementwise_func
+      ~BinaryMateSelectionProblem.elementwise_runner
+      ~BinaryMateSelectionProblem.eqcv_trans
+      ~BinaryMateSelectionProblem.eqcv_trans_kwargs
+      ~BinaryMateSelectionProblem.eqcv_wt
+      ~BinaryMateSelectionProblem.exclude_from_serialization
+      ~BinaryMateSelectionProblem.ineqcv_trans
+      ~BinaryMateSelectionProblem.ineqcv_trans_kwargs
+      ~BinaryMateSelectionProblem.ineqcv_wt
+      ~BinaryMateSelectionProblem.n_constr
+      ~BinaryMateSelectionProblem.n_eq_constr
+      ~BinaryMateSelectionProblem.n_ieq_constr
+      ~BinaryMateSelectionProblem.n_obj
+      ~BinaryMateSelectionProblem.n_var
+      ~BinaryMateSelectionProblem.ndecn
+      ~BinaryMateSelectionProblem.neqcv
+      ~BinaryMateSelectionProblem.nineqcv
+      ~BinaryMateSelectionProblem.nlatent
+      ~BinaryMateSelectionProblem.nobj
+      ~BinaryMateSelectionProblem.obj_trans
+      ~BinaryMateSelectionProblem.obj_trans_kwargs
+      ~BinaryMateSelectionProblem.obj_wt
+      ~BinaryMateSelectionProblem.replace_nan_values_by
+      ~BinaryMateSelectionProblem.strict
+      ~BinaryMateSelectionProblem.vars
+      ~BinaryMateSelectionProblem.vtype
+      ~BinaryMateSelectionProblem.xl
+      ~BinaryMateSelectionProblem.xu
+   
+   

@@ -1,0 +1,39 @@
+MultiObjectiveGenomicMatingProblemMixin
+=======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.MultiObjectiveGenomicMatingProblem
+
+.. autoclass:: MultiObjectiveGenomicMatingProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MultiObjectiveGenomicMatingProblemMixin.from_object
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MultiObjectiveGenomicMatingProblemMixin.geno
+      ~MultiObjectiveGenomicMatingProblemMixin.mkrwt
+      ~MultiObjectiveGenomicMatingProblemMixin.nlatent
+      ~MultiObjectiveGenomicMatingProblemMixin.ploidy
+      ~MultiObjectiveGenomicMatingProblemMixin.tfreq
+      ~MultiObjectiveGenomicMatingProblemMixin.thet
+      ~MultiObjectiveGenomicMatingProblemMixin.tmajor
+      ~MultiObjectiveGenomicMatingProblemMixin.tminor
+      ~MultiObjectiveGenomicMatingProblemMixin.xmap
+   
+   

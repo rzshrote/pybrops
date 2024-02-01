@@ -1,0 +1,6 @@
+assert\_semiabstract\_class
+===========================
+
+.. currentmodule:: pybrops.test.assert_python
+
+.. autofunction:: assert_semiabstract_class

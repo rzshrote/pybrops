@@ -1,0 +1,78 @@
+OptimalContributionIntegerSelectionProblem
+==========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem
+
+.. autoclass:: OptimalContributionIntegerSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalContributionIntegerSelectionProblem.bounds
+      ~OptimalContributionIntegerSelectionProblem.do
+      ~OptimalContributionIntegerSelectionProblem.evalfn
+      ~OptimalContributionIntegerSelectionProblem.evaluate
+      ~OptimalContributionIntegerSelectionProblem.from_bvmat_gmat
+      ~OptimalContributionIntegerSelectionProblem.has_bounds
+      ~OptimalContributionIntegerSelectionProblem.has_constraints
+      ~OptimalContributionIntegerSelectionProblem.ideal_point
+      ~OptimalContributionIntegerSelectionProblem.latentfn
+      ~OptimalContributionIntegerSelectionProblem.nadir_point
+      ~OptimalContributionIntegerSelectionProblem.name
+      ~OptimalContributionIntegerSelectionProblem.pareto_front
+      ~OptimalContributionIntegerSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalContributionIntegerSelectionProblem.C
+      ~OptimalContributionIntegerSelectionProblem.callback
+      ~OptimalContributionIntegerSelectionProblem.data
+      ~OptimalContributionIntegerSelectionProblem.decn_space
+      ~OptimalContributionIntegerSelectionProblem.decn_space_lower
+      ~OptimalContributionIntegerSelectionProblem.decn_space_upper
+      ~OptimalContributionIntegerSelectionProblem.ebv
+      ~OptimalContributionIntegerSelectionProblem.elementwise
+      ~OptimalContributionIntegerSelectionProblem.elementwise_func
+      ~OptimalContributionIntegerSelectionProblem.elementwise_runner
+      ~OptimalContributionIntegerSelectionProblem.eqcv_trans
+      ~OptimalContributionIntegerSelectionProblem.eqcv_trans_kwargs
+      ~OptimalContributionIntegerSelectionProblem.eqcv_wt
+      ~OptimalContributionIntegerSelectionProblem.exclude_from_serialization
+      ~OptimalContributionIntegerSelectionProblem.ineqcv_trans
+      ~OptimalContributionIntegerSelectionProblem.ineqcv_trans_kwargs
+      ~OptimalContributionIntegerSelectionProblem.ineqcv_wt
+      ~OptimalContributionIntegerSelectionProblem.n_constr
+      ~OptimalContributionIntegerSelectionProblem.n_eq_constr
+      ~OptimalContributionIntegerSelectionProblem.n_ieq_constr
+      ~OptimalContributionIntegerSelectionProblem.n_obj
+      ~OptimalContributionIntegerSelectionProblem.n_var
+      ~OptimalContributionIntegerSelectionProblem.ndecn
+      ~OptimalContributionIntegerSelectionProblem.neqcv
+      ~OptimalContributionIntegerSelectionProblem.nineqcv
+      ~OptimalContributionIntegerSelectionProblem.nlatent
+      ~OptimalContributionIntegerSelectionProblem.nobj
+      ~OptimalContributionIntegerSelectionProblem.obj_trans
+      ~OptimalContributionIntegerSelectionProblem.obj_trans_kwargs
+      ~OptimalContributionIntegerSelectionProblem.obj_wt
+      ~OptimalContributionIntegerSelectionProblem.replace_nan_values_by
+      ~OptimalContributionIntegerSelectionProblem.strict
+      ~OptimalContributionIntegerSelectionProblem.vars
+      ~OptimalContributionIntegerSelectionProblem.vtype
+      ~OptimalContributionIntegerSelectionProblem.xl
+      ~OptimalContributionIntegerSelectionProblem.xu
+   
+   

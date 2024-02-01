@@ -1,0 +1,25 @@
+GenotypingProtocol
+==================
+
+.. currentmodule:: pybrops.breed.prot.gt.GenotypingProtocol
+
+.. autoclass:: GenotypingProtocol
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GenotypingProtocol.genotype
+   
+   
+
+   
+   
+   

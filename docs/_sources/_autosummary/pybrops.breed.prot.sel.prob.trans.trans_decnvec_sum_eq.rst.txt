@@ -1,0 +1,6 @@
+trans\_decnvec\_sum\_eq
+=======================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.trans
+
+.. autofunction:: trans_decnvec_sum_eq

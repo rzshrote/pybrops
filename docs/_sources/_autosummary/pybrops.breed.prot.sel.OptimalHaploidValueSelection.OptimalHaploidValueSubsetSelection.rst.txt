@@ -1,0 +1,59 @@
+OptimalHaploidValueSubsetSelection
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.OptimalHaploidValueSelection
+
+.. autoclass:: OptimalHaploidValueSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalHaploidValueSubsetSelection.mosolve
+      ~OptimalHaploidValueSubsetSelection.problem
+      ~OptimalHaploidValueSubsetSelection.select
+      ~OptimalHaploidValueSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalHaploidValueSubsetSelection.eqcv_trans
+      ~OptimalHaploidValueSubsetSelection.eqcv_trans_kwargs
+      ~OptimalHaploidValueSubsetSelection.eqcv_wt
+      ~OptimalHaploidValueSubsetSelection.ineqcv_trans
+      ~OptimalHaploidValueSubsetSelection.ineqcv_trans_kwargs
+      ~OptimalHaploidValueSubsetSelection.ineqcv_wt
+      ~OptimalHaploidValueSubsetSelection.moalgo
+      ~OptimalHaploidValueSubsetSelection.ncross
+      ~OptimalHaploidValueSubsetSelection.ndset_trans
+      ~OptimalHaploidValueSubsetSelection.ndset_trans_kwargs
+      ~OptimalHaploidValueSubsetSelection.ndset_wt
+      ~OptimalHaploidValueSubsetSelection.neqcv
+      ~OptimalHaploidValueSubsetSelection.nhaploblk
+      ~OptimalHaploidValueSubsetSelection.nineqcv
+      ~OptimalHaploidValueSubsetSelection.nmating
+      ~OptimalHaploidValueSubsetSelection.nobj
+      ~OptimalHaploidValueSubsetSelection.nparent
+      ~OptimalHaploidValueSubsetSelection.nprogeny
+      ~OptimalHaploidValueSubsetSelection.nselindiv
+      ~OptimalHaploidValueSubsetSelection.ntrait
+      ~OptimalHaploidValueSubsetSelection.obj_trans
+      ~OptimalHaploidValueSubsetSelection.obj_trans_kwargs
+      ~OptimalHaploidValueSubsetSelection.obj_wt
+      ~OptimalHaploidValueSubsetSelection.rng
+      ~OptimalHaploidValueSubsetSelection.soalgo
+      ~OptimalHaploidValueSubsetSelection.unique_parents
+   
+   

@@ -1,0 +1,6 @@
+check\_is\_DenseGeneticMappableMatrix
+=====================================
+
+.. currentmodule:: pybrops.popgen.gmap.DenseGeneticMappableMatrix
+
+.. autofunction:: check_is_DenseGeneticMappableMatrix

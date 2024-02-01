@@ -1,0 +1,6 @@
+check\_is\_Problem
+==================
+
+.. currentmodule:: pybrops.opt.prob.Problem
+
+.. autofunction:: check_is_Problem

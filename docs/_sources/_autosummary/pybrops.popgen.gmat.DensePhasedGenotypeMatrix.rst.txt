@@ -1,0 +1,42 @@
+DensePhasedGenotypeMatrix
+=========================
+
+.. automodule:: pybrops.popgen.gmat.DensePhasedGenotypeMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DensePhasedGenotypeMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_DensePhasedGenotypeMatrix_has_vrnt_xoprob
+      check_is_DensePhasedGenotypeMatrix
+   
+   
+
+   
+   
+   
+
+
+

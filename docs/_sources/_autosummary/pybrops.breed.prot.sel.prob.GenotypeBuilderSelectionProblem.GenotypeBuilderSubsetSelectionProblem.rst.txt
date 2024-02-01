@@ -1,0 +1,79 @@
+GenotypeBuilderSubsetSelectionProblem
+=====================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.GenotypeBuilderSelectionProblem
+
+.. autoclass:: GenotypeBuilderSubsetSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GenotypeBuilderSubsetSelectionProblem.bounds
+      ~GenotypeBuilderSubsetSelectionProblem.do
+      ~GenotypeBuilderSubsetSelectionProblem.evalfn
+      ~GenotypeBuilderSubsetSelectionProblem.evaluate
+      ~GenotypeBuilderSubsetSelectionProblem.from_pgmat_gpmod
+      ~GenotypeBuilderSubsetSelectionProblem.has_bounds
+      ~GenotypeBuilderSubsetSelectionProblem.has_constraints
+      ~GenotypeBuilderSubsetSelectionProblem.ideal_point
+      ~GenotypeBuilderSubsetSelectionProblem.latentfn
+      ~GenotypeBuilderSubsetSelectionProblem.nadir_point
+      ~GenotypeBuilderSubsetSelectionProblem.name
+      ~GenotypeBuilderSubsetSelectionProblem.pareto_front
+      ~GenotypeBuilderSubsetSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenotypeBuilderSubsetSelectionProblem.callback
+      ~GenotypeBuilderSubsetSelectionProblem.data
+      ~GenotypeBuilderSubsetSelectionProblem.decn_space
+      ~GenotypeBuilderSubsetSelectionProblem.decn_space_lower
+      ~GenotypeBuilderSubsetSelectionProblem.decn_space_upper
+      ~GenotypeBuilderSubsetSelectionProblem.elementwise
+      ~GenotypeBuilderSubsetSelectionProblem.elementwise_func
+      ~GenotypeBuilderSubsetSelectionProblem.elementwise_runner
+      ~GenotypeBuilderSubsetSelectionProblem.eqcv_trans
+      ~GenotypeBuilderSubsetSelectionProblem.eqcv_trans_kwargs
+      ~GenotypeBuilderSubsetSelectionProblem.eqcv_wt
+      ~GenotypeBuilderSubsetSelectionProblem.exclude_from_serialization
+      ~GenotypeBuilderSubsetSelectionProblem.haplomat
+      ~GenotypeBuilderSubsetSelectionProblem.ineqcv_trans
+      ~GenotypeBuilderSubsetSelectionProblem.ineqcv_trans_kwargs
+      ~GenotypeBuilderSubsetSelectionProblem.ineqcv_wt
+      ~GenotypeBuilderSubsetSelectionProblem.n_constr
+      ~GenotypeBuilderSubsetSelectionProblem.n_eq_constr
+      ~GenotypeBuilderSubsetSelectionProblem.n_ieq_constr
+      ~GenotypeBuilderSubsetSelectionProblem.n_obj
+      ~GenotypeBuilderSubsetSelectionProblem.n_var
+      ~GenotypeBuilderSubsetSelectionProblem.nbestfndr
+      ~GenotypeBuilderSubsetSelectionProblem.ndecn
+      ~GenotypeBuilderSubsetSelectionProblem.neqcv
+      ~GenotypeBuilderSubsetSelectionProblem.nineqcv
+      ~GenotypeBuilderSubsetSelectionProblem.nlatent
+      ~GenotypeBuilderSubsetSelectionProblem.nobj
+      ~GenotypeBuilderSubsetSelectionProblem.obj_trans
+      ~GenotypeBuilderSubsetSelectionProblem.obj_trans_kwargs
+      ~GenotypeBuilderSubsetSelectionProblem.obj_wt
+      ~GenotypeBuilderSubsetSelectionProblem.ploidy
+      ~GenotypeBuilderSubsetSelectionProblem.replace_nan_values_by
+      ~GenotypeBuilderSubsetSelectionProblem.strict
+      ~GenotypeBuilderSubsetSelectionProblem.vars
+      ~GenotypeBuilderSubsetSelectionProblem.vtype
+      ~GenotypeBuilderSubsetSelectionProblem.xl
+      ~GenotypeBuilderSubsetSelectionProblem.xu
+   
+   

@@ -1,0 +1,6 @@
+tiled\_choice
+=============
+
+.. currentmodule:: pybrops.core.random.sampling
+
+.. autofunction:: tiled_choice

@@ -1,0 +1,32 @@
+MeanExpectedHeterozygositySelectionProblemMixin
+===============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.MeanExpectedHeterozygositySelectionProblem
+
+.. autoclass:: MeanExpectedHeterozygositySelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanExpectedHeterozygositySelectionProblemMixin.from_gmat
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanExpectedHeterozygositySelectionProblemMixin.C
+      ~MeanExpectedHeterozygositySelectionProblemMixin.nlatent
+   
+   

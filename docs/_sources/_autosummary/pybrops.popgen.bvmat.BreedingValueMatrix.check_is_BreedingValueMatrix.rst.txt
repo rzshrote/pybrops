@@ -1,0 +1,6 @@
+check\_is\_BreedingValueMatrix
+==============================
+
+.. currentmodule:: pybrops.popgen.bvmat.BreedingValueMatrix
+
+.. autofunction:: check_is_BreedingValueMatrix

@@ -1,0 +1,39 @@
+G\_E\_Phenotyping
+=================
+
+.. currentmodule:: pybrops.breed.prot.pt.G_E_Phenotyping
+
+.. autoclass:: G_E_Phenotyping
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~G_E_Phenotyping.phenotype
+      ~G_E_Phenotyping.set_H2
+      ~G_E_Phenotyping.set_h2
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~G_E_Phenotyping.gpmod
+      ~G_E_Phenotyping.nenv
+      ~G_E_Phenotyping.nrep
+      ~G_E_Phenotyping.rng
+      ~G_E_Phenotyping.var_env
+      ~G_E_Phenotyping.var_err
+      ~G_E_Phenotyping.var_rep
+   
+   

@@ -1,0 +1,33 @@
+GenotypeBuilderSelection
+========================
+
+.. automodule:: pybrops.breed.prot.sel.GenotypeBuilderSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      GenotypeBuilderSelectionMixin
+      GenotypeBuilderSubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

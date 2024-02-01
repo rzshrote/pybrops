@@ -1,0 +1,36 @@
+GermplasmBank
+=============
+
+.. currentmodule:: pybrops.breed.arch.GermplasmBank
+
+.. autoclass:: GermplasmBank
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GermplasmBank.bval
+      ~GermplasmBank.geno
+      ~GermplasmBank.genome
+      ~GermplasmBank.gmod
+      ~GermplasmBank.pheno
+      ~GermplasmBank.t_cur
+      ~GermplasmBank.t_max
+   
+   

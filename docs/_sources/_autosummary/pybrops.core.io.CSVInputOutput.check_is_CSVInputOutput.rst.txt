@@ -1,0 +1,6 @@
+check\_is\_CSVInputOutput
+=========================
+
+.. currentmodule:: pybrops.core.io.CSVInputOutput
+
+.. autofunction:: check_is_CSVInputOutput

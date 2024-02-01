@@ -1,0 +1,32 @@
+ssel
+====
+
+.. automodule:: pybrops.breed.op.ssel
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.op.ssel.SurvivorSelectionOperator
+

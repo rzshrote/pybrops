@@ -1,0 +1,44 @@
+IntegerSelectionSolution
+========================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.IntegerSelectionSolution
+
+.. autoclass:: IntegerSelectionSolution
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~IntegerSelectionSolution.decn_space
+      ~IntegerSelectionSolution.decn_space_lower
+      ~IntegerSelectionSolution.decn_space_upper
+      ~IntegerSelectionSolution.eqcv_wt
+      ~IntegerSelectionSolution.ineqcv_wt
+      ~IntegerSelectionSolution.ndecn
+      ~IntegerSelectionSolution.neqcv
+      ~IntegerSelectionSolution.nineqcv
+      ~IntegerSelectionSolution.nobj
+      ~IntegerSelectionSolution.nsoln
+      ~IntegerSelectionSolution.obj_wt
+      ~IntegerSelectionSolution.soln_decn
+      ~IntegerSelectionSolution.soln_eqcv
+      ~IntegerSelectionSolution.soln_ineqcv
+      ~IntegerSelectionSolution.soln_obj
+   
+   

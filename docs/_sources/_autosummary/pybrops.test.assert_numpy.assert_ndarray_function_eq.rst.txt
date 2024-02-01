@@ -1,0 +1,6 @@
+assert\_ndarray\_function\_eq
+=============================
+
+.. currentmodule:: pybrops.test.assert_numpy
+
+.. autofunction:: assert_ndarray_function_eq

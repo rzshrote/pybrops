@@ -1,0 +1,111 @@
+PhasedTaxaVariantMatrix
+=======================
+
+.. currentmodule:: pybrops.core.mat.PhasedTaxaVariantMatrix
+
+.. autoclass:: PhasedTaxaVariantMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PhasedTaxaVariantMatrix.adjoin
+      ~PhasedTaxaVariantMatrix.adjoin_phase
+      ~PhasedTaxaVariantMatrix.adjoin_taxa
+      ~PhasedTaxaVariantMatrix.adjoin_vrnt
+      ~PhasedTaxaVariantMatrix.append
+      ~PhasedTaxaVariantMatrix.append_phase
+      ~PhasedTaxaVariantMatrix.append_taxa
+      ~PhasedTaxaVariantMatrix.append_vrnt
+      ~PhasedTaxaVariantMatrix.concat
+      ~PhasedTaxaVariantMatrix.concat_phase
+      ~PhasedTaxaVariantMatrix.concat_taxa
+      ~PhasedTaxaVariantMatrix.concat_vrnt
+      ~PhasedTaxaVariantMatrix.copy
+      ~PhasedTaxaVariantMatrix.deepcopy
+      ~PhasedTaxaVariantMatrix.delete
+      ~PhasedTaxaVariantMatrix.delete_phase
+      ~PhasedTaxaVariantMatrix.delete_taxa
+      ~PhasedTaxaVariantMatrix.delete_vrnt
+      ~PhasedTaxaVariantMatrix.from_hdf5
+      ~PhasedTaxaVariantMatrix.group
+      ~PhasedTaxaVariantMatrix.group_taxa
+      ~PhasedTaxaVariantMatrix.group_vrnt
+      ~PhasedTaxaVariantMatrix.incorp
+      ~PhasedTaxaVariantMatrix.incorp_phase
+      ~PhasedTaxaVariantMatrix.incorp_taxa
+      ~PhasedTaxaVariantMatrix.incorp_vrnt
+      ~PhasedTaxaVariantMatrix.insert
+      ~PhasedTaxaVariantMatrix.insert_phase
+      ~PhasedTaxaVariantMatrix.insert_taxa
+      ~PhasedTaxaVariantMatrix.insert_vrnt
+      ~PhasedTaxaVariantMatrix.is_grouped
+      ~PhasedTaxaVariantMatrix.is_grouped_taxa
+      ~PhasedTaxaVariantMatrix.is_grouped_vrnt
+      ~PhasedTaxaVariantMatrix.lexsort
+      ~PhasedTaxaVariantMatrix.lexsort_taxa
+      ~PhasedTaxaVariantMatrix.lexsort_vrnt
+      ~PhasedTaxaVariantMatrix.remove
+      ~PhasedTaxaVariantMatrix.remove_phase
+      ~PhasedTaxaVariantMatrix.remove_taxa
+      ~PhasedTaxaVariantMatrix.remove_vrnt
+      ~PhasedTaxaVariantMatrix.reorder
+      ~PhasedTaxaVariantMatrix.reorder_taxa
+      ~PhasedTaxaVariantMatrix.reorder_vrnt
+      ~PhasedTaxaVariantMatrix.select
+      ~PhasedTaxaVariantMatrix.select_phase
+      ~PhasedTaxaVariantMatrix.select_taxa
+      ~PhasedTaxaVariantMatrix.select_vrnt
+      ~PhasedTaxaVariantMatrix.sort
+      ~PhasedTaxaVariantMatrix.sort_taxa
+      ~PhasedTaxaVariantMatrix.sort_vrnt
+      ~PhasedTaxaVariantMatrix.to_hdf5
+      ~PhasedTaxaVariantMatrix.ungroup
+      ~PhasedTaxaVariantMatrix.ungroup_taxa
+      ~PhasedTaxaVariantMatrix.ungroup_vrnt
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PhasedTaxaVariantMatrix.mat
+      ~PhasedTaxaVariantMatrix.mat_ndim
+      ~PhasedTaxaVariantMatrix.mat_shape
+      ~PhasedTaxaVariantMatrix.nphase
+      ~PhasedTaxaVariantMatrix.ntaxa
+      ~PhasedTaxaVariantMatrix.nvrnt
+      ~PhasedTaxaVariantMatrix.phase_axis
+      ~PhasedTaxaVariantMatrix.taxa
+      ~PhasedTaxaVariantMatrix.taxa_axis
+      ~PhasedTaxaVariantMatrix.taxa_grp
+      ~PhasedTaxaVariantMatrix.taxa_grp_len
+      ~PhasedTaxaVariantMatrix.taxa_grp_name
+      ~PhasedTaxaVariantMatrix.taxa_grp_spix
+      ~PhasedTaxaVariantMatrix.taxa_grp_stix
+      ~PhasedTaxaVariantMatrix.vrnt_axis
+      ~PhasedTaxaVariantMatrix.vrnt_chrgrp
+      ~PhasedTaxaVariantMatrix.vrnt_chrgrp_len
+      ~PhasedTaxaVariantMatrix.vrnt_chrgrp_name
+      ~PhasedTaxaVariantMatrix.vrnt_chrgrp_spix
+      ~PhasedTaxaVariantMatrix.vrnt_chrgrp_stix
+      ~PhasedTaxaVariantMatrix.vrnt_genpos
+      ~PhasedTaxaVariantMatrix.vrnt_hapalt
+      ~PhasedTaxaVariantMatrix.vrnt_hapgrp
+      ~PhasedTaxaVariantMatrix.vrnt_hapref
+      ~PhasedTaxaVariantMatrix.vrnt_mask
+      ~PhasedTaxaVariantMatrix.vrnt_name
+      ~PhasedTaxaVariantMatrix.vrnt_phypos
+      ~PhasedTaxaVariantMatrix.vrnt_xoprob
+   
+   

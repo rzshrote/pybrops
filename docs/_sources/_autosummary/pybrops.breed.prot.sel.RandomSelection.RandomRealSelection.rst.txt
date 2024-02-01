@@ -1,0 +1,57 @@
+RandomRealSelection
+===================
+
+.. currentmodule:: pybrops.breed.prot.sel.RandomSelection
+
+.. autoclass:: RandomRealSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RandomRealSelection.mosolve
+      ~RandomRealSelection.problem
+      ~RandomRealSelection.select
+      ~RandomRealSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RandomRealSelection.eqcv_trans
+      ~RandomRealSelection.eqcv_trans_kwargs
+      ~RandomRealSelection.eqcv_wt
+      ~RandomRealSelection.ineqcv_trans
+      ~RandomRealSelection.ineqcv_trans_kwargs
+      ~RandomRealSelection.ineqcv_wt
+      ~RandomRealSelection.moalgo
+      ~RandomRealSelection.ncross
+      ~RandomRealSelection.ndset_trans
+      ~RandomRealSelection.ndset_trans_kwargs
+      ~RandomRealSelection.ndset_wt
+      ~RandomRealSelection.neqcv
+      ~RandomRealSelection.nineqcv
+      ~RandomRealSelection.nmating
+      ~RandomRealSelection.nobj
+      ~RandomRealSelection.nparent
+      ~RandomRealSelection.nprogeny
+      ~RandomRealSelection.nselindiv
+      ~RandomRealSelection.ntrait
+      ~RandomRealSelection.obj_trans
+      ~RandomRealSelection.obj_trans_kwargs
+      ~RandomRealSelection.obj_wt
+      ~RandomRealSelection.rng
+      ~RandomRealSelection.soalgo
+   
+   

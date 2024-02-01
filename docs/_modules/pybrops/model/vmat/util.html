@@ -1,0 +1,786 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pybrops.model.vmat.util &#8212; pybrops 0.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/model/vmat/util';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pybrops.mode...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pybrops.model.vmat.util</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module containing utility functions for variance estimations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;rprob_filial&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;cov_D1s&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;cov_D2s&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;cov_D1st&quot;</span><span class="p">,</span> 
+    <span class="s2">&quot;cov_D2st&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<div class="viewcode-block" id="rprob_filial">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.util.rprob_filial.html#pybrops.model.vmat.util.rprob_filial">[docs]</a>
+<span class="k">def</span> <span class="nf">rprob_filial</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the expected observed recombination rate between two loci at</span>
+<span class="sd">    filial generation &#39;k&#39; as specified by Lehermeier (2017).</span>
+
+<span class="sd">    Remark:</span>
+<span class="sd">        Expected observed recombination rate is what would be observed across</span>
+<span class="sd">        infinite progeny.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    r : numpy.ndarray</span>
+<span class="sd">        Recombination probability matrix.</span>
+<span class="sd">    k : int, inf</span>
+<span class="sd">        Selfing filial generation number to derive gametes from.</span>
+
+<span class="sd">        +-------------+-------------------------+</span>
+<span class="sd">        | Example     | Description             |</span>
+<span class="sd">        +=============+=========================+</span>
+<span class="sd">        | ``k = 1``   | Derive gametes from F1  |</span>
+<span class="sd">        +-------------+-------------------------+</span>
+<span class="sd">        | ``k = 2``   | Derive gametes from F2  |</span>
+<span class="sd">        +-------------+-------------------------+</span>
+<span class="sd">        | ``k = 3``   | Derive gametes from F3  |</span>
+<span class="sd">        +-------------+-------------------------+</span>
+<span class="sd">        | ``...``     | etc.                    |</span>
+<span class="sd">        +-------------+-------------------------+</span>
+<span class="sd">        | ``k = inf`` | Derive gametes from SSD |</span>
+<span class="sd">        +-------------+-------------------------+</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    r_k : numpy.ndarray</span>
+<span class="sd">        Expected observed recombination rate between two loci at filial</span>
+<span class="sd">        generation &#39;k&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># multiply matrix by two</span>
+    <span class="n">two_r</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">r</span>
+
+    <span class="c1"># calculate first component of r_k</span>
+    <span class="n">r_k</span> <span class="o">=</span> <span class="n">two_r</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">two_r</span><span class="p">)</span>
+
+    <span class="c1"># if k &lt; inf, we do not have SSD and second term is needed</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">:</span>
+        <span class="n">r_k</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span> <span class="p">(</span><span class="mf">0.5</span><span class="o">**</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">two_r</span><span class="p">)</span><span class="o">**</span><span class="n">k</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+
+    <span class="c1"># return result</span>
+    <span class="k">return</span> <span class="n">r_k</span></div>
+
+
+<div class="viewcode-block" id="cov_D1s">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.util.cov_D1s.html#pybrops.model.vmat.util.cov_D1s">[docs]</a>
+<span class="k">def</span> <span class="nf">cov_D1s</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">nself</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate a D1 matrix.</span>
+
+<span class="sd">    This matrix represents the covariance (caused by linkage disequilibrium)</span>
+<span class="sd">    between genomic loci one recombination event prior to selfing for random</span>
+<span class="sd">    intermating.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    r : numpy.ndarray</span>
+<span class="sd">        Recombination probability matrix.</span>
+<span class="sd">    nself : int, inf</span>
+<span class="sd">        Selfing generation number to derive gametes from.</span>
+
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | Example         | Description             |</span>
+<span class="sd">        +=================+=========================+</span>
+<span class="sd">        | ``nself = 0``   | Derive gametes from F1  |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``nself = 1``   | Derive gametes from F2  |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``nself = 2``   | Derive gametes from F3  |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``...``         | etc.                    |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``nself = inf`` | Derive gametes from SSD |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    D1 : numpy.ndarray</span>
+<span class="sd">        A D1 matrix of covariance between genomic loci.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">nself</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">r</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">nself</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">rprob_filial</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">nself</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;s must be &gt;= 0.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cov_D2s">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.util.cov_D2s.html#pybrops.model.vmat.util.cov_D2s">[docs]</a>
+<span class="k">def</span> <span class="nf">cov_D2s</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">nself</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate a D2 matrix.</span>
+
+<span class="sd">    This matrix represents the covariance (caused by linkage disequilibrium)</span>
+<span class="sd">    between genomic loci two recombination events prior to selfing for random</span>
+<span class="sd">    intermating.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    r : numpy.ndarray</span>
+<span class="sd">        Recombination probability matrix.</span>
+<span class="sd">    nself : int, inf</span>
+<span class="sd">        Selfing generation number to derive gametes from.</span>
+
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | Example         | Description             |</span>
+<span class="sd">        +=================+=========================+</span>
+<span class="sd">        | ``nself = 0``   | Derive gametes from F1  |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``nself = 1``   | Derive gametes from F2  |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``nself = 2``   | Derive gametes from F3  |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``...``         | etc.                    |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``nself = inf`` | Derive gametes from SSD |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    D2 : numpy.ndarray</span>
+<span class="sd">        A D2 matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">nself</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">elif</span> <span class="n">nself</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">four_r</span> <span class="o">=</span> <span class="mf">4.0</span> <span class="o">*</span> <span class="n">r</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">four_r</span> <span class="o">+</span> <span class="p">(</span><span class="n">four_r</span> <span class="o">*</span> <span class="n">rprob_filial</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">nself</span><span class="o">+</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;s must be &gt;= 0.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cov_D1st">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.util.cov_D1st.html#pybrops.model.vmat.util.cov_D1st">[docs]</a>
+<span class="k">def</span> <span class="nf">cov_D1st</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">nself</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate a D1 matrix.</span>
+
+<span class="sd">    This matrix represents the covariance between genomic loci caused by</span>
+<span class="sd">    linkage disequilibrium.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    r : numpy.ndarray</span>
+<span class="sd">        Recombination probability matrix.</span>
+<span class="sd">    nself : int, inf</span>
+<span class="sd">        Selfing generation number to derive gametes from.</span>
+
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | Example         | Description             |</span>
+<span class="sd">        +=================+=========================+</span>
+<span class="sd">        | ``nself = 0``   | Derive gametes from F1  |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``nself = 1``   | Derive gametes from F2  |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``nself = 2``   | Derive gametes from F3  |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``...``         | etc.                    |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``nself = inf`` | Derive gametes from SSD |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+
+<span class="sd">        Remark:</span>
+
+<span class="sd">        - &#39;s&#39; takes priority over &#39;t&#39;. If s &gt; 0, &#39;t&#39; calculations are not</span>
+<span class="sd">          performed.</span>
+<span class="sd">    t : int, inf</span>
+<span class="sd">        Random intermating generation number to derive gametes from.</span>
+
+<span class="sd">        +-------------+--------------------------------------------------+</span>
+<span class="sd">        | Example     | Description                                      |</span>
+<span class="sd">        +=============+==================================================+</span>
+<span class="sd">        | ``t = 0``   | Derive gametes from F1                           |</span>
+<span class="sd">        +-------------+--------------------------------------------------+</span>
+<span class="sd">        | ``t = 1``   | Derive gametes from (F1 x F1)                    |</span>
+<span class="sd">        +-------------+--------------------------------------------------+</span>
+<span class="sd">        | ``t = 2``   | Derive gametes from (F1 x F1) x (F1 x F1)        |</span>
+<span class="sd">        +-------------+--------------------------------------------------+</span>
+<span class="sd">        | ``...``     | etc.                                             |</span>
+<span class="sd">        +-------------+--------------------------------------------------+</span>
+<span class="sd">        | ``t = inf`` | Derive gametes from unlimited random intermating |</span>
+<span class="sd">        +-------------+--------------------------------------------------+</span>
+
+<span class="sd">        Remark:</span>
+
+<span class="sd">        - &#39;s&#39; takes priority over &#39;t&#39;. If s &gt; 0, &#39;t&#39; calculations are not</span>
+<span class="sd">          performed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    D_1 : numpy.ndarray</span>
+<span class="sd">        A D_1 matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">nself</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">t</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">r</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">nself</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">r_k</span> <span class="o">=</span> <span class="n">rprob_filial</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">nself</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">r_k</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">r</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;s and t must be &gt;= 0.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="cov_D2st">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.util.cov_D2st.html#pybrops.model.vmat.util.cov_D2st">[docs]</a>
+<span class="k">def</span> <span class="nf">cov_D2st</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">nself</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate a D_2 matrix. This matrix represents a linkage disequilibrium</span>
+<span class="sd">    prototype for two recombination events prior to selfing or random</span>
+<span class="sd">    intermating.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    r : numpy.ndarray</span>
+<span class="sd">        Recombination probability matrix.</span>
+<span class="sd">    nself : int, inf</span>
+<span class="sd">        Selfing generation number to derive gametes from.</span>
+
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | Example         | Description             |</span>
+<span class="sd">        +=================+=========================+</span>
+<span class="sd">        | ``nself = 0``   | Derive gametes from F1  |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``nself = 1``   | Derive gametes from F2  |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``nself = 2``   | Derive gametes from F3  |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``...``         | etc.                    |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+<span class="sd">        | ``nself = inf`` | Derive gametes from SSD |</span>
+<span class="sd">        +-----------------+-------------------------+</span>
+
+<span class="sd">        Remark:</span>
+
+<span class="sd">        - &#39;s&#39; takes priority over &#39;t&#39;. If s &gt; 0, &#39;t&#39; calculations are not</span>
+<span class="sd">          performed.</span>
+<span class="sd">    t : int, inf</span>
+<span class="sd">        Random intermating generation number to derive gametes from.</span>
+
+<span class="sd">        +-------------+--------------------------------------------------+</span>
+<span class="sd">        | Example     | Description                                      |</span>
+<span class="sd">        +=============+==================================================+</span>
+<span class="sd">        | ``t = 0``   | Derive gametes from F1                           |</span>
+<span class="sd">        +-------------+--------------------------------------------------+</span>
+<span class="sd">        | ``t = 1``   | Derive gametes from (F1 x F1)                    |</span>
+<span class="sd">        +-------------+--------------------------------------------------+</span>
+<span class="sd">        | ``t = 2``   | Derive gametes from (F1 x F1) x (F1 x F1)        |</span>
+<span class="sd">        +-------------+--------------------------------------------------+</span>
+<span class="sd">        | ``...``     | etc.                                             |</span>
+<span class="sd">        +-------------+--------------------------------------------------+</span>
+<span class="sd">        | ``t = inf`` | Derive gametes from unlimited random intermating |</span>
+<span class="sd">        +-------------+--------------------------------------------------+</span>
+
+<span class="sd">        Remark:</span>
+
+<span class="sd">        - &#39;s&#39; takes priority over &#39;t&#39;. If s &gt; 0, &#39;t&#39; calculations are not</span>
+<span class="sd">          performed.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    D_2 : numpy.ndarray</span>
+<span class="sd">        A D_2 matrix.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">nself</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">t</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">elif</span> <span class="n">nself</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">r_k</span> <span class="o">=</span> <span class="n">rprob_filial</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">nself</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">four_r</span> <span class="o">=</span> <span class="mf">4.0</span><span class="o">*</span><span class="n">r</span>
+        <span class="k">return</span> <span class="p">(</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">four_r</span> <span class="o">+</span> <span class="p">(</span><span class="n">four_r</span><span class="o">*</span><span class="n">r_k</span><span class="p">)</span> <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">((</span><span class="mf">1.0</span> <span class="o">-</span> <span class="mf">2.0</span><span class="o">*</span><span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span><span class="o">**</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;s and t must be &gt;= 0.&quot;</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, Robert Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

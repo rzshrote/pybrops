@@ -1,0 +1,78 @@
+GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem
+====================================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem
+
+.. autoclass:: GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.bounds
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.do
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.evalfn
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.evaluate
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.from_gmat_algpmod
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.from_numpy
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.has_bounds
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.has_constraints
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.ideal_point
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.latentfn
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.nadir_point
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.name
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.pareto_front
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.callback
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.data
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.decn_space
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.decn_space_lower
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.decn_space_upper
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.elementwise
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.elementwise_func
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.elementwise_runner
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.eqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.eqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.eqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.exclude_from_serialization
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.gwgebv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.ineqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.ineqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.ineqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.n_constr
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.n_eq_constr
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.n_ieq_constr
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.n_obj
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.n_var
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.ndecn
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.neqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.nineqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.nlatent
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.nobj
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.obj_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.obj_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.obj_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.replace_nan_values_by
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.strict
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.vars
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.vtype
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.xl
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.xu
+   
+   

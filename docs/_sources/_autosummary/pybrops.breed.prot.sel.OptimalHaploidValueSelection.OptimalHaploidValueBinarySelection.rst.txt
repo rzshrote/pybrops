@@ -1,0 +1,59 @@
+OptimalHaploidValueBinarySelection
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.OptimalHaploidValueSelection
+
+.. autoclass:: OptimalHaploidValueBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalHaploidValueBinarySelection.mosolve
+      ~OptimalHaploidValueBinarySelection.problem
+      ~OptimalHaploidValueBinarySelection.select
+      ~OptimalHaploidValueBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalHaploidValueBinarySelection.eqcv_trans
+      ~OptimalHaploidValueBinarySelection.eqcv_trans_kwargs
+      ~OptimalHaploidValueBinarySelection.eqcv_wt
+      ~OptimalHaploidValueBinarySelection.ineqcv_trans
+      ~OptimalHaploidValueBinarySelection.ineqcv_trans_kwargs
+      ~OptimalHaploidValueBinarySelection.ineqcv_wt
+      ~OptimalHaploidValueBinarySelection.moalgo
+      ~OptimalHaploidValueBinarySelection.ncross
+      ~OptimalHaploidValueBinarySelection.ndset_trans
+      ~OptimalHaploidValueBinarySelection.ndset_trans_kwargs
+      ~OptimalHaploidValueBinarySelection.ndset_wt
+      ~OptimalHaploidValueBinarySelection.neqcv
+      ~OptimalHaploidValueBinarySelection.nhaploblk
+      ~OptimalHaploidValueBinarySelection.nineqcv
+      ~OptimalHaploidValueBinarySelection.nmating
+      ~OptimalHaploidValueBinarySelection.nobj
+      ~OptimalHaploidValueBinarySelection.nparent
+      ~OptimalHaploidValueBinarySelection.nprogeny
+      ~OptimalHaploidValueBinarySelection.nselindiv
+      ~OptimalHaploidValueBinarySelection.ntrait
+      ~OptimalHaploidValueBinarySelection.obj_trans
+      ~OptimalHaploidValueBinarySelection.obj_trans_kwargs
+      ~OptimalHaploidValueBinarySelection.obj_wt
+      ~OptimalHaploidValueBinarySelection.rng
+      ~OptimalHaploidValueBinarySelection.soalgo
+      ~OptimalHaploidValueBinarySelection.unique_parents
+   
+   

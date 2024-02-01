@@ -1,0 +1,58 @@
+GenomicEstimatedBreedingValueIntegerSelection
+=============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection
+
+.. autoclass:: GenomicEstimatedBreedingValueIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GenomicEstimatedBreedingValueIntegerSelection.mosolve
+      ~GenomicEstimatedBreedingValueIntegerSelection.problem
+      ~GenomicEstimatedBreedingValueIntegerSelection.select
+      ~GenomicEstimatedBreedingValueIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenomicEstimatedBreedingValueIntegerSelection.eqcv_trans
+      ~GenomicEstimatedBreedingValueIntegerSelection.eqcv_trans_kwargs
+      ~GenomicEstimatedBreedingValueIntegerSelection.eqcv_wt
+      ~GenomicEstimatedBreedingValueIntegerSelection.ineqcv_trans
+      ~GenomicEstimatedBreedingValueIntegerSelection.ineqcv_trans_kwargs
+      ~GenomicEstimatedBreedingValueIntegerSelection.ineqcv_wt
+      ~GenomicEstimatedBreedingValueIntegerSelection.moalgo
+      ~GenomicEstimatedBreedingValueIntegerSelection.ncross
+      ~GenomicEstimatedBreedingValueIntegerSelection.ndset_trans
+      ~GenomicEstimatedBreedingValueIntegerSelection.ndset_trans_kwargs
+      ~GenomicEstimatedBreedingValueIntegerSelection.ndset_wt
+      ~GenomicEstimatedBreedingValueIntegerSelection.neqcv
+      ~GenomicEstimatedBreedingValueIntegerSelection.nineqcv
+      ~GenomicEstimatedBreedingValueIntegerSelection.nmating
+      ~GenomicEstimatedBreedingValueIntegerSelection.nobj
+      ~GenomicEstimatedBreedingValueIntegerSelection.nparent
+      ~GenomicEstimatedBreedingValueIntegerSelection.nprogeny
+      ~GenomicEstimatedBreedingValueIntegerSelection.nselindiv
+      ~GenomicEstimatedBreedingValueIntegerSelection.ntrait
+      ~GenomicEstimatedBreedingValueIntegerSelection.obj_trans
+      ~GenomicEstimatedBreedingValueIntegerSelection.obj_trans_kwargs
+      ~GenomicEstimatedBreedingValueIntegerSelection.obj_wt
+      ~GenomicEstimatedBreedingValueIntegerSelection.rng
+      ~GenomicEstimatedBreedingValueIntegerSelection.soalgo
+      ~GenomicEstimatedBreedingValueIntegerSelection.unscale
+   
+   

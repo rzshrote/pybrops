@@ -1,0 +1,6 @@
+check\_ndarray\_len\_is\_multiple\_of
+=====================================
+
+.. currentmodule:: pybrops.core.error.error_value_numpy
+
+.. autofunction:: check_ndarray_len_is_multiple_of

@@ -1,0 +1,32 @@
+iterator
+========
+
+.. automodule:: pybrops.core.util.iterator
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      iterlen
+   
+   
+
+   
+   
+   
+
+
+

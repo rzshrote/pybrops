@@ -1,0 +1,77 @@
+OptimalHaploidValueRealSelectionProblem
+=======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem
+
+.. autoclass:: OptimalHaploidValueRealSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalHaploidValueRealSelectionProblem.bounds
+      ~OptimalHaploidValueRealSelectionProblem.do
+      ~OptimalHaploidValueRealSelectionProblem.evalfn
+      ~OptimalHaploidValueRealSelectionProblem.evaluate
+      ~OptimalHaploidValueRealSelectionProblem.from_pgmat_gpmod
+      ~OptimalHaploidValueRealSelectionProblem.has_bounds
+      ~OptimalHaploidValueRealSelectionProblem.has_constraints
+      ~OptimalHaploidValueRealSelectionProblem.ideal_point
+      ~OptimalHaploidValueRealSelectionProblem.latentfn
+      ~OptimalHaploidValueRealSelectionProblem.nadir_point
+      ~OptimalHaploidValueRealSelectionProblem.name
+      ~OptimalHaploidValueRealSelectionProblem.pareto_front
+      ~OptimalHaploidValueRealSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalHaploidValueRealSelectionProblem.callback
+      ~OptimalHaploidValueRealSelectionProblem.data
+      ~OptimalHaploidValueRealSelectionProblem.decn_space
+      ~OptimalHaploidValueRealSelectionProblem.decn_space_lower
+      ~OptimalHaploidValueRealSelectionProblem.decn_space_upper
+      ~OptimalHaploidValueRealSelectionProblem.elementwise
+      ~OptimalHaploidValueRealSelectionProblem.elementwise_func
+      ~OptimalHaploidValueRealSelectionProblem.elementwise_runner
+      ~OptimalHaploidValueRealSelectionProblem.eqcv_trans
+      ~OptimalHaploidValueRealSelectionProblem.eqcv_trans_kwargs
+      ~OptimalHaploidValueRealSelectionProblem.eqcv_wt
+      ~OptimalHaploidValueRealSelectionProblem.exclude_from_serialization
+      ~OptimalHaploidValueRealSelectionProblem.ineqcv_trans
+      ~OptimalHaploidValueRealSelectionProblem.ineqcv_trans_kwargs
+      ~OptimalHaploidValueRealSelectionProblem.ineqcv_wt
+      ~OptimalHaploidValueRealSelectionProblem.n_constr
+      ~OptimalHaploidValueRealSelectionProblem.n_eq_constr
+      ~OptimalHaploidValueRealSelectionProblem.n_ieq_constr
+      ~OptimalHaploidValueRealSelectionProblem.n_obj
+      ~OptimalHaploidValueRealSelectionProblem.n_var
+      ~OptimalHaploidValueRealSelectionProblem.ndecn
+      ~OptimalHaploidValueRealSelectionProblem.neqcv
+      ~OptimalHaploidValueRealSelectionProblem.nineqcv
+      ~OptimalHaploidValueRealSelectionProblem.nlatent
+      ~OptimalHaploidValueRealSelectionProblem.nobj
+      ~OptimalHaploidValueRealSelectionProblem.obj_trans
+      ~OptimalHaploidValueRealSelectionProblem.obj_trans_kwargs
+      ~OptimalHaploidValueRealSelectionProblem.obj_wt
+      ~OptimalHaploidValueRealSelectionProblem.ohvmat
+      ~OptimalHaploidValueRealSelectionProblem.replace_nan_values_by
+      ~OptimalHaploidValueRealSelectionProblem.strict
+      ~OptimalHaploidValueRealSelectionProblem.vars
+      ~OptimalHaploidValueRealSelectionProblem.vtype
+      ~OptimalHaploidValueRealSelectionProblem.xl
+      ~OptimalHaploidValueRealSelectionProblem.xu
+   
+   

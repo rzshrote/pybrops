@@ -1,0 +1,6 @@
+check\_is\_NumPyInputOutput
+===========================
+
+.. currentmodule:: pybrops.core.io.NumPyInputOutput
+
+.. autofunction:: check_is_NumPyInputOutput

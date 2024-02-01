@@ -1,0 +1,100 @@
+DenseGenicVarianceMatrix
+========================
+
+.. currentmodule:: pybrops.model.vmat.DenseGenicVarianceMatrix
+
+.. autoclass:: DenseGenicVarianceMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseGenicVarianceMatrix.adjoin
+      ~DenseGenicVarianceMatrix.adjoin_taxa
+      ~DenseGenicVarianceMatrix.adjoin_trait
+      ~DenseGenicVarianceMatrix.append
+      ~DenseGenicVarianceMatrix.append_taxa
+      ~DenseGenicVarianceMatrix.append_trait
+      ~DenseGenicVarianceMatrix.concat
+      ~DenseGenicVarianceMatrix.concat_taxa
+      ~DenseGenicVarianceMatrix.concat_trait
+      ~DenseGenicVarianceMatrix.copy
+      ~DenseGenicVarianceMatrix.deepcopy
+      ~DenseGenicVarianceMatrix.delete
+      ~DenseGenicVarianceMatrix.delete_taxa
+      ~DenseGenicVarianceMatrix.delete_trait
+      ~DenseGenicVarianceMatrix.from_csv
+      ~DenseGenicVarianceMatrix.from_gmod
+      ~DenseGenicVarianceMatrix.from_hdf5
+      ~DenseGenicVarianceMatrix.from_pandas
+      ~DenseGenicVarianceMatrix.group
+      ~DenseGenicVarianceMatrix.group_taxa
+      ~DenseGenicVarianceMatrix.incorp
+      ~DenseGenicVarianceMatrix.incorp_taxa
+      ~DenseGenicVarianceMatrix.incorp_trait
+      ~DenseGenicVarianceMatrix.insert
+      ~DenseGenicVarianceMatrix.insert_taxa
+      ~DenseGenicVarianceMatrix.insert_trait
+      ~DenseGenicVarianceMatrix.is_grouped
+      ~DenseGenicVarianceMatrix.is_grouped_taxa
+      ~DenseGenicVarianceMatrix.is_square
+      ~DenseGenicVarianceMatrix.is_square_taxa
+      ~DenseGenicVarianceMatrix.lexsort
+      ~DenseGenicVarianceMatrix.lexsort_taxa
+      ~DenseGenicVarianceMatrix.lexsort_trait
+      ~DenseGenicVarianceMatrix.remove
+      ~DenseGenicVarianceMatrix.remove_taxa
+      ~DenseGenicVarianceMatrix.remove_trait
+      ~DenseGenicVarianceMatrix.reorder
+      ~DenseGenicVarianceMatrix.reorder_taxa
+      ~DenseGenicVarianceMatrix.reorder_trait
+      ~DenseGenicVarianceMatrix.select
+      ~DenseGenicVarianceMatrix.select_taxa
+      ~DenseGenicVarianceMatrix.select_trait
+      ~DenseGenicVarianceMatrix.sort
+      ~DenseGenicVarianceMatrix.sort_taxa
+      ~DenseGenicVarianceMatrix.sort_trait
+      ~DenseGenicVarianceMatrix.to_csv
+      ~DenseGenicVarianceMatrix.to_hdf5
+      ~DenseGenicVarianceMatrix.to_pandas
+      ~DenseGenicVarianceMatrix.ungroup
+      ~DenseGenicVarianceMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseGenicVarianceMatrix.epgc
+      ~DenseGenicVarianceMatrix.mat
+      ~DenseGenicVarianceMatrix.mat_ndim
+      ~DenseGenicVarianceMatrix.mat_shape
+      ~DenseGenicVarianceMatrix.nsquare
+      ~DenseGenicVarianceMatrix.nsquare_taxa
+      ~DenseGenicVarianceMatrix.ntaxa
+      ~DenseGenicVarianceMatrix.ntrait
+      ~DenseGenicVarianceMatrix.square_axes
+      ~DenseGenicVarianceMatrix.square_axes_len
+      ~DenseGenicVarianceMatrix.square_taxa_axes
+      ~DenseGenicVarianceMatrix.square_taxa_axes_len
+      ~DenseGenicVarianceMatrix.taxa
+      ~DenseGenicVarianceMatrix.taxa_axis
+      ~DenseGenicVarianceMatrix.taxa_grp
+      ~DenseGenicVarianceMatrix.taxa_grp_len
+      ~DenseGenicVarianceMatrix.taxa_grp_name
+      ~DenseGenicVarianceMatrix.taxa_grp_spix
+      ~DenseGenicVarianceMatrix.taxa_grp_stix
+      ~DenseGenicVarianceMatrix.trait
+      ~DenseGenicVarianceMatrix.trait_axis
+   
+   

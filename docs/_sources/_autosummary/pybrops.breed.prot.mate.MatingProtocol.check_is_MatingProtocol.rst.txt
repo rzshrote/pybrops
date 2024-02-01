@@ -1,0 +1,6 @@
+check\_is\_MatingProtocol
+=========================
+
+.. currentmodule:: pybrops.breed.prot.mate.MatingProtocol
+
+.. autofunction:: check_is_MatingProtocol

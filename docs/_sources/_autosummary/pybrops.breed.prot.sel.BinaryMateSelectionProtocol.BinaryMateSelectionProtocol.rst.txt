@@ -1,0 +1,56 @@
+BinaryMateSelectionProtocol
+===========================
+
+.. currentmodule:: pybrops.breed.prot.sel.BinaryMateSelectionProtocol
+
+.. autoclass:: BinaryMateSelectionProtocol
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BinaryMateSelectionProtocol.mosolve
+      ~BinaryMateSelectionProtocol.problem
+      ~BinaryMateSelectionProtocol.select
+      ~BinaryMateSelectionProtocol.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BinaryMateSelectionProtocol.eqcv_trans
+      ~BinaryMateSelectionProtocol.eqcv_trans_kwargs
+      ~BinaryMateSelectionProtocol.eqcv_wt
+      ~BinaryMateSelectionProtocol.ineqcv_trans
+      ~BinaryMateSelectionProtocol.ineqcv_trans_kwargs
+      ~BinaryMateSelectionProtocol.ineqcv_wt
+      ~BinaryMateSelectionProtocol.moalgo
+      ~BinaryMateSelectionProtocol.ncross
+      ~BinaryMateSelectionProtocol.ndset_trans
+      ~BinaryMateSelectionProtocol.ndset_trans_kwargs
+      ~BinaryMateSelectionProtocol.ndset_wt
+      ~BinaryMateSelectionProtocol.neqcv
+      ~BinaryMateSelectionProtocol.nineqcv
+      ~BinaryMateSelectionProtocol.nmating
+      ~BinaryMateSelectionProtocol.nobj
+      ~BinaryMateSelectionProtocol.nparent
+      ~BinaryMateSelectionProtocol.nprogeny
+      ~BinaryMateSelectionProtocol.nselindiv
+      ~BinaryMateSelectionProtocol.obj_trans
+      ~BinaryMateSelectionProtocol.obj_trans_kwargs
+      ~BinaryMateSelectionProtocol.obj_wt
+      ~BinaryMateSelectionProtocol.rng
+      ~BinaryMateSelectionProtocol.soalgo
+   
+   

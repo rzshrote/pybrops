@@ -1,0 +1,57 @@
+FamilyEstimatedBreedingValueRealSelection
+=========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.FamilyEstimatedBreedingValueSelection
+
+.. autoclass:: FamilyEstimatedBreedingValueRealSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~FamilyEstimatedBreedingValueRealSelection.mosolve
+      ~FamilyEstimatedBreedingValueRealSelection.problem
+      ~FamilyEstimatedBreedingValueRealSelection.select
+      ~FamilyEstimatedBreedingValueRealSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FamilyEstimatedBreedingValueRealSelection.eqcv_trans
+      ~FamilyEstimatedBreedingValueRealSelection.eqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueRealSelection.eqcv_wt
+      ~FamilyEstimatedBreedingValueRealSelection.ineqcv_trans
+      ~FamilyEstimatedBreedingValueRealSelection.ineqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueRealSelection.ineqcv_wt
+      ~FamilyEstimatedBreedingValueRealSelection.moalgo
+      ~FamilyEstimatedBreedingValueRealSelection.ncross
+      ~FamilyEstimatedBreedingValueRealSelection.ndset_trans
+      ~FamilyEstimatedBreedingValueRealSelection.ndset_trans_kwargs
+      ~FamilyEstimatedBreedingValueRealSelection.ndset_wt
+      ~FamilyEstimatedBreedingValueRealSelection.neqcv
+      ~FamilyEstimatedBreedingValueRealSelection.nineqcv
+      ~FamilyEstimatedBreedingValueRealSelection.nmating
+      ~FamilyEstimatedBreedingValueRealSelection.nobj
+      ~FamilyEstimatedBreedingValueRealSelection.nparent
+      ~FamilyEstimatedBreedingValueRealSelection.nprogeny
+      ~FamilyEstimatedBreedingValueRealSelection.nselindiv
+      ~FamilyEstimatedBreedingValueRealSelection.ntrait
+      ~FamilyEstimatedBreedingValueRealSelection.obj_trans
+      ~FamilyEstimatedBreedingValueRealSelection.obj_trans_kwargs
+      ~FamilyEstimatedBreedingValueRealSelection.obj_wt
+      ~FamilyEstimatedBreedingValueRealSelection.rng
+      ~FamilyEstimatedBreedingValueRealSelection.soalgo
+   
+   

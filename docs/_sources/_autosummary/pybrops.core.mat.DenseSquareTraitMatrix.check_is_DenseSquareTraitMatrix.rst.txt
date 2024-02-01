@@ -1,0 +1,6 @@
+check\_is\_DenseSquareTraitMatrix
+=================================
+
+.. currentmodule:: pybrops.core.mat.DenseSquareTraitMatrix
+
+.. autofunction:: check_is_DenseSquareTraitMatrix

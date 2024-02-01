@@ -1,0 +1,6 @@
+check\_ndarray\_mean\_is\_approx
+================================
+
+.. currentmodule:: pybrops.core.error.error_value_numpy
+
+.. autofunction:: check_ndarray_mean_is_approx

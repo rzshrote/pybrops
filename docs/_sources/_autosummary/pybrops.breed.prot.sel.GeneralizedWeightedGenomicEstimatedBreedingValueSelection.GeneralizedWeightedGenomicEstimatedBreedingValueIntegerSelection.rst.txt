@@ -1,0 +1,58 @@
+GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection
+================================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection
+
+.. autoclass:: GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.mosolve
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.problem
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.select
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.alpha
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.eqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.eqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.eqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.ineqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.ineqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.ineqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.moalgo
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.ncross
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.ndset_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.ndset_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.ndset_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.neqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.nineqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.nmating
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.nobj
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.nparent
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.nprogeny
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.nselindiv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.ntrait
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.obj_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.obj_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.obj_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.rng
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection.soalgo
+   
+   

@@ -1,0 +1,25 @@
+BreedingValueProtocol
+=====================
+
+.. currentmodule:: pybrops.breed.prot.bv.BreedingValueProtocol
+
+.. autoclass:: BreedingValueProtocol
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BreedingValueProtocol.estimate
+   
+   
+
+   
+   
+   

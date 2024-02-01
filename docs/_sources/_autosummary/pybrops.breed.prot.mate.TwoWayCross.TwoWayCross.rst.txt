@@ -1,0 +1,34 @@
+TwoWayCross
+===========
+
+.. currentmodule:: pybrops.breed.prot.mate.TwoWayCross
+
+.. autoclass:: TwoWayCross
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TwoWayCross.mate
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TwoWayCross.family_counter
+      ~TwoWayCross.nparent
+      ~TwoWayCross.progeny_counter
+      ~TwoWayCross.rng
+   
+   

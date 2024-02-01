@@ -1,0 +1,63 @@
+error\_type\_python
+===================
+
+.. automodule:: pybrops.core.error.error_type_python
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_Sequence_all_type
+      check_inherits
+      check_is_Callable
+      check_is_Complex
+      check_is_Container
+      check_is_Integral
+      check_is_Integral_or_None
+      check_is_Integral_or_inf
+      check_is_Number
+      check_is_Real
+      check_is_Sequence
+      check_is_array_like
+      check_is_bool
+      check_is_bytes
+      check_is_class
+      check_is_dict
+      check_is_float
+      check_is_frozenset
+      check_is_int
+      check_is_int_or_None
+      check_is_int_or_inf
+      check_is_list
+      check_is_list_or_tuple
+      check_is_range
+      check_is_set
+      check_is_str
+      check_is_str_or_Integral
+      check_is_str_or_Sequence
+      check_is_str_or_iterable
+      check_is_tuple
+      check_is_type
+      check_isinstance
+   
+   
+
+   
+   
+   
+
+
+

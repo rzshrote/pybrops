@@ -1,0 +1,44 @@
+IntegerSolution
+===============
+
+.. currentmodule:: pybrops.opt.soln.IntegerSolution
+
+.. autoclass:: IntegerSolution
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~IntegerSolution.decn_space
+      ~IntegerSolution.decn_space_lower
+      ~IntegerSolution.decn_space_upper
+      ~IntegerSolution.eqcv_wt
+      ~IntegerSolution.ineqcv_wt
+      ~IntegerSolution.ndecn
+      ~IntegerSolution.neqcv
+      ~IntegerSolution.nineqcv
+      ~IntegerSolution.nobj
+      ~IntegerSolution.nsoln
+      ~IntegerSolution.obj_wt
+      ~IntegerSolution.soln_decn
+      ~IntegerSolution.soln_eqcv
+      ~IntegerSolution.soln_ineqcv
+      ~IntegerSolution.soln_obj
+   
+   

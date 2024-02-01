@@ -1,0 +1,36 @@
+core
+====
+
+.. automodule:: pybrops.core
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.core.error
+   pybrops.core.io
+   pybrops.core.mat
+   pybrops.core.random
+   pybrops.core.util
+

@@ -1,0 +1,36 @@
+util
+====
+
+.. automodule:: pybrops.model.vmat.util
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      cov_D1s
+      cov_D1st
+      cov_D2s
+      cov_D2st
+      rprob_filial
+   
+   
+
+   
+   
+   
+
+
+

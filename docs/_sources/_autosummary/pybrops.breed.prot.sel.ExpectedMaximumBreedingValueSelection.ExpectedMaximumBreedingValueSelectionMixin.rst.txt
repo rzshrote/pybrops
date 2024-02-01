@@ -1,0 +1,33 @@
+ExpectedMaximumBreedingValueSelectionMixin
+==========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.ExpectedMaximumBreedingValueSelection
+
+.. autoclass:: ExpectedMaximumBreedingValueSelectionMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ExpectedMaximumBreedingValueSelectionMixin.mateprot
+      ~ExpectedMaximumBreedingValueSelectionMixin.nrep
+      ~ExpectedMaximumBreedingValueSelectionMixin.ntrait
+      ~ExpectedMaximumBreedingValueSelectionMixin.unique_parents
+   
+   

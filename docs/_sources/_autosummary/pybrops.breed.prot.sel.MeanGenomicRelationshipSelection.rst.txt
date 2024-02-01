@@ -1,0 +1,36 @@
+MeanGenomicRelationshipSelection
+================================
+
+.. automodule:: pybrops.breed.prot.sel.MeanGenomicRelationshipSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      MeanGenomicRelationshipBinarySelection
+      MeanGenomicRelationshipIntegerSelection
+      MeanGenomicRelationshipRealSelection
+      MeanGenomicRelationshipSelectionMixin
+      MeanGenomicRelationshipSubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

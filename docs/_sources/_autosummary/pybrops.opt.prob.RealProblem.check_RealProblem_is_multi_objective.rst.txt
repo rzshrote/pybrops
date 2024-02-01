@@ -1,0 +1,6 @@
+check\_RealProblem\_is\_multi\_objective
+========================================
+
+.. currentmodule:: pybrops.opt.prob.RealProblem
+
+.. autofunction:: check_RealProblem_is_multi_objective

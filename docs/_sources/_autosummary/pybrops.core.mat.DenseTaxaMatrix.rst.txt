@@ -1,0 +1,41 @@
+DenseTaxaMatrix
+===============
+
+.. automodule:: pybrops.core.mat.DenseTaxaMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseTaxaMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseTaxaMatrix
+   
+   
+
+   
+   
+   
+
+
+

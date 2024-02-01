@@ -1,0 +1,60 @@
+ExpectedMaximumBreedingValueSubsetSelection
+===========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.ExpectedMaximumBreedingValueSelection
+
+.. autoclass:: ExpectedMaximumBreedingValueSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ExpectedMaximumBreedingValueSubsetSelection.mosolve
+      ~ExpectedMaximumBreedingValueSubsetSelection.problem
+      ~ExpectedMaximumBreedingValueSubsetSelection.select
+      ~ExpectedMaximumBreedingValueSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ExpectedMaximumBreedingValueSubsetSelection.eqcv_trans
+      ~ExpectedMaximumBreedingValueSubsetSelection.eqcv_trans_kwargs
+      ~ExpectedMaximumBreedingValueSubsetSelection.eqcv_wt
+      ~ExpectedMaximumBreedingValueSubsetSelection.ineqcv_trans
+      ~ExpectedMaximumBreedingValueSubsetSelection.ineqcv_trans_kwargs
+      ~ExpectedMaximumBreedingValueSubsetSelection.ineqcv_wt
+      ~ExpectedMaximumBreedingValueSubsetSelection.mateprot
+      ~ExpectedMaximumBreedingValueSubsetSelection.moalgo
+      ~ExpectedMaximumBreedingValueSubsetSelection.ncross
+      ~ExpectedMaximumBreedingValueSubsetSelection.ndset_trans
+      ~ExpectedMaximumBreedingValueSubsetSelection.ndset_trans_kwargs
+      ~ExpectedMaximumBreedingValueSubsetSelection.ndset_wt
+      ~ExpectedMaximumBreedingValueSubsetSelection.neqcv
+      ~ExpectedMaximumBreedingValueSubsetSelection.nineqcv
+      ~ExpectedMaximumBreedingValueSubsetSelection.nmating
+      ~ExpectedMaximumBreedingValueSubsetSelection.nobj
+      ~ExpectedMaximumBreedingValueSubsetSelection.nparent
+      ~ExpectedMaximumBreedingValueSubsetSelection.nprogeny
+      ~ExpectedMaximumBreedingValueSubsetSelection.nrep
+      ~ExpectedMaximumBreedingValueSubsetSelection.nselindiv
+      ~ExpectedMaximumBreedingValueSubsetSelection.ntrait
+      ~ExpectedMaximumBreedingValueSubsetSelection.obj_trans
+      ~ExpectedMaximumBreedingValueSubsetSelection.obj_trans_kwargs
+      ~ExpectedMaximumBreedingValueSubsetSelection.obj_wt
+      ~ExpectedMaximumBreedingValueSubsetSelection.rng
+      ~ExpectedMaximumBreedingValueSubsetSelection.soalgo
+      ~ExpectedMaximumBreedingValueSubsetSelection.unique_parents
+   
+   

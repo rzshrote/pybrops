@@ -1,0 +1,25 @@
+BinaryOptimizationAlgorithm
+===========================
+
+.. currentmodule:: pybrops.opt.algo.BinaryOptimizationAlgorithm
+
+.. autoclass:: BinaryOptimizationAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BinaryOptimizationAlgorithm.minimize
+   
+   
+
+   
+   
+   

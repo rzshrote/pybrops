@@ -1,0 +1,41 @@
+InitializationOperator
+======================
+
+.. automodule:: pybrops.breed.op.init.InitializationOperator
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      InitializationOperator
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_InitializationOperator
+   
+   
+
+   
+   
+   
+
+
+

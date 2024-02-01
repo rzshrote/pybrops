@@ -1,0 +1,34 @@
+pt
+==
+
+.. automodule:: pybrops.breed.prot.pt
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.prot.pt.G_E_Phenotyping
+   pybrops.breed.prot.pt.PhenotypingProtocol
+   pybrops.breed.prot.pt.TruePhenotyping
+

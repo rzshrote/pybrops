@@ -1,0 +1,61 @@
+TraitMatrix
+===========
+
+.. currentmodule:: pybrops.core.mat.TraitMatrix
+
+.. autoclass:: TraitMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TraitMatrix.adjoin
+      ~TraitMatrix.adjoin_trait
+      ~TraitMatrix.append
+      ~TraitMatrix.append_trait
+      ~TraitMatrix.concat
+      ~TraitMatrix.concat_trait
+      ~TraitMatrix.copy
+      ~TraitMatrix.deepcopy
+      ~TraitMatrix.delete
+      ~TraitMatrix.delete_trait
+      ~TraitMatrix.from_hdf5
+      ~TraitMatrix.incorp
+      ~TraitMatrix.incorp_trait
+      ~TraitMatrix.insert
+      ~TraitMatrix.insert_trait
+      ~TraitMatrix.lexsort
+      ~TraitMatrix.lexsort_trait
+      ~TraitMatrix.remove
+      ~TraitMatrix.remove_trait
+      ~TraitMatrix.reorder
+      ~TraitMatrix.reorder_trait
+      ~TraitMatrix.select
+      ~TraitMatrix.select_trait
+      ~TraitMatrix.sort
+      ~TraitMatrix.sort_trait
+      ~TraitMatrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TraitMatrix.mat
+      ~TraitMatrix.mat_ndim
+      ~TraitMatrix.mat_shape
+      ~TraitMatrix.ntrait
+      ~TraitMatrix.trait
+      ~TraitMatrix.trait_axis
+   
+   

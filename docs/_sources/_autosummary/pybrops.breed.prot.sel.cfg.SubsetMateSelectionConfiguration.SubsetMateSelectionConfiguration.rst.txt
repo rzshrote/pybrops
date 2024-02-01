@@ -1,0 +1,39 @@
+SubsetMateSelectionConfiguration
+================================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.SubsetMateSelectionConfiguration
+
+.. autoclass:: SubsetMateSelectionConfiguration
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SubsetMateSelectionConfiguration.sample_xconfig
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SubsetMateSelectionConfiguration.ncross
+      ~SubsetMateSelectionConfiguration.nmating
+      ~SubsetMateSelectionConfiguration.nparent
+      ~SubsetMateSelectionConfiguration.nprogeny
+      ~SubsetMateSelectionConfiguration.pgmat
+      ~SubsetMateSelectionConfiguration.rng
+      ~SubsetMateSelectionConfiguration.xconfig
+      ~SubsetMateSelectionConfiguration.xconfig_decn
+      ~SubsetMateSelectionConfiguration.xconfig_xmap
+   
+   

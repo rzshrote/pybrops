@@ -1,0 +1,101 @@
+TaxaVariantMatrix
+=================
+
+.. currentmodule:: pybrops.core.mat.TaxaVariantMatrix
+
+.. autoclass:: TaxaVariantMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TaxaVariantMatrix.adjoin
+      ~TaxaVariantMatrix.adjoin_taxa
+      ~TaxaVariantMatrix.adjoin_vrnt
+      ~TaxaVariantMatrix.append
+      ~TaxaVariantMatrix.append_taxa
+      ~TaxaVariantMatrix.append_vrnt
+      ~TaxaVariantMatrix.concat
+      ~TaxaVariantMatrix.concat_taxa
+      ~TaxaVariantMatrix.concat_vrnt
+      ~TaxaVariantMatrix.copy
+      ~TaxaVariantMatrix.deepcopy
+      ~TaxaVariantMatrix.delete
+      ~TaxaVariantMatrix.delete_taxa
+      ~TaxaVariantMatrix.delete_vrnt
+      ~TaxaVariantMatrix.from_hdf5
+      ~TaxaVariantMatrix.group
+      ~TaxaVariantMatrix.group_taxa
+      ~TaxaVariantMatrix.group_vrnt
+      ~TaxaVariantMatrix.incorp
+      ~TaxaVariantMatrix.incorp_taxa
+      ~TaxaVariantMatrix.incorp_vrnt
+      ~TaxaVariantMatrix.insert
+      ~TaxaVariantMatrix.insert_taxa
+      ~TaxaVariantMatrix.insert_vrnt
+      ~TaxaVariantMatrix.is_grouped
+      ~TaxaVariantMatrix.is_grouped_taxa
+      ~TaxaVariantMatrix.is_grouped_vrnt
+      ~TaxaVariantMatrix.lexsort
+      ~TaxaVariantMatrix.lexsort_taxa
+      ~TaxaVariantMatrix.lexsort_vrnt
+      ~TaxaVariantMatrix.remove
+      ~TaxaVariantMatrix.remove_taxa
+      ~TaxaVariantMatrix.remove_vrnt
+      ~TaxaVariantMatrix.reorder
+      ~TaxaVariantMatrix.reorder_taxa
+      ~TaxaVariantMatrix.reorder_vrnt
+      ~TaxaVariantMatrix.select
+      ~TaxaVariantMatrix.select_taxa
+      ~TaxaVariantMatrix.select_vrnt
+      ~TaxaVariantMatrix.sort
+      ~TaxaVariantMatrix.sort_taxa
+      ~TaxaVariantMatrix.sort_vrnt
+      ~TaxaVariantMatrix.to_hdf5
+      ~TaxaVariantMatrix.ungroup
+      ~TaxaVariantMatrix.ungroup_taxa
+      ~TaxaVariantMatrix.ungroup_vrnt
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TaxaVariantMatrix.mat
+      ~TaxaVariantMatrix.mat_ndim
+      ~TaxaVariantMatrix.mat_shape
+      ~TaxaVariantMatrix.ntaxa
+      ~TaxaVariantMatrix.nvrnt
+      ~TaxaVariantMatrix.taxa
+      ~TaxaVariantMatrix.taxa_axis
+      ~TaxaVariantMatrix.taxa_grp
+      ~TaxaVariantMatrix.taxa_grp_len
+      ~TaxaVariantMatrix.taxa_grp_name
+      ~TaxaVariantMatrix.taxa_grp_spix
+      ~TaxaVariantMatrix.taxa_grp_stix
+      ~TaxaVariantMatrix.vrnt_axis
+      ~TaxaVariantMatrix.vrnt_chrgrp
+      ~TaxaVariantMatrix.vrnt_chrgrp_len
+      ~TaxaVariantMatrix.vrnt_chrgrp_name
+      ~TaxaVariantMatrix.vrnt_chrgrp_spix
+      ~TaxaVariantMatrix.vrnt_chrgrp_stix
+      ~TaxaVariantMatrix.vrnt_genpos
+      ~TaxaVariantMatrix.vrnt_hapalt
+      ~TaxaVariantMatrix.vrnt_hapgrp
+      ~TaxaVariantMatrix.vrnt_hapref
+      ~TaxaVariantMatrix.vrnt_mask
+      ~TaxaVariantMatrix.vrnt_name
+      ~TaxaVariantMatrix.vrnt_phypos
+      ~TaxaVariantMatrix.vrnt_xoprob
+   
+   

@@ -1,0 +1,67 @@
+SubsetProblem
+=============
+
+.. currentmodule:: pybrops.opt.prob.SubsetProblem
+
+.. autoclass:: SubsetProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SubsetProblem.bounds
+      ~SubsetProblem.do
+      ~SubsetProblem.evalfn
+      ~SubsetProblem.evaluate
+      ~SubsetProblem.has_bounds
+      ~SubsetProblem.has_constraints
+      ~SubsetProblem.ideal_point
+      ~SubsetProblem.nadir_point
+      ~SubsetProblem.name
+      ~SubsetProblem.pareto_front
+      ~SubsetProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SubsetProblem.callback
+      ~SubsetProblem.data
+      ~SubsetProblem.decn_space
+      ~SubsetProblem.decn_space_lower
+      ~SubsetProblem.decn_space_upper
+      ~SubsetProblem.elementwise
+      ~SubsetProblem.elementwise_func
+      ~SubsetProblem.elementwise_runner
+      ~SubsetProblem.eqcv_wt
+      ~SubsetProblem.exclude_from_serialization
+      ~SubsetProblem.ineqcv_wt
+      ~SubsetProblem.n_constr
+      ~SubsetProblem.n_eq_constr
+      ~SubsetProblem.n_ieq_constr
+      ~SubsetProblem.n_obj
+      ~SubsetProblem.n_var
+      ~SubsetProblem.ndecn
+      ~SubsetProblem.neqcv
+      ~SubsetProblem.nineqcv
+      ~SubsetProblem.nobj
+      ~SubsetProblem.obj_wt
+      ~SubsetProblem.replace_nan_values_by
+      ~SubsetProblem.strict
+      ~SubsetProblem.vars
+      ~SubsetProblem.vtype
+      ~SubsetProblem.xl
+      ~SubsetProblem.xu
+   
+   

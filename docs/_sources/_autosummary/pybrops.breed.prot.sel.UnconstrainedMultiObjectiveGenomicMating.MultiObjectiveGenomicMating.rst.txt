@@ -1,0 +1,56 @@
+MultiObjectiveGenomicMating
+===========================
+
+.. currentmodule:: pybrops.breed.prot.sel.UnconstrainedMultiObjectiveGenomicMating
+
+.. autoclass:: MultiObjectiveGenomicMating
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MultiObjectiveGenomicMating.objfn
+      ~MultiObjectiveGenomicMating.objfn_static
+      ~MultiObjectiveGenomicMating.objfn_vec
+      ~MultiObjectiveGenomicMating.objfn_vec_static
+      ~MultiObjectiveGenomicMating.pareto
+      ~MultiObjectiveGenomicMating.select
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MultiObjectiveGenomicMating.gmapfn
+      ~MultiObjectiveGenomicMating.mem
+      ~MultiObjectiveGenomicMating.method
+      ~MultiObjectiveGenomicMating.moalgo
+      ~MultiObjectiveGenomicMating.nconfig
+      ~MultiObjectiveGenomicMating.ncross
+      ~MultiObjectiveGenomicMating.ndset_trans
+      ~MultiObjectiveGenomicMating.ndset_trans_kwargs
+      ~MultiObjectiveGenomicMating.ndset_wt
+      ~MultiObjectiveGenomicMating.nparent
+      ~MultiObjectiveGenomicMating.nprogeny
+      ~MultiObjectiveGenomicMating.nself
+      ~MultiObjectiveGenomicMating.objfn_trans
+      ~MultiObjectiveGenomicMating.objfn_trans_kwargs
+      ~MultiObjectiveGenomicMating.objfn_wt
+      ~MultiObjectiveGenomicMating.rng
+      ~MultiObjectiveGenomicMating.soalgo
+      ~MultiObjectiveGenomicMating.target
+      ~MultiObjectiveGenomicMating.unique_parents
+      ~MultiObjectiveGenomicMating.vmatfcty
+      ~MultiObjectiveGenomicMating.weight
+   
+   

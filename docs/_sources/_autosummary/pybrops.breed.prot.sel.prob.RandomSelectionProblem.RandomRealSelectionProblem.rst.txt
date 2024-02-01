@@ -1,0 +1,77 @@
+RandomRealSelectionProblem
+==========================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.RandomSelectionProblem
+
+.. autoclass:: RandomRealSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RandomRealSelectionProblem.bounds
+      ~RandomRealSelectionProblem.do
+      ~RandomRealSelectionProblem.evalfn
+      ~RandomRealSelectionProblem.evaluate
+      ~RandomRealSelectionProblem.from_object
+      ~RandomRealSelectionProblem.has_bounds
+      ~RandomRealSelectionProblem.has_constraints
+      ~RandomRealSelectionProblem.ideal_point
+      ~RandomRealSelectionProblem.latentfn
+      ~RandomRealSelectionProblem.nadir_point
+      ~RandomRealSelectionProblem.name
+      ~RandomRealSelectionProblem.pareto_front
+      ~RandomRealSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RandomRealSelectionProblem.callback
+      ~RandomRealSelectionProblem.data
+      ~RandomRealSelectionProblem.decn_space
+      ~RandomRealSelectionProblem.decn_space_lower
+      ~RandomRealSelectionProblem.decn_space_upper
+      ~RandomRealSelectionProblem.elementwise
+      ~RandomRealSelectionProblem.elementwise_func
+      ~RandomRealSelectionProblem.elementwise_runner
+      ~RandomRealSelectionProblem.eqcv_trans
+      ~RandomRealSelectionProblem.eqcv_trans_kwargs
+      ~RandomRealSelectionProblem.eqcv_wt
+      ~RandomRealSelectionProblem.exclude_from_serialization
+      ~RandomRealSelectionProblem.ineqcv_trans
+      ~RandomRealSelectionProblem.ineqcv_trans_kwargs
+      ~RandomRealSelectionProblem.ineqcv_wt
+      ~RandomRealSelectionProblem.n_constr
+      ~RandomRealSelectionProblem.n_eq_constr
+      ~RandomRealSelectionProblem.n_ieq_constr
+      ~RandomRealSelectionProblem.n_obj
+      ~RandomRealSelectionProblem.n_var
+      ~RandomRealSelectionProblem.ndecn
+      ~RandomRealSelectionProblem.neqcv
+      ~RandomRealSelectionProblem.nineqcv
+      ~RandomRealSelectionProblem.nlatent
+      ~RandomRealSelectionProblem.nobj
+      ~RandomRealSelectionProblem.obj_trans
+      ~RandomRealSelectionProblem.obj_trans_kwargs
+      ~RandomRealSelectionProblem.obj_wt
+      ~RandomRealSelectionProblem.rbv
+      ~RandomRealSelectionProblem.replace_nan_values_by
+      ~RandomRealSelectionProblem.strict
+      ~RandomRealSelectionProblem.vars
+      ~RandomRealSelectionProblem.vtype
+      ~RandomRealSelectionProblem.xl
+      ~RandomRealSelectionProblem.xu
+   
+   

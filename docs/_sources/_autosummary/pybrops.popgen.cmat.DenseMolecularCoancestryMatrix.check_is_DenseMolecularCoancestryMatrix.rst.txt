@@ -1,0 +1,6 @@
+check\_is\_DenseMolecularCoancestryMatrix
+=========================================
+
+.. currentmodule:: pybrops.popgen.cmat.DenseMolecularCoancestryMatrix
+
+.. autofunction:: check_is_DenseMolecularCoancestryMatrix

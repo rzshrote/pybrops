@@ -1,0 +1,42 @@
+GenotypeMatrix
+==============
+
+.. automodule:: pybrops.popgen.gmat.GenotypeMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      GenotypeMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_GenotypeMatrix_has_taxa
+      check_is_GenotypeMatrix
+   
+   
+
+   
+   
+   
+
+
+

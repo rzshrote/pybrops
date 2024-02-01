@@ -1,0 +1,96 @@
+DenseMolecularCoancestryMatrix
+==============================
+
+.. currentmodule:: pybrops.popgen.cmat.DenseMolecularCoancestryMatrix
+
+.. autoclass:: DenseMolecularCoancestryMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseMolecularCoancestryMatrix.adjoin
+      ~DenseMolecularCoancestryMatrix.adjoin_taxa
+      ~DenseMolecularCoancestryMatrix.append
+      ~DenseMolecularCoancestryMatrix.append_taxa
+      ~DenseMolecularCoancestryMatrix.apply_jitter
+      ~DenseMolecularCoancestryMatrix.coancestry
+      ~DenseMolecularCoancestryMatrix.concat
+      ~DenseMolecularCoancestryMatrix.concat_taxa
+      ~DenseMolecularCoancestryMatrix.copy
+      ~DenseMolecularCoancestryMatrix.deepcopy
+      ~DenseMolecularCoancestryMatrix.delete
+      ~DenseMolecularCoancestryMatrix.delete_taxa
+      ~DenseMolecularCoancestryMatrix.from_csv
+      ~DenseMolecularCoancestryMatrix.from_gmat
+      ~DenseMolecularCoancestryMatrix.from_hdf5
+      ~DenseMolecularCoancestryMatrix.from_pandas
+      ~DenseMolecularCoancestryMatrix.group
+      ~DenseMolecularCoancestryMatrix.group_taxa
+      ~DenseMolecularCoancestryMatrix.incorp
+      ~DenseMolecularCoancestryMatrix.incorp_taxa
+      ~DenseMolecularCoancestryMatrix.insert
+      ~DenseMolecularCoancestryMatrix.insert_taxa
+      ~DenseMolecularCoancestryMatrix.inverse
+      ~DenseMolecularCoancestryMatrix.is_grouped
+      ~DenseMolecularCoancestryMatrix.is_grouped_taxa
+      ~DenseMolecularCoancestryMatrix.is_positive_semidefinite
+      ~DenseMolecularCoancestryMatrix.is_square
+      ~DenseMolecularCoancestryMatrix.is_square_taxa
+      ~DenseMolecularCoancestryMatrix.kinship
+      ~DenseMolecularCoancestryMatrix.lexsort
+      ~DenseMolecularCoancestryMatrix.lexsort_taxa
+      ~DenseMolecularCoancestryMatrix.mat_asformat
+      ~DenseMolecularCoancestryMatrix.max
+      ~DenseMolecularCoancestryMatrix.max_inbreeding
+      ~DenseMolecularCoancestryMatrix.mean
+      ~DenseMolecularCoancestryMatrix.min
+      ~DenseMolecularCoancestryMatrix.min_inbreeding
+      ~DenseMolecularCoancestryMatrix.remove
+      ~DenseMolecularCoancestryMatrix.remove_taxa
+      ~DenseMolecularCoancestryMatrix.reorder
+      ~DenseMolecularCoancestryMatrix.reorder_taxa
+      ~DenseMolecularCoancestryMatrix.select
+      ~DenseMolecularCoancestryMatrix.select_taxa
+      ~DenseMolecularCoancestryMatrix.sort
+      ~DenseMolecularCoancestryMatrix.sort_taxa
+      ~DenseMolecularCoancestryMatrix.to_csv
+      ~DenseMolecularCoancestryMatrix.to_hdf5
+      ~DenseMolecularCoancestryMatrix.to_pandas
+      ~DenseMolecularCoancestryMatrix.ungroup
+      ~DenseMolecularCoancestryMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseMolecularCoancestryMatrix.mat
+      ~DenseMolecularCoancestryMatrix.mat_ndim
+      ~DenseMolecularCoancestryMatrix.mat_shape
+      ~DenseMolecularCoancestryMatrix.nsquare
+      ~DenseMolecularCoancestryMatrix.nsquare_taxa
+      ~DenseMolecularCoancestryMatrix.ntaxa
+      ~DenseMolecularCoancestryMatrix.square_axes
+      ~DenseMolecularCoancestryMatrix.square_axes_len
+      ~DenseMolecularCoancestryMatrix.square_taxa_axes
+      ~DenseMolecularCoancestryMatrix.square_taxa_axes_len
+      ~DenseMolecularCoancestryMatrix.taxa
+      ~DenseMolecularCoancestryMatrix.taxa_axis
+      ~DenseMolecularCoancestryMatrix.taxa_grp
+      ~DenseMolecularCoancestryMatrix.taxa_grp_len
+      ~DenseMolecularCoancestryMatrix.taxa_grp_name
+      ~DenseMolecularCoancestryMatrix.taxa_grp_spix
+      ~DenseMolecularCoancestryMatrix.taxa_grp_stix
+   
+   

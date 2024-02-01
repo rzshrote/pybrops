@@ -1,0 +1,6 @@
+check\_is\_SquareTraitMatrix
+============================
+
+.. currentmodule:: pybrops.core.mat.SquareTraitMatrix
+
+.. autofunction:: check_is_SquareTraitMatrix

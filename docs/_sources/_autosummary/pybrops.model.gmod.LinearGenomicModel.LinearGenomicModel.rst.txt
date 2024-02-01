@@ -1,0 +1,79 @@
+LinearGenomicModel
+==================
+
+.. currentmodule:: pybrops.model.gmod.LinearGenomicModel
+
+.. autoclass:: LinearGenomicModel
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~LinearGenomicModel.bulmer
+      ~LinearGenomicModel.bulmer_numpy
+      ~LinearGenomicModel.copy
+      ~LinearGenomicModel.daavail
+      ~LinearGenomicModel.dacount
+      ~LinearGenomicModel.dafixed
+      ~LinearGenomicModel.dafreq
+      ~LinearGenomicModel.deepcopy
+      ~LinearGenomicModel.faavail
+      ~LinearGenomicModel.facount
+      ~LinearGenomicModel.fafixed
+      ~LinearGenomicModel.fafreq
+      ~LinearGenomicModel.fit
+      ~LinearGenomicModel.fit_numpy
+      ~LinearGenomicModel.from_csv_dict
+      ~LinearGenomicModel.from_hdf5
+      ~LinearGenomicModel.from_pandas_dict
+      ~LinearGenomicModel.gebv
+      ~LinearGenomicModel.gebv_numpy
+      ~LinearGenomicModel.gegv
+      ~LinearGenomicModel.gegv_numpy
+      ~LinearGenomicModel.lsl
+      ~LinearGenomicModel.lsl_numpy
+      ~LinearGenomicModel.predict
+      ~LinearGenomicModel.predict_numpy
+      ~LinearGenomicModel.score
+      ~LinearGenomicModel.score_numpy
+      ~LinearGenomicModel.to_csv_dict
+      ~LinearGenomicModel.to_hdf5
+      ~LinearGenomicModel.to_pandas_dict
+      ~LinearGenomicModel.usl
+      ~LinearGenomicModel.usl_numpy
+      ~LinearGenomicModel.var_A
+      ~LinearGenomicModel.var_A_numpy
+      ~LinearGenomicModel.var_G
+      ~LinearGenomicModel.var_G_numpy
+      ~LinearGenomicModel.var_a
+      ~LinearGenomicModel.var_a_numpy
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~LinearGenomicModel.beta
+      ~LinearGenomicModel.hyperparams
+      ~LinearGenomicModel.model_name
+      ~LinearGenomicModel.nexplan
+      ~LinearGenomicModel.nexplan_beta
+      ~LinearGenomicModel.nexplan_u
+      ~LinearGenomicModel.nparam
+      ~LinearGenomicModel.nparam_beta
+      ~LinearGenomicModel.nparam_u
+      ~LinearGenomicModel.ntrait
+      ~LinearGenomicModel.trait
+      ~LinearGenomicModel.u
+   
+   

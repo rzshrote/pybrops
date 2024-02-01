@@ -1,0 +1,6 @@
+check\_is\_CoancestryLinearGenomicModel
+=======================================
+
+.. currentmodule:: pybrops.model.gmod.CoancestryLinearGenomicModel
+
+.. autofunction:: check_is_CoancestryLinearGenomicModel

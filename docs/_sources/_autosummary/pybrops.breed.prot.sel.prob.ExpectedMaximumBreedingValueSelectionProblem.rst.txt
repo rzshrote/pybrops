@@ -1,0 +1,36 @@
+ExpectedMaximumBreedingValueSelectionProblem
+============================================
+
+.. automodule:: pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      ExpectedMaximumBreedingValueBinarySelectionProblem
+      ExpectedMaximumBreedingValueIntegerSelectionProblem
+      ExpectedMaximumBreedingValueRealSelectionProblem
+      ExpectedMaximumBreedingValueSelectionProblemMixin
+      ExpectedMaximumBreedingValueSubsetSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

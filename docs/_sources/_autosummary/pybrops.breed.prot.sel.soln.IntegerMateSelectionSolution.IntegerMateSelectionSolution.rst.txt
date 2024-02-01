@@ -1,0 +1,45 @@
+IntegerMateSelectionSolution
+============================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.IntegerMateSelectionSolution
+
+.. autoclass:: IntegerMateSelectionSolution
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~IntegerMateSelectionSolution.decn_space
+      ~IntegerMateSelectionSolution.decn_space_lower
+      ~IntegerMateSelectionSolution.decn_space_upper
+      ~IntegerMateSelectionSolution.decn_space_xmap
+      ~IntegerMateSelectionSolution.eqcv_wt
+      ~IntegerMateSelectionSolution.ineqcv_wt
+      ~IntegerMateSelectionSolution.ndecn
+      ~IntegerMateSelectionSolution.neqcv
+      ~IntegerMateSelectionSolution.nineqcv
+      ~IntegerMateSelectionSolution.nobj
+      ~IntegerMateSelectionSolution.nsoln
+      ~IntegerMateSelectionSolution.obj_wt
+      ~IntegerMateSelectionSolution.soln_decn
+      ~IntegerMateSelectionSolution.soln_eqcv
+      ~IntegerMateSelectionSolution.soln_ineqcv
+      ~IntegerMateSelectionSolution.soln_obj
+   
+   

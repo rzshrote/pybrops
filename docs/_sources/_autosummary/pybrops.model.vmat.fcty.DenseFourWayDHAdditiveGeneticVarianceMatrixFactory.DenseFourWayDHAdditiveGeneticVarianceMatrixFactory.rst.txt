@@ -1,0 +1,26 @@
+DenseFourWayDHAdditiveGeneticVarianceMatrixFactory
+==================================================
+
+.. currentmodule:: pybrops.model.vmat.fcty.DenseFourWayDHAdditiveGeneticVarianceMatrixFactory
+
+.. autoclass:: DenseFourWayDHAdditiveGeneticVarianceMatrixFactory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseFourWayDHAdditiveGeneticVarianceMatrixFactory.from_algmod
+      ~DenseFourWayDHAdditiveGeneticVarianceMatrixFactory.from_gmod
+   
+   
+
+   
+   
+   

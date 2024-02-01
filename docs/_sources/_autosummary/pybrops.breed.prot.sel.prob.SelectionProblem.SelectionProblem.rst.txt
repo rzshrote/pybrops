@@ -1,0 +1,75 @@
+SelectionProblem
+================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.SelectionProblem
+
+.. autoclass:: SelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SelectionProblem.bounds
+      ~SelectionProblem.do
+      ~SelectionProblem.evalfn
+      ~SelectionProblem.evaluate
+      ~SelectionProblem.has_bounds
+      ~SelectionProblem.has_constraints
+      ~SelectionProblem.ideal_point
+      ~SelectionProblem.latentfn
+      ~SelectionProblem.nadir_point
+      ~SelectionProblem.name
+      ~SelectionProblem.pareto_front
+      ~SelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SelectionProblem.callback
+      ~SelectionProblem.data
+      ~SelectionProblem.decn_space
+      ~SelectionProblem.decn_space_lower
+      ~SelectionProblem.decn_space_upper
+      ~SelectionProblem.elementwise
+      ~SelectionProblem.elementwise_func
+      ~SelectionProblem.elementwise_runner
+      ~SelectionProblem.eqcv_trans
+      ~SelectionProblem.eqcv_trans_kwargs
+      ~SelectionProblem.eqcv_wt
+      ~SelectionProblem.exclude_from_serialization
+      ~SelectionProblem.ineqcv_trans
+      ~SelectionProblem.ineqcv_trans_kwargs
+      ~SelectionProblem.ineqcv_wt
+      ~SelectionProblem.n_constr
+      ~SelectionProblem.n_eq_constr
+      ~SelectionProblem.n_ieq_constr
+      ~SelectionProblem.n_obj
+      ~SelectionProblem.n_var
+      ~SelectionProblem.ndecn
+      ~SelectionProblem.neqcv
+      ~SelectionProblem.nineqcv
+      ~SelectionProblem.nlatent
+      ~SelectionProblem.nobj
+      ~SelectionProblem.obj_trans
+      ~SelectionProblem.obj_trans_kwargs
+      ~SelectionProblem.obj_wt
+      ~SelectionProblem.replace_nan_values_by
+      ~SelectionProblem.strict
+      ~SelectionProblem.vars
+      ~SelectionProblem.vtype
+      ~SelectionProblem.xl
+      ~SelectionProblem.xu
+   
+   

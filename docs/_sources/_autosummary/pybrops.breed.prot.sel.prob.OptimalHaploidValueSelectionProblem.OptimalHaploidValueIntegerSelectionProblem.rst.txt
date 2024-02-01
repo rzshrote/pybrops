@@ -1,0 +1,77 @@
+OptimalHaploidValueIntegerSelectionProblem
+==========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem
+
+.. autoclass:: OptimalHaploidValueIntegerSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalHaploidValueIntegerSelectionProblem.bounds
+      ~OptimalHaploidValueIntegerSelectionProblem.do
+      ~OptimalHaploidValueIntegerSelectionProblem.evalfn
+      ~OptimalHaploidValueIntegerSelectionProblem.evaluate
+      ~OptimalHaploidValueIntegerSelectionProblem.from_pgmat_gpmod
+      ~OptimalHaploidValueIntegerSelectionProblem.has_bounds
+      ~OptimalHaploidValueIntegerSelectionProblem.has_constraints
+      ~OptimalHaploidValueIntegerSelectionProblem.ideal_point
+      ~OptimalHaploidValueIntegerSelectionProblem.latentfn
+      ~OptimalHaploidValueIntegerSelectionProblem.nadir_point
+      ~OptimalHaploidValueIntegerSelectionProblem.name
+      ~OptimalHaploidValueIntegerSelectionProblem.pareto_front
+      ~OptimalHaploidValueIntegerSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalHaploidValueIntegerSelectionProblem.callback
+      ~OptimalHaploidValueIntegerSelectionProblem.data
+      ~OptimalHaploidValueIntegerSelectionProblem.decn_space
+      ~OptimalHaploidValueIntegerSelectionProblem.decn_space_lower
+      ~OptimalHaploidValueIntegerSelectionProblem.decn_space_upper
+      ~OptimalHaploidValueIntegerSelectionProblem.elementwise
+      ~OptimalHaploidValueIntegerSelectionProblem.elementwise_func
+      ~OptimalHaploidValueIntegerSelectionProblem.elementwise_runner
+      ~OptimalHaploidValueIntegerSelectionProblem.eqcv_trans
+      ~OptimalHaploidValueIntegerSelectionProblem.eqcv_trans_kwargs
+      ~OptimalHaploidValueIntegerSelectionProblem.eqcv_wt
+      ~OptimalHaploidValueIntegerSelectionProblem.exclude_from_serialization
+      ~OptimalHaploidValueIntegerSelectionProblem.ineqcv_trans
+      ~OptimalHaploidValueIntegerSelectionProblem.ineqcv_trans_kwargs
+      ~OptimalHaploidValueIntegerSelectionProblem.ineqcv_wt
+      ~OptimalHaploidValueIntegerSelectionProblem.n_constr
+      ~OptimalHaploidValueIntegerSelectionProblem.n_eq_constr
+      ~OptimalHaploidValueIntegerSelectionProblem.n_ieq_constr
+      ~OptimalHaploidValueIntegerSelectionProblem.n_obj
+      ~OptimalHaploidValueIntegerSelectionProblem.n_var
+      ~OptimalHaploidValueIntegerSelectionProblem.ndecn
+      ~OptimalHaploidValueIntegerSelectionProblem.neqcv
+      ~OptimalHaploidValueIntegerSelectionProblem.nineqcv
+      ~OptimalHaploidValueIntegerSelectionProblem.nlatent
+      ~OptimalHaploidValueIntegerSelectionProblem.nobj
+      ~OptimalHaploidValueIntegerSelectionProblem.obj_trans
+      ~OptimalHaploidValueIntegerSelectionProblem.obj_trans_kwargs
+      ~OptimalHaploidValueIntegerSelectionProblem.obj_wt
+      ~OptimalHaploidValueIntegerSelectionProblem.ohvmat
+      ~OptimalHaploidValueIntegerSelectionProblem.replace_nan_values_by
+      ~OptimalHaploidValueIntegerSelectionProblem.strict
+      ~OptimalHaploidValueIntegerSelectionProblem.vars
+      ~OptimalHaploidValueIntegerSelectionProblem.vtype
+      ~OptimalHaploidValueIntegerSelectionProblem.xl
+      ~OptimalHaploidValueIntegerSelectionProblem.xu
+   
+   

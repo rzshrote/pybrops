@@ -1,0 +1,6 @@
+error\_readonly
+===============
+
+.. currentmodule:: pybrops.core.error.error_attr_python
+
+.. autofunction:: error_readonly

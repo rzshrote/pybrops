@@ -1,0 +1,6 @@
+axis\_shuffle
+=============
+
+.. currentmodule:: pybrops.core.random.sampling
+
+.. autofunction:: axis_shuffle

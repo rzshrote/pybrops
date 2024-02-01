@@ -1,0 +1,6 @@
+check\_is\_ParentSelectionOperator
+==================================
+
+.. currentmodule:: pybrops.breed.op.psel.ParentSelectionOperator
+
+.. autofunction:: check_is_ParentSelectionOperator

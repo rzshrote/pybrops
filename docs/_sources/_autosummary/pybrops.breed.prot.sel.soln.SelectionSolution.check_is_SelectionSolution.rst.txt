@@ -1,0 +1,6 @@
+check\_is\_SelectionSolution
+============================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.SelectionSolution
+
+.. autofunction:: check_is_SelectionSolution

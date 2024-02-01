@@ -1,0 +1,41 @@
+TraitMatrix
+===========
+
+.. automodule:: pybrops.core.mat.TraitMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      TraitMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_TraitMatrix
+   
+   
+
+   
+   
+   
+
+
+

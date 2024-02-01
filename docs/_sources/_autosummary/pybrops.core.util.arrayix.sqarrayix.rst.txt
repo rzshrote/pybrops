@@ -1,0 +1,6 @@
+sqarrayix
+=========
+
+.. currentmodule:: pybrops.core.util.arrayix
+
+.. autofunction:: sqarrayix

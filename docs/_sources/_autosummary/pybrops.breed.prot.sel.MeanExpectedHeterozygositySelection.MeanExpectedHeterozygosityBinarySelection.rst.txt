@@ -1,0 +1,56 @@
+MeanExpectedHeterozygosityBinarySelection
+=========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.MeanExpectedHeterozygositySelection
+
+.. autoclass:: MeanExpectedHeterozygosityBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanExpectedHeterozygosityBinarySelection.mosolve
+      ~MeanExpectedHeterozygosityBinarySelection.problem
+      ~MeanExpectedHeterozygosityBinarySelection.select
+      ~MeanExpectedHeterozygosityBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanExpectedHeterozygosityBinarySelection.eqcv_trans
+      ~MeanExpectedHeterozygosityBinarySelection.eqcv_trans_kwargs
+      ~MeanExpectedHeterozygosityBinarySelection.eqcv_wt
+      ~MeanExpectedHeterozygosityBinarySelection.ineqcv_trans
+      ~MeanExpectedHeterozygosityBinarySelection.ineqcv_trans_kwargs
+      ~MeanExpectedHeterozygosityBinarySelection.ineqcv_wt
+      ~MeanExpectedHeterozygosityBinarySelection.moalgo
+      ~MeanExpectedHeterozygosityBinarySelection.ncross
+      ~MeanExpectedHeterozygosityBinarySelection.ndset_trans
+      ~MeanExpectedHeterozygosityBinarySelection.ndset_trans_kwargs
+      ~MeanExpectedHeterozygosityBinarySelection.ndset_wt
+      ~MeanExpectedHeterozygosityBinarySelection.neqcv
+      ~MeanExpectedHeterozygosityBinarySelection.nineqcv
+      ~MeanExpectedHeterozygosityBinarySelection.nmating
+      ~MeanExpectedHeterozygosityBinarySelection.nobj
+      ~MeanExpectedHeterozygosityBinarySelection.nparent
+      ~MeanExpectedHeterozygosityBinarySelection.nprogeny
+      ~MeanExpectedHeterozygosityBinarySelection.nselindiv
+      ~MeanExpectedHeterozygosityBinarySelection.obj_trans
+      ~MeanExpectedHeterozygosityBinarySelection.obj_trans_kwargs
+      ~MeanExpectedHeterozygosityBinarySelection.obj_wt
+      ~MeanExpectedHeterozygosityBinarySelection.rng
+      ~MeanExpectedHeterozygosityBinarySelection.soalgo
+   
+   

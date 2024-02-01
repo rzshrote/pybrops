@@ -1,0 +1,36 @@
+SimpleMateSelectionConfiguration
+================================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.SimpleMateSelectionConfiguration
+
+.. autoclass:: SimpleMateSelectionConfiguration
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SimpleMateSelectionConfiguration.ncross
+      ~SimpleMateSelectionConfiguration.nmating
+      ~SimpleMateSelectionConfiguration.nparent
+      ~SimpleMateSelectionConfiguration.nprogeny
+      ~SimpleMateSelectionConfiguration.pgmat
+      ~SimpleMateSelectionConfiguration.xconfig
+      ~SimpleMateSelectionConfiguration.xconfig_xmap
+   
+   

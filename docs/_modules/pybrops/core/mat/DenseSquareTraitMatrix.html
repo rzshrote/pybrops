@@ -1,0 +1,1690 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pybrops.core.mat.DenseSquareTraitMatrix &#8212; pybrops 0.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/core/mat/DenseSquareTraitMatrix';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pybrops.core...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pybrops.core.mat.DenseSquareTraitMatrix</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module implementing a dense trait matrix with axes that are square and </span>
+<span class="sd">associated error checking routines.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;DenseSquareTraitMatrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_is_DenseSquareTraitMatrix&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_attr_python</span> <span class="kn">import</span> <span class="n">check_is_iterable</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_generic_python</span> <span class="kn">import</span> <span class="n">generic_check_isinstance</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_array_like</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.mat.DenseSquareMatrix</span> <span class="kn">import</span> <span class="n">DenseSquareMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.mat.DenseTraitMatrix</span> <span class="kn">import</span> <span class="n">DenseTraitMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.mat.Matrix</span> <span class="kn">import</span> <span class="n">Matrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.mat.SquareTraitMatrix</span> <span class="kn">import</span> <span class="n">SquareTraitMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.mat.util</span> <span class="kn">import</span> <span class="n">get_axis</span>
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix">[docs]</a>
+<span class="k">class</span> <span class="nc">DenseSquareTraitMatrix</span><span class="p">(</span>
+        <span class="n">DenseSquareMatrix</span><span class="p">,</span>
+        <span class="n">DenseTraitMatrix</span><span class="p">,</span>
+        <span class="n">SquareTraitMatrix</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A concrete class for dense matrices with trait metadata and axes that are</span>
+<span class="sd">    square.</span>
+
+<span class="sd">    The purpose of this abstract class is to merge the following implementations</span>
+<span class="sd">    and interfaces:</span>
+
+<span class="sd">        1. DenseSquareMatrix (implementation)</span>
+<span class="sd">        2. DenseTraitMatrix (implementation)</span>
+<span class="sd">        3. SquareTraitMatrix (interface)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">mat</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for DenseSquareTraitMatrix.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mat : numpy.ndarray</span>
+<span class="sd">            A numpy.ndarray used to construct the object.</span>
+<span class="sd">        trait : numpy.ndarray, None</span>
+<span class="sd">            A numpy.ndarray of shape ``(t,)`` containing trait names.</span>
+<span class="sd">            If ``None``, do not store any trait name information.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments used for cooperative inheritance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DenseSquareTraitMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">mat</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span>
+
+    <span class="c1">#################### Matrix copying ####################</span>
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a shallow copy of the the matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquareTraitMatrix</span>
+<span class="sd">            A shallow copy of the matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create new object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">),</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">memo</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a deep copy of the matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        memo : dict</span>
+<span class="sd">            Dictionary of memo metadata.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquareTraitMatrix</span>
+<span class="sd">            A deep copy of the matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create new object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="c1">############################ Object Properties #############################</span>
+
+    <span class="c1">##################### Matrix Data ######################</span>
+    <span class="c1"># mat inherited from DenseSquareMatrix</span>
+
+    <span class="c1">############## Square Metadata Properties ##############</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nsquare</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of axes that are square.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsquare_trait</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">square_axes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Axis indices for axes that are square.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">square_axes_len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Axis lengths for axes that are square.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes_len</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nsquare_trait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of trait axes that are square.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">square_trait_axes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Axis indices for trait axes that are square.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">square_trait_axes_len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Axis lengths for axes that are square.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat_shape</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span> <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">)</span>
+
+    <span class="c1">################ Trait Data Properites #################</span>
+
+    <span class="c1">############## Trait Metadata Properites ###############</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">trait_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;First square axis along which trait are stored&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">)</span>
+
+    <span class="c1">################### Fill data lookup ###################</span>
+    <span class="c1"># _fill_value inherited from DenseSquareMatrix</span>
+
+    <span class="c1">############################## Object Methods ##############################</span>
+
+    <span class="c1">#################### Square Methods ####################</span>
+<div class="viewcode-block" id="DenseSquareTraitMatrix.is_square">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.is_square">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_square</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine whether the axis lengths for the square axes are identical.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : bool</span>
+<span class="sd">            ``True`` if all square axes are the same length.</span>
+<span class="sd">            ``False`` if not all square axes are the same length.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_square_trait</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.is_square_trait">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.is_square_trait">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_square_trait</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine whether the trait axes lengths for the square axes are identical.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : bool</span>
+<span class="sd">            ``True`` if all square trait axes are the same length.</span>
+<span class="sd">            ``False`` if not all square trait axes are the same length.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">siter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes_len</span><span class="p">)</span>    <span class="c1"># get iterator of axis lengths</span>
+        <span class="k">try</span><span class="p">:</span>                                        <span class="c1"># try next</span>
+            <span class="n">e0</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">siter</span><span class="p">)</span>                        <span class="c1"># get the first element of siter</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>                       <span class="c1"># catch StopIteration exception</span>
+            <span class="k">return</span> <span class="kc">False</span>                            <span class="c1"># something is horribly wrong; no axes!</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">all</span><span class="p">(</span><span class="n">e0</span> <span class="o">==</span> <span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">siter</span><span class="p">)</span>           <span class="c1"># determine if all are equal to e0</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">######### Matrix element copy-on-manipulation ##########</span>
+<div class="viewcode-block" id="DenseSquareTraitMatrix.adjoin">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.adjoin">[docs]</a>
+    <span class="k">def</span> <span class="nf">adjoin</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Matrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add additional elements to the end of the Matrix along an axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        values : Matrix, numpy.ndarray</span>
+<span class="sd">            Values are appended to append to the Matrix.</span>
+<span class="sd">        axis : int</span>
+<span class="sd">            The axis along which values are adjoined.</span>
+<span class="sd">        trait : numpy.ndarray</span>
+<span class="sd">            Trait names to adjoin to the Matrix.</span>
+<span class="sd">            If values is a DenseHaplotypeMatrix that has a non-None</span>
+<span class="sd">            trait field, providing this argument overwrites the field.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquareTraitMatrix</span>
+<span class="sd">            A copy of DenseSquareTraitMatrix with values appended to axis. Note that adjoin does</span>
+<span class="sd">            not occur in-place: a new DenseSquareTraitMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>    <span class="c1"># get axis</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="kc">None</span>                              <span class="c1"># declare variable</span>
+
+        <span class="c1"># dispatch functions to handle operations</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adjoin_trait</span><span class="p">(</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+                <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot append along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.adjoin_trait">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.adjoin_trait">[docs]</a>
+    <span class="k">def</span> <span class="nf">adjoin_trait</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Matrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add additional elements to the end of the Matrix along an axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        values : Matrix, numpy.ndarray</span>
+<span class="sd">            Values are appended to append to the Matrix.</span>
+<span class="sd">        trait : numpy.ndarray</span>
+<span class="sd">            Trait names to adjoin to the Matrix.</span>
+<span class="sd">            If values is a DenseHaplotypeMatrix that has a non-None</span>
+<span class="sd">            trait field, providing this argument overwrites the field.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquareTraitMatrix</span>
+<span class="sd">            A copy of DenseSquareTraitMatrix with values appended to axis. Note that adjoin does</span>
+<span class="sd">            not occur in-place: a new DenseSquareTraitMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># extract mat values</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">trait</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">trait</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">trait</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">mat</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot adjoin: &#39;values&#39; must be of type </span><span class="si">{0}</span><span class="s2"> or numpy.ndarray&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">))</span>
+
+        <span class="c1"># perform error checks before allocating memory</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot adjoin: &#39;values&#39; must have ndim == </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_shape</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">j</span> <span class="o">!=</span> <span class="n">k</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot adjoin: axis lengths incompatible for axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">trait</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;object&quot;</span><span class="p">)</span>   <span class="c1"># fill with None</span>
+
+        <span class="c1"># calculate shape of new matrix to allocate</span>
+        <span class="n">mshape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat_shape</span><span class="p">)</span>       <span class="c1"># get matrix shape of self</span>
+        <span class="n">vshape</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span>               <span class="c1"># get matrix shape of values</span>
+        <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>   <span class="c1"># for each square trait axis index</span>
+            <span class="n">mshape</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span> <span class="o">+=</span> <span class="n">vshape</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>        <span class="c1"># add value axis length to self shape</span>
+        <span class="n">mshape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">mshape</span><span class="p">)</span>              <span class="c1"># convert list to tuple</span>
+
+        <span class="c1"># allocate memory and fill with default fill values</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">mshape</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">mat</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fill_value</span><span class="p">[</span><span class="n">mat</span><span class="o">.</span><span class="n">dtype</span><span class="p">])</span>
+
+        <span class="c1"># calculate indexing tuples for copying matrix values into &#39;mat&#39;</span>
+        <span class="n">nd</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">ndim</span>           <span class="c1"># number of dimensions</span>
+        <span class="n">sms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_shape</span>    <span class="c1"># matrix shape for self</span>
+        <span class="n">ssa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span>  <span class="c1"># tuple of square trait axes</span>
+        <span class="n">ms</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span>          <span class="c1"># output matrix shape</span>
+
+        <span class="c1"># calculate indexing tuple for self._mat</span>
+        <span class="c1"># if axis is a square axis then</span>
+        <span class="c1">#     slice to select 0 to &#39;a&#39; along axis (numpy: [...,0:a,...])</span>
+        <span class="c1"># else</span>
+        <span class="c1">#     slice everything (numpy: [...,:,...])</span>
+        <span class="n">six</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">sms</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ssa</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nd</span><span class="p">))</span>
+
+        <span class="c1"># calculate indexing tuple for self._mat</span>
+        <span class="c1"># if axis is a square axis then</span>
+        <span class="c1">#     slice to select &#39;a&#39; to &#39;b&#39; along axis (numpy: [...,a:b,...])</span>
+        <span class="c1"># else</span>
+        <span class="c1">#     slice everything (numpy: [...,:,...])</span>
+        <span class="n">vix</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">sms</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">ms</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ssa</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nd</span><span class="p">))</span>
+
+        <span class="c1"># adjoin values by copying</span>
+        <span class="n">mat</span><span class="p">[</span><span class="n">six</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span>    <span class="c1"># copy self into matrix</span>
+        <span class="n">mat</span><span class="p">[</span><span class="n">vix</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span>       <span class="c1"># copy values into matrix</span>
+
+        <span class="c1"># adjoin values</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trait</span><span class="p">,</span> <span class="n">trait</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># create output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.delete">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.delete">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete sub-arrays along an axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj : int, slice, or Sequence of ints</span>
+<span class="sd">            Indicate indices of sub-arrays to remove along the specified axis.</span>
+<span class="sd">        axis: int</span>
+<span class="sd">            The axis along which to delete the subarray defined by obj.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquareTraitMatrix</span>
+<span class="sd">            A DenseSquareTraitMatrix with deleted elements. Note that concat does not occur</span>
+<span class="sd">            in-place: a new DenseSquareTraitMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>    <span class="c1"># get axis</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="kc">None</span>                              <span class="c1"># declare variable</span>
+
+        <span class="c1"># dispatch functions to handle operations</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delete_trait</span><span class="p">(</span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot delete along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.delete_trait">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.delete_trait">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_trait</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete sub-arrays along the trait axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj : int, slice, or Sequence of ints</span>
+<span class="sd">            Indicate indices of sub-arrays to remove along the specified axis.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquareTraitMatrix</span>
+<span class="sd">            A DenseSquareTraitMatrix with deleted elements. Note that concat does not occur</span>
+<span class="sd">            in-place: a new DenseSquareTraitMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get values</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span>
+        <span class="n">trait</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span>
+
+        <span class="c1"># delete values</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">trait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">trait</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># create output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.insert">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.insert">[docs]</a>
+    <span class="k">def</span> <span class="nf">insert</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Matrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Insert values along the given axis before the given indices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj: int, slice, or Sequence of ints</span>
+<span class="sd">            Object that defines the index or indices before which values is</span>
+<span class="sd">            inserted.</span>
+<span class="sd">        values : Matrix, numpy.ndarray</span>
+<span class="sd">            Values to insert into the matrix.</span>
+<span class="sd">        axis : int</span>
+<span class="sd">            The axis along which values are inserted.</span>
+<span class="sd">        trait : numpy.ndarray</span>
+<span class="sd">            Trait names to insert into the Matrix.</span>
+<span class="sd">            If values is a DenseHaplotypeMatrix that has a non-None</span>
+<span class="sd">            trait field, providing this argument overwrites the field.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquareTraitMatrix</span>
+<span class="sd">            A DenseSquareTraitMatrix with values inserted. Note that insert does not occur</span>
+<span class="sd">            in-place: a new DenseSquareTraitMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>    <span class="c1"># get axis</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="kc">None</span>                              <span class="c1"># declare variable</span>
+
+        <span class="c1"># dispatch functions to handle operations</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">insert_trait</span><span class="p">(</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="p">,</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+                <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot insert along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1"># TODO: FIXME</span>
+<div class="viewcode-block" id="DenseSquareTraitMatrix.insert_trait">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.insert_trait">[docs]</a>
+    <span class="k">def</span> <span class="nf">insert_trait</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Matrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Insert values along the trait axis before the given indices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj: int, slice, or Sequence of ints</span>
+<span class="sd">            Object that defines the index or indices before which values is</span>
+<span class="sd">            inserted.</span>
+<span class="sd">        values : Matrix, numpy.ndarray</span>
+<span class="sd">            Values to insert into the matrix.</span>
+<span class="sd">        trait : numpy.ndarray</span>
+<span class="sd">            Trait names to insert into the Matrix.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquareTraitMatrix</span>
+<span class="sd">            A DenseSquareTraitMatrix with values inserted. Note that insert does not occur</span>
+<span class="sd">            in-place: a new DenseSquareTraitMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># extract mat values</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">trait</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">trait</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">trait</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">mat</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;values&#39; must be of type </span><span class="si">{0}</span><span class="s2"> or numpy.ndarray&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">))</span>
+
+        <span class="c1"># perform error checks before allocating memory</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot insert: &#39;values&#39; must have ndim == </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_shape</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">j</span> <span class="o">!=</span> <span class="n">k</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot insert: axis lengths incompatible for axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">trait</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;object&quot;</span><span class="p">)</span>   <span class="c1"># fill with None</span>
+
+        <span class="c1"># TODO: # FIXME: figure out insertion logic</span>
+        <span class="c1"># insert values</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trait</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">trait</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># create output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.select">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.select">[docs]</a>
+    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">indices</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> 
+            <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select certain values from the matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        indices : array_like (Nj, ...)</span>
+<span class="sd">            The indices of the values to select.</span>
+<span class="sd">        axis : int</span>
+<span class="sd">            The axis along which values are selected.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquareTraitMatrix</span>
+<span class="sd">            The output DenseSquareTraitMatrix with values selected. Note that select does not</span>
+<span class="sd">            occur in-place: a new DenseSquareTraitMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>    <span class="c1"># get axis</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="kc">None</span>                              <span class="c1"># declare variable</span>
+
+        <span class="c1"># dispatch functions to handle operations</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">select_trait</span><span class="p">(</span><span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot select along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.select_trait">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.select_trait">[docs]</a>
+    <span class="k">def</span> <span class="nf">select_trait</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">indices</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select certain values from the Matrix along the trait axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        indices : array_like (Nj, ...)</span>
+<span class="sd">            The indices of the values to select.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquareTraitMatrix</span>
+<span class="sd">            The output DenseSquareTraitMatrix with values selected. Note that select does not</span>
+<span class="sd">            occur in-place: a new DenseSquareTraitMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check for array_like</span>
+        <span class="n">check_is_array_like</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="s2">&quot;indices&quot;</span><span class="p">)</span>
+
+        <span class="c1"># get values</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span>
+        <span class="n">trait</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span>
+
+        <span class="c1"># select values</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">trait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">trait</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># create output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.concat">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.concat">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">concat</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">mats</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">,</span> 
+            <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Concatenate matrices together along an axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mats : Sequence of matrices</span>
+<span class="sd">            List of Matrix to concatenate. The matrices must have the same</span>
+<span class="sd">            shape, except in the dimension corresponding to axis.</span>
+<span class="sd">        axis : int</span>
+<span class="sd">            The axis along which the arrays will be joined.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquareTraitMatrix</span>
+<span class="sd">            The concatenated DenseSquareTraitMatrix. Note that concat does not occur in-place:</span>
+<span class="sd">            a new DenseSquareTraitMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="n">mats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>     <span class="c1"># get axis</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="kc">None</span>                                  <span class="c1"># declare variable</span>
+
+        <span class="c1"># dispatch items to worker functions</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">mats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">concat_trait</span><span class="p">(</span><span class="n">mats</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot concat along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1"># TODO: FIXME</span>
+<div class="viewcode-block" id="DenseSquareTraitMatrix.concat_trait">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.concat_trait">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">concat_trait</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">mats</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Concatenate list of Matrix together along the trait axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mats : Sequence of Matrix</span>
+<span class="sd">            List of Matrix to concatenate. The matrices must have the same</span>
+<span class="sd">            shape, except in the dimension corresponding to axis.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquareTraitMatrix</span>
+<span class="sd">            The concatenated DenseSquareTraitMatrix. Note that concat does not occur in-place:</span>
+<span class="sd">            a new DenseSquareTraitMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># ensure that we have an iterable object</span>
+        <span class="n">check_is_iterable</span><span class="p">(</span><span class="n">mats</span><span class="p">,</span> <span class="s2">&quot;mats&quot;</span><span class="p">)</span>
+
+        <span class="c1"># ensure that we have an array_like of length &gt;= 1</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mats</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;need at least one Matrix to concatenate&quot;</span><span class="p">)</span>
+
+        <span class="c1"># ensure that all items in mats are DenseHaplotypeMatrix</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mats</span><span class="p">):</span>
+            <span class="n">generic_check_isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="s2">&quot;mats[</span><span class="si">{0}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="bp">cls</span><span class="p">)</span>
+
+        <span class="c1"># make sure dimensions are all identical to first element in mats</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">mat_ndim</span> <span class="o">!=</span> <span class="n">mats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">mat_ndim</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mats</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot concat: not all matrices have the same number of dimensions&quot;</span><span class="p">)</span>
+
+        <span class="c1"># extract tuple of shapes for testing compatibility</span>
+        <span class="n">shape_t</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mats</span><span class="p">]))</span>
+
+        <span class="c1"># test matrix compatibility (same axis length along non-trait axes)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">shape_t</span><span class="p">):</span>                              <span class="c1"># for each index,tuple in shape_t</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">mats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">l</span> <span class="o">!=</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">v</span><span class="p">):</span> <span class="c1"># if not the trait axis AND axis lengths are different</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot concat: matrix shapes do not all align along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+        <span class="c1"># create matrix lists</span>
+        <span class="n">mat_ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">mat</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mats</span><span class="p">]</span>
+        <span class="n">trait_ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">trait</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">mats</span><span class="p">]</span>
+
+        <span class="c1"># process/error check trait_ls</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">e</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">trait_ls</span><span class="p">):</span>                             <span class="c1"># if all elements are None</span>
+            <span class="n">trait_ls</span> <span class="o">=</span> <span class="kc">None</span>                                              <span class="c1"># replace list with None</span>
+        <span class="k">else</span><span class="p">:</span>                                                           <span class="c1"># else at least one matrix does not have a trait array</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">trait_ls</span><span class="p">):</span>                              <span class="c1"># for each index,element in trait_ls</span>
+                <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>                                           <span class="c1"># if element is None</span>
+                    <span class="n">ntrait</span> <span class="o">=</span> <span class="n">shape_t</span><span class="p">[</span><span class="n">mats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>               <span class="c1"># get number of trait</span>
+                    <span class="n">trait_ls</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">ntrait</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;object&quot;</span><span class="p">)</span>   <span class="c1"># replace with array of None</span>
+
+        <span class="c1"># concatenate mat, trait items</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">mat_ls</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">mats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">)</span>
+        <span class="n">trait</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">trait_ls</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">trait_ls</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># TODO: decide if first element in list is good source of information</span>
+        <span class="c1"># concatenate everything and put into new DenseHaplotypeMatrix</span>
+        <span class="c1"># use first element as source of variant data</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">######### Matrix element in-place-manipulation #########</span>
+<div class="viewcode-block" id="DenseSquareTraitMatrix.append">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.append">[docs]</a>
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Matrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Append values to the matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        values : DenseHaplotypeMatrix, numpy.ndarray</span>
+<span class="sd">            Values are appended to append to the matrix.</span>
+<span class="sd">            Must be of type int8.</span>
+<span class="sd">            Must be of shape (m, n, p)</span>
+<span class="sd">        axis : int</span>
+<span class="sd">            The axis along which values are appended.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get axis</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>
+
+        <span class="c1"># dispatch functions</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">append_trait</span><span class="p">(</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+                <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot append along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.append_trait">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.append_trait">[docs]</a>
+    <span class="k">def</span> <span class="nf">append_trait</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Matrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Append values to the Matrix along the trait axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        values : Matrix, numpy.ndarray</span>
+<span class="sd">            Values are appended to append to the matrix.</span>
+<span class="sd">        trait : numpy.ndarray</span>
+<span class="sd">            Trait names to append to the Matrix.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># extract mat values</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">trait</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">trait</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">trait</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">mat</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;values&#39; must be of type </span><span class="si">{0}</span><span class="s2"> or numpy.ndarray&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">))</span>
+
+        <span class="c1"># perform error checks before allocating memory</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot append: &#39;values&#39; must have ndim == </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_shape</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">j</span> <span class="o">!=</span> <span class="n">k</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot append: axis lengths incompatible for axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">trait</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;object&quot;</span><span class="p">)</span> <span class="c1"># fill with None</span>
+
+        <span class="c1"># calculate shape of new matrix to allocate</span>
+        <span class="n">mshape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat_shape</span><span class="p">)</span>       <span class="c1"># get matrix shape of self</span>
+        <span class="n">vshape</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span>               <span class="c1"># get matrix shape of values</span>
+        <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>   <span class="c1"># for each square axis index</span>
+            <span class="n">mshape</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span> <span class="o">+=</span> <span class="n">vshape</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>        <span class="c1"># add value axis length to self shape</span>
+        <span class="n">mshape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">mshape</span><span class="p">)</span>              <span class="c1"># convert list to tuple</span>
+
+        <span class="c1"># allocate memory and fill with default fill values</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">mshape</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="n">mat</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_fill_value</span><span class="p">[</span><span class="n">mat</span><span class="o">.</span><span class="n">dtype</span><span class="p">])</span>
+
+        <span class="c1"># calculate indexing tuples for copying matrix values into &#39;mat&#39;</span>
+        <span class="n">nd</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">ndim</span>                   <span class="c1"># number of dimensions</span>
+        <span class="n">sms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_shape</span>            <span class="c1"># matrix shape for self</span>
+        <span class="n">ssa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span>    <span class="c1"># tuple of square trait axes</span>
+        <span class="n">ms</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">shape</span>                  <span class="c1"># output matrix shape</span>
+
+        <span class="c1"># calculate indexing tuple for self._mat</span>
+        <span class="c1"># if axis is a square axis then</span>
+        <span class="c1">#     slice to select 0 to &#39;a&#39; along axis (numpy: [...,0:a,...])</span>
+        <span class="c1"># else</span>
+        <span class="c1">#     slice everything (numpy: [...,:,...])</span>
+        <span class="n">six</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">sms</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ssa</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nd</span><span class="p">))</span>
+
+        <span class="c1"># calculate indexing tuple for self._mat</span>
+        <span class="c1"># if axis is a square axis then</span>
+        <span class="c1">#     slice to select &#39;a&#39; to &#39;b&#39; along axis (numpy: [...,a:b,...])</span>
+        <span class="c1"># else</span>
+        <span class="c1">#     slice everything (numpy: [...,:,...])</span>
+        <span class="n">vix</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">slice</span><span class="p">(</span><span class="n">sms</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">ms</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ssa</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nd</span><span class="p">))</span>
+
+        <span class="c1"># append values by copying</span>
+        <span class="n">mat</span><span class="p">[</span><span class="n">six</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span>    <span class="c1"># copy self into matrix</span>
+        <span class="n">mat</span><span class="p">[</span><span class="n">vix</span><span class="p">]</span> <span class="o">=</span> <span class="n">values</span>       <span class="c1"># copy values into matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span> <span class="o">=</span> <span class="n">mat</span>         <span class="c1"># change pointer reference</span>
+
+        <span class="c1"># append values</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trait</span><span class="p">,</span> <span class="n">trait</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.remove">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.remove">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove sub-arrays along an axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj : int, slice, or Sequence of ints</span>
+<span class="sd">            Indicate indices of sub-arrays to remove along the specified axis.</span>
+<span class="sd">        axis: int</span>
+<span class="sd">            The axis along which to remove the subarray defined by obj.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get axis</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_trait</span><span class="p">(</span><span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot remove along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.remove_trait">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.remove_trait">[docs]</a>
+    <span class="k">def</span> <span class="nf">remove_trait</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove sub-arrays along the trait axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj : int, slice, or Sequence of ints</span>
+<span class="sd">            Indicate indices of sub-arrays to remove along the specified axis.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># delete values</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trait</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.incorp">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.incorp">[docs]</a>
+    <span class="k">def</span> <span class="nf">incorp</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Matrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Incorporate values along the given axis before the given indices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj: int, slice, or Sequence of ints</span>
+<span class="sd">            Object that defines the index or indices before which values is</span>
+<span class="sd">            incorporated.</span>
+<span class="sd">        values : array_like</span>
+<span class="sd">            Values to incorporate into the matrix.</span>
+<span class="sd">        axis : int</span>
+<span class="sd">            The axis along which values are incorporated.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get axis</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">incorp_trait</span><span class="p">(</span>
+                <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="p">,</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+                <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot incorp along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span></div>
+
+
+    <span class="c1"># TODO: FIXME</span>
+<div class="viewcode-block" id="DenseSquareTraitMatrix.incorp_trait">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.incorp_trait">[docs]</a>
+    <span class="k">def</span> <span class="nf">incorp_trait</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Matrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Incorporate values along the trait axis before the given indices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj: int, slice, or Sequence of ints</span>
+<span class="sd">            Object that defines the index or indices before which values is</span>
+<span class="sd">            incorporated.</span>
+<span class="sd">        values : Matrix, numpy.ndarray</span>
+<span class="sd">            Values to incorporate into the matrix.</span>
+<span class="sd">        trait : numpy.ndarray</span>
+<span class="sd">            Trait names to incorporate into the Matrix.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># extract mat values</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">trait</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">trait</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">trait</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">mat</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;values&#39; must be of type DenseHaplotypeMatrix or numpy.ndarray&quot;</span><span class="p">)</span>
+
+        <span class="c1"># perform error checks before allocating memory</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot incorp: &#39;values&#39; must have ndim == </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_shape</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">j</span> <span class="o">!=</span> <span class="n">k</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot incorp: axis lengths incompatible for axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">trait</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;object&quot;</span><span class="p">)</span>  <span class="c1"># fill with None</span>
+
+        <span class="c1"># TODO: # FIXME: figure out incorporation logic</span>
+        <span class="c1"># incorp values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trait</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">trait</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span></div>
+
+
+    <span class="c1">################### Sorting Methods ####################</span>
+<div class="viewcode-block" id="DenseSquareTraitMatrix.lexsort">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.lexsort">[docs]</a>
+    <span class="k">def</span> <span class="nf">lexsort</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">keys</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span> 
+            <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform an indirect stable sort using a tuple of keys.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        keys : tuple, None</span>
+<span class="sd">            A tuple of columns to be sorted. The last column is the primary</span>
+<span class="sd">            sort key.</span>
+<span class="sd">        axis : int</span>
+<span class="sd">            The axis of the Matrix over which to sort values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        indices : numpy.ndarray</span>
+<span class="sd">            Array of indices that sort the keys.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>    <span class="c1"># transform axis number to an index</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="kc">None</span>                          <span class="c1"># declare variable</span>
+
+        <span class="c1"># dispatch to correct function</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lexsort_trait</span><span class="p">(</span><span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot lexsort along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">indices</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.lexsort_trait">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.lexsort_trait">[docs]</a>
+    <span class="k">def</span> <span class="nf">lexsort_trait</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">keys</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform an indirect stable sort using a sequence of keys along the trait</span>
+<span class="sd">        axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        keys : (k, N) array or tuple containing k (N,)-shaped sequences</span>
+<span class="sd">            The k different columns to be sorted. The last column (or row if</span>
+<span class="sd">            keys is a 2D array) is the primary sort key.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        indices : (N,) ndarray of ints</span>
+<span class="sd">            Array of indices that sort the keys along the specified axis.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># default error message</span>
+        <span class="n">emess</span> <span class="o">=</span> <span class="s2">&quot;no available keys to sort&quot;</span>
+
+        <span class="c1"># if no keys were provided, set a default</span>
+        <span class="k">if</span> <span class="n">keys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">keys</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_trait</span><span class="p">,)</span>         <span class="c1"># trait default keys</span>
+            <span class="n">emess</span> <span class="o">=</span> <span class="s2">&quot;trait is None&quot;</span>           <span class="c1"># trait error message</span>
+
+        <span class="c1"># remove None keys</span>
+        <span class="n">keys</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="c1"># raise error if no keys remain</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot lexsort on axis </span><span class="si">{0}</span><span class="s2"> (trait axis): </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">,</span> <span class="n">emess</span><span class="p">))</span>
+
+        <span class="c1"># raise error if keys are of incompatible length</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">):</span>
+            <span class="n">emess</span> <span class="o">=</span> <span class="s2">&quot;keys are not all length </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;cannot lexsort on axes </span><span class="si">{0}</span><span class="s2"> (trait axes): </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">,</span> <span class="n">emess</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1"># get indices</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">lexsort</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span>
+
+        <span class="c1"># return indices</span>
+        <span class="k">return</span> <span class="n">indices</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.reorder">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.reorder">[docs]</a>
+    <span class="k">def</span> <span class="nf">reorder</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">indices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reorder the VariantMatrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        indices : numpy.ndarray</span>
+<span class="sd">            Indices of where to place elements.</span>
+<span class="sd">        axis : int</span>
+<span class="sd">            The axis over which to reorder values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>                   <span class="c1"># transform axis number to an index</span>
+
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reorder_trait</span><span class="p">(</span><span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot reorder along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.reorder_trait">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.reorder_trait">[docs]</a>
+    <span class="k">def</span> <span class="nf">reorder_trait</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">indices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reorder elements of the Matrix along the trait axis using an array of</span>
+<span class="sd">        indices. Note this modifies the Matrix in-place.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        indices : (N,) ndarray of ints</span>
+<span class="sd">            Array of indices that reorder the matrix along the specified axis.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># reorder arrays</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>           <span class="c1"># for each trait axis</span>
+            <span class="n">ix</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>                         <span class="c1"># build a tuple to slice the matrix</span>
+                <span class="n">indices</span> <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">axis</span> <span class="k">else</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>           <span class="c1"># reorder matrix</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>                      <span class="c1"># if we have trait names</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_trait</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>            <span class="c1"># reorder trait array</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTraitMatrix.sort">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.DenseSquareTraitMatrix.sort">[docs]</a>
+    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">keys</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">axis</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset metadata for corresponding axis: name, stix, spix, len.</span>
+<span class="sd">        Sort the VariantMatrix using a tuple of keys.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        keys : tuple, None</span>
+<span class="sd">            A tuple of columns to be sorted. The last column is the primary</span>
+<span class="sd">            sort key.</span>
+<span class="sd">        axis : int</span>
+<span class="sd">            The axis over which to sort values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># transform axis number to an index</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>
+
+        <span class="c1"># dispatch functions</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">square_trait_axes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sort_trait</span><span class="p">(</span><span class="n">keys</span> <span class="o">=</span> <span class="n">keys</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot sort along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span></div>
+</div>
+
+
+    <span class="c1"># sort_trait is unaltered</span>
+
+    <span class="c1">############################## Class Methods ###############################</span>
+
+    <span class="c1">############################## Static Methods ##############################</span>
+
+
+
+<span class="c1">################################## Utilities ###################################</span>
+<div class="viewcode-block" id="check_is_DenseSquareTraitMatrix">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTraitMatrix.check_is_DenseSquareTraitMatrix.html#pybrops.core.mat.DenseSquareTraitMatrix.check_is_DenseSquareTraitMatrix">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_DenseSquareTraitMatrix</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if object is of type DenseSquareTraitMatrix. Otherwise raise TypeError.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        Any Python object to test.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of variable to print in TypeError message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DenseSquareTraitMatrix</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; must be a of type &#39;</span><span class="si">{1}</span><span class="s2">&#39; but received type &#39;</span><span class="si">{2}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span><span class="n">DenseSquareTraitMatrix</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, Robert Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

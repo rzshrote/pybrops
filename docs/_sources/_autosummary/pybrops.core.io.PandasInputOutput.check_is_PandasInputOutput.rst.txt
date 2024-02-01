@@ -1,0 +1,6 @@
+check\_is\_PandasInputOutput
+============================
+
+.. currentmodule:: pybrops.core.io.PandasInputOutput
+
+.. autofunction:: check_is_PandasInputOutput

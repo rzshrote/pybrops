@@ -1,0 +1,31 @@
+GenomicEstimatedBreedingValueSelectionMixin
+===========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection
+
+.. autoclass:: GenomicEstimatedBreedingValueSelectionMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenomicEstimatedBreedingValueSelectionMixin.ntrait
+      ~GenomicEstimatedBreedingValueSelectionMixin.unscale
+   
+   

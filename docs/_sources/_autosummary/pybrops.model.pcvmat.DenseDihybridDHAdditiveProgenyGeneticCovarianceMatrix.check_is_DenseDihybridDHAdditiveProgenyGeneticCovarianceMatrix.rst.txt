@@ -1,0 +1,6 @@
+check\_is\_DenseDihybridDHAdditiveProgenyGeneticCovarianceMatrix
+================================================================
+
+.. currentmodule:: pybrops.model.pcvmat.DenseDihybridDHAdditiveProgenyGeneticCovarianceMatrix
+
+.. autofunction:: check_is_DenseDihybridDHAdditiveProgenyGeneticCovarianceMatrix

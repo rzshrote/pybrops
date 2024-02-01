@@ -1,0 +1,36 @@
+MeanGenomicRelationshipSelectionProblem
+=======================================
+
+.. automodule:: pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      MeanGenomicRelationshipBinarySelectionProblem
+      MeanGenomicRelationshipIntegerSelectionProblem
+      MeanGenomicRelationshipRealSelectionProblem
+      MeanGenomicRelationshipSelectionProblemMixin
+      MeanGenomicRelationshipSubsetSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

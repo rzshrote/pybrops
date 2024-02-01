@@ -1,0 +1,41 @@
+SelectionProtocol
+=================
+
+.. automodule:: pybrops.breed.prot.sel.SelectionProtocol
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      SelectionProtocol
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_SelectionProtocol
+   
+   
+
+   
+   
+   
+
+
+

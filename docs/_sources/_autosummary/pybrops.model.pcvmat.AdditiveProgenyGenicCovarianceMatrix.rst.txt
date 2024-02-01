@@ -1,0 +1,41 @@
+AdditiveProgenyGenicCovarianceMatrix
+====================================
+
+.. automodule:: pybrops.model.pcvmat.AdditiveProgenyGenicCovarianceMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      AdditiveProgenyGenicCovarianceMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_AdditiveProgenyGenicCovarianceMatrix
+   
+   
+
+   
+   
+   
+
+
+

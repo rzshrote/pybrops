@@ -1,0 +1,6 @@
+generic\_check\_ndarray\_ndim\_gteq
+===================================
+
+.. currentmodule:: pybrops.core.error.error_generic_numpy
+
+.. autofunction:: generic_check_ndarray_ndim_gteq

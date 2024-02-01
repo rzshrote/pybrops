@@ -1,0 +1,96 @@
+CoancestryMatrix
+================
+
+.. currentmodule:: pybrops.popgen.cmat.CoancestryMatrix
+
+.. autoclass:: CoancestryMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~CoancestryMatrix.adjoin
+      ~CoancestryMatrix.adjoin_taxa
+      ~CoancestryMatrix.append
+      ~CoancestryMatrix.append_taxa
+      ~CoancestryMatrix.apply_jitter
+      ~CoancestryMatrix.coancestry
+      ~CoancestryMatrix.concat
+      ~CoancestryMatrix.concat_taxa
+      ~CoancestryMatrix.copy
+      ~CoancestryMatrix.deepcopy
+      ~CoancestryMatrix.delete
+      ~CoancestryMatrix.delete_taxa
+      ~CoancestryMatrix.from_csv
+      ~CoancestryMatrix.from_gmat
+      ~CoancestryMatrix.from_hdf5
+      ~CoancestryMatrix.from_pandas
+      ~CoancestryMatrix.group
+      ~CoancestryMatrix.group_taxa
+      ~CoancestryMatrix.incorp
+      ~CoancestryMatrix.incorp_taxa
+      ~CoancestryMatrix.insert
+      ~CoancestryMatrix.insert_taxa
+      ~CoancestryMatrix.inverse
+      ~CoancestryMatrix.is_grouped
+      ~CoancestryMatrix.is_grouped_taxa
+      ~CoancestryMatrix.is_positive_semidefinite
+      ~CoancestryMatrix.is_square
+      ~CoancestryMatrix.is_square_taxa
+      ~CoancestryMatrix.kinship
+      ~CoancestryMatrix.lexsort
+      ~CoancestryMatrix.lexsort_taxa
+      ~CoancestryMatrix.mat_asformat
+      ~CoancestryMatrix.max
+      ~CoancestryMatrix.max_inbreeding
+      ~CoancestryMatrix.mean
+      ~CoancestryMatrix.min
+      ~CoancestryMatrix.min_inbreeding
+      ~CoancestryMatrix.remove
+      ~CoancestryMatrix.remove_taxa
+      ~CoancestryMatrix.reorder
+      ~CoancestryMatrix.reorder_taxa
+      ~CoancestryMatrix.select
+      ~CoancestryMatrix.select_taxa
+      ~CoancestryMatrix.sort
+      ~CoancestryMatrix.sort_taxa
+      ~CoancestryMatrix.to_csv
+      ~CoancestryMatrix.to_hdf5
+      ~CoancestryMatrix.to_pandas
+      ~CoancestryMatrix.ungroup
+      ~CoancestryMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CoancestryMatrix.mat
+      ~CoancestryMatrix.mat_ndim
+      ~CoancestryMatrix.mat_shape
+      ~CoancestryMatrix.nsquare
+      ~CoancestryMatrix.nsquare_taxa
+      ~CoancestryMatrix.ntaxa
+      ~CoancestryMatrix.square_axes
+      ~CoancestryMatrix.square_axes_len
+      ~CoancestryMatrix.square_taxa_axes
+      ~CoancestryMatrix.square_taxa_axes_len
+      ~CoancestryMatrix.taxa
+      ~CoancestryMatrix.taxa_axis
+      ~CoancestryMatrix.taxa_grp
+      ~CoancestryMatrix.taxa_grp_len
+      ~CoancestryMatrix.taxa_grp_name
+      ~CoancestryMatrix.taxa_grp_spix
+      ~CoancestryMatrix.taxa_grp_stix
+   
+   

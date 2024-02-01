@@ -1,0 +1,6 @@
+check\_is\_BinarySolution
+=========================
+
+.. currentmodule:: pybrops.opt.soln.BinarySolution
+
+.. autofunction:: check_is_BinarySolution

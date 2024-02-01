@@ -1,0 +1,36 @@
+pymoo\_addon
+============
+
+.. automodule:: pybrops.opt.algo.pymoo_addon
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      IntegerPolynomialMutation
+      IntegerSimulatedBinaryCrossover
+      ReducedExchangeCrossover
+      ReducedExchangeMutation
+      SubsetRandomSampling
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

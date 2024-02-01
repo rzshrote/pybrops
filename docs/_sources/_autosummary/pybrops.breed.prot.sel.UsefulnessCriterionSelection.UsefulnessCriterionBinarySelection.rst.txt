@@ -1,0 +1,63 @@
+UsefulnessCriterionBinarySelection
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.UsefulnessCriterionSelection
+
+.. autoclass:: UsefulnessCriterionBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UsefulnessCriterionBinarySelection.mosolve
+      ~UsefulnessCriterionBinarySelection.problem
+      ~UsefulnessCriterionBinarySelection.select
+      ~UsefulnessCriterionBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~UsefulnessCriterionBinarySelection.eqcv_trans
+      ~UsefulnessCriterionBinarySelection.eqcv_trans_kwargs
+      ~UsefulnessCriterionBinarySelection.eqcv_wt
+      ~UsefulnessCriterionBinarySelection.gmapfn
+      ~UsefulnessCriterionBinarySelection.ineqcv_trans
+      ~UsefulnessCriterionBinarySelection.ineqcv_trans_kwargs
+      ~UsefulnessCriterionBinarySelection.ineqcv_wt
+      ~UsefulnessCriterionBinarySelection.moalgo
+      ~UsefulnessCriterionBinarySelection.ncross
+      ~UsefulnessCriterionBinarySelection.ndset_trans
+      ~UsefulnessCriterionBinarySelection.ndset_trans_kwargs
+      ~UsefulnessCriterionBinarySelection.ndset_wt
+      ~UsefulnessCriterionBinarySelection.neqcv
+      ~UsefulnessCriterionBinarySelection.nineqcv
+      ~UsefulnessCriterionBinarySelection.nmating
+      ~UsefulnessCriterionBinarySelection.nobj
+      ~UsefulnessCriterionBinarySelection.nparent
+      ~UsefulnessCriterionBinarySelection.nprogeny
+      ~UsefulnessCriterionBinarySelection.nself
+      ~UsefulnessCriterionBinarySelection.nselindiv
+      ~UsefulnessCriterionBinarySelection.ntrait
+      ~UsefulnessCriterionBinarySelection.obj_trans
+      ~UsefulnessCriterionBinarySelection.obj_trans_kwargs
+      ~UsefulnessCriterionBinarySelection.obj_wt
+      ~UsefulnessCriterionBinarySelection.rng
+      ~UsefulnessCriterionBinarySelection.selection_intensity
+      ~UsefulnessCriterionBinarySelection.soalgo
+      ~UsefulnessCriterionBinarySelection.unique_parents
+      ~UsefulnessCriterionBinarySelection.upper_percentile
+      ~UsefulnessCriterionBinarySelection.vmatfcty
+   
+   

@@ -1,0 +1,6 @@
+check\_is\_PhasedGenotypeMatrix
+===============================
+
+.. currentmodule:: pybrops.popgen.gmat.PhasedGenotypeMatrix
+
+.. autofunction:: check_is_PhasedGenotypeMatrix

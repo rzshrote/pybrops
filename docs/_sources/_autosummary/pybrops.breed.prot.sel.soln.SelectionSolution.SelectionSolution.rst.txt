@@ -1,0 +1,44 @@
+SelectionSolution
+=================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.SelectionSolution
+
+.. autoclass:: SelectionSolution
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SelectionSolution.decn_space
+      ~SelectionSolution.decn_space_lower
+      ~SelectionSolution.decn_space_upper
+      ~SelectionSolution.eqcv_wt
+      ~SelectionSolution.ineqcv_wt
+      ~SelectionSolution.ndecn
+      ~SelectionSolution.neqcv
+      ~SelectionSolution.nineqcv
+      ~SelectionSolution.nobj
+      ~SelectionSolution.nsoln
+      ~SelectionSolution.obj_wt
+      ~SelectionSolution.soln_decn
+      ~SelectionSolution.soln_eqcv
+      ~SelectionSolution.soln_ineqcv
+      ~SelectionSolution.soln_obj
+   
+   

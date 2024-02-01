@@ -1,0 +1,76 @@
+SubsetMateSelectionProblem
+==========================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem
+
+.. autoclass:: SubsetMateSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SubsetMateSelectionProblem.bounds
+      ~SubsetMateSelectionProblem.do
+      ~SubsetMateSelectionProblem.evalfn
+      ~SubsetMateSelectionProblem.evaluate
+      ~SubsetMateSelectionProblem.has_bounds
+      ~SubsetMateSelectionProblem.has_constraints
+      ~SubsetMateSelectionProblem.ideal_point
+      ~SubsetMateSelectionProblem.latentfn
+      ~SubsetMateSelectionProblem.nadir_point
+      ~SubsetMateSelectionProblem.name
+      ~SubsetMateSelectionProblem.pareto_front
+      ~SubsetMateSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SubsetMateSelectionProblem.callback
+      ~SubsetMateSelectionProblem.data
+      ~SubsetMateSelectionProblem.decn_space
+      ~SubsetMateSelectionProblem.decn_space_lower
+      ~SubsetMateSelectionProblem.decn_space_upper
+      ~SubsetMateSelectionProblem.decn_space_xmap
+      ~SubsetMateSelectionProblem.elementwise
+      ~SubsetMateSelectionProblem.elementwise_func
+      ~SubsetMateSelectionProblem.elementwise_runner
+      ~SubsetMateSelectionProblem.eqcv_trans
+      ~SubsetMateSelectionProblem.eqcv_trans_kwargs
+      ~SubsetMateSelectionProblem.eqcv_wt
+      ~SubsetMateSelectionProblem.exclude_from_serialization
+      ~SubsetMateSelectionProblem.ineqcv_trans
+      ~SubsetMateSelectionProblem.ineqcv_trans_kwargs
+      ~SubsetMateSelectionProblem.ineqcv_wt
+      ~SubsetMateSelectionProblem.n_constr
+      ~SubsetMateSelectionProblem.n_eq_constr
+      ~SubsetMateSelectionProblem.n_ieq_constr
+      ~SubsetMateSelectionProblem.n_obj
+      ~SubsetMateSelectionProblem.n_var
+      ~SubsetMateSelectionProblem.ndecn
+      ~SubsetMateSelectionProblem.neqcv
+      ~SubsetMateSelectionProblem.nineqcv
+      ~SubsetMateSelectionProblem.nlatent
+      ~SubsetMateSelectionProblem.nobj
+      ~SubsetMateSelectionProblem.obj_trans
+      ~SubsetMateSelectionProblem.obj_trans_kwargs
+      ~SubsetMateSelectionProblem.obj_wt
+      ~SubsetMateSelectionProblem.replace_nan_values_by
+      ~SubsetMateSelectionProblem.strict
+      ~SubsetMateSelectionProblem.vars
+      ~SubsetMateSelectionProblem.vtype
+      ~SubsetMateSelectionProblem.xl
+      ~SubsetMateSelectionProblem.xu
+   
+   

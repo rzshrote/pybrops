@@ -1,0 +1,6 @@
+check\_is\_SubsetProblem
+========================
+
+.. currentmodule:: pybrops.opt.prob.SubsetProblem
+
+.. autofunction:: check_is_SubsetProblem

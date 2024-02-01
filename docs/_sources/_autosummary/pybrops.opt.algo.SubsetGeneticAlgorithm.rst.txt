@@ -1,0 +1,32 @@
+SubsetGeneticAlgorithm
+======================
+
+.. automodule:: pybrops.opt.algo.SubsetGeneticAlgorithm
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      SubsetGeneticAlgorithm
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

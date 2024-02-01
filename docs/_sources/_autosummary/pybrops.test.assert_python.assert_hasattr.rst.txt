@@ -1,0 +1,6 @@
+assert\_hasattr
+===============
+
+.. currentmodule:: pybrops.test.assert_python
+
+.. autofunction:: assert_hasattr

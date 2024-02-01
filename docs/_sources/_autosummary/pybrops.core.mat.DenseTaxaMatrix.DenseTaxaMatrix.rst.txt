@@ -1,0 +1,72 @@
+DenseTaxaMatrix
+===============
+
+.. currentmodule:: pybrops.core.mat.DenseTaxaMatrix
+
+.. autoclass:: DenseTaxaMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseTaxaMatrix.adjoin
+      ~DenseTaxaMatrix.adjoin_taxa
+      ~DenseTaxaMatrix.append
+      ~DenseTaxaMatrix.append_taxa
+      ~DenseTaxaMatrix.concat
+      ~DenseTaxaMatrix.concat_taxa
+      ~DenseTaxaMatrix.copy
+      ~DenseTaxaMatrix.deepcopy
+      ~DenseTaxaMatrix.delete
+      ~DenseTaxaMatrix.delete_taxa
+      ~DenseTaxaMatrix.from_hdf5
+      ~DenseTaxaMatrix.group
+      ~DenseTaxaMatrix.group_taxa
+      ~DenseTaxaMatrix.incorp
+      ~DenseTaxaMatrix.incorp_taxa
+      ~DenseTaxaMatrix.insert
+      ~DenseTaxaMatrix.insert_taxa
+      ~DenseTaxaMatrix.is_grouped
+      ~DenseTaxaMatrix.is_grouped_taxa
+      ~DenseTaxaMatrix.lexsort
+      ~DenseTaxaMatrix.lexsort_taxa
+      ~DenseTaxaMatrix.remove
+      ~DenseTaxaMatrix.remove_taxa
+      ~DenseTaxaMatrix.reorder
+      ~DenseTaxaMatrix.reorder_taxa
+      ~DenseTaxaMatrix.select
+      ~DenseTaxaMatrix.select_taxa
+      ~DenseTaxaMatrix.sort
+      ~DenseTaxaMatrix.sort_taxa
+      ~DenseTaxaMatrix.to_hdf5
+      ~DenseTaxaMatrix.ungroup
+      ~DenseTaxaMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseTaxaMatrix.mat
+      ~DenseTaxaMatrix.mat_ndim
+      ~DenseTaxaMatrix.mat_shape
+      ~DenseTaxaMatrix.ntaxa
+      ~DenseTaxaMatrix.taxa
+      ~DenseTaxaMatrix.taxa_axis
+      ~DenseTaxaMatrix.taxa_grp
+      ~DenseTaxaMatrix.taxa_grp_len
+      ~DenseTaxaMatrix.taxa_grp_name
+      ~DenseTaxaMatrix.taxa_grp_spix
+      ~DenseTaxaMatrix.taxa_grp_stix
+   
+   

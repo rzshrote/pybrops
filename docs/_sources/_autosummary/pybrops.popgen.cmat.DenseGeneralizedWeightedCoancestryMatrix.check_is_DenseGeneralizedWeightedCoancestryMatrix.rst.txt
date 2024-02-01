@@ -1,0 +1,6 @@
+check\_is\_DenseGeneralizedWeightedCoancestryMatrix
+===================================================
+
+.. currentmodule:: pybrops.popgen.cmat.DenseGeneralizedWeightedCoancestryMatrix
+
+.. autofunction:: check_is_DenseGeneralizedWeightedCoancestryMatrix

@@ -1,0 +1,44 @@
+MutableMatrix
+=============
+
+.. currentmodule:: pybrops.core.mat.MutableMatrix
+
+.. autoclass:: MutableMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MutableMatrix.adjoin
+      ~MutableMatrix.append
+      ~MutableMatrix.concat
+      ~MutableMatrix.copy
+      ~MutableMatrix.deepcopy
+      ~MutableMatrix.delete
+      ~MutableMatrix.from_hdf5
+      ~MutableMatrix.incorp
+      ~MutableMatrix.insert
+      ~MutableMatrix.remove
+      ~MutableMatrix.select
+      ~MutableMatrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MutableMatrix.mat
+      ~MutableMatrix.mat_ndim
+      ~MutableMatrix.mat_shape
+   
+   

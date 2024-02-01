@@ -1,0 +1,33 @@
+assert\_numpy
+=============
+
+.. automodule:: pybrops.test.assert_numpy
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      assert_ndarray_function_eq
+      assert_ndarray_operator
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,105 @@
+DenseDihybridDHAdditiveGeneticVarianceMatrix
+============================================
+
+.. currentmodule:: pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix
+
+.. autoclass:: DenseDihybridDHAdditiveGeneticVarianceMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.adjoin
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.adjoin_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.adjoin_trait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.append
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.append_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.append_trait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.concat
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.concat_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.concat_trait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.copy
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.deepcopy
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.delete
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.delete_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.delete_trait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.from_algmod
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.from_csv
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.from_gmod
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.from_hdf5
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.from_pandas
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.group
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.group_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.incorp
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.incorp_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.incorp_trait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.insert
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.insert_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.insert_trait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.is_grouped
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.is_grouped_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.is_square
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.is_square_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.lexsort
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.lexsort_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.lexsort_trait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.remove
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.remove_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.remove_trait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.reorder
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.reorder_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.reorder_trait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.select
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.select_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.select_trait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.sort
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.sort_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.sort_trait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.to_csv
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.to_hdf5
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.to_pandas
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.ungroup
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.epgc
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.female_axis
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.male_axis
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.mat
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.mat_ndim
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.mat_shape
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.nfemale
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.nmale
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.nsquare
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.nsquare_taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.ntaxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.ntrait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.square_axes
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.square_axes_len
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.square_taxa_axes
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.square_taxa_axes_len
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.taxa
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.taxa_axis
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.taxa_grp
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.taxa_grp_len
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.taxa_grp_name
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.taxa_grp_spix
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.taxa_grp_stix
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.trait
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrix.trait_axis
+   
+   

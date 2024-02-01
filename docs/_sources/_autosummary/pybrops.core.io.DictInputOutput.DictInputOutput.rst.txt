@@ -1,0 +1,26 @@
+DictInputOutput
+===============
+
+.. currentmodule:: pybrops.core.io.DictInputOutput
+
+.. autoclass:: DictInputOutput
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DictInputOutput.from_dict
+      ~DictInputOutput.to_dict
+   
+   
+
+   
+   
+   

@@ -1,0 +1,59 @@
+GenotypeBuilderSubsetSelection
+==============================
+
+.. currentmodule:: pybrops.breed.prot.sel.GenotypeBuilderSelection
+
+.. autoclass:: GenotypeBuilderSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GenotypeBuilderSubsetSelection.mosolve
+      ~GenotypeBuilderSubsetSelection.problem
+      ~GenotypeBuilderSubsetSelection.select
+      ~GenotypeBuilderSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenotypeBuilderSubsetSelection.eqcv_trans
+      ~GenotypeBuilderSubsetSelection.eqcv_trans_kwargs
+      ~GenotypeBuilderSubsetSelection.eqcv_wt
+      ~GenotypeBuilderSubsetSelection.ineqcv_trans
+      ~GenotypeBuilderSubsetSelection.ineqcv_trans_kwargs
+      ~GenotypeBuilderSubsetSelection.ineqcv_wt
+      ~GenotypeBuilderSubsetSelection.moalgo
+      ~GenotypeBuilderSubsetSelection.nbestfndr
+      ~GenotypeBuilderSubsetSelection.ncross
+      ~GenotypeBuilderSubsetSelection.ndset_trans
+      ~GenotypeBuilderSubsetSelection.ndset_trans_kwargs
+      ~GenotypeBuilderSubsetSelection.ndset_wt
+      ~GenotypeBuilderSubsetSelection.neqcv
+      ~GenotypeBuilderSubsetSelection.nhaploblk
+      ~GenotypeBuilderSubsetSelection.nineqcv
+      ~GenotypeBuilderSubsetSelection.nmating
+      ~GenotypeBuilderSubsetSelection.nobj
+      ~GenotypeBuilderSubsetSelection.nparent
+      ~GenotypeBuilderSubsetSelection.nprogeny
+      ~GenotypeBuilderSubsetSelection.nselindiv
+      ~GenotypeBuilderSubsetSelection.ntrait
+      ~GenotypeBuilderSubsetSelection.obj_trans
+      ~GenotypeBuilderSubsetSelection.obj_trans_kwargs
+      ~GenotypeBuilderSubsetSelection.obj_wt
+      ~GenotypeBuilderSubsetSelection.rng
+      ~GenotypeBuilderSubsetSelection.soalgo
+   
+   

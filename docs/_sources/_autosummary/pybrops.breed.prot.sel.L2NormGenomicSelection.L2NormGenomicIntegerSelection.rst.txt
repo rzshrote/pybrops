@@ -1,0 +1,57 @@
+L2NormGenomicIntegerSelection
+=============================
+
+.. currentmodule:: pybrops.breed.prot.sel.L2NormGenomicSelection
+
+.. autoclass:: L2NormGenomicIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~L2NormGenomicIntegerSelection.mosolve
+      ~L2NormGenomicIntegerSelection.problem
+      ~L2NormGenomicIntegerSelection.select
+      ~L2NormGenomicIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~L2NormGenomicIntegerSelection.cmatfcty
+      ~L2NormGenomicIntegerSelection.eqcv_trans
+      ~L2NormGenomicIntegerSelection.eqcv_trans_kwargs
+      ~L2NormGenomicIntegerSelection.eqcv_wt
+      ~L2NormGenomicIntegerSelection.ineqcv_trans
+      ~L2NormGenomicIntegerSelection.ineqcv_trans_kwargs
+      ~L2NormGenomicIntegerSelection.ineqcv_wt
+      ~L2NormGenomicIntegerSelection.moalgo
+      ~L2NormGenomicIntegerSelection.ncross
+      ~L2NormGenomicIntegerSelection.ndset_trans
+      ~L2NormGenomicIntegerSelection.ndset_trans_kwargs
+      ~L2NormGenomicIntegerSelection.ndset_wt
+      ~L2NormGenomicIntegerSelection.neqcv
+      ~L2NormGenomicIntegerSelection.nineqcv
+      ~L2NormGenomicIntegerSelection.nmating
+      ~L2NormGenomicIntegerSelection.nobj
+      ~L2NormGenomicIntegerSelection.nparent
+      ~L2NormGenomicIntegerSelection.nprogeny
+      ~L2NormGenomicIntegerSelection.nselindiv
+      ~L2NormGenomicIntegerSelection.obj_trans
+      ~L2NormGenomicIntegerSelection.obj_trans_kwargs
+      ~L2NormGenomicIntegerSelection.obj_wt
+      ~L2NormGenomicIntegerSelection.rng
+      ~L2NormGenomicIntegerSelection.soalgo
+   
+   

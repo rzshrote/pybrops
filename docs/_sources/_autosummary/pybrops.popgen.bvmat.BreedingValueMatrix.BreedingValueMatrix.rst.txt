@@ -1,0 +1,101 @@
+BreedingValueMatrix
+===================
+
+.. currentmodule:: pybrops.popgen.bvmat.BreedingValueMatrix
+
+.. autoclass:: BreedingValueMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BreedingValueMatrix.adjoin
+      ~BreedingValueMatrix.adjoin_taxa
+      ~BreedingValueMatrix.adjoin_trait
+      ~BreedingValueMatrix.append
+      ~BreedingValueMatrix.append_taxa
+      ~BreedingValueMatrix.append_trait
+      ~BreedingValueMatrix.concat
+      ~BreedingValueMatrix.concat_taxa
+      ~BreedingValueMatrix.concat_trait
+      ~BreedingValueMatrix.copy
+      ~BreedingValueMatrix.deepcopy
+      ~BreedingValueMatrix.delete
+      ~BreedingValueMatrix.delete_taxa
+      ~BreedingValueMatrix.delete_trait
+      ~BreedingValueMatrix.from_csv
+      ~BreedingValueMatrix.from_hdf5
+      ~BreedingValueMatrix.from_pandas
+      ~BreedingValueMatrix.group
+      ~BreedingValueMatrix.group_taxa
+      ~BreedingValueMatrix.incorp
+      ~BreedingValueMatrix.incorp_taxa
+      ~BreedingValueMatrix.incorp_trait
+      ~BreedingValueMatrix.insert
+      ~BreedingValueMatrix.insert_taxa
+      ~BreedingValueMatrix.insert_trait
+      ~BreedingValueMatrix.is_grouped
+      ~BreedingValueMatrix.is_grouped_taxa
+      ~BreedingValueMatrix.lexsort
+      ~BreedingValueMatrix.lexsort_taxa
+      ~BreedingValueMatrix.lexsort_trait
+      ~BreedingValueMatrix.remove
+      ~BreedingValueMatrix.remove_taxa
+      ~BreedingValueMatrix.remove_trait
+      ~BreedingValueMatrix.reorder
+      ~BreedingValueMatrix.reorder_taxa
+      ~BreedingValueMatrix.reorder_trait
+      ~BreedingValueMatrix.select
+      ~BreedingValueMatrix.select_taxa
+      ~BreedingValueMatrix.select_trait
+      ~BreedingValueMatrix.sort
+      ~BreedingValueMatrix.sort_taxa
+      ~BreedingValueMatrix.sort_trait
+      ~BreedingValueMatrix.targmax
+      ~BreedingValueMatrix.targmin
+      ~BreedingValueMatrix.tmax
+      ~BreedingValueMatrix.tmean
+      ~BreedingValueMatrix.tmin
+      ~BreedingValueMatrix.to_csv
+      ~BreedingValueMatrix.to_hdf5
+      ~BreedingValueMatrix.to_pandas
+      ~BreedingValueMatrix.trange
+      ~BreedingValueMatrix.tstd
+      ~BreedingValueMatrix.tvar
+      ~BreedingValueMatrix.ungroup
+      ~BreedingValueMatrix.ungroup_taxa
+      ~BreedingValueMatrix.unscale
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BreedingValueMatrix.location
+      ~BreedingValueMatrix.mat
+      ~BreedingValueMatrix.mat_ndim
+      ~BreedingValueMatrix.mat_shape
+      ~BreedingValueMatrix.ntaxa
+      ~BreedingValueMatrix.ntrait
+      ~BreedingValueMatrix.scale
+      ~BreedingValueMatrix.taxa
+      ~BreedingValueMatrix.taxa_axis
+      ~BreedingValueMatrix.taxa_grp
+      ~BreedingValueMatrix.taxa_grp_len
+      ~BreedingValueMatrix.taxa_grp_name
+      ~BreedingValueMatrix.taxa_grp_spix
+      ~BreedingValueMatrix.taxa_grp_stix
+      ~BreedingValueMatrix.trait
+      ~BreedingValueMatrix.trait_axis
+   
+   

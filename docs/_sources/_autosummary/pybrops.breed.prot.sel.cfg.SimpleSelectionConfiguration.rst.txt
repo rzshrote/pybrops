@@ -1,0 +1,32 @@
+SimpleSelectionConfiguration
+============================
+
+.. automodule:: pybrops.breed.prot.sel.cfg.SimpleSelectionConfiguration
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      SimpleSelectionConfiguration
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

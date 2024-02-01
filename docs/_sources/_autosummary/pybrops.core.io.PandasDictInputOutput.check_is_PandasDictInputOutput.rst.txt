@@ -1,0 +1,6 @@
+check\_is\_PandasDictInputOutput
+================================
+
+.. currentmodule:: pybrops.core.io.PandasDictInputOutput
+
+.. autofunction:: check_is_PandasDictInputOutput

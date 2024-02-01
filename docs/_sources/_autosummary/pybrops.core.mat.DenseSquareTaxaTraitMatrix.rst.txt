@@ -1,0 +1,41 @@
+DenseSquareTaxaTraitMatrix
+==========================
+
+.. automodule:: pybrops.core.mat.DenseSquareTaxaTraitMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseSquareTaxaTraitMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseSquareTaxaTraitMatrix
+   
+   
+
+   
+   
+   
+
+
+

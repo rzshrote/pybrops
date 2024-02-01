@@ -1,0 +1,37 @@
+gmat
+====
+
+.. automodule:: pybrops.popgen.gmat
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.popgen.gmat.DenseGenotypeMatrix
+   pybrops.popgen.gmat.DensePhasedGenotypeMatrix
+   pybrops.popgen.gmat.GenotypeMatrix
+   pybrops.popgen.gmat.HaplotypeMatrix
+   pybrops.popgen.gmat.PhasedGenotypeMatrix
+   pybrops.popgen.gmat.PhasedHaplotypeMatrix
+

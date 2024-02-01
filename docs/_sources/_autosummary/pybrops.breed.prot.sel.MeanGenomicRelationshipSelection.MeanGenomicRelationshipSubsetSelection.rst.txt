@@ -1,0 +1,57 @@
+MeanGenomicRelationshipSubsetSelection
+======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.MeanGenomicRelationshipSelection
+
+.. autoclass:: MeanGenomicRelationshipSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanGenomicRelationshipSubsetSelection.mosolve
+      ~MeanGenomicRelationshipSubsetSelection.problem
+      ~MeanGenomicRelationshipSubsetSelection.select
+      ~MeanGenomicRelationshipSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanGenomicRelationshipSubsetSelection.cmatfcty
+      ~MeanGenomicRelationshipSubsetSelection.eqcv_trans
+      ~MeanGenomicRelationshipSubsetSelection.eqcv_trans_kwargs
+      ~MeanGenomicRelationshipSubsetSelection.eqcv_wt
+      ~MeanGenomicRelationshipSubsetSelection.ineqcv_trans
+      ~MeanGenomicRelationshipSubsetSelection.ineqcv_trans_kwargs
+      ~MeanGenomicRelationshipSubsetSelection.ineqcv_wt
+      ~MeanGenomicRelationshipSubsetSelection.moalgo
+      ~MeanGenomicRelationshipSubsetSelection.ncross
+      ~MeanGenomicRelationshipSubsetSelection.ndset_trans
+      ~MeanGenomicRelationshipSubsetSelection.ndset_trans_kwargs
+      ~MeanGenomicRelationshipSubsetSelection.ndset_wt
+      ~MeanGenomicRelationshipSubsetSelection.neqcv
+      ~MeanGenomicRelationshipSubsetSelection.nineqcv
+      ~MeanGenomicRelationshipSubsetSelection.nmating
+      ~MeanGenomicRelationshipSubsetSelection.nobj
+      ~MeanGenomicRelationshipSubsetSelection.nparent
+      ~MeanGenomicRelationshipSubsetSelection.nprogeny
+      ~MeanGenomicRelationshipSubsetSelection.nselindiv
+      ~MeanGenomicRelationshipSubsetSelection.obj_trans
+      ~MeanGenomicRelationshipSubsetSelection.obj_trans_kwargs
+      ~MeanGenomicRelationshipSubsetSelection.obj_wt
+      ~MeanGenomicRelationshipSubsetSelection.rng
+      ~MeanGenomicRelationshipSubsetSelection.soalgo
+   
+   

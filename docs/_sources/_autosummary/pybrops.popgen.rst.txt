@@ -1,0 +1,35 @@
+popgen
+======
+
+.. automodule:: pybrops.popgen
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.popgen.bvmat
+   pybrops.popgen.cmat
+   pybrops.popgen.gmap
+   pybrops.popgen.gmat
+

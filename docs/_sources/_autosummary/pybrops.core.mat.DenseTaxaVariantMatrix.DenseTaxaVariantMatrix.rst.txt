@@ -1,0 +1,101 @@
+DenseTaxaVariantMatrix
+======================
+
+.. currentmodule:: pybrops.core.mat.DenseTaxaVariantMatrix
+
+.. autoclass:: DenseTaxaVariantMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseTaxaVariantMatrix.adjoin
+      ~DenseTaxaVariantMatrix.adjoin_taxa
+      ~DenseTaxaVariantMatrix.adjoin_vrnt
+      ~DenseTaxaVariantMatrix.append
+      ~DenseTaxaVariantMatrix.append_taxa
+      ~DenseTaxaVariantMatrix.append_vrnt
+      ~DenseTaxaVariantMatrix.concat
+      ~DenseTaxaVariantMatrix.concat_taxa
+      ~DenseTaxaVariantMatrix.concat_vrnt
+      ~DenseTaxaVariantMatrix.copy
+      ~DenseTaxaVariantMatrix.deepcopy
+      ~DenseTaxaVariantMatrix.delete
+      ~DenseTaxaVariantMatrix.delete_taxa
+      ~DenseTaxaVariantMatrix.delete_vrnt
+      ~DenseTaxaVariantMatrix.from_hdf5
+      ~DenseTaxaVariantMatrix.group
+      ~DenseTaxaVariantMatrix.group_taxa
+      ~DenseTaxaVariantMatrix.group_vrnt
+      ~DenseTaxaVariantMatrix.incorp
+      ~DenseTaxaVariantMatrix.incorp_taxa
+      ~DenseTaxaVariantMatrix.incorp_vrnt
+      ~DenseTaxaVariantMatrix.insert
+      ~DenseTaxaVariantMatrix.insert_taxa
+      ~DenseTaxaVariantMatrix.insert_vrnt
+      ~DenseTaxaVariantMatrix.is_grouped
+      ~DenseTaxaVariantMatrix.is_grouped_taxa
+      ~DenseTaxaVariantMatrix.is_grouped_vrnt
+      ~DenseTaxaVariantMatrix.lexsort
+      ~DenseTaxaVariantMatrix.lexsort_taxa
+      ~DenseTaxaVariantMatrix.lexsort_vrnt
+      ~DenseTaxaVariantMatrix.remove
+      ~DenseTaxaVariantMatrix.remove_taxa
+      ~DenseTaxaVariantMatrix.remove_vrnt
+      ~DenseTaxaVariantMatrix.reorder
+      ~DenseTaxaVariantMatrix.reorder_taxa
+      ~DenseTaxaVariantMatrix.reorder_vrnt
+      ~DenseTaxaVariantMatrix.select
+      ~DenseTaxaVariantMatrix.select_taxa
+      ~DenseTaxaVariantMatrix.select_vrnt
+      ~DenseTaxaVariantMatrix.sort
+      ~DenseTaxaVariantMatrix.sort_taxa
+      ~DenseTaxaVariantMatrix.sort_vrnt
+      ~DenseTaxaVariantMatrix.to_hdf5
+      ~DenseTaxaVariantMatrix.ungroup
+      ~DenseTaxaVariantMatrix.ungroup_taxa
+      ~DenseTaxaVariantMatrix.ungroup_vrnt
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseTaxaVariantMatrix.mat
+      ~DenseTaxaVariantMatrix.mat_ndim
+      ~DenseTaxaVariantMatrix.mat_shape
+      ~DenseTaxaVariantMatrix.ntaxa
+      ~DenseTaxaVariantMatrix.nvrnt
+      ~DenseTaxaVariantMatrix.taxa
+      ~DenseTaxaVariantMatrix.taxa_axis
+      ~DenseTaxaVariantMatrix.taxa_grp
+      ~DenseTaxaVariantMatrix.taxa_grp_len
+      ~DenseTaxaVariantMatrix.taxa_grp_name
+      ~DenseTaxaVariantMatrix.taxa_grp_spix
+      ~DenseTaxaVariantMatrix.taxa_grp_stix
+      ~DenseTaxaVariantMatrix.vrnt_axis
+      ~DenseTaxaVariantMatrix.vrnt_chrgrp
+      ~DenseTaxaVariantMatrix.vrnt_chrgrp_len
+      ~DenseTaxaVariantMatrix.vrnt_chrgrp_name
+      ~DenseTaxaVariantMatrix.vrnt_chrgrp_spix
+      ~DenseTaxaVariantMatrix.vrnt_chrgrp_stix
+      ~DenseTaxaVariantMatrix.vrnt_genpos
+      ~DenseTaxaVariantMatrix.vrnt_hapalt
+      ~DenseTaxaVariantMatrix.vrnt_hapgrp
+      ~DenseTaxaVariantMatrix.vrnt_hapref
+      ~DenseTaxaVariantMatrix.vrnt_mask
+      ~DenseTaxaVariantMatrix.vrnt_name
+      ~DenseTaxaVariantMatrix.vrnt_phypos
+      ~DenseTaxaVariantMatrix.vrnt_xoprob
+   
+   

@@ -1,0 +1,6 @@
+check\_pandas\_Series\_has\_index
+=================================
+
+.. currentmodule:: pybrops.core.error.error_value_pandas
+
+.. autofunction:: check_pandas_Series_has_index

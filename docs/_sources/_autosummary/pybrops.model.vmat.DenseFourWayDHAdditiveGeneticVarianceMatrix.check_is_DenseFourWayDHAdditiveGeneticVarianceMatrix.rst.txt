@@ -1,0 +1,6 @@
+check\_is\_DenseFourWayDHAdditiveGeneticVarianceMatrix
+======================================================
+
+.. currentmodule:: pybrops.model.vmat.DenseFourWayDHAdditiveGeneticVarianceMatrix
+
+.. autofunction:: check_is_DenseFourWayDHAdditiveGeneticVarianceMatrix

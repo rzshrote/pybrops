@@ -1,0 +1,33 @@
+MeanPhenotypicBreedingValue
+===========================
+
+.. currentmodule:: pybrops.breed.prot.bv.MeanPhenotypicBreedingValue
+
+.. autoclass:: MeanPhenotypicBreedingValue
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanPhenotypicBreedingValue.estimate
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanPhenotypicBreedingValue.taxa_col
+      ~MeanPhenotypicBreedingValue.taxa_grp_col
+      ~MeanPhenotypicBreedingValue.trait_cols
+   
+   

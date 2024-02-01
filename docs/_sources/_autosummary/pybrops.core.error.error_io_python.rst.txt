@@ -1,0 +1,34 @@
+error\_io\_python
+=================
+
+.. automodule:: pybrops.core.error.error_io_python
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_directory_exists
+      check_file_exists
+      check_path_exists
+   
+   
+
+   
+   
+   
+
+
+

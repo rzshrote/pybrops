@@ -1,0 +1,6 @@
+check\_is\_Solution
+===================
+
+.. currentmodule:: pybrops.opt.soln.Solution
+
+.. autofunction:: check_is_Solution

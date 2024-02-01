@@ -1,0 +1,36 @@
+FamilyEstimatedBreedingValueSelection
+=====================================
+
+.. automodule:: pybrops.breed.prot.sel.FamilyEstimatedBreedingValueSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      FamilyEstimatedBreedingValueBinarySelection
+      FamilyEstimatedBreedingValueIntegerSelection
+      FamilyEstimatedBreedingValueRealSelection
+      FamilyEstimatedBreedingValueSelectionMixin
+      FamilyEstimatedBreedingValueSubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

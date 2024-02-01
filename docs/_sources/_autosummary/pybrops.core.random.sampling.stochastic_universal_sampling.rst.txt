@@ -1,0 +1,6 @@
+stochastic\_universal\_sampling
+===============================
+
+.. currentmodule:: pybrops.core.random.sampling
+
+.. autofunction:: stochastic_universal_sampling

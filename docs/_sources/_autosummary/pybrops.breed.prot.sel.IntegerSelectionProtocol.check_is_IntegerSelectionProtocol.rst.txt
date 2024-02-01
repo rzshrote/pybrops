@@ -1,0 +1,6 @@
+check\_is\_IntegerSelectionProtocol
+===================================
+
+.. currentmodule:: pybrops.breed.prot.sel.IntegerSelectionProtocol
+
+.. autofunction:: check_is_IntegerSelectionProtocol

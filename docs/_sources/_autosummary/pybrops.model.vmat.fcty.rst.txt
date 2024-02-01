@@ -1,0 +1,40 @@
+fcty
+====
+
+.. automodule:: pybrops.model.vmat.fcty
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.model.vmat.fcty.AdditiveGeneticVarianceMatrixFactory
+   pybrops.model.vmat.fcty.AdditiveGenicVarianceMatrixFactory
+   pybrops.model.vmat.fcty.DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
+   pybrops.model.vmat.fcty.DenseFourWayDHAdditiveGeneticVarianceMatrixFactory
+   pybrops.model.vmat.fcty.DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory
+   pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory
+   pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGenicVarianceMatrixFactory
+   pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory
+   pybrops.model.vmat.fcty.GenicVarianceMatrixFactory
+

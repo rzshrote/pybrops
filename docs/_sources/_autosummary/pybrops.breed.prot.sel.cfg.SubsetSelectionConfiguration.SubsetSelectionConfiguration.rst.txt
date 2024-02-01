@@ -1,0 +1,38 @@
+SubsetSelectionConfiguration
+============================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration
+
+.. autoclass:: SubsetSelectionConfiguration
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SubsetSelectionConfiguration.sample_xconfig
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SubsetSelectionConfiguration.ncross
+      ~SubsetSelectionConfiguration.nmating
+      ~SubsetSelectionConfiguration.nparent
+      ~SubsetSelectionConfiguration.nprogeny
+      ~SubsetSelectionConfiguration.pgmat
+      ~SubsetSelectionConfiguration.rng
+      ~SubsetSelectionConfiguration.xconfig
+      ~SubsetSelectionConfiguration.xconfig_decn
+   
+   

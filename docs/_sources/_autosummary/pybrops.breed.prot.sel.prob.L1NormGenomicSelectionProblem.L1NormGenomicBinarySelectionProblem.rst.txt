@@ -1,0 +1,77 @@
+L1NormGenomicBinarySelectionProblem
+===================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem
+
+.. autoclass:: L1NormGenomicBinarySelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~L1NormGenomicBinarySelectionProblem.bounds
+      ~L1NormGenomicBinarySelectionProblem.do
+      ~L1NormGenomicBinarySelectionProblem.evalfn
+      ~L1NormGenomicBinarySelectionProblem.evaluate
+      ~L1NormGenomicBinarySelectionProblem.from_numpy
+      ~L1NormGenomicBinarySelectionProblem.has_bounds
+      ~L1NormGenomicBinarySelectionProblem.has_constraints
+      ~L1NormGenomicBinarySelectionProblem.ideal_point
+      ~L1NormGenomicBinarySelectionProblem.latentfn
+      ~L1NormGenomicBinarySelectionProblem.nadir_point
+      ~L1NormGenomicBinarySelectionProblem.name
+      ~L1NormGenomicBinarySelectionProblem.pareto_front
+      ~L1NormGenomicBinarySelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~L1NormGenomicBinarySelectionProblem.V
+      ~L1NormGenomicBinarySelectionProblem.callback
+      ~L1NormGenomicBinarySelectionProblem.data
+      ~L1NormGenomicBinarySelectionProblem.decn_space
+      ~L1NormGenomicBinarySelectionProblem.decn_space_lower
+      ~L1NormGenomicBinarySelectionProblem.decn_space_upper
+      ~L1NormGenomicBinarySelectionProblem.elementwise
+      ~L1NormGenomicBinarySelectionProblem.elementwise_func
+      ~L1NormGenomicBinarySelectionProblem.elementwise_runner
+      ~L1NormGenomicBinarySelectionProblem.eqcv_trans
+      ~L1NormGenomicBinarySelectionProblem.eqcv_trans_kwargs
+      ~L1NormGenomicBinarySelectionProblem.eqcv_wt
+      ~L1NormGenomicBinarySelectionProblem.exclude_from_serialization
+      ~L1NormGenomicBinarySelectionProblem.ineqcv_trans
+      ~L1NormGenomicBinarySelectionProblem.ineqcv_trans_kwargs
+      ~L1NormGenomicBinarySelectionProblem.ineqcv_wt
+      ~L1NormGenomicBinarySelectionProblem.n_constr
+      ~L1NormGenomicBinarySelectionProblem.n_eq_constr
+      ~L1NormGenomicBinarySelectionProblem.n_ieq_constr
+      ~L1NormGenomicBinarySelectionProblem.n_obj
+      ~L1NormGenomicBinarySelectionProblem.n_var
+      ~L1NormGenomicBinarySelectionProblem.ndecn
+      ~L1NormGenomicBinarySelectionProblem.neqcv
+      ~L1NormGenomicBinarySelectionProblem.nineqcv
+      ~L1NormGenomicBinarySelectionProblem.nlatent
+      ~L1NormGenomicBinarySelectionProblem.nobj
+      ~L1NormGenomicBinarySelectionProblem.obj_trans
+      ~L1NormGenomicBinarySelectionProblem.obj_trans_kwargs
+      ~L1NormGenomicBinarySelectionProblem.obj_wt
+      ~L1NormGenomicBinarySelectionProblem.replace_nan_values_by
+      ~L1NormGenomicBinarySelectionProblem.strict
+      ~L1NormGenomicBinarySelectionProblem.vars
+      ~L1NormGenomicBinarySelectionProblem.vtype
+      ~L1NormGenomicBinarySelectionProblem.xl
+      ~L1NormGenomicBinarySelectionProblem.xu
+   
+   

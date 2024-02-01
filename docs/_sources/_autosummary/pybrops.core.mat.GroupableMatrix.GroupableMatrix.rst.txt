@@ -1,0 +1,50 @@
+GroupableMatrix
+===============
+
+.. currentmodule:: pybrops.core.mat.GroupableMatrix
+
+.. autoclass:: GroupableMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GroupableMatrix.adjoin
+      ~GroupableMatrix.append
+      ~GroupableMatrix.concat
+      ~GroupableMatrix.copy
+      ~GroupableMatrix.deepcopy
+      ~GroupableMatrix.delete
+      ~GroupableMatrix.from_hdf5
+      ~GroupableMatrix.group
+      ~GroupableMatrix.incorp
+      ~GroupableMatrix.insert
+      ~GroupableMatrix.is_grouped
+      ~GroupableMatrix.lexsort
+      ~GroupableMatrix.remove
+      ~GroupableMatrix.reorder
+      ~GroupableMatrix.select
+      ~GroupableMatrix.sort
+      ~GroupableMatrix.to_hdf5
+      ~GroupableMatrix.ungroup
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GroupableMatrix.mat
+      ~GroupableMatrix.mat_ndim
+      ~GroupableMatrix.mat_shape
+   
+   

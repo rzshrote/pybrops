@@ -1,0 +1,35 @@
+SelectionConfiguration
+======================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.SelectionConfiguration
+
+.. autoclass:: SelectionConfiguration
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SelectionConfiguration.ncross
+      ~SelectionConfiguration.nmating
+      ~SelectionConfiguration.nparent
+      ~SelectionConfiguration.nprogeny
+      ~SelectionConfiguration.pgmat
+      ~SelectionConfiguration.xconfig
+   
+   

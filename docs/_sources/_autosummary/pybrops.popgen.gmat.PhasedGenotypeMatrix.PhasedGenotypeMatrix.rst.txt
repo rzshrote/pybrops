@@ -1,0 +1,125 @@
+PhasedGenotypeMatrix
+====================
+
+.. currentmodule:: pybrops.popgen.gmat.PhasedGenotypeMatrix
+
+.. autoclass:: PhasedGenotypeMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PhasedGenotypeMatrix.acount
+      ~PhasedGenotypeMatrix.adjoin
+      ~PhasedGenotypeMatrix.adjoin_phase
+      ~PhasedGenotypeMatrix.adjoin_taxa
+      ~PhasedGenotypeMatrix.adjoin_vrnt
+      ~PhasedGenotypeMatrix.afreq
+      ~PhasedGenotypeMatrix.apoly
+      ~PhasedGenotypeMatrix.append
+      ~PhasedGenotypeMatrix.append_phase
+      ~PhasedGenotypeMatrix.append_taxa
+      ~PhasedGenotypeMatrix.append_vrnt
+      ~PhasedGenotypeMatrix.concat
+      ~PhasedGenotypeMatrix.concat_phase
+      ~PhasedGenotypeMatrix.concat_taxa
+      ~PhasedGenotypeMatrix.concat_vrnt
+      ~PhasedGenotypeMatrix.copy
+      ~PhasedGenotypeMatrix.deepcopy
+      ~PhasedGenotypeMatrix.delete
+      ~PhasedGenotypeMatrix.delete_phase
+      ~PhasedGenotypeMatrix.delete_taxa
+      ~PhasedGenotypeMatrix.delete_vrnt
+      ~PhasedGenotypeMatrix.from_hdf5
+      ~PhasedGenotypeMatrix.group
+      ~PhasedGenotypeMatrix.group_taxa
+      ~PhasedGenotypeMatrix.group_vrnt
+      ~PhasedGenotypeMatrix.gtcount
+      ~PhasedGenotypeMatrix.gtfreq
+      ~PhasedGenotypeMatrix.incorp
+      ~PhasedGenotypeMatrix.incorp_phase
+      ~PhasedGenotypeMatrix.incorp_taxa
+      ~PhasedGenotypeMatrix.incorp_vrnt
+      ~PhasedGenotypeMatrix.insert
+      ~PhasedGenotypeMatrix.insert_phase
+      ~PhasedGenotypeMatrix.insert_taxa
+      ~PhasedGenotypeMatrix.insert_vrnt
+      ~PhasedGenotypeMatrix.interp_genpos
+      ~PhasedGenotypeMatrix.interp_xoprob
+      ~PhasedGenotypeMatrix.is_grouped
+      ~PhasedGenotypeMatrix.is_grouped_taxa
+      ~PhasedGenotypeMatrix.is_grouped_vrnt
+      ~PhasedGenotypeMatrix.lexsort
+      ~PhasedGenotypeMatrix.lexsort_taxa
+      ~PhasedGenotypeMatrix.lexsort_vrnt
+      ~PhasedGenotypeMatrix.maf
+      ~PhasedGenotypeMatrix.mat_asformat
+      ~PhasedGenotypeMatrix.meh
+      ~PhasedGenotypeMatrix.remove
+      ~PhasedGenotypeMatrix.remove_phase
+      ~PhasedGenotypeMatrix.remove_taxa
+      ~PhasedGenotypeMatrix.remove_vrnt
+      ~PhasedGenotypeMatrix.reorder
+      ~PhasedGenotypeMatrix.reorder_taxa
+      ~PhasedGenotypeMatrix.reorder_vrnt
+      ~PhasedGenotypeMatrix.select
+      ~PhasedGenotypeMatrix.select_phase
+      ~PhasedGenotypeMatrix.select_taxa
+      ~PhasedGenotypeMatrix.select_vrnt
+      ~PhasedGenotypeMatrix.sort
+      ~PhasedGenotypeMatrix.sort_taxa
+      ~PhasedGenotypeMatrix.sort_vrnt
+      ~PhasedGenotypeMatrix.tacount
+      ~PhasedGenotypeMatrix.tafreq
+      ~PhasedGenotypeMatrix.to_hdf5
+      ~PhasedGenotypeMatrix.ungroup
+      ~PhasedGenotypeMatrix.ungroup_taxa
+      ~PhasedGenotypeMatrix.ungroup_vrnt
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PhasedGenotypeMatrix.mat
+      ~PhasedGenotypeMatrix.mat_format
+      ~PhasedGenotypeMatrix.mat_ndim
+      ~PhasedGenotypeMatrix.mat_shape
+      ~PhasedGenotypeMatrix.nphase
+      ~PhasedGenotypeMatrix.ntaxa
+      ~PhasedGenotypeMatrix.nvrnt
+      ~PhasedGenotypeMatrix.phase_axis
+      ~PhasedGenotypeMatrix.ploidy
+      ~PhasedGenotypeMatrix.taxa
+      ~PhasedGenotypeMatrix.taxa_axis
+      ~PhasedGenotypeMatrix.taxa_grp
+      ~PhasedGenotypeMatrix.taxa_grp_len
+      ~PhasedGenotypeMatrix.taxa_grp_name
+      ~PhasedGenotypeMatrix.taxa_grp_spix
+      ~PhasedGenotypeMatrix.taxa_grp_stix
+      ~PhasedGenotypeMatrix.vrnt_axis
+      ~PhasedGenotypeMatrix.vrnt_chrgrp
+      ~PhasedGenotypeMatrix.vrnt_chrgrp_len
+      ~PhasedGenotypeMatrix.vrnt_chrgrp_name
+      ~PhasedGenotypeMatrix.vrnt_chrgrp_spix
+      ~PhasedGenotypeMatrix.vrnt_chrgrp_stix
+      ~PhasedGenotypeMatrix.vrnt_genpos
+      ~PhasedGenotypeMatrix.vrnt_hapalt
+      ~PhasedGenotypeMatrix.vrnt_hapgrp
+      ~PhasedGenotypeMatrix.vrnt_hapref
+      ~PhasedGenotypeMatrix.vrnt_mask
+      ~PhasedGenotypeMatrix.vrnt_name
+      ~PhasedGenotypeMatrix.vrnt_phypos
+      ~PhasedGenotypeMatrix.vrnt_xoprob
+   
+   

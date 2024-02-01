@@ -1,0 +1,45 @@
+RealMateSelectionSolution
+=========================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.RealMateSelectionSolution
+
+.. autoclass:: RealMateSelectionSolution
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RealMateSelectionSolution.decn_space
+      ~RealMateSelectionSolution.decn_space_lower
+      ~RealMateSelectionSolution.decn_space_upper
+      ~RealMateSelectionSolution.decn_space_xmap
+      ~RealMateSelectionSolution.eqcv_wt
+      ~RealMateSelectionSolution.ineqcv_wt
+      ~RealMateSelectionSolution.ndecn
+      ~RealMateSelectionSolution.neqcv
+      ~RealMateSelectionSolution.nineqcv
+      ~RealMateSelectionSolution.nobj
+      ~RealMateSelectionSolution.nsoln
+      ~RealMateSelectionSolution.obj_wt
+      ~RealMateSelectionSolution.soln_decn
+      ~RealMateSelectionSolution.soln_eqcv
+      ~RealMateSelectionSolution.soln_ineqcv
+      ~RealMateSelectionSolution.soln_obj
+   
+   

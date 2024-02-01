@@ -1,0 +1,6 @@
+check\_is\_DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory
+==============================================================
+
+.. currentmodule:: pybrops.model.vmat.fcty.DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory
+
+.. autofunction:: check_is_DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory

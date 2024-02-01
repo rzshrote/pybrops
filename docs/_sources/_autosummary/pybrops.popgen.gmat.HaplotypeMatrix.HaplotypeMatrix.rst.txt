@@ -1,0 +1,112 @@
+HaplotypeMatrix
+===============
+
+.. currentmodule:: pybrops.popgen.gmat.HaplotypeMatrix
+
+.. autoclass:: HaplotypeMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~HaplotypeMatrix.adjoin
+      ~HaplotypeMatrix.adjoin_taxa
+      ~HaplotypeMatrix.adjoin_vrnt
+      ~HaplotypeMatrix.append
+      ~HaplotypeMatrix.append_taxa
+      ~HaplotypeMatrix.append_vrnt
+      ~HaplotypeMatrix.concat
+      ~HaplotypeMatrix.concat_taxa
+      ~HaplotypeMatrix.concat_vrnt
+      ~HaplotypeMatrix.copy
+      ~HaplotypeMatrix.deepcopy
+      ~HaplotypeMatrix.delete
+      ~HaplotypeMatrix.delete_taxa
+      ~HaplotypeMatrix.delete_vrnt
+      ~HaplotypeMatrix.from_hdf5
+      ~HaplotypeMatrix.group
+      ~HaplotypeMatrix.group_taxa
+      ~HaplotypeMatrix.group_vrnt
+      ~HaplotypeMatrix.gtcount
+      ~HaplotypeMatrix.gtfreq
+      ~HaplotypeMatrix.hcount
+      ~HaplotypeMatrix.hfreq
+      ~HaplotypeMatrix.incorp
+      ~HaplotypeMatrix.incorp_taxa
+      ~HaplotypeMatrix.incorp_vrnt
+      ~HaplotypeMatrix.insert
+      ~HaplotypeMatrix.insert_taxa
+      ~HaplotypeMatrix.insert_vrnt
+      ~HaplotypeMatrix.is_grouped
+      ~HaplotypeMatrix.is_grouped_taxa
+      ~HaplotypeMatrix.is_grouped_vrnt
+      ~HaplotypeMatrix.lexsort
+      ~HaplotypeMatrix.lexsort_taxa
+      ~HaplotypeMatrix.lexsort_vrnt
+      ~HaplotypeMatrix.meh
+      ~HaplotypeMatrix.mhf
+      ~HaplotypeMatrix.remove
+      ~HaplotypeMatrix.remove_taxa
+      ~HaplotypeMatrix.remove_vrnt
+      ~HaplotypeMatrix.reorder
+      ~HaplotypeMatrix.reorder_taxa
+      ~HaplotypeMatrix.reorder_vrnt
+      ~HaplotypeMatrix.select
+      ~HaplotypeMatrix.select_taxa
+      ~HaplotypeMatrix.select_vrnt
+      ~HaplotypeMatrix.sort
+      ~HaplotypeMatrix.sort_taxa
+      ~HaplotypeMatrix.sort_vrnt
+      ~HaplotypeMatrix.thcount
+      ~HaplotypeMatrix.thfreq
+      ~HaplotypeMatrix.to_hdf5
+      ~HaplotypeMatrix.ungroup
+      ~HaplotypeMatrix.ungroup_taxa
+      ~HaplotypeMatrix.ungroup_vrnt
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~HaplotypeMatrix.mat
+      ~HaplotypeMatrix.mat_format
+      ~HaplotypeMatrix.mat_ndim
+      ~HaplotypeMatrix.mat_shape
+      ~HaplotypeMatrix.nphase
+      ~HaplotypeMatrix.ntaxa
+      ~HaplotypeMatrix.nvrnt
+      ~HaplotypeMatrix.ploidy
+      ~HaplotypeMatrix.taxa
+      ~HaplotypeMatrix.taxa_axis
+      ~HaplotypeMatrix.taxa_grp
+      ~HaplotypeMatrix.taxa_grp_len
+      ~HaplotypeMatrix.taxa_grp_name
+      ~HaplotypeMatrix.taxa_grp_spix
+      ~HaplotypeMatrix.taxa_grp_stix
+      ~HaplotypeMatrix.vrnt_axis
+      ~HaplotypeMatrix.vrnt_chrgrp
+      ~HaplotypeMatrix.vrnt_chrgrp_len
+      ~HaplotypeMatrix.vrnt_chrgrp_name
+      ~HaplotypeMatrix.vrnt_chrgrp_spix
+      ~HaplotypeMatrix.vrnt_chrgrp_stix
+      ~HaplotypeMatrix.vrnt_genpos
+      ~HaplotypeMatrix.vrnt_hapalt
+      ~HaplotypeMatrix.vrnt_hapgrp
+      ~HaplotypeMatrix.vrnt_hapref
+      ~HaplotypeMatrix.vrnt_mask
+      ~HaplotypeMatrix.vrnt_name
+      ~HaplotypeMatrix.vrnt_phypos
+      ~HaplotypeMatrix.vrnt_xoprob
+   
+   

@@ -1,0 +1,37 @@
+fcty
+====
+
+.. automodule:: pybrops.popgen.cmat.fcty
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.popgen.cmat.fcty.CoancestryMatrixFactory
+   pybrops.popgen.cmat.fcty.DenseCoancestryMatrixFactory
+   pybrops.popgen.cmat.fcty.DenseGeneralizedWeightedCoancestryMatrixFactory
+   pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory
+   pybrops.popgen.cmat.fcty.DenseVanRadenCoancestryMatrixFactory
+   pybrops.popgen.cmat.fcty.DenseYangCoancestryMatrixFactory
+

@@ -1,0 +1,37 @@
+prob
+====
+
+.. automodule:: pybrops.opt.prob
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.opt.prob.BinaryProblem
+   pybrops.opt.prob.FunctionWeight
+   pybrops.opt.prob.IntegerProblem
+   pybrops.opt.prob.Problem
+   pybrops.opt.prob.RealProblem
+   pybrops.opt.prob.SubsetProblem
+

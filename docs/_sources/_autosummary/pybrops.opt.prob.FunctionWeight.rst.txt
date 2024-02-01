@@ -1,0 +1,34 @@
+FunctionWeight
+==============
+
+.. automodule:: pybrops.opt.prob.FunctionWeight
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      FunctionWeight
+      MaximizingFunctionWeight
+      MinimizingFunctionWeight
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

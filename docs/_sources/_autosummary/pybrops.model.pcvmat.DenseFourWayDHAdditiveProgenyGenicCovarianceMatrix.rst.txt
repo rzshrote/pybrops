@@ -1,0 +1,32 @@
+DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix
+==================================================
+
+.. automodule:: pybrops.model.pcvmat.DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

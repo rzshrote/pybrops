@@ -1,0 +1,6 @@
+save\_dict\_to\_hdf5
+====================
+
+.. currentmodule:: pybrops.core.util.h5py
+
+.. autofunction:: save_dict_to_hdf5

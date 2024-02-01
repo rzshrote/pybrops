@@ -1,0 +1,37 @@
+﻿pybrops
+=======
+
+.. automodule:: pybrops
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed
+   pybrops.core
+   pybrops.model
+   pybrops.opt
+   pybrops.popgen
+   pybrops.test
+

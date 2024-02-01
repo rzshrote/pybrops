@@ -1,0 +1,78 @@
+GenomicEstimatedBreedingValueIntegerSelectionProblem
+====================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem
+
+.. autoclass:: GenomicEstimatedBreedingValueIntegerSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.bounds
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.do
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.evalfn
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.evaluate
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.from_bvmat
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.from_gmat_gpmod
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.has_bounds
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.has_constraints
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.ideal_point
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.latentfn
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.nadir_point
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.name
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.pareto_front
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.callback
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.data
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.decn_space
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.decn_space_lower
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.decn_space_upper
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.elementwise
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.elementwise_func
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.elementwise_runner
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.eqcv_trans
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.eqcv_trans_kwargs
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.eqcv_wt
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.exclude_from_serialization
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.gebv
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.ineqcv_trans
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.ineqcv_trans_kwargs
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.ineqcv_wt
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.n_constr
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.n_eq_constr
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.n_ieq_constr
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.n_obj
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.n_var
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.ndecn
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.neqcv
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.nineqcv
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.nlatent
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.nobj
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.obj_trans
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.obj_trans_kwargs
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.obj_wt
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.replace_nan_values_by
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.strict
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.vars
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.vtype
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.xl
+      ~GenomicEstimatedBreedingValueIntegerSelectionProblem.xu
+   
+   

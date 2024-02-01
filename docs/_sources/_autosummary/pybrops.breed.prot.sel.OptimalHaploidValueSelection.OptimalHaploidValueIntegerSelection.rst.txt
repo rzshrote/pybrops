@@ -1,0 +1,59 @@
+OptimalHaploidValueIntegerSelection
+===================================
+
+.. currentmodule:: pybrops.breed.prot.sel.OptimalHaploidValueSelection
+
+.. autoclass:: OptimalHaploidValueIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalHaploidValueIntegerSelection.mosolve
+      ~OptimalHaploidValueIntegerSelection.problem
+      ~OptimalHaploidValueIntegerSelection.select
+      ~OptimalHaploidValueIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalHaploidValueIntegerSelection.eqcv_trans
+      ~OptimalHaploidValueIntegerSelection.eqcv_trans_kwargs
+      ~OptimalHaploidValueIntegerSelection.eqcv_wt
+      ~OptimalHaploidValueIntegerSelection.ineqcv_trans
+      ~OptimalHaploidValueIntegerSelection.ineqcv_trans_kwargs
+      ~OptimalHaploidValueIntegerSelection.ineqcv_wt
+      ~OptimalHaploidValueIntegerSelection.moalgo
+      ~OptimalHaploidValueIntegerSelection.ncross
+      ~OptimalHaploidValueIntegerSelection.ndset_trans
+      ~OptimalHaploidValueIntegerSelection.ndset_trans_kwargs
+      ~OptimalHaploidValueIntegerSelection.ndset_wt
+      ~OptimalHaploidValueIntegerSelection.neqcv
+      ~OptimalHaploidValueIntegerSelection.nhaploblk
+      ~OptimalHaploidValueIntegerSelection.nineqcv
+      ~OptimalHaploidValueIntegerSelection.nmating
+      ~OptimalHaploidValueIntegerSelection.nobj
+      ~OptimalHaploidValueIntegerSelection.nparent
+      ~OptimalHaploidValueIntegerSelection.nprogeny
+      ~OptimalHaploidValueIntegerSelection.nselindiv
+      ~OptimalHaploidValueIntegerSelection.ntrait
+      ~OptimalHaploidValueIntegerSelection.obj_trans
+      ~OptimalHaploidValueIntegerSelection.obj_trans_kwargs
+      ~OptimalHaploidValueIntegerSelection.obj_wt
+      ~OptimalHaploidValueIntegerSelection.rng
+      ~OptimalHaploidValueIntegerSelection.soalgo
+      ~OptimalHaploidValueIntegerSelection.unique_parents
+   
+   

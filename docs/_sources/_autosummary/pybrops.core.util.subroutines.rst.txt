@@ -1,0 +1,36 @@
+subroutines
+===========
+
+.. automodule:: pybrops.core.util.subroutines
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      human2bytes
+      matrix_is_sorted
+      slice_to_list
+      slice_to_range
+      srange
+   
+   
+
+   
+   
+   
+
+
+

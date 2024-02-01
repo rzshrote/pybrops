@@ -1,0 +1,57 @@
+L2NormGenomicBinarySelection
+============================
+
+.. currentmodule:: pybrops.breed.prot.sel.L2NormGenomicSelection
+
+.. autoclass:: L2NormGenomicBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~L2NormGenomicBinarySelection.mosolve
+      ~L2NormGenomicBinarySelection.problem
+      ~L2NormGenomicBinarySelection.select
+      ~L2NormGenomicBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~L2NormGenomicBinarySelection.cmatfcty
+      ~L2NormGenomicBinarySelection.eqcv_trans
+      ~L2NormGenomicBinarySelection.eqcv_trans_kwargs
+      ~L2NormGenomicBinarySelection.eqcv_wt
+      ~L2NormGenomicBinarySelection.ineqcv_trans
+      ~L2NormGenomicBinarySelection.ineqcv_trans_kwargs
+      ~L2NormGenomicBinarySelection.ineqcv_wt
+      ~L2NormGenomicBinarySelection.moalgo
+      ~L2NormGenomicBinarySelection.ncross
+      ~L2NormGenomicBinarySelection.ndset_trans
+      ~L2NormGenomicBinarySelection.ndset_trans_kwargs
+      ~L2NormGenomicBinarySelection.ndset_wt
+      ~L2NormGenomicBinarySelection.neqcv
+      ~L2NormGenomicBinarySelection.nineqcv
+      ~L2NormGenomicBinarySelection.nmating
+      ~L2NormGenomicBinarySelection.nobj
+      ~L2NormGenomicBinarySelection.nparent
+      ~L2NormGenomicBinarySelection.nprogeny
+      ~L2NormGenomicBinarySelection.nselindiv
+      ~L2NormGenomicBinarySelection.obj_trans
+      ~L2NormGenomicBinarySelection.obj_trans_kwargs
+      ~L2NormGenomicBinarySelection.obj_wt
+      ~L2NormGenomicBinarySelection.rng
+      ~L2NormGenomicBinarySelection.soalgo
+   
+   

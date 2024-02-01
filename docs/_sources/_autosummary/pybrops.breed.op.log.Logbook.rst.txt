@@ -1,0 +1,41 @@
+Logbook
+=======
+
+.. automodule:: pybrops.breed.op.log.Logbook
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      Logbook
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_Logbook
+   
+   
+
+   
+   
+   
+
+
+

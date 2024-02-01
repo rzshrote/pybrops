@@ -1,0 +1,41 @@
+Matrix
+======
+
+.. currentmodule:: pybrops.core.mat.Matrix
+
+.. autoclass:: Matrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~Matrix.adjoin
+      ~Matrix.concat
+      ~Matrix.copy
+      ~Matrix.deepcopy
+      ~Matrix.delete
+      ~Matrix.from_hdf5
+      ~Matrix.insert
+      ~Matrix.select
+      ~Matrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Matrix.mat
+      ~Matrix.mat_ndim
+      ~Matrix.mat_shape
+   
+   

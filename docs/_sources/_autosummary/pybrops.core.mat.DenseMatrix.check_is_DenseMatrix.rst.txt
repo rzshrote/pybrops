@@ -1,0 +1,6 @@
+check\_is\_DenseMatrix
+======================
+
+.. currentmodule:: pybrops.core.mat.DenseMatrix
+
+.. autofunction:: check_is_DenseMatrix

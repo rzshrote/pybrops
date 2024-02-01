@@ -1,0 +1,25 @@
+DenseVanRadenCoancestryMatrixFactory
+====================================
+
+.. currentmodule:: pybrops.popgen.cmat.fcty.DenseVanRadenCoancestryMatrixFactory
+
+.. autoclass:: DenseVanRadenCoancestryMatrixFactory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseVanRadenCoancestryMatrixFactory.from_gmat
+   
+   
+
+   
+   
+   

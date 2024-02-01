@@ -1,0 +1,36 @@
+RandomSelection
+===============
+
+.. automodule:: pybrops.breed.prot.sel.RandomSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      RandomBinarySelection
+      RandomIntegerSelection
+      RandomRealSelection
+      RandomSelectionMixin
+      RandomSubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

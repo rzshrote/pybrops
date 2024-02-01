@@ -1,0 +1,44 @@
+cfg
+===
+
+.. automodule:: pybrops.breed.prot.sel.cfg
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.prot.sel.cfg.BinaryMateSelectionConfiguration
+   pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration
+   pybrops.breed.prot.sel.cfg.IntegerMateSelectionConfiguration
+   pybrops.breed.prot.sel.cfg.IntegerSelectionConfiguration
+   pybrops.breed.prot.sel.cfg.MateSelectionConfiguration
+   pybrops.breed.prot.sel.cfg.RealMateSelectionConfiguration
+   pybrops.breed.prot.sel.cfg.RealSelectionConfiguration
+   pybrops.breed.prot.sel.cfg.SampledSelectionConfigurationMixin
+   pybrops.breed.prot.sel.cfg.SelectionConfiguration
+   pybrops.breed.prot.sel.cfg.SimpleMateSelectionConfiguration
+   pybrops.breed.prot.sel.cfg.SimpleSelectionConfiguration
+   pybrops.breed.prot.sel.cfg.SubsetMateSelectionConfiguration
+   pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration
+

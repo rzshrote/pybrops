@@ -1,0 +1,77 @@
+OptimalHaploidValueSubsetSelectionProblem
+=========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem
+
+.. autoclass:: OptimalHaploidValueSubsetSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalHaploidValueSubsetSelectionProblem.bounds
+      ~OptimalHaploidValueSubsetSelectionProblem.do
+      ~OptimalHaploidValueSubsetSelectionProblem.evalfn
+      ~OptimalHaploidValueSubsetSelectionProblem.evaluate
+      ~OptimalHaploidValueSubsetSelectionProblem.from_pgmat_gpmod
+      ~OptimalHaploidValueSubsetSelectionProblem.has_bounds
+      ~OptimalHaploidValueSubsetSelectionProblem.has_constraints
+      ~OptimalHaploidValueSubsetSelectionProblem.ideal_point
+      ~OptimalHaploidValueSubsetSelectionProblem.latentfn
+      ~OptimalHaploidValueSubsetSelectionProblem.nadir_point
+      ~OptimalHaploidValueSubsetSelectionProblem.name
+      ~OptimalHaploidValueSubsetSelectionProblem.pareto_front
+      ~OptimalHaploidValueSubsetSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalHaploidValueSubsetSelectionProblem.callback
+      ~OptimalHaploidValueSubsetSelectionProblem.data
+      ~OptimalHaploidValueSubsetSelectionProblem.decn_space
+      ~OptimalHaploidValueSubsetSelectionProblem.decn_space_lower
+      ~OptimalHaploidValueSubsetSelectionProblem.decn_space_upper
+      ~OptimalHaploidValueSubsetSelectionProblem.elementwise
+      ~OptimalHaploidValueSubsetSelectionProblem.elementwise_func
+      ~OptimalHaploidValueSubsetSelectionProblem.elementwise_runner
+      ~OptimalHaploidValueSubsetSelectionProblem.eqcv_trans
+      ~OptimalHaploidValueSubsetSelectionProblem.eqcv_trans_kwargs
+      ~OptimalHaploidValueSubsetSelectionProblem.eqcv_wt
+      ~OptimalHaploidValueSubsetSelectionProblem.exclude_from_serialization
+      ~OptimalHaploidValueSubsetSelectionProblem.ineqcv_trans
+      ~OptimalHaploidValueSubsetSelectionProblem.ineqcv_trans_kwargs
+      ~OptimalHaploidValueSubsetSelectionProblem.ineqcv_wt
+      ~OptimalHaploidValueSubsetSelectionProblem.n_constr
+      ~OptimalHaploidValueSubsetSelectionProblem.n_eq_constr
+      ~OptimalHaploidValueSubsetSelectionProblem.n_ieq_constr
+      ~OptimalHaploidValueSubsetSelectionProblem.n_obj
+      ~OptimalHaploidValueSubsetSelectionProblem.n_var
+      ~OptimalHaploidValueSubsetSelectionProblem.ndecn
+      ~OptimalHaploidValueSubsetSelectionProblem.neqcv
+      ~OptimalHaploidValueSubsetSelectionProblem.nineqcv
+      ~OptimalHaploidValueSubsetSelectionProblem.nlatent
+      ~OptimalHaploidValueSubsetSelectionProblem.nobj
+      ~OptimalHaploidValueSubsetSelectionProblem.obj_trans
+      ~OptimalHaploidValueSubsetSelectionProblem.obj_trans_kwargs
+      ~OptimalHaploidValueSubsetSelectionProblem.obj_wt
+      ~OptimalHaploidValueSubsetSelectionProblem.ohvmat
+      ~OptimalHaploidValueSubsetSelectionProblem.replace_nan_values_by
+      ~OptimalHaploidValueSubsetSelectionProblem.strict
+      ~OptimalHaploidValueSubsetSelectionProblem.vars
+      ~OptimalHaploidValueSubsetSelectionProblem.vtype
+      ~OptimalHaploidValueSubsetSelectionProblem.xl
+      ~OptimalHaploidValueSubsetSelectionProblem.xu
+   
+   

@@ -1,0 +1,36 @@
+UsefulnessCriterionSelection
+============================
+
+.. automodule:: pybrops.breed.prot.sel.UsefulnessCriterionSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      UsefulnessCriterionBinarySelection
+      UsefulnessCriterionIntegerSelection
+      UsefulnessCriterionRealSelection
+      UsefulnessCriterionSelectionMixin
+      UsefulnessCriterionSubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

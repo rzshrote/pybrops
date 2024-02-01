@@ -1,0 +1,78 @@
+GenomicEstimatedBreedingValueBinarySelectionProblem
+===================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem
+
+.. autoclass:: GenomicEstimatedBreedingValueBinarySelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.bounds
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.do
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.evalfn
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.evaluate
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.from_bvmat
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.from_gmat_gpmod
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.has_bounds
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.has_constraints
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.ideal_point
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.latentfn
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.nadir_point
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.name
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.pareto_front
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.callback
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.data
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.decn_space
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.decn_space_lower
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.decn_space_upper
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.elementwise
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.elementwise_func
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.elementwise_runner
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.eqcv_trans
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.eqcv_trans_kwargs
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.eqcv_wt
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.exclude_from_serialization
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.gebv
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.ineqcv_trans
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.ineqcv_trans_kwargs
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.ineqcv_wt
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.n_constr
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.n_eq_constr
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.n_ieq_constr
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.n_obj
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.n_var
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.ndecn
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.neqcv
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.nineqcv
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.nlatent
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.nobj
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.obj_trans
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.obj_trans_kwargs
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.obj_wt
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.replace_nan_values_by
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.strict
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.vars
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.vtype
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.xl
+      ~GenomicEstimatedBreedingValueBinarySelectionProblem.xu
+   
+   

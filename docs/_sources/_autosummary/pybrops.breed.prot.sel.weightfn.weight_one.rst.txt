@@ -1,0 +1,6 @@
+weight\_one
+===========
+
+.. currentmodule:: pybrops.breed.prot.sel.weightfn
+
+.. autofunction:: weight_one

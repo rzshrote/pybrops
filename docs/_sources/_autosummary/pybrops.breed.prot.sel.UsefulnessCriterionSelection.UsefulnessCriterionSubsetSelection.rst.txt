@@ -1,0 +1,63 @@
+UsefulnessCriterionSubsetSelection
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.UsefulnessCriterionSelection
+
+.. autoclass:: UsefulnessCriterionSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UsefulnessCriterionSubsetSelection.mosolve
+      ~UsefulnessCriterionSubsetSelection.problem
+      ~UsefulnessCriterionSubsetSelection.select
+      ~UsefulnessCriterionSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~UsefulnessCriterionSubsetSelection.eqcv_trans
+      ~UsefulnessCriterionSubsetSelection.eqcv_trans_kwargs
+      ~UsefulnessCriterionSubsetSelection.eqcv_wt
+      ~UsefulnessCriterionSubsetSelection.gmapfn
+      ~UsefulnessCriterionSubsetSelection.ineqcv_trans
+      ~UsefulnessCriterionSubsetSelection.ineqcv_trans_kwargs
+      ~UsefulnessCriterionSubsetSelection.ineqcv_wt
+      ~UsefulnessCriterionSubsetSelection.moalgo
+      ~UsefulnessCriterionSubsetSelection.ncross
+      ~UsefulnessCriterionSubsetSelection.ndset_trans
+      ~UsefulnessCriterionSubsetSelection.ndset_trans_kwargs
+      ~UsefulnessCriterionSubsetSelection.ndset_wt
+      ~UsefulnessCriterionSubsetSelection.neqcv
+      ~UsefulnessCriterionSubsetSelection.nineqcv
+      ~UsefulnessCriterionSubsetSelection.nmating
+      ~UsefulnessCriterionSubsetSelection.nobj
+      ~UsefulnessCriterionSubsetSelection.nparent
+      ~UsefulnessCriterionSubsetSelection.nprogeny
+      ~UsefulnessCriterionSubsetSelection.nself
+      ~UsefulnessCriterionSubsetSelection.nselindiv
+      ~UsefulnessCriterionSubsetSelection.ntrait
+      ~UsefulnessCriterionSubsetSelection.obj_trans
+      ~UsefulnessCriterionSubsetSelection.obj_trans_kwargs
+      ~UsefulnessCriterionSubsetSelection.obj_wt
+      ~UsefulnessCriterionSubsetSelection.rng
+      ~UsefulnessCriterionSubsetSelection.selection_intensity
+      ~UsefulnessCriterionSubsetSelection.soalgo
+      ~UsefulnessCriterionSubsetSelection.unique_parents
+      ~UsefulnessCriterionSubsetSelection.upper_percentile
+      ~UsefulnessCriterionSubsetSelection.vmatfcty
+   
+   

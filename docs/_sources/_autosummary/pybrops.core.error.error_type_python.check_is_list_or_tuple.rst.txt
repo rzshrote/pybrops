@@ -1,0 +1,6 @@
+check\_is\_list\_or\_tuple
+==========================
+
+.. currentmodule:: pybrops.core.error.error_type_python
+
+.. autofunction:: check_is_list_or_tuple

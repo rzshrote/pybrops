@@ -1,0 +1,41 @@
+MateSelectionSolution
+=====================
+
+.. automodule:: pybrops.breed.prot.sel.soln.MateSelectionSolution
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      MateSelectionSolution
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_MateSelectionSolution
+   
+   
+
+   
+   
+   
+
+
+

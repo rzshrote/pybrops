@@ -1,0 +1,6 @@
+is\_pareto\_efficient
+=====================
+
+.. currentmodule:: pybrops.core.util.pareto
+
+.. autofunction:: is_pareto_efficient

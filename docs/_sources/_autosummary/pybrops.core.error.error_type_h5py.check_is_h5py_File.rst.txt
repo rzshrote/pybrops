@@ -1,0 +1,6 @@
+check\_is\_h5py\_File
+=====================
+
+.. currentmodule:: pybrops.core.error.error_type_h5py
+
+.. autofunction:: check_is_h5py_File

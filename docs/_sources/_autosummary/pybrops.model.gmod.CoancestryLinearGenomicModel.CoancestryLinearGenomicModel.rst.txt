@@ -1,0 +1,81 @@
+CoancestryLinearGenomicModel
+============================
+
+.. currentmodule:: pybrops.model.gmod.CoancestryLinearGenomicModel
+
+.. autoclass:: CoancestryLinearGenomicModel
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~CoancestryLinearGenomicModel.bulmer
+      ~CoancestryLinearGenomicModel.bulmer_numpy
+      ~CoancestryLinearGenomicModel.copy
+      ~CoancestryLinearGenomicModel.daavail
+      ~CoancestryLinearGenomicModel.dacount
+      ~CoancestryLinearGenomicModel.dafixed
+      ~CoancestryLinearGenomicModel.dafreq
+      ~CoancestryLinearGenomicModel.deepcopy
+      ~CoancestryLinearGenomicModel.faavail
+      ~CoancestryLinearGenomicModel.facount
+      ~CoancestryLinearGenomicModel.fafixed
+      ~CoancestryLinearGenomicModel.fafreq
+      ~CoancestryLinearGenomicModel.fit
+      ~CoancestryLinearGenomicModel.fit_numpy
+      ~CoancestryLinearGenomicModel.from_csv_dict
+      ~CoancestryLinearGenomicModel.from_hdf5
+      ~CoancestryLinearGenomicModel.from_pandas_dict
+      ~CoancestryLinearGenomicModel.gebv
+      ~CoancestryLinearGenomicModel.gebv_numpy
+      ~CoancestryLinearGenomicModel.gegv
+      ~CoancestryLinearGenomicModel.gegv_numpy
+      ~CoancestryLinearGenomicModel.lsl
+      ~CoancestryLinearGenomicModel.lsl_numpy
+      ~CoancestryLinearGenomicModel.predict
+      ~CoancestryLinearGenomicModel.predict_numpy
+      ~CoancestryLinearGenomicModel.score
+      ~CoancestryLinearGenomicModel.score_numpy
+      ~CoancestryLinearGenomicModel.to_csv_dict
+      ~CoancestryLinearGenomicModel.to_hdf5
+      ~CoancestryLinearGenomicModel.to_pandas_dict
+      ~CoancestryLinearGenomicModel.usl
+      ~CoancestryLinearGenomicModel.usl_numpy
+      ~CoancestryLinearGenomicModel.var_A
+      ~CoancestryLinearGenomicModel.var_A_numpy
+      ~CoancestryLinearGenomicModel.var_G
+      ~CoancestryLinearGenomicModel.var_G_numpy
+      ~CoancestryLinearGenomicModel.var_a
+      ~CoancestryLinearGenomicModel.var_a_numpy
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~CoancestryLinearGenomicModel.beta
+      ~CoancestryLinearGenomicModel.hyperparams
+      ~CoancestryLinearGenomicModel.model_name
+      ~CoancestryLinearGenomicModel.nexplan
+      ~CoancestryLinearGenomicModel.nexplan_beta
+      ~CoancestryLinearGenomicModel.nexplan_u
+      ~CoancestryLinearGenomicModel.nparam
+      ~CoancestryLinearGenomicModel.nparam_beta
+      ~CoancestryLinearGenomicModel.nparam_u
+      ~CoancestryLinearGenomicModel.ntrait
+      ~CoancestryLinearGenomicModel.trait
+      ~CoancestryLinearGenomicModel.u
+      ~CoancestryLinearGenomicModel.u_c
+      ~CoancestryLinearGenomicModel.u_misc
+   
+   

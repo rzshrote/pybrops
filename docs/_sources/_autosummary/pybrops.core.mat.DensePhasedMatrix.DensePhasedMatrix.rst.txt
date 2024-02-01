@@ -1,0 +1,54 @@
+DensePhasedMatrix
+=================
+
+.. currentmodule:: pybrops.core.mat.DensePhasedMatrix
+
+.. autoclass:: DensePhasedMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DensePhasedMatrix.adjoin
+      ~DensePhasedMatrix.adjoin_phase
+      ~DensePhasedMatrix.append
+      ~DensePhasedMatrix.append_phase
+      ~DensePhasedMatrix.concat
+      ~DensePhasedMatrix.concat_phase
+      ~DensePhasedMatrix.copy
+      ~DensePhasedMatrix.deepcopy
+      ~DensePhasedMatrix.delete
+      ~DensePhasedMatrix.delete_phase
+      ~DensePhasedMatrix.from_hdf5
+      ~DensePhasedMatrix.incorp
+      ~DensePhasedMatrix.incorp_phase
+      ~DensePhasedMatrix.insert
+      ~DensePhasedMatrix.insert_phase
+      ~DensePhasedMatrix.remove
+      ~DensePhasedMatrix.remove_phase
+      ~DensePhasedMatrix.select
+      ~DensePhasedMatrix.select_phase
+      ~DensePhasedMatrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DensePhasedMatrix.mat
+      ~DensePhasedMatrix.mat_ndim
+      ~DensePhasedMatrix.mat_shape
+      ~DensePhasedMatrix.nphase
+      ~DensePhasedMatrix.phase_axis
+   
+   

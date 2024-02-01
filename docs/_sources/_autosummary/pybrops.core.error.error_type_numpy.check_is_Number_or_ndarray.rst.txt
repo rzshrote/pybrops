@@ -1,0 +1,6 @@
+check\_is\_Number\_or\_ndarray
+==============================
+
+.. currentmodule:: pybrops.core.error.error_type_numpy
+
+.. autofunction:: check_is_Number_or_ndarray

@@ -1,0 +1,6 @@
+check\_is\_BinaryOptimizationAlgorithm
+======================================
+
+.. currentmodule:: pybrops.opt.algo.BinaryOptimizationAlgorithm
+
+.. autofunction:: check_is_BinaryOptimizationAlgorithm

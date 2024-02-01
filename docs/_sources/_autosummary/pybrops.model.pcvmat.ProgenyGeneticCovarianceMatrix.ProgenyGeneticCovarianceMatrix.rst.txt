@@ -1,0 +1,104 @@
+ProgenyGeneticCovarianceMatrix
+==============================
+
+.. currentmodule:: pybrops.model.pcvmat.ProgenyGeneticCovarianceMatrix
+
+.. autoclass:: ProgenyGeneticCovarianceMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ProgenyGeneticCovarianceMatrix.adjoin
+      ~ProgenyGeneticCovarianceMatrix.adjoin_taxa
+      ~ProgenyGeneticCovarianceMatrix.adjoin_trait
+      ~ProgenyGeneticCovarianceMatrix.append
+      ~ProgenyGeneticCovarianceMatrix.append_taxa
+      ~ProgenyGeneticCovarianceMatrix.append_trait
+      ~ProgenyGeneticCovarianceMatrix.concat
+      ~ProgenyGeneticCovarianceMatrix.concat_taxa
+      ~ProgenyGeneticCovarianceMatrix.concat_trait
+      ~ProgenyGeneticCovarianceMatrix.copy
+      ~ProgenyGeneticCovarianceMatrix.deepcopy
+      ~ProgenyGeneticCovarianceMatrix.delete
+      ~ProgenyGeneticCovarianceMatrix.delete_taxa
+      ~ProgenyGeneticCovarianceMatrix.delete_trait
+      ~ProgenyGeneticCovarianceMatrix.from_csv
+      ~ProgenyGeneticCovarianceMatrix.from_gmod
+      ~ProgenyGeneticCovarianceMatrix.from_hdf5
+      ~ProgenyGeneticCovarianceMatrix.from_pandas
+      ~ProgenyGeneticCovarianceMatrix.group
+      ~ProgenyGeneticCovarianceMatrix.group_taxa
+      ~ProgenyGeneticCovarianceMatrix.incorp
+      ~ProgenyGeneticCovarianceMatrix.incorp_taxa
+      ~ProgenyGeneticCovarianceMatrix.incorp_trait
+      ~ProgenyGeneticCovarianceMatrix.insert
+      ~ProgenyGeneticCovarianceMatrix.insert_taxa
+      ~ProgenyGeneticCovarianceMatrix.insert_trait
+      ~ProgenyGeneticCovarianceMatrix.is_grouped
+      ~ProgenyGeneticCovarianceMatrix.is_grouped_taxa
+      ~ProgenyGeneticCovarianceMatrix.is_square
+      ~ProgenyGeneticCovarianceMatrix.is_square_taxa
+      ~ProgenyGeneticCovarianceMatrix.is_square_trait
+      ~ProgenyGeneticCovarianceMatrix.lexsort
+      ~ProgenyGeneticCovarianceMatrix.lexsort_taxa
+      ~ProgenyGeneticCovarianceMatrix.lexsort_trait
+      ~ProgenyGeneticCovarianceMatrix.remove
+      ~ProgenyGeneticCovarianceMatrix.remove_taxa
+      ~ProgenyGeneticCovarianceMatrix.remove_trait
+      ~ProgenyGeneticCovarianceMatrix.reorder
+      ~ProgenyGeneticCovarianceMatrix.reorder_taxa
+      ~ProgenyGeneticCovarianceMatrix.reorder_trait
+      ~ProgenyGeneticCovarianceMatrix.select
+      ~ProgenyGeneticCovarianceMatrix.select_taxa
+      ~ProgenyGeneticCovarianceMatrix.select_trait
+      ~ProgenyGeneticCovarianceMatrix.sort
+      ~ProgenyGeneticCovarianceMatrix.sort_taxa
+      ~ProgenyGeneticCovarianceMatrix.sort_trait
+      ~ProgenyGeneticCovarianceMatrix.to_csv
+      ~ProgenyGeneticCovarianceMatrix.to_hdf5
+      ~ProgenyGeneticCovarianceMatrix.to_pandas
+      ~ProgenyGeneticCovarianceMatrix.ungroup
+      ~ProgenyGeneticCovarianceMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ProgenyGeneticCovarianceMatrix.epgc
+      ~ProgenyGeneticCovarianceMatrix.mat
+      ~ProgenyGeneticCovarianceMatrix.mat_ndim
+      ~ProgenyGeneticCovarianceMatrix.mat_shape
+      ~ProgenyGeneticCovarianceMatrix.nsquare
+      ~ProgenyGeneticCovarianceMatrix.nsquare_taxa
+      ~ProgenyGeneticCovarianceMatrix.nsquare_trait
+      ~ProgenyGeneticCovarianceMatrix.ntaxa
+      ~ProgenyGeneticCovarianceMatrix.ntrait
+      ~ProgenyGeneticCovarianceMatrix.square_axes
+      ~ProgenyGeneticCovarianceMatrix.square_axes_len
+      ~ProgenyGeneticCovarianceMatrix.square_taxa_axes
+      ~ProgenyGeneticCovarianceMatrix.square_taxa_axes_len
+      ~ProgenyGeneticCovarianceMatrix.square_trait_axes
+      ~ProgenyGeneticCovarianceMatrix.square_trait_axes_len
+      ~ProgenyGeneticCovarianceMatrix.taxa
+      ~ProgenyGeneticCovarianceMatrix.taxa_axis
+      ~ProgenyGeneticCovarianceMatrix.taxa_grp
+      ~ProgenyGeneticCovarianceMatrix.taxa_grp_len
+      ~ProgenyGeneticCovarianceMatrix.taxa_grp_name
+      ~ProgenyGeneticCovarianceMatrix.taxa_grp_spix
+      ~ProgenyGeneticCovarianceMatrix.taxa_grp_stix
+      ~ProgenyGeneticCovarianceMatrix.trait
+      ~ProgenyGeneticCovarianceMatrix.trait_axis
+   
+   

@@ -10,12 +10,16 @@
 # instructions for creating a virtual environment for local testing
 # Line 1: if a virtual environment has not been created, create it
 # Line 2: activate the virtual environment for local testing
-virtualenv-devel:
+devel-virtualenv:
 	# make virtual environment if needed
 	if [ ! -f env/bin/activate ]; then python3 -m venv env; fi
 
+# instructions for installing Python libraries needed for local development
+devel-dependencies: devel-virtualenv
+	. env/bin/activate && python3 -m pip install numpy pandas scipy matplotlib pymoo cyvcf2 h5py pytest pytest-datadir sphinx-autodoc-typehints pydata-sphinx-theme
+
 # instructions for installing an editable package for local testing
-install-devel: virtualenv-devel
+devel-install: devel-virtualenv devel-dependencies
 	# activate virtual environment and install
 	. env/bin/activate && python3 -m pip install --editable .
 
@@ -40,5 +44,5 @@ doc-pdf:
 	cd docsrc/ && $(MAKE) latexpdf
 
 # instructions for cleaning the virtual environment
-clean-virtualenv-devel:
+clean-devel-virtualenv:
 	rm -rf env/

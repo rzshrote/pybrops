@@ -1,0 +1,6 @@
+check\_BinaryProblem\_is\_multi\_objective
+==========================================
+
+.. currentmodule:: pybrops.opt.prob.BinaryProblem
+
+.. autofunction:: check_BinaryProblem_is_multi_objective

@@ -1,0 +1,76 @@
+MateSelectionProblem
+====================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.MateSelectionProblem
+
+.. autoclass:: MateSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MateSelectionProblem.bounds
+      ~MateSelectionProblem.do
+      ~MateSelectionProblem.evalfn
+      ~MateSelectionProblem.evaluate
+      ~MateSelectionProblem.has_bounds
+      ~MateSelectionProblem.has_constraints
+      ~MateSelectionProblem.ideal_point
+      ~MateSelectionProblem.latentfn
+      ~MateSelectionProblem.nadir_point
+      ~MateSelectionProblem.name
+      ~MateSelectionProblem.pareto_front
+      ~MateSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MateSelectionProblem.callback
+      ~MateSelectionProblem.data
+      ~MateSelectionProblem.decn_space
+      ~MateSelectionProblem.decn_space_lower
+      ~MateSelectionProblem.decn_space_upper
+      ~MateSelectionProblem.decn_space_xmap
+      ~MateSelectionProblem.elementwise
+      ~MateSelectionProblem.elementwise_func
+      ~MateSelectionProblem.elementwise_runner
+      ~MateSelectionProblem.eqcv_trans
+      ~MateSelectionProblem.eqcv_trans_kwargs
+      ~MateSelectionProblem.eqcv_wt
+      ~MateSelectionProblem.exclude_from_serialization
+      ~MateSelectionProblem.ineqcv_trans
+      ~MateSelectionProblem.ineqcv_trans_kwargs
+      ~MateSelectionProblem.ineqcv_wt
+      ~MateSelectionProblem.n_constr
+      ~MateSelectionProblem.n_eq_constr
+      ~MateSelectionProblem.n_ieq_constr
+      ~MateSelectionProblem.n_obj
+      ~MateSelectionProblem.n_var
+      ~MateSelectionProblem.ndecn
+      ~MateSelectionProblem.neqcv
+      ~MateSelectionProblem.nineqcv
+      ~MateSelectionProblem.nlatent
+      ~MateSelectionProblem.nobj
+      ~MateSelectionProblem.obj_trans
+      ~MateSelectionProblem.obj_trans_kwargs
+      ~MateSelectionProblem.obj_wt
+      ~MateSelectionProblem.replace_nan_values_by
+      ~MateSelectionProblem.strict
+      ~MateSelectionProblem.vars
+      ~MateSelectionProblem.vtype
+      ~MateSelectionProblem.xl
+      ~MateSelectionProblem.xu
+   
+   

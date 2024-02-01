@@ -1,0 +1,6 @@
+check\_is\_IntegerOptimizationAlgorithm
+=======================================
+
+.. currentmodule:: pybrops.opt.algo.IntegerOptimizationAlgorithm
+
+.. autofunction:: check_is_IntegerOptimizationAlgorithm

@@ -1,0 +1,58 @@
+GenomicEstimatedBreedingValueSubsetSelection
+============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection
+
+.. autoclass:: GenomicEstimatedBreedingValueSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GenomicEstimatedBreedingValueSubsetSelection.mosolve
+      ~GenomicEstimatedBreedingValueSubsetSelection.problem
+      ~GenomicEstimatedBreedingValueSubsetSelection.select
+      ~GenomicEstimatedBreedingValueSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenomicEstimatedBreedingValueSubsetSelection.eqcv_trans
+      ~GenomicEstimatedBreedingValueSubsetSelection.eqcv_trans_kwargs
+      ~GenomicEstimatedBreedingValueSubsetSelection.eqcv_wt
+      ~GenomicEstimatedBreedingValueSubsetSelection.ineqcv_trans
+      ~GenomicEstimatedBreedingValueSubsetSelection.ineqcv_trans_kwargs
+      ~GenomicEstimatedBreedingValueSubsetSelection.ineqcv_wt
+      ~GenomicEstimatedBreedingValueSubsetSelection.moalgo
+      ~GenomicEstimatedBreedingValueSubsetSelection.ncross
+      ~GenomicEstimatedBreedingValueSubsetSelection.ndset_trans
+      ~GenomicEstimatedBreedingValueSubsetSelection.ndset_trans_kwargs
+      ~GenomicEstimatedBreedingValueSubsetSelection.ndset_wt
+      ~GenomicEstimatedBreedingValueSubsetSelection.neqcv
+      ~GenomicEstimatedBreedingValueSubsetSelection.nineqcv
+      ~GenomicEstimatedBreedingValueSubsetSelection.nmating
+      ~GenomicEstimatedBreedingValueSubsetSelection.nobj
+      ~GenomicEstimatedBreedingValueSubsetSelection.nparent
+      ~GenomicEstimatedBreedingValueSubsetSelection.nprogeny
+      ~GenomicEstimatedBreedingValueSubsetSelection.nselindiv
+      ~GenomicEstimatedBreedingValueSubsetSelection.ntrait
+      ~GenomicEstimatedBreedingValueSubsetSelection.obj_trans
+      ~GenomicEstimatedBreedingValueSubsetSelection.obj_trans_kwargs
+      ~GenomicEstimatedBreedingValueSubsetSelection.obj_wt
+      ~GenomicEstimatedBreedingValueSubsetSelection.rng
+      ~GenomicEstimatedBreedingValueSubsetSelection.soalgo
+      ~GenomicEstimatedBreedingValueSubsetSelection.unscale
+   
+   

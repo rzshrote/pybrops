@@ -1,0 +1,32 @@
+SampledSelectionConfigurationMixin
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.SampledSelectionConfigurationMixin
+
+.. autoclass:: SampledSelectionConfigurationMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SampledSelectionConfigurationMixin.sample_xconfig
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SampledSelectionConfigurationMixin.rng
+      ~SampledSelectionConfigurationMixin.xconfig_decn
+   
+   

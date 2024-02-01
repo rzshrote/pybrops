@@ -1,0 +1,33 @@
+error\_type\_pandas
+===================
+
+.. automodule:: pybrops.core.error.error_type_pandas
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_Series_all_type
+      check_is_pandas_DataFrame
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,63 @@
+UsefulnessCriterionIntegerSelection
+===================================
+
+.. currentmodule:: pybrops.breed.prot.sel.UsefulnessCriterionSelection
+
+.. autoclass:: UsefulnessCriterionIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UsefulnessCriterionIntegerSelection.mosolve
+      ~UsefulnessCriterionIntegerSelection.problem
+      ~UsefulnessCriterionIntegerSelection.select
+      ~UsefulnessCriterionIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~UsefulnessCriterionIntegerSelection.eqcv_trans
+      ~UsefulnessCriterionIntegerSelection.eqcv_trans_kwargs
+      ~UsefulnessCriterionIntegerSelection.eqcv_wt
+      ~UsefulnessCriterionIntegerSelection.gmapfn
+      ~UsefulnessCriterionIntegerSelection.ineqcv_trans
+      ~UsefulnessCriterionIntegerSelection.ineqcv_trans_kwargs
+      ~UsefulnessCriterionIntegerSelection.ineqcv_wt
+      ~UsefulnessCriterionIntegerSelection.moalgo
+      ~UsefulnessCriterionIntegerSelection.ncross
+      ~UsefulnessCriterionIntegerSelection.ndset_trans
+      ~UsefulnessCriterionIntegerSelection.ndset_trans_kwargs
+      ~UsefulnessCriterionIntegerSelection.ndset_wt
+      ~UsefulnessCriterionIntegerSelection.neqcv
+      ~UsefulnessCriterionIntegerSelection.nineqcv
+      ~UsefulnessCriterionIntegerSelection.nmating
+      ~UsefulnessCriterionIntegerSelection.nobj
+      ~UsefulnessCriterionIntegerSelection.nparent
+      ~UsefulnessCriterionIntegerSelection.nprogeny
+      ~UsefulnessCriterionIntegerSelection.nself
+      ~UsefulnessCriterionIntegerSelection.nselindiv
+      ~UsefulnessCriterionIntegerSelection.ntrait
+      ~UsefulnessCriterionIntegerSelection.obj_trans
+      ~UsefulnessCriterionIntegerSelection.obj_trans_kwargs
+      ~UsefulnessCriterionIntegerSelection.obj_wt
+      ~UsefulnessCriterionIntegerSelection.rng
+      ~UsefulnessCriterionIntegerSelection.selection_intensity
+      ~UsefulnessCriterionIntegerSelection.soalgo
+      ~UsefulnessCriterionIntegerSelection.unique_parents
+      ~UsefulnessCriterionIntegerSelection.upper_percentile
+      ~UsefulnessCriterionIntegerSelection.vmatfcty
+   
+   

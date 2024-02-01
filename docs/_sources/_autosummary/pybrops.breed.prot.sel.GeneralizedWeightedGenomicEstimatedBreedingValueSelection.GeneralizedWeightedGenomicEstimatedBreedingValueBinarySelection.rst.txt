@@ -1,0 +1,58 @@
+GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection
+===============================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection
+
+.. autoclass:: GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.mosolve
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.problem
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.select
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.alpha
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.eqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.eqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.eqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.ineqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.ineqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.ineqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.moalgo
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.ncross
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.ndset_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.ndset_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.ndset_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.neqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.nineqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.nmating
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.nobj
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.nparent
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.nprogeny
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.nselindiv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.ntrait
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.obj_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.obj_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.obj_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.rng
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection.soalgo
+   
+   

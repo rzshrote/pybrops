@@ -1,0 +1,32 @@
+OptimalHaploidValueSelectionProblemMixin
+========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem
+
+.. autoclass:: OptimalHaploidValueSelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalHaploidValueSelectionProblemMixin.from_pgmat_gpmod
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalHaploidValueSelectionProblemMixin.nlatent
+      ~OptimalHaploidValueSelectionProblemMixin.ohvmat
+   
+   

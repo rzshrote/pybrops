@@ -1,0 +1,6 @@
+trans\_sum
+==========
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.trans
+
+.. autofunction:: trans_sum

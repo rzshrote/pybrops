@@ -1,0 +1,57 @@
+RandomBinarySelection
+=====================
+
+.. currentmodule:: pybrops.breed.prot.sel.RandomSelection
+
+.. autoclass:: RandomBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RandomBinarySelection.mosolve
+      ~RandomBinarySelection.problem
+      ~RandomBinarySelection.select
+      ~RandomBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RandomBinarySelection.eqcv_trans
+      ~RandomBinarySelection.eqcv_trans_kwargs
+      ~RandomBinarySelection.eqcv_wt
+      ~RandomBinarySelection.ineqcv_trans
+      ~RandomBinarySelection.ineqcv_trans_kwargs
+      ~RandomBinarySelection.ineqcv_wt
+      ~RandomBinarySelection.moalgo
+      ~RandomBinarySelection.ncross
+      ~RandomBinarySelection.ndset_trans
+      ~RandomBinarySelection.ndset_trans_kwargs
+      ~RandomBinarySelection.ndset_wt
+      ~RandomBinarySelection.neqcv
+      ~RandomBinarySelection.nineqcv
+      ~RandomBinarySelection.nmating
+      ~RandomBinarySelection.nobj
+      ~RandomBinarySelection.nparent
+      ~RandomBinarySelection.nprogeny
+      ~RandomBinarySelection.nselindiv
+      ~RandomBinarySelection.ntrait
+      ~RandomBinarySelection.obj_trans
+      ~RandomBinarySelection.obj_trans_kwargs
+      ~RandomBinarySelection.obj_wt
+      ~RandomBinarySelection.rng
+      ~RandomBinarySelection.soalgo
+   
+   

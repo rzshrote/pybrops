@@ -1,0 +1,6 @@
+not\_raises
+===========
+
+.. currentmodule:: pybrops.test.assert_python
+
+.. autofunction:: not_raises

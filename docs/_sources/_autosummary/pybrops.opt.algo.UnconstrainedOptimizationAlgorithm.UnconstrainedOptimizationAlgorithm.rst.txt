@@ -1,0 +1,25 @@
+UnconstrainedOptimizationAlgorithm
+==================================
+
+.. currentmodule:: pybrops.opt.algo.UnconstrainedOptimizationAlgorithm
+
+.. autoclass:: UnconstrainedOptimizationAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UnconstrainedOptimizationAlgorithm.optimize
+   
+   
+
+   
+   
+   

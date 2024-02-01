@@ -1,0 +1,26 @@
+CSVDictInputOutput
+==================
+
+.. currentmodule:: pybrops.core.io.CSVDictInputOutput
+
+.. autoclass:: CSVDictInputOutput
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~CSVDictInputOutput.from_csv_dict
+      ~CSVDictInputOutput.to_csv_dict
+   
+   
+
+   
+   
+   

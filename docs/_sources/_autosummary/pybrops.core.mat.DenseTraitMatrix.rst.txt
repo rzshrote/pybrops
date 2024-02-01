@@ -1,0 +1,41 @@
+DenseTraitMatrix
+================
+
+.. automodule:: pybrops.core.mat.DenseTraitMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseTraitMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseTraitMatrix
+   
+   
+
+   
+   
+   
+
+
+

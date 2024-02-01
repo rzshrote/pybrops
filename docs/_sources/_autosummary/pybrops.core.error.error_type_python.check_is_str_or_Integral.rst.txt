@@ -1,0 +1,6 @@
+check\_is\_str\_or\_Integral
+============================
+
+.. currentmodule:: pybrops.core.error.error_type_python
+
+.. autofunction:: check_is_str_or_Integral

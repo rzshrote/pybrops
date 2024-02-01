@@ -1,0 +1,69 @@
+DenseSquareTraitMatrix
+======================
+
+.. currentmodule:: pybrops.core.mat.DenseSquareTraitMatrix
+
+.. autoclass:: DenseSquareTraitMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseSquareTraitMatrix.adjoin
+      ~DenseSquareTraitMatrix.adjoin_trait
+      ~DenseSquareTraitMatrix.append
+      ~DenseSquareTraitMatrix.append_trait
+      ~DenseSquareTraitMatrix.concat
+      ~DenseSquareTraitMatrix.concat_trait
+      ~DenseSquareTraitMatrix.copy
+      ~DenseSquareTraitMatrix.deepcopy
+      ~DenseSquareTraitMatrix.delete
+      ~DenseSquareTraitMatrix.delete_trait
+      ~DenseSquareTraitMatrix.from_hdf5
+      ~DenseSquareTraitMatrix.incorp
+      ~DenseSquareTraitMatrix.incorp_trait
+      ~DenseSquareTraitMatrix.insert
+      ~DenseSquareTraitMatrix.insert_trait
+      ~DenseSquareTraitMatrix.is_square
+      ~DenseSquareTraitMatrix.is_square_trait
+      ~DenseSquareTraitMatrix.lexsort
+      ~DenseSquareTraitMatrix.lexsort_trait
+      ~DenseSquareTraitMatrix.remove
+      ~DenseSquareTraitMatrix.remove_trait
+      ~DenseSquareTraitMatrix.reorder
+      ~DenseSquareTraitMatrix.reorder_trait
+      ~DenseSquareTraitMatrix.select
+      ~DenseSquareTraitMatrix.select_trait
+      ~DenseSquareTraitMatrix.sort
+      ~DenseSquareTraitMatrix.sort_trait
+      ~DenseSquareTraitMatrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseSquareTraitMatrix.mat
+      ~DenseSquareTraitMatrix.mat_ndim
+      ~DenseSquareTraitMatrix.mat_shape
+      ~DenseSquareTraitMatrix.nsquare
+      ~DenseSquareTraitMatrix.nsquare_trait
+      ~DenseSquareTraitMatrix.ntrait
+      ~DenseSquareTraitMatrix.square_axes
+      ~DenseSquareTraitMatrix.square_axes_len
+      ~DenseSquareTraitMatrix.square_trait_axes
+      ~DenseSquareTraitMatrix.square_trait_axes_len
+      ~DenseSquareTraitMatrix.trait
+      ~DenseSquareTraitMatrix.trait_axis
+   
+   

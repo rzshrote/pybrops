@@ -1,0 +1,77 @@
+EstimatedBreedingValueBinarySelectionProblem
+============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem
+
+.. autoclass:: EstimatedBreedingValueBinarySelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~EstimatedBreedingValueBinarySelectionProblem.bounds
+      ~EstimatedBreedingValueBinarySelectionProblem.do
+      ~EstimatedBreedingValueBinarySelectionProblem.evalfn
+      ~EstimatedBreedingValueBinarySelectionProblem.evaluate
+      ~EstimatedBreedingValueBinarySelectionProblem.from_bvmat
+      ~EstimatedBreedingValueBinarySelectionProblem.has_bounds
+      ~EstimatedBreedingValueBinarySelectionProblem.has_constraints
+      ~EstimatedBreedingValueBinarySelectionProblem.ideal_point
+      ~EstimatedBreedingValueBinarySelectionProblem.latentfn
+      ~EstimatedBreedingValueBinarySelectionProblem.nadir_point
+      ~EstimatedBreedingValueBinarySelectionProblem.name
+      ~EstimatedBreedingValueBinarySelectionProblem.pareto_front
+      ~EstimatedBreedingValueBinarySelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EstimatedBreedingValueBinarySelectionProblem.callback
+      ~EstimatedBreedingValueBinarySelectionProblem.data
+      ~EstimatedBreedingValueBinarySelectionProblem.decn_space
+      ~EstimatedBreedingValueBinarySelectionProblem.decn_space_lower
+      ~EstimatedBreedingValueBinarySelectionProblem.decn_space_upper
+      ~EstimatedBreedingValueBinarySelectionProblem.ebv
+      ~EstimatedBreedingValueBinarySelectionProblem.elementwise
+      ~EstimatedBreedingValueBinarySelectionProblem.elementwise_func
+      ~EstimatedBreedingValueBinarySelectionProblem.elementwise_runner
+      ~EstimatedBreedingValueBinarySelectionProblem.eqcv_trans
+      ~EstimatedBreedingValueBinarySelectionProblem.eqcv_trans_kwargs
+      ~EstimatedBreedingValueBinarySelectionProblem.eqcv_wt
+      ~EstimatedBreedingValueBinarySelectionProblem.exclude_from_serialization
+      ~EstimatedBreedingValueBinarySelectionProblem.ineqcv_trans
+      ~EstimatedBreedingValueBinarySelectionProblem.ineqcv_trans_kwargs
+      ~EstimatedBreedingValueBinarySelectionProblem.ineqcv_wt
+      ~EstimatedBreedingValueBinarySelectionProblem.n_constr
+      ~EstimatedBreedingValueBinarySelectionProblem.n_eq_constr
+      ~EstimatedBreedingValueBinarySelectionProblem.n_ieq_constr
+      ~EstimatedBreedingValueBinarySelectionProblem.n_obj
+      ~EstimatedBreedingValueBinarySelectionProblem.n_var
+      ~EstimatedBreedingValueBinarySelectionProblem.ndecn
+      ~EstimatedBreedingValueBinarySelectionProblem.neqcv
+      ~EstimatedBreedingValueBinarySelectionProblem.nineqcv
+      ~EstimatedBreedingValueBinarySelectionProblem.nlatent
+      ~EstimatedBreedingValueBinarySelectionProblem.nobj
+      ~EstimatedBreedingValueBinarySelectionProblem.obj_trans
+      ~EstimatedBreedingValueBinarySelectionProblem.obj_trans_kwargs
+      ~EstimatedBreedingValueBinarySelectionProblem.obj_wt
+      ~EstimatedBreedingValueBinarySelectionProblem.replace_nan_values_by
+      ~EstimatedBreedingValueBinarySelectionProblem.strict
+      ~EstimatedBreedingValueBinarySelectionProblem.vars
+      ~EstimatedBreedingValueBinarySelectionProblem.vtype
+      ~EstimatedBreedingValueBinarySelectionProblem.xl
+      ~EstimatedBreedingValueBinarySelectionProblem.xu
+   
+   

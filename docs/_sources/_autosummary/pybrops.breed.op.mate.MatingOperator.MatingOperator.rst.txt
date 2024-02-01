@@ -1,0 +1,25 @@
+MatingOperator
+==============
+
+.. currentmodule:: pybrops.breed.op.mate.MatingOperator
+
+.. autoclass:: MatingOperator
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MatingOperator.mate
+   
+   
+
+   
+   
+   

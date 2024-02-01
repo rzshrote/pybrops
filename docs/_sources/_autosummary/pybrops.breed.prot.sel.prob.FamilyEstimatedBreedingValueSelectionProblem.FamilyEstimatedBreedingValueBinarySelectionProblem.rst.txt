@@ -1,0 +1,80 @@
+FamilyEstimatedBreedingValueBinarySelectionProblem
+==================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem
+
+.. autoclass:: FamilyEstimatedBreedingValueBinarySelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.bounds
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.do
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.evalfn
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.evaluate
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.from_bvmat
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.has_bounds
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.has_constraints
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.ideal_point
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.latentfn
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.nadir_point
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.name
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.pareto_front
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.callback
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.data
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.decn_space
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.decn_space_lower
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.decn_space_upper
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.ebv
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.elementwise
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.elementwise_func
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.elementwise_runner
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.eqcv_trans
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.eqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.eqcv_wt
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.exclude_from_serialization
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.family
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.familyid
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.familyix
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.ineqcv_trans
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.ineqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.ineqcv_wt
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.n_constr
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.n_eq_constr
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.n_ieq_constr
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.n_obj
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.n_var
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.ndecn
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.neqcv
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.nineqcv
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.nlatent
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.nobj
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.obj_trans
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.obj_trans_kwargs
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.obj_wt
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.replace_nan_values_by
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.strict
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.vars
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.vtype
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.xl
+      ~FamilyEstimatedBreedingValueBinarySelectionProblem.xu
+   
+   

@@ -1,0 +1,41 @@
+SubsetSolution
+==============
+
+.. automodule:: pybrops.opt.soln.SubsetSolution
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      SubsetSolution
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_SubsetSolution
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,32 @@
+L2NormGenomicSelectionProblemMixin
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.L2NormGenomicSelectionProblem
+
+.. autoclass:: L2NormGenomicSelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~L2NormGenomicSelectionProblemMixin.from_gmat
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~L2NormGenomicSelectionProblemMixin.C
+      ~L2NormGenomicSelectionProblemMixin.nlatent
+   
+   

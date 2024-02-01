@@ -1,0 +1,56 @@
+BinarySelectionProtocol
+=======================
+
+.. currentmodule:: pybrops.breed.prot.sel.BinarySelectionProtocol
+
+.. autoclass:: BinarySelectionProtocol
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BinarySelectionProtocol.mosolve
+      ~BinarySelectionProtocol.problem
+      ~BinarySelectionProtocol.select
+      ~BinarySelectionProtocol.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BinarySelectionProtocol.eqcv_trans
+      ~BinarySelectionProtocol.eqcv_trans_kwargs
+      ~BinarySelectionProtocol.eqcv_wt
+      ~BinarySelectionProtocol.ineqcv_trans
+      ~BinarySelectionProtocol.ineqcv_trans_kwargs
+      ~BinarySelectionProtocol.ineqcv_wt
+      ~BinarySelectionProtocol.moalgo
+      ~BinarySelectionProtocol.ncross
+      ~BinarySelectionProtocol.ndset_trans
+      ~BinarySelectionProtocol.ndset_trans_kwargs
+      ~BinarySelectionProtocol.ndset_wt
+      ~BinarySelectionProtocol.neqcv
+      ~BinarySelectionProtocol.nineqcv
+      ~BinarySelectionProtocol.nmating
+      ~BinarySelectionProtocol.nobj
+      ~BinarySelectionProtocol.nparent
+      ~BinarySelectionProtocol.nprogeny
+      ~BinarySelectionProtocol.nselindiv
+      ~BinarySelectionProtocol.obj_trans
+      ~BinarySelectionProtocol.obj_trans_kwargs
+      ~BinarySelectionProtocol.obj_wt
+      ~BinarySelectionProtocol.rng
+      ~BinarySelectionProtocol.soalgo
+   
+   

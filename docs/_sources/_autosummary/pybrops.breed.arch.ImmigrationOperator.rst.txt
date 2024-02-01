@@ -1,0 +1,41 @@
+ImmigrationOperator
+===================
+
+.. automodule:: pybrops.breed.arch.ImmigrationOperator
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      ImmigrationOperator
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_ImmigrationOperator
+   
+   
+
+   
+   
+   
+
+
+

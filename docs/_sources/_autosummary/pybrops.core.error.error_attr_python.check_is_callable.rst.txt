@@ -1,0 +1,6 @@
+check\_is\_callable
+===================
+
+.. currentmodule:: pybrops.core.error.error_attr_python
+
+.. autofunction:: check_is_callable

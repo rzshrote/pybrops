@@ -1,0 +1,1535 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix &#8212; pybrops 0.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/model/vmat/DenseDihybridDHAdditiveGeneticVarianceMatrix';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pybrops.mode...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module implementing classes and associated error checking routines for matrices</span>
+<span class="sd">storing dense additive genetic variance estimates calculated using dihybrid DH</span>
+<span class="sd">formulae.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_io_python</span> <span class="kn">import</span> <span class="n">check_file_exists</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_pandas</span> <span class="kn">import</span> <span class="n">check_is_pandas_DataFrame</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span><span class="p">,</span> <span class="n">check_is_Integral_or_None</span><span class="p">,</span> <span class="n">check_is_Integral_or_inf</span><span class="p">,</span> <span class="n">check_is_str</span><span class="p">,</span> <span class="n">check_is_str_or_Integral</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_has_group</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_ndim</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_pandas</span> <span class="kn">import</span> <span class="n">check_pandas_DataFrame_has_column</span><span class="p">,</span> <span class="n">check_pandas_DataFrame_has_column_index</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.arrayix</span> <span class="kn">import</span> <span class="n">flattenix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">save_dict_to_hdf5</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.subroutines</span> <span class="kn">import</span> <span class="n">srange</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.AdditiveLinearGenomicModel</span> <span class="kn">import</span> <span class="n">AdditiveLinearGenomicModel</span><span class="p">,</span> <span class="n">check_is_AdditiveLinearGenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">GenomicModel</span><span class="p">,</span> <span class="n">check_is_GenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.vmat.util</span> <span class="kn">import</span> <span class="n">cov_D1s</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.vmat.util</span> <span class="kn">import</span> <span class="n">cov_D2s</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix</span> <span class="kn">import</span> <span class="n">DenseAdditiveGeneticVarianceMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmap.GeneticMapFunction</span> <span class="kn">import</span> <span class="n">GeneticMapFunction</span><span class="p">,</span> <span class="n">check_is_GeneticMapFunction</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> <span class="n">check_is_PhasedGenotypeMatrix</span>
+
+<div class="viewcode-block" id="DenseDihybridDHAdditiveGeneticVarianceMatrix">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.html#pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix">[docs]</a>
+<span class="k">class</span> <span class="nc">DenseDihybridDHAdditiveGeneticVarianceMatrix</span><span class="p">(</span><span class="n">DenseAdditiveGeneticVarianceMatrix</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A concrete class for dense additive genetic variance matrices calculated</span>
+<span class="sd">    for dihybrid DH progenies.</span>
+
+<span class="sd">    The purpose of this concrete class is to implement functionality for:</span>
+<span class="sd">        1) Genetic variance estimation for dihybrid DH progenies.</span>
+<span class="sd">        2) I/O for dihybrid DH progeny variance matrices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">mat</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for the concrete class DenseFourWayDHAdditiveGeneticVarianceMatrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mat : numpy.ndarray</span>
+<span class="sd">            Array used to construct the object.</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            Taxa names.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            Taxa groupings.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DenseDihybridDHAdditiveGeneticVarianceMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+    <span class="c1">############################ Object Properties #############################</span>
+
+    <span class="c1">##################### Matrix Data ######################</span>
+    <span class="nd">@DenseAdditiveGeneticVarianceMatrix</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">mat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set pointer to raw numpy.ndarray object.&quot;&quot;&quot;</span>
+        <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">)</span>
+        <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="c1"># (ntaxa,ntaxa,ntrait)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1">############## Square Metadata Properties ##############</span>
+    <span class="nd">@DenseAdditiveGeneticVarianceMatrix</span><span class="o">.</span><span class="n">square_axes</span><span class="o">.</span><span class="n">getter</span>
+    <span class="k">def</span> <span class="nf">square_axes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get axis indices for axes that are square&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># (female, male)</span>
+
+    <span class="c1">#################### Trait metadata ####################</span>
+    <span class="nd">@DenseAdditiveGeneticVarianceMatrix</span><span class="o">.</span><span class="n">trait_axis</span><span class="o">.</span><span class="n">getter</span>
+    <span class="k">def</span> <span class="nf">trait_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Axis along which traits are stored.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">2</span>
+
+    <span class="c1">######## Expected parental genome contributions ########</span>
+    <span class="nd">@DenseAdditiveGeneticVarianceMatrix</span><span class="o">.</span><span class="n">epgc</span><span class="o">.</span><span class="n">getter</span>
+    <span class="k">def</span> <span class="nf">epgc</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a tuple of the expected parental genome contributions.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="c1">################# Parental dimensions ##################</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nfemale</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Integral</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of female parents.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">female_axis</span><span class="p">]</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">female_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Integral</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Axis along which female parents are stored.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nmale</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Integral</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of male parents.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">male_axis</span><span class="p">]</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">male_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Integral</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Axis along which male parents are stored.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    
+    <span class="c1">############################## Object Methods ##############################</span>
+
+    <span class="c1">###################### Matrix I/O ######################</span>
+    <span class="c1"># TODO: make exporting of specific female, male, trait values, not just all</span>
+<div class="viewcode-block" id="DenseDihybridDHAdditiveGeneticVarianceMatrix.to_pandas">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.html#pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.to_pandas">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_pandas</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">female_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;female&quot;</span><span class="p">,</span>
+            <span class="n">female_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;female_grp&quot;</span><span class="p">,</span>
+            <span class="n">male_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;male&quot;</span><span class="p">,</span>
+            <span class="n">male_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;male_grp&quot;</span><span class="p">,</span>
+            <span class="n">trait_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;trait&quot;</span><span class="p">,</span>
+            <span class="n">variance_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;variance&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export a DenseDihybridDHAdditiveGeneticVarianceMatrix to a pandas.DataFrame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        female_col : str, default = &quot;female&quot;</span>
+<span class="sd">            Name of the column to which to write female taxa names.</span>
+
+<span class="sd">        female_grp_col : str, None, default = &quot;female_grp&quot;</span>
+<span class="sd">            Name of the column to which to write female taxa groups.</span>
+
+<span class="sd">        male_col : str, default = &quot;male&quot;</span>
+<span class="sd">            Name of the column to which to write male taxa names.</span>
+
+<span class="sd">        male_grp_col : str, None, default = &quot;male_grp&quot;</span>
+<span class="sd">            Name of the column to which to write male taxa groups.</span>
+
+<span class="sd">        trait_col : str, default = &quot;trait&quot;</span>
+<span class="sd">            Name of the column to which to write trait taxa names.</span>
+
+<span class="sd">        variance_col : str, default = &quot;variance&quot;</span>
+<span class="sd">            Name of the column to which to write variance taxa names.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating export to a </span>
+<span class="sd">            pandas.DataFrame.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : pandas.DataFrame</span>
+<span class="sd">            An output dataframe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">female_col</span><span class="p">,</span> <span class="s2">&quot;female_col&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">female_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_str</span><span class="p">(</span><span class="n">female_grp_col</span><span class="p">,</span> <span class="s2">&quot;female_grp_col&quot;</span><span class="p">)</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">male_col</span><span class="p">,</span> <span class="s2">&quot;male_col&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">male_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_str</span><span class="p">(</span><span class="n">male_grp_col</span><span class="p">,</span> <span class="s2">&quot;male_grp_col&quot;</span><span class="p">)</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">trait_col</span><span class="p">,</span> <span class="s2">&quot;trait_col&quot;</span><span class="p">)</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">variance_col</span><span class="p">,</span> <span class="s2">&quot;variance_col&quot;</span><span class="p">)</span>
+
+        <span class="c1"># calculate how much zero fill we need</span>
+        <span class="n">taxazfill</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">traitzfill</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span>
+
+        <span class="c1"># get names for taxa</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="s2">&quot;Taxon&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="n">taxazfill</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">)],</span>
+                <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span>
+
+        <span class="c1"># get names for traits</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="s2">&quot;Trait&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="n">traitzfill</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)],</span>
+                <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span>
+
+        <span class="c1"># calculate flattened array and corresponding axis indices</span>
+        <span class="n">flatmat</span><span class="p">,</span> <span class="p">(</span><span class="n">femaleix</span><span class="p">,</span> <span class="n">maleix</span><span class="p">,</span> <span class="n">traitix</span><span class="p">)</span> <span class="o">=</span> <span class="n">flattenix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span>
+
+        <span class="c1"># make dictionary to store output columns in specific column ordering</span>
+        <span class="n">out_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">female_col</span><span class="p">:</span> <span class="n">taxa</span><span class="p">[</span><span class="n">femaleix</span><span class="p">]})</span>
+        <span class="k">if</span> <span class="n">female_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">[</span><span class="n">femaleix</span><span class="p">]</span>
+            <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">female_grp_col</span><span class="p">:</span> <span class="n">values</span><span class="p">})</span>
+        <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">male_col</span><span class="p">:</span> <span class="n">taxa</span><span class="p">[</span><span class="n">maleix</span><span class="p">]})</span>
+        <span class="k">if</span> <span class="n">male_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">[</span><span class="n">maleix</span><span class="p">]</span>
+            <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">male_grp_col</span><span class="p">:</span> <span class="n">values</span><span class="p">})</span>
+        <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">trait_col</span><span class="p">:</span> <span class="n">trait</span><span class="p">[</span><span class="n">traitix</span><span class="p">]})</span>
+        <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">variance_col</span><span class="p">:</span> <span class="n">flatmat</span><span class="p">})</span>
+
+        <span class="c1"># create a pandas DataFrame from the data</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">out_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseDihybridDHAdditiveGeneticVarianceMatrix.to_csv">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.html#pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.to_csv">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_csv</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">female_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;female&quot;</span><span class="p">,</span>
+            <span class="n">female_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;female_grp&quot;</span><span class="p">,</span>
+            <span class="n">male_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;male&quot;</span><span class="p">,</span>
+            <span class="n">male_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;male_grp&quot;</span><span class="p">,</span>
+            <span class="n">trait_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;trait&quot;</span><span class="p">,</span>
+            <span class="n">variance_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;variance&quot;</span><span class="p">,</span>
+            <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> 
+            <span class="n">header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+            <span class="n">index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write a DenseDihybridDHAdditiveGeneticVarianceMatrix to a CSV file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            CSV file name to which to write.</span>
+<span class="sd">        </span>
+<span class="sd">        female_col : str, default = &quot;female&quot;</span>
+<span class="sd">            Name of the column to which to write female taxa names.</span>
+
+<span class="sd">        female_grp_col : str, None, default = &quot;female_grp&quot;</span>
+<span class="sd">            Name of the column to which to write female taxa groups.</span>
+
+<span class="sd">        male_col : str, default = &quot;male&quot;</span>
+<span class="sd">            Name of the column to which to write male taxa names.</span>
+
+<span class="sd">        male_grp_col : str, None, default = &quot;male_grp&quot;</span>
+<span class="sd">            Name of the column to which to write male taxa groups.</span>
+
+<span class="sd">        trait_col : str, default = &quot;trait&quot;</span>
+<span class="sd">            Name of the column to which to write trait taxa names.</span>
+
+<span class="sd">        variance_col : str, default = &quot;variance&quot;</span>
+<span class="sd">            Name of the column to which to write variance taxa names.</span>
+
+<span class="sd">        sep : str, default = &quot;,&quot;</span>
+<span class="sd">            Separator to use in the exported CSV file.</span>
+<span class="sd">        </span>
+<span class="sd">        header : bool, default = True</span>
+<span class="sd">            Whether to save header names.</span>
+<span class="sd">        </span>
+<span class="sd">        index : bool, default = False</span>
+<span class="sd">            Whether to save a row index in the exported CSV file.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating export to a CSV.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># convert DenseDihybridDHAdditiveGeneticVarianceMatrix to pandas.DataFrame</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(</span>
+            <span class="n">female_col</span> <span class="o">=</span> <span class="n">female_col</span><span class="p">,</span>
+            <span class="n">female_grp_col</span> <span class="o">=</span> <span class="n">female_grp_col</span><span class="p">,</span>
+            <span class="n">male_col</span> <span class="o">=</span> <span class="n">male_col</span><span class="p">,</span>
+            <span class="n">male_grp_col</span> <span class="o">=</span> <span class="n">male_grp_col</span><span class="p">,</span>
+            <span class="n">trait_col</span> <span class="o">=</span> <span class="n">trait_col</span><span class="p">,</span>
+            <span class="n">variance_col</span> <span class="o">=</span> <span class="n">variance_col</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># export using pandas</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">path_or_buf</span> <span class="o">=</span> <span class="n">filename</span><span class="p">,</span>
+            <span class="n">sep</span> <span class="o">=</span> <span class="n">sep</span><span class="p">,</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="p">,</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DenseDihybridDHAdditiveGeneticVarianceMatrix.to_hdf5">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.html#pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.to_hdf5">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_hdf5</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write DenseDihybridDHAdditiveGeneticVarianceMatrix to an HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str, h5py.File</span>
+<span class="sd">            HDF5 file name or HDF5 file stream to which to write.</span>
+
+<span class="sd">        groupname : str or None</span>
+<span class="sd">            HDF5 group name under which the ``DenseDihybridDHAdditiveGeneticVarianceMatrix`` data is stored.</span>
+<span class="sd">            If ``None``, the ``DenseDihybridDHAdditiveGeneticVarianceMatrix`` is written to the base HDF5 group.</span>
+<span class="sd">        </span>
+<span class="sd">        overwrite : bool</span>
+<span class="sd">            Whether to overwrite data fields if they are present in the HDF5 file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">### type checks</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">)</span>
+
+        <span class="c1"># open HDF5 in write mode</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+        <span class="c1">############ process groupname argument ############</span>
+
+        <span class="c1"># if groupname is None, set groupname to empty string</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        
+        <span class="c1"># if groupname is a string, add &#39;/&#39; to end of string if not last character</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+
+        <span class="c1"># else raise error</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="s2">&quot;groupname&quot;</span><span class="p">)</span>
+        
+        <span class="c1">################ populate HDF5 file ################</span>
+
+        <span class="c1"># data dictionary</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;mat&quot;</span>           <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span>
+            <span class="s2">&quot;taxa&quot;</span>          <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp&quot;</span>      <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="s2">&quot;trait&quot;</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_name&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_name</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_stix&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_stix</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_spix&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_spix</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_len&quot;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_len</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># save data</span>
+        <span class="n">save_dict_to_hdf5</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>
+
+        <span class="c1">################# write conclusion #################</span>
+
+        <span class="c1"># close the file</span>
+        <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+    
+    <span class="c1">############################## Class Methods ###############################</span>
+
+    <span class="c1">###################### Matrix I/O ######################</span>
+<div class="viewcode-block" id="DenseDihybridDHAdditiveGeneticVarianceMatrix.from_pandas">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.html#pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.from_pandas">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pandas</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> 
+            <span class="n">female_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;female&quot;</span><span class="p">,</span>
+            <span class="n">female_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;female_grp&quot;</span><span class="p">,</span>
+            <span class="n">male_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;male&quot;</span><span class="p">,</span>
+            <span class="n">male_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;male_grp&quot;</span><span class="p">,</span>
+            <span class="n">trait_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;trait&quot;</span><span class="p">,</span>
+            <span class="n">variance_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;variance&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseDihybridDHAdditiveGeneticVarianceMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a ``DenseDihybridDHAdditiveGeneticVarianceMatrix`` from a ``pandas.DataFrame``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : pandas.DataFrame</span>
+<span class="sd">            Pandas dataframe from which to read.</span>
+
+<span class="sd">        female_col : str, Integral, default = &quot;female&quot;</span>
+<span class="sd">            Name or index of the column from which to read female taxa names.</span>
+
+<span class="sd">        female_grp_col : str, Integral, None, default = &quot;female&quot;</span>
+<span class="sd">            Name or index of the column from which to read female taxa groups.</span>
+
+<span class="sd">        male_col : str, Integral, None, default = &quot;male&quot;</span>
+<span class="sd">            Name or index of the column from which to read male taxa names.</span>
+
+<span class="sd">        male_grp_col : str, Integral, None, default = &quot;male&quot;</span>
+<span class="sd">            Name or index of the column from which to read male taxa names.</span>
+
+<span class="sd">        trait_col : str, Integral, default = &quot;trait&quot;</span>
+<span class="sd">            Name or index of the column from which to read trait taxa names.</span>
+
+<span class="sd">        variance_col : str, Integral, default = &quot;variance&quot;</span>
+<span class="sd">            Name or index of the column from which to read variance taxa names.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating importing from a </span>
+<span class="sd">            ``pandas.DataFrame``.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseDihybridDHAdditiveGeneticVarianceMatrix</span>
+<span class="sd">            A ``DenseDihybridDHAdditiveGeneticVarianceMatrix`` read from a ``pandas.DataFrame``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">### type checks and get df indices</span>
+
+        <span class="c1"># df</span>
+        <span class="n">check_is_pandas_DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">)</span>
+
+        <span class="c1"># female_col</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">female_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">female_col</span><span class="p">)</span>
+            <span class="n">female_colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">female_col</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">female_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">female_col</span><span class="p">)</span>
+            <span class="n">female_colix</span> <span class="o">=</span> <span class="n">female_col</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">female_col</span><span class="p">,</span> <span class="s2">&quot;female_col&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># female_grp_col</span>
+        <span class="k">if</span> <span class="n">female_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">female_grp_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">female_grp_col</span><span class="p">)</span>
+                <span class="n">female_grp_colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">female_grp_col</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">female_grp_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+                <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">female_grp_col</span><span class="p">)</span>
+                <span class="n">female_grp_colix</span> <span class="o">=</span> <span class="n">female_grp_col</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">female_grp_col</span><span class="p">,</span> <span class="s2">&quot;female_grp_col&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># male_col</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">male_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">male_col</span><span class="p">)</span>
+            <span class="n">male_colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">male_col</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">male_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">male_col</span><span class="p">)</span>
+            <span class="n">male_colix</span> <span class="o">=</span> <span class="n">male_col</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">male_col</span><span class="p">,</span> <span class="s2">&quot;male_col&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># male_grp_col</span>
+        <span class="k">if</span> <span class="n">male_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">male_grp_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">male_grp_col</span><span class="p">)</span>
+                <span class="n">male_grp_colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">male_grp_col</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">male_grp_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+                <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">male_grp_col</span><span class="p">)</span>
+                <span class="n">male_grp_colix</span> <span class="o">=</span> <span class="n">male_grp_col</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">male_grp_col</span><span class="p">,</span> <span class="s2">&quot;male_grp_col&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># trait_col</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">trait_col</span><span class="p">)</span>
+            <span class="n">trait_colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">trait_col</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">trait_col</span><span class="p">)</span>
+            <span class="n">trait_colix</span> <span class="o">=</span> <span class="n">trait_col</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">trait_col</span><span class="p">,</span> <span class="s2">&quot;trait_col&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># variance_col</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variance_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">variance_col</span><span class="p">)</span>
+            <span class="n">variance_colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">variance_col</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">variance_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">variance_col</span><span class="p">)</span>
+            <span class="n">variance_colix</span> <span class="o">=</span> <span class="n">variance_col</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">variance_col</span><span class="p">,</span> <span class="s2">&quot;variance_col&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># get required data columns (type numpy.ndarray)</span>
+        <span class="n">female_data</span>   <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">female_colix</span>  <span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+        <span class="n">male_data</span>     <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">male_colix</span>    <span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+        <span class="n">trait_data</span>    <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">trait_colix</span>   <span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+        <span class="n">variance_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">variance_colix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+
+        <span class="c1"># get unique female, male taxa (type numpy.ndarray)</span>
+        <span class="n">female_taxa</span><span class="p">,</span> <span class="n">female_taxaix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">female_data</span><span class="p">,</span> <span class="n">return_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">male_taxa</span><span class="p">,</span> <span class="n">male_taxaix</span>     <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">male_data</span><span class="p">,</span> <span class="n">return_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># combine female and male taxa names (type numpy.ndarray)</span>
+        <span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">union1d</span><span class="p">(</span><span class="n">female_taxa</span><span class="p">,</span> <span class="n">male_taxa</span><span class="p">)</span>
+
+        <span class="c1"># allocate female, male indices</span>
+        <span class="n">femaleix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">female_data</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">maleix</span>   <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">male_data</span>  <span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+
+        <span class="c1"># calculate female, male indices</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">taxon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">taxa</span><span class="p">):</span>
+            <span class="n">femaleix</span><span class="p">[</span><span class="n">female_data</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">maleix</span><span class="p">[</span><span class="n">male_data</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+        
+        <span class="c1"># calculate unique trait values, trait indices</span>
+        <span class="n">trait</span><span class="p">,</span> <span class="n">traitix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">trait_data</span><span class="p">,</span> <span class="n">return_inverse</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># get optional taxa group data</span>
+        <span class="n">taxa_grp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">female_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">taxa</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="n">female_grp_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">female_grp_colix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">taxon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">taxa</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">taxon</span> <span class="ow">in</span> <span class="n">female_taxa</span><span class="p">:</span>
+                    <span class="n">ix</span> <span class="o">=</span> <span class="n">female_taxaix</span><span class="p">[</span><span class="n">female_taxa</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">]</span>
+                    <span class="n">taxa_grp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">female_grp_data</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">male_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">taxa</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="n">male_grp_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">male_grp_colix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">taxon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">taxa</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">taxon</span> <span class="ow">in</span> <span class="n">male_taxa</span><span class="p">:</span>
+                    <span class="n">ix</span> <span class="o">=</span> <span class="n">male_taxaix</span><span class="p">[</span><span class="n">male_taxa</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">]</span>
+                    <span class="n">taxa_grp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">male_grp_data</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+
+        <span class="c1"># get array dimensions</span>
+        <span class="n">nfemale</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">taxa</span><span class="p">)</span>
+        <span class="n">nmale</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">taxa</span><span class="p">)</span>
+        <span class="n">ntrait</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trait</span><span class="p">)</span>
+
+        <span class="c1"># allocate NaN array for variance matrix</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">nfemale</span><span class="p">,</span><span class="n">nmale</span><span class="p">,</span><span class="n">ntrait</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+
+        <span class="c1"># overwrite NaN values with variance values</span>
+        <span class="n">mat</span><span class="p">[</span><span class="n">femaleix</span><span class="p">,</span><span class="n">maleix</span><span class="p">,</span><span class="n">traitix</span><span class="p">]</span> <span class="o">=</span> <span class="n">variance_data</span>
+
+        <span class="c1"># construct an object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span> 
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span> 
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span> 
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseDihybridDHAdditiveGeneticVarianceMatrix.from_csv">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.html#pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.from_csv">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_csv</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">female_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;female&quot;</span><span class="p">,</span>
+            <span class="n">female_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;female_grp&quot;</span><span class="p">,</span>
+            <span class="n">male_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;male&quot;</span><span class="p">,</span>
+            <span class="n">male_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;male_grp&quot;</span><span class="p">,</span>
+            <span class="n">trait_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;trait&quot;</span><span class="p">,</span>
+            <span class="n">variance_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;variance&quot;</span><span class="p">,</span>
+            <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span>
+            <span class="n">header</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseDihybridDHAdditiveGeneticVarianceMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read an object from a CSV file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            CSV file name from which to read.</span>
+
+<span class="sd">        female_col : str, Integral, default = &quot;female&quot;</span>
+<span class="sd">            Name or index of the column from which to read female taxa names.</span>
+
+<span class="sd">        female_grp_col : str, Integral, None, default = &quot;female&quot;</span>
+<span class="sd">            Name or index of the column from which to read female taxa groups.</span>
+
+<span class="sd">        male_col : str, Integral, None, default = &quot;male&quot;</span>
+<span class="sd">            Name or index of the column from which to read male taxa names.</span>
+
+<span class="sd">        male_grp_col : str, Integral, None, default = &quot;male&quot;</span>
+<span class="sd">            Name or index of the column from which to read male taxa names.</span>
+
+<span class="sd">        trait_col : str, Integral, default = &quot;trait&quot;</span>
+<span class="sd">            Name or index of the column from which to read trait taxa names.</span>
+
+<span class="sd">        variance_col : str, Integral, default = &quot;variance&quot;</span>
+<span class="sd">            Name or index of the column from which to read variance taxa names.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating importing from a CSV.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : CSVInputOutput</span>
+<span class="sd">            An object read from a CSV file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+            <span class="n">filepath_or_buffer</span> <span class="o">=</span> <span class="n">filename</span><span class="p">,</span>
+            <span class="n">sep</span> <span class="o">=</span> <span class="n">sep</span><span class="p">,</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">,</span>
+            <span class="n">female_col</span> <span class="o">=</span> <span class="n">female_col</span><span class="p">,</span>
+            <span class="n">female_grp_col</span> <span class="o">=</span> <span class="n">female_grp_col</span><span class="p">,</span>
+            <span class="n">male_col</span> <span class="o">=</span> <span class="n">male_col</span><span class="p">,</span>
+            <span class="n">male_grp_col</span> <span class="o">=</span> <span class="n">male_grp_col</span><span class="p">,</span>
+            <span class="n">trait_col</span> <span class="o">=</span> <span class="n">trait_col</span><span class="p">,</span>
+            <span class="n">variance_col</span> <span class="o">=</span> <span class="n">variance_col</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+    
+<div class="viewcode-block" id="DenseDihybridDHAdditiveGeneticVarianceMatrix.from_hdf5">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.html#pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.from_hdf5">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_hdf5</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseDihybridDHAdditiveGeneticVarianceMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read DenseDihybridDHAdditiveGeneticVarianceMatrix from an HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            HDF5 file name which to read.</span>
+<span class="sd">        groupname : str or None</span>
+<span class="sd">            HDF5 group name under which DenseDihybridDHAdditiveGeneticVarianceMatrix data is stored.</span>
+<span class="sd">            If None, DenseDihybridDHAdditiveGeneticVarianceMatrix is read from base HDF5 group.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseDihybridDHAdditiveGeneticVarianceMatrix</span>
+<span class="sd">            A DenseDihybridDHAdditiveGeneticVarianceMatrix read from file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">)</span>
+
+        <span class="c1">#################### Open file #####################</span>
+        
+        <span class="c1"># check file exists</span>
+        <span class="n">check_file_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        
+        <span class="c1"># open HDF5 in read only</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+        
+        <span class="c1">############ Process groupname argument ############</span>
+
+        <span class="c1"># if groupname is None, set groupname to empty string</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        
+        <span class="c1"># if we have a string, check that group exists, add &#39;/&#39; to end if needed</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">groupname</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+        
+        <span class="c1"># else raise error</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="s2">&quot;groupname&quot;</span><span class="p">)</span>
+        
+        <span class="c1">############ Check for required fields #############</span>
+
+        <span class="c1"># list of all required arguments</span>
+        <span class="n">required_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mat&quot;</span><span class="p">]</span>
+
+        <span class="c1"># for each required field, concatenate base groupname and field and</span>
+        <span class="c1"># check that group exists</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">:</span>
+            <span class="n">fieldname</span> <span class="o">=</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span>
+            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">)</span>
+        
+        <span class="c1">#################### Read data #####################</span>
+
+        <span class="c1"># output dictionary</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;mat&quot;</span>           <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa&quot;</span>          <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp&quot;</span>      <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;trait&quot;</span>         <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_name&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_stix&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_spix&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_len&quot;</span>  <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># for each field, concatenate base groupname and field and</span>
+        <span class="c1"># if the field exists in the HDF5 file, then read the array</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">fieldname</span> <span class="o">=</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span>
+            <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][()]</span>
+
+        <span class="c1">#################### Close file ####################</span>
+        
+        <span class="c1"># close file</span>
+        <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        
+        <span class="c1">############### Datatype conversion ################</span>
+
+        <span class="c1"># if taxa names read, convert taxa strings from byte to utf-8</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">]],</span>
+                <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span>
+            <span class="p">)</span>
+
+        <span class="c1"># if trait names read, convert trait strings from byte to utf-8</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trait&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trait&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trait&quot;</span><span class="p">]],</span>
+                <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span>
+            <span class="p">)</span>
+        
+        <span class="c1">################# Object creation ##################</span>
+        <span class="c1"># create object from read data</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span>      <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;mat&quot;</span><span class="p">],</span>
+            <span class="n">taxa</span>     <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">],</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp&quot;</span><span class="p">],</span>
+            <span class="n">trait</span>    <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trait&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        
+        <span class="c1"># copy metadata if there is any</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_name</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_name&quot;</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_stix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_stix&quot;</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_spix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_spix&quot;</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_len</span>  <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_len&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">############# Matrix Factory Class Methods #############</span>
+    <span class="c1"># TODO: provide support for non-linear models</span>
+<div class="viewcode-block" id="DenseDihybridDHAdditiveGeneticVarianceMatrix.from_gmod">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.html#pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.from_gmod">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_gmod</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">gmod</span><span class="p">:</span> <span class="n">GenomicModel</span><span class="p">,</span> 
+            <span class="n">pgmat</span><span class="p">:</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> 
+            <span class="n">ncross</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span> 
+            <span class="n">nprogeny</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span> 
+            <span class="n">nself</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Integral</span><span class="p">,</span><span class="n">Real</span><span class="p">],</span>
+            <span class="n">gmapfn</span><span class="p">:</span> <span class="n">GeneticMapFunction</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseDihybridDHAdditiveGeneticVarianceMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate a symmetrical tensor of progeny variances for each possible</span>
+<span class="sd">        3-way cross between *inbred* individuals.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        gmod : GenomicModel</span>
+<span class="sd">            Genomic Model with which to estimate genetic variances.</span>
+<span class="sd">        pgmat : PhasedGenotypeMatrix</span>
+<span class="sd">            Input genomes to use to estimate genetic variances.</span>
+<span class="sd">        ncross : Integral</span>
+<span class="sd">            Number of cross patterns to simulate for genetic variance</span>
+<span class="sd">            estimation.</span>
+<span class="sd">        nprogeny : Integral</span>
+<span class="sd">            Number of progeny to simulate per cross to estimate genetic</span>
+<span class="sd">            variance.</span>
+<span class="sd">        nself : Integral, Real</span>
+<span class="sd">            Number of selfing generations post-cross pattern before &#39;nprogeny&#39;</span>
+<span class="sd">            individuals are simulated.</span>
+
+<span class="sd">            +-----------------+-------------------------+</span>
+<span class="sd">            | Example         | Description             |</span>
+<span class="sd">            +=================+=========================+</span>
+<span class="sd">            | ``nself = 0``   | Derive gametes from F1  |</span>
+<span class="sd">            +-----------------+-------------------------+</span>
+<span class="sd">            | ``nself = 1``   | Derive gametes from F2  |</span>
+<span class="sd">            +-----------------+-------------------------+</span>
+<span class="sd">            | ``nself = 2``   | Derive gametes from F3  |</span>
+<span class="sd">            +-----------------+-------------------------+</span>
+<span class="sd">            | ``...``         | etc.                    |</span>
+<span class="sd">            +-----------------+-------------------------+</span>
+<span class="sd">            | ``nself = inf`` | Derive gametes from SSD |</span>
+<span class="sd">            +-----------------+-------------------------+</span>
+<span class="sd">        gmapfn : GeneticMapFunction</span>
+<span class="sd">            GeneticMapFunction to use to estimate covariance induced by</span>
+<span class="sd">            recombination.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseDihybridDHAdditiveGeneticVarianceMatrix</span>
+<span class="sd">            A matrix of additive genetic variance estimations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="n">check_is_GenomicModel</span><span class="p">(</span><span class="n">gmod</span><span class="p">,</span> <span class="s2">&quot;gmod&quot;</span><span class="p">)</span>
+        <span class="n">check_is_PhasedGenotypeMatrix</span><span class="p">(</span><span class="n">pgmat</span><span class="p">,</span> <span class="s2">&quot;pgmat&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">ncross</span><span class="p">,</span> <span class="s2">&quot;ncross&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nprogeny</span><span class="p">,</span> <span class="s2">&quot;nprogeny&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral_or_inf</span><span class="p">(</span><span class="n">nself</span><span class="p">,</span> <span class="s2">&quot;nself&quot;</span><span class="p">)</span>
+        <span class="n">check_is_GeneticMapFunction</span><span class="p">(</span><span class="n">gmapfn</span><span class="p">,</span> <span class="s2">&quot;gmapfn&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># if genomic model is an additive linear genomic model, then use specialized routine</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gmod</span><span class="p">,</span> <span class="n">AdditiveLinearGenomicModel</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_algmod</span><span class="p">(</span>
+                <span class="n">algmod</span> <span class="o">=</span> <span class="n">gmod</span><span class="p">,</span> 
+                <span class="n">pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="p">,</span> 
+                <span class="n">ncross</span> <span class="o">=</span> <span class="n">ncross</span><span class="p">,</span> 
+                <span class="n">nprogeny</span> <span class="o">=</span> <span class="n">nprogeny</span><span class="p">,</span> 
+                <span class="n">nself</span> <span class="o">=</span> <span class="n">nself</span><span class="p">,</span> 
+                <span class="n">gmapfn</span> <span class="o">=</span> <span class="n">gmapfn</span><span class="p">,</span> 
+                <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+        <span class="c1"># otherwise raise error since non-linear support hasn&#39;t been implemented yet</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;support for non-linear models not implemented yet&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DenseDihybridDHAdditiveGeneticVarianceMatrix.from_algmod">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.html#pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.DenseDihybridDHAdditiveGeneticVarianceMatrix.from_algmod">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_algmod</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">algmod</span><span class="p">:</span> <span class="n">AdditiveLinearGenomicModel</span><span class="p">,</span> 
+            <span class="n">pgmat</span><span class="p">:</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> 
+            <span class="n">ncross</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span> 
+            <span class="n">nprogeny</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span> 
+            <span class="n">nself</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Integral</span><span class="p">,</span><span class="n">Real</span><span class="p">],</span> 
+            <span class="n">gmapfn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span> 
+            <span class="n">mem</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Integral</span><span class="p">,</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1024</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseDihybridDHAdditiveGeneticVarianceMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate a symmetrical matrix of DH progeny variances for each possible</span>
+<span class="sd">        pairwise dihybrid cross between *non-inbred* individuals.</span>
+<span class="sd">        Calculations are derived from Lehermeier et al. (2019).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        algmod : AdditiveLinearGenomicModel</span>
+<span class="sd">            AdditiveLinearGenomicModel with which to estimate genetic variances.</span>
+<span class="sd">        pgmat : PhasedGenotypeMatrix</span>
+<span class="sd">            Input genomes to use to estimate genetic variances.</span>
+<span class="sd">        ncross : Integral</span>
+<span class="sd">            Number of cross patterns to simulate for genetic variance</span>
+<span class="sd">            estimation.</span>
+<span class="sd">        nprogeny : Integral</span>
+<span class="sd">            Number of progeny to simulate per cross to estimate genetic</span>
+<span class="sd">            variance.</span>
+<span class="sd">        nself : Integral, Real</span>
+<span class="sd">            Number of selfing generations post-cross pattern before &#39;nprogeny&#39;</span>
+<span class="sd">            individuals are simulated.</span>
+
+<span class="sd">            +-----------------+-------------------------+</span>
+<span class="sd">            | Example         | Description             |</span>
+<span class="sd">            +=================+=========================+</span>
+<span class="sd">            | ``nself = 0``   | Derive gametes from F1  |</span>
+<span class="sd">            +-----------------+-------------------------+</span>
+<span class="sd">            | ``nself = 1``   | Derive gametes from F2  |</span>
+<span class="sd">            +-----------------+-------------------------+</span>
+<span class="sd">            | ``nself = 2``   | Derive gametes from F3  |</span>
+<span class="sd">            +-----------------+-------------------------+</span>
+<span class="sd">            | ``...``         | etc.                    |</span>
+<span class="sd">            +-----------------+-------------------------+</span>
+<span class="sd">            | ``nself = inf`` | Derive gametes from SSD |</span>
+<span class="sd">            +-----------------+-------------------------+</span>
+<span class="sd">        gmapfn : GeneticMapFunction</span>
+<span class="sd">            GeneticMapFunction to use to estimate covariance induced by</span>
+<span class="sd">            recombination.</span>
+<span class="sd">        mem : Integral, default = 1024</span>
+<span class="sd">            Memory chunk size to use during matrix operations. If ``None``,</span>
+<span class="sd">            then memory chunk size is not limited.</span>
+
+<span class="sd">            WARNING: Setting ``mem = None`` might result in memory allocation</span>
+<span class="sd">            errors! For reference, ``mem = 1024`` refers to a matrix of size</span>
+<span class="sd">            1024x1024, which needs about 8.5 MB of storage. Matrices of course</span>
+<span class="sd">            need a quadratic amount of memory: :math:`O(n^2)`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : GeneticVarianceMatrix</span>
+<span class="sd">            A matrix of additive genetic variance estimations.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="n">check_is_AdditiveLinearGenomicModel</span><span class="p">(</span><span class="n">algmod</span><span class="p">,</span> <span class="s2">&quot;algmod&quot;</span><span class="p">)</span>
+        <span class="n">check_is_PhasedGenotypeMatrix</span><span class="p">(</span><span class="n">pgmat</span><span class="p">,</span> <span class="s2">&quot;pgmat&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">ncross</span><span class="p">,</span> <span class="s2">&quot;ncross&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nprogeny</span><span class="p">,</span> <span class="s2">&quot;nprogeny&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral_or_inf</span><span class="p">(</span><span class="n">nself</span><span class="p">,</span> <span class="s2">&quot;nself&quot;</span><span class="p">)</span>
+        <span class="n">check_is_GeneticMapFunction</span><span class="p">(</span><span class="n">gmapfn</span><span class="p">,</span> <span class="s2">&quot;gmapfn&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral_or_None</span><span class="p">(</span><span class="n">mem</span><span class="p">,</span> <span class="s2">&quot;mem&quot;</span><span class="p">)</span>
+
+        <span class="c1"># check for chromosome grouping</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">is_grouped_vrnt</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;pgmat must be grouped along the vrnt axis&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># check for genetic positions</span>
+        <span class="k">if</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">vrnt_genpos</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;pgmat must have genetic positions&quot;</span><span class="p">)</span>
+
+        <span class="c1"># gather shapes of data input</span>
+        <span class="n">ntrait</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">ntrait</span>                  <span class="c1"># number ot traits (t)</span>
+        <span class="n">ntaxa</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">ntaxa</span>                     <span class="c1"># number of individuals (n)</span>
+
+        <span class="c1"># gather data pointers</span>
+        <span class="n">geno</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">mat</span>                        <span class="c1"># (m,n,p) genotype matrix</span>
+        <span class="n">chrgrp_stix</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">vrnt_chrgrp_stix</span>    <span class="c1"># (g,) chromosome group start indices</span>
+        <span class="n">chrgrp_spix</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">vrnt_chrgrp_spix</span>    <span class="c1"># (g,) chromosome group stop indices</span>
+        <span class="n">genpos</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">vrnt_genpos</span>              <span class="c1"># (p,) marker genetic positions</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">u_a</span>                          <span class="c1"># (p,t) marker effect coefficients</span>
+
+        <span class="c1"># allocate a square matrix for each pairwise variance</span>
+        <span class="n">varA_mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">ntaxa</span><span class="p">,</span> <span class="n">ntaxa</span><span class="p">,</span> <span class="n">ntrait</span><span class="p">),</span>     <span class="c1"># (n,n,t) variance matrix</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span>
+        <span class="p">)</span>
+
+        <span class="c1"># for each linkage group</span>
+        <span class="k">for</span> <span class="n">lst</span><span class="p">,</span> <span class="n">lsp</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">chrgrp_stix</span><span class="p">,</span> <span class="n">chrgrp_spix</span><span class="p">):</span>
+            <span class="c1"># determine memory chunk step (for iterators)</span>
+            <span class="n">step</span> <span class="o">=</span> <span class="p">(</span><span class="n">lsp</span> <span class="o">-</span> <span class="n">lst</span><span class="p">)</span> <span class="k">if</span> <span class="n">mem</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">mem</span>
+            <span class="c1"># for each computational chunk</span>
+            <span class="k">for</span> <span class="n">rst</span><span class="p">,</span><span class="n">rsp</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span><span class="n">lsp</span><span class="p">,</span><span class="n">step</span><span class="p">),</span><span class="n">srange</span><span class="p">(</span><span class="n">lst</span><span class="o">+</span><span class="n">step</span><span class="p">,</span><span class="n">lsp</span><span class="p">,</span><span class="n">step</span><span class="p">)):</span>
+                <span class="k">for</span> <span class="n">cst</span><span class="p">,</span><span class="n">csp</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">lst</span><span class="p">,</span><span class="n">lsp</span><span class="p">,</span><span class="n">step</span><span class="p">),</span><span class="n">srange</span><span class="p">(</span><span class="n">lst</span><span class="o">+</span><span class="n">step</span><span class="p">,</span><span class="n">lsp</span><span class="p">,</span><span class="n">step</span><span class="p">)):</span>
+                    <span class="c1"># create sparse meshgrid indicating where genetic positions are</span>
+                    <span class="n">gi</span><span class="p">,</span> <span class="n">gj</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span>
+                        <span class="n">genpos</span><span class="p">[</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">],</span>        <span class="c1"># row block genetic positions</span>
+                        <span class="n">genpos</span><span class="p">[</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">],</span>        <span class="c1"># column block genetic positions</span>
+                        <span class="n">indexing</span> <span class="o">=</span> <span class="s1">&#39;ij&#39;</span><span class="p">,</span>        <span class="c1"># use ij indexing</span>
+                        <span class="n">sparse</span> <span class="o">=</span> <span class="kc">True</span>           <span class="c1"># generate a spare array tuple for speed</span>
+                    <span class="p">)</span>
+
+                    <span class="c1"># calculate recombination probability matrix for chunk</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">gmapfn</span><span class="o">.</span><span class="n">mapfn</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">gi</span> <span class="o">-</span> <span class="n">gj</span><span class="p">))</span> <span class="c1"># (rb,cb) covariance matrix</span>
+
+                    <span class="c1"># calculate a D1 matrix; this is specific to mating scheme</span>
+                    <span class="n">D1</span> <span class="o">=</span> <span class="n">cov_D1s</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">nself</span><span class="p">)</span>  <span class="c1"># (rb,cb) covariance matrix</span>
+
+                    <span class="c1"># calculate a D2 matrix; this is specific to mating scheme</span>
+                    <span class="n">D2</span> <span class="o">=</span> <span class="n">cov_D2s</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">nself</span><span class="p">)</span>  <span class="c1"># (rb,cb) covariance matrix</span>
+
+                    <span class="c1"># get marker coefficients for rows and columns</span>
+                    <span class="n">ru</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="c1"># (rb,t)&#39; -&gt; (t,rb)</span>
+                    <span class="n">cu</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="c1"># (cb,t)&#39; -&gt; (t,cb)</span>
+
+                    <span class="c1"># for each mate pair (including selfs)</span>
+                    <span class="c1"># subscript codes:</span>
+                    <span class="c1">#   1 = female phase 2</span>
+                    <span class="c1">#   2 = female phase 1</span>
+                    <span class="c1">#   3 = male phase 2</span>
+                    <span class="c1">#   4 = male phase 1</span>
+                    <span class="k">for</span> <span class="n">female</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">ntaxa</span><span class="p">):</span>       <span class="c1"># varA row index</span>
+                        <span class="k">for</span> <span class="n">male</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">female</span><span class="p">):</span>    <span class="c1"># varA col index</span>
+                            <span class="c1"># calculate genotype differences for row, col</span>
+                            <span class="n">rdgeno21</span> <span class="o">=</span> <span class="n">geno</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">female</span><span class="p">,</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span> <span class="o">-</span> <span class="n">geno</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">female</span><span class="p">,</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span> <span class="c1"># (rb,)</span>
+                            <span class="n">cdgeno21</span> <span class="o">=</span> <span class="n">geno</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">female</span><span class="p">,</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span> <span class="o">-</span> <span class="n">geno</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">female</span><span class="p">,</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span> <span class="c1"># (cb,)</span>
+                            <span class="n">rdgeno31</span> <span class="o">=</span> <span class="n">geno</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">male</span><span class="p">,</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span> <span class="o">-</span> <span class="n">geno</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">female</span><span class="p">,</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span> <span class="c1"># (rb,)</span>
+                            <span class="n">cdgeno31</span> <span class="o">=</span> <span class="n">geno</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">male</span><span class="p">,</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span> <span class="o">-</span> <span class="n">geno</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">female</span><span class="p">,</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span> <span class="c1"># (cb,)</span>
+                            <span class="n">rdgeno32</span> <span class="o">=</span> <span class="n">geno</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">male</span><span class="p">,</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span> <span class="o">-</span> <span class="n">geno</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">female</span><span class="p">,</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span> <span class="c1"># (rb,)</span>
+                            <span class="n">cdgeno32</span> <span class="o">=</span> <span class="n">geno</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">male</span><span class="p">,</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span> <span class="o">-</span> <span class="n">geno</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">female</span><span class="p">,</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span> <span class="c1"># (cb,)</span>
+                            <span class="n">rdgeno41</span> <span class="o">=</span> <span class="n">geno</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">male</span><span class="p">,</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span> <span class="o">-</span> <span class="n">geno</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">female</span><span class="p">,</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span> <span class="c1"># (rb,)</span>
+                            <span class="n">cdgeno41</span> <span class="o">=</span> <span class="n">geno</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">male</span><span class="p">,</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span> <span class="o">-</span> <span class="n">geno</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">female</span><span class="p">,</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span> <span class="c1"># (cb,)</span>
+                            <span class="n">rdgeno42</span> <span class="o">=</span> <span class="n">geno</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">male</span><span class="p">,</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span> <span class="o">-</span> <span class="n">geno</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">female</span><span class="p">,</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span> <span class="c1"># (rb,)</span>
+                            <span class="n">cdgeno42</span> <span class="o">=</span> <span class="n">geno</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">male</span><span class="p">,</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span> <span class="o">-</span> <span class="n">geno</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">female</span><span class="p">,</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span> <span class="c1"># (cb,)</span>
+                            <span class="n">rdgeno43</span> <span class="o">=</span> <span class="n">geno</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">male</span><span class="p">,</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span> <span class="o">-</span> <span class="n">geno</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">male</span><span class="p">,</span><span class="n">rst</span><span class="p">:</span><span class="n">rsp</span><span class="p">]</span> <span class="c1"># (rb,)</span>
+                            <span class="n">cdgeno43</span> <span class="o">=</span> <span class="n">geno</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">male</span><span class="p">,</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span> <span class="o">-</span> <span class="n">geno</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">male</span><span class="p">,</span><span class="n">cst</span><span class="p">:</span><span class="n">csp</span><span class="p">]</span> <span class="c1"># (cb,)</span>
+
+                            <span class="c1"># calculate effect differences</span>
+                            <span class="n">reffect21</span> <span class="o">=</span> <span class="n">rdgeno21</span> <span class="o">*</span> <span class="n">ru</span> <span class="c1"># (rb,)*(t,rb) -&gt; (t,rb)</span>
+                            <span class="n">ceffect21</span> <span class="o">=</span> <span class="n">cdgeno21</span> <span class="o">*</span> <span class="n">cu</span> <span class="c1"># (cb,)*(t,cb) -&gt; (t,cb)</span>
+                            <span class="n">reffect31</span> <span class="o">=</span> <span class="n">rdgeno31</span> <span class="o">*</span> <span class="n">ru</span> <span class="c1"># (rb,)*(t,rb) -&gt; (t,rb)</span>
+                            <span class="n">ceffect31</span> <span class="o">=</span> <span class="n">cdgeno31</span> <span class="o">*</span> <span class="n">cu</span> <span class="c1"># (cb,)*(t,cb) -&gt; (t,cb)</span>
+                            <span class="n">reffect32</span> <span class="o">=</span> <span class="n">rdgeno32</span> <span class="o">*</span> <span class="n">ru</span> <span class="c1"># (rb,)*(t,rb) -&gt; (t,rb)</span>
+                            <span class="n">ceffect32</span> <span class="o">=</span> <span class="n">cdgeno32</span> <span class="o">*</span> <span class="n">cu</span> <span class="c1"># (cb,)*(t,cb) -&gt; (t,cb)</span>
+                            <span class="n">reffect41</span> <span class="o">=</span> <span class="n">rdgeno41</span> <span class="o">*</span> <span class="n">ru</span> <span class="c1"># (rb,)*(t,rb) -&gt; (t,rb)</span>
+                            <span class="n">ceffect41</span> <span class="o">=</span> <span class="n">cdgeno41</span> <span class="o">*</span> <span class="n">cu</span> <span class="c1"># (cb,)*(t,cb) -&gt; (t,cb)</span>
+                            <span class="n">reffect42</span> <span class="o">=</span> <span class="n">rdgeno42</span> <span class="o">*</span> <span class="n">ru</span> <span class="c1"># (rb,)*(t,rb) -&gt; (t,rb)</span>
+                            <span class="n">ceffect42</span> <span class="o">=</span> <span class="n">cdgeno42</span> <span class="o">*</span> <span class="n">cu</span> <span class="c1"># (cb,)*(t,cb) -&gt; (t,cb)</span>
+                            <span class="n">reffect43</span> <span class="o">=</span> <span class="n">rdgeno43</span> <span class="o">*</span> <span class="n">ru</span> <span class="c1"># (rb,)*(t,rb) -&gt; (t,rb)</span>
+                            <span class="n">ceffect43</span> <span class="o">=</span> <span class="n">cdgeno43</span> <span class="o">*</span> <span class="n">cu</span> <span class="c1"># (cb,)*(t,cb) -&gt; (t,cb)</span>
+
+                            <span class="c1"># calculate varA part for female2-male</span>
+                            <span class="c1"># (t,rb)x(rb,cb) -&gt; (t,cb)</span>
+                            <span class="c1"># (t,cb)*(t,cb) -&gt; (t,cb)</span>
+                            <span class="c1"># (t,cb).sum(1) -&gt; (t,)</span>
+                            <span class="n">varA_part21</span> <span class="o">=</span> <span class="p">(</span><span class="n">reffect21</span> <span class="o">@</span> <span class="n">D2</span> <span class="o">*</span> <span class="n">ceffect21</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="n">varA_part31</span> <span class="o">=</span> <span class="p">(</span><span class="n">reffect31</span> <span class="o">@</span> <span class="n">D1</span> <span class="o">*</span> <span class="n">ceffect31</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="n">varA_part32</span> <span class="o">=</span> <span class="p">(</span><span class="n">reffect32</span> <span class="o">@</span> <span class="n">D1</span> <span class="o">*</span> <span class="n">ceffect32</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="n">varA_part41</span> <span class="o">=</span> <span class="p">(</span><span class="n">reffect41</span> <span class="o">@</span> <span class="n">D1</span> <span class="o">*</span> <span class="n">ceffect41</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="n">varA_part42</span> <span class="o">=</span> <span class="p">(</span><span class="n">reffect42</span> <span class="o">@</span> <span class="n">D1</span> <span class="o">*</span> <span class="n">ceffect42</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="n">varA_part43</span> <span class="o">=</span> <span class="p">(</span><span class="n">reffect43</span> <span class="o">@</span> <span class="n">D2</span> <span class="o">*</span> <span class="n">ceffect43</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+                            <span class="c1"># calculate varA part for this matrix chunk</span>
+                            <span class="c1"># (t,) + (t,) + (t,) + (t,) + (t,) + (t,) -&gt; (t,)</span>
+                            <span class="n">varA_part</span> <span class="o">=</span> <span class="n">varA_part21</span> <span class="o">+</span> <span class="n">varA_part31</span> <span class="o">+</span> <span class="n">varA_part32</span> <span class="o">+</span> <span class="n">varA_part41</span> <span class="o">+</span> <span class="n">varA_part42</span> <span class="o">+</span> <span class="n">varA_part43</span>
+
+                            <span class="c1"># add this partial variance to the lower triangle</span>
+                            <span class="c1"># (1,1,t) + (t,) -&gt; (1,1,t)</span>
+                            <span class="n">varA_mat</span><span class="p">[</span><span class="n">female</span><span class="p">,</span><span class="n">male</span><span class="p">,:]</span> <span class="o">+=</span> <span class="n">varA_part</span>
+
+        <span class="c1"># divide entire matrix by 4 to get variance per the equation</span>
+        <span class="c1"># multiplication is faster computationally</span>
+        <span class="n">varA_mat</span> <span class="o">*=</span> <span class="mf">0.25</span>
+
+        <span class="c1"># each matrix is symmetrical within a slice because exchanging female</span>
+        <span class="c1"># and male orders is mathematically equivalent.</span>
+        <span class="c1"># copy lower triangle to the upper since varA matrix is symmetrical within each slice</span>
+        <span class="k">for</span> <span class="n">female</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ntaxa</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">male</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">female</span><span class="p">):</span>
+                <span class="n">varA_mat</span><span class="p">[</span><span class="n">male</span><span class="p">,</span><span class="n">female</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">varA_mat</span><span class="p">[</span><span class="n">female</span><span class="p">,</span><span class="n">male</span><span class="p">,:]</span>
+
+        <span class="c1"># construct output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">varA_mat</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">taxa_grp</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+</div>
+
+
+
+
+<span class="c1">################################## Utilities ###################################</span>
+<div class="viewcode-block" id="check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix.html#pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix.check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_DenseDihybridDHAdditiveGeneticVarianceMatrix</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if object is of type ``DenseDihybridDHAdditiveGeneticVarianceMatrix``. Otherwise raise ``TypeError``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        Any Python object to test.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of variable to print in ``TypeError`` message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DenseDihybridDHAdditiveGeneticVarianceMatrix</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{0}</span><span class="s2">&#39; must be a DenseDihybridDHAdditiveGeneticVarianceMatrix&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, Robert Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+HDF5InputOutput
+===============
+
+.. automodule:: pybrops.core.io.HDF5InputOutput
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      HDF5InputOutput
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_HDF5InputOutput
+   
+   
+
+   
+   
+   
+
+
+

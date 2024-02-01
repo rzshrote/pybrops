@@ -1,0 +1,96 @@
+DenseGeneralizedWeightedCoancestryMatrix
+========================================
+
+.. currentmodule:: pybrops.popgen.cmat.DenseGeneralizedWeightedCoancestryMatrix
+
+.. autoclass:: DenseGeneralizedWeightedCoancestryMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseGeneralizedWeightedCoancestryMatrix.adjoin
+      ~DenseGeneralizedWeightedCoancestryMatrix.adjoin_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.append
+      ~DenseGeneralizedWeightedCoancestryMatrix.append_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.apply_jitter
+      ~DenseGeneralizedWeightedCoancestryMatrix.coancestry
+      ~DenseGeneralizedWeightedCoancestryMatrix.concat
+      ~DenseGeneralizedWeightedCoancestryMatrix.concat_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.copy
+      ~DenseGeneralizedWeightedCoancestryMatrix.deepcopy
+      ~DenseGeneralizedWeightedCoancestryMatrix.delete
+      ~DenseGeneralizedWeightedCoancestryMatrix.delete_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.from_csv
+      ~DenseGeneralizedWeightedCoancestryMatrix.from_gmat
+      ~DenseGeneralizedWeightedCoancestryMatrix.from_hdf5
+      ~DenseGeneralizedWeightedCoancestryMatrix.from_pandas
+      ~DenseGeneralizedWeightedCoancestryMatrix.group
+      ~DenseGeneralizedWeightedCoancestryMatrix.group_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.incorp
+      ~DenseGeneralizedWeightedCoancestryMatrix.incorp_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.insert
+      ~DenseGeneralizedWeightedCoancestryMatrix.insert_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.inverse
+      ~DenseGeneralizedWeightedCoancestryMatrix.is_grouped
+      ~DenseGeneralizedWeightedCoancestryMatrix.is_grouped_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.is_positive_semidefinite
+      ~DenseGeneralizedWeightedCoancestryMatrix.is_square
+      ~DenseGeneralizedWeightedCoancestryMatrix.is_square_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.kinship
+      ~DenseGeneralizedWeightedCoancestryMatrix.lexsort
+      ~DenseGeneralizedWeightedCoancestryMatrix.lexsort_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.mat_asformat
+      ~DenseGeneralizedWeightedCoancestryMatrix.max
+      ~DenseGeneralizedWeightedCoancestryMatrix.max_inbreeding
+      ~DenseGeneralizedWeightedCoancestryMatrix.mean
+      ~DenseGeneralizedWeightedCoancestryMatrix.min
+      ~DenseGeneralizedWeightedCoancestryMatrix.min_inbreeding
+      ~DenseGeneralizedWeightedCoancestryMatrix.remove
+      ~DenseGeneralizedWeightedCoancestryMatrix.remove_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.reorder
+      ~DenseGeneralizedWeightedCoancestryMatrix.reorder_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.select
+      ~DenseGeneralizedWeightedCoancestryMatrix.select_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.sort
+      ~DenseGeneralizedWeightedCoancestryMatrix.sort_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.to_csv
+      ~DenseGeneralizedWeightedCoancestryMatrix.to_hdf5
+      ~DenseGeneralizedWeightedCoancestryMatrix.to_pandas
+      ~DenseGeneralizedWeightedCoancestryMatrix.ungroup
+      ~DenseGeneralizedWeightedCoancestryMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseGeneralizedWeightedCoancestryMatrix.mat
+      ~DenseGeneralizedWeightedCoancestryMatrix.mat_ndim
+      ~DenseGeneralizedWeightedCoancestryMatrix.mat_shape
+      ~DenseGeneralizedWeightedCoancestryMatrix.nsquare
+      ~DenseGeneralizedWeightedCoancestryMatrix.nsquare_taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.ntaxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.square_axes
+      ~DenseGeneralizedWeightedCoancestryMatrix.square_axes_len
+      ~DenseGeneralizedWeightedCoancestryMatrix.square_taxa_axes
+      ~DenseGeneralizedWeightedCoancestryMatrix.square_taxa_axes_len
+      ~DenseGeneralizedWeightedCoancestryMatrix.taxa
+      ~DenseGeneralizedWeightedCoancestryMatrix.taxa_axis
+      ~DenseGeneralizedWeightedCoancestryMatrix.taxa_grp
+      ~DenseGeneralizedWeightedCoancestryMatrix.taxa_grp_len
+      ~DenseGeneralizedWeightedCoancestryMatrix.taxa_grp_name
+      ~DenseGeneralizedWeightedCoancestryMatrix.taxa_grp_spix
+      ~DenseGeneralizedWeightedCoancestryMatrix.taxa_grp_stix
+   
+   

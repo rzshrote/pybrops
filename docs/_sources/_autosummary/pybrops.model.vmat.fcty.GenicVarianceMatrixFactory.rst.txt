@@ -1,0 +1,41 @@
+GenicVarianceMatrixFactory
+==========================
+
+.. automodule:: pybrops.model.vmat.fcty.GenicVarianceMatrixFactory
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      GenicVarianceMatrixFactory
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_GenicVarianceMatrixFactory
+   
+   
+
+   
+   
+   
+
+
+

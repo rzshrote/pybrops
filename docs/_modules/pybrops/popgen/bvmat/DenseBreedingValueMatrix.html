@@ -1,0 +1,1613 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pybrops.popgen.bvmat.DenseBreedingValueMatrix &#8212; pybrops 0.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/popgen/bvmat/DenseBreedingValueMatrix';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pybrops.popg...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pybrops.popgen.bvmat.DenseBreedingValueMatrix</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module implementing matrix routines and associated error checking routines</span>
+<span class="sd">for dense breeding value matrices.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;DenseBreedingValueMatrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_is_DenseBreedingValueMatrix&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_pandas</span> <span class="kn">import</span> <span class="n">check_is_pandas_DataFrame</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_array_like</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_bool</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_str</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_str_or_Integral</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_str_or_Sequence</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_has_group</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_all_gteq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_ndim</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_io_python</span> <span class="kn">import</span> <span class="n">check_file_exists</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_gteq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_len</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_str_value</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.mat.DenseTaxaTraitMatrix</span> <span class="kn">import</span> <span class="n">DenseTaxaTraitMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">save_dict_to_hdf5</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.bvmat.BreedingValueMatrix</span> <span class="kn">import</span> <span class="n">BreedingValueMatrix</span>
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix">[docs]</a>
+<span class="k">class</span> <span class="nc">DenseBreedingValueMatrix</span><span class="p">(</span><span class="n">DenseTaxaTraitMatrix</span><span class="p">,</span><span class="n">BreedingValueMatrix</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The DenseBreedingValueMatrix class uses a dense matrix to represent a</span>
+<span class="sd">    Multivariate Breeding Value.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    All elements within a BreedingValueMatrix are mean-centered and scaled to</span>
+<span class="sd">    unit variance for each trait.</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        BV = \\frac{X - \\mu}{\\sigma}</span>
+
+<span class="sd">    Where:</span>
+
+<span class="sd">    - :math:`BV` is the breeding value.</span>
+<span class="sd">    - :math:`X` is the phenotype value.</span>
+<span class="sd">    - :math:`\\mu` is the mean (location) for :math:`X`.</span>
+<span class="sd">    - :math:`\\sigma` is the standard deviation (scale) for :math:`X`.</span>
+
+<span class="sd">    Phenotype values can be reconstituted using:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        X = \\sigma BV + \\mu</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">mat</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="n">location</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> 
+            <span class="n">scale</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> 
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        BreedingValueMatrix constructor</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mat : numpy.ndarray</span>
+<span class="sd">            An array of breeding values of shape ``(n,t)``.</span>
+<span class="sd">            It is the responsibility of the user to ensure that the means and </span>
+<span class="sd">            standard deviations of this array along the ``taxa`` axis are 0 and</span>
+<span class="sd">            1, respectively, if the breeding values are with respect to the</span>
+<span class="sd">            individuals in the breeding value matrix.</span>
+
+<span class="sd">        location : numpy.ndarray, Real</span>
+<span class="sd">            A ``numpy.ndarray`` of shape ``(t,)`` containing breeding value </span>
+<span class="sd">            locations. If given a ``Real``, create a ``numpy.ndarray`` of shape </span>
+<span class="sd">            ``(t,)`` filled with the provided value.</span>
+<span class="sd">        </span>
+<span class="sd">        scale : numpy.ndarray, Real</span>
+<span class="sd">            A ``numpy.ndarray`` of shape ``(t,)`` containing breeding value </span>
+<span class="sd">            scales. If given a ``Real``, create a ``numpy.ndarray`` of shape </span>
+<span class="sd">            ``(t,)`` filled with the provided value.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa : numpy.ndarray, None</span>
+<span class="sd">            A ``numpy.ndarray`` of shape ``(n,)`` containing taxa names.</span>
+<span class="sd">            If ``None``, do not store any taxa name information.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp : numpy.ndarray, None</span>
+<span class="sd">            A ``numpy.ndarray`` of shape ``(n,)`` containing taxa groupings.</span>
+<span class="sd">            If ``None``, do not store any taxa group information.</span>
+<span class="sd">        </span>
+<span class="sd">        trait : numpy.ndarray, None</span>
+<span class="sd">            A ``numpy.ndarray`` of shape ``(t,)`` containing trait names.</span>
+<span class="sd">            If ``None``, do not store any trait name information.</span>
+<span class="sd">        </span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Used for cooperative inheritance. Dictionary passing unused</span>
+<span class="sd">            arguments to the parent class constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DenseBreedingValueMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="c1"># set location and scale parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">location</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span>
+
+    <span class="c1">#################### Matrix copying ####################</span>
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a shallow copy of the the matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseBreedingValueMatrix</span>
+<span class="sd">            A copy of the matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create new object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">),</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">),</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">),</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">),</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">),</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="c1"># copy taxa metadata</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_name</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_name</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_stix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_stix</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_spix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_spix</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_len</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_len</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">memo</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a deep copy of the matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        memo : dict</span>
+<span class="sd">            A dictionary of objects already copied during the current copying</span>
+<span class="sd">            pass.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseBreedingValueMatrix</span>
+<span class="sd">            A deep copy of the matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create new object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">),</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">),</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># copy taxa metadata</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_name</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_name</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_stix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_stix</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_spix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_spix</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_len</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_len</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="c1">############################ Object Properties #############################</span>
+
+    <span class="c1">################# Breeding Value Data ##################</span>
+    <span class="nd">@DenseTaxaTraitMatrix</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">mat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set raw matrix&quot;&quot;&quot;</span>
+        <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">)</span>
+        <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mean of the phenotype values used to calculate breeding values.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_location</span>
+    <span class="nd">@location</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the mean of the phenotype values used to calculate breeding values&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">check_ndarray_axis_len</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;variable &#39;location&#39; must be of type &#39;numpy.ndarray&#39; or &#39;Real&#39;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="o">=</span> <span class="n">value</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Standard deviation of the phenotype values used to calculate breeding values.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span>
+    <span class="nd">@scale</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the standard deviation of the phenotype values used to calculate breeding values&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">check_ndarray_axis_len</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)</span>
+            <span class="n">check_ndarray_all_gteq</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
+            <span class="n">check_is_gteq</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;variable &#39;scale&#39; must be of type &#39;numpy.ndarray&#39; or &#39;Real&#39;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1">############################## Object Methods ##############################</span>
+
+    <span class="c1">#################### Matrix copying ####################</span>
+<div class="viewcode-block" id="DenseBreedingValueMatrix.copy">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.copy">[docs]</a>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a shallow copy of the Matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseMatrix</span>
+<span class="sd">            A shallow copy of the original DenseMatrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.deepcopy">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.deepcopy">[docs]</a>
+    <span class="k">def</span> <span class="nf">deepcopy</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">memo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a deep copy of the Matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        memo : dict</span>
+<span class="sd">            Dictionary of memo metadata.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseMatrix</span>
+<span class="sd">            A deep copy of the original DenseMatrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span></div>
+
+
+    <span class="c1">######### Matrix element copy-on-manipulation ##########</span>
+    <span class="c1"># FIXME: super adjoin, delete, insert, select, ... for location, scale bug</span>
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.select_taxa">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.select_taxa">[docs]</a>
+    <span class="k">def</span> <span class="nf">select_taxa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select certain values from the Matrix along the taxa axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        indices : array_like (Nj, ...)</span>
+<span class="sd">            The indices of the values to select.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Matrix</span>
+<span class="sd">            The output Matrix with values selected. Note that select does not</span>
+<span class="sd">            occur in-place: a new Matrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check for array_like</span>
+        <span class="n">check_is_array_like</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="s2">&quot;indices&quot;</span><span class="p">)</span>
+
+        <span class="c1"># get values</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>        <span class="c1"># get unscaled values</span>
+        <span class="n">taxa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_taxa</span>
+        <span class="n">taxa_grp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_taxa_grp</span>
+
+        <span class="c1"># select values</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">taxa</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">taxa_grp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">taxa_grp</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># re-calculate breeding values</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>          <span class="c1"># recalculate location</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>              <span class="c1"># recalculate scale</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="p">(</span><span class="n">mat</span> <span class="o">-</span> <span class="n">location</span><span class="p">)</span> <span class="o">/</span> <span class="n">scale</span>  <span class="c1"># mean center and scale values</span>
+
+        <span class="c1"># construct output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="p">,</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">############## Matrix summary statistics ###############</span>
+<div class="viewcode-block" id="DenseBreedingValueMatrix.targmax">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.targmax">[docs]</a>
+    <span class="k">def</span> <span class="nf">targmax</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return indices of the maximum values for each trait column (along the taxa axis).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An index array of shape ``(t,)`` containing indices of maximum</span>
+<span class="sd">            values along the taxa axis.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>    <span class="c1"># get argument maximum</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.targmin">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.targmin">[docs]</a>
+    <span class="k">def</span> <span class="nf">targmin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return indices of the minimum values for each trait column (along the taxa axis).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An index array of shape ``(t,)`` containing indices of minimum</span>
+<span class="sd">            values along the taxa axis.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>    <span class="c1"># get argument minimum</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.tmax">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.tmax">[docs]</a>
+    <span class="k">def</span> <span class="nf">tmax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unscale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the maximum for each trait column (along the taxa axis).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        unscale : bool, default = False</span>
+<span class="sd">            Whether to transform results to their unscaled values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An array of shape ``(t,)`` containing maximum values along the taxa</span>
+<span class="sd">            axis.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>   <span class="c1"># get maximum</span>
+        <span class="k">if</span> <span class="n">unscale</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span>
+            <span class="n">out</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_location</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.tmean">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.tmean">[docs]</a>
+    <span class="k">def</span> <span class="nf">tmean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unscale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the mean for each trait column (along the taxa axis).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        unscale : bool, default = False</span>
+<span class="sd">            Whether to transform results to their unscaled values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An array of shape ``(t,)`` containing maximum values along the taxa</span>
+<span class="sd">            axis.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_location</span> <span class="k">if</span> <span class="n">unscale</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span> <span class="c1"># get mean</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.tmin">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.tmin">[docs]</a>
+    <span class="k">def</span> <span class="nf">tmin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unscale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the minimum for each trait column (along the taxa axis).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        unscale : bool, default = False</span>
+<span class="sd">            Whether to transform results to their unscaled values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An index array of shape ``(t,)`` containing minimum values along the</span>
+<span class="sd">            taxa axis.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>   <span class="c1"># get minimum</span>
+        <span class="k">if</span> <span class="n">unscale</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span>
+            <span class="n">out</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_location</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.trange">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.trange">[docs]</a>
+    <span class="k">def</span> <span class="nf">trange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unscale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the range for each trait column (along the taxa axis).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        unscale : bool, default = False</span>
+<span class="sd">            Whether to transform results to their unscaled values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An array of shape ``(t,)`` containing range values along the taxa</span>
+<span class="sd">            axis.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ptp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>    <span class="c1"># get range</span>
+        <span class="k">if</span> <span class="n">unscale</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.tstd">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.tstd">[docs]</a>
+    <span class="k">def</span> <span class="nf">tstd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unscale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the standard deviation for each trait column (along the taxa axis).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        unscale : bool, default = False</span>
+<span class="sd">            whether to transform results to their unscaled values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An array of shape ``(t,)`` containing standard deviation values</span>
+<span class="sd">            along the taxa axis.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="k">if</span> <span class="n">unscale</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span> <span class="c1"># get standard deviation</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.tvar">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.tvar">[docs]</a>
+    <span class="k">def</span> <span class="nf">tvar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unscale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the variance for each trait column (along the taxa axis).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        unscale : bool, default = False</span>
+<span class="sd">            whether to transform results to their unscaled values.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An array of shape ``(t,)`` containing variance values along the taxa</span>
+<span class="sd">            axis.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span><span class="o">**</span><span class="mi">2</span> <span class="k">if</span> <span class="n">unscale</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span> <span class="c1"># get variance</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.unscale">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.unscale">[docs]</a>
+    <span class="k">def</span> <span class="nf">unscale</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform values within the BreedingValueMatrix back to their unscaled</span>
+<span class="sd">        and de-centered values</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An array of shape ``(n,t)`` containing unscaled and de-centered</span>
+<span class="sd">            values.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of taxa.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_location</span></div>
+
+
+    <span class="c1">################### Matrix File I/O ####################</span>
+<div class="viewcode-block" id="DenseBreedingValueMatrix.to_pandas">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.to_pandas">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_pandas</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">taxa_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
+            <span class="n">taxa_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span>
+            <span class="n">trait_cols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+            <span class="n">unscale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export a DenseBreedingValueMatrix to a pandas.DataFrame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        taxa_col : str, None, default = &quot;taxa&quot;</span>
+<span class="sd">            Name of the column to which to write taxa names.</span>
+<span class="sd">            If ``str``, the column is given the name in ``taxa_col``.</span>
+<span class="sd">            If ``None``, the column is not exported.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp_col : str, None, default = &quot;taxa_grp&quot;</span>
+<span class="sd">            Name of the column to which to write taxa group names.</span>
+<span class="sd">            If ``str``, the column is given the name in ``taxa_grp_col``.</span>
+<span class="sd">            If ``None``, the column is not exported.</span>
+
+<span class="sd">        trait_cols : Sequence, str, None, default = &quot;trait&quot;</span>
+<span class="sd">            Names of the trait columns to which to write breeding values.</span>
+<span class="sd">            If ``Sequence``, column names are given by the strings in the </span>
+<span class="sd">            ``trait_cols`` Sequence.</span>
+<span class="sd">            If ``str``, must be equal to ``&quot;all&quot;``. Use all trait names given </span>
+<span class="sd">            in the ``trait`` property.</span>
+<span class="sd">            If ``None``, use numeric trait column names.</span>
+<span class="sd">        </span>
+<span class="sd">        unscale : bool, default = False</span>
+<span class="sd">            whether to transform breeding values to their unscaled values.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating export to a </span>
+<span class="sd">            pandas.DataFrame.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : pandas.DataFrame</span>
+<span class="sd">            An output dataframe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="k">if</span> <span class="n">taxa_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_str</span><span class="p">(</span><span class="n">taxa_col</span><span class="p">,</span> <span class="s2">&quot;taxa_col&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">taxa_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_str</span><span class="p">(</span><span class="n">taxa_grp_col</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_col&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">trait_cols</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_cols</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">check_str_value</span><span class="p">(</span><span class="n">trait_cols</span><span class="p">,</span> <span class="s2">&quot;trait_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_cols</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+                <span class="n">check_len</span><span class="p">(</span><span class="n">trait_cols</span><span class="p">,</span> <span class="s2">&quot;trait_cols&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">check_is_str_or_Sequence</span><span class="p">(</span><span class="n">trait_cols</span><span class="p">,</span> <span class="s2">&quot;trait_cols&quot;</span><span class="p">)</span>
+        <span class="n">check_is_bool</span><span class="p">(</span><span class="n">unscale</span><span class="p">,</span> <span class="s2">&quot;unscale&quot;</span><span class="p">)</span>
+
+        <span class="c1"># construct dictionary for labels and data</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># process taxa_col</span>
+        <span class="k">if</span> <span class="n">taxa_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data_dict</span><span class="p">[</span><span class="n">taxa_col</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span>
+        
+        <span class="c1"># process taxa_grp_col</span>
+        <span class="k">if</span> <span class="n">taxa_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">data_dict</span><span class="p">[</span><span class="n">taxa_grp_col</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span>
+        
+        <span class="c1"># process trait_cols</span>
+        <span class="k">if</span> <span class="n">trait_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">trait_cols</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_cols</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">trait_cols</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span>
+        
+        <span class="c1"># extract breeding values</span>
+        <span class="n">bv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span> <span class="k">if</span> <span class="n">unscale</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">trait</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">),</span><span class="n">trait_cols</span><span class="p">):</span>
+            <span class="n">data_dict</span><span class="p">[</span><span class="n">trait</span><span class="p">]</span> <span class="o">=</span> <span class="n">bv</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span>
+        
+        <span class="c1"># create dataframe</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.to_csv">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.to_csv">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_csv</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">taxa_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
+            <span class="n">taxa_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span>
+            <span class="n">trait_cols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;trait&quot;</span><span class="p">,</span>
+            <span class="n">unscale</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> 
+            <span class="n">header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+            <span class="n">index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write a DenseBreedingValueMatrix to a CSV file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            CSV file name to which to write.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_col : str, None, default = &quot;taxa&quot;</span>
+<span class="sd">            Name of the column to which to write taxa names.</span>
+<span class="sd">            If ``str``, the column is given the name in ``taxa_col``.</span>
+<span class="sd">            If ``None``, the column is not exported.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp_col : str, None, default = &quot;taxa_grp&quot;</span>
+<span class="sd">            Name of the column to which to write taxa group names.</span>
+<span class="sd">            If ``str``, the column is given the name in ``taxa_grp_col``.</span>
+<span class="sd">            If ``None``, the column is not exported.</span>
+
+<span class="sd">        trait_cols : Sequence, str, None, default = &quot;trait&quot;</span>
+<span class="sd">            Names of the trait columns to which to write breeding values.</span>
+<span class="sd">            If ``Sequence``, column names are given by the strings in the </span>
+<span class="sd">            ``trait_cols`` Sequence.</span>
+<span class="sd">            If ``str``, must be equal to ``&quot;trait&quot;``. Use trait names given in </span>
+<span class="sd">            the ``trait`` property.</span>
+<span class="sd">            If ``None``, use numeric trait column names.</span>
+<span class="sd">        </span>
+<span class="sd">        unscale : bool, default = False</span>
+<span class="sd">            whether to transform breeding values to their unscaled values.</span>
+<span class="sd">        </span>
+<span class="sd">        sep : str, default = &quot;,&quot;</span>
+<span class="sd">            Separator to use in the exported CSV file.</span>
+<span class="sd">        </span>
+<span class="sd">        header : bool, default = True</span>
+<span class="sd">            Whether to save header names.</span>
+<span class="sd">        </span>
+<span class="sd">        index : bool, default = False</span>
+<span class="sd">            Whether to save a row index in the exported CSV file.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating export to a CSV.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># convert DenseBreedingValueMatrix to pandas.DataFrame</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(</span>
+            <span class="n">taxa_col</span> <span class="o">=</span> <span class="n">taxa_col</span><span class="p">,</span>
+            <span class="n">taxa_grp_col</span> <span class="o">=</span> <span class="n">taxa_grp_col</span><span class="p">,</span>
+            <span class="n">trait_cols</span> <span class="o">=</span> <span class="n">trait_cols</span><span class="p">,</span>
+            <span class="n">unscale</span> <span class="o">=</span> <span class="n">unscale</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># export using pandas</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">path_or_buf</span> <span class="o">=</span> <span class="n">filename</span><span class="p">,</span>
+            <span class="n">sep</span> <span class="o">=</span> <span class="n">sep</span><span class="p">,</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="p">,</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.to_hdf5">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.to_hdf5">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_hdf5</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write GenotypeMatrix to an HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            HDF5 file name to which to write.</span>
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            HDF5 group name under which GenotypeMatrix data is stored.</span>
+<span class="sd">            If ``None``, GenotypeMatrix is written to the base HDF5 group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>                       <span class="c1"># open HDF5 in write mode</span>
+        <span class="c1">######################################################### process groupname argument</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>                          <span class="c1"># if we have a string</span>
+            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>                            <span class="c1"># if last character in string is not &#39;/&#39;</span>
+                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>                                <span class="c1"># add &#39;/&#39; to end of string</span>
+        <span class="k">elif</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>                                 <span class="c1"># else if groupname is None</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>                                      <span class="c1"># empty string</span>
+        <span class="k">else</span><span class="p">:</span>                                                   <span class="c1"># else raise error</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;groupname&#39; must be of type str or None&quot;</span><span class="p">)</span>
+        <span class="c1">######################################################### populate HDF5 file</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>                                           <span class="c1"># data dictionary</span>
+            <span class="s2">&quot;mat&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span>
+            <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+            <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">,</span>
+            <span class="s2">&quot;taxa&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="s2">&quot;trait&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span>
+        <span class="p">}</span>
+        <span class="n">save_dict_to_hdf5</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>         <span class="c1"># save data</span>
+        <span class="c1">######################################################### write conclusion</span>
+        <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>                                          <span class="c1"># close the file</span></div>
+
+
+    <span class="c1">############################## Class Methods ###############################</span>
+
+    <span class="c1">################### Matrix File I/O ####################</span>
+<div class="viewcode-block" id="DenseBreedingValueMatrix.from_pandas">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.from_pandas">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pandas</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">location</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> 
+            <span class="n">scale</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> 
+            <span class="n">taxa_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
+            <span class="n">taxa_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span>
+            <span class="n">trait_cols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;infer&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a DenseBreedingValueMatrix from a pandas.DataFrame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : pandas.DataFrame</span>
+<span class="sd">            Pandas dataframe from which to read.</span>
+
+<span class="sd">        location : numpy.ndarray, Real, default = 0.0</span>
+<span class="sd">            A ``numpy.ndarray`` of shape ``(t,)`` containing breeding value </span>
+<span class="sd">            locations. If given a ``Real``, create a ``numpy.ndarray`` of shape </span>
+<span class="sd">            ``(t,)`` filled with the provided value.</span>
+
+<span class="sd">        scale : numpy.ndarray, Real, default = 1.0</span>
+<span class="sd">            A ``numpy.ndarray`` of shape ``(t,)`` containing breeding value </span>
+<span class="sd">            scales. If given a ``Real``, create a ``numpy.ndarray`` of shape </span>
+<span class="sd">            ``(t,)`` filled with the provided value.</span>
+
+<span class="sd">        taxa_col : str, Integral, None, default = &quot;taxa&quot;</span>
+<span class="sd">            Name of the column from which to read taxa names.</span>
+<span class="sd">            If of type ``str``, taxa names are read from the column named </span>
+<span class="sd">            defined by ``taxa_col``.</span>
+<span class="sd">            If of type ``Integral``, taxa names are read from the column </span>
+<span class="sd">            number defined by ``taxa_col``.</span>
+<span class="sd">            If ``None``, taxa names are not imported.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp_col : str, None, default = &quot;taxa_grp&quot;</span>
+<span class="sd">            Name of the column to which to read taxa group names.</span>
+<span class="sd">            If of type ``str``, taxa group names are read from the column named </span>
+<span class="sd">            defined by ``taxa_col``.</span>
+<span class="sd">            If of type ``Integral``, taxa group names are read from the column </span>
+<span class="sd">            number defined by ``taxa_col``.</span>
+<span class="sd">            If ``None``, taxa group names are not imported.</span>
+
+<span class="sd">        trait_cols : Sequence, str, None, default = &quot;trait&quot;</span>
+<span class="sd">            Names of the trait columns to which to read breeding values.</span>
+<span class="sd">            If ``Sequence``, column names are given by the strings or integers </span>
+<span class="sd">            in the ``trait_cols`` Sequence.</span>
+<span class="sd">            If ``str``, must be equal to ``&quot;infer&quot;``. Use remaining columns in </span>
+<span class="sd">            the input dataframe to load trait breeding values.</span>
+<span class="sd">            If ``None``, do not load any trait breeding values.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating importing from a </span>
+<span class="sd">            pandas.DataFrame.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseBreedingValueMatrix</span>
+<span class="sd">            A DenseBreedingValueMatrix read from a pandas.DataFrame.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="n">check_is_pandas_DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">taxa_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">taxa_col</span><span class="p">,</span> <span class="s2">&quot;taxa_col&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">taxa_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">taxa_grp_col</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_col&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">trait_cols</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_cols</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">check_str_value</span><span class="p">(</span><span class="n">trait_cols</span><span class="p">,</span> <span class="s2">&quot;trait_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;infer&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_cols</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+                <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">check_is_str_or_Sequence</span><span class="p">(</span><span class="n">trait_cols</span><span class="p">,</span> <span class="s2">&quot;trait_cols&quot;</span><span class="p">)</span>
+
+        <span class="c1">### extract data from dataframe</span>
+        <span class="n">colmask</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">),</span> <span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">)</span>
+
+        <span class="c1"># extract taxa data</span>
+        <span class="n">taxa</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">taxa_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxaix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">taxa_col</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">taxa_col</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">taxaix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+            <span class="n">colmask</span><span class="p">[</span><span class="n">taxaix</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="c1"># extract taxa group data</span>
+        <span class="n">taxa_grp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">taxa_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxagrpix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">taxa_grp_col</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_grp_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">taxa_grp_col</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">taxagrpix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="n">colmask</span><span class="p">[</span><span class="n">taxagrpix</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="c1"># for non-string Sequence, re-construct column mask</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_cols</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_cols</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">colmask</span><span class="p">[:]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">trait_col</span> <span class="ow">in</span> <span class="n">trait_cols</span><span class="p">:</span>
+                <span class="n">traitcolix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">trait_col</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">trait_col</span>
+                <span class="n">colmask</span><span class="p">[</span><span class="n">traitcolix</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># extract trait and matrix data</span>
+        <span class="n">trait</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">colmask</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">colmask</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+            
+        <span class="c1"># construct output object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span> 
+            <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="p">,</span> 
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span> 
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span> 
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.from_csv">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.from_csv">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_csv</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span>
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">location</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> 
+            <span class="n">scale</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> 
+            <span class="n">taxa_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
+            <span class="n">taxa_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span>
+            <span class="n">trait_cols</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;infer&quot;</span><span class="p">,</span>
+            <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span>
+            <span class="n">header</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a DenseBreedingValueMatrix from a CSV file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            CSV file name from which to read.</span>
+<span class="sd">        </span>
+<span class="sd">        sep : str, default = &#39;,&#39;</span>
+<span class="sd">            CSV delimiter to use.</span>
+<span class="sd">        </span>
+<span class="sd">        header : int, list of int, default=0</span>
+<span class="sd">            Row number(s) to use as the column names, and the start of the data.</span>
+
+<span class="sd">        location : numpy.ndarray, Real, default = 0.0</span>
+<span class="sd">            A ``numpy.ndarray`` of shape ``(t,)`` containing breeding value </span>
+<span class="sd">            locations. If given a ``Real``, create a ``numpy.ndarray`` of shape </span>
+<span class="sd">            ``(t,)`` filled with the provided value.</span>
+
+<span class="sd">        scale : numpy.ndarray, Real, default = 1.0</span>
+<span class="sd">            A ``numpy.ndarray`` of shape ``(t,)`` containing breeding value </span>
+<span class="sd">            scales. If given a ``Real``, create a ``numpy.ndarray`` of shape </span>
+<span class="sd">            ``(t,)`` filled with the provided value.</span>
+
+<span class="sd">        taxa_col : str, Integral, None, default = &quot;taxa&quot;</span>
+<span class="sd">            Name of the column from which to read taxa names.</span>
+<span class="sd">            If of type ``str``, taxa names are read from the column named </span>
+<span class="sd">            defined by ``taxa_col``.</span>
+<span class="sd">            If of type ``Integral``, taxa names are read from the column </span>
+<span class="sd">            number defined by ``taxa_col``.</span>
+<span class="sd">            If ``None``, taxa names are not imported.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp_col : str, None, default = &quot;taxa_grp&quot;</span>
+<span class="sd">            Name of the column from which to read taxa group names.</span>
+<span class="sd">            If of type ``str``, taxa group names are read from the column named </span>
+<span class="sd">            defined by ``taxa_col``.</span>
+<span class="sd">            If of type ``Integral``, taxa group names are read from the column </span>
+<span class="sd">            number defined by ``taxa_col``.</span>
+<span class="sd">            If ``None``, taxa group names are not imported.</span>
+
+<span class="sd">        trait_cols : Sequence, str, None, default = &quot;trait&quot;</span>
+<span class="sd">            Names of the trait columns to which to read breeding values.</span>
+<span class="sd">            If ``Sequence``, column names are given by the strings or integers </span>
+<span class="sd">            in the ``trait_cols`` Sequence.</span>
+<span class="sd">            If ``str``, must be equal to ``&quot;infer&quot;``. Use remaining columns in </span>
+<span class="sd">            the input dataframe to load trait breeding values.</span>
+<span class="sd">            If ``None``, do not load any trait breeding values.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating importing from a CSV.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseBreedingValueMatrix</span>
+<span class="sd">            A DenseBreedingValueMatrix read from a CSV file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># read file using pandas</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+            <span class="n">filepath_or_buffer</span> <span class="o">=</span> <span class="n">filename</span><span class="p">,</span>
+            <span class="n">sep</span> <span class="o">=</span> <span class="n">sep</span><span class="p">,</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="c1"># construct genetic map from pandas.DataFrame</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">,</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="p">,</span> 
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span> 
+            <span class="n">taxa_col</span> <span class="o">=</span> <span class="n">taxa_col</span><span class="p">,</span> 
+            <span class="n">taxa_grp_col</span> <span class="o">=</span> <span class="n">taxa_grp_col</span><span class="p">,</span> 
+            <span class="n">trait_cols</span> <span class="o">=</span> <span class="n">trait_cols</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.from_hdf5">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.from_hdf5">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_hdf5</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read DenseBreedingValueMatrix from an HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            HDF5 file name which to read.</span>
+<span class="sd">        groupname : str or None</span>
+<span class="sd">            HDF5 group name under which DenseBreedingValueMatrix data is stored.</span>
+<span class="sd">            If ``None``, DenseBreedingValueMatrix is read from base HDF5 group.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        gmat : DenseBreedingValueMatrix</span>
+<span class="sd">            A genotype matrix read from file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_file_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>                             <span class="c1"># check file exists</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>                       <span class="c1"># open HDF5 in read only</span>
+        <span class="c1">######################################################### process groupname argument</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>                          <span class="c1"># if we have a string</span>
+            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">groupname</span><span class="p">)</span>    <span class="c1"># check that group exists</span>
+            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>                            <span class="c1"># if last character in string is not &#39;/&#39;</span>
+                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>                                <span class="c1"># add &#39;/&#39; to end of string</span>
+        <span class="k">elif</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>                                 <span class="c1"># else if groupname is None</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>                                      <span class="c1"># empty string</span>
+        <span class="k">else</span><span class="p">:</span>                                                   <span class="c1"># else raise error</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;groupname&#39; must be of type str or None&quot;</span><span class="p">)</span>
+        <span class="c1">######################################################### check that we have all required fields</span>
+        <span class="n">required_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mat&quot;</span><span class="p">,</span> <span class="s2">&quot;location&quot;</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">]</span>          <span class="c1"># all required arguments</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">:</span>                           <span class="c1"># for each required field</span>
+            <span class="n">fieldname</span> <span class="o">=</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span>                       <span class="c1"># concatenate base groupname and field</span>
+            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">)</span>    <span class="c1"># check that group exists</span>
+        <span class="c1">######################################################### read data</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>                                           <span class="c1"># output dictionary</span>
+            <span class="s2">&quot;mat&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;location&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;trait&quot;</span><span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>                          <span class="c1"># for each field</span>
+            <span class="n">fieldname</span> <span class="o">=</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span>                       <span class="c1"># concatenate base groupname and field</span>
+            <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>                             <span class="c1"># if the field exists in the HDF5 file</span>
+                <span class="n">data_dict</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][:]</span>         <span class="c1"># read array</span>
+        <span class="c1">######################################################### read conclusion</span>
+        <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>                                          <span class="c1"># close file</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>                        <span class="c1"># convert taxa strings from byte to utf-8</span>
+            <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">]],</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span>
+        <span class="p">)</span>
+        <span class="n">data_dict</span><span class="p">[</span><span class="s2">&quot;trait&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>                       <span class="c1"># convert trait string from byte to utf-8</span>
+            <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="p">[</span><span class="s2">&quot;trait&quot;</span><span class="p">]],</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span>
+        <span class="p">)</span>
+        <span class="c1">######################################################### create object</span>
+        <span class="n">gmat</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">data_dict</span><span class="p">)</span>                                 <span class="c1"># create object from read data</span>
+        <span class="k">return</span> <span class="n">gmat</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.from_numpy">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.from_numpy">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_numpy</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">mat</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct a DenseBreedingValueMatrix from a numpy.ndarray.</span>
+<span class="sd">        Calculates mean-centering and scaling to unit variance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        a : numpy.ndarray</span>
+<span class="sd">            A ``float64`` matrix of shape ``(n,t)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of taxa.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            An array of taxa names.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            An array of taxa groups.</span>
+<span class="sd">        trait : numpy.ndarray</span>
+<span class="sd">            An array of trait names.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseBreedingValueMatrix</span>
+<span class="sd">            Output breeding value matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check inputs</span>
+        <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># calculate location parameters</span>
+        <span class="c1"># (n,t) -&gt; (t,)</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># calculate scale parameters</span>
+        <span class="c1"># (n,t) -&gt; (t,)</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># if scale &lt; tolerance, set to 1.0 (do not scale)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">scale</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="c1"># mean center and scale values</span>
+        <span class="c1"># scalar / (t,) -&gt; (t,)</span>
+        <span class="c1"># (t,) * ( (n,t) - (t,) ) -&gt; (n,t)</span>
+        <span class="c1"># multiply since multiplication is faster than division for floating points</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">mat</span> <span class="o">-</span> <span class="n">location</span><span class="p">)</span> 
+
+        <span class="c1"># construct output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="p">,</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+</div>
+
+
+
+
+<span class="c1">################################## Utilities ###################################</span>
+<div class="viewcode-block" id="check_is_DenseBreedingValueMatrix">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.check_is_DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.check_is_DenseBreedingValueMatrix">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_DenseBreedingValueMatrix</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if object is of type DenseBreedingValueMatrix. Otherwise raise TypeError.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        Any Python object to test.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of variable to print in TypeError message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DenseBreedingValueMatrix</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; must be a DenseBreedingValueMatrix&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, Robert Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

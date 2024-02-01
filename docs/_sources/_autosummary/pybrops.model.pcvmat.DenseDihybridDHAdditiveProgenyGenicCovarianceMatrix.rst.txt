@@ -1,0 +1,32 @@
+DenseDihybridDHAdditiveProgenyGenicCovarianceMatrix
+===================================================
+
+.. automodule:: pybrops.model.pcvmat.DenseDihybridDHAdditiveProgenyGenicCovarianceMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseDihybridDHAdditiveProgenyGenicCovarianceMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

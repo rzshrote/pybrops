@@ -1,0 +1,6 @@
+check\_is\_BreedingGraph
+========================
+
+.. currentmodule:: pybrops.breed.arch.BreedingGraph
+
+.. autofunction:: check_is_BreedingGraph

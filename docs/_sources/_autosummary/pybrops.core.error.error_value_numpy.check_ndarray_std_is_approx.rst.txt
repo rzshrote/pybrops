@@ -1,0 +1,6 @@
+check\_ndarray\_std\_is\_approx
+===============================
+
+.. currentmodule:: pybrops.core.error.error_value_numpy
+
+.. autofunction:: check_ndarray_std_is_approx

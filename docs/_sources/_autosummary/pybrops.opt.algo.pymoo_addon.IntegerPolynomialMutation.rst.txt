@@ -1,0 +1,26 @@
+IntegerPolynomialMutation
+=========================
+
+.. currentmodule:: pybrops.opt.algo.pymoo_addon
+
+.. autoclass:: IntegerPolynomialMutation
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~IntegerPolynomialMutation.do
+      ~IntegerPolynomialMutation.get_prob_var
+   
+   
+
+   
+   
+   

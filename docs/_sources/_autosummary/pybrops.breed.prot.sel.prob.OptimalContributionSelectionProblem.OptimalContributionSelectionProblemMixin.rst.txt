@@ -1,0 +1,33 @@
+OptimalContributionSelectionProblemMixin
+========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem
+
+.. autoclass:: OptimalContributionSelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalContributionSelectionProblemMixin.from_bvmat_gmat
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalContributionSelectionProblemMixin.C
+      ~OptimalContributionSelectionProblemMixin.ebv
+      ~OptimalContributionSelectionProblemMixin.nlatent
+   
+   

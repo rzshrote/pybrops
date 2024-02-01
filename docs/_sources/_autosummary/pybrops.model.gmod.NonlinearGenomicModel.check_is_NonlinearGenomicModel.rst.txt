@@ -1,0 +1,6 @@
+check\_is\_NonlinearGenomicModel
+================================
+
+.. currentmodule:: pybrops.model.gmod.NonlinearGenomicModel
+
+.. autofunction:: check_is_NonlinearGenomicModel

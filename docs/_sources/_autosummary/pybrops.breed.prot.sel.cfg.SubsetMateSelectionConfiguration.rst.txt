@@ -1,0 +1,32 @@
+SubsetMateSelectionConfiguration
+================================
+
+.. automodule:: pybrops.breed.prot.sel.cfg.SubsetMateSelectionConfiguration
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      SubsetMateSelectionConfiguration
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

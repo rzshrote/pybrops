@@ -1,0 +1,780 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overview: module code &#8212; pybrops 0.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/index';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Overview:...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>All modules for which code is available</h1>
+<ul><li><a href="pybrops/breed/arch/BreedingEdge.html">pybrops.breed.arch.BreedingEdge</a></li>
+<li><a href="pybrops/breed/arch/BreedingGraph.html">pybrops.breed.arch.BreedingGraph</a></li>
+<li><a href="pybrops/breed/arch/BreedingNode.html">pybrops.breed.arch.BreedingNode</a></li>
+<li><a href="pybrops/breed/arch/BreedingProgram.html">pybrops.breed.arch.BreedingProgram</a></li>
+<li><a href="pybrops/breed/arch/EmigrationOperator.html">pybrops.breed.arch.EmigrationOperator</a></li>
+<li><a href="pybrops/breed/arch/GermplasmBank.html">pybrops.breed.arch.GermplasmBank</a></li>
+<li><a href="pybrops/breed/arch/ImmigrationOperator.html">pybrops.breed.arch.ImmigrationOperator</a></li>
+<li><a href="pybrops/breed/arch/RecurrentSelectionBreedingProgram.html">pybrops.breed.arch.RecurrentSelectionBreedingProgram</a></li>
+<li><a href="pybrops/breed/op/eval/EvaluationOperator.html">pybrops.breed.op.eval.EvaluationOperator</a></li>
+<li><a href="pybrops/breed/op/init/InitializationOperator.html">pybrops.breed.op.init.InitializationOperator</a></li>
+<li><a href="pybrops/breed/op/log/Logbook.html">pybrops.breed.op.log.Logbook</a></li>
+<li><a href="pybrops/breed/op/mate/MatingOperator.html">pybrops.breed.op.mate.MatingOperator</a></li>
+<li><a href="pybrops/breed/op/psel/ParentSelectionOperator.html">pybrops.breed.op.psel.ParentSelectionOperator</a></li>
+<li><a href="pybrops/breed/op/ssel/SurvivorSelectionOperator.html">pybrops.breed.op.ssel.SurvivorSelectionOperator</a></li>
+<li><a href="pybrops/breed/prot/bv/BreedingValueProtocol.html">pybrops.breed.prot.bv.BreedingValueProtocol</a></li>
+<li><a href="pybrops/breed/prot/bv/MeanPhenotypicBreedingValue.html">pybrops.breed.prot.bv.MeanPhenotypicBreedingValue</a></li>
+<li><a href="pybrops/breed/prot/bv/TrueBreedingValue.html">pybrops.breed.prot.bv.TrueBreedingValue</a></li>
+<li><a href="pybrops/breed/prot/gt/DenseUnphasedGenotyping.html">pybrops.breed.prot.gt.DenseUnphasedGenotyping</a></li>
+<li><a href="pybrops/breed/prot/gt/GenotypingProtocol.html">pybrops.breed.prot.gt.GenotypingProtocol</a></li>
+<li><a href="pybrops/breed/prot/mate/FourWayCross.html">pybrops.breed.prot.mate.FourWayCross</a></li>
+<li><a href="pybrops/breed/prot/mate/FourWayDHCross.html">pybrops.breed.prot.mate.FourWayDHCross</a></li>
+<li><a href="pybrops/breed/prot/mate/MatingProtocol.html">pybrops.breed.prot.mate.MatingProtocol</a></li>
+<li><a href="pybrops/breed/prot/mate/SelfCross.html">pybrops.breed.prot.mate.SelfCross</a></li>
+<li><a href="pybrops/breed/prot/mate/ThreeWayCross.html">pybrops.breed.prot.mate.ThreeWayCross</a></li>
+<li><a href="pybrops/breed/prot/mate/ThreeWayDHCross.html">pybrops.breed.prot.mate.ThreeWayDHCross</a></li>
+<li><a href="pybrops/breed/prot/mate/TwoWayCross.html">pybrops.breed.prot.mate.TwoWayCross</a></li>
+<li><a href="pybrops/breed/prot/mate/TwoWayDHCross.html">pybrops.breed.prot.mate.TwoWayDHCross</a></li>
+<li><a href="pybrops/breed/prot/mate/util.html">pybrops.breed.prot.mate.util</a></li>
+<li><a href="pybrops/breed/prot/pt/G_E_Phenotyping.html">pybrops.breed.prot.pt.G_E_Phenotyping</a></li>
+<li><a href="pybrops/breed/prot/pt/PhenotypingProtocol.html">pybrops.breed.prot.pt.PhenotypingProtocol</a></li>
+<li><a href="pybrops/breed/prot/pt/TruePhenotyping.html">pybrops.breed.prot.pt.TruePhenotyping</a></li>
+<li><a href="pybrops/breed/prot/sel/BinaryMateSelectionProtocol.html">pybrops.breed.prot.sel.BinaryMateSelectionProtocol</a></li>
+<li><a href="pybrops/breed/prot/sel/BinarySelectionProtocol.html">pybrops.breed.prot.sel.BinarySelectionProtocol</a></li>
+<li><a href="pybrops/breed/prot/sel/EstimatedBreedingValueSelection.html">pybrops.breed.prot.sel.EstimatedBreedingValueSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/ExpectedMaximumBreedingValueSelection.html">pybrops.breed.prot.sel.ExpectedMaximumBreedingValueSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/FamilyEstimatedBreedingValueSelection.html">pybrops.breed.prot.sel.FamilyEstimatedBreedingValueSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/GeneralizedWeightedGenomicEstimatedBreedingValueSelection.html">pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/GenomicEstimatedBreedingValueSelection.html">pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/GenotypeBuilderSelection.html">pybrops.breed.prot.sel.GenotypeBuilderSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/IntegerMateSelectionProtocol.html">pybrops.breed.prot.sel.IntegerMateSelectionProtocol</a></li>
+<li><a href="pybrops/breed/prot/sel/IntegerSelectionProtocol.html">pybrops.breed.prot.sel.IntegerSelectionProtocol</a></li>
+<li><a href="pybrops/breed/prot/sel/L2NormGenomicSelection.html">pybrops.breed.prot.sel.L2NormGenomicSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/MateSelectionProtocol.html">pybrops.breed.prot.sel.MateSelectionProtocol</a></li>
+<li><a href="pybrops/breed/prot/sel/MeanExpectedHeterozygositySelection.html">pybrops.breed.prot.sel.MeanExpectedHeterozygositySelection</a></li>
+<li><a href="pybrops/breed/prot/sel/MeanGenomicRelationshipSelection.html">pybrops.breed.prot.sel.MeanGenomicRelationshipSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/MultiObjectiveGenomicSelection.html">pybrops.breed.prot.sel.MultiObjectiveGenomicSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/OptimalContributionSelection.html">pybrops.breed.prot.sel.OptimalContributionSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/OptimalHaploidValueSelection.html">pybrops.breed.prot.sel.OptimalHaploidValueSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/OptimalPopulationValueSelection.html">pybrops.breed.prot.sel.OptimalPopulationValueSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/RandomSelection.html">pybrops.breed.prot.sel.RandomSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/RealMateSelectionProtocol.html">pybrops.breed.prot.sel.RealMateSelectionProtocol</a></li>
+<li><a href="pybrops/breed/prot/sel/RealSelectionProtocol.html">pybrops.breed.prot.sel.RealSelectionProtocol</a></li>
+<li><a href="pybrops/breed/prot/sel/SelectionProtocol.html">pybrops.breed.prot.sel.SelectionProtocol</a></li>
+<li><a href="pybrops/breed/prot/sel/SubsetMateSelectionProtocol.html">pybrops.breed.prot.sel.SubsetMateSelectionProtocol</a></li>
+<li><a href="pybrops/breed/prot/sel/SubsetSelectionProtocol.html">pybrops.breed.prot.sel.SubsetSelectionProtocol</a></li>
+<li><a href="pybrops/breed/prot/sel/UnconstrainedGeneralized1NormGenomicSelection.html">pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/UnconstrainedMultiObjectiveGenomicMating.html">pybrops.breed.prot.sel.UnconstrainedMultiObjectiveGenomicMating</a></li>
+<li><a href="pybrops/breed/prot/sel/UnconstrainedPopulationAlleleFrequencyDistanceSelection.html">pybrops.breed.prot.sel.UnconstrainedPopulationAlleleFrequencyDistanceSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/UnconstrainedPopulationAlleleUnavailabilitySelection.html">pybrops.breed.prot.sel.UnconstrainedPopulationAlleleUnavailabilitySelection</a></li>
+<li><a href="pybrops/breed/prot/sel/UnconstrainedSelectionProtocol.html">pybrops.breed.prot.sel.UnconstrainedSelectionProtocol</a></li>
+<li><a href="pybrops/breed/prot/sel/UsefulnessCriterionSelection.html">pybrops.breed.prot.sel.UsefulnessCriterionSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/WeightedGenomicSelection.html">pybrops.breed.prot.sel.WeightedGenomicSelection</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/BinaryMateSelectionConfiguration.html">pybrops.breed.prot.sel.cfg.BinaryMateSelectionConfiguration</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/BinarySelectionConfiguration.html">pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/IntegerMateSelectionConfiguration.html">pybrops.breed.prot.sel.cfg.IntegerMateSelectionConfiguration</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/IntegerSelectionConfiguration.html">pybrops.breed.prot.sel.cfg.IntegerSelectionConfiguration</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/MateSelectionConfiguration.html">pybrops.breed.prot.sel.cfg.MateSelectionConfiguration</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/RealMateSelectionConfiguration.html">pybrops.breed.prot.sel.cfg.RealMateSelectionConfiguration</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/RealSelectionConfiguration.html">pybrops.breed.prot.sel.cfg.RealSelectionConfiguration</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/SampledSelectionConfigurationMixin.html">pybrops.breed.prot.sel.cfg.SampledSelectionConfigurationMixin</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/SelectionConfiguration.html">pybrops.breed.prot.sel.cfg.SelectionConfiguration</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/SimpleMateSelectionConfiguration.html">pybrops.breed.prot.sel.cfg.SimpleMateSelectionConfiguration</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/SimpleSelectionConfiguration.html">pybrops.breed.prot.sel.cfg.SimpleSelectionConfiguration</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/SubsetMateSelectionConfiguration.html">pybrops.breed.prot.sel.cfg.SubsetMateSelectionConfiguration</a></li>
+<li><a href="pybrops/breed/prot/sel/cfg/SubsetSelectionConfiguration.html">pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/BinaryMateSelectionProblem.html">pybrops.breed.prot.sel.prob.BinaryMateSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/BinarySelectionProblem.html">pybrops.breed.prot.sel.prob.BinarySelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/EstimatedBreedingValueSelectionProblem.html">pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/ExpectedMaximumBreedingValueSelectionProblem.html">pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/FamilyEstimatedBreedingValueSelectionProblem.html">pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem.html">pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/GenomicEstimatedBreedingValueSelectionProblem.html">pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/GenotypeBuilderSelectionProblem.html">pybrops.breed.prot.sel.prob.GenotypeBuilderSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/IntegerMateSelectionProblem.html">pybrops.breed.prot.sel.prob.IntegerMateSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/IntegerSelectionProblem.html">pybrops.breed.prot.sel.prob.IntegerSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/L1NormGenomicSelectionProblem.html">pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/L2NormGenomicSelectionProblem.html">pybrops.breed.prot.sel.prob.L2NormGenomicSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/MateSelectionProblem.html">pybrops.breed.prot.sel.prob.MateSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/MeanExpectedHeterozygositySelectionProblem.html">pybrops.breed.prot.sel.prob.MeanExpectedHeterozygositySelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/MeanGenomicRelationshipSelectionProblem.html">pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/MultiObjectiveGenomicMatingProblem.html">pybrops.breed.prot.sel.prob.MultiObjectiveGenomicMatingProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/MultiObjectiveGenomicSelectionProblem.html">pybrops.breed.prot.sel.prob.MultiObjectiveGenomicSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/OptimalContributionSelectionProblem.html">pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/OptimalHaploidValueSelectionProblem.html">pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/OptimalPopulationValueSelectionProblem.html">pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/RandomSelectionProblem.html">pybrops.breed.prot.sel.prob.RandomSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/RealLookAheadGeneralizedWeightedGenomicSelectionProblem.html">pybrops.breed.prot.sel.prob.RealLookAheadGeneralizedWeightedGenomicSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/RealMateSelectionProblem.html">pybrops.breed.prot.sel.prob.RealMateSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/RealSelectionProblem.html">pybrops.breed.prot.sel.prob.RealSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/SelectionProblem.html">pybrops.breed.prot.sel.prob.SelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/SubsetMateSelectionProblem.html">pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/SubsetSelectionProblem.html">pybrops.breed.prot.sel.prob.SubsetSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/UsefulnessCriterionSelectionProblem.html">pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/WeightedGenomicSelectionProblem.html">pybrops.breed.prot.sel.prob.WeightedGenomicSelectionProblem</a></li>
+<li><a href="pybrops/breed/prot/sel/prob/trans.html">pybrops.breed.prot.sel.prob.trans</a></li>
+<li><a href="pybrops/breed/prot/sel/soln/BinaryMateSelectionSolution.html">pybrops.breed.prot.sel.soln.BinaryMateSelectionSolution</a></li>
+<li><a href="pybrops/breed/prot/sel/soln/BinarySelectionSolution.html">pybrops.breed.prot.sel.soln.BinarySelectionSolution</a></li>
+<li><a href="pybrops/breed/prot/sel/soln/IntegerMateSelectionSolution.html">pybrops.breed.prot.sel.soln.IntegerMateSelectionSolution</a></li>
+<li><a href="pybrops/breed/prot/sel/soln/IntegerSelectionSolution.html">pybrops.breed.prot.sel.soln.IntegerSelectionSolution</a></li>
+<li><a href="pybrops/breed/prot/sel/soln/MateSelectionSolution.html">pybrops.breed.prot.sel.soln.MateSelectionSolution</a></li>
+<li><a href="pybrops/breed/prot/sel/soln/RealMateSelectionSolution.html">pybrops.breed.prot.sel.soln.RealMateSelectionSolution</a></li>
+<li><a href="pybrops/breed/prot/sel/soln/RealSelectionSolution.html">pybrops.breed.prot.sel.soln.RealSelectionSolution</a></li>
+<li><a href="pybrops/breed/prot/sel/soln/SelectionSolution.html">pybrops.breed.prot.sel.soln.SelectionSolution</a></li>
+<li><a href="pybrops/breed/prot/sel/soln/SubsetMateSelectionSolution.html">pybrops.breed.prot.sel.soln.SubsetMateSelectionSolution</a></li>
+<li><a href="pybrops/breed/prot/sel/soln/SubsetSelectionSolution.html">pybrops.breed.prot.sel.soln.SubsetSelectionSolution</a></li>
+<li><a href="pybrops/breed/prot/sel/targetfn.html">pybrops.breed.prot.sel.targetfn</a></li>
+<li><a href="pybrops/breed/prot/sel/transfn.html">pybrops.breed.prot.sel.transfn</a></li>
+<li><a href="pybrops/breed/prot/sel/weightfn.html">pybrops.breed.prot.sel.weightfn</a></li>
+<li><a href="pybrops/core/error/error_attr_python.html">pybrops.core.error.error_attr_python</a></li>
+<li><a href="pybrops/core/error/error_generic_numpy.html">pybrops.core.error.error_generic_numpy</a></li>
+<li><a href="pybrops/core/error/error_generic_python.html">pybrops.core.error.error_generic_python</a></li>
+<li><a href="pybrops/core/error/error_io_python.html">pybrops.core.error.error_io_python</a></li>
+<li><a href="pybrops/core/error/error_type_h5py.html">pybrops.core.error.error_type_h5py</a></li>
+<li><a href="pybrops/core/error/error_type_numpy.html">pybrops.core.error.error_type_numpy</a></li>
+<li><a href="pybrops/core/error/error_type_pandas.html">pybrops.core.error.error_type_pandas</a></li>
+<li><a href="pybrops/core/error/error_type_python.html">pybrops.core.error.error_type_python</a></li>
+<li><a href="pybrops/core/error/error_value_h5py.html">pybrops.core.error.error_value_h5py</a></li>
+<li><a href="pybrops/core/error/error_value_numpy.html">pybrops.core.error.error_value_numpy</a></li>
+<li><a href="pybrops/core/error/error_value_pandas.html">pybrops.core.error.error_value_pandas</a></li>
+<li><a href="pybrops/core/error/error_value_python.html">pybrops.core.error.error_value_python</a></li>
+<li><a href="pybrops/core/io/CSVDictInputOutput.html">pybrops.core.io.CSVDictInputOutput</a></li>
+<li><a href="pybrops/core/io/CSVInputOutput.html">pybrops.core.io.CSVInputOutput</a></li>
+<li><a href="pybrops/core/io/DictInputOutput.html">pybrops.core.io.DictInputOutput</a></li>
+<li><a href="pybrops/core/io/HDF5InputOutput.html">pybrops.core.io.HDF5InputOutput</a></li>
+<li><a href="pybrops/core/io/NPYInputOutput.html">pybrops.core.io.NPYInputOutput</a></li>
+<li><a href="pybrops/core/io/NPZInputOutput.html">pybrops.core.io.NPZInputOutput</a></li>
+<li><a href="pybrops/core/io/NumPyInputOutput.html">pybrops.core.io.NumPyInputOutput</a></li>
+<li><a href="pybrops/core/io/PandasDictInputOutput.html">pybrops.core.io.PandasDictInputOutput</a></li>
+<li><a href="pybrops/core/io/PandasInputOutput.html">pybrops.core.io.PandasInputOutput</a></li>
+<li><a href="pybrops/core/mat/DenseMatrix.html">pybrops.core.mat.DenseMatrix</a></li>
+<li><a href="pybrops/core/mat/DenseMutableMatrix.html">pybrops.core.mat.DenseMutableMatrix</a></li>
+<li><a href="pybrops/core/mat/DensePhasedMatrix.html">pybrops.core.mat.DensePhasedMatrix</a></li>
+<li><a href="pybrops/core/mat/DensePhasedTaxaVariantMatrix.html">pybrops.core.mat.DensePhasedTaxaVariantMatrix</a></li>
+<li><a href="pybrops/core/mat/DenseSquareMatrix.html">pybrops.core.mat.DenseSquareMatrix</a></li>
+<li><a href="pybrops/core/mat/DenseSquareTaxaMatrix.html">pybrops.core.mat.DenseSquareTaxaMatrix</a></li>
+<li><a href="pybrops/core/mat/DenseSquareTaxaSquareTraitMatrix.html">pybrops.core.mat.DenseSquareTaxaSquareTraitMatrix</a></li>
+<li><a href="pybrops/core/mat/DenseSquareTaxaTraitMatrix.html">pybrops.core.mat.DenseSquareTaxaTraitMatrix</a></li>
+<li><a href="pybrops/core/mat/DenseSquareTraitMatrix.html">pybrops.core.mat.DenseSquareTraitMatrix</a></li>
+<li><a href="pybrops/core/mat/DenseTaxaMatrix.html">pybrops.core.mat.DenseTaxaMatrix</a></li>
+<li><a href="pybrops/core/mat/DenseTaxaTraitMatrix.html">pybrops.core.mat.DenseTaxaTraitMatrix</a></li>
+<li><a href="pybrops/core/mat/DenseTaxaVariantMatrix.html">pybrops.core.mat.DenseTaxaVariantMatrix</a></li>
+<li><a href="pybrops/core/mat/DenseTraitMatrix.html">pybrops.core.mat.DenseTraitMatrix</a></li>
+<li><a href="pybrops/core/mat/DenseVariantMatrix.html">pybrops.core.mat.DenseVariantMatrix</a></li>
+<li><a href="pybrops/core/mat/GroupableMatrix.html">pybrops.core.mat.GroupableMatrix</a></li>
+<li><a href="pybrops/core/mat/Matrix.html">pybrops.core.mat.Matrix</a></li>
+<li><a href="pybrops/core/mat/MutableMatrix.html">pybrops.core.mat.MutableMatrix</a></li>
+<li><a href="pybrops/core/mat/PhasedMatrix.html">pybrops.core.mat.PhasedMatrix</a></li>
+<li><a href="pybrops/core/mat/PhasedTaxaVariantMatrix.html">pybrops.core.mat.PhasedTaxaVariantMatrix</a></li>
+<li><a href="pybrops/core/mat/PrunableMatrix.html">pybrops.core.mat.PrunableMatrix</a></li>
+<li><a href="pybrops/core/mat/SortableMatrix.html">pybrops.core.mat.SortableMatrix</a></li>
+<li><a href="pybrops/core/mat/SquareMatrix.html">pybrops.core.mat.SquareMatrix</a></li>
+<li><a href="pybrops/core/mat/SquareTaxaMatrix.html">pybrops.core.mat.SquareTaxaMatrix</a></li>
+<li><a href="pybrops/core/mat/SquareTaxaSquareTraitMatrix.html">pybrops.core.mat.SquareTaxaSquareTraitMatrix</a></li>
+<li><a href="pybrops/core/mat/SquareTaxaTraitMatrix.html">pybrops.core.mat.SquareTaxaTraitMatrix</a></li>
+<li><a href="pybrops/core/mat/SquareTraitMatrix.html">pybrops.core.mat.SquareTraitMatrix</a></li>
+<li><a href="pybrops/core/mat/TaxaMatrix.html">pybrops.core.mat.TaxaMatrix</a></li>
+<li><a href="pybrops/core/mat/TaxaTraitMatrix.html">pybrops.core.mat.TaxaTraitMatrix</a></li>
+<li><a href="pybrops/core/mat/TaxaVariantMatrix.html">pybrops.core.mat.TaxaVariantMatrix</a></li>
+<li><a href="pybrops/core/mat/TraitMatrix.html">pybrops.core.mat.TraitMatrix</a></li>
+<li><a href="pybrops/core/mat/VariantMatrix.html">pybrops.core.mat.VariantMatrix</a></li>
+<li><a href="pybrops/core/mat/util.html">pybrops.core.mat.util</a></li>
+<li><a href="pybrops/core/random/prng.html">pybrops.core.random.prng</a></li>
+<li><a href="pybrops/core/random/sampling.html">pybrops.core.random.sampling</a></li>
+<li><a href="pybrops/core/util/arrayix.html">pybrops.core.util.arrayix</a></li>
+<li><a href="pybrops/core/util/h5py.html">pybrops.core.util.h5py</a></li>
+<li><a href="pybrops/core/util/haplo.html">pybrops.core.util.haplo</a></li>
+<li><a href="pybrops/core/util/iterator.html">pybrops.core.util.iterator</a></li>
+<li><a href="pybrops/core/util/pareto.html">pybrops.core.util.pareto</a></li>
+<li><a href="pybrops/core/util/subroutines.html">pybrops.core.util.subroutines</a></li>
+<li><a href="pybrops/model/gmod/AdditiveDominanceEpistaticLinearGenomicModel.html">pybrops.model.gmod.AdditiveDominanceEpistaticLinearGenomicModel</a></li>
+<li><a href="pybrops/model/gmod/AdditiveDominanceLinearGenomicModel.html">pybrops.model.gmod.AdditiveDominanceLinearGenomicModel</a></li>
+<li><a href="pybrops/model/gmod/AdditiveLinearGenomicModel.html">pybrops.model.gmod.AdditiveLinearGenomicModel</a></li>
+<li><a href="pybrops/model/gmod/CoancestryLinearGenomicModel.html">pybrops.model.gmod.CoancestryLinearGenomicModel</a></li>
+<li><a href="pybrops/model/gmod/DenseAdditiveLinearGenomicModel.html">pybrops.model.gmod.DenseAdditiveLinearGenomicModel</a></li>
+<li><a href="pybrops/model/gmod/DenseLinearGenomicModel.html">pybrops.model.gmod.DenseLinearGenomicModel</a></li>
+<li><a href="pybrops/model/gmod/GenomicModel.html">pybrops.model.gmod.GenomicModel</a></li>
+<li><a href="pybrops/model/gmod/LinearGenomicModel.html">pybrops.model.gmod.LinearGenomicModel</a></li>
+<li><a href="pybrops/model/gmod/NonlinearGenomicModel.html">pybrops.model.gmod.NonlinearGenomicModel</a></li>
+<li><a href="pybrops/model/pcvmat/AdditiveProgenyGeneticCovarianceMatrix.html">pybrops.model.pcvmat.AdditiveProgenyGeneticCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/AdditiveProgenyGenicCovarianceMatrix.html">pybrops.model.pcvmat.AdditiveProgenyGenicCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/DenseAdditiveProgenyGeneticCovarianceMatrix.html">pybrops.model.pcvmat.DenseAdditiveProgenyGeneticCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/DenseAdditiveProgenyGenicCovarianceMatrix.html">pybrops.model.pcvmat.DenseAdditiveProgenyGenicCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/DenseDihybridDHAdditiveProgenyGeneticCovarianceMatrix.html">pybrops.model.pcvmat.DenseDihybridDHAdditiveProgenyGeneticCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/DenseDihybridDHAdditiveProgenyGenicCovarianceMatrix.html">pybrops.model.pcvmat.DenseDihybridDHAdditiveProgenyGenicCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix.html">pybrops.model.pcvmat.DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix.html">pybrops.model.pcvmat.DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/DenseProgenyGeneticCovarianceMatrix.html">pybrops.model.pcvmat.DenseProgenyGeneticCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/DenseProgenyGenicCovarianceMatrix.html">pybrops.model.pcvmat.DenseProgenyGenicCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/DenseThreeWayDHAdditiveProgenyGeneticCovarianceMatrix.html">pybrops.model.pcvmat.DenseThreeWayDHAdditiveProgenyGeneticCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/DenseThreeWayDHAdditiveProgenyGenicCovarianceMatrix.html">pybrops.model.pcvmat.DenseThreeWayDHAdditiveProgenyGenicCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.html">pybrops.model.pcvmat.DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix.html">pybrops.model.pcvmat.DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/ProgenyGeneticCovarianceMatrix.html">pybrops.model.pcvmat.ProgenyGeneticCovarianceMatrix</a></li>
+<li><a href="pybrops/model/pcvmat/ProgenyGenicCovarianceMatrix.html">pybrops.model.pcvmat.ProgenyGenicCovarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/AdditiveGeneticVarianceMatrix.html">pybrops.model.vmat.AdditiveGeneticVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/AdditiveGenicVarianceMatrix.html">pybrops.model.vmat.AdditiveGenicVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/DenseAdditiveGeneticVarianceMatrix.html">pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/DenseAdditiveGenicVarianceMatrix.html">pybrops.model.vmat.DenseAdditiveGenicVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/DenseDihybridDHAdditiveGeneticVarianceMatrix.html">pybrops.model.vmat.DenseDihybridDHAdditiveGeneticVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/DenseDihybridDHAdditiveGenicVarianceMatrix.html">pybrops.model.vmat.DenseDihybridDHAdditiveGenicVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/DenseFourWayDHAdditiveGeneticVarianceMatrix.html">pybrops.model.vmat.DenseFourWayDHAdditiveGeneticVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/DenseFourWayDHAdditiveGenicVarianceMatrix.html">pybrops.model.vmat.DenseFourWayDHAdditiveGenicVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/DenseGeneticVarianceMatrix.html">pybrops.model.vmat.DenseGeneticVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/DenseGenicVarianceMatrix.html">pybrops.model.vmat.DenseGenicVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/DenseThreeWayDHAdditiveGeneticVarianceMatrix.html">pybrops.model.vmat.DenseThreeWayDHAdditiveGeneticVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/DenseThreeWayDHAdditiveGenicVarianceMatrix.html">pybrops.model.vmat.DenseThreeWayDHAdditiveGenicVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/DenseTwoWayDHAdditiveGeneticVarianceMatrix.html">pybrops.model.vmat.DenseTwoWayDHAdditiveGeneticVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/DenseTwoWayDHAdditiveGenicVarianceMatrix.html">pybrops.model.vmat.DenseTwoWayDHAdditiveGenicVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/GeneticVarianceMatrix.html">pybrops.model.vmat.GeneticVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/GenicVarianceMatrix.html">pybrops.model.vmat.GenicVarianceMatrix</a></li>
+<li><a href="pybrops/model/vmat/fcty/AdditiveGeneticVarianceMatrixFactory.html">pybrops.model.vmat.fcty.AdditiveGeneticVarianceMatrixFactory</a></li>
+<li><a href="pybrops/model/vmat/fcty/AdditiveGenicVarianceMatrixFactory.html">pybrops.model.vmat.fcty.AdditiveGenicVarianceMatrixFactory</a></li>
+<li><a href="pybrops/model/vmat/fcty/DenseDihybridDHAdditiveGeneticVarianceMatrixFactory.html">pybrops.model.vmat.fcty.DenseDihybridDHAdditiveGeneticVarianceMatrixFactory</a></li>
+<li><a href="pybrops/model/vmat/fcty/DenseFourWayDHAdditiveGeneticVarianceMatrixFactory.html">pybrops.model.vmat.fcty.DenseFourWayDHAdditiveGeneticVarianceMatrixFactory</a></li>
+<li><a href="pybrops/model/vmat/fcty/DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory.html">pybrops.model.vmat.fcty.DenseThreeWayDHAdditiveGeneticVarianceMatrixFactory</a></li>
+<li><a href="pybrops/model/vmat/fcty/DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory.html">pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory</a></li>
+<li><a href="pybrops/model/vmat/fcty/DenseTwoWayDHAdditiveGenicVarianceMatrixFactory.html">pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGenicVarianceMatrixFactory</a></li>
+<li><a href="pybrops/model/vmat/fcty/GeneticVarianceMatrixFactory.html">pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory</a></li>
+<li><a href="pybrops/model/vmat/fcty/GenicVarianceMatrixFactory.html">pybrops.model.vmat.fcty.GenicVarianceMatrixFactory</a></li>
+<li><a href="pybrops/model/vmat/util.html">pybrops.model.vmat.util</a></li>
+<li><a href="pybrops/opt/algo/BinaryGeneticAlgorithm.html">pybrops.opt.algo.BinaryGeneticAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/BinaryOptimizationAlgorithm.html">pybrops.opt.algo.BinaryOptimizationAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/IntegerGeneticAlgorithm.html">pybrops.opt.algo.IntegerGeneticAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/IntegerOptimizationAlgorithm.html">pybrops.opt.algo.IntegerOptimizationAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/NSGA2BinaryGeneticAlgorithm.html">pybrops.opt.algo.NSGA2BinaryGeneticAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/NSGA2IntegerGeneticAlgorithm.html">pybrops.opt.algo.NSGA2IntegerGeneticAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/NSGA2RealGeneticAlgorithm.html">pybrops.opt.algo.NSGA2RealGeneticAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/NSGA2SubsetGeneticAlgorithm.html">pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/OptimizationAlgorithm.html">pybrops.opt.algo.OptimizationAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/RealGeneticAlgorithm.html">pybrops.opt.algo.RealGeneticAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/RealOptimizationAlgorithm.html">pybrops.opt.algo.RealOptimizationAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/SortingSteepestDescentSubsetHillClimber.html">pybrops.opt.algo.SortingSteepestDescentSubsetHillClimber</a></li>
+<li><a href="pybrops/opt/algo/SortingSubsetOptimizationAlgorithm.html">pybrops.opt.algo.SortingSubsetOptimizationAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/SteepestDescentSubsetHillClimber.html">pybrops.opt.algo.SteepestDescentSubsetHillClimber</a></li>
+<li><a href="pybrops/opt/algo/SubsetGeneticAlgorithm.html">pybrops.opt.algo.SubsetGeneticAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/SubsetOptimizationAlgorithm.html">pybrops.opt.algo.SubsetOptimizationAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/UnconstrainedNSGA2SetGeneticAlgorithm.html">pybrops.opt.algo.UnconstrainedNSGA2SetGeneticAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/UnconstrainedOptimizationAlgorithm.html">pybrops.opt.algo.UnconstrainedOptimizationAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/UnconstrainedSetGeneticAlgorithm.html">pybrops.opt.algo.UnconstrainedSetGeneticAlgorithm</a></li>
+<li><a href="pybrops/opt/algo/UnconstrainedSteepestAscentSetHillClimber.html">pybrops.opt.algo.UnconstrainedSteepestAscentSetHillClimber</a></li>
+<li><a href="pybrops/opt/algo/pymoo_addon.html">pybrops.opt.algo.pymoo_addon</a></li>
+<li><a href="pybrops/opt/prob/BinaryProblem.html">pybrops.opt.prob.BinaryProblem</a></li>
+<li><a href="pybrops/opt/prob/FunctionWeight.html">pybrops.opt.prob.FunctionWeight</a></li>
+<li><a href="pybrops/opt/prob/IntegerProblem.html">pybrops.opt.prob.IntegerProblem</a></li>
+<li><a href="pybrops/opt/prob/Problem.html">pybrops.opt.prob.Problem</a></li>
+<li><a href="pybrops/opt/prob/RealProblem.html">pybrops.opt.prob.RealProblem</a></li>
+<li><a href="pybrops/opt/prob/SubsetProblem.html">pybrops.opt.prob.SubsetProblem</a></li>
+<li><a href="pybrops/opt/soln/BinarySolution.html">pybrops.opt.soln.BinarySolution</a></li>
+<li><a href="pybrops/opt/soln/IntegerSolution.html">pybrops.opt.soln.IntegerSolution</a></li>
+<li><a href="pybrops/opt/soln/RealSolution.html">pybrops.opt.soln.RealSolution</a></li>
+<li><a href="pybrops/opt/soln/Solution.html">pybrops.opt.soln.Solution</a></li>
+<li><a href="pybrops/opt/soln/SubsetSolution.html">pybrops.opt.soln.SubsetSolution</a></li>
+<li><a href="pybrops/popgen/bvmat/BreedingValueMatrix.html">pybrops.popgen.bvmat.BreedingValueMatrix</a></li>
+<li><a href="pybrops/popgen/bvmat/DenseBreedingValueMatrix.html">pybrops.popgen.bvmat.DenseBreedingValueMatrix</a></li>
+<li><a href="pybrops/popgen/bvmat/DenseEstimatedBreedingValueMatrix.html">pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix</a></li>
+<li><a href="pybrops/popgen/bvmat/DenseGenomicEstimatedBreedingValueMatrix.html">pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix</a></li>
+<li><a href="pybrops/popgen/cmat/CoancestryMatrix.html">pybrops.popgen.cmat.CoancestryMatrix</a></li>
+<li><a href="pybrops/popgen/cmat/DenseCoancestryMatrix.html">pybrops.popgen.cmat.DenseCoancestryMatrix</a></li>
+<li><a href="pybrops/popgen/cmat/DenseGeneralizedWeightedCoancestryMatrix.html">pybrops.popgen.cmat.DenseGeneralizedWeightedCoancestryMatrix</a></li>
+<li><a href="pybrops/popgen/cmat/DenseMolecularCoancestryMatrix.html">pybrops.popgen.cmat.DenseMolecularCoancestryMatrix</a></li>
+<li><a href="pybrops/popgen/cmat/DenseVanRadenCoancestryMatrix.html">pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix</a></li>
+<li><a href="pybrops/popgen/cmat/DenseYangCoancestryMatrix.html">pybrops.popgen.cmat.DenseYangCoancestryMatrix</a></li>
+<li><a href="pybrops/popgen/cmat/fcty/CoancestryMatrixFactory.html">pybrops.popgen.cmat.fcty.CoancestryMatrixFactory</a></li>
+<li><a href="pybrops/popgen/cmat/fcty/DenseCoancestryMatrixFactory.html">pybrops.popgen.cmat.fcty.DenseCoancestryMatrixFactory</a></li>
+<li><a href="pybrops/popgen/cmat/fcty/DenseGeneralizedWeightedCoancestryMatrixFactory.html">pybrops.popgen.cmat.fcty.DenseGeneralizedWeightedCoancestryMatrixFactory</a></li>
+<li><a href="pybrops/popgen/cmat/fcty/DenseMolecularCoancestryMatrixFactory.html">pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory</a></li>
+<li><a href="pybrops/popgen/cmat/fcty/DenseVanRadenCoancestryMatrixFactory.html">pybrops.popgen.cmat.fcty.DenseVanRadenCoancestryMatrixFactory</a></li>
+<li><a href="pybrops/popgen/cmat/fcty/DenseYangCoancestryMatrixFactory.html">pybrops.popgen.cmat.fcty.DenseYangCoancestryMatrixFactory</a></li>
+<li><a href="pybrops/popgen/gmap/DenseGeneticMappableMatrix.html">pybrops.popgen.gmap.DenseGeneticMappableMatrix</a></li>
+<li><a href="pybrops/popgen/gmap/ExtendedGeneticMap.html">pybrops.popgen.gmap.ExtendedGeneticMap</a></li>
+<li><a href="pybrops/popgen/gmap/GeneticMap.html">pybrops.popgen.gmap.GeneticMap</a></li>
+<li><a href="pybrops/popgen/gmap/GeneticMapFunction.html">pybrops.popgen.gmap.GeneticMapFunction</a></li>
+<li><a href="pybrops/popgen/gmap/GeneticMappableMatrix.html">pybrops.popgen.gmap.GeneticMappableMatrix</a></li>
+<li><a href="pybrops/popgen/gmap/HaldaneMapFunction.html">pybrops.popgen.gmap.HaldaneMapFunction</a></li>
+<li><a href="pybrops/popgen/gmap/KosambiMapFunction.html">pybrops.popgen.gmap.KosambiMapFunction</a></li>
+<li><a href="pybrops/popgen/gmap/StandardGeneticMap.html">pybrops.popgen.gmap.StandardGeneticMap</a></li>
+<li><a href="pybrops/popgen/gmap/util.html">pybrops.popgen.gmap.util</a></li>
+<li><a href="pybrops/popgen/gmat/DenseGenotypeMatrix.html">pybrops.popgen.gmat.DenseGenotypeMatrix</a></li>
+<li><a href="pybrops/popgen/gmat/DensePhasedGenotypeMatrix.html">pybrops.popgen.gmat.DensePhasedGenotypeMatrix</a></li>
+<li><a href="pybrops/popgen/gmat/GenotypeMatrix.html">pybrops.popgen.gmat.GenotypeMatrix</a></li>
+<li><a href="pybrops/popgen/gmat/HaplotypeMatrix.html">pybrops.popgen.gmat.HaplotypeMatrix</a></li>
+<li><a href="pybrops/popgen/gmat/PhasedGenotypeMatrix.html">pybrops.popgen.gmat.PhasedGenotypeMatrix</a></li>
+<li><a href="pybrops/popgen/gmat/PhasedHaplotypeMatrix.html">pybrops.popgen.gmat.PhasedHaplotypeMatrix</a></li>
+<li><a href="pybrops/test/assert_numpy.html">pybrops.test.assert_numpy</a></li>
+<li><a href="pybrops/test/assert_python.html">pybrops.test.assert_python</a></li>
+</ul>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, Robert Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

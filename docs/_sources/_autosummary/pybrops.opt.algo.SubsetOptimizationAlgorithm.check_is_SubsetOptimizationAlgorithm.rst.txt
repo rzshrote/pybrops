@@ -1,0 +1,6 @@
+check\_is\_SubsetOptimizationAlgorithm
+======================================
+
+.. currentmodule:: pybrops.opt.algo.SubsetOptimizationAlgorithm
+
+.. autofunction:: check_is_SubsetOptimizationAlgorithm

@@ -1,0 +1,32 @@
+SampledSelectionConfigurationMixin
+==================================
+
+.. automodule:: pybrops.breed.prot.sel.cfg.SampledSelectionConfigurationMixin
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      SampledSelectionConfigurationMixin
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

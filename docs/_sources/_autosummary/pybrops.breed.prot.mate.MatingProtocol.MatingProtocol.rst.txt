@@ -1,0 +1,31 @@
+MatingProtocol
+==============
+
+.. currentmodule:: pybrops.breed.prot.mate.MatingProtocol
+
+.. autoclass:: MatingProtocol
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MatingProtocol.mate
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MatingProtocol.nparent
+   
+   

@@ -1,0 +1,6 @@
+haplobin\_bounds
+================
+
+.. currentmodule:: pybrops.core.util.haplo
+
+.. autofunction:: haplobin_bounds

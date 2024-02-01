@@ -1,0 +1,6 @@
+check\_is\_SubsetSelectionProblem
+=================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.SubsetSelectionProblem
+
+.. autofunction:: check_is_SubsetSelectionProblem

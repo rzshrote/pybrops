@@ -1,0 +1,71 @@
+ExtendedGeneticMap
+==================
+
+.. currentmodule:: pybrops.popgen.gmap.ExtendedGeneticMap
+
+.. autoclass:: ExtendedGeneticMap
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ExtendedGeneticMap.build_spline
+      ~ExtendedGeneticMap.congruence
+      ~ExtendedGeneticMap.copy
+      ~ExtendedGeneticMap.deepcopy
+      ~ExtendedGeneticMap.from_csv
+      ~ExtendedGeneticMap.from_egmap
+      ~ExtendedGeneticMap.from_pandas
+      ~ExtendedGeneticMap.gdist1g
+      ~ExtendedGeneticMap.gdist1p
+      ~ExtendedGeneticMap.gdist2g
+      ~ExtendedGeneticMap.gdist2p
+      ~ExtendedGeneticMap.group
+      ~ExtendedGeneticMap.has_spline
+      ~ExtendedGeneticMap.interp_genpos
+      ~ExtendedGeneticMap.interp_gmap
+      ~ExtendedGeneticMap.is_congruent
+      ~ExtendedGeneticMap.is_grouped
+      ~ExtendedGeneticMap.lexsort
+      ~ExtendedGeneticMap.prune
+      ~ExtendedGeneticMap.remove
+      ~ExtendedGeneticMap.remove_discrepancies
+      ~ExtendedGeneticMap.reorder
+      ~ExtendedGeneticMap.select
+      ~ExtendedGeneticMap.sort
+      ~ExtendedGeneticMap.to_csv
+      ~ExtendedGeneticMap.to_egmap
+      ~ExtendedGeneticMap.to_pandas
+      ~ExtendedGeneticMap.ungroup
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ExtendedGeneticMap.nvrnt
+      ~ExtendedGeneticMap.spline
+      ~ExtendedGeneticMap.spline_fill_value
+      ~ExtendedGeneticMap.spline_kind
+      ~ExtendedGeneticMap.vrnt_chrgrp
+      ~ExtendedGeneticMap.vrnt_chrgrp_len
+      ~ExtendedGeneticMap.vrnt_chrgrp_name
+      ~ExtendedGeneticMap.vrnt_chrgrp_spix
+      ~ExtendedGeneticMap.vrnt_chrgrp_stix
+      ~ExtendedGeneticMap.vrnt_fncode
+      ~ExtendedGeneticMap.vrnt_genpos
+      ~ExtendedGeneticMap.vrnt_name
+      ~ExtendedGeneticMap.vrnt_phypos
+      ~ExtendedGeneticMap.vrnt_stop
+   
+   

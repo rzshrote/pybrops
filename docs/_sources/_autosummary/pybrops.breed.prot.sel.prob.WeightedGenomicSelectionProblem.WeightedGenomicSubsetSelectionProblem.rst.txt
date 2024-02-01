@@ -1,0 +1,78 @@
+WeightedGenomicSubsetSelectionProblem
+=====================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.WeightedGenomicSelectionProblem
+
+.. autoclass:: WeightedGenomicSubsetSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~WeightedGenomicSubsetSelectionProblem.bounds
+      ~WeightedGenomicSubsetSelectionProblem.do
+      ~WeightedGenomicSubsetSelectionProblem.evalfn
+      ~WeightedGenomicSubsetSelectionProblem.evaluate
+      ~WeightedGenomicSubsetSelectionProblem.from_gmat_algpmod
+      ~WeightedGenomicSubsetSelectionProblem.from_numpy
+      ~WeightedGenomicSubsetSelectionProblem.has_bounds
+      ~WeightedGenomicSubsetSelectionProblem.has_constraints
+      ~WeightedGenomicSubsetSelectionProblem.ideal_point
+      ~WeightedGenomicSubsetSelectionProblem.latentfn
+      ~WeightedGenomicSubsetSelectionProblem.nadir_point
+      ~WeightedGenomicSubsetSelectionProblem.name
+      ~WeightedGenomicSubsetSelectionProblem.pareto_front
+      ~WeightedGenomicSubsetSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~WeightedGenomicSubsetSelectionProblem.callback
+      ~WeightedGenomicSubsetSelectionProblem.data
+      ~WeightedGenomicSubsetSelectionProblem.decn_space
+      ~WeightedGenomicSubsetSelectionProblem.decn_space_lower
+      ~WeightedGenomicSubsetSelectionProblem.decn_space_upper
+      ~WeightedGenomicSubsetSelectionProblem.elementwise
+      ~WeightedGenomicSubsetSelectionProblem.elementwise_func
+      ~WeightedGenomicSubsetSelectionProblem.elementwise_runner
+      ~WeightedGenomicSubsetSelectionProblem.eqcv_trans
+      ~WeightedGenomicSubsetSelectionProblem.eqcv_trans_kwargs
+      ~WeightedGenomicSubsetSelectionProblem.eqcv_wt
+      ~WeightedGenomicSubsetSelectionProblem.exclude_from_serialization
+      ~WeightedGenomicSubsetSelectionProblem.gwgebv
+      ~WeightedGenomicSubsetSelectionProblem.ineqcv_trans
+      ~WeightedGenomicSubsetSelectionProblem.ineqcv_trans_kwargs
+      ~WeightedGenomicSubsetSelectionProblem.ineqcv_wt
+      ~WeightedGenomicSubsetSelectionProblem.n_constr
+      ~WeightedGenomicSubsetSelectionProblem.n_eq_constr
+      ~WeightedGenomicSubsetSelectionProblem.n_ieq_constr
+      ~WeightedGenomicSubsetSelectionProblem.n_obj
+      ~WeightedGenomicSubsetSelectionProblem.n_var
+      ~WeightedGenomicSubsetSelectionProblem.ndecn
+      ~WeightedGenomicSubsetSelectionProblem.neqcv
+      ~WeightedGenomicSubsetSelectionProblem.nineqcv
+      ~WeightedGenomicSubsetSelectionProblem.nlatent
+      ~WeightedGenomicSubsetSelectionProblem.nobj
+      ~WeightedGenomicSubsetSelectionProblem.obj_trans
+      ~WeightedGenomicSubsetSelectionProblem.obj_trans_kwargs
+      ~WeightedGenomicSubsetSelectionProblem.obj_wt
+      ~WeightedGenomicSubsetSelectionProblem.replace_nan_values_by
+      ~WeightedGenomicSubsetSelectionProblem.strict
+      ~WeightedGenomicSubsetSelectionProblem.vars
+      ~WeightedGenomicSubsetSelectionProblem.vtype
+      ~WeightedGenomicSubsetSelectionProblem.xl
+      ~WeightedGenomicSubsetSelectionProblem.xu
+   
+   

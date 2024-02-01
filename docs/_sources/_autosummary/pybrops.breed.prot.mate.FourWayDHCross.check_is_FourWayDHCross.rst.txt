@@ -1,0 +1,6 @@
+check\_is\_FourWayDHCross
+=========================
+
+.. currentmodule:: pybrops.breed.prot.mate.FourWayDHCross
+
+.. autofunction:: check_is_FourWayDHCross

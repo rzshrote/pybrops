@@ -1,0 +1,6 @@
+slice\_to\_list
+===============
+
+.. currentmodule:: pybrops.core.util.subroutines
+
+.. autofunction:: slice_to_list

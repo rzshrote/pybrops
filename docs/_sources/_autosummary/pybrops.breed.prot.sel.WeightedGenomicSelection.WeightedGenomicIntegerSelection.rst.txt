@@ -1,0 +1,58 @@
+WeightedGenomicIntegerSelection
+===============================
+
+.. currentmodule:: pybrops.breed.prot.sel.WeightedGenomicSelection
+
+.. autoclass:: WeightedGenomicIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~WeightedGenomicIntegerSelection.mosolve
+      ~WeightedGenomicIntegerSelection.problem
+      ~WeightedGenomicIntegerSelection.select
+      ~WeightedGenomicIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~WeightedGenomicIntegerSelection.alpha
+      ~WeightedGenomicIntegerSelection.eqcv_trans
+      ~WeightedGenomicIntegerSelection.eqcv_trans_kwargs
+      ~WeightedGenomicIntegerSelection.eqcv_wt
+      ~WeightedGenomicIntegerSelection.ineqcv_trans
+      ~WeightedGenomicIntegerSelection.ineqcv_trans_kwargs
+      ~WeightedGenomicIntegerSelection.ineqcv_wt
+      ~WeightedGenomicIntegerSelection.moalgo
+      ~WeightedGenomicIntegerSelection.ncross
+      ~WeightedGenomicIntegerSelection.ndset_trans
+      ~WeightedGenomicIntegerSelection.ndset_trans_kwargs
+      ~WeightedGenomicIntegerSelection.ndset_wt
+      ~WeightedGenomicIntegerSelection.neqcv
+      ~WeightedGenomicIntegerSelection.nineqcv
+      ~WeightedGenomicIntegerSelection.nmating
+      ~WeightedGenomicIntegerSelection.nobj
+      ~WeightedGenomicIntegerSelection.nparent
+      ~WeightedGenomicIntegerSelection.nprogeny
+      ~WeightedGenomicIntegerSelection.nselindiv
+      ~WeightedGenomicIntegerSelection.ntrait
+      ~WeightedGenomicIntegerSelection.obj_trans
+      ~WeightedGenomicIntegerSelection.obj_trans_kwargs
+      ~WeightedGenomicIntegerSelection.obj_wt
+      ~WeightedGenomicIntegerSelection.rng
+      ~WeightedGenomicIntegerSelection.soalgo
+   
+   

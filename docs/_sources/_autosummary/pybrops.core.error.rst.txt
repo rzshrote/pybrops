@@ -1,0 +1,43 @@
+error
+=====
+
+.. automodule:: pybrops.core.error
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.core.error.error_attr_python
+   pybrops.core.error.error_generic_numpy
+   pybrops.core.error.error_generic_python
+   pybrops.core.error.error_io_python
+   pybrops.core.error.error_type_h5py
+   pybrops.core.error.error_type_numpy
+   pybrops.core.error.error_type_pandas
+   pybrops.core.error.error_type_python
+   pybrops.core.error.error_value_h5py
+   pybrops.core.error.error_value_numpy
+   pybrops.core.error.error_value_pandas
+   pybrops.core.error.error_value_python
+

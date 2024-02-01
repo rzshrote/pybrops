@@ -1,0 +1,6 @@
+check\_is\_CSVDictInputOutput
+=============================
+
+.. currentmodule:: pybrops.core.io.CSVDictInputOutput
+
+.. autofunction:: check_is_CSVDictInputOutput

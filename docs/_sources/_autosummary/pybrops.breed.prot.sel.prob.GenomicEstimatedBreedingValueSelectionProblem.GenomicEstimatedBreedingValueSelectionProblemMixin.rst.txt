@@ -1,0 +1,31 @@
+GenomicEstimatedBreedingValueSelectionProblemMixin
+==================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem
+
+.. autoclass:: GenomicEstimatedBreedingValueSelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenomicEstimatedBreedingValueSelectionProblemMixin.gebv
+      ~GenomicEstimatedBreedingValueSelectionProblemMixin.nlatent
+   
+   

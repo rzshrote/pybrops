@@ -1,0 +1,36 @@
+OptimalHaploidValueSelection
+============================
+
+.. automodule:: pybrops.breed.prot.sel.OptimalHaploidValueSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      OptimalHaploidValueBinarySelection
+      OptimalHaploidValueIntegerSelection
+      OptimalHaploidValueRealSelection
+      OptimalHaploidValueSelectionMixin
+      OptimalHaploidValueSubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

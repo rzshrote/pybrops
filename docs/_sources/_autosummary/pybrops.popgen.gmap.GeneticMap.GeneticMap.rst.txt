@@ -1,0 +1,65 @@
+GeneticMap
+==========
+
+.. currentmodule:: pybrops.popgen.gmap.GeneticMap
+
+.. autoclass:: GeneticMap
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneticMap.build_spline
+      ~GeneticMap.congruence
+      ~GeneticMap.copy
+      ~GeneticMap.deepcopy
+      ~GeneticMap.from_csv
+      ~GeneticMap.from_pandas
+      ~GeneticMap.gdist1g
+      ~GeneticMap.gdist1p
+      ~GeneticMap.gdist2g
+      ~GeneticMap.gdist2p
+      ~GeneticMap.group
+      ~GeneticMap.has_spline
+      ~GeneticMap.interp_genpos
+      ~GeneticMap.interp_gmap
+      ~GeneticMap.is_congruent
+      ~GeneticMap.is_grouped
+      ~GeneticMap.lexsort
+      ~GeneticMap.remove
+      ~GeneticMap.remove_discrepancies
+      ~GeneticMap.reorder
+      ~GeneticMap.select
+      ~GeneticMap.sort
+      ~GeneticMap.to_csv
+      ~GeneticMap.to_pandas
+      ~GeneticMap.ungroup
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GeneticMap.nvrnt
+      ~GeneticMap.spline
+      ~GeneticMap.spline_fill_value
+      ~GeneticMap.spline_kind
+      ~GeneticMap.vrnt_chrgrp
+      ~GeneticMap.vrnt_chrgrp_len
+      ~GeneticMap.vrnt_chrgrp_name
+      ~GeneticMap.vrnt_chrgrp_spix
+      ~GeneticMap.vrnt_chrgrp_stix
+      ~GeneticMap.vrnt_genpos
+      ~GeneticMap.vrnt_phypos
+   
+   

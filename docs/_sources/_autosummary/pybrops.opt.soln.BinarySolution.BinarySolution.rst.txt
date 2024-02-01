@@ -1,0 +1,44 @@
+BinarySolution
+==============
+
+.. currentmodule:: pybrops.opt.soln.BinarySolution
+
+.. autoclass:: BinarySolution
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BinarySolution.decn_space
+      ~BinarySolution.decn_space_lower
+      ~BinarySolution.decn_space_upper
+      ~BinarySolution.eqcv_wt
+      ~BinarySolution.ineqcv_wt
+      ~BinarySolution.ndecn
+      ~BinarySolution.neqcv
+      ~BinarySolution.nineqcv
+      ~BinarySolution.nobj
+      ~BinarySolution.nsoln
+      ~BinarySolution.obj_wt
+      ~BinarySolution.soln_decn
+      ~BinarySolution.soln_eqcv
+      ~BinarySolution.soln_ineqcv
+      ~BinarySolution.soln_obj
+   
+   

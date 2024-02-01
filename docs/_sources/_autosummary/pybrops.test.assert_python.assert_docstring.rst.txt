@@ -1,0 +1,6 @@
+assert\_docstring
+=================
+
+.. currentmodule:: pybrops.test.assert_python
+
+.. autofunction:: assert_docstring

@@ -1,0 +1,6 @@
+check\_is\_GenomicModel
+=======================
+
+.. currentmodule:: pybrops.model.gmod.GenomicModel
+
+.. autofunction:: check_is_GenomicModel

@@ -1,0 +1,26 @@
+PandasDictInputOutput
+=====================
+
+.. currentmodule:: pybrops.core.io.PandasDictInputOutput
+
+.. autoclass:: PandasDictInputOutput
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PandasDictInputOutput.from_pandas_dict
+      ~PandasDictInputOutput.to_pandas_dict
+   
+   
+
+   
+   
+   

@@ -1,0 +1,32 @@
+SimpleMateSelectionConfiguration
+================================
+
+.. automodule:: pybrops.breed.prot.sel.cfg.SimpleMateSelectionConfiguration
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      SimpleMateSelectionConfiguration
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,69 @@
+GenomicModel
+============
+
+.. currentmodule:: pybrops.model.gmod.GenomicModel
+
+.. autoclass:: GenomicModel
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GenomicModel.bulmer
+      ~GenomicModel.bulmer_numpy
+      ~GenomicModel.copy
+      ~GenomicModel.daavail
+      ~GenomicModel.dacount
+      ~GenomicModel.dafixed
+      ~GenomicModel.dafreq
+      ~GenomicModel.deepcopy
+      ~GenomicModel.faavail
+      ~GenomicModel.facount
+      ~GenomicModel.fafixed
+      ~GenomicModel.fafreq
+      ~GenomicModel.fit
+      ~GenomicModel.fit_numpy
+      ~GenomicModel.from_hdf5
+      ~GenomicModel.gebv
+      ~GenomicModel.gebv_numpy
+      ~GenomicModel.gegv
+      ~GenomicModel.gegv_numpy
+      ~GenomicModel.lsl
+      ~GenomicModel.lsl_numpy
+      ~GenomicModel.predict
+      ~GenomicModel.predict_numpy
+      ~GenomicModel.score
+      ~GenomicModel.score_numpy
+      ~GenomicModel.to_hdf5
+      ~GenomicModel.usl
+      ~GenomicModel.usl_numpy
+      ~GenomicModel.var_A
+      ~GenomicModel.var_A_numpy
+      ~GenomicModel.var_G
+      ~GenomicModel.var_G_numpy
+      ~GenomicModel.var_a
+      ~GenomicModel.var_a_numpy
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenomicModel.hyperparams
+      ~GenomicModel.model_name
+      ~GenomicModel.nexplan
+      ~GenomicModel.nparam
+      ~GenomicModel.ntrait
+      ~GenomicModel.trait
+   
+   

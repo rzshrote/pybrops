@@ -1,0 +1,36 @@
+EstimatedBreedingValueSelectionProblem
+======================================
+
+.. automodule:: pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      EstimatedBreedingValueBinarySelectionProblem
+      EstimatedBreedingValueIntegerSelectionProblem
+      EstimatedBreedingValueRealSelectionProblem
+      EstimatedBreedingValueSelectionProblemMixin
+      EstimatedBreedingValueSubsetSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

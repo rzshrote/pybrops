@@ -1,0 +1,41 @@
+DenseVanRadenCoancestryMatrixFactory
+====================================
+
+.. automodule:: pybrops.popgen.cmat.fcty.DenseVanRadenCoancestryMatrixFactory
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseVanRadenCoancestryMatrixFactory
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseVanRadenCoancestryMatrixFactory
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,41 @@
+IntegerSelectionProblem
+=======================
+
+.. automodule:: pybrops.breed.prot.sel.prob.IntegerSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      IntegerSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_IntegerSelectionProblem
+   
+   
+
+   
+   
+   
+
+
+

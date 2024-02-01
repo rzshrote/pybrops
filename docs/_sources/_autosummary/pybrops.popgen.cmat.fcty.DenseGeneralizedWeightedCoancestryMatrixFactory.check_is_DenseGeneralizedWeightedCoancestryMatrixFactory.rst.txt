@@ -1,0 +1,6 @@
+check\_is\_DenseGeneralizedWeightedCoancestryMatrixFactory
+==========================================================
+
+.. currentmodule:: pybrops.popgen.cmat.fcty.DenseGeneralizedWeightedCoancestryMatrixFactory
+
+.. autofunction:: check_is_DenseGeneralizedWeightedCoancestryMatrixFactory

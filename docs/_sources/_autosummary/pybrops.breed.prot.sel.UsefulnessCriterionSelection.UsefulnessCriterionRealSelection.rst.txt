@@ -1,0 +1,63 @@
+UsefulnessCriterionRealSelection
+================================
+
+.. currentmodule:: pybrops.breed.prot.sel.UsefulnessCriterionSelection
+
+.. autoclass:: UsefulnessCriterionRealSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UsefulnessCriterionRealSelection.mosolve
+      ~UsefulnessCriterionRealSelection.problem
+      ~UsefulnessCriterionRealSelection.select
+      ~UsefulnessCriterionRealSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~UsefulnessCriterionRealSelection.eqcv_trans
+      ~UsefulnessCriterionRealSelection.eqcv_trans_kwargs
+      ~UsefulnessCriterionRealSelection.eqcv_wt
+      ~UsefulnessCriterionRealSelection.gmapfn
+      ~UsefulnessCriterionRealSelection.ineqcv_trans
+      ~UsefulnessCriterionRealSelection.ineqcv_trans_kwargs
+      ~UsefulnessCriterionRealSelection.ineqcv_wt
+      ~UsefulnessCriterionRealSelection.moalgo
+      ~UsefulnessCriterionRealSelection.ncross
+      ~UsefulnessCriterionRealSelection.ndset_trans
+      ~UsefulnessCriterionRealSelection.ndset_trans_kwargs
+      ~UsefulnessCriterionRealSelection.ndset_wt
+      ~UsefulnessCriterionRealSelection.neqcv
+      ~UsefulnessCriterionRealSelection.nineqcv
+      ~UsefulnessCriterionRealSelection.nmating
+      ~UsefulnessCriterionRealSelection.nobj
+      ~UsefulnessCriterionRealSelection.nparent
+      ~UsefulnessCriterionRealSelection.nprogeny
+      ~UsefulnessCriterionRealSelection.nself
+      ~UsefulnessCriterionRealSelection.nselindiv
+      ~UsefulnessCriterionRealSelection.ntrait
+      ~UsefulnessCriterionRealSelection.obj_trans
+      ~UsefulnessCriterionRealSelection.obj_trans_kwargs
+      ~UsefulnessCriterionRealSelection.obj_wt
+      ~UsefulnessCriterionRealSelection.rng
+      ~UsefulnessCriterionRealSelection.selection_intensity
+      ~UsefulnessCriterionRealSelection.soalgo
+      ~UsefulnessCriterionRealSelection.unique_parents
+      ~UsefulnessCriterionRealSelection.upper_percentile
+      ~UsefulnessCriterionRealSelection.vmatfcty
+   
+   

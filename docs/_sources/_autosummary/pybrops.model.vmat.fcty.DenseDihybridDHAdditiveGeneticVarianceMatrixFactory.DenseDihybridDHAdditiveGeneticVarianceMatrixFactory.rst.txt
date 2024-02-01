@@ -1,0 +1,26 @@
+DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
+===================================================
+
+.. currentmodule:: pybrops.model.vmat.fcty.DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
+
+.. autoclass:: DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrixFactory.from_algmod
+      ~DenseDihybridDHAdditiveGeneticVarianceMatrixFactory.from_gmod
+   
+   
+
+   
+   
+   

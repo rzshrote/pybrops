@@ -1,0 +1,6 @@
+check\_is\_SubsetSelectionProtocol
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.SubsetSelectionProtocol
+
+.. autofunction:: check_is_SubsetSelectionProtocol

@@ -1,0 +1,43 @@
+IntegerProblem
+==============
+
+.. automodule:: pybrops.opt.prob.IntegerProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      IntegerProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_IntegerProblem_is_multi_objective
+      check_IntegerProblem_is_single_objective
+      check_is_IntegerProblem
+   
+   
+
+   
+   
+   
+
+
+

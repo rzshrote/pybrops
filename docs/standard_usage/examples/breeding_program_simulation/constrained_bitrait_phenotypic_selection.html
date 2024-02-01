@@ -1,10 +1,12 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+
+<html lang="en" data-content_root="../../../" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Constrained Bi-Trait Phenotypic Selection &#8212; pybrops 0.9.0 documentation</title>
   
@@ -16,107 +18,119 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-<link href="../../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/wider_borders.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/wider_borders.css?v=ec38ee01" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
-<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-    <script src="../../../_static/jquery.js"></script>
-    <script src="../../../_static/underscore.js"></script>
-    <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../../_static/doctools.js"></script>
-    <script src="../../../_static/sphinx_highlight.js"></script>
+    <script src="../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'standard_usage/examples/breeding_program_simulation/constrained_bitrait_phenotypic_selection';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Advanced PyBrOpS Usage" href="../../../advanced_usage/advanced_usage.html" />
     <link rel="prev" title="Constrained Single-Trait Phenotypic Selection" href="constrained_single_trait_phenotypic_selection.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="docsearch:language" content="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
   
-  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
   <label class="overlay overlay-primary" for="__primary"></label>
-
   
-  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
   <label class="overlay overlay-secondary" for="__secondary"></label>
-
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
     <div class="search-button__search-container">
-      
-<form class="bd-search d-flex align-items-center" action="../../../search.html" method="get">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-    </div>
+</form></div>
   </div>
-
   
-  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fa-solid fa-bars"></span>
+    <span class="fa-solid fa-bars"></span>
   </label>
-  <div id="navbar-start">
-    
-    
   
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
 
+  
 
 <a class="navbar-brand logo" href="../../../index.html">
-
   
   
   
   
-  
-  
-  
-
   
   
     <p class="title logo__title">pybrops 0.9.0 documentation</p>
   
-</a>
+</a></div>
     
   </div>
-
   
   <div class="col-lg-9 navbar-header-items">
-    <div id="navbar-center" class="mr-auto">
+    
+    <div class="me-auto navbar-header-items__center">
       
-      <div class="navbar-center-item">
-        <nav class="navbar-nav">
-    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
-        Site Navigation
-    </p>
-    <ul id="navbar-main-elements" class="navbar-nav">
-        
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../../getting_started/getting_started.html">
                         Getting Started
@@ -151,98 +165,117 @@
                       </a>
                     </li>
                 
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
                     More
                 </button>
-                <div class="dropdown-menu">
+                <ul id="pst-nav-more-links" class="dropdown-menu">
                     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../contributing/contributing.html">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../contributing/contributing.html">
                         Contributing
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../faq/faq.html">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../faq/faq.html">
                         Frequently Asked Questions
                       </a>
                     </li>
                 
-                </div>
-            </div>
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
             
-    </ul>
-</nav>
-      </div>
+  </ul>
+</nav></div>
       
     </div>
-
-    <div id="navbar-end">
+    
+    
+    <div class="navbar-header-items__end">
       
-        <div class="navbar-end-item navbar-persistent--container">
+        <div class="navbar-item navbar-persistent--container">
           
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
-  <i class="fa-solid fa-magnifying-glass"></i>
-</button>
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
-      <div class="navbar-end-item">
-        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-</button>
-      </div>
-      
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
-      </ul>
-      </div>
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
       
     </div>
+    
   </div>
-
-
   
   
     <div class="navbar-persistent--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
-  <i class="fa-solid fa-magnifying-glass"></i>
-</button>
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
   
-  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
       <span class="fa-solid fa-outdent"></span>
-  </label>
+    </label>
   
-
 </div>
-  </nav>
+
+    </header>
   
 
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
+      
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
+
   
   <div class="sidebar-header-items sidebar-primary__section">
     
     
       <div class="sidebar-header-items__center">
-      
-      <div class="navbar-center-item">
-        <nav class="navbar-nav">
-    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
-        Site Navigation
-    </p>
-    <ul id="navbar-main-elements" class="navbar-nav">
         
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../../getting_started/getting_started.html">
                         Getting Started
@@ -277,64 +310,66 @@
                       </a>
                     </li>
                 
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
                     More
                 </button>
-                <div class="dropdown-menu">
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
                     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../contributing/contributing.html">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../contributing/contributing.html">
                         Contributing
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../../faq/faq.html">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../faq/faq.html">
                         Frequently Asked Questions
                       </a>
                     </li>
                 
-                </div>
-            </div>
-            
-    </ul>
-</nav>
-      </div>
-      
-      </div>
-    
 
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
     
     
-    <div class="sidebar-header-items__end">
-      
-      <div class="navbar-end-item">
-        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-</button>
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
       </div>
-      
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
-      </ul>
-      </div>
-      
-    </div>
     
   </div>
-
   
-  <div class="sidebar-start-items sidebar-primary__section">
-    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">
-    Section Navigation
-  </p>
-  <div class="bd-toc-item navbar-nav">
-    <p aria-level="2" class="caption" role="heading"><span class="caption-text">Core Infrastructure Usage:</span></p>
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Core Infrastructure Usage:</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../core_infrastructure/random_number_generation.html">Random Number Generation</a></li>
 </ul>
@@ -388,44 +423,73 @@
 </ul>
 </li>
 </ul>
-
-  </div>
-</nav>
+</div>
+</nav></div>
     </div>
-  </div>
   
-
   
-  <div class="sidebar-end-items sidebar-primary__section">
-    <div class="sidebar-end-items__item">
-    </div>
+  <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-
   
   <div id="rtd-footer-container"></div>
 
+
       </div>
+      
       <main id="main-content" class="bd-main">
         
         
-        <div class="bd-content">
-          <div class="bd-article-container">
-            
-            <div class="bd-header-article">
-                
-            </div>
-            
-            
-            <article class="bd-article" role="main">
+          <div class="bd-content">
+            <div class="bd-article-container">
               
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../standard_usage.html" class="nav-link">Standard PyBrOpS Usage</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../examples.html" class="nav-link">Examples</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Constrained...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section id="constrained-bi-trait-phenotypic-selection">
-<h1>Constrained Bi-Trait Phenotypic Selection<a class="headerlink" href="#constrained-bi-trait-phenotypic-selection" title="Permalink to this heading">#</a></h1>
+<h1>Constrained Bi-Trait Phenotypic Selection<a class="headerlink" href="#constrained-bi-trait-phenotypic-selection" title="Link to this heading">#</a></h1>
 <p>Often in breeding, we desire to improve a trait while maintaining another trait’s value. An example of this can be found in maize. In maize, breeders seek to maximize yield while maintaining a lower ear height. Having a lower ear height is a desirable attribute in case of stalk lodging. If a plant stalk lodges, plants with lower ears are less likely to lose their ears, preserving yields.</p>
 <p>In this example, we demonstrate how another trait can be used as a constraint for selection. We compare this constrained scenario against an unconstrained scenario.</p>
 <section id="simulation-preliminaries">
-<h2>Simulation Preliminaries<a class="headerlink" href="#simulation-preliminaries" title="Permalink to this heading">#</a></h2>
+<h2>Simulation Preliminaries<a class="headerlink" href="#simulation-preliminaries" title="Link to this heading">#</a></h2>
 <section id="loading-required-modules-and-seeding-the-global-prng">
-<h3>Loading Required Modules and Seeding the global PRNG<a class="headerlink" href="#loading-required-modules-and-seeding-the-global-prng" title="Permalink to this heading">#</a></h3>
+<h3>Loading Required Modules and Seeding the global PRNG<a class="headerlink" href="#loading-required-modules-and-seeding-the-global-prng" title="Link to this heading">#</a></h3>
 <p>To begin, we import the various modules we will be used into the Python namespace. We also set the seed for our simulation so that we can replicate the results at a later time.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import libraries</span>
 <span class="kn">import</span> <span class="nn">copy</span>
@@ -455,7 +519,7 @@
 </div>
 </section>
 <section id="simulation-parameters">
-<h3>Simulation Parameters<a class="headerlink" href="#simulation-parameters" title="Permalink to this heading">#</a></h3>
+<h3>Simulation Parameters<a class="headerlink" href="#simulation-parameters" title="Link to this heading">#</a></h3>
 <p>Next, we define a couple of simulation parameter constants.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nfndr</span> <span class="o">=</span> <span class="mi">40</span>      <span class="c1"># number of founder individuals</span>
 <span class="n">nqtl</span> <span class="o">=</span> <span class="mi">1000</span>     <span class="c1"># number of QTL</span>
@@ -470,7 +534,7 @@
 </div>
 </section>
 <section id="loading-genetic-map-data-from-a-text-file">
-<h3>Loading Genetic Map Data from a Text File<a class="headerlink" href="#loading-genetic-map-data-from-a-text-file" title="Permalink to this heading">#</a></h3>
+<h3>Loading Genetic Map Data from a Text File<a class="headerlink" href="#loading-genetic-map-data-from-a-text-file" title="Link to this heading">#</a></h3>
 <p>Then, we load genetic map data from a CSV-like file. In this example, we are using the US NAM genetic map constructed by McMullen et al. in 2009. The code below demonstrates how these data are read into a <code class="docutils literal notranslate"><span class="pre">StandardGeneticMap</span></code> object using the <code class="docutils literal notranslate"><span class="pre">from_csv</span></code> class method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read genetic map</span>
 <span class="n">gmap</span> <span class="o">=</span> <span class="n">StandardGeneticMap</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span>
@@ -488,7 +552,7 @@
 </div>
 </section>
 <section id="creating-a-genetic-map-function">
-<h3>Creating a Genetic Map Function<a class="headerlink" href="#creating-a-genetic-map-function" title="Permalink to this heading">#</a></h3>
+<h3>Creating a Genetic Map Function<a class="headerlink" href="#creating-a-genetic-map-function" title="Link to this heading">#</a></h3>
 <p>After loading our genetic map data, we want to create a genetic map function object which will be used to calculate recombination probabilities for our simulations. We create a simple Haldane genetic map function using the <code class="docutils literal notranslate"><span class="pre">HaldaneMapFunction</span></code> class.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># use Haldane map function to calculate crossover probabilities</span>
 <span class="n">gmapfn</span> <span class="o">=</span> <span class="n">HaldaneMapFunction</span><span class="p">()</span>
@@ -496,7 +560,7 @@
 </div>
 </section>
 <section id="loading-genome-data-from-a-vcf-file">
-<h3>Loading Genome Data from a VCF File<a class="headerlink" href="#loading-genome-data-from-a-vcf-file" title="Permalink to this heading">#</a></h3>
+<h3>Loading Genome Data from a VCF File<a class="headerlink" href="#loading-genome-data-from-a-vcf-file" title="Link to this heading">#</a></h3>
 <p>Next, we load phased genetic markers from a VCF file. In this example, we are using a subset of genetic markers from the Wisconsin Maize Diversity Panel, which is composed of 942 individuals. 2000 SNPs with a minor allele frequency greater than 0.2 have been randomly selected to keep the dataset small. From the original 942 individuals and 2000 SNPs, we randomly select 40 founders and 1000 SNPs to create a founding synthetic population.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read phased genetic markers from a vcf file</span>
 <span class="n">fndr_pgmat</span> <span class="o">=</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="o">.</span><span class="n">from_vcf</span><span class="p">(</span><span class="s2">&quot;widiv_2000SNPs.vcf.gz&quot;</span><span class="p">,</span> <span class="n">auto_group_vrnt</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -520,7 +584,7 @@
 </div>
 </section>
 <section id="constructing-a-bi-trait-genomic-model">
-<h3>Constructing a Bi-Trait Genomic Model<a class="headerlink" href="#constructing-a-bi-trait-genomic-model" title="Permalink to this heading">#</a></h3>
+<h3>Constructing a Bi-Trait Genomic Model<a class="headerlink" href="#constructing-a-bi-trait-genomic-model" title="Link to this heading">#</a></h3>
 <p>Next, we want to construct a true genomic model that will model two traits with a strictly additive genetic architectures. We’ll name these two traits <code class="docutils literal notranslate"><span class="pre">&quot;yield&quot;</span></code> for yield and <code class="docutils literal notranslate"><span class="pre">&quot;earht&quot;</span></code> for ear height. We’ll simulate pleiotropy by how we generate marker effects. We’ll use a multivariate normal distribution to draw yield and ear height marker effects. The marker effects will have a covariance structure such that the correlation between their effects is 0.4. In other words, individuals with higher ear height yield more.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># model intercepts: (1,ntrait=2)</span>
 <span class="n">beta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">100.0</span><span class="p">,</span> <span class="mf">50.0</span><span class="p">]],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
@@ -564,10 +628,10 @@
 </section>
 </section>
 <section id="build-founder-populations-run-breeding-program-burn-in">
-<h2>Build Founder Populations &amp; Run Breeding Program Burn-In<a class="headerlink" href="#build-founder-populations-run-breeding-program-burn-in" title="Permalink to this heading">#</a></h2>
+<h2>Build Founder Populations &amp; Run Breeding Program Burn-In<a class="headerlink" href="#build-founder-populations-run-breeding-program-burn-in" title="Link to this heading">#</a></h2>
 <p>In this next series of steps, we’ll create a founder population by randomly intermating our 40 selected founders for 20 generations. Following random intermating, we’ll create 6 cohorts of doubled haploid individuals, each cohort representing progenies produced in a single year. In this simulation, the oldest 3 cohorts will be aggregated into a <code class="docutils literal notranslate"><span class="pre">&quot;main&quot;</span></code> population to serve as selection candidates. The youngest 3 cohorts will be “in the pipeline” and will represent doubled haploid progenies which are being made. From the <code class="docutils literal notranslate"><span class="pre">&quot;main&quot;</span></code> population, the top 5% of individuals for yield from each family will be selected to form a <code class="docutils literal notranslate"><span class="pre">&quot;cand&quot;</span></code> population. It is from this <code class="docutils literal notranslate"><span class="pre">&quot;cand&quot;</span></code> population that parents will be selected. In the burn-in, yield is the only trait considered for selection from the <code class="docutils literal notranslate"><span class="pre">&quot;cand&quot;</span></code> population. The burn-in segment of the breeding program continues until the mean expected heterozygosity decreases to just under 0.3. After this point is reached, the simulated populations are ready for use in the main simulation.</p>
 <section id="randomly-intermate-for-nrandmate-generations">
-<h3>Randomly Intermate for <code class="docutils literal notranslate"><span class="pre">nrandmate</span></code> Generations<a class="headerlink" href="#randomly-intermate-for-nrandmate-generations" title="Permalink to this heading">#</a></h3>
+<h3>Randomly Intermate for <code class="docutils literal notranslate"><span class="pre">nrandmate</span></code> Generations<a class="headerlink" href="#randomly-intermate-for-nrandmate-generations" title="Link to this heading">#</a></h3>
 <p>To start our random mating scheme, we first randomly pair up our 40 founders and mate them to create hybrids. Each mating event creates 80 progenies. This creates a population of size 1600.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create 2-way cross object</span>
 <span class="n">mate2way</span> <span class="o">=</span> <span class="n">TwoWayCross</span><span class="p">()</span>
@@ -607,7 +671,7 @@
 </div>
 </section>
 <section id="create-breeding-protocols-for-burn-in">
-<h3>Create Breeding Protocols for Burn-In<a class="headerlink" href="#create-breeding-protocols-for-burn-in" title="Permalink to this heading">#</a></h3>
+<h3>Create Breeding Protocols for Burn-In<a class="headerlink" href="#create-breeding-protocols-for-burn-in" title="Link to this heading">#</a></h3>
 <p>Next, we make a 2-way DH cross protocol for our burn-in stage.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a 2-way DH cross object, use the counters from the 2-way cross object</span>
 <span class="n">mate2waydh</span> <span class="o">=</span> <span class="n">TwoWayDHCross</span><span class="p">(</span>
@@ -635,7 +699,7 @@
 </div>
 </section>
 <section id="create-a-within-family-selection-function">
-<h3>Create a Within-Family Selection Function<a class="headerlink" href="#create-a-within-family-selection-function" title="Permalink to this heading">#</a></h3>
+<h3>Create a Within-Family Selection Function<a class="headerlink" href="#create-a-within-family-selection-function" title="Link to this heading">#</a></h3>
 <p>Next, we create a custom function to manually select individuals within families based on their breeding values. This function selects the top <code class="docutils literal notranslate"><span class="pre">nindiv</span></code> individuals within each family and outputs a set of indices corresponding to these individuals.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># define function to do within family selection based on yield</span>
 <span class="k">def</span> <span class="nf">within_family_selection</span><span class="p">(</span><span class="n">bvmat</span><span class="p">:</span> <span class="n">DenseBreedingValueMatrix</span><span class="p">,</span> <span class="n">nindiv</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -656,7 +720,7 @@
 </div>
 </section>
 <section id="create-cohort-structure">
-<h3>Create Cohort Structure<a class="headerlink" href="#create-cohort-structure" title="Permalink to this heading">#</a></h3>
+<h3>Create Cohort Structure<a class="headerlink" href="#create-cohort-structure" title="Link to this heading">#</a></h3>
 <p>In the next step, we create a cohort structure as described at the beginning of this section. We utilize dictionaries to keep track of our cohorts and populations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a dictionary to store founder individuals</span>
 <span class="n">fndr_genome</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;cand&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span>   <span class="s2">&quot;main&quot;</span><span class="p">:</span><span class="kc">None</span><span class="p">,</span>   <span class="s2">&quot;queue&quot;</span><span class="p">:[]}</span>
@@ -714,7 +778,7 @@
 </div>
 </section>
 <section id="create-a-burn-in-selection-protocol-object">
-<h3>Create a Burn-In Selection Protocol Object<a class="headerlink" href="#create-a-burn-in-selection-protocol-object" title="Permalink to this heading">#</a></h3>
+<h3>Create a Burn-In Selection Protocol Object<a class="headerlink" href="#create-a-burn-in-selection-protocol-object" title="Link to this heading">#</a></h3>
 <p>Next, we create a selection protocol for our burn-in loop. This selects individuals with the best breeding values for only our yield trait.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># define an objective transformation function</span>
 <span class="k">def</span> <span class="nf">obj_trans</span><span class="p">(</span>
@@ -722,7 +786,7 @@
         <span class="n">latentvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Receive an incoming vector of [-BV1,-BV2] and transform it to</span>
 <span class="sd">    [-BV1].</span>
 
@@ -765,7 +829,7 @@
 </div>
 </section>
 <section id="running-a-population-burn-in-until-meh-is-slightly-less-than-0-30">
-<h3>Running a Population Burn-in until MEH is slightly less than 0.30<a class="headerlink" href="#running-a-population-burn-in-until-meh-is-slightly-less-than-0-30" title="Permalink to this heading">#</a></h3>
+<h3>Running a Population Burn-in until MEH is slightly less than 0.30<a class="headerlink" href="#running-a-population-burn-in-until-meh-is-slightly-less-than-0-30" title="Link to this heading">#</a></h3>
 <p>Finally, we perform selection on our populations until the mean expected heterozygosity of the <code class="docutils literal notranslate"><span class="pre">&quot;main&quot;</span></code> population reaches slightly less than 0.30. This in effect sets the starting genetic diversity for our simulations so that they are not as dependent on the set of founders that were initially randomly selected.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">while</span> <span class="n">fndr_genome</span><span class="p">[</span><span class="s2">&quot;main&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">meh</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.30</span><span class="p">:</span>
@@ -813,10 +877,10 @@
 </section>
 </section>
 <section id="simulation-setup">
-<h2>Simulation Setup<a class="headerlink" href="#simulation-setup" title="Permalink to this heading">#</a></h2>
+<h2>Simulation Setup<a class="headerlink" href="#simulation-setup" title="Link to this heading">#</a></h2>
 <p>In the sections above, we created the starting point for our simulations. In these next sections, we’ll test two selection strategies: one constrained by a maximum ear height of 50, and another unconstrained by ear height. We’ll plot and compare the yield and ear height results of these simulations.</p>
 <section id="constructing-a-constrained-ebv-subset-selection-object">
-<h3>Constructing a Constrained EBV Subset Selection Object<a class="headerlink" href="#constructing-a-constrained-ebv-subset-selection-object" title="Permalink to this heading">#</a></h3>
+<h3>Constructing a Constrained EBV Subset Selection Object<a class="headerlink" href="#constructing-a-constrained-ebv-subset-selection-object" title="Link to this heading">#</a></h3>
 <p>First, we’ll define a selection protocol where individuals are selected on their yield breeding values subject to an ear height constraint of 50. We’ll use the <code class="docutils literal notranslate"><span class="pre">EstimatedBreedingValueSubsetSelection</span></code> class to accomplish this task and provide objective and inequality constraint violation transformation functions to create such a scenario.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># define an objective transformation function</span>
 <span class="k">def</span> <span class="nf">obj_trans</span><span class="p">(</span>
@@ -824,7 +888,7 @@
         <span class="n">latentvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Receive an incoming vector of [-BV1,-BV2] and transform it to</span>
 <span class="sd">    [-BV1].</span>
 
@@ -854,7 +918,7 @@
         <span class="n">latentvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Receive an incoming vector of [-BV1,-BV2] and transform it to</span>
 <span class="sd">    [CV2].</span>
 
@@ -902,7 +966,7 @@
 </div>
 </section>
 <section id="create-an-unconstrained-selection-protocol-object">
-<h3>Create an Unconstrained Selection Protocol Object<a class="headerlink" href="#create-an-unconstrained-selection-protocol-object" title="Permalink to this heading">#</a></h3>
+<h3>Create an Unconstrained Selection Protocol Object<a class="headerlink" href="#create-an-unconstrained-selection-protocol-object" title="Link to this heading">#</a></h3>
 <p>Second, we’ll define a selection protocol where individuals are selected on their yield breeding values and ear height is ignored. As before, we’ll use the <code class="docutils literal notranslate"><span class="pre">EstimatedBreedingValueSubsetSelection</span></code> class to accomplish this task and provide an objective transformation function to create such a scenario.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># define an objective transformation function</span>
 <span class="k">def</span> <span class="nf">obj_trans</span><span class="p">(</span>
@@ -910,7 +974,7 @@
         <span class="n">latentvec</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Receive an incoming vector of [-BV1,-BV2] and transform it to</span>
 <span class="sd">    [-BV1].</span>
 
@@ -953,7 +1017,7 @@
 </div>
 </section>
 <section id="make-a-statistics-recording-helper-function">
-<h3>Make a Statistics Recording Helper Function<a class="headerlink" href="#make-a-statistics-recording-helper-function" title="Permalink to this heading">#</a></h3>
+<h3>Make a Statistics Recording Helper Function<a class="headerlink" href="#make-a-statistics-recording-helper-function" title="Link to this heading">#</a></h3>
 <p>To assist in record keeping, we’ll create a function to help us record simulation metrics and store them into a dictionary.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make recording helper function</span>
 <span class="k">def</span> <span class="nf">record</span><span class="p">(</span><span class="n">lbook</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">gen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">genome</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">geno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">pheno</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">bval</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">gmod</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1016,10 +1080,10 @@
 </section>
 </section>
 <section id="running-a-constrained-breeding-simulations-for-60-generations">
-<h2>Running a Constrained Breeding Simulations for 60 Generations<a class="headerlink" href="#running-a-constrained-breeding-simulations-for-60-generations" title="Permalink to this heading">#</a></h2>
+<h2>Running a Constrained Breeding Simulations for 60 Generations<a class="headerlink" href="#running-a-constrained-breeding-simulations-for-60-generations" title="Link to this heading">#</a></h2>
 <p>The next subsections detail simulations in the constrained scenario.</p>
 <section id="copy-founders">
-<h3>Copy Founders<a class="headerlink" href="#copy-founders" title="Permalink to this heading">#</a></h3>
+<h3>Copy Founders<a class="headerlink" href="#copy-founders" title="Link to this heading">#</a></h3>
 <p>First we’ll copy our founder populations so that we don’t modify them and can use them for repeated simulations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># deep copy founder populations, bvals, etc. so we can replicate if needed</span>
 <span class="n">simul_genome</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fndr_genome</span><span class="p">)</span>
@@ -1031,7 +1095,7 @@
 </div>
 </section>
 <section id="rudimentary-logbooks">
-<h3>Rudimentary Logbooks<a class="headerlink" href="#rudimentary-logbooks" title="Permalink to this heading">#</a></h3>
+<h3>Rudimentary Logbooks<a class="headerlink" href="#rudimentary-logbooks" title="Link to this heading">#</a></h3>
 <p>Then, we’ll make a dictionary logbook to store simulation metrics.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make a dictionary logbook</span>
 <span class="n">const_lbook</span> <span class="o">=</span> <span class="p">{</span>
@@ -1068,7 +1132,7 @@
 </div>
 </section>
 <section id="simulation-main-loop">
-<h3>Simulation Main Loop<a class="headerlink" href="#simulation-main-loop" title="Permalink to this heading">#</a></h3>
+<h3>Simulation Main Loop<a class="headerlink" href="#simulation-main-loop" title="Link to this heading">#</a></h3>
 <p>Next, we’ll simulate our constrained scenario breeding program for 60 generations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># record initial statistics</span>
 <span class="n">record</span><span class="p">(</span><span class="n">const_lbook</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">simul_genome</span><span class="p">,</span> <span class="n">simul_geno</span><span class="p">,</span> <span class="n">simul_pheno</span><span class="p">,</span> <span class="n">simul_bval</span><span class="p">,</span> <span class="n">simul_gmod</span><span class="p">)</span>
@@ -1117,7 +1181,7 @@
 </div>
 </section>
 <section id="saving-results-to-a-file">
-<h3>Saving Results to a File<a class="headerlink" href="#saving-results-to-a-file" title="Permalink to this heading">#</a></h3>
+<h3>Saving Results to a File<a class="headerlink" href="#saving-results-to-a-file" title="Link to this heading">#</a></h3>
 <p>Finally, we’ll save the results of our simulation to a CSV file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create output dataframe and save</span>
 <span class="n">const_lbook_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">const_lbook</span><span class="p">)</span>
@@ -1127,9 +1191,9 @@
 </section>
 </section>
 <section id="running-an-unconstrained-breeding-simulations-for-60-generations">
-<h2>Running an Unconstrained Breeding Simulations for 60 Generations<a class="headerlink" href="#running-an-unconstrained-breeding-simulations-for-60-generations" title="Permalink to this heading">#</a></h2>
+<h2>Running an Unconstrained Breeding Simulations for 60 Generations<a class="headerlink" href="#running-an-unconstrained-breeding-simulations-for-60-generations" title="Link to this heading">#</a></h2>
 <section id="id1">
-<h3>Copy Founders<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h3>
+<h3>Copy Founders<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <p>As before, we’ll copy our founder populations so that we don’t modify them and can use them for repeated simulations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># deep copy founder populations, bvals, etc. so we can replicate if needed</span>
 <span class="n">simul_genome</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fndr_genome</span><span class="p">)</span>
@@ -1141,7 +1205,7 @@
 </div>
 </section>
 <section id="id2">
-<h3>Rudimentary Logbooks<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h3>
+<h3>Rudimentary Logbooks<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p>Then, we’ll make a dictionary logbook to store simulation metrics.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make a dictionary logbook</span>
 <span class="n">unconst_lbook</span> <span class="o">=</span> <span class="p">{</span>
@@ -1178,7 +1242,7 @@
 </div>
 </section>
 <section id="id3">
-<h3>Simulation Main Loop<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h3>
+<h3>Simulation Main Loop<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <p>Next, we’ll simulate our unconstrained scenario breeding program for 60 generations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># record initial statistics</span>
 <span class="n">record</span><span class="p">(</span><span class="n">unconst_lbook</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">simul_genome</span><span class="p">,</span> <span class="n">simul_geno</span><span class="p">,</span> <span class="n">simul_pheno</span><span class="p">,</span> <span class="n">simul_bval</span><span class="p">,</span> <span class="n">simul_gmod</span><span class="p">)</span>
@@ -1227,7 +1291,7 @@
 </div>
 </section>
 <section id="id4">
-<h3>Saving Results to a File<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h3>
+<h3>Saving Results to a File<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p>Finally, we’ll save the results of our simulation to a CSV file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create output dataframe and save</span>
 <span class="n">unconst_lbook_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">unconst_lbook</span><span class="p">)</span>
@@ -1237,9 +1301,9 @@
 </section>
 </section>
 <section id="visualizing-breeding-program-simulation-results-with-matplotlib">
-<h2>Visualizing Breeding Program Simulation Results with <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code><a class="headerlink" href="#visualizing-breeding-program-simulation-results-with-matplotlib" title="Permalink to this heading">#</a></h2>
+<h2>Visualizing Breeding Program Simulation Results with <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code><a class="headerlink" href="#visualizing-breeding-program-simulation-results-with-matplotlib" title="Link to this heading">#</a></h2>
 <section id="visualizing-true-breeding-values-tbvs">
-<h3>Visualizing True Breeding Values (TBVs)<a class="headerlink" href="#visualizing-true-breeding-values-tbvs" title="Permalink to this heading">#</a></h3>
+<h3>Visualizing True Breeding Values (TBVs)<a class="headerlink" href="#visualizing-true-breeding-values-tbvs" title="Link to this heading">#</a></h3>
 <p>Using the results, we’ll visualize the population mean yield true breeding values over time for the constrained and unconstrained scenarios. Additionally, we’ll plot the upper and lower selection limits to depict the narrowing of the genetic diverity over time.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create static figure</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -1298,7 +1362,7 @@
 <img alt="../../../_images/constr_vs_unconst_bitrait_phenotypic_selection_bitrait_TBV.png" src="../../../_images/constr_vs_unconst_bitrait_phenotypic_selection_bitrait_TBV.png" />
 </section>
 <section id="visualizing-estimated-breeding-values-ebvs">
-<h3>Visualizing Estimated Breeding Values (EBVs)<a class="headerlink" href="#visualizing-estimated-breeding-values-ebvs" title="Permalink to this heading">#</a></h3>
+<h3>Visualizing Estimated Breeding Values (EBVs)<a class="headerlink" href="#visualizing-estimated-breeding-values-ebvs" title="Link to this heading">#</a></h3>
 <p>We’ll visualize the population mean yield estimated breeding values over time for the constrained and unconstrained scenarios alongside their upper and lower selection limits using the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create static figure</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -1357,7 +1421,7 @@
 <img alt="../../../_images/constr_vs_unconst_bitrait_phenotypic_selection_bitrait_EBV.png" src="../../../_images/constr_vs_unconst_bitrait_phenotypic_selection_bitrait_EBV.png" />
 </section>
 <section id="visualizing-mean-expected-heterozygosity-meh">
-<h3>Visualizing Mean Expected Heterozygosity (MEH)<a class="headerlink" href="#visualizing-mean-expected-heterozygosity-meh" title="Permalink to this heading">#</a></h3>
+<h3>Visualizing Mean Expected Heterozygosity (MEH)<a class="headerlink" href="#visualizing-mean-expected-heterozygosity-meh" title="Link to this heading">#</a></h3>
 <p>As a metric of diverity, we’ll visualize the population mean expected heterozygosity over time for the constrained and unconstrained scenarios with the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create static figure</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -1376,7 +1440,7 @@
 <img alt="../../../_images/constr_vs_unconst_bitrait_phenotypic_selection_mean_expected_heterozygosity.png" src="../../../_images/constr_vs_unconst_bitrait_phenotypic_selection_mean_expected_heterozygosity.png" />
 </section>
 <section id="visualizing-true-breeding-value-standard-deviations">
-<h3>Visualizing True Breeding Value Standard Deviations<a class="headerlink" href="#visualizing-true-breeding-value-standard-deviations" title="Permalink to this heading">#</a></h3>
+<h3>Visualizing True Breeding Value Standard Deviations<a class="headerlink" href="#visualizing-true-breeding-value-standard-deviations" title="Link to this heading">#</a></h3>
 <p>As another metric of diversity, we’ll visualize the population true breeding value standard deviation over time for the constrained and unconstrained scenarios with the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create static figure</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -1397,7 +1461,7 @@
 <img alt="../../../_images/constr_vs_unconst_bitrait_phenotypic_selection_bitrait_TBV_standard_deviation.png" src="../../../_images/constr_vs_unconst_bitrait_phenotypic_selection_bitrait_TBV_standard_deviation.png" />
 </section>
 <section id="visualizing-estimated-breeding-value-standard-deviations">
-<h3>Visualizing Estimated Breeding Value Standard Deviations<a class="headerlink" href="#visualizing-estimated-breeding-value-standard-deviations" title="Permalink to this heading">#</a></h3>
+<h3>Visualizing Estimated Breeding Value Standard Deviations<a class="headerlink" href="#visualizing-estimated-breeding-value-standard-deviations" title="Link to this heading">#</a></h3>
 <p>Additionally, we’ll visualize the population estimated breeding value standard deviation over time for the constrained and unconstrained scenarios with the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create static figure</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -1418,7 +1482,7 @@
 <img alt="../../../_images/constr_vs_unconst_bitrait_phenotypic_selection_bitrait_EBV_standard_deviation.png" src="../../../_images/constr_vs_unconst_bitrait_phenotypic_selection_bitrait_EBV_standard_deviation.png" />
 </section>
 <section id="visualizing-genetic-and-genic-variance">
-<h3>Visualizing Genetic and Genic Variance<a class="headerlink" href="#visualizing-genetic-and-genic-variance" title="Permalink to this heading">#</a></h3>
+<h3>Visualizing Genetic and Genic Variance<a class="headerlink" href="#visualizing-genetic-and-genic-variance" title="Link to this heading">#</a></h3>
 <p>As a final metric of diversity, we’ll visualize the population genetic and genic diversity over time for both constrained and unconstrained scenarios in the next two code blocks.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create static figure</span>
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -1459,310 +1523,155 @@
 </section>
 
 
-            </article>
-            
-            
-            
-            <footer class="bd-footer-article">
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="constrained_single_trait_phenotypic_selection.html" title="previous page">
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="constrained_single_trait_phenotypic_selection.html"
+       title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
-          <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Constrained Single-Trait Phenotypic Selection</p>
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Constrained Single-Trait Phenotypic Selection</p>
       </div>
-  </a>
-  <a class='right-next' id="next-link" href="../../../advanced_usage/advanced_usage.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Advanced PyBrOpS Usage</p>
-  </div>
-  <i class="fa-solid fa-angle-right"></i>
-  </a>
+    </a>
+    <a class="right-next"
+       href="../../../advanced_usage/advanced_usage.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Advanced PyBrOpS Usage</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
-            </footer>
-            
-          </div>
-          
-          
-          
-            <div class="bd-sidebar-secondary bd-toc">
+                </footer>
               
-<div class="toc-item">
-  
-<div class="tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-</div>
-<nav id="bd-toc-nav" class="page-toc">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#simulation-preliminaries">
-   Simulation Preliminaries
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#loading-required-modules-and-seeding-the-global-prng">
-     Loading Required Modules and Seeding the global PRNG
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#simulation-parameters">
-     Simulation Parameters
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#loading-genetic-map-data-from-a-text-file">
-     Loading Genetic Map Data from a Text File
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#creating-a-genetic-map-function">
-     Creating a Genetic Map Function
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#loading-genome-data-from-a-vcf-file">
-     Loading Genome Data from a VCF File
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#constructing-a-bi-trait-genomic-model">
-     Constructing a Bi-Trait Genomic Model
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#build-founder-populations-run-breeding-program-burn-in">
-   Build Founder Populations &amp; Run Breeding Program Burn-In
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#randomly-intermate-for-nrandmate-generations">
-     Randomly Intermate for
-     <code class="docutils literal notranslate">
-      <span class="pre">
-       nrandmate
-      </span>
-     </code>
-     Generations
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-breeding-protocols-for-burn-in">
-     Create Breeding Protocols for Burn-In
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-a-within-family-selection-function">
-     Create a Within-Family Selection Function
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-cohort-structure">
-     Create Cohort Structure
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-a-burn-in-selection-protocol-object">
-     Create a Burn-In Selection Protocol Object
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#running-a-population-burn-in-until-meh-is-slightly-less-than-0-30">
-     Running a Population Burn-in until MEH is slightly less than 0.30
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#simulation-setup">
-   Simulation Setup
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#constructing-a-constrained-ebv-subset-selection-object">
-     Constructing a Constrained EBV Subset Selection Object
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-an-unconstrained-selection-protocol-object">
-     Create an Unconstrained Selection Protocol Object
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#make-a-statistics-recording-helper-function">
-     Make a Statistics Recording Helper Function
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#running-a-constrained-breeding-simulations-for-60-generations">
-   Running a Constrained Breeding Simulations for 60 Generations
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#copy-founders">
-     Copy Founders
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#rudimentary-logbooks">
-     Rudimentary Logbooks
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#simulation-main-loop">
-     Simulation Main Loop
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#saving-results-to-a-file">
-     Saving Results to a File
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#running-an-unconstrained-breeding-simulations-for-60-generations">
-   Running an Unconstrained Breeding Simulations for 60 Generations
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id1">
-     Copy Founders
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id2">
-     Rudimentary Logbooks
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id3">
-     Simulation Main Loop
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id4">
-     Saving Results to a File
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#visualizing-breeding-program-simulation-results-with-matplotlib">
-   Visualizing Breeding Program Simulation Results with
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     matplotlib
-    </span>
-   </code>
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#visualizing-true-breeding-values-tbvs">
-     Visualizing True Breeding Values (TBVs)
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#visualizing-estimated-breeding-values-ebvs">
-     Visualizing Estimated Breeding Values (EBVs)
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#visualizing-mean-expected-heterozygosity-meh">
-     Visualizing Mean Expected Heterozygosity (MEH)
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#visualizing-true-breeding-value-standard-deviations">
-     Visualizing True Breeding Value Standard Deviations
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#visualizing-estimated-breeding-value-standard-deviations">
-     Visualizing Estimated Breeding Value Standard Deviations
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#visualizing-genetic-and-genic-variance">
-     Visualizing Genetic and Genic Variance
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
-</nav>
-</div>
-
-<div class="toc-item">
-  
-<div id="searchbox"></div>
-</div>
-
-<div class="toc-item">
-  
-</div>
-
-<div class="toc-item">
-  
-</div>
-
             </div>
-          
-          
-        </div>
-        <footer class="bd-footer-content">
-          <div class="bd-footer-content__inner">
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-preliminaries">Simulation Preliminaries</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-required-modules-and-seeding-the-global-prng">Loading Required Modules and Seeding the global PRNG</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-parameters">Simulation Parameters</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-genetic-map-data-from-a-text-file">Loading Genetic Map Data from a Text File</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-genetic-map-function">Creating a Genetic Map Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-genome-data-from-a-vcf-file">Loading Genome Data from a VCF File</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-a-bi-trait-genomic-model">Constructing a Bi-Trait Genomic Model</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#build-founder-populations-run-breeding-program-burn-in">Build Founder Populations &amp; Run Breeding Program Burn-In</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#randomly-intermate-for-nrandmate-generations">Randomly Intermate for <code class="docutils literal notranslate"><span class="pre">nrandmate</span></code> Generations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-breeding-protocols-for-burn-in">Create Breeding Protocols for Burn-In</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-within-family-selection-function">Create a Within-Family Selection Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-cohort-structure">Create Cohort Structure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-burn-in-selection-protocol-object">Create a Burn-In Selection Protocol Object</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-population-burn-in-until-meh-is-slightly-less-than-0-30">Running a Population Burn-in until MEH is slightly less than 0.30</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-setup">Simulation Setup</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-a-constrained-ebv-subset-selection-object">Constructing a Constrained EBV Subset Selection Object</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-an-unconstrained-selection-protocol-object">Create an Unconstrained Selection Protocol Object</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#make-a-statistics-recording-helper-function">Make a Statistics Recording Helper Function</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-constrained-breeding-simulations-for-60-generations">Running a Constrained Breeding Simulations for 60 Generations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-founders">Copy Founders</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rudimentary-logbooks">Rudimentary Logbooks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-main-loop">Simulation Main Loop</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#saving-results-to-a-file">Saving Results to a File</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-an-unconstrained-breeding-simulations-for-60-generations">Running an Unconstrained Breeding Simulations for 60 Generations</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Copy Founders</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Rudimentary Logbooks</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Simulation Main Loop</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Saving Results to a File</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-breeding-program-simulation-results-with-matplotlib">Visualizing Breeding Program Simulation Results with <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-true-breeding-values-tbvs">Visualizing True Breeding Values (TBVs)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-estimated-breeding-values-ebvs">Visualizing Estimated Breeding Values (EBVs)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-mean-expected-heterozygosity-meh">Visualizing Mean Expected Heterozygosity (MEH)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-true-breeding-value-standard-deviations">Visualizing True Breeding Value Standard Deviations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-estimated-breeding-value-standard-deviations">Visualizing Estimated Breeding Value Standard Deviations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-genetic-and-genic-variance">Visualizing Genetic and Genic Variance</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
             
           </div>
-        </footer>
+          <footer class="bd-footer-content">
+            
+          </footer>
         
       </main>
     </div>
   </div>
-
   
-    
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
-<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
-  <footer class="bd-footer"><div class="bd-footer__inner container">
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
   
-  <div class="footer-item">
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
     
-<p class="copyright">
-
-    &copy; Copyright 2023, Robert Shrote.<br>
-
-</p>
-
-  </div>
-  
-  <div class="footer-item">
-    <p class="theme-version">
-    Built with the
-    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
-        PyData Sphinx Theme
-    </a>
-    0.12.0.
-</p>
-  </div>
-  
-  <div class="footer-item">
+      © Copyright 2023, Robert Shrote.
+      <br/>
     
-<p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
-</p>
+  </p>
+</div>
+      
+        <div class="footer-item">
 
-  </div>
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
   
 </div>
+
   </footer>
   </body>
 </html>

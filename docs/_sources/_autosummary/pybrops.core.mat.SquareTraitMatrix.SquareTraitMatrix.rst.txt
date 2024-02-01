@@ -1,0 +1,69 @@
+SquareTraitMatrix
+=================
+
+.. currentmodule:: pybrops.core.mat.SquareTraitMatrix
+
+.. autoclass:: SquareTraitMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SquareTraitMatrix.adjoin
+      ~SquareTraitMatrix.adjoin_trait
+      ~SquareTraitMatrix.append
+      ~SquareTraitMatrix.append_trait
+      ~SquareTraitMatrix.concat
+      ~SquareTraitMatrix.concat_trait
+      ~SquareTraitMatrix.copy
+      ~SquareTraitMatrix.deepcopy
+      ~SquareTraitMatrix.delete
+      ~SquareTraitMatrix.delete_trait
+      ~SquareTraitMatrix.from_hdf5
+      ~SquareTraitMatrix.incorp
+      ~SquareTraitMatrix.incorp_trait
+      ~SquareTraitMatrix.insert
+      ~SquareTraitMatrix.insert_trait
+      ~SquareTraitMatrix.is_square
+      ~SquareTraitMatrix.is_square_trait
+      ~SquareTraitMatrix.lexsort
+      ~SquareTraitMatrix.lexsort_trait
+      ~SquareTraitMatrix.remove
+      ~SquareTraitMatrix.remove_trait
+      ~SquareTraitMatrix.reorder
+      ~SquareTraitMatrix.reorder_trait
+      ~SquareTraitMatrix.select
+      ~SquareTraitMatrix.select_trait
+      ~SquareTraitMatrix.sort
+      ~SquareTraitMatrix.sort_trait
+      ~SquareTraitMatrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SquareTraitMatrix.mat
+      ~SquareTraitMatrix.mat_ndim
+      ~SquareTraitMatrix.mat_shape
+      ~SquareTraitMatrix.nsquare
+      ~SquareTraitMatrix.nsquare_trait
+      ~SquareTraitMatrix.ntrait
+      ~SquareTraitMatrix.square_axes
+      ~SquareTraitMatrix.square_axes_len
+      ~SquareTraitMatrix.square_trait_axes
+      ~SquareTraitMatrix.square_trait_axes_len
+      ~SquareTraitMatrix.trait
+      ~SquareTraitMatrix.trait_axis
+   
+   

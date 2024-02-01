@@ -1,0 +1,6 @@
+check\_is\_SubsetSolution
+=========================
+
+.. currentmodule:: pybrops.opt.soln.SubsetSolution
+
+.. autofunction:: check_is_SubsetSolution

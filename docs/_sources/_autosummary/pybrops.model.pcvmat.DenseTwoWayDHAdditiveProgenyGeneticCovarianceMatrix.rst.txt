@@ -1,0 +1,32 @@
+DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix
+===================================================
+
+.. automodule:: pybrops.model.pcvmat.DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

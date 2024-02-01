@@ -1,0 +1,6 @@
+weight\_absolute
+================
+
+.. currentmodule:: pybrops.breed.prot.sel.weightfn
+
+.. autofunction:: weight_absolute

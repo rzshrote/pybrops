@@ -1,0 +1,41 @@
+Problem
+=======
+
+.. automodule:: pybrops.opt.prob.Problem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      Problem
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_Problem
+   
+   
+
+   
+   
+   
+
+
+

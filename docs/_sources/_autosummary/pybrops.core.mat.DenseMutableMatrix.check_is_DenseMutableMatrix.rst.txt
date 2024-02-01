@@ -1,0 +1,6 @@
+check\_is\_DenseMutableMatrix
+=============================
+
+.. currentmodule:: pybrops.core.mat.DenseMutableMatrix
+
+.. autofunction:: check_is_DenseMutableMatrix

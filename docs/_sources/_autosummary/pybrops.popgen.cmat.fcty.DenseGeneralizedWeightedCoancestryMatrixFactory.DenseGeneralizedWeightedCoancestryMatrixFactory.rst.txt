@@ -1,0 +1,25 @@
+DenseGeneralizedWeightedCoancestryMatrixFactory
+===============================================
+
+.. currentmodule:: pybrops.popgen.cmat.fcty.DenseGeneralizedWeightedCoancestryMatrixFactory
+
+.. autoclass:: DenseGeneralizedWeightedCoancestryMatrixFactory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseGeneralizedWeightedCoancestryMatrixFactory.from_gmat
+   
+   
+
+   
+   
+   

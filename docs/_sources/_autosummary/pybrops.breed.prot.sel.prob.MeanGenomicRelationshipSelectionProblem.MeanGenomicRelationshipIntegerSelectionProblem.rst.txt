@@ -1,0 +1,77 @@
+MeanGenomicRelationshipIntegerSelectionProblem
+==============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem
+
+.. autoclass:: MeanGenomicRelationshipIntegerSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanGenomicRelationshipIntegerSelectionProblem.bounds
+      ~MeanGenomicRelationshipIntegerSelectionProblem.do
+      ~MeanGenomicRelationshipIntegerSelectionProblem.evalfn
+      ~MeanGenomicRelationshipIntegerSelectionProblem.evaluate
+      ~MeanGenomicRelationshipIntegerSelectionProblem.from_gmat
+      ~MeanGenomicRelationshipIntegerSelectionProblem.has_bounds
+      ~MeanGenomicRelationshipIntegerSelectionProblem.has_constraints
+      ~MeanGenomicRelationshipIntegerSelectionProblem.ideal_point
+      ~MeanGenomicRelationshipIntegerSelectionProblem.latentfn
+      ~MeanGenomicRelationshipIntegerSelectionProblem.nadir_point
+      ~MeanGenomicRelationshipIntegerSelectionProblem.name
+      ~MeanGenomicRelationshipIntegerSelectionProblem.pareto_front
+      ~MeanGenomicRelationshipIntegerSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanGenomicRelationshipIntegerSelectionProblem.C
+      ~MeanGenomicRelationshipIntegerSelectionProblem.callback
+      ~MeanGenomicRelationshipIntegerSelectionProblem.data
+      ~MeanGenomicRelationshipIntegerSelectionProblem.decn_space
+      ~MeanGenomicRelationshipIntegerSelectionProblem.decn_space_lower
+      ~MeanGenomicRelationshipIntegerSelectionProblem.decn_space_upper
+      ~MeanGenomicRelationshipIntegerSelectionProblem.elementwise
+      ~MeanGenomicRelationshipIntegerSelectionProblem.elementwise_func
+      ~MeanGenomicRelationshipIntegerSelectionProblem.elementwise_runner
+      ~MeanGenomicRelationshipIntegerSelectionProblem.eqcv_trans
+      ~MeanGenomicRelationshipIntegerSelectionProblem.eqcv_trans_kwargs
+      ~MeanGenomicRelationshipIntegerSelectionProblem.eqcv_wt
+      ~MeanGenomicRelationshipIntegerSelectionProblem.exclude_from_serialization
+      ~MeanGenomicRelationshipIntegerSelectionProblem.ineqcv_trans
+      ~MeanGenomicRelationshipIntegerSelectionProblem.ineqcv_trans_kwargs
+      ~MeanGenomicRelationshipIntegerSelectionProblem.ineqcv_wt
+      ~MeanGenomicRelationshipIntegerSelectionProblem.n_constr
+      ~MeanGenomicRelationshipIntegerSelectionProblem.n_eq_constr
+      ~MeanGenomicRelationshipIntegerSelectionProblem.n_ieq_constr
+      ~MeanGenomicRelationshipIntegerSelectionProblem.n_obj
+      ~MeanGenomicRelationshipIntegerSelectionProblem.n_var
+      ~MeanGenomicRelationshipIntegerSelectionProblem.ndecn
+      ~MeanGenomicRelationshipIntegerSelectionProblem.neqcv
+      ~MeanGenomicRelationshipIntegerSelectionProblem.nineqcv
+      ~MeanGenomicRelationshipIntegerSelectionProblem.nlatent
+      ~MeanGenomicRelationshipIntegerSelectionProblem.nobj
+      ~MeanGenomicRelationshipIntegerSelectionProblem.obj_trans
+      ~MeanGenomicRelationshipIntegerSelectionProblem.obj_trans_kwargs
+      ~MeanGenomicRelationshipIntegerSelectionProblem.obj_wt
+      ~MeanGenomicRelationshipIntegerSelectionProblem.replace_nan_values_by
+      ~MeanGenomicRelationshipIntegerSelectionProblem.strict
+      ~MeanGenomicRelationshipIntegerSelectionProblem.vars
+      ~MeanGenomicRelationshipIntegerSelectionProblem.vtype
+      ~MeanGenomicRelationshipIntegerSelectionProblem.xl
+      ~MeanGenomicRelationshipIntegerSelectionProblem.xu
+   
+   

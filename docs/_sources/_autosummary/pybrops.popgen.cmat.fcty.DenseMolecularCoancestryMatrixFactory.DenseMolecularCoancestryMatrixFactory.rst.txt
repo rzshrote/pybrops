@@ -1,0 +1,25 @@
+DenseMolecularCoancestryMatrixFactory
+=====================================
+
+.. currentmodule:: pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory
+
+.. autoclass:: DenseMolecularCoancestryMatrixFactory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseMolecularCoancestryMatrixFactory.from_gmat
+   
+   
+
+   
+   
+   

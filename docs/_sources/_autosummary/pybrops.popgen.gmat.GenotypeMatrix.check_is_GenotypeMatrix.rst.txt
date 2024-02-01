@@ -1,0 +1,6 @@
+check\_is\_GenotypeMatrix
+=========================
+
+.. currentmodule:: pybrops.popgen.gmat.GenotypeMatrix
+
+.. autofunction:: check_is_GenotypeMatrix

@@ -1,0 +1,6 @@
+check\_is\_float
+================
+
+.. currentmodule:: pybrops.core.error.error_type_python
+
+.. autofunction:: check_is_float

@@ -1,0 +1,34 @@
+GenotypeBuilderSelectionProblemMixin
+====================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.GenotypeBuilderSelectionProblem
+
+.. autoclass:: GenotypeBuilderSelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GenotypeBuilderSelectionProblemMixin.from_pgmat_gpmod
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenotypeBuilderSelectionProblemMixin.haplomat
+      ~GenotypeBuilderSelectionProblemMixin.nbestfndr
+      ~GenotypeBuilderSelectionProblemMixin.nlatent
+      ~GenotypeBuilderSelectionProblemMixin.ploidy
+   
+   

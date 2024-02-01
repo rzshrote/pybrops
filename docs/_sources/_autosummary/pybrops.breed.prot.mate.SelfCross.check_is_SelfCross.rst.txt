@@ -1,0 +1,6 @@
+check\_is\_SelfCross
+====================
+
+.. currentmodule:: pybrops.breed.prot.mate.SelfCross
+
+.. autofunction:: check_is_SelfCross

@@ -1,0 +1,6 @@
+check\_is\_SquareTaxaMatrix
+===========================
+
+.. currentmodule:: pybrops.core.mat.SquareTaxaMatrix
+
+.. autofunction:: check_is_SquareTaxaMatrix

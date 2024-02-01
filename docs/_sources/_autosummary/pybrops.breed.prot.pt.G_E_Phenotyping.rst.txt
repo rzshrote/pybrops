@@ -1,0 +1,32 @@
+G\_E\_Phenotyping
+=================
+
+.. automodule:: pybrops.breed.prot.pt.G_E_Phenotyping
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      G_E_Phenotyping
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

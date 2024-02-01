@@ -1,0 +1,41 @@
+soln
+====
+
+.. automodule:: pybrops.breed.prot.sel.soln
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.prot.sel.soln.BinaryMateSelectionSolution
+   pybrops.breed.prot.sel.soln.BinarySelectionSolution
+   pybrops.breed.prot.sel.soln.IntegerMateSelectionSolution
+   pybrops.breed.prot.sel.soln.IntegerSelectionSolution
+   pybrops.breed.prot.sel.soln.MateSelectionSolution
+   pybrops.breed.prot.sel.soln.RealMateSelectionSolution
+   pybrops.breed.prot.sel.soln.RealSelectionSolution
+   pybrops.breed.prot.sel.soln.SelectionSolution
+   pybrops.breed.prot.sel.soln.SubsetMateSelectionSolution
+   pybrops.breed.prot.sel.soln.SubsetSelectionSolution
+

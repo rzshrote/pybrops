@@ -1,0 +1,6 @@
+check\_is\_MateSelectionProtocol
+================================
+
+.. currentmodule:: pybrops.breed.prot.sel.MateSelectionProtocol
+
+.. autofunction:: check_is_MateSelectionProtocol

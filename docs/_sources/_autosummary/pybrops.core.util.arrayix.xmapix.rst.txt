@@ -1,0 +1,6 @@
+xmapix
+======
+
+.. currentmodule:: pybrops.core.util.arrayix
+
+.. autofunction:: xmapix

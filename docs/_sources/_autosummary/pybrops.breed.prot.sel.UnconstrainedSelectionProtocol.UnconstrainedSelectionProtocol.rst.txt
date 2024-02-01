@@ -1,0 +1,30 @@
+UnconstrainedSelectionProtocol
+==============================
+
+.. currentmodule:: pybrops.breed.prot.sel.UnconstrainedSelectionProtocol
+
+.. autoclass:: UnconstrainedSelectionProtocol
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UnconstrainedSelectionProtocol.objfn
+      ~UnconstrainedSelectionProtocol.objfn_static
+      ~UnconstrainedSelectionProtocol.objfn_vec
+      ~UnconstrainedSelectionProtocol.objfn_vec_static
+      ~UnconstrainedSelectionProtocol.pareto
+      ~UnconstrainedSelectionProtocol.select
+   
+   
+
+   
+   
+   

@@ -1,0 +1,6 @@
+seed
+====
+
+.. currentmodule:: pybrops.core.random.prng
+
+.. autofunction:: seed

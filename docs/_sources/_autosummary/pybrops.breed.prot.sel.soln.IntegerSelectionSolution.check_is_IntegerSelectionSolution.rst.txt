@@ -1,0 +1,6 @@
+check\_is\_IntegerSelectionSolution
+===================================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.IntegerSelectionSolution
+
+.. autofunction:: check_is_IntegerSelectionSolution

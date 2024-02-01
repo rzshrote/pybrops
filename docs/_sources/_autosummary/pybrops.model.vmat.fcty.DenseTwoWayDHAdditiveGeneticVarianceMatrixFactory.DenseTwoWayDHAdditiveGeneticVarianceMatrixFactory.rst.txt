@@ -1,0 +1,26 @@
+DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory
+=================================================
+
+.. currentmodule:: pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory
+
+.. autoclass:: DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory.from_algmod
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory.from_gmod
+   
+   
+
+   
+   
+   

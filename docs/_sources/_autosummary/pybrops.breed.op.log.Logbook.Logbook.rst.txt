@@ -1,0 +1,38 @@
+Logbook
+=======
+
+.. currentmodule:: pybrops.breed.op.log.Logbook
+
+.. autoclass:: Logbook
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~Logbook.log_evaluate
+      ~Logbook.log_initialize
+      ~Logbook.log_mate
+      ~Logbook.log_pselect
+      ~Logbook.log_sselect
+      ~Logbook.reset
+      ~Logbook.write
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Logbook.data
+      ~Logbook.rep
+   
+   

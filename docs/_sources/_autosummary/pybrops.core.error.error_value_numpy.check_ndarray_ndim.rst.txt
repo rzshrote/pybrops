@@ -1,0 +1,6 @@
+check\_ndarray\_ndim
+====================
+
+.. currentmodule:: pybrops.core.error.error_value_numpy
+
+.. autofunction:: check_ndarray_ndim

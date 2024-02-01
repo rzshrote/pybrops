@@ -1,0 +1,32 @@
+L1NormGenomicSelectionProblemMixin
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem
+
+.. autoclass:: L1NormGenomicSelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~L1NormGenomicSelectionProblemMixin.from_numpy
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~L1NormGenomicSelectionProblemMixin.V
+      ~L1NormGenomicSelectionProblemMixin.nlatent
+   
+   

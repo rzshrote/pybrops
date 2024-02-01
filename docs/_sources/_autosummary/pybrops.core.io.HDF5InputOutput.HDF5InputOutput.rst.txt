@@ -1,0 +1,26 @@
+HDF5InputOutput
+===============
+
+.. currentmodule:: pybrops.core.io.HDF5InputOutput
+
+.. autoclass:: HDF5InputOutput
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~HDF5InputOutput.from_hdf5
+      ~HDF5InputOutput.to_hdf5
+   
+   
+
+   
+   
+   

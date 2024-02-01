@@ -1,0 +1,6 @@
+check\_GenotypeMatrix\_has\_taxa
+================================
+
+.. currentmodule:: pybrops.popgen.gmat.GenotypeMatrix
+
+.. autofunction:: check_GenotypeMatrix_has_taxa

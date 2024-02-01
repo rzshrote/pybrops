@@ -1,0 +1,39 @@
+arch
+====
+
+.. automodule:: pybrops.breed.arch
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.arch.BreedingEdge
+   pybrops.breed.arch.BreedingGraph
+   pybrops.breed.arch.BreedingNode
+   pybrops.breed.arch.BreedingProgram
+   pybrops.breed.arch.EmigrationOperator
+   pybrops.breed.arch.GermplasmBank
+   pybrops.breed.arch.ImmigrationOperator
+   pybrops.breed.arch.RecurrentSelectionBreedingProgram
+

@@ -1,0 +1,6 @@
+check\_h5py\_File\_is\_writable
+===============================
+
+.. currentmodule:: pybrops.core.error.error_value_h5py
+
+.. autofunction:: check_h5py_File_is_writable

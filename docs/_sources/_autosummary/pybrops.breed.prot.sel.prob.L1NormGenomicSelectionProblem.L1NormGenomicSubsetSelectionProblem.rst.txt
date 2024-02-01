@@ -1,0 +1,77 @@
+L1NormGenomicSubsetSelectionProblem
+===================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem
+
+.. autoclass:: L1NormGenomicSubsetSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~L1NormGenomicSubsetSelectionProblem.bounds
+      ~L1NormGenomicSubsetSelectionProblem.do
+      ~L1NormGenomicSubsetSelectionProblem.evalfn
+      ~L1NormGenomicSubsetSelectionProblem.evaluate
+      ~L1NormGenomicSubsetSelectionProblem.from_numpy
+      ~L1NormGenomicSubsetSelectionProblem.has_bounds
+      ~L1NormGenomicSubsetSelectionProblem.has_constraints
+      ~L1NormGenomicSubsetSelectionProblem.ideal_point
+      ~L1NormGenomicSubsetSelectionProblem.latentfn
+      ~L1NormGenomicSubsetSelectionProblem.nadir_point
+      ~L1NormGenomicSubsetSelectionProblem.name
+      ~L1NormGenomicSubsetSelectionProblem.pareto_front
+      ~L1NormGenomicSubsetSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~L1NormGenomicSubsetSelectionProblem.V
+      ~L1NormGenomicSubsetSelectionProblem.callback
+      ~L1NormGenomicSubsetSelectionProblem.data
+      ~L1NormGenomicSubsetSelectionProblem.decn_space
+      ~L1NormGenomicSubsetSelectionProblem.decn_space_lower
+      ~L1NormGenomicSubsetSelectionProblem.decn_space_upper
+      ~L1NormGenomicSubsetSelectionProblem.elementwise
+      ~L1NormGenomicSubsetSelectionProblem.elementwise_func
+      ~L1NormGenomicSubsetSelectionProblem.elementwise_runner
+      ~L1NormGenomicSubsetSelectionProblem.eqcv_trans
+      ~L1NormGenomicSubsetSelectionProblem.eqcv_trans_kwargs
+      ~L1NormGenomicSubsetSelectionProblem.eqcv_wt
+      ~L1NormGenomicSubsetSelectionProblem.exclude_from_serialization
+      ~L1NormGenomicSubsetSelectionProblem.ineqcv_trans
+      ~L1NormGenomicSubsetSelectionProblem.ineqcv_trans_kwargs
+      ~L1NormGenomicSubsetSelectionProblem.ineqcv_wt
+      ~L1NormGenomicSubsetSelectionProblem.n_constr
+      ~L1NormGenomicSubsetSelectionProblem.n_eq_constr
+      ~L1NormGenomicSubsetSelectionProblem.n_ieq_constr
+      ~L1NormGenomicSubsetSelectionProblem.n_obj
+      ~L1NormGenomicSubsetSelectionProblem.n_var
+      ~L1NormGenomicSubsetSelectionProblem.ndecn
+      ~L1NormGenomicSubsetSelectionProblem.neqcv
+      ~L1NormGenomicSubsetSelectionProblem.nineqcv
+      ~L1NormGenomicSubsetSelectionProblem.nlatent
+      ~L1NormGenomicSubsetSelectionProblem.nobj
+      ~L1NormGenomicSubsetSelectionProblem.obj_trans
+      ~L1NormGenomicSubsetSelectionProblem.obj_trans_kwargs
+      ~L1NormGenomicSubsetSelectionProblem.obj_wt
+      ~L1NormGenomicSubsetSelectionProblem.replace_nan_values_by
+      ~L1NormGenomicSubsetSelectionProblem.strict
+      ~L1NormGenomicSubsetSelectionProblem.vars
+      ~L1NormGenomicSubsetSelectionProblem.vtype
+      ~L1NormGenomicSubsetSelectionProblem.xl
+      ~L1NormGenomicSubsetSelectionProblem.xu
+   
+   

@@ -1,0 +1,32 @@
+UnconstrainedMultiObjectiveGenomicMating
+========================================
+
+.. automodule:: pybrops.breed.prot.sel.UnconstrainedMultiObjectiveGenomicMating
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      MultiObjectiveGenomicMating
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

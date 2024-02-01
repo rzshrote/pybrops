@@ -1,0 +1,41 @@
+DenseGeneticVarianceMatrix
+==========================
+
+.. automodule:: pybrops.model.vmat.DenseGeneticVarianceMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseGeneticVarianceMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseGeneticVarianceMatrix
+   
+   
+
+   
+   
+   
+
+
+

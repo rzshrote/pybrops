@@ -1,0 +1,81 @@
+DenseGeneticMappableMatrix
+==========================
+
+.. currentmodule:: pybrops.popgen.gmap.DenseGeneticMappableMatrix
+
+.. autoclass:: DenseGeneticMappableMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseGeneticMappableMatrix.adjoin
+      ~DenseGeneticMappableMatrix.adjoin_vrnt
+      ~DenseGeneticMappableMatrix.append
+      ~DenseGeneticMappableMatrix.append_vrnt
+      ~DenseGeneticMappableMatrix.concat
+      ~DenseGeneticMappableMatrix.concat_vrnt
+      ~DenseGeneticMappableMatrix.copy
+      ~DenseGeneticMappableMatrix.deepcopy
+      ~DenseGeneticMappableMatrix.delete
+      ~DenseGeneticMappableMatrix.delete_vrnt
+      ~DenseGeneticMappableMatrix.from_hdf5
+      ~DenseGeneticMappableMatrix.group
+      ~DenseGeneticMappableMatrix.group_vrnt
+      ~DenseGeneticMappableMatrix.incorp
+      ~DenseGeneticMappableMatrix.incorp_vrnt
+      ~DenseGeneticMappableMatrix.insert
+      ~DenseGeneticMappableMatrix.insert_vrnt
+      ~DenseGeneticMappableMatrix.interp_genpos
+      ~DenseGeneticMappableMatrix.interp_xoprob
+      ~DenseGeneticMappableMatrix.is_grouped
+      ~DenseGeneticMappableMatrix.is_grouped_vrnt
+      ~DenseGeneticMappableMatrix.lexsort
+      ~DenseGeneticMappableMatrix.lexsort_vrnt
+      ~DenseGeneticMappableMatrix.remove
+      ~DenseGeneticMappableMatrix.remove_vrnt
+      ~DenseGeneticMappableMatrix.reorder
+      ~DenseGeneticMappableMatrix.reorder_vrnt
+      ~DenseGeneticMappableMatrix.select
+      ~DenseGeneticMappableMatrix.select_vrnt
+      ~DenseGeneticMappableMatrix.sort
+      ~DenseGeneticMappableMatrix.sort_vrnt
+      ~DenseGeneticMappableMatrix.to_hdf5
+      ~DenseGeneticMappableMatrix.ungroup
+      ~DenseGeneticMappableMatrix.ungroup_vrnt
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseGeneticMappableMatrix.mat
+      ~DenseGeneticMappableMatrix.mat_ndim
+      ~DenseGeneticMappableMatrix.mat_shape
+      ~DenseGeneticMappableMatrix.nvrnt
+      ~DenseGeneticMappableMatrix.vrnt_axis
+      ~DenseGeneticMappableMatrix.vrnt_chrgrp
+      ~DenseGeneticMappableMatrix.vrnt_chrgrp_len
+      ~DenseGeneticMappableMatrix.vrnt_chrgrp_name
+      ~DenseGeneticMappableMatrix.vrnt_chrgrp_spix
+      ~DenseGeneticMappableMatrix.vrnt_chrgrp_stix
+      ~DenseGeneticMappableMatrix.vrnt_genpos
+      ~DenseGeneticMappableMatrix.vrnt_hapalt
+      ~DenseGeneticMappableMatrix.vrnt_hapgrp
+      ~DenseGeneticMappableMatrix.vrnt_hapref
+      ~DenseGeneticMappableMatrix.vrnt_mask
+      ~DenseGeneticMappableMatrix.vrnt_name
+      ~DenseGeneticMappableMatrix.vrnt_phypos
+      ~DenseGeneticMappableMatrix.vrnt_xoprob
+   
+   

@@ -1,0 +1,6 @@
+check\_is\_lteq
+===============
+
+.. currentmodule:: pybrops.core.error.error_value_python
+
+.. autofunction:: check_is_lteq

@@ -1,0 +1,43 @@
+RealProblem
+===========
+
+.. automodule:: pybrops.opt.prob.RealProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      RealProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_RealProblem_is_multi_objective
+      check_RealProblem_is_single_objective
+      check_is_RealProblem
+   
+   
+
+   
+   
+   
+
+
+

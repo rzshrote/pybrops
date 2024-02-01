@@ -1,0 +1,44 @@
+RealSolution
+============
+
+.. currentmodule:: pybrops.opt.soln.RealSolution
+
+.. autoclass:: RealSolution
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RealSolution.decn_space
+      ~RealSolution.decn_space_lower
+      ~RealSolution.decn_space_upper
+      ~RealSolution.eqcv_wt
+      ~RealSolution.ineqcv_wt
+      ~RealSolution.ndecn
+      ~RealSolution.neqcv
+      ~RealSolution.nineqcv
+      ~RealSolution.nobj
+      ~RealSolution.nsoln
+      ~RealSolution.obj_wt
+      ~RealSolution.soln_decn
+      ~RealSolution.soln_eqcv
+      ~RealSolution.soln_ineqcv
+      ~RealSolution.soln_obj
+   
+   

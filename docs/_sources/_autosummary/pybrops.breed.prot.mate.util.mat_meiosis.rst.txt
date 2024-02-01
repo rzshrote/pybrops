@@ -1,0 +1,6 @@
+mat\_meiosis
+============
+
+.. currentmodule:: pybrops.breed.prot.mate.util
+
+.. autofunction:: mat_meiosis

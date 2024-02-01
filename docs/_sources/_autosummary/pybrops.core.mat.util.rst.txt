@@ -1,0 +1,32 @@
+util
+====
+
+.. automodule:: pybrops.core.mat.util
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      get_axis
+   
+   
+
+   
+   
+   
+
+
+

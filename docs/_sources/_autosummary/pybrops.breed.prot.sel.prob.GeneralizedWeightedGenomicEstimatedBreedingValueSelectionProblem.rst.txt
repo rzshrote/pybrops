@@ -1,0 +1,36 @@
+GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem
+================================================================
+
+.. automodule:: pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem
+      GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem
+      GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem
+      GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin
+      GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

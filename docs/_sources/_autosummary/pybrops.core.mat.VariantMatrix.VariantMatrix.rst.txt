@@ -1,0 +1,79 @@
+VariantMatrix
+=============
+
+.. currentmodule:: pybrops.core.mat.VariantMatrix
+
+.. autoclass:: VariantMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~VariantMatrix.adjoin
+      ~VariantMatrix.adjoin_vrnt
+      ~VariantMatrix.append
+      ~VariantMatrix.append_vrnt
+      ~VariantMatrix.concat
+      ~VariantMatrix.concat_vrnt
+      ~VariantMatrix.copy
+      ~VariantMatrix.deepcopy
+      ~VariantMatrix.delete
+      ~VariantMatrix.delete_vrnt
+      ~VariantMatrix.from_hdf5
+      ~VariantMatrix.group
+      ~VariantMatrix.group_vrnt
+      ~VariantMatrix.incorp
+      ~VariantMatrix.incorp_vrnt
+      ~VariantMatrix.insert
+      ~VariantMatrix.insert_vrnt
+      ~VariantMatrix.is_grouped
+      ~VariantMatrix.is_grouped_vrnt
+      ~VariantMatrix.lexsort
+      ~VariantMatrix.lexsort_vrnt
+      ~VariantMatrix.remove
+      ~VariantMatrix.remove_vrnt
+      ~VariantMatrix.reorder
+      ~VariantMatrix.reorder_vrnt
+      ~VariantMatrix.select
+      ~VariantMatrix.select_vrnt
+      ~VariantMatrix.sort
+      ~VariantMatrix.sort_vrnt
+      ~VariantMatrix.to_hdf5
+      ~VariantMatrix.ungroup
+      ~VariantMatrix.ungroup_vrnt
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~VariantMatrix.mat
+      ~VariantMatrix.mat_ndim
+      ~VariantMatrix.mat_shape
+      ~VariantMatrix.nvrnt
+      ~VariantMatrix.vrnt_axis
+      ~VariantMatrix.vrnt_chrgrp
+      ~VariantMatrix.vrnt_chrgrp_len
+      ~VariantMatrix.vrnt_chrgrp_name
+      ~VariantMatrix.vrnt_chrgrp_spix
+      ~VariantMatrix.vrnt_chrgrp_stix
+      ~VariantMatrix.vrnt_genpos
+      ~VariantMatrix.vrnt_hapalt
+      ~VariantMatrix.vrnt_hapgrp
+      ~VariantMatrix.vrnt_hapref
+      ~VariantMatrix.vrnt_mask
+      ~VariantMatrix.vrnt_name
+      ~VariantMatrix.vrnt_phypos
+      ~VariantMatrix.vrnt_xoprob
+   
+   

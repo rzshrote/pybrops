@@ -1,0 +1,6 @@
+check\_is\_VariantMatrix
+========================
+
+.. currentmodule:: pybrops.core.mat.VariantMatrix
+
+.. autofunction:: check_is_VariantMatrix

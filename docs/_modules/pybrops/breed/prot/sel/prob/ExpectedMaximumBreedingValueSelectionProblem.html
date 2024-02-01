@@ -1,0 +1,1573 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem &#8212; pybrops 0.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/sel/prob/ExpectedMaximumBreedingValueSelectionProblem';</script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pybrops.bree...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module implementing Expected Maximum Breeding Value (EMBV) Selection problems.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;ExpectedMaximumBreedingValueSubsetSelectionProblem&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ExpectedMaximumBreedingValueRealSelectionProblem&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ExpectedMaximumBreedingValueIntegerSelectionProblem&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ExpectedMaximumBreedingValueBinarySelectionProblem&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.mate.MatingProtocol</span> <span class="kn">import</span> <span class="n">MatingProtocol</span><span class="p">,</span> <span class="n">check_is_MatingProtocol</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.BinarySelectionProblem</span> <span class="kn">import</span> <span class="n">BinarySelectionProblem</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.IntegerSelectionProblem</span> <span class="kn">import</span> <span class="n">IntegerSelectionProblem</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.RealSelectionProblem</span> <span class="kn">import</span> <span class="n">RealSelectionProblem</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.SubsetSelectionProblem</span> <span class="kn">import</span> <span class="n">SubsetSelectionProblem</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span><span class="p">,</span> <span class="n">check_is_bool</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len_eq</span><span class="p">,</span> <span class="n">check_ndarray_axis_len_gteq</span><span class="p">,</span> <span class="n">check_ndarray_ndim</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.arrayix</span> <span class="kn">import</span> <span class="n">triudix</span><span class="p">,</span> <span class="n">triuix</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">GenomicModel</span><span class="p">,</span> <span class="n">check_is_GenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> <span class="n">check_is_PhasedGenotypeMatrix</span>
+
+
+<div class="viewcode-block" id="ExpectedMaximumBreedingValueSelectionProblemMixin">
+<a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueSelectionProblemMixin.html#pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueSelectionProblemMixin">[docs]</a>
+<span class="k">class</span> <span class="nc">ExpectedMaximumBreedingValueSelectionProblemMixin</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper class to implement properties common to EMBV selection problems.&quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+    <span class="c1"># __init__() CANNOT be defined to be classified as a Mixin class</span>
+
+    <span class="c1">############################ Object Properties #############################</span>
+
+    <span class="c1">############## Number of latent variables ##############</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nlatent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Integral</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of latent variables.&quot;&quot;&quot;</span>
+        <span class="c1"># return number of traits in EMBV matrix</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embv</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1">##################### EMBV matrix ######################</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">embv</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Expected maximum breeding value matrix of shape ``(s,t)``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embv</span>
+    <span class="nd">@embv</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">embv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set expected maximum breeding value matrix.&quot;&quot;&quot;</span>
+        <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;embv&quot;</span><span class="p">)</span>
+        <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;embv&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># most (binary, real, integer) problems require decisons for each cross</span>
+        <span class="n">check_ndarray_axis_len_eq</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;embv&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ndecn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_embv</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1">########################## Private Object Methods ##########################</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_calc_xmap</span><span class="p">(</span><span class="n">ntaxa</span><span class="p">,</span> <span class="n">nparent</span><span class="p">,</span> <span class="n">unique_parents</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the cross map.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ntaxa : int</span>
+<span class="sd">            Number of taxa.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An array of shape ``(s,d)`` containing cross map indices.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``s`` is the number of elements in the upper triangle, including</span>
+<span class="sd">              or not including the diagonal (depending on ``unique_parents``).</span>
+<span class="sd">            - ``d`` is the number of parents in the cross.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">unique_parents</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">triudix</span><span class="p">(</span><span class="n">ntaxa</span><span class="p">,</span><span class="n">nparent</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">triuix</span><span class="p">(</span><span class="n">ntaxa</span><span class="p">,</span><span class="n">nparent</span><span class="p">)))</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_calc_embv</span><span class="p">(</span>
+            <span class="n">nparent</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">nmating</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">nprogeny</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">nrep</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">unique_parents</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">pgmat</span><span class="p">:</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> 
+            <span class="n">gpmod</span><span class="p">:</span> <span class="n">GenomicModel</span><span class="p">,</span> 
+            <span class="n">mateprot</span><span class="p">:</span> <span class="n">MatingProtocol</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="c1"># calculate cross map for our genotype matrix</span>
+        <span class="c1"># (s,d)</span>
+        <span class="n">xmap</span> <span class="o">=</span> <span class="n">ExpectedMaximumBreedingValueSelectionProblemMixin</span><span class="o">.</span><span class="n">_calc_xmap</span><span class="p">(</span>
+            <span class="n">pgmat</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">,</span>
+            <span class="n">nparent</span><span class="p">,</span>
+            <span class="n">unique_parents</span>
+        <span class="p">)</span>
+
+        <span class="c1"># allocate matrix for output EMBVs</span>
+        <span class="c1"># (s,t)</span>
+        <span class="n">embv</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">xmap</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">gpmod</span><span class="o">.</span><span class="n">ntrait</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+
+        <span class="c1"># for each cross configuration</span>
+        <span class="c1"># (d,)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">xconfig</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">xmap</span><span class="p">):</span>
+            <span class="c1"># variable for tracking the average</span>
+            <span class="c1"># (t,)</span>
+            <span class="n">avg</span> <span class="o">=</span> <span class="mi">0</span>
+            
+            <span class="c1"># run progeny simulations</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nrep</span><span class="p">):</span>
+                <span class="c1"># create progeny</span>
+                <span class="n">progeny</span> <span class="o">=</span> <span class="n">mateprot</span><span class="o">.</span><span class="n">mate</span><span class="p">(</span>
+                    <span class="n">pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="p">,</span>
+                    <span class="n">xconfig</span> <span class="o">=</span> <span class="n">xconfig</span><span class="p">[</span><span class="kc">None</span><span class="p">,:],</span> <span class="c1"># (t,) -&gt; (1,t)</span>
+                    <span class="n">nmating</span> <span class="o">=</span> <span class="n">nmating</span><span class="p">,</span>
+                    <span class="n">nprogeny</span> <span class="o">=</span> <span class="n">nprogeny</span><span class="p">,</span>
+                    <span class="n">miscout</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="p">)</span>
+
+                <span class="c1"># predict progeny breeding values</span>
+                <span class="c1"># (nprogeny,t)</span>
+                <span class="n">bvmat</span> <span class="o">=</span> <span class="n">gpmod</span><span class="o">.</span><span class="n">gebv</span><span class="p">(</span><span class="n">progeny</span><span class="p">)</span>
+
+                <span class="c1"># find max trait values and add to avg</span>
+                <span class="c1"># (nprogeny,t).max(0) -&gt; (t,)</span>
+                <span class="c1"># (nprogeny,).max(0) -&gt; scalar</span>
+                <span class="n">avg</span> <span class="o">=</span> <span class="n">avg</span> <span class="o">+</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">tmax</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="c1"># divide by the number of replicates</span>
+            <span class="c1"># (t,)</span>
+            <span class="n">avg</span> <span class="o">=</span> <span class="n">avg</span> <span class="o">/</span> <span class="n">nrep</span>
+
+            <span class="n">embv</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">avg</span>
+
+        <span class="k">return</span> <span class="n">embv</span></div>
+
+
+<div class="viewcode-block" id="ExpectedMaximumBreedingValueSubsetSelectionProblem">
+<a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueSubsetSelectionProblem.html#pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueSubsetSelectionProblem">[docs]</a>
+<span class="k">class</span> <span class="nc">ExpectedMaximumBreedingValueSubsetSelectionProblem</span><span class="p">(</span><span class="n">ExpectedMaximumBreedingValueSelectionProblemMixin</span><span class="p">,</span><span class="n">SubsetSelectionProblem</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing Expected Maximum Breeding Value (EMBV) selection problems in subset search spaces.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">embv</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+            <span class="n">ndecn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">decn_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_lower</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_upper</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">nobj</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">obj_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">nineqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">neqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for ExpectedMaximumBreedingValueSubsetSelectionProblem</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        embv : numpy.ndarray</span>
+<span class="sd">            An expected maximum breeding value matrix of shape ``(s,t)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``s`` is the number of cross candidates.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        ndecn : Integral</span>
+<span class="sd">            Number of decision variables.</span>
+<span class="sd">        decn_space: numpy.ndarray, None</span>
+<span class="sd">            An array of shape ``(2,ndecn)`` defining the decision space.</span>
+<span class="sd">            If None, do not set a decision space.</span>
+<span class="sd">        decn_space_lower: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing lower limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a lower limit for the decision variables.</span>
+<span class="sd">        decn_space_upper: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing upper limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a upper limit for the decision variables.</span>
+<span class="sd">        nobj: Integral</span>
+<span class="sd">            Number of objectives.</span>
+<span class="sd">        obj_wt: numpy.ndarray</span>
+<span class="sd">            Objective function weights.</span>
+<span class="sd">        obj_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an objective space vector.</span>
+<span class="sd">            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the identity transformation function: copy the latent space vector to the objective space vector.</span>
+<span class="sd">        obj_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to objective space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        nineqcv: Integral,</span>
+<span class="sd">            Number of inequality constraints.</span>
+<span class="sd">        ineqcv_wt: numpy.ndarray,</span>
+<span class="sd">            Inequality constraint violation weights.</span>
+<span class="sd">        ineqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an inequality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        ineqcv_trans_kwargs: Optional[dict],</span>
+<span class="sd">            Keyword arguments for the latent space to inequality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        neqcv: Integral</span>
+<span class="sd">            Number of equality constraints.</span>
+<span class="sd">        eqcv_wt: numpy.ndarray</span>
+<span class="sd">            Equality constraint violation weights.</span>
+<span class="sd">        eqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an equality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        eqcv_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to equality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ExpectedMaximumBreedingValueSubsetSelectionProblem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">embv</span> <span class="o">=</span> <span class="n">embv</span><span class="p">,</span>
+            <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
+            <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
+            <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
+            <span class="n">decn_space_upper</span> <span class="o">=</span> <span class="n">decn_space_upper</span><span class="p">,</span>
+            <span class="n">nobj</span> <span class="o">=</span> <span class="n">nobj</span><span class="p">,</span>
+            <span class="n">obj_wt</span> <span class="o">=</span> <span class="n">obj_wt</span><span class="p">,</span>
+            <span class="n">obj_trans</span> <span class="o">=</span> <span class="n">obj_trans</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span> <span class="o">=</span> <span class="n">obj_trans_kwargs</span><span class="p">,</span>
+            <span class="n">nineqcv</span> <span class="o">=</span> <span class="n">nineqcv</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span> <span class="o">=</span> <span class="n">ineqcv_wt</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span> <span class="o">=</span> <span class="n">ineqcv_trans</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">ineqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="n">neqcv</span> <span class="o">=</span> <span class="n">neqcv</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span> <span class="o">=</span> <span class="n">eqcv_wt</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span> <span class="o">=</span> <span class="n">eqcv_trans</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">eqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="c1"># order dependent assignments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embv</span> <span class="o">=</span> <span class="n">embv</span>
+
+    <span class="c1">############################ Object Properties #############################</span>
+
+    <span class="c1">##################### EMBV matrix ######################</span>
+    <span class="nd">@ExpectedMaximumBreedingValueSelectionProblemMixin</span><span class="o">.</span><span class="n">embv</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">embv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set expected maximum breeding value matrix.&quot;&quot;&quot;</span>
+        <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;embv&quot;</span><span class="p">)</span>
+        <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;embv&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># for subset problems, must have more crosses than decision variables</span>
+        <span class="n">check_ndarray_axis_len_gteq</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;embv&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ndecn</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_embv</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1">############################## Object Methods ##############################</span>
+<div class="viewcode-block" id="ExpectedMaximumBreedingValueSubsetSelectionProblem.latentfn">
+<a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueSubsetSelectionProblem.html#pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueSubsetSelectionProblem.latentfn">[docs]</a>
+    <span class="k">def</span> <span class="nf">latentfn</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Score a subset of individuals based on Expected Maximum Breeding Value</span>
+<span class="sd">        (EMBV) selection (Müller et al., 2018). </span>
+<span class="sd">        </span>
+<span class="sd">        Scoring for EMBV selection is defined as the negative mean of EMBVs for </span>
+<span class="sd">        a selected subset. A smaller value indicates a better EMBV score.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : numpy.ndarray</span>
+<span class="sd">            A candidate solution vector of shape ``(k,) == (ndecn,)``.</span>
+<span class="sd">        args : tuple</span>
+<span class="sd">            Additional non-keyword arguments.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An EMBV selection matrix of shape ``(t,)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># select individuals and take the negative mean of their EMBVs</span>
+        <span class="c1"># Step 1: (s,t)[(k,),:] -&gt; (k,t)    # select individuals</span>
+        <span class="c1"># Step 2: (k,t).sum(0)  -&gt; (t,)     # sum across all individuals</span>
+        <span class="c1"># Step 3: scalar * (t,) -&gt; (t,)     # take mean across selection</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_embv</span><span class="p">[</span><span class="n">x</span><span class="p">,:]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">############################## Class Methods ###############################</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pgmat_gpmod</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span>
+            <span class="n">nparent</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">nmating</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">nprogeny</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">nrep</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">unique_parents</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">pgmat</span><span class="p">:</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> 
+            <span class="n">gpmod</span><span class="p">:</span> <span class="n">GenomicModel</span><span class="p">,</span> 
+            <span class="n">mateprot</span><span class="p">:</span> <span class="n">MatingProtocol</span><span class="p">,</span>
+            <span class="n">ndecn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">decn_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_lower</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_upper</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">nobj</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">obj_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">nineqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">neqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ExpectedMaximumBreedingValueSubsetSelectionProblem&quot;</span><span class="p">:</span>
+        <span class="c1"># check input types</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nparent</span><span class="p">,</span> <span class="s2">&quot;nparent&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nmating</span><span class="p">,</span> <span class="s2">&quot;nmating&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nprogeny</span><span class="p">,</span> <span class="s2">&quot;nprogeny&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nrep</span><span class="p">,</span> <span class="s2">&quot;nrep&quot;</span><span class="p">)</span>
+        <span class="n">check_is_bool</span><span class="p">(</span><span class="n">unique_parents</span><span class="p">,</span> <span class="s2">&quot;unique_parents&quot;</span><span class="p">)</span>
+        <span class="n">check_is_PhasedGenotypeMatrix</span><span class="p">(</span><span class="n">pgmat</span><span class="p">,</span> <span class="s2">&quot;pgmat&quot;</span><span class="p">)</span>
+        <span class="n">check_is_GenomicModel</span><span class="p">(</span><span class="n">gpmod</span><span class="p">,</span> <span class="s2">&quot;gpmod&quot;</span><span class="p">)</span>
+        <span class="n">check_is_MatingProtocol</span><span class="p">(</span><span class="n">mateprot</span><span class="p">,</span> <span class="s2">&quot;mateprot&quot;</span><span class="p">)</span>
+
+        <span class="c1"># calculate estimated maximum breeding values</span>
+        <span class="n">embv</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_calc_embv</span><span class="p">(</span><span class="n">nparent</span><span class="p">,</span> <span class="n">nmating</span><span class="p">,</span> <span class="n">nprogeny</span><span class="p">,</span> <span class="n">nrep</span><span class="p">,</span> <span class="n">unique_parents</span><span class="p">,</span> <span class="n">pgmat</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">,</span> <span class="n">mateprot</span><span class="p">)</span>
+
+        <span class="c1"># construct class</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">embv</span> <span class="o">=</span> <span class="n">embv</span><span class="p">,</span>
+            <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
+            <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
+            <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
+            <span class="n">decn_space_upper</span> <span class="o">=</span> <span class="n">decn_space_upper</span><span class="p">,</span>
+            <span class="n">nobj</span> <span class="o">=</span> <span class="n">nobj</span><span class="p">,</span>
+            <span class="n">obj_wt</span> <span class="o">=</span> <span class="n">obj_wt</span><span class="p">,</span>
+            <span class="n">obj_trans</span> <span class="o">=</span> <span class="n">obj_trans</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span> <span class="o">=</span> <span class="n">obj_trans_kwargs</span><span class="p">,</span>
+            <span class="n">nineqcv</span> <span class="o">=</span> <span class="n">nineqcv</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span> <span class="o">=</span> <span class="n">ineqcv_wt</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span> <span class="o">=</span> <span class="n">ineqcv_trans</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">ineqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="n">neqcv</span> <span class="o">=</span> <span class="n">neqcv</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span> <span class="o">=</span> <span class="n">eqcv_wt</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span> <span class="o">=</span> <span class="n">eqcv_trans</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">eqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="ExpectedMaximumBreedingValueRealSelectionProblem">
+<a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueRealSelectionProblem.html#pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueRealSelectionProblem">[docs]</a>
+<span class="k">class</span> <span class="nc">ExpectedMaximumBreedingValueRealSelectionProblem</span><span class="p">(</span><span class="n">ExpectedMaximumBreedingValueSelectionProblemMixin</span><span class="p">,</span><span class="n">RealSelectionProblem</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing Expected Maximum Breeding Value (EMBV) selection problems in real search spaces.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">embv</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+            <span class="n">ndecn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">decn_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_lower</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_upper</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">nobj</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">obj_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">nineqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">neqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for RealExpectedMaximumBreedingValueSelectionProblem</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        embv : numpy.ndarray</span>
+<span class="sd">            An expected maximum breeding value matrix of shape ``(s,t)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``s`` is the number of cross candidates.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        ndecn : Integral</span>
+<span class="sd">            Number of decision variables.</span>
+<span class="sd">        decn_space: numpy.ndarray, None</span>
+<span class="sd">            An array of shape ``(2,ndecn)`` defining the decision space.</span>
+<span class="sd">            If None, do not set a decision space.</span>
+<span class="sd">        decn_space_lower: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing lower limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a lower limit for the decision variables.</span>
+<span class="sd">        decn_space_upper: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing upper limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a upper limit for the decision variables.</span>
+<span class="sd">        nobj: Integral</span>
+<span class="sd">            Number of objectives.</span>
+<span class="sd">        obj_wt: numpy.ndarray</span>
+<span class="sd">            Objective function weights.</span>
+<span class="sd">        obj_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an objective space vector.</span>
+<span class="sd">            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the identity transformation function: copy the latent space vector to the objective space vector.</span>
+<span class="sd">        obj_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to objective space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        nineqcv: Integral,</span>
+<span class="sd">            Number of inequality constraints.</span>
+<span class="sd">        ineqcv_wt: numpy.ndarray,</span>
+<span class="sd">            Inequality constraint violation weights.</span>
+<span class="sd">        ineqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an inequality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        ineqcv_trans_kwargs: Optional[dict],</span>
+<span class="sd">            Keyword arguments for the latent space to inequality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        neqcv: Integral</span>
+<span class="sd">            Number of equality constraints.</span>
+<span class="sd">        eqcv_wt: numpy.ndarray</span>
+<span class="sd">            Equality constraint violation weights.</span>
+<span class="sd">        eqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an equality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        eqcv_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to equality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ExpectedMaximumBreedingValueRealSelectionProblem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">embv</span> <span class="o">=</span> <span class="n">embv</span><span class="p">,</span>
+            <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
+            <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
+            <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
+            <span class="n">decn_space_upper</span> <span class="o">=</span> <span class="n">decn_space_upper</span><span class="p">,</span>
+            <span class="n">nobj</span> <span class="o">=</span> <span class="n">nobj</span><span class="p">,</span>
+            <span class="n">obj_wt</span> <span class="o">=</span> <span class="n">obj_wt</span><span class="p">,</span>
+            <span class="n">obj_trans</span> <span class="o">=</span> <span class="n">obj_trans</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span> <span class="o">=</span> <span class="n">obj_trans_kwargs</span><span class="p">,</span>
+            <span class="n">nineqcv</span> <span class="o">=</span> <span class="n">nineqcv</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span> <span class="o">=</span> <span class="n">ineqcv_wt</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span> <span class="o">=</span> <span class="n">ineqcv_trans</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">ineqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="n">neqcv</span> <span class="o">=</span> <span class="n">neqcv</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span> <span class="o">=</span> <span class="n">eqcv_wt</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span> <span class="o">=</span> <span class="n">eqcv_trans</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">eqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="c1"># order dependent assignments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embv</span> <span class="o">=</span> <span class="n">embv</span>
+
+    <span class="c1">############################## Object Methods ##############################</span>
+<div class="viewcode-block" id="ExpectedMaximumBreedingValueRealSelectionProblem.latentfn">
+<a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueRealSelectionProblem.html#pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueRealSelectionProblem.latentfn">[docs]</a>
+    <span class="k">def</span> <span class="nf">latentfn</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Score a subset of individuals based on Expected Maximum Breeding Value</span>
+<span class="sd">        (EMBV) selection (Müller et al., 2018). </span>
+<span class="sd">        </span>
+<span class="sd">        Scoring for EMBV selection is defined as the negative mean of EMBVs for </span>
+<span class="sd">        a selected subset. A smaller value indicates a better EMBV score.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : numpy.ndarray</span>
+<span class="sd">            A candidate solution vector of shape ``(s,) == (ndecn,) == (ntaxa,)``.</span>
+<span class="sd">            On entry, this vector is scaled to have a unit sum, such that</span>
+<span class="sd">            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.</span>
+<span class="sd">        args : tuple</span>
+<span class="sd">            Additional non-keyword arguments.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An EMBV selection matrix of shape ``(t,)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># calculate sum(x)</span>
+        <span class="n">xsum</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># if sum(x) ~== 0, then set to 1</span>
+        <span class="n">xsum</span> <span class="o">=</span> <span class="n">xsum</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">xsum</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">1e-10</span> <span class="k">else</span> <span class="mf">1.0</span>
+
+        <span class="c1"># scale x to have a sum of 1 (contribution)</span>
+        <span class="c1"># (n,) -&gt; (n,)</span>
+        <span class="n">contrib</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">xsum</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+
+        <span class="c1"># select individuals and take the negative mean of their EMBVs</span>
+        <span class="c1"># CGS calculation explanation</span>
+        <span class="c1"># Step 1: (s,) . (s,t) -&gt; (t,)  # take dot product with contributions</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="o">-</span><span class="n">contrib</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_embv</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">############################## Class Methods ###############################</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pgmat_gpmod</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span>
+            <span class="n">nparent</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">nmating</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">nprogeny</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">nrep</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">unique_parents</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">pgmat</span><span class="p">:</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> 
+            <span class="n">gpmod</span><span class="p">:</span> <span class="n">GenomicModel</span><span class="p">,</span> 
+            <span class="n">mateprot</span><span class="p">:</span> <span class="n">MatingProtocol</span><span class="p">,</span>
+            <span class="n">ndecn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">decn_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_lower</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_upper</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">nobj</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">obj_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">nineqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">neqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ExpectedMaximumBreedingValueRealSelectionProblem&quot;</span><span class="p">:</span>
+        <span class="c1"># check input types</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nparent</span><span class="p">,</span> <span class="s2">&quot;nparent&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nmating</span><span class="p">,</span> <span class="s2">&quot;nmating&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nprogeny</span><span class="p">,</span> <span class="s2">&quot;nprogeny&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nrep</span><span class="p">,</span> <span class="s2">&quot;nrep&quot;</span><span class="p">)</span>
+        <span class="n">check_is_bool</span><span class="p">(</span><span class="n">unique_parents</span><span class="p">,</span> <span class="s2">&quot;unique_parents&quot;</span><span class="p">)</span>
+        <span class="n">check_is_PhasedGenotypeMatrix</span><span class="p">(</span><span class="n">pgmat</span><span class="p">,</span> <span class="s2">&quot;pgmat&quot;</span><span class="p">)</span>
+        <span class="n">check_is_GenomicModel</span><span class="p">(</span><span class="n">gpmod</span><span class="p">,</span> <span class="s2">&quot;gpmod&quot;</span><span class="p">)</span>
+        <span class="n">check_is_MatingProtocol</span><span class="p">(</span><span class="n">mateprot</span><span class="p">,</span> <span class="s2">&quot;mateprot&quot;</span><span class="p">)</span>
+
+        <span class="c1"># calculate estimated maximum breeding values</span>
+        <span class="n">embv</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_calc_embv</span><span class="p">(</span><span class="n">nparent</span><span class="p">,</span> <span class="n">nmating</span><span class="p">,</span> <span class="n">nprogeny</span><span class="p">,</span> <span class="n">nrep</span><span class="p">,</span> <span class="n">unique_parents</span><span class="p">,</span> <span class="n">pgmat</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">,</span> <span class="n">mateprot</span><span class="p">)</span>
+
+        <span class="c1"># construct class</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">embv</span> <span class="o">=</span> <span class="n">embv</span><span class="p">,</span>
+            <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
+            <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
+            <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
+            <span class="n">decn_space_upper</span> <span class="o">=</span> <span class="n">decn_space_upper</span><span class="p">,</span>
+            <span class="n">nobj</span> <span class="o">=</span> <span class="n">nobj</span><span class="p">,</span>
+            <span class="n">obj_wt</span> <span class="o">=</span> <span class="n">obj_wt</span><span class="p">,</span>
+            <span class="n">obj_trans</span> <span class="o">=</span> <span class="n">obj_trans</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span> <span class="o">=</span> <span class="n">obj_trans_kwargs</span><span class="p">,</span>
+            <span class="n">nineqcv</span> <span class="o">=</span> <span class="n">nineqcv</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span> <span class="o">=</span> <span class="n">ineqcv_wt</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span> <span class="o">=</span> <span class="n">ineqcv_trans</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">ineqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="n">neqcv</span> <span class="o">=</span> <span class="n">neqcv</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span> <span class="o">=</span> <span class="n">eqcv_wt</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span> <span class="o">=</span> <span class="n">eqcv_trans</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">eqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="ExpectedMaximumBreedingValueIntegerSelectionProblem">
+<a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueIntegerSelectionProblem.html#pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueIntegerSelectionProblem">[docs]</a>
+<span class="k">class</span> <span class="nc">ExpectedMaximumBreedingValueIntegerSelectionProblem</span><span class="p">(</span><span class="n">ExpectedMaximumBreedingValueSelectionProblemMixin</span><span class="p">,</span><span class="n">IntegerSelectionProblem</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing Expected Maximum Breeding Value (EMBV) selection problems in integer search spaces.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">embv</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+            <span class="n">ndecn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">decn_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_lower</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_upper</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">nobj</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">obj_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">nineqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">neqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for IntegerExpectedMaximumBreedingValueSelectionProblem</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        embv : numpy.ndarray</span>
+<span class="sd">            An expected maximum breeding value matrix of shape ``(s,t)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``s`` is the number of cross candidates.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        ndecn : Integral</span>
+<span class="sd">            Number of decision variables.</span>
+<span class="sd">        decn_space: numpy.ndarray, None</span>
+<span class="sd">            An array of shape ``(2,ndecn)`` defining the decision space.</span>
+<span class="sd">            If None, do not set a decision space.</span>
+<span class="sd">        decn_space_lower: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing lower limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a lower limit for the decision variables.</span>
+<span class="sd">        decn_space_upper: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing upper limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a upper limit for the decision variables.</span>
+<span class="sd">        nobj: Integral</span>
+<span class="sd">            Number of objectives.</span>
+<span class="sd">        obj_wt: numpy.ndarray</span>
+<span class="sd">            Objective function weights.</span>
+<span class="sd">        obj_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an objective space vector.</span>
+<span class="sd">            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the identity transformation function: copy the latent space vector to the objective space vector.</span>
+<span class="sd">        obj_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to objective space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        nineqcv: Integral,</span>
+<span class="sd">            Number of inequality constraints.</span>
+<span class="sd">        ineqcv_wt: numpy.ndarray,</span>
+<span class="sd">            Inequality constraint violation weights.</span>
+<span class="sd">        ineqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an inequality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        ineqcv_trans_kwargs: Optional[dict],</span>
+<span class="sd">            Keyword arguments for the latent space to inequality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        neqcv: Integral</span>
+<span class="sd">            Number of equality constraints.</span>
+<span class="sd">        eqcv_wt: numpy.ndarray</span>
+<span class="sd">            Equality constraint violation weights.</span>
+<span class="sd">        eqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an equality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        eqcv_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to equality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ExpectedMaximumBreedingValueIntegerSelectionProblem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">embv</span> <span class="o">=</span> <span class="n">embv</span><span class="p">,</span>
+            <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
+            <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
+            <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
+            <span class="n">decn_space_upper</span> <span class="o">=</span> <span class="n">decn_space_upper</span><span class="p">,</span>
+            <span class="n">nobj</span> <span class="o">=</span> <span class="n">nobj</span><span class="p">,</span>
+            <span class="n">obj_wt</span> <span class="o">=</span> <span class="n">obj_wt</span><span class="p">,</span>
+            <span class="n">obj_trans</span> <span class="o">=</span> <span class="n">obj_trans</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span> <span class="o">=</span> <span class="n">obj_trans_kwargs</span><span class="p">,</span>
+            <span class="n">nineqcv</span> <span class="o">=</span> <span class="n">nineqcv</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span> <span class="o">=</span> <span class="n">ineqcv_wt</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span> <span class="o">=</span> <span class="n">ineqcv_trans</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">ineqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="n">neqcv</span> <span class="o">=</span> <span class="n">neqcv</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span> <span class="o">=</span> <span class="n">eqcv_wt</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span> <span class="o">=</span> <span class="n">eqcv_trans</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">eqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="c1"># order dependent assignments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embv</span> <span class="o">=</span> <span class="n">embv</span>
+
+    <span class="c1">############################## Object Methods ##############################</span>
+<div class="viewcode-block" id="ExpectedMaximumBreedingValueIntegerSelectionProblem.latentfn">
+<a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueIntegerSelectionProblem.html#pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueIntegerSelectionProblem.latentfn">[docs]</a>
+    <span class="k">def</span> <span class="nf">latentfn</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Score a subset of individuals based on Expected Maximum Breeding Value</span>
+<span class="sd">        (EMBV) selection (Müller et al., 2018). </span>
+<span class="sd">        </span>
+<span class="sd">        Scoring for EMBV selection is defined as the negative mean of EMBVs for </span>
+<span class="sd">        a selected subset. A smaller value indicates a better EMBV score.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : numpy.ndarray</span>
+<span class="sd">            A candidate solution vector of shape ``(s,) == (ndecn,) == (ntaxa,)``.</span>
+<span class="sd">            On entry, this vector is scaled to have a unit sum, such that</span>
+<span class="sd">            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.</span>
+<span class="sd">        args : tuple</span>
+<span class="sd">            Additional non-keyword arguments.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An EMBV selection matrix of shape ``(t,)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># calculate sum(x)</span>
+        <span class="n">xsum</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># if sum(x) ~== 0, then set to 1</span>
+        <span class="n">xsum</span> <span class="o">=</span> <span class="n">xsum</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">xsum</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">1e-10</span> <span class="k">else</span> <span class="mf">1.0</span>
+
+        <span class="c1"># scale x to have a sum of 1 (contribution)</span>
+        <span class="c1"># (n,) -&gt; (n,)</span>
+        <span class="n">contrib</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">xsum</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+
+        <span class="c1"># select individuals and take the negative mean of their EMBVs</span>
+        <span class="c1"># CGS calculation explanation</span>
+        <span class="c1"># Step 1: (s,) . (s,t) -&gt; (t,)  # take dot product with contributions</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="o">-</span><span class="n">contrib</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_embv</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">############################## Class Methods ###############################</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pgmat_gpmod</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span>
+            <span class="n">nparent</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">nmating</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">nprogeny</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">nrep</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">unique_parents</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">pgmat</span><span class="p">:</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> 
+            <span class="n">gpmod</span><span class="p">:</span> <span class="n">GenomicModel</span><span class="p">,</span> 
+            <span class="n">mateprot</span><span class="p">:</span> <span class="n">MatingProtocol</span><span class="p">,</span>
+            <span class="n">ndecn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">decn_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_lower</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_upper</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">nobj</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">obj_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">nineqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">neqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ExpectedMaximumBreedingValueIntegerSelectionProblem&quot;</span><span class="p">:</span>
+        <span class="c1"># check input types</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nparent</span><span class="p">,</span> <span class="s2">&quot;nparent&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nmating</span><span class="p">,</span> <span class="s2">&quot;nmating&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nprogeny</span><span class="p">,</span> <span class="s2">&quot;nprogeny&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nrep</span><span class="p">,</span> <span class="s2">&quot;nrep&quot;</span><span class="p">)</span>
+        <span class="n">check_is_bool</span><span class="p">(</span><span class="n">unique_parents</span><span class="p">,</span> <span class="s2">&quot;unique_parents&quot;</span><span class="p">)</span>
+        <span class="n">check_is_PhasedGenotypeMatrix</span><span class="p">(</span><span class="n">pgmat</span><span class="p">,</span> <span class="s2">&quot;pgmat&quot;</span><span class="p">)</span>
+        <span class="n">check_is_GenomicModel</span><span class="p">(</span><span class="n">gpmod</span><span class="p">,</span> <span class="s2">&quot;gpmod&quot;</span><span class="p">)</span>
+        <span class="n">check_is_MatingProtocol</span><span class="p">(</span><span class="n">mateprot</span><span class="p">,</span> <span class="s2">&quot;mateprot&quot;</span><span class="p">)</span>
+
+        <span class="c1"># calculate estimated maximum breeding values</span>
+        <span class="n">embv</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_calc_embv</span><span class="p">(</span><span class="n">nparent</span><span class="p">,</span> <span class="n">nmating</span><span class="p">,</span> <span class="n">nprogeny</span><span class="p">,</span> <span class="n">nrep</span><span class="p">,</span> <span class="n">unique_parents</span><span class="p">,</span> <span class="n">pgmat</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">,</span> <span class="n">mateprot</span><span class="p">)</span>
+
+        <span class="c1"># construct class</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">embv</span> <span class="o">=</span> <span class="n">embv</span><span class="p">,</span>
+            <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
+            <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
+            <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
+            <span class="n">decn_space_upper</span> <span class="o">=</span> <span class="n">decn_space_upper</span><span class="p">,</span>
+            <span class="n">nobj</span> <span class="o">=</span> <span class="n">nobj</span><span class="p">,</span>
+            <span class="n">obj_wt</span> <span class="o">=</span> <span class="n">obj_wt</span><span class="p">,</span>
+            <span class="n">obj_trans</span> <span class="o">=</span> <span class="n">obj_trans</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span> <span class="o">=</span> <span class="n">obj_trans_kwargs</span><span class="p">,</span>
+            <span class="n">nineqcv</span> <span class="o">=</span> <span class="n">nineqcv</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span> <span class="o">=</span> <span class="n">ineqcv_wt</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span> <span class="o">=</span> <span class="n">ineqcv_trans</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">ineqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="n">neqcv</span> <span class="o">=</span> <span class="n">neqcv</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span> <span class="o">=</span> <span class="n">eqcv_wt</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span> <span class="o">=</span> <span class="n">eqcv_trans</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">eqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="ExpectedMaximumBreedingValueBinarySelectionProblem">
+<a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueBinarySelectionProblem.html#pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueBinarySelectionProblem">[docs]</a>
+<span class="k">class</span> <span class="nc">ExpectedMaximumBreedingValueBinarySelectionProblem</span><span class="p">(</span><span class="n">ExpectedMaximumBreedingValueSelectionProblemMixin</span><span class="p">,</span><span class="n">BinarySelectionProblem</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class representing Expected Maximum Breeding Value (EMBV) selection problems in binary search spaces.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">embv</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+            <span class="n">ndecn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">decn_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_lower</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_upper</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">nobj</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">obj_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">nineqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">neqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for ExpectedMaximumBreedingValueBinarySelectionProblem</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        embv : numpy.ndarray</span>
+<span class="sd">            An expected maximum breeding value matrix of shape ``(s,t)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``s`` is the number of cross candidates.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        ndecn : Integral</span>
+<span class="sd">            Number of decision variables.</span>
+<span class="sd">        decn_space: numpy.ndarray, None</span>
+<span class="sd">            An array of shape ``(2,ndecn)`` defining the decision space.</span>
+<span class="sd">            If None, do not set a decision space.</span>
+<span class="sd">        decn_space_lower: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing lower limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a lower limit for the decision variables.</span>
+<span class="sd">        decn_space_upper: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing upper limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a upper limit for the decision variables.</span>
+<span class="sd">        nobj: Integral</span>
+<span class="sd">            Number of objectives.</span>
+<span class="sd">        obj_wt: numpy.ndarray</span>
+<span class="sd">            Objective function weights.</span>
+<span class="sd">        obj_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an objective space vector.</span>
+<span class="sd">            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the identity transformation function: copy the latent space vector to the objective space vector.</span>
+<span class="sd">        obj_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to objective space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        nineqcv: Integral,</span>
+<span class="sd">            Number of inequality constraints.</span>
+<span class="sd">        ineqcv_wt: numpy.ndarray,</span>
+<span class="sd">            Inequality constraint violation weights.</span>
+<span class="sd">        ineqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an inequality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        ineqcv_trans_kwargs: Optional[dict],</span>
+<span class="sd">            Keyword arguments for the latent space to inequality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        neqcv: Integral</span>
+<span class="sd">            Number of equality constraints.</span>
+<span class="sd">        eqcv_wt: numpy.ndarray</span>
+<span class="sd">            Equality constraint violation weights.</span>
+<span class="sd">        eqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an equality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        eqcv_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to equality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ExpectedMaximumBreedingValueBinarySelectionProblem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">embv</span> <span class="o">=</span> <span class="n">embv</span><span class="p">,</span>
+            <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
+            <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
+            <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
+            <span class="n">decn_space_upper</span> <span class="o">=</span> <span class="n">decn_space_upper</span><span class="p">,</span>
+            <span class="n">nobj</span> <span class="o">=</span> <span class="n">nobj</span><span class="p">,</span>
+            <span class="n">obj_wt</span> <span class="o">=</span> <span class="n">obj_wt</span><span class="p">,</span>
+            <span class="n">obj_trans</span> <span class="o">=</span> <span class="n">obj_trans</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span> <span class="o">=</span> <span class="n">obj_trans_kwargs</span><span class="p">,</span>
+            <span class="n">nineqcv</span> <span class="o">=</span> <span class="n">nineqcv</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span> <span class="o">=</span> <span class="n">ineqcv_wt</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span> <span class="o">=</span> <span class="n">ineqcv_trans</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">ineqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="n">neqcv</span> <span class="o">=</span> <span class="n">neqcv</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span> <span class="o">=</span> <span class="n">eqcv_wt</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span> <span class="o">=</span> <span class="n">eqcv_trans</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">eqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="c1"># order dependent assignments</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embv</span> <span class="o">=</span> <span class="n">embv</span>
+
+    <span class="c1">############################## Object Methods ##############################</span>
+<div class="viewcode-block" id="ExpectedMaximumBreedingValueBinarySelectionProblem.latentfn">
+<a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueBinarySelectionProblem.html#pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem.ExpectedMaximumBreedingValueBinarySelectionProblem.latentfn">[docs]</a>
+    <span class="k">def</span> <span class="nf">latentfn</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Score a subset of individuals based on Expected Maximum Breeding Value</span>
+<span class="sd">        (EMBV) selection (Müller et al., 2018). </span>
+<span class="sd">        </span>
+<span class="sd">        Scoring for EMBV selection is defined as the negative mean of EMBVs for </span>
+<span class="sd">        a selected subset. A smaller value indicates a better EMBV score.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        x : numpy.ndarray</span>
+<span class="sd">            A candidate solution vector of shape ``(s,) == (ndecn,) == (ntaxa,)``.</span>
+<span class="sd">            On entry, this vector is scaled to have a unit sum, such that</span>
+<span class="sd">            ``latentfn(x) == latentfn(ax)`` where ``a`` is any number.</span>
+<span class="sd">        args : tuple</span>
+<span class="sd">            Additional non-keyword arguments.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An EMBV selection matrix of shape ``(t,)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># calculate sum(x)</span>
+        <span class="n">xsum</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># if sum(x) ~== 0, then set to 1</span>
+        <span class="n">xsum</span> <span class="o">=</span> <span class="n">xsum</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">xsum</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">1e-10</span> <span class="k">else</span> <span class="mf">1.0</span>
+
+        <span class="c1"># scale x to have a sum of 1 (contribution)</span>
+        <span class="c1"># (n,) -&gt; (n,)</span>
+        <span class="n">contrib</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">xsum</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+
+        <span class="c1"># select individuals and take the negative mean of their EMBVs</span>
+        <span class="c1"># CGS calculation explanation</span>
+        <span class="c1"># Step 1: (s,) . (s,t) -&gt; (t,)  # take dot product with contributions</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="o">-</span><span class="n">contrib</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_embv</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">############################## Class Methods ###############################</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pgmat_gpmod</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span>
+            <span class="n">nparent</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">nmating</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">nprogeny</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">nrep</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">unique_parents</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">pgmat</span><span class="p">:</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> 
+            <span class="n">gpmod</span><span class="p">:</span> <span class="n">GenomicModel</span><span class="p">,</span> 
+            <span class="n">mateprot</span><span class="p">:</span> <span class="n">MatingProtocol</span><span class="p">,</span>
+            <span class="n">ndecn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">decn_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_lower</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">decn_space_upper</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
+            <span class="n">nobj</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
+            <span class="n">obj_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">nineqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">neqcv</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="nb">dict</span><span class="p">],</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;ExpectedMaximumBreedingValueBinarySelectionProblem&quot;</span><span class="p">:</span>
+        <span class="c1"># check input types</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nparent</span><span class="p">,</span> <span class="s2">&quot;nparent&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nmating</span><span class="p">,</span> <span class="s2">&quot;nmating&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nprogeny</span><span class="p">,</span> <span class="s2">&quot;nprogeny&quot;</span><span class="p">)</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">nrep</span><span class="p">,</span> <span class="s2">&quot;nrep&quot;</span><span class="p">)</span>
+        <span class="n">check_is_bool</span><span class="p">(</span><span class="n">unique_parents</span><span class="p">,</span> <span class="s2">&quot;unique_parents&quot;</span><span class="p">)</span>
+        <span class="n">check_is_PhasedGenotypeMatrix</span><span class="p">(</span><span class="n">pgmat</span><span class="p">,</span> <span class="s2">&quot;pgmat&quot;</span><span class="p">)</span>
+        <span class="n">check_is_GenomicModel</span><span class="p">(</span><span class="n">gpmod</span><span class="p">,</span> <span class="s2">&quot;gpmod&quot;</span><span class="p">)</span>
+        <span class="n">check_is_MatingProtocol</span><span class="p">(</span><span class="n">mateprot</span><span class="p">,</span> <span class="s2">&quot;mateprot&quot;</span><span class="p">)</span>
+
+        <span class="c1"># calculate estimated maximum breeding values</span>
+        <span class="n">embv</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_calc_embv</span><span class="p">(</span><span class="n">nparent</span><span class="p">,</span> <span class="n">nmating</span><span class="p">,</span> <span class="n">nprogeny</span><span class="p">,</span> <span class="n">nrep</span><span class="p">,</span> <span class="n">unique_parents</span><span class="p">,</span> <span class="n">pgmat</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">,</span> <span class="n">mateprot</span><span class="p">)</span>
+
+        <span class="c1"># construct class</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">embv</span> <span class="o">=</span> <span class="n">embv</span><span class="p">,</span>
+            <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
+            <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
+            <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
+            <span class="n">decn_space_upper</span> <span class="o">=</span> <span class="n">decn_space_upper</span><span class="p">,</span>
+            <span class="n">nobj</span> <span class="o">=</span> <span class="n">nobj</span><span class="p">,</span>
+            <span class="n">obj_wt</span> <span class="o">=</span> <span class="n">obj_wt</span><span class="p">,</span>
+            <span class="n">obj_trans</span> <span class="o">=</span> <span class="n">obj_trans</span><span class="p">,</span>
+            <span class="n">obj_trans_kwargs</span> <span class="o">=</span> <span class="n">obj_trans_kwargs</span><span class="p">,</span>
+            <span class="n">nineqcv</span> <span class="o">=</span> <span class="n">nineqcv</span><span class="p">,</span>
+            <span class="n">ineqcv_wt</span> <span class="o">=</span> <span class="n">ineqcv_wt</span><span class="p">,</span>
+            <span class="n">ineqcv_trans</span> <span class="o">=</span> <span class="n">ineqcv_trans</span><span class="p">,</span>
+            <span class="n">ineqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">ineqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="n">neqcv</span> <span class="o">=</span> <span class="n">neqcv</span><span class="p">,</span>
+            <span class="n">eqcv_wt</span> <span class="o">=</span> <span class="n">eqcv_wt</span><span class="p">,</span>
+            <span class="n">eqcv_trans</span> <span class="o">=</span> <span class="n">eqcv_trans</span><span class="p">,</span>
+            <span class="n">eqcv_trans_kwargs</span> <span class="o">=</span> <span class="n">eqcv_trans_kwargs</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, Robert Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

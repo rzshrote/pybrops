@@ -1,0 +1,35 @@
+sampling
+========
+
+.. automodule:: pybrops.core.random.sampling
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      axis_shuffle
+      outcross_shuffle
+      stochastic_universal_sampling
+      tiled_choice
+   
+   
+
+   
+   
+   
+
+
+

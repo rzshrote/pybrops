@@ -1,0 +1,57 @@
+L2NormGenomicRealSelection
+==========================
+
+.. currentmodule:: pybrops.breed.prot.sel.L2NormGenomicSelection
+
+.. autoclass:: L2NormGenomicRealSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~L2NormGenomicRealSelection.mosolve
+      ~L2NormGenomicRealSelection.problem
+      ~L2NormGenomicRealSelection.select
+      ~L2NormGenomicRealSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~L2NormGenomicRealSelection.cmatfcty
+      ~L2NormGenomicRealSelection.eqcv_trans
+      ~L2NormGenomicRealSelection.eqcv_trans_kwargs
+      ~L2NormGenomicRealSelection.eqcv_wt
+      ~L2NormGenomicRealSelection.ineqcv_trans
+      ~L2NormGenomicRealSelection.ineqcv_trans_kwargs
+      ~L2NormGenomicRealSelection.ineqcv_wt
+      ~L2NormGenomicRealSelection.moalgo
+      ~L2NormGenomicRealSelection.ncross
+      ~L2NormGenomicRealSelection.ndset_trans
+      ~L2NormGenomicRealSelection.ndset_trans_kwargs
+      ~L2NormGenomicRealSelection.ndset_wt
+      ~L2NormGenomicRealSelection.neqcv
+      ~L2NormGenomicRealSelection.nineqcv
+      ~L2NormGenomicRealSelection.nmating
+      ~L2NormGenomicRealSelection.nobj
+      ~L2NormGenomicRealSelection.nparent
+      ~L2NormGenomicRealSelection.nprogeny
+      ~L2NormGenomicRealSelection.nselindiv
+      ~L2NormGenomicRealSelection.obj_trans
+      ~L2NormGenomicRealSelection.obj_trans_kwargs
+      ~L2NormGenomicRealSelection.obj_wt
+      ~L2NormGenomicRealSelection.rng
+      ~L2NormGenomicRealSelection.soalgo
+   
+   

@@ -1,0 +1,59 @@
+OptimalContributionRealSelection
+================================
+
+.. currentmodule:: pybrops.breed.prot.sel.OptimalContributionSelection
+
+.. autoclass:: OptimalContributionRealSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalContributionRealSelection.mosolve
+      ~OptimalContributionRealSelection.problem
+      ~OptimalContributionRealSelection.select
+      ~OptimalContributionRealSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalContributionRealSelection.cmatfcty
+      ~OptimalContributionRealSelection.eqcv_trans
+      ~OptimalContributionRealSelection.eqcv_trans_kwargs
+      ~OptimalContributionRealSelection.eqcv_wt
+      ~OptimalContributionRealSelection.ineqcv_trans
+      ~OptimalContributionRealSelection.ineqcv_trans_kwargs
+      ~OptimalContributionRealSelection.ineqcv_wt
+      ~OptimalContributionRealSelection.moalgo
+      ~OptimalContributionRealSelection.ncross
+      ~OptimalContributionRealSelection.ndset_trans
+      ~OptimalContributionRealSelection.ndset_trans_kwargs
+      ~OptimalContributionRealSelection.ndset_wt
+      ~OptimalContributionRealSelection.neqcv
+      ~OptimalContributionRealSelection.nineqcv
+      ~OptimalContributionRealSelection.nmating
+      ~OptimalContributionRealSelection.nobj
+      ~OptimalContributionRealSelection.nparent
+      ~OptimalContributionRealSelection.nprogeny
+      ~OptimalContributionRealSelection.nselindiv
+      ~OptimalContributionRealSelection.ntrait
+      ~OptimalContributionRealSelection.obj_trans
+      ~OptimalContributionRealSelection.obj_trans_kwargs
+      ~OptimalContributionRealSelection.obj_wt
+      ~OptimalContributionRealSelection.rng
+      ~OptimalContributionRealSelection.soalgo
+      ~OptimalContributionRealSelection.unscale
+   
+   

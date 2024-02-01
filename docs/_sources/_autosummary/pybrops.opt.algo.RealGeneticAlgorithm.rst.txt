@@ -1,0 +1,32 @@
+RealGeneticAlgorithm
+====================
+
+.. automodule:: pybrops.opt.algo.RealGeneticAlgorithm
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      RealGeneticAlgorithm
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

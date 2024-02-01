@@ -1,0 +1,77 @@
+ExpectedMaximumBreedingValueRealSelectionProblem
+================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem
+
+.. autoclass:: ExpectedMaximumBreedingValueRealSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.bounds
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.do
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.evalfn
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.evaluate
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.from_pgmat_gpmod
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.has_bounds
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.has_constraints
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.ideal_point
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.latentfn
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.nadir_point
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.name
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.pareto_front
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.callback
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.data
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.decn_space
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.decn_space_lower
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.decn_space_upper
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.elementwise
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.elementwise_func
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.elementwise_runner
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.embv
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.eqcv_trans
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.eqcv_trans_kwargs
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.eqcv_wt
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.exclude_from_serialization
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.ineqcv_trans
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.ineqcv_trans_kwargs
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.ineqcv_wt
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.n_constr
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.n_eq_constr
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.n_ieq_constr
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.n_obj
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.n_var
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.ndecn
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.neqcv
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.nineqcv
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.nlatent
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.nobj
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.obj_trans
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.obj_trans_kwargs
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.obj_wt
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.replace_nan_values_by
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.strict
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.vars
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.vtype
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.xl
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.xu
+   
+   

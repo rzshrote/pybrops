@@ -1,0 +1,26 @@
+CSVInputOutput
+==============
+
+.. currentmodule:: pybrops.core.io.CSVInputOutput
+
+.. autoclass:: CSVInputOutput
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~CSVInputOutput.from_csv
+      ~CSVInputOutput.to_csv
+   
+   
+
+   
+   
+   

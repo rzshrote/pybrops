@@ -1,0 +1,6 @@
+check\_is\_ExtendedGeneticMap
+=============================
+
+.. currentmodule:: pybrops.popgen.gmap.ExtendedGeneticMap
+
+.. autofunction:: check_is_ExtendedGeneticMap

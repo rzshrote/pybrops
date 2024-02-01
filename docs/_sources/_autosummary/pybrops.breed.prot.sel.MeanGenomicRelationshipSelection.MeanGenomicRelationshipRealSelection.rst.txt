@@ -1,0 +1,57 @@
+MeanGenomicRelationshipRealSelection
+====================================
+
+.. currentmodule:: pybrops.breed.prot.sel.MeanGenomicRelationshipSelection
+
+.. autoclass:: MeanGenomicRelationshipRealSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanGenomicRelationshipRealSelection.mosolve
+      ~MeanGenomicRelationshipRealSelection.problem
+      ~MeanGenomicRelationshipRealSelection.select
+      ~MeanGenomicRelationshipRealSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanGenomicRelationshipRealSelection.cmatfcty
+      ~MeanGenomicRelationshipRealSelection.eqcv_trans
+      ~MeanGenomicRelationshipRealSelection.eqcv_trans_kwargs
+      ~MeanGenomicRelationshipRealSelection.eqcv_wt
+      ~MeanGenomicRelationshipRealSelection.ineqcv_trans
+      ~MeanGenomicRelationshipRealSelection.ineqcv_trans_kwargs
+      ~MeanGenomicRelationshipRealSelection.ineqcv_wt
+      ~MeanGenomicRelationshipRealSelection.moalgo
+      ~MeanGenomicRelationshipRealSelection.ncross
+      ~MeanGenomicRelationshipRealSelection.ndset_trans
+      ~MeanGenomicRelationshipRealSelection.ndset_trans_kwargs
+      ~MeanGenomicRelationshipRealSelection.ndset_wt
+      ~MeanGenomicRelationshipRealSelection.neqcv
+      ~MeanGenomicRelationshipRealSelection.nineqcv
+      ~MeanGenomicRelationshipRealSelection.nmating
+      ~MeanGenomicRelationshipRealSelection.nobj
+      ~MeanGenomicRelationshipRealSelection.nparent
+      ~MeanGenomicRelationshipRealSelection.nprogeny
+      ~MeanGenomicRelationshipRealSelection.nselindiv
+      ~MeanGenomicRelationshipRealSelection.obj_trans
+      ~MeanGenomicRelationshipRealSelection.obj_trans_kwargs
+      ~MeanGenomicRelationshipRealSelection.obj_wt
+      ~MeanGenomicRelationshipRealSelection.rng
+      ~MeanGenomicRelationshipRealSelection.soalgo
+   
+   

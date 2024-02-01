@@ -1,0 +1,6 @@
+check\_is\_MateSelectionSolution
+================================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.MateSelectionSolution
+
+.. autofunction:: check_is_MateSelectionSolution

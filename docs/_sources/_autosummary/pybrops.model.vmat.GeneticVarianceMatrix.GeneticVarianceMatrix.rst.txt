@@ -1,0 +1,100 @@
+GeneticVarianceMatrix
+=====================
+
+.. currentmodule:: pybrops.model.vmat.GeneticVarianceMatrix
+
+.. autoclass:: GeneticVarianceMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneticVarianceMatrix.adjoin
+      ~GeneticVarianceMatrix.adjoin_taxa
+      ~GeneticVarianceMatrix.adjoin_trait
+      ~GeneticVarianceMatrix.append
+      ~GeneticVarianceMatrix.append_taxa
+      ~GeneticVarianceMatrix.append_trait
+      ~GeneticVarianceMatrix.concat
+      ~GeneticVarianceMatrix.concat_taxa
+      ~GeneticVarianceMatrix.concat_trait
+      ~GeneticVarianceMatrix.copy
+      ~GeneticVarianceMatrix.deepcopy
+      ~GeneticVarianceMatrix.delete
+      ~GeneticVarianceMatrix.delete_taxa
+      ~GeneticVarianceMatrix.delete_trait
+      ~GeneticVarianceMatrix.from_csv
+      ~GeneticVarianceMatrix.from_gmod
+      ~GeneticVarianceMatrix.from_hdf5
+      ~GeneticVarianceMatrix.from_pandas
+      ~GeneticVarianceMatrix.group
+      ~GeneticVarianceMatrix.group_taxa
+      ~GeneticVarianceMatrix.incorp
+      ~GeneticVarianceMatrix.incorp_taxa
+      ~GeneticVarianceMatrix.incorp_trait
+      ~GeneticVarianceMatrix.insert
+      ~GeneticVarianceMatrix.insert_taxa
+      ~GeneticVarianceMatrix.insert_trait
+      ~GeneticVarianceMatrix.is_grouped
+      ~GeneticVarianceMatrix.is_grouped_taxa
+      ~GeneticVarianceMatrix.is_square
+      ~GeneticVarianceMatrix.is_square_taxa
+      ~GeneticVarianceMatrix.lexsort
+      ~GeneticVarianceMatrix.lexsort_taxa
+      ~GeneticVarianceMatrix.lexsort_trait
+      ~GeneticVarianceMatrix.remove
+      ~GeneticVarianceMatrix.remove_taxa
+      ~GeneticVarianceMatrix.remove_trait
+      ~GeneticVarianceMatrix.reorder
+      ~GeneticVarianceMatrix.reorder_taxa
+      ~GeneticVarianceMatrix.reorder_trait
+      ~GeneticVarianceMatrix.select
+      ~GeneticVarianceMatrix.select_taxa
+      ~GeneticVarianceMatrix.select_trait
+      ~GeneticVarianceMatrix.sort
+      ~GeneticVarianceMatrix.sort_taxa
+      ~GeneticVarianceMatrix.sort_trait
+      ~GeneticVarianceMatrix.to_csv
+      ~GeneticVarianceMatrix.to_hdf5
+      ~GeneticVarianceMatrix.to_pandas
+      ~GeneticVarianceMatrix.ungroup
+      ~GeneticVarianceMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GeneticVarianceMatrix.epgc
+      ~GeneticVarianceMatrix.mat
+      ~GeneticVarianceMatrix.mat_ndim
+      ~GeneticVarianceMatrix.mat_shape
+      ~GeneticVarianceMatrix.nsquare
+      ~GeneticVarianceMatrix.nsquare_taxa
+      ~GeneticVarianceMatrix.ntaxa
+      ~GeneticVarianceMatrix.ntrait
+      ~GeneticVarianceMatrix.square_axes
+      ~GeneticVarianceMatrix.square_axes_len
+      ~GeneticVarianceMatrix.square_taxa_axes
+      ~GeneticVarianceMatrix.square_taxa_axes_len
+      ~GeneticVarianceMatrix.taxa
+      ~GeneticVarianceMatrix.taxa_axis
+      ~GeneticVarianceMatrix.taxa_grp
+      ~GeneticVarianceMatrix.taxa_grp_len
+      ~GeneticVarianceMatrix.taxa_grp_name
+      ~GeneticVarianceMatrix.taxa_grp_spix
+      ~GeneticVarianceMatrix.taxa_grp_stix
+      ~GeneticVarianceMatrix.trait
+      ~GeneticVarianceMatrix.trait_axis
+   
+   

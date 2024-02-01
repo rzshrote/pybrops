@@ -1,0 +1,6 @@
+check\_dict\_values\_have\_equal\_len
+=====================================
+
+.. currentmodule:: pybrops.core.error.error_value_python
+
+.. autofunction:: check_dict_values_have_equal_len

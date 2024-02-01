@@ -1,0 +1,58 @@
+WeightedGenomicBinarySelection
+==============================
+
+.. currentmodule:: pybrops.breed.prot.sel.WeightedGenomicSelection
+
+.. autoclass:: WeightedGenomicBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~WeightedGenomicBinarySelection.mosolve
+      ~WeightedGenomicBinarySelection.problem
+      ~WeightedGenomicBinarySelection.select
+      ~WeightedGenomicBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~WeightedGenomicBinarySelection.alpha
+      ~WeightedGenomicBinarySelection.eqcv_trans
+      ~WeightedGenomicBinarySelection.eqcv_trans_kwargs
+      ~WeightedGenomicBinarySelection.eqcv_wt
+      ~WeightedGenomicBinarySelection.ineqcv_trans
+      ~WeightedGenomicBinarySelection.ineqcv_trans_kwargs
+      ~WeightedGenomicBinarySelection.ineqcv_wt
+      ~WeightedGenomicBinarySelection.moalgo
+      ~WeightedGenomicBinarySelection.ncross
+      ~WeightedGenomicBinarySelection.ndset_trans
+      ~WeightedGenomicBinarySelection.ndset_trans_kwargs
+      ~WeightedGenomicBinarySelection.ndset_wt
+      ~WeightedGenomicBinarySelection.neqcv
+      ~WeightedGenomicBinarySelection.nineqcv
+      ~WeightedGenomicBinarySelection.nmating
+      ~WeightedGenomicBinarySelection.nobj
+      ~WeightedGenomicBinarySelection.nparent
+      ~WeightedGenomicBinarySelection.nprogeny
+      ~WeightedGenomicBinarySelection.nselindiv
+      ~WeightedGenomicBinarySelection.ntrait
+      ~WeightedGenomicBinarySelection.obj_trans
+      ~WeightedGenomicBinarySelection.obj_trans_kwargs
+      ~WeightedGenomicBinarySelection.obj_wt
+      ~WeightedGenomicBinarySelection.rng
+      ~WeightedGenomicBinarySelection.soalgo
+   
+   

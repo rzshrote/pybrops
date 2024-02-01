@@ -1,0 +1,67 @@
+BinaryProblem
+=============
+
+.. currentmodule:: pybrops.opt.prob.BinaryProblem
+
+.. autoclass:: BinaryProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BinaryProblem.bounds
+      ~BinaryProblem.do
+      ~BinaryProblem.evalfn
+      ~BinaryProblem.evaluate
+      ~BinaryProblem.has_bounds
+      ~BinaryProblem.has_constraints
+      ~BinaryProblem.ideal_point
+      ~BinaryProblem.nadir_point
+      ~BinaryProblem.name
+      ~BinaryProblem.pareto_front
+      ~BinaryProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BinaryProblem.callback
+      ~BinaryProblem.data
+      ~BinaryProblem.decn_space
+      ~BinaryProblem.decn_space_lower
+      ~BinaryProblem.decn_space_upper
+      ~BinaryProblem.elementwise
+      ~BinaryProblem.elementwise_func
+      ~BinaryProblem.elementwise_runner
+      ~BinaryProblem.eqcv_wt
+      ~BinaryProblem.exclude_from_serialization
+      ~BinaryProblem.ineqcv_wt
+      ~BinaryProblem.n_constr
+      ~BinaryProblem.n_eq_constr
+      ~BinaryProblem.n_ieq_constr
+      ~BinaryProblem.n_obj
+      ~BinaryProblem.n_var
+      ~BinaryProblem.ndecn
+      ~BinaryProblem.neqcv
+      ~BinaryProblem.nineqcv
+      ~BinaryProblem.nobj
+      ~BinaryProblem.obj_wt
+      ~BinaryProblem.replace_nan_values_by
+      ~BinaryProblem.strict
+      ~BinaryProblem.vars
+      ~BinaryProblem.vtype
+      ~BinaryProblem.xl
+      ~BinaryProblem.xu
+   
+   

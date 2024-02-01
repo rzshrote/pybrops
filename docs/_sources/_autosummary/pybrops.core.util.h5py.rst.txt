@@ -1,0 +1,33 @@
+h5py
+====
+
+.. automodule:: pybrops.core.util.h5py
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      h5py_File_is_writable
+      save_dict_to_hdf5
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,32 @@
+ReducedExchangeMutation
+=======================
+
+.. currentmodule:: pybrops.opt.algo.pymoo_addon
+
+.. autoclass:: ReducedExchangeMutation
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ReducedExchangeMutation.do
+      ~ReducedExchangeMutation.get_prob_var
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ReducedExchangeMutation.setspace
+   
+   

@@ -1,0 +1,25 @@
+GeneticVarianceMatrixFactory
+============================
+
+.. currentmodule:: pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory
+
+.. autoclass:: GeneticVarianceMatrixFactory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneticVarianceMatrixFactory.from_gmod
+   
+   
+
+   
+   
+   

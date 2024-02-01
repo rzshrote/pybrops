@@ -1,0 +1,36 @@
+EstimatedBreedingValueSelection
+===============================
+
+.. automodule:: pybrops.breed.prot.sel.EstimatedBreedingValueSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      EstimatedBreedingValueBinarySelection
+      EstimatedBreedingValueIntegerSelection
+      EstimatedBreedingValueRealSelection
+      EstimatedBreedingValueSelectionMixin
+      EstimatedBreedingValueSubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

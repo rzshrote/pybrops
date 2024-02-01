@@ -1,0 +1,96 @@
+DenseYangCoancestryMatrix
+=========================
+
+.. currentmodule:: pybrops.popgen.cmat.DenseYangCoancestryMatrix
+
+.. autoclass:: DenseYangCoancestryMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseYangCoancestryMatrix.adjoin
+      ~DenseYangCoancestryMatrix.adjoin_taxa
+      ~DenseYangCoancestryMatrix.append
+      ~DenseYangCoancestryMatrix.append_taxa
+      ~DenseYangCoancestryMatrix.apply_jitter
+      ~DenseYangCoancestryMatrix.coancestry
+      ~DenseYangCoancestryMatrix.concat
+      ~DenseYangCoancestryMatrix.concat_taxa
+      ~DenseYangCoancestryMatrix.copy
+      ~DenseYangCoancestryMatrix.deepcopy
+      ~DenseYangCoancestryMatrix.delete
+      ~DenseYangCoancestryMatrix.delete_taxa
+      ~DenseYangCoancestryMatrix.from_csv
+      ~DenseYangCoancestryMatrix.from_gmat
+      ~DenseYangCoancestryMatrix.from_hdf5
+      ~DenseYangCoancestryMatrix.from_pandas
+      ~DenseYangCoancestryMatrix.group
+      ~DenseYangCoancestryMatrix.group_taxa
+      ~DenseYangCoancestryMatrix.incorp
+      ~DenseYangCoancestryMatrix.incorp_taxa
+      ~DenseYangCoancestryMatrix.insert
+      ~DenseYangCoancestryMatrix.insert_taxa
+      ~DenseYangCoancestryMatrix.inverse
+      ~DenseYangCoancestryMatrix.is_grouped
+      ~DenseYangCoancestryMatrix.is_grouped_taxa
+      ~DenseYangCoancestryMatrix.is_positive_semidefinite
+      ~DenseYangCoancestryMatrix.is_square
+      ~DenseYangCoancestryMatrix.is_square_taxa
+      ~DenseYangCoancestryMatrix.kinship
+      ~DenseYangCoancestryMatrix.lexsort
+      ~DenseYangCoancestryMatrix.lexsort_taxa
+      ~DenseYangCoancestryMatrix.mat_asformat
+      ~DenseYangCoancestryMatrix.max
+      ~DenseYangCoancestryMatrix.max_inbreeding
+      ~DenseYangCoancestryMatrix.mean
+      ~DenseYangCoancestryMatrix.min
+      ~DenseYangCoancestryMatrix.min_inbreeding
+      ~DenseYangCoancestryMatrix.remove
+      ~DenseYangCoancestryMatrix.remove_taxa
+      ~DenseYangCoancestryMatrix.reorder
+      ~DenseYangCoancestryMatrix.reorder_taxa
+      ~DenseYangCoancestryMatrix.select
+      ~DenseYangCoancestryMatrix.select_taxa
+      ~DenseYangCoancestryMatrix.sort
+      ~DenseYangCoancestryMatrix.sort_taxa
+      ~DenseYangCoancestryMatrix.to_csv
+      ~DenseYangCoancestryMatrix.to_hdf5
+      ~DenseYangCoancestryMatrix.to_pandas
+      ~DenseYangCoancestryMatrix.ungroup
+      ~DenseYangCoancestryMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseYangCoancestryMatrix.mat
+      ~DenseYangCoancestryMatrix.mat_ndim
+      ~DenseYangCoancestryMatrix.mat_shape
+      ~DenseYangCoancestryMatrix.nsquare
+      ~DenseYangCoancestryMatrix.nsquare_taxa
+      ~DenseYangCoancestryMatrix.ntaxa
+      ~DenseYangCoancestryMatrix.square_axes
+      ~DenseYangCoancestryMatrix.square_axes_len
+      ~DenseYangCoancestryMatrix.square_taxa_axes
+      ~DenseYangCoancestryMatrix.square_taxa_axes_len
+      ~DenseYangCoancestryMatrix.taxa
+      ~DenseYangCoancestryMatrix.taxa_axis
+      ~DenseYangCoancestryMatrix.taxa_grp
+      ~DenseYangCoancestryMatrix.taxa_grp_len
+      ~DenseYangCoancestryMatrix.taxa_grp_name
+      ~DenseYangCoancestryMatrix.taxa_grp_spix
+      ~DenseYangCoancestryMatrix.taxa_grp_stix
+   
+   

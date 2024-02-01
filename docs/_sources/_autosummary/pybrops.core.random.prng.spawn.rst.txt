@@ -1,0 +1,6 @@
+spawn
+=====
+
+.. currentmodule:: pybrops.core.random.prng
+
+.. autofunction:: spawn

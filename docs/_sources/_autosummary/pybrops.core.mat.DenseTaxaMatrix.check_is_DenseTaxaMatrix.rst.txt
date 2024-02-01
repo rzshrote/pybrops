@@ -1,0 +1,6 @@
+check\_is\_DenseTaxaMatrix
+==========================
+
+.. currentmodule:: pybrops.core.mat.DenseTaxaMatrix
+
+.. autofunction:: check_is_DenseTaxaMatrix

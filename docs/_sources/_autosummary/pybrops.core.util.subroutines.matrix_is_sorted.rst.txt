@@ -1,0 +1,6 @@
+matrix\_is\_sorted
+==================
+
+.. currentmodule:: pybrops.core.util.subroutines
+
+.. autofunction:: matrix_is_sorted

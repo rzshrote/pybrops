@@ -1,0 +1,34 @@
+TruePhenotyping
+===============
+
+.. currentmodule:: pybrops.breed.prot.pt.TruePhenotyping
+
+.. autoclass:: TruePhenotyping
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TruePhenotyping.phenotype
+      ~TruePhenotyping.set_H2
+      ~TruePhenotyping.set_h2
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TruePhenotyping.gpmod
+      ~TruePhenotyping.var_err
+   
+   

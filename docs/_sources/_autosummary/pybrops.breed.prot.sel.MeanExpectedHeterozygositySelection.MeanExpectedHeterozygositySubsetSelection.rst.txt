@@ -1,0 +1,56 @@
+MeanExpectedHeterozygositySubsetSelection
+=========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.MeanExpectedHeterozygositySelection
+
+.. autoclass:: MeanExpectedHeterozygositySubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanExpectedHeterozygositySubsetSelection.mosolve
+      ~MeanExpectedHeterozygositySubsetSelection.problem
+      ~MeanExpectedHeterozygositySubsetSelection.select
+      ~MeanExpectedHeterozygositySubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanExpectedHeterozygositySubsetSelection.eqcv_trans
+      ~MeanExpectedHeterozygositySubsetSelection.eqcv_trans_kwargs
+      ~MeanExpectedHeterozygositySubsetSelection.eqcv_wt
+      ~MeanExpectedHeterozygositySubsetSelection.ineqcv_trans
+      ~MeanExpectedHeterozygositySubsetSelection.ineqcv_trans_kwargs
+      ~MeanExpectedHeterozygositySubsetSelection.ineqcv_wt
+      ~MeanExpectedHeterozygositySubsetSelection.moalgo
+      ~MeanExpectedHeterozygositySubsetSelection.ncross
+      ~MeanExpectedHeterozygositySubsetSelection.ndset_trans
+      ~MeanExpectedHeterozygositySubsetSelection.ndset_trans_kwargs
+      ~MeanExpectedHeterozygositySubsetSelection.ndset_wt
+      ~MeanExpectedHeterozygositySubsetSelection.neqcv
+      ~MeanExpectedHeterozygositySubsetSelection.nineqcv
+      ~MeanExpectedHeterozygositySubsetSelection.nmating
+      ~MeanExpectedHeterozygositySubsetSelection.nobj
+      ~MeanExpectedHeterozygositySubsetSelection.nparent
+      ~MeanExpectedHeterozygositySubsetSelection.nprogeny
+      ~MeanExpectedHeterozygositySubsetSelection.nselindiv
+      ~MeanExpectedHeterozygositySubsetSelection.obj_trans
+      ~MeanExpectedHeterozygositySubsetSelection.obj_trans_kwargs
+      ~MeanExpectedHeterozygositySubsetSelection.obj_wt
+      ~MeanExpectedHeterozygositySubsetSelection.rng
+      ~MeanExpectedHeterozygositySubsetSelection.soalgo
+   
+   

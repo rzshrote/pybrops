@@ -1,0 +1,32 @@
+IntegerGeneticAlgorithm
+=======================
+
+.. automodule:: pybrops.opt.algo.IntegerGeneticAlgorithm
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      IntegerGeneticAlgorithm
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

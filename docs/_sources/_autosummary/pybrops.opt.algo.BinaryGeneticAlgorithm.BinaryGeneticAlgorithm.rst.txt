@@ -1,0 +1,33 @@
+BinaryGeneticAlgorithm
+======================
+
+.. currentmodule:: pybrops.opt.algo.BinaryGeneticAlgorithm
+
+.. autoclass:: BinaryGeneticAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BinaryGeneticAlgorithm.minimize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BinaryGeneticAlgorithm.ngen
+      ~BinaryGeneticAlgorithm.pop_size
+      ~BinaryGeneticAlgorithm.rng
+   
+   

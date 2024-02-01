@@ -1,0 +1,6 @@
+check\_is\_PhasedTaxaVariantMatrix
+==================================
+
+.. currentmodule:: pybrops.core.mat.PhasedTaxaVariantMatrix
+
+.. autofunction:: check_is_PhasedTaxaVariantMatrix

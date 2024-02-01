@@ -1,0 +1,6 @@
+check\_is\_MatingOperator
+=========================
+
+.. currentmodule:: pybrops.breed.op.mate.MatingOperator
+
+.. autofunction:: check_is_MatingOperator

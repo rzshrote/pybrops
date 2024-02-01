@@ -1,0 +1,72 @@
+TaxaMatrix
+==========
+
+.. currentmodule:: pybrops.core.mat.TaxaMatrix
+
+.. autoclass:: TaxaMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TaxaMatrix.adjoin
+      ~TaxaMatrix.adjoin_taxa
+      ~TaxaMatrix.append
+      ~TaxaMatrix.append_taxa
+      ~TaxaMatrix.concat
+      ~TaxaMatrix.concat_taxa
+      ~TaxaMatrix.copy
+      ~TaxaMatrix.deepcopy
+      ~TaxaMatrix.delete
+      ~TaxaMatrix.delete_taxa
+      ~TaxaMatrix.from_hdf5
+      ~TaxaMatrix.group
+      ~TaxaMatrix.group_taxa
+      ~TaxaMatrix.incorp
+      ~TaxaMatrix.incorp_taxa
+      ~TaxaMatrix.insert
+      ~TaxaMatrix.insert_taxa
+      ~TaxaMatrix.is_grouped
+      ~TaxaMatrix.is_grouped_taxa
+      ~TaxaMatrix.lexsort
+      ~TaxaMatrix.lexsort_taxa
+      ~TaxaMatrix.remove
+      ~TaxaMatrix.remove_taxa
+      ~TaxaMatrix.reorder
+      ~TaxaMatrix.reorder_taxa
+      ~TaxaMatrix.select
+      ~TaxaMatrix.select_taxa
+      ~TaxaMatrix.sort
+      ~TaxaMatrix.sort_taxa
+      ~TaxaMatrix.to_hdf5
+      ~TaxaMatrix.ungroup
+      ~TaxaMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TaxaMatrix.mat
+      ~TaxaMatrix.mat_ndim
+      ~TaxaMatrix.mat_shape
+      ~TaxaMatrix.ntaxa
+      ~TaxaMatrix.taxa
+      ~TaxaMatrix.taxa_axis
+      ~TaxaMatrix.taxa_grp
+      ~TaxaMatrix.taxa_grp_len
+      ~TaxaMatrix.taxa_grp_name
+      ~TaxaMatrix.taxa_grp_spix
+      ~TaxaMatrix.taxa_grp_stix
+   
+   

@@ -1,0 +1,25 @@
+SortingSubsetOptimizationAlgorithm
+==================================
+
+.. currentmodule:: pybrops.opt.algo.SortingSubsetOptimizationAlgorithm
+
+.. autoclass:: SortingSubsetOptimizationAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SortingSubsetOptimizationAlgorithm.minimize
+   
+   
+
+   
+   
+   

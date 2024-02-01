@@ -1,0 +1,77 @@
+RandomSubsetSelectionProblem
+============================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.RandomSelectionProblem
+
+.. autoclass:: RandomSubsetSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RandomSubsetSelectionProblem.bounds
+      ~RandomSubsetSelectionProblem.do
+      ~RandomSubsetSelectionProblem.evalfn
+      ~RandomSubsetSelectionProblem.evaluate
+      ~RandomSubsetSelectionProblem.from_object
+      ~RandomSubsetSelectionProblem.has_bounds
+      ~RandomSubsetSelectionProblem.has_constraints
+      ~RandomSubsetSelectionProblem.ideal_point
+      ~RandomSubsetSelectionProblem.latentfn
+      ~RandomSubsetSelectionProblem.nadir_point
+      ~RandomSubsetSelectionProblem.name
+      ~RandomSubsetSelectionProblem.pareto_front
+      ~RandomSubsetSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RandomSubsetSelectionProblem.callback
+      ~RandomSubsetSelectionProblem.data
+      ~RandomSubsetSelectionProblem.decn_space
+      ~RandomSubsetSelectionProblem.decn_space_lower
+      ~RandomSubsetSelectionProblem.decn_space_upper
+      ~RandomSubsetSelectionProblem.elementwise
+      ~RandomSubsetSelectionProblem.elementwise_func
+      ~RandomSubsetSelectionProblem.elementwise_runner
+      ~RandomSubsetSelectionProblem.eqcv_trans
+      ~RandomSubsetSelectionProblem.eqcv_trans_kwargs
+      ~RandomSubsetSelectionProblem.eqcv_wt
+      ~RandomSubsetSelectionProblem.exclude_from_serialization
+      ~RandomSubsetSelectionProblem.ineqcv_trans
+      ~RandomSubsetSelectionProblem.ineqcv_trans_kwargs
+      ~RandomSubsetSelectionProblem.ineqcv_wt
+      ~RandomSubsetSelectionProblem.n_constr
+      ~RandomSubsetSelectionProblem.n_eq_constr
+      ~RandomSubsetSelectionProblem.n_ieq_constr
+      ~RandomSubsetSelectionProblem.n_obj
+      ~RandomSubsetSelectionProblem.n_var
+      ~RandomSubsetSelectionProblem.ndecn
+      ~RandomSubsetSelectionProblem.neqcv
+      ~RandomSubsetSelectionProblem.nineqcv
+      ~RandomSubsetSelectionProblem.nlatent
+      ~RandomSubsetSelectionProblem.nobj
+      ~RandomSubsetSelectionProblem.obj_trans
+      ~RandomSubsetSelectionProblem.obj_trans_kwargs
+      ~RandomSubsetSelectionProblem.obj_wt
+      ~RandomSubsetSelectionProblem.rbv
+      ~RandomSubsetSelectionProblem.replace_nan_values_by
+      ~RandomSubsetSelectionProblem.strict
+      ~RandomSubsetSelectionProblem.vars
+      ~RandomSubsetSelectionProblem.vtype
+      ~RandomSubsetSelectionProblem.xl
+      ~RandomSubsetSelectionProblem.xu
+   
+   

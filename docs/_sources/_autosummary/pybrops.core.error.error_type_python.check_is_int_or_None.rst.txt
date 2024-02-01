@@ -1,0 +1,6 @@
+check\_is\_int\_or\_None
+========================
+
+.. currentmodule:: pybrops.core.error.error_type_python
+
+.. autofunction:: check_is_int_or_None

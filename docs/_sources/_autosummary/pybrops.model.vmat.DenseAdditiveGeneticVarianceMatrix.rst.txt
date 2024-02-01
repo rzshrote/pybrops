@@ -1,0 +1,41 @@
+DenseAdditiveGeneticVarianceMatrix
+==================================
+
+.. automodule:: pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseAdditiveGeneticVarianceMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseAdditiveGeneticVarianceMatrix
+   
+   
+
+   
+   
+   
+
+
+

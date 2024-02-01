@@ -1,0 +1,6 @@
+outcross\_shuffle
+=================
+
+.. currentmodule:: pybrops.core.random.sampling
+
+.. autofunction:: outcross_shuffle

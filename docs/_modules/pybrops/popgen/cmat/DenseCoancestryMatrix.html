@@ -1,0 +1,1602 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pybrops.popgen.cmat.DenseCoancestryMatrix &#8212; pybrops 0.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/popgen/cmat/DenseCoancestryMatrix';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pybrops.popg...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pybrops.popgen.cmat.DenseCoancestryMatrix</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module providing dense coancestry matrix implementations and associated error checking routines.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;DenseCoancestryMatrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_is_DenseCoancestryMatrix&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">DTypeLike</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_io_python</span> <span class="kn">import</span> <span class="n">check_file_exists</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_pandas</span> <span class="kn">import</span> <span class="n">check_Series_all_type</span><span class="p">,</span> <span class="n">check_is_pandas_DataFrame</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_has_group</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_pandas</span> <span class="kn">import</span> <span class="n">check_pandas_DataFrame_has_column</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_pandas</span> <span class="kn">import</span> <span class="n">check_pandas_DataFrame_has_column_index</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_pandas</span> <span class="kn">import</span> <span class="n">check_pandas_DataFrame_has_column_indices</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_pandas</span> <span class="kn">import</span> <span class="n">check_pandas_DataFrame_has_columns</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_pandas</span> <span class="kn">import</span> <span class="n">check_pandas_Series_has_indices</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_pandas</span> <span class="kn">import</span> <span class="n">check_pandas_Series_has_values</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_all_equal</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_dtype</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_dtype_is_object</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_has_values</span><span class="p">,</span> <span class="n">check_ndarray_ndim</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_Sequence_all_type</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_str</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_str_or_Integral</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_str_or_Sequence</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_str_value</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.mat.DenseSquareTaxaMatrix</span> <span class="kn">import</span> <span class="n">DenseSquareTaxaMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">save_dict_to_hdf5</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.cmat.CoancestryMatrix</span> <span class="kn">import</span> <span class="n">CoancestryMatrix</span>
+
+<div class="viewcode-block" id="DenseCoancestryMatrix">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix">[docs]</a>
+<span class="k">class</span> <span class="nc">DenseCoancestryMatrix</span><span class="p">(</span><span class="n">DenseSquareTaxaMatrix</span><span class="p">,</span><span class="n">CoancestryMatrix</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A concrete class for dense coancestry matrices. Coancestry matrices are square.</span>
+
+<span class="sd">    The purpose of this concrete class is to implement functionality for:</span>
+<span class="sd">        1) Dense coancestry matrix value calculation.</span>
+<span class="sd">        2) Dense coancestry matrix value access.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">mat</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for DenseCoancestryMatrix class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mat : numpy.ndarray</span>
+<span class="sd">            Coancestry matrix of shape ``(n,n)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of taxa.</span>
+<span class="sd">        taxa : numpy.ndarray, None</span>
+<span class="sd">        taxa_grp : numpy.ndarray, None</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># call constructor for DenseTaxaMatrix</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DenseCoancestryMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+    <span class="c1">############################ Object Properties #############################</span>
+
+    <span class="c1">############## Coancestry Data Properites ##############</span>
+    <span class="nd">@DenseSquareTaxaMatrix</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">mat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">)</span>
+        <span class="n">check_all_equal</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="s2">&quot;mat.shape&quot;</span><span class="p">)</span>
+        <span class="n">check_ndarray_dtype</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1">################# Taxa Data Properites #################</span>
+    <span class="nd">@DenseSquareTaxaMatrix</span><span class="o">.</span><span class="n">taxa</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">taxa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set taxa label array&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa&quot;</span><span class="p">)</span>
+            <span class="n">check_ndarray_dtype_is_object</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa&quot;</span><span class="p">)</span>
+            <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">check_ndarray_axis_len</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_taxa</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@DenseSquareTaxaMatrix</span><span class="o">.</span><span class="n">taxa_grp</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">taxa_grp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set taxa group label array&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">)</span>
+            <span class="n">check_ndarray_dtype</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">check_ndarray_axis_len</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_taxa_grp</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1">############### Taxa Metadata Properites ###############</span>
+    <span class="nd">@DenseSquareTaxaMatrix</span><span class="o">.</span><span class="n">taxa_grp_name</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">taxa_grp_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set taxa group name array&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_name&quot;</span><span class="p">)</span>
+            <span class="n">check_ndarray_dtype</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_name&quot;</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_name&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_taxa_grp_name</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@DenseSquareTaxaMatrix</span><span class="o">.</span><span class="n">taxa_grp_stix</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">taxa_grp_stix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set taxa group start indices array&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_stix&quot;</span><span class="p">)</span>
+            <span class="n">check_ndarray_dtype</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_stix&quot;</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_stix&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_taxa_grp_stix</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@DenseSquareTaxaMatrix</span><span class="o">.</span><span class="n">taxa_grp_spix</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">taxa_grp_spix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set taxa group stop indices array&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_spix&quot;</span><span class="p">)</span>
+            <span class="n">check_ndarray_dtype</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_spix&quot;</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_spix&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_taxa_grp_spix</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@DenseSquareTaxaMatrix</span><span class="o">.</span><span class="n">taxa_grp_len</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">taxa_grp_len</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_len&quot;</span><span class="p">)</span>
+            <span class="n">check_ndarray_dtype</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_len&quot;</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+            <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_len&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_taxa_grp_len</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1">############################## Object Methods ##############################</span>
+
+    <span class="c1">################## Matrix conversion ###################</span>
+<div class="viewcode-block" id="DenseCoancestryMatrix.mat_asformat">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.mat_asformat">[docs]</a>
+    <span class="k">def</span> <span class="nf">mat_asformat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get matrix in a specific format.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format : str</span>
+<span class="sd">            Desired output format. Options are &quot;coancestry&quot;, &quot;kinship&quot;.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            Matrix in the desired output format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check values</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">)</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="nb">format</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">check_str_value</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="s2">&quot;coancestry&quot;</span><span class="p">,</span> <span class="s2">&quot;kinship&quot;</span><span class="p">)</span>
+
+        <span class="c1"># process string</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;coancestry&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;kinship&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span></div>
+
+
+    <span class="c1">############## Coancestry/kinship Methods ##############</span>
+<div class="viewcode-block" id="DenseCoancestryMatrix.coancestry">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.coancestry">[docs]</a>
+    <span class="k">def</span> <span class="nf">coancestry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve the coancestry between individuals.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        args : tuple</span>
+<span class="sd">            A tuple of matrix indices to access the coancestry.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">[</span><span class="n">args</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="DenseCoancestryMatrix.kinship">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.kinship">[docs]</a>
+    <span class="k">def</span> <span class="nf">kinship</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve the kinship between individuals.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        args : tuple</span>
+<span class="sd">            A tuple of matrix indices to access the kinship.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">[</span><span class="n">args</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="DenseCoancestryMatrix.is_positive_semidefinite">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.is_positive_semidefinite">[docs]</a>
+    <span class="k">def</span> <span class="nf">is_positive_semidefinite</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">eigvaltol</span> <span class="o">=</span> <span class="mf">2e-14</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine whether the coancestry matrix is positive semidefinite.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        eigvaltol : float</span>
+<span class="sd">            Eigenvalue tolerance for determining positive semidefiniteness.</span>
+<span class="sd">            If provided eigenvalue tolerance is less than zero, the tolerance</span>
+<span class="sd">            is set to 0.0.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : bool</span>
+<span class="sd">            Whether the coancestry matrix is positive semidefinite.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if tolerance is less than zero, set to zero</span>
+        <span class="k">if</span> <span class="n">eigvaltol</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+            <span class="n">eigvaltol</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">eigvaltol</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="DenseCoancestryMatrix.apply_jitter">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.apply_jitter">[docs]</a>
+    <span class="k">def</span> <span class="nf">apply_jitter</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">eigvaltol</span> <span class="o">=</span> <span class="mf">2e-14</span><span class="p">,</span> 
+            <span class="n">minjitter</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span> 
+            <span class="n">maxjitter</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span> 
+            <span class="n">nattempt</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a random jitter value to the diagonal of the coancestry matrix until </span>
+<span class="sd">        all eigenvalues exceed the provided eigenvalue tolerance.</span>
+<span class="sd">        This ensures that a matrix can be decomposed using the Cholesky decomposition.</span>
+<span class="sd">        This routine attempts to apply a jitter 100 times before giving up.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        eigvaltol : float</span>
+<span class="sd">            Eigenvalue tolerance for determining positive semidefiniteness.</span>
+<span class="sd">            If provided eigenvalue tolerance is less than zero, the tolerance</span>
+<span class="sd">            is set to 0.0.</span>
+<span class="sd">        minjitter : float</span>
+<span class="sd">            Minimum jitter value applied to a diagonal element.</span>
+<span class="sd">        maxjitter : float</span>
+<span class="sd">            Maximum jitter value applied to a diagonal element.</span>
+<span class="sd">        nattempt : int</span>
+<span class="sd">            Number of jitter application attempts.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : bool</span>
+<span class="sd">            Whether the jitter was successfully applied.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">diagix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diag_indices_from</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">)</span>
+        <span class="n">mat_diag_old</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">[</span><span class="n">diagix</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">is_not_posdef</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_positive_semidefinite</span><span class="p">(</span><span class="n">eigvaltol</span><span class="p">)</span>
+
+        <span class="c1"># attempt to apply jitter in nattempt or less attempts</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">is_not_posdef</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">counter</span> <span class="o">&lt;</span> <span class="n">nattempt</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">[</span><span class="n">diagix</span><span class="p">]</span> <span class="o">=</span> <span class="n">mat_diag_old</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">minjitter</span><span class="p">,</span> <span class="n">maxjitter</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">mat_diag_old</span><span class="p">))</span>
+            <span class="n">is_not_posdef</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_positive_semidefinite</span><span class="p">(</span><span class="n">eigvaltol</span><span class="p">)</span>
+            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+        
+        <span class="c1"># if we still weren&#39;t able to find appropriate jitter, then give old diagonals and warn</span>
+        <span class="k">if</span> <span class="n">is_not_posdef</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">[</span><span class="n">diagix</span><span class="p">]</span> <span class="o">=</span> <span class="n">mat_diag_old</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Unable to successfully apply jitter to meet eigenvalue tolerance&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="DenseCoancestryMatrix.max_inbreeding">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.max_inbreeding">[docs]</a>
+    <span class="k">def</span> <span class="nf">max_inbreeding</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;coancestry&quot;</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Real</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the maximum attainable inbreeding after one generation for </span>
+<span class="sd">        the coancestry matrix. For coancestry, this is equivalent to:</span>
+<span class="sd">        </span>
+<span class="sd">        ..math:</span>
+<span class="sd">            \\max(\\mathrm{diag}(\\mathbf{G}))</span>
+
+<span class="sd">        or for kinship, the equivalent is:</span>
+
+<span class="sd">        ..math:</span>
+<span class="sd">            \\max(\\mathrm{diag}(\\mathbf{K}))</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format : str</span>
+<span class="sd">            Desired output format. Options are &quot;coancestry&quot;, &quot;kinship&quot;.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Real</span>
+<span class="sd">            The maximum attainable inbreeding after one generation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check values</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">)</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="nb">format</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">check_str_value</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="s2">&quot;coancestry&quot;</span><span class="p">,</span> <span class="s2">&quot;kinship&quot;</span><span class="p">)</span>
+
+        <span class="c1"># get output in coancestry format</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+        <span class="c1"># if requested format is kinship, then convert coancestry to kinship</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;kinship&quot;</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">out</span>
+        
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseCoancestryMatrix.min_inbreeding">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.min_inbreeding">[docs]</a>
+    <span class="k">def</span> <span class="nf">min_inbreeding</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;coancestry&quot;</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Real</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the minimum attainable inbreeding after one generation for </span>
+<span class="sd">        the coancestry matrix. For coancestry, this is equivalent to:</span>
+<span class="sd">        </span>
+<span class="sd">        ..math:</span>
+<span class="sd">            \\frac{1}{\\mathbf{1&#39;G1}}</span>
+
+<span class="sd">        or for kinship, the equivalent is:</span>
+
+<span class="sd">        ..math:</span>
+<span class="sd">            \\frac{1}{\\mathbf{1&#39;K1}}</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format : str</span>
+<span class="sd">            Desired output format. Options are &quot;coancestry&quot;, &quot;kinship&quot;.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Real</span>
+<span class="sd">            The minimum attainable inbreeding after one generation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check values</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">)</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="nb">format</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">check_str_value</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="s2">&quot;coancestry&quot;</span><span class="p">,</span> <span class="s2">&quot;kinship&quot;</span><span class="p">)</span>
+
+        <span class="c1"># calculate G inverse</span>
+        <span class="n">Ginv</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span>
+
+        <span class="c1"># calculate min inbreeding</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">Ginv</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+        <span class="c1"># if requested format is kinship, then convert coancestry to kinship</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;kinship&quot;</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">out</span>
+        
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseCoancestryMatrix.inverse">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.inverse">[docs]</a>
+    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;coancestry&quot;</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the inverse of the coancestry matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format : str</span>
+<span class="sd">            Desired matrix type on which to calculate the inverse. </span>
+<span class="sd">            Options are &quot;coancestry&quot;, &quot;kinship&quot;.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            Inverse of the coancestry or kinship matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">)</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="nb">format</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">check_str_value</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="s2">&quot;coancestry&quot;</span><span class="p">,</span> <span class="s2">&quot;kinship&quot;</span><span class="p">)</span>
+
+        <span class="c1"># invert matrix</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;coancestry&quot;</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;kinship&quot;</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">############## Matrix summary statistics ###############</span>
+<div class="viewcode-block" id="DenseCoancestryMatrix.max">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.max">[docs]</a>
+    <span class="k">def</span> <span class="nf">max</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;coancestry&quot;</span><span class="p">,</span>
+            <span class="n">axis</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">tuple</span><span class="p">,</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Real</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the maximum coancestry or kinship for the CoancestryMatrix</span>
+<span class="sd">        along a specified axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format : str</span>
+<span class="sd">            Desired output format. Options are &quot;coancestry&quot;, &quot;kinship&quot;.</span>
+<span class="sd">        axis : int, tuple of ints, None</span>
+<span class="sd">            Axis along which to find the maximum value.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Real, numpy.ndarray</span>
+<span class="sd">            Maximum coancestry or kinship for the CoancestryMatrix along the </span>
+<span class="sd">            specified axis.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">)</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="nb">format</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">check_str_value</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="s2">&quot;coancestry&quot;</span><span class="p">,</span> <span class="s2">&quot;kinship&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># calculate mean values</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="n">axis</span><span class="p">)</span>
+
+        <span class="c1"># process string and apply transformations</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;kinship&quot;</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">*=</span> <span class="mf">0.5</span>
+        
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseCoancestryMatrix.mean">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.mean">[docs]</a>
+    <span class="k">def</span> <span class="nf">mean</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;coancestry&quot;</span><span class="p">,</span>
+            <span class="n">axis</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">tuple</span><span class="p">,</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DTypeLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Real</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the mean coancestry or kinship for the CoancestryMatrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format : str</span>
+<span class="sd">            Desired output format. Options are &quot;coancestry&quot;, &quot;kinship&quot;.</span>
+<span class="sd">        axis : int, tuple of ints, None</span>
+<span class="sd">            Axis along which to find the mean value.</span>
+<span class="sd">        dtype : DTypeLike, None</span>
+<span class="sd">            Type to use in computing the mean. If ``None`` use the native </span>
+<span class="sd">            float type.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Real</span>
+<span class="sd">            Mean coancestry or kinship for the CoancestryMatrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">)</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="nb">format</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">check_str_value</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="s2">&quot;coancestry&quot;</span><span class="p">,</span> <span class="s2">&quot;kinship&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># calculate mean values</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="n">axis</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span><span class="p">)</span>
+
+        <span class="c1"># process string and apply transformations</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;kinship&quot;</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">*=</span> <span class="mf">0.5</span>
+        
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseCoancestryMatrix.min">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.min">[docs]</a>
+    <span class="k">def</span> <span class="nf">min</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;coancestry&quot;</span><span class="p">,</span>
+            <span class="n">axis</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">tuple</span><span class="p">,</span><span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Real</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the minimum coancestry or kinship for the CoancestryMatrix</span>
+<span class="sd">        along a specified axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        format : str</span>
+<span class="sd">            Desired output format. Options are &quot;coancestry&quot;, &quot;kinship&quot;.</span>
+<span class="sd">        axis : int, tuple of ints, None</span>
+<span class="sd">            Axis along which to find the minimum value.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Real, numpy.ndarray</span>
+<span class="sd">            Minimum coancestry or kinship for the CoancestryMatrix along the </span>
+<span class="sd">            specified axis.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">)</span>
+        <span class="nb">format</span> <span class="o">=</span> <span class="nb">format</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">check_str_value</span><span class="p">(</span><span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;format&quot;</span><span class="p">,</span> <span class="s2">&quot;coancestry&quot;</span><span class="p">,</span> <span class="s2">&quot;kinship&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># calculate mean values</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span> <span class="o">=</span> <span class="n">axis</span><span class="p">)</span>
+
+        <span class="c1"># process string and apply transformations</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;kinship&quot;</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">*=</span> <span class="mf">0.5</span>
+        
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">###################### Matrix I/O ######################</span>
+<div class="viewcode-block" id="DenseCoancestryMatrix.to_pandas">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.to_pandas">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_pandas</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">taxa_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
+            <span class="n">taxa_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span>
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]]</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export a ``DenseCoancestryMatrix`` to a ``pandas.DataFrame``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        taxa_col : str, default = &quot;taxa&quot;</span>
+<span class="sd">            Name of the column to which to write taxa names. Cannot be ``None``.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp_col : str, None, default = &quot;taxa_grp&quot;</span>
+<span class="sd">            Name of the column to which to write taxa group names.</span>
+<span class="sd">            If ``str``, the column is given the name in ``taxa_grp_col``.</span>
+<span class="sd">            If ``None``, the column is not exported.</span>
+
+<span class="sd">        taxa : str, Sequence, default = &quot;all&quot;</span>
+<span class="sd">            Name(s) of the taxa columns for which to write coancestry values.</span>
+<span class="sd">            If ``Sequence``, export the taxa names given by the string or </span>
+<span class="sd">            integer value in the ``taxa`` Sequence.</span>
+<span class="sd">            If ``str``, must be equal to ``&quot;all&quot;``. Export all taxa names as is.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating export to a </span>
+<span class="sd">            ``pandas.DataFrame``.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : pandas.DataFrame</span>
+<span class="sd">            An output dataframe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">###</span>
+        <span class="c1">### type checks</span>
+        <span class="c1">###</span>
+
+        <span class="c1">### taxa_col</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">taxa_col</span><span class="p">,</span> <span class="s2">&quot;taxa_col&quot;</span><span class="p">)</span>
+
+        <span class="c1">### taxa_grp_col</span>
+        <span class="k">if</span> <span class="n">taxa_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_str</span><span class="p">(</span><span class="n">taxa_grp_col</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_col&quot;</span><span class="p">)</span>
+
+        <span class="c1">### taxa</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">check_str_value</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="c1"># if no taxa labels present, check that taxa names are all indices </span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">check_Sequence_all_type</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span> <span class="n">Integral</span><span class="p">)</span>
+            <span class="c1"># if taxa labels present, check that taxa names are all str or indices</span>
+            <span class="c1"># for str values, make sure they are in the taxa labels</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">check_Sequence_all_type</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">))</span>
+                <span class="n">taxa_str</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">taxa</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="nb">str</span><span class="p">))</span>
+                <span class="n">check_ndarray_has_values</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span> <span class="s2">&quot;CoancestryMatrix.taxa&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">taxa_str</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Sequence</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="s2">&quot;taxa&quot;</span><span class="p">)</span>
+
+        <span class="c1">###</span>
+        <span class="c1">### Vector extraction</span>
+        <span class="c1">###</span>
+
+        <span class="c1"># construct taxa selection indices</span>
+        <span class="n">taxaix</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># if taxa is string, get all indices</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">taxa</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">):</span>
+            <span class="n">taxaix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">)</span>
+        <span class="c1"># else taxa is Sequence, get select indices</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># if no taxa labels, then all taxa elements are indices</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">taxaix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="c1"># else taxa labels, then convert string to indices</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># get first instance of string or index</span>
+                <span class="n">taxaix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa</span> <span class="o">==</span> <span class="n">t</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">taxa</span><span class="p">],</span> 
+                    <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span>
+                <span class="p">)</span>
+
+        <span class="c1"># extract the central matrix</span>
+        <span class="n">mat_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># if taxa is string, get all values</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">taxa</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">):</span>
+            <span class="n">mat_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span>
+        <span class="c1"># else taxa is Sequence, get select indices</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mat_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">[</span><span class="n">taxaix</span><span class="p">,:][:,</span><span class="n">taxaix</span><span class="p">]</span>
+
+        <span class="c1"># extract taxa labels</span>
+        <span class="n">taxa_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># if taxa is string, get all taxa names</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">taxa</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">taxa_data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">taxa_data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">]</span>
+        <span class="c1"># else taxa is Sequence, get select taxa names</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">taxa_data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">taxaix</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">taxa_data</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">[</span><span class="n">taxaix</span><span class="p">]]</span>
+
+        <span class="c1"># extract taxa group labels</span>
+        <span class="n">taxa_grp_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">taxa_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># if taxa is string, get all taxa group labels</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">taxa</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">taxa_grp_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">taxa_grp_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span>
+            <span class="c1"># else taxa is Sequence, get select taxa group labels</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">taxa_grp_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">taxaix</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">taxa_grp_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">[</span><span class="n">taxaix</span><span class="p">]</span>
+
+        <span class="c1">###</span>
+        <span class="c1">### DataFrame construction</span>
+        <span class="c1">###</span>
+
+        <span class="c1"># make dictionary for labels</span>
+        <span class="n">labels_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">taxa_col</span><span class="p">:</span> <span class="n">taxa_data</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">taxa_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">labels_dict</span><span class="p">[</span><span class="n">taxa_grp_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxa_grp_data</span>
+        
+        <span class="c1"># make dataframe for labels</span>
+        <span class="n">labels_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">labels_dict</span><span class="p">)</span>
+
+        <span class="c1"># make dataframe for values</span>
+        <span class="n">values_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">mat_data</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">taxa_data</span><span class="p">)</span>
+
+        <span class="c1"># concatenate columns</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">labels_df</span><span class="p">,</span><span class="n">values_df</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseCoancestryMatrix.to_csv">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.to_csv">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_csv</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">taxa_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
+            <span class="n">taxa_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span>
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]]</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+            <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> 
+            <span class="n">header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+            <span class="n">index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write an object to a CSV file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            CSV file name to which to write.</span>
+
+<span class="sd">        taxa_col : str, default = &quot;taxa&quot;</span>
+<span class="sd">            Name of the column to which to write taxa names. Cannot be ``None``.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp_col : str, None, default = &quot;taxa_grp&quot;</span>
+<span class="sd">            Name of the column to which to write taxa group names.</span>
+<span class="sd">            If ``str``, the column is given the name in ``taxa_grp_col``.</span>
+<span class="sd">            If ``None``, the column is not exported.</span>
+
+<span class="sd">        taxa : str, Sequence, default = &quot;all&quot;</span>
+<span class="sd">            Name(s) of the taxa columns for which to write coancestry values.</span>
+<span class="sd">            If ``Sequence``, export the taxa names given by the string or </span>
+<span class="sd">            integer value in the ``taxa`` Sequence.</span>
+<span class="sd">            If ``str``, must be equal to ``&quot;all&quot;``. Export all taxa names as is.</span>
+
+<span class="sd">        sep : str, default = &quot;,&quot;</span>
+<span class="sd">            Separator to use in the exported CSV file.</span>
+<span class="sd">        </span>
+<span class="sd">        header : bool, default = True</span>
+<span class="sd">            Whether to save header names.</span>
+<span class="sd">        </span>
+<span class="sd">        index : bool, default = False</span>
+<span class="sd">            Whether to save a row index in the exported CSV file.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating export to a CSV.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># construct dataframe</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(</span>
+            <span class="n">taxa_col</span> <span class="o">=</span> <span class="n">taxa_col</span><span class="p">,</span>
+            <span class="n">taxa_grp_col</span> <span class="o">=</span> <span class="n">taxa_grp_col</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># export using pandas</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">path_or_buf</span> <span class="o">=</span> <span class="n">filename</span><span class="p">,</span>
+            <span class="n">sep</span> <span class="o">=</span> <span class="n">sep</span><span class="p">,</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="p">,</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DenseCoancestryMatrix.to_hdf5">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.to_hdf5">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_hdf5</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write GenotypeMatrix to an HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            HDF5 file name to which to write.</span>
+<span class="sd">        groupname : str or None</span>
+<span class="sd">            HDF5 group name under which the ``DenseMatrix`` data is stored.</span>
+<span class="sd">            If ``None``, the ``DenseMatrix`` is written to the base HDF5 group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>                       <span class="c1"># open HDF5 in write mode</span>
+        <span class="c1">######################################################### process groupname argument</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>                          <span class="c1"># if we have a string</span>
+            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>                            <span class="c1"># if last character in string is not &#39;/&#39;</span>
+                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>                                <span class="c1"># add &#39;/&#39; to end of string</span>
+        <span class="k">elif</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>                                 <span class="c1"># else if groupname is None</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>                                      <span class="c1"># empty string</span>
+        <span class="k">else</span><span class="p">:</span>                                                   <span class="c1"># else raise error</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;groupname&#39; must be of type str or None&quot;</span><span class="p">)</span>
+        <span class="c1">######################################################### populate HDF5 file</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>                                           <span class="c1"># data dictionary</span>
+            <span class="s2">&quot;mat&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span>
+            <span class="s2">&quot;taxa&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span>
+        <span class="p">}</span>
+        <span class="n">save_dict_to_hdf5</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>         <span class="c1"># save data</span>
+        <span class="c1">######################################################### write conclusion</span>
+        <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>                                          <span class="c1"># close the file</span></div>
+
+
+    <span class="c1">############################## Class Methods ###############################</span>
+
+    <span class="c1">###################### Matrix I/O ######################</span>
+<div class="viewcode-block" id="DenseCoancestryMatrix.from_pandas">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.from_pandas">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pandas</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">taxa_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
+            <span class="n">taxa_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span>
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]]</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseCoancestryMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a ``DenseCoancestryMatrix`` from a ``pandas.DataFrame``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : pandas.DataFrame</span>
+<span class="sd">            Pandas dataframe from which to read.</span>
+
+<span class="sd">        taxa_col : str, Integral, None, default = &quot;taxa&quot;</span>
+<span class="sd">            Name of the column from which to read taxa names. Cannot be ``None``.</span>
+<span class="sd">            This column is used to search for column names to extract coancestry values.</span>
+<span class="sd">            Elements in this column are interpreted as strings.</span>
+<span class="sd">            If of type ``str``, taxa names are read from the column named </span>
+<span class="sd">            defined by ``taxa_col``.</span>
+<span class="sd">            If of type ``Integral``, taxa names are read from the column </span>
+<span class="sd">            number defined by ``taxa_col``.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp_col : str, None, default = &quot;taxa_grp&quot;</span>
+<span class="sd">            Name of the column from which to read taxa group names.</span>
+<span class="sd">            If of type ``str``, taxa group names are read from the column named </span>
+<span class="sd">            defined by ``taxa_col``.</span>
+<span class="sd">            If of type ``Integral``, taxa group names are read from the column </span>
+<span class="sd">            number defined by ``taxa_col``.</span>
+<span class="sd">            If ``None``, taxa group names are not imported.</span>
+
+<span class="sd">        taxa : str, Sequence, default = &quot;all&quot;</span>
+<span class="sd">            Name(s) of the taxa columns for which to read coancestry values.</span>
+<span class="sd">            If ``Sequence``, read the taxa names given by the string or </span>
+<span class="sd">            integer value in the ``taxa`` Sequence.</span>
+<span class="sd">            If ``str``, must be equal to ``&quot;all&quot;``. Import all taxa names as </span>
+<span class="sd">            defined in the ``taxa_col`` column.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating importing from a </span>
+<span class="sd">            ``pandas.DataFrame``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseCoancestryMatrix</span>
+<span class="sd">            A ``DenseCoancestryMatrix`` read from a ``pandas.DataFrame``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">###</span>
+        <span class="c1">### type checks</span>
+        <span class="c1">###</span>
+
+        <span class="c1">### df</span>
+        <span class="n">check_is_pandas_DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">)</span>
+
+        <span class="c1"># force conversion of column names to string</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+        <span class="c1">### taxa_col</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">taxa_col</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">taxa_col</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">taxa_col</span><span class="p">,</span> <span class="s2">&quot;taxa_col&quot;</span><span class="p">)</span>
+
+        <span class="c1">### taxa_grp_col</span>
+        <span class="k">if</span> <span class="n">taxa_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_grp_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">taxa_grp_col</span><span class="p">)</span>
+                <span class="n">col</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">taxa_grp_col</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_grp_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+                <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">taxa_grp_col</span><span class="p">)</span>
+                <span class="n">col</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">taxa_grp_col</span><span class="p">]</span>
+                <span class="c1"># if all entries are None, treat as though no taxa group column was provided</span>
+                <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">e</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">col</span><span class="p">):</span>
+                    <span class="n">taxa_grp_col</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">taxa_grp_col</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_col&quot;</span><span class="p">)</span>
+        <span class="c1"># extract the taxa series for future use</span>
+        <span class="n">taxa_col_pds</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">taxa_col</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_col</span><span class="p">,</span><span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">taxa_col</span><span class="p">]</span>
+
+        <span class="c1">### taxa</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">check_str_value</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">)</span>
+            <span class="n">check_Series_all_type</span><span class="p">(</span><span class="n">taxa_col_pds</span><span class="p">,</span> <span class="s2">&quot;df[taxa_col]&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">))</span>
+            <span class="n">taxa_str</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">taxa_col_pds</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="nb">str</span><span class="p">))</span>
+            <span class="n">taxa_int</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">taxa_col_pds</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">Integral</span><span class="p">))</span>
+            <span class="n">check_pandas_DataFrame_has_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">taxa_str</span><span class="p">)</span>
+            <span class="n">check_pandas_DataFrame_has_column_indices</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">taxa_int</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="n">check_Series_all_type</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">))</span>
+            <span class="n">taxa_str</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">taxa</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="nb">str</span><span class="p">))</span>
+            <span class="n">taxa_int</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">taxa</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">Integral</span><span class="p">))</span>
+            <span class="n">check_pandas_DataFrame_has_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">taxa_str</span><span class="p">)</span>
+            <span class="n">check_pandas_DataFrame_has_column_indices</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">taxa_int</span><span class="p">)</span>
+            <span class="n">check_pandas_Series_has_values</span><span class="p">(</span><span class="n">taxa_col_pds</span><span class="p">,</span> <span class="s2">&quot;df[taxa_col]&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">taxa_str</span><span class="p">)</span>
+            <span class="n">check_pandas_Series_has_indices</span><span class="p">(</span><span class="n">taxa_col_pds</span><span class="p">,</span> <span class="s2">&quot;df[taxa_col]&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">taxa_int</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Sequence</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="s2">&quot;taxa&quot;</span><span class="p">)</span>
+
+        <span class="c1">### </span>
+        <span class="c1">### sanitize inputs</span>
+        <span class="c1">### </span>
+
+        <span class="k">if</span> <span class="n">taxa_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># calculate column index</span>
+            <span class="n">colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">taxa_grp_col</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_grp_col</span><span class="p">,</span><span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">taxa_grp_col</span>
+            <span class="c1"># get mask of where values are NA</span>
+            <span class="n">mask</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">colix</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span>
+            <span class="c1"># convert None to pandas.NA</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span><span class="n">colix</span><span class="p">]</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">NA</span>
+            <span class="c1"># if all entries are None, treat as though no taxa group column was provided</span>
+            <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+                <span class="n">taxa_grp_col</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1">###</span>
+        <span class="c1">### data extraction</span>
+        <span class="c1">###</span>
+
+        <span class="c1"># calculate row indices from the taxa column index</span>
+        <span class="n">rowix</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">taxa</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">):</span>
+            <span class="n">rowix</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">taxa_col_pds</span><span class="p">))]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="n">taxa_col_pdi</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">taxa_col_pds</span><span class="p">)</span>
+            <span class="n">rowix</span> <span class="o">=</span> <span class="p">[</span><span class="n">taxa_col_pdi</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">taxa</span><span class="p">]</span>
+        
+        <span class="c1"># calculate column indices</span>
+        <span class="n">colix</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">taxa</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">):</span>
+            <span class="n">colix</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">taxa_col_pds</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="n">colix</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">taxa</span><span class="p">]</span>
+
+        <span class="c1"># extract dataframe rows and columns for matrix construction</span>
+        <span class="n">mat_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">rowix</span><span class="p">,:]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">colix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">,</span> <span class="n">na_value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="n">taxa_data</span> <span class="o">=</span> <span class="n">taxa_col_pds</span><span class="p">[</span><span class="n">rowix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+        <span class="n">taxa_grp_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">taxa_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa_grp_col_pds</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">taxa_grp_col</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_grp_col</span><span class="p">,</span><span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">taxa_grp_col</span><span class="p">]</span>
+            <span class="n">taxa_grp_data</span> <span class="o">=</span> <span class="n">taxa_grp_col_pds</span><span class="p">[</span><span class="n">rowix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">,</span> <span class="n">na_value</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1">###</span>
+        <span class="c1">### construct object</span>
+        <span class="c1">###</span>
+
+        <span class="c1"># construct object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat_data</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa_data</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp_data</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseCoancestryMatrix.from_csv">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.from_csv">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_csv</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span>
+            <span class="n">header</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="n">taxa_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;taxa&quot;</span><span class="p">,</span>
+            <span class="n">taxa_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">,</span>
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]]</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseCoancestryMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a ``DenseCoancestryMatrix`` from a CSV file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            CSV file name from which to read.</span>
+<span class="sd">        </span>
+<span class="sd">        sep : str, default = &#39;,&#39;</span>
+<span class="sd">            CSV delimiter to use.</span>
+<span class="sd">        </span>
+<span class="sd">        header : int, list of int, default=0</span>
+<span class="sd">            Row number(s) to use as the column names, and the start of the data.</span>
+
+<span class="sd">        taxa_col : str, Integral, None, default = &quot;taxa&quot;</span>
+<span class="sd">            Name of the column from which to read taxa names. Cannot be ``None``.</span>
+<span class="sd">            This column is used to search for column names to extract coancestry values.</span>
+<span class="sd">            Elements in this column are interpreted as strings.</span>
+<span class="sd">            If of type ``str``, taxa names are read from the column named </span>
+<span class="sd">            defined by ``taxa_col``.</span>
+<span class="sd">            If of type ``Integral``, taxa names are read from the column </span>
+<span class="sd">            number defined by ``taxa_col``.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp_col : str, None, default = &quot;taxa_grp&quot;</span>
+<span class="sd">            Name of the column from which to read taxa group names.</span>
+<span class="sd">            If of type ``str``, taxa group names are read from the column named </span>
+<span class="sd">            defined by ``taxa_col``.</span>
+<span class="sd">            If of type ``Integral``, taxa group names are read from the column </span>
+<span class="sd">            number defined by ``taxa_col``.</span>
+<span class="sd">            If ``None``, taxa group names are not imported.</span>
+
+<span class="sd">        taxa : str, Sequence, default = &quot;all&quot;</span>
+<span class="sd">            Name(s) of the taxa columns for which to read coancestry values.</span>
+<span class="sd">            If ``Sequence``, read the taxa names given by the string or </span>
+<span class="sd">            integer value in the ``taxa`` Sequence.</span>
+<span class="sd">            If ``str``, must be equal to ``&quot;all&quot;``. Import all taxa names as </span>
+<span class="sd">            defined in the ``taxa_col`` column.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating importing from a CSV.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseCoancestryMatrix</span>
+<span class="sd">            A ``DenseCoancestryMatrix`` read from a CSV file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">sep</span><span class="p">,</span> <span class="s2">&quot;sep&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read file using pandas</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+            <span class="n">filename</span><span class="p">,</span>
+            <span class="n">sep</span> <span class="o">=</span> <span class="n">sep</span><span class="p">,</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="c1"># construct genetic map from pandas.DataFrame</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">,</span>
+            <span class="n">taxa_col</span> <span class="o">=</span> <span class="n">taxa_col</span><span class="p">,</span> 
+            <span class="n">taxa_grp_col</span> <span class="o">=</span> <span class="n">taxa_grp_col</span><span class="p">,</span> 
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseCoancestryMatrix.from_hdf5">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.from_hdf5">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_hdf5</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseCoancestryMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a ``DenseCoancestryMatrix`` from an HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            HDF5 file name which to read.</span>
+<span class="sd">        groupname : str or None</span>
+<span class="sd">            HDF5 group name under which the ``DenseCoancestryMatrix`` data is stored.</span>
+<span class="sd">            If None, the ``DenseCoancestryMatrix`` is read from base HDF5 group.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseCoancestryMatrix</span>
+<span class="sd">            A dense matrix read from file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">check_file_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>                             <span class="c1"># check file exists</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>                       <span class="c1"># open HDF5 in read only</span>
+        <span class="c1">######################################################### process groupname argument</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>                          <span class="c1"># if we have a string</span>
+            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">groupname</span><span class="p">)</span>    <span class="c1"># check that group exists</span>
+            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>                            <span class="c1"># if last character in string is not &#39;/&#39;</span>
+                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>                                <span class="c1"># add &#39;/&#39; to end of string</span>
+        <span class="k">elif</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>                                 <span class="c1"># else if groupname is None</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>                                      <span class="c1"># empty string</span>
+        <span class="k">else</span><span class="p">:</span>                                                   <span class="c1"># else raise error</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;groupname&#39; must be of type str or None&quot;</span><span class="p">)</span>
+        <span class="c1">######################################################### check that we have all required fields</span>
+        <span class="n">required_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mat&quot;</span><span class="p">]</span>                               <span class="c1"># all required arguments</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">:</span>                           <span class="c1"># for each required field</span>
+            <span class="n">fieldname</span> <span class="o">=</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span>                       <span class="c1"># concatenate base groupname and field</span>
+            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">)</span>    <span class="c1"># check that group exists</span>
+        <span class="c1">######################################################### read data</span>
+        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>                                           <span class="c1"># output dictionary</span>
+            <span class="s2">&quot;mat&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp&quot;</span> <span class="p">:</span> <span class="kc">None</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>                          <span class="c1"># for each field</span>
+            <span class="n">fieldname</span> <span class="o">=</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span>                       <span class="c1"># concatenate base groupname and field</span>
+            <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>                             <span class="c1"># if the field exists in the HDF5 file</span>
+                <span class="n">data_dict</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][()]</span>        <span class="c1"># read array</span>
+        <span class="c1">######################################################### read conclusion</span>
+        <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>                                          <span class="c1"># close file</span>
+        <span class="c1">######################################################### create object</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">data_dict</span><span class="p">)</span>                                  <span class="c1"># create object from read data</span>
+        <span class="k">return</span> <span class="n">mat</span></div>
+</div>
+
+
+
+
+<span class="c1">################################## Utilities ###################################</span>
+<div class="viewcode-block" id="check_is_DenseCoancestryMatrix">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.check_is_DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.check_is_DenseCoancestryMatrix">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_DenseCoancestryMatrix</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if object is of type DenseCoancestryMatrix. Otherwise raise TypeError.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        Any Python object to test.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of variable to print in TypeError message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DenseCoancestryMatrix</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; must be a DenseCoancestryMatrix&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, Robert Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

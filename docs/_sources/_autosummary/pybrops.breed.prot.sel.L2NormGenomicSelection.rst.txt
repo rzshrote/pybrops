@@ -1,0 +1,36 @@
+L2NormGenomicSelection
+======================
+
+.. automodule:: pybrops.breed.prot.sel.L2NormGenomicSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      L2NormGenomicBinarySelection
+      L2NormGenomicIntegerSelection
+      L2NormGenomicRealSelection
+      L2NormGenomicSelectionMixin
+      L2NormGenomicSubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

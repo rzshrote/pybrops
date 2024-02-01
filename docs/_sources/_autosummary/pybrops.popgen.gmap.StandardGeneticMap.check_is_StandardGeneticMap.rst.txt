@@ -1,0 +1,6 @@
+check\_is\_StandardGeneticMap
+=============================
+
+.. currentmodule:: pybrops.popgen.gmap.StandardGeneticMap
+
+.. autofunction:: check_is_StandardGeneticMap

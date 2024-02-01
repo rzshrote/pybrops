@@ -1,0 +1,80 @@
+FamilyEstimatedBreedingValueIntegerSelectionProblem
+===================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem
+
+.. autoclass:: FamilyEstimatedBreedingValueIntegerSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.bounds
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.do
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.evalfn
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.evaluate
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.from_bvmat
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.has_bounds
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.has_constraints
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.ideal_point
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.latentfn
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.nadir_point
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.name
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.pareto_front
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.callback
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.data
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.decn_space
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.decn_space_lower
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.decn_space_upper
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.ebv
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.elementwise
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.elementwise_func
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.elementwise_runner
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.eqcv_trans
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.eqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.eqcv_wt
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.exclude_from_serialization
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.family
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.familyid
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.familyix
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.ineqcv_trans
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.ineqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.ineqcv_wt
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.n_constr
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.n_eq_constr
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.n_ieq_constr
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.n_obj
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.n_var
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.ndecn
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.neqcv
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.nineqcv
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.nlatent
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.nobj
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.obj_trans
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.obj_trans_kwargs
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.obj_wt
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.replace_nan_values_by
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.strict
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.vars
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.vtype
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.xl
+      ~FamilyEstimatedBreedingValueIntegerSelectionProblem.xu
+   
+   

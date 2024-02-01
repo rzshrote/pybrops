@@ -1,0 +1,39 @@
+transfn
+=======
+
+.. automodule:: pybrops.breed.prot.sel.transfn
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      trans_dot
+      trans_flatten
+      trans_identity_unconstrained
+      trans_inbmax_penalty
+      trans_max_inbreeding_constraint
+      trans_ndpt_to_vec_dist
+      trans_sum
+      trans_sum_inbmax_penalty
+   
+   
+
+   
+   
+   
+
+
+

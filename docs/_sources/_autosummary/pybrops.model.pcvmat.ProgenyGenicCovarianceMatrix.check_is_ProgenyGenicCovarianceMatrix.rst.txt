@@ -1,0 +1,6 @@
+check\_is\_ProgenyGenicCovarianceMatrix
+=======================================
+
+.. currentmodule:: pybrops.model.pcvmat.ProgenyGenicCovarianceMatrix
+
+.. autofunction:: check_is_ProgenyGenicCovarianceMatrix

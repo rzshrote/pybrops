@@ -1,0 +1,6 @@
+check\_is\_DenseProgenyGenicCovarianceMatrix
+============================================
+
+.. currentmodule:: pybrops.model.pcvmat.DenseProgenyGenicCovarianceMatrix
+
+.. autofunction:: check_is_DenseProgenyGenicCovarianceMatrix

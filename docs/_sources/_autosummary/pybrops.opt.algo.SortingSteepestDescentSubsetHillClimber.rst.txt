@@ -1,0 +1,32 @@
+SortingSteepestDescentSubsetHillClimber
+=======================================
+
+.. automodule:: pybrops.opt.algo.SortingSteepestDescentSubsetHillClimber
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      SortingSteepestDescentSubsetHillClimber
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

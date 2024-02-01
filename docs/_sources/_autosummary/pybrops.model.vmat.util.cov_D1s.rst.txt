@@ -1,0 +1,6 @@
+cov\_D1s
+========
+
+.. currentmodule:: pybrops.model.vmat.util
+
+.. autofunction:: cov_D1s

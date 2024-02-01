@@ -1,0 +1,35 @@
+FamilyEstimatedBreedingValueSelectionProblemMixin
+=================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem
+
+.. autoclass:: FamilyEstimatedBreedingValueSelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~FamilyEstimatedBreedingValueSelectionProblemMixin.from_bvmat
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FamilyEstimatedBreedingValueSelectionProblemMixin.ebv
+      ~FamilyEstimatedBreedingValueSelectionProblemMixin.family
+      ~FamilyEstimatedBreedingValueSelectionProblemMixin.familyid
+      ~FamilyEstimatedBreedingValueSelectionProblemMixin.familyix
+      ~FamilyEstimatedBreedingValueSelectionProblemMixin.nlatent
+   
+   

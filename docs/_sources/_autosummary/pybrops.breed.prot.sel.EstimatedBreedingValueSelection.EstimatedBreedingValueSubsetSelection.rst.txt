@@ -1,0 +1,58 @@
+EstimatedBreedingValueSubsetSelection
+=====================================
+
+.. currentmodule:: pybrops.breed.prot.sel.EstimatedBreedingValueSelection
+
+.. autoclass:: EstimatedBreedingValueSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~EstimatedBreedingValueSubsetSelection.mosolve
+      ~EstimatedBreedingValueSubsetSelection.problem
+      ~EstimatedBreedingValueSubsetSelection.select
+      ~EstimatedBreedingValueSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EstimatedBreedingValueSubsetSelection.eqcv_trans
+      ~EstimatedBreedingValueSubsetSelection.eqcv_trans_kwargs
+      ~EstimatedBreedingValueSubsetSelection.eqcv_wt
+      ~EstimatedBreedingValueSubsetSelection.ineqcv_trans
+      ~EstimatedBreedingValueSubsetSelection.ineqcv_trans_kwargs
+      ~EstimatedBreedingValueSubsetSelection.ineqcv_wt
+      ~EstimatedBreedingValueSubsetSelection.moalgo
+      ~EstimatedBreedingValueSubsetSelection.ncross
+      ~EstimatedBreedingValueSubsetSelection.ndset_trans
+      ~EstimatedBreedingValueSubsetSelection.ndset_trans_kwargs
+      ~EstimatedBreedingValueSubsetSelection.ndset_wt
+      ~EstimatedBreedingValueSubsetSelection.neqcv
+      ~EstimatedBreedingValueSubsetSelection.nineqcv
+      ~EstimatedBreedingValueSubsetSelection.nmating
+      ~EstimatedBreedingValueSubsetSelection.nobj
+      ~EstimatedBreedingValueSubsetSelection.nparent
+      ~EstimatedBreedingValueSubsetSelection.nprogeny
+      ~EstimatedBreedingValueSubsetSelection.nselindiv
+      ~EstimatedBreedingValueSubsetSelection.ntrait
+      ~EstimatedBreedingValueSubsetSelection.obj_trans
+      ~EstimatedBreedingValueSubsetSelection.obj_trans_kwargs
+      ~EstimatedBreedingValueSubsetSelection.obj_wt
+      ~EstimatedBreedingValueSubsetSelection.rng
+      ~EstimatedBreedingValueSubsetSelection.soalgo
+      ~EstimatedBreedingValueSubsetSelection.unscale
+   
+   

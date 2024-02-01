@@ -1,0 +1,80 @@
+SquareTaxaMatrix
+================
+
+.. currentmodule:: pybrops.core.mat.SquareTaxaMatrix
+
+.. autoclass:: SquareTaxaMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SquareTaxaMatrix.adjoin
+      ~SquareTaxaMatrix.adjoin_taxa
+      ~SquareTaxaMatrix.append
+      ~SquareTaxaMatrix.append_taxa
+      ~SquareTaxaMatrix.concat
+      ~SquareTaxaMatrix.concat_taxa
+      ~SquareTaxaMatrix.copy
+      ~SquareTaxaMatrix.deepcopy
+      ~SquareTaxaMatrix.delete
+      ~SquareTaxaMatrix.delete_taxa
+      ~SquareTaxaMatrix.from_hdf5
+      ~SquareTaxaMatrix.group
+      ~SquareTaxaMatrix.group_taxa
+      ~SquareTaxaMatrix.incorp
+      ~SquareTaxaMatrix.incorp_taxa
+      ~SquareTaxaMatrix.insert
+      ~SquareTaxaMatrix.insert_taxa
+      ~SquareTaxaMatrix.is_grouped
+      ~SquareTaxaMatrix.is_grouped_taxa
+      ~SquareTaxaMatrix.is_square
+      ~SquareTaxaMatrix.is_square_taxa
+      ~SquareTaxaMatrix.lexsort
+      ~SquareTaxaMatrix.lexsort_taxa
+      ~SquareTaxaMatrix.remove
+      ~SquareTaxaMatrix.remove_taxa
+      ~SquareTaxaMatrix.reorder
+      ~SquareTaxaMatrix.reorder_taxa
+      ~SquareTaxaMatrix.select
+      ~SquareTaxaMatrix.select_taxa
+      ~SquareTaxaMatrix.sort
+      ~SquareTaxaMatrix.sort_taxa
+      ~SquareTaxaMatrix.to_hdf5
+      ~SquareTaxaMatrix.ungroup
+      ~SquareTaxaMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SquareTaxaMatrix.mat
+      ~SquareTaxaMatrix.mat_ndim
+      ~SquareTaxaMatrix.mat_shape
+      ~SquareTaxaMatrix.nsquare
+      ~SquareTaxaMatrix.nsquare_taxa
+      ~SquareTaxaMatrix.ntaxa
+      ~SquareTaxaMatrix.square_axes
+      ~SquareTaxaMatrix.square_axes_len
+      ~SquareTaxaMatrix.square_taxa_axes
+      ~SquareTaxaMatrix.square_taxa_axes_len
+      ~SquareTaxaMatrix.taxa
+      ~SquareTaxaMatrix.taxa_axis
+      ~SquareTaxaMatrix.taxa_grp
+      ~SquareTaxaMatrix.taxa_grp_len
+      ~SquareTaxaMatrix.taxa_grp_name
+      ~SquareTaxaMatrix.taxa_grp_spix
+      ~SquareTaxaMatrix.taxa_grp_stix
+   
+   

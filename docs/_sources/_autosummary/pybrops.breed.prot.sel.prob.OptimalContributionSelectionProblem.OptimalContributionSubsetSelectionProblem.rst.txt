@@ -1,0 +1,78 @@
+OptimalContributionSubsetSelectionProblem
+=========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem
+
+.. autoclass:: OptimalContributionSubsetSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalContributionSubsetSelectionProblem.bounds
+      ~OptimalContributionSubsetSelectionProblem.do
+      ~OptimalContributionSubsetSelectionProblem.evalfn
+      ~OptimalContributionSubsetSelectionProblem.evaluate
+      ~OptimalContributionSubsetSelectionProblem.from_bvmat_gmat
+      ~OptimalContributionSubsetSelectionProblem.has_bounds
+      ~OptimalContributionSubsetSelectionProblem.has_constraints
+      ~OptimalContributionSubsetSelectionProblem.ideal_point
+      ~OptimalContributionSubsetSelectionProblem.latentfn
+      ~OptimalContributionSubsetSelectionProblem.nadir_point
+      ~OptimalContributionSubsetSelectionProblem.name
+      ~OptimalContributionSubsetSelectionProblem.pareto_front
+      ~OptimalContributionSubsetSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalContributionSubsetSelectionProblem.C
+      ~OptimalContributionSubsetSelectionProblem.callback
+      ~OptimalContributionSubsetSelectionProblem.data
+      ~OptimalContributionSubsetSelectionProblem.decn_space
+      ~OptimalContributionSubsetSelectionProblem.decn_space_lower
+      ~OptimalContributionSubsetSelectionProblem.decn_space_upper
+      ~OptimalContributionSubsetSelectionProblem.ebv
+      ~OptimalContributionSubsetSelectionProblem.elementwise
+      ~OptimalContributionSubsetSelectionProblem.elementwise_func
+      ~OptimalContributionSubsetSelectionProblem.elementwise_runner
+      ~OptimalContributionSubsetSelectionProblem.eqcv_trans
+      ~OptimalContributionSubsetSelectionProblem.eqcv_trans_kwargs
+      ~OptimalContributionSubsetSelectionProblem.eqcv_wt
+      ~OptimalContributionSubsetSelectionProblem.exclude_from_serialization
+      ~OptimalContributionSubsetSelectionProblem.ineqcv_trans
+      ~OptimalContributionSubsetSelectionProblem.ineqcv_trans_kwargs
+      ~OptimalContributionSubsetSelectionProblem.ineqcv_wt
+      ~OptimalContributionSubsetSelectionProblem.n_constr
+      ~OptimalContributionSubsetSelectionProblem.n_eq_constr
+      ~OptimalContributionSubsetSelectionProblem.n_ieq_constr
+      ~OptimalContributionSubsetSelectionProblem.n_obj
+      ~OptimalContributionSubsetSelectionProblem.n_var
+      ~OptimalContributionSubsetSelectionProblem.ndecn
+      ~OptimalContributionSubsetSelectionProblem.neqcv
+      ~OptimalContributionSubsetSelectionProblem.nineqcv
+      ~OptimalContributionSubsetSelectionProblem.nlatent
+      ~OptimalContributionSubsetSelectionProblem.nobj
+      ~OptimalContributionSubsetSelectionProblem.obj_trans
+      ~OptimalContributionSubsetSelectionProblem.obj_trans_kwargs
+      ~OptimalContributionSubsetSelectionProblem.obj_wt
+      ~OptimalContributionSubsetSelectionProblem.replace_nan_values_by
+      ~OptimalContributionSubsetSelectionProblem.strict
+      ~OptimalContributionSubsetSelectionProblem.vars
+      ~OptimalContributionSubsetSelectionProblem.vtype
+      ~OptimalContributionSubsetSelectionProblem.xl
+      ~OptimalContributionSubsetSelectionProblem.xu
+   
+   

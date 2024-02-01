@@ -1,0 +1,41 @@
+SquareTraitMatrix
+=================
+
+.. automodule:: pybrops.core.mat.SquareTraitMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      SquareTraitMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_SquareTraitMatrix
+   
+   
+
+   
+   
+   
+
+
+

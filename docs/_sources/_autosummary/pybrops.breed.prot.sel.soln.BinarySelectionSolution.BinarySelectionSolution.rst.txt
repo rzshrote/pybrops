@@ -1,0 +1,44 @@
+BinarySelectionSolution
+=======================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.BinarySelectionSolution
+
+.. autoclass:: BinarySelectionSolution
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BinarySelectionSolution.decn_space
+      ~BinarySelectionSolution.decn_space_lower
+      ~BinarySelectionSolution.decn_space_upper
+      ~BinarySelectionSolution.eqcv_wt
+      ~BinarySelectionSolution.ineqcv_wt
+      ~BinarySelectionSolution.ndecn
+      ~BinarySelectionSolution.neqcv
+      ~BinarySelectionSolution.nineqcv
+      ~BinarySelectionSolution.nobj
+      ~BinarySelectionSolution.nsoln
+      ~BinarySelectionSolution.obj_wt
+      ~BinarySelectionSolution.soln_decn
+      ~BinarySelectionSolution.soln_eqcv
+      ~BinarySelectionSolution.soln_ineqcv
+      ~BinarySelectionSolution.soln_obj
+   
+   

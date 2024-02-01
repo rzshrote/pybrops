@@ -1,0 +1,77 @@
+MeanGenomicRelationshipBinarySelectionProblem
+=============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem
+
+.. autoclass:: MeanGenomicRelationshipBinarySelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanGenomicRelationshipBinarySelectionProblem.bounds
+      ~MeanGenomicRelationshipBinarySelectionProblem.do
+      ~MeanGenomicRelationshipBinarySelectionProblem.evalfn
+      ~MeanGenomicRelationshipBinarySelectionProblem.evaluate
+      ~MeanGenomicRelationshipBinarySelectionProblem.from_gmat
+      ~MeanGenomicRelationshipBinarySelectionProblem.has_bounds
+      ~MeanGenomicRelationshipBinarySelectionProblem.has_constraints
+      ~MeanGenomicRelationshipBinarySelectionProblem.ideal_point
+      ~MeanGenomicRelationshipBinarySelectionProblem.latentfn
+      ~MeanGenomicRelationshipBinarySelectionProblem.nadir_point
+      ~MeanGenomicRelationshipBinarySelectionProblem.name
+      ~MeanGenomicRelationshipBinarySelectionProblem.pareto_front
+      ~MeanGenomicRelationshipBinarySelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanGenomicRelationshipBinarySelectionProblem.C
+      ~MeanGenomicRelationshipBinarySelectionProblem.callback
+      ~MeanGenomicRelationshipBinarySelectionProblem.data
+      ~MeanGenomicRelationshipBinarySelectionProblem.decn_space
+      ~MeanGenomicRelationshipBinarySelectionProblem.decn_space_lower
+      ~MeanGenomicRelationshipBinarySelectionProblem.decn_space_upper
+      ~MeanGenomicRelationshipBinarySelectionProblem.elementwise
+      ~MeanGenomicRelationshipBinarySelectionProblem.elementwise_func
+      ~MeanGenomicRelationshipBinarySelectionProblem.elementwise_runner
+      ~MeanGenomicRelationshipBinarySelectionProblem.eqcv_trans
+      ~MeanGenomicRelationshipBinarySelectionProblem.eqcv_trans_kwargs
+      ~MeanGenomicRelationshipBinarySelectionProblem.eqcv_wt
+      ~MeanGenomicRelationshipBinarySelectionProblem.exclude_from_serialization
+      ~MeanGenomicRelationshipBinarySelectionProblem.ineqcv_trans
+      ~MeanGenomicRelationshipBinarySelectionProblem.ineqcv_trans_kwargs
+      ~MeanGenomicRelationshipBinarySelectionProblem.ineqcv_wt
+      ~MeanGenomicRelationshipBinarySelectionProblem.n_constr
+      ~MeanGenomicRelationshipBinarySelectionProblem.n_eq_constr
+      ~MeanGenomicRelationshipBinarySelectionProblem.n_ieq_constr
+      ~MeanGenomicRelationshipBinarySelectionProblem.n_obj
+      ~MeanGenomicRelationshipBinarySelectionProblem.n_var
+      ~MeanGenomicRelationshipBinarySelectionProblem.ndecn
+      ~MeanGenomicRelationshipBinarySelectionProblem.neqcv
+      ~MeanGenomicRelationshipBinarySelectionProblem.nineqcv
+      ~MeanGenomicRelationshipBinarySelectionProblem.nlatent
+      ~MeanGenomicRelationshipBinarySelectionProblem.nobj
+      ~MeanGenomicRelationshipBinarySelectionProblem.obj_trans
+      ~MeanGenomicRelationshipBinarySelectionProblem.obj_trans_kwargs
+      ~MeanGenomicRelationshipBinarySelectionProblem.obj_wt
+      ~MeanGenomicRelationshipBinarySelectionProblem.replace_nan_values_by
+      ~MeanGenomicRelationshipBinarySelectionProblem.strict
+      ~MeanGenomicRelationshipBinarySelectionProblem.vars
+      ~MeanGenomicRelationshipBinarySelectionProblem.vtype
+      ~MeanGenomicRelationshipBinarySelectionProblem.xl
+      ~MeanGenomicRelationshipBinarySelectionProblem.xu
+   
+   

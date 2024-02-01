@@ -1,0 +1,50 @@
+Generalized1NormGenomicSelection
+================================
+
+.. currentmodule:: pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection
+
+.. autoclass:: Generalized1NormGenomicSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~Generalized1NormGenomicSelection.objfn
+      ~Generalized1NormGenomicSelection.objfn_static
+      ~Generalized1NormGenomicSelection.objfn_vec
+      ~Generalized1NormGenomicSelection.objfn_vec_static
+      ~Generalized1NormGenomicSelection.pareto
+      ~Generalized1NormGenomicSelection.select
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Generalized1NormGenomicSelection.method
+      ~Generalized1NormGenomicSelection.moalgo
+      ~Generalized1NormGenomicSelection.ncross
+      ~Generalized1NormGenomicSelection.ndset_trans
+      ~Generalized1NormGenomicSelection.ndset_trans_kwargs
+      ~Generalized1NormGenomicSelection.ndset_wt
+      ~Generalized1NormGenomicSelection.nparent
+      ~Generalized1NormGenomicSelection.nprogeny
+      ~Generalized1NormGenomicSelection.objfn_trans
+      ~Generalized1NormGenomicSelection.objfn_trans_kwargs
+      ~Generalized1NormGenomicSelection.objfn_wt
+      ~Generalized1NormGenomicSelection.rng
+      ~Generalized1NormGenomicSelection.soalgo
+      ~Generalized1NormGenomicSelection.target
+      ~Generalized1NormGenomicSelection.weight
+   
+   

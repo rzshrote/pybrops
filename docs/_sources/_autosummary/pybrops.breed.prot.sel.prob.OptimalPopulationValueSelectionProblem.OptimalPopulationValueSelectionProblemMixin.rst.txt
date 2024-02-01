@@ -1,0 +1,33 @@
+OptimalPopulationValueSelectionProblemMixin
+===========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem
+
+.. autoclass:: OptimalPopulationValueSelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalPopulationValueSelectionProblemMixin.from_pgmat_gpmod
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalPopulationValueSelectionProblemMixin.haplomat
+      ~OptimalPopulationValueSelectionProblemMixin.nlatent
+      ~OptimalPopulationValueSelectionProblemMixin.ploidy
+   
+   

@@ -1,0 +1,56 @@
+MateSelectionProtocol
+=====================
+
+.. currentmodule:: pybrops.breed.prot.sel.MateSelectionProtocol
+
+.. autoclass:: MateSelectionProtocol
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MateSelectionProtocol.mosolve
+      ~MateSelectionProtocol.problem
+      ~MateSelectionProtocol.select
+      ~MateSelectionProtocol.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MateSelectionProtocol.eqcv_trans
+      ~MateSelectionProtocol.eqcv_trans_kwargs
+      ~MateSelectionProtocol.eqcv_wt
+      ~MateSelectionProtocol.ineqcv_trans
+      ~MateSelectionProtocol.ineqcv_trans_kwargs
+      ~MateSelectionProtocol.ineqcv_wt
+      ~MateSelectionProtocol.moalgo
+      ~MateSelectionProtocol.ncross
+      ~MateSelectionProtocol.ndset_trans
+      ~MateSelectionProtocol.ndset_trans_kwargs
+      ~MateSelectionProtocol.ndset_wt
+      ~MateSelectionProtocol.neqcv
+      ~MateSelectionProtocol.nineqcv
+      ~MateSelectionProtocol.nmating
+      ~MateSelectionProtocol.nobj
+      ~MateSelectionProtocol.nparent
+      ~MateSelectionProtocol.nprogeny
+      ~MateSelectionProtocol.nselindiv
+      ~MateSelectionProtocol.obj_trans
+      ~MateSelectionProtocol.obj_trans_kwargs
+      ~MateSelectionProtocol.obj_wt
+      ~MateSelectionProtocol.rng
+      ~MateSelectionProtocol.soalgo
+   
+   

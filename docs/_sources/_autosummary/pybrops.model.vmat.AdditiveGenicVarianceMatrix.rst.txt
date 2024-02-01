@@ -1,0 +1,41 @@
+AdditiveGenicVarianceMatrix
+===========================
+
+.. automodule:: pybrops.model.vmat.AdditiveGenicVarianceMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      AdditiveGenicVarianceMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_AdditiveGenicVarianceMatrix
+   
+   
+
+   
+   
+   
+
+
+

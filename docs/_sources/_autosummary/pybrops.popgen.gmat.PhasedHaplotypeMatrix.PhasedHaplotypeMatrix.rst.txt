@@ -1,0 +1,121 @@
+PhasedHaplotypeMatrix
+=====================
+
+.. currentmodule:: pybrops.popgen.gmat.PhasedHaplotypeMatrix
+
+.. autoclass:: PhasedHaplotypeMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PhasedHaplotypeMatrix.adjoin
+      ~PhasedHaplotypeMatrix.adjoin_phase
+      ~PhasedHaplotypeMatrix.adjoin_taxa
+      ~PhasedHaplotypeMatrix.adjoin_vrnt
+      ~PhasedHaplotypeMatrix.append
+      ~PhasedHaplotypeMatrix.append_phase
+      ~PhasedHaplotypeMatrix.append_taxa
+      ~PhasedHaplotypeMatrix.append_vrnt
+      ~PhasedHaplotypeMatrix.concat
+      ~PhasedHaplotypeMatrix.concat_phase
+      ~PhasedHaplotypeMatrix.concat_taxa
+      ~PhasedHaplotypeMatrix.concat_vrnt
+      ~PhasedHaplotypeMatrix.copy
+      ~PhasedHaplotypeMatrix.deepcopy
+      ~PhasedHaplotypeMatrix.delete
+      ~PhasedHaplotypeMatrix.delete_phase
+      ~PhasedHaplotypeMatrix.delete_taxa
+      ~PhasedHaplotypeMatrix.delete_vrnt
+      ~PhasedHaplotypeMatrix.from_hdf5
+      ~PhasedHaplotypeMatrix.group
+      ~PhasedHaplotypeMatrix.group_taxa
+      ~PhasedHaplotypeMatrix.group_vrnt
+      ~PhasedHaplotypeMatrix.gtcount
+      ~PhasedHaplotypeMatrix.gtfreq
+      ~PhasedHaplotypeMatrix.hcount
+      ~PhasedHaplotypeMatrix.hfreq
+      ~PhasedHaplotypeMatrix.incorp
+      ~PhasedHaplotypeMatrix.incorp_phase
+      ~PhasedHaplotypeMatrix.incorp_taxa
+      ~PhasedHaplotypeMatrix.incorp_vrnt
+      ~PhasedHaplotypeMatrix.insert
+      ~PhasedHaplotypeMatrix.insert_phase
+      ~PhasedHaplotypeMatrix.insert_taxa
+      ~PhasedHaplotypeMatrix.insert_vrnt
+      ~PhasedHaplotypeMatrix.is_grouped
+      ~PhasedHaplotypeMatrix.is_grouped_taxa
+      ~PhasedHaplotypeMatrix.is_grouped_vrnt
+      ~PhasedHaplotypeMatrix.lexsort
+      ~PhasedHaplotypeMatrix.lexsort_taxa
+      ~PhasedHaplotypeMatrix.lexsort_vrnt
+      ~PhasedHaplotypeMatrix.meh
+      ~PhasedHaplotypeMatrix.mhf
+      ~PhasedHaplotypeMatrix.remove
+      ~PhasedHaplotypeMatrix.remove_phase
+      ~PhasedHaplotypeMatrix.remove_taxa
+      ~PhasedHaplotypeMatrix.remove_vrnt
+      ~PhasedHaplotypeMatrix.reorder
+      ~PhasedHaplotypeMatrix.reorder_taxa
+      ~PhasedHaplotypeMatrix.reorder_vrnt
+      ~PhasedHaplotypeMatrix.select
+      ~PhasedHaplotypeMatrix.select_phase
+      ~PhasedHaplotypeMatrix.select_taxa
+      ~PhasedHaplotypeMatrix.select_vrnt
+      ~PhasedHaplotypeMatrix.sort
+      ~PhasedHaplotypeMatrix.sort_taxa
+      ~PhasedHaplotypeMatrix.sort_vrnt
+      ~PhasedHaplotypeMatrix.thcount
+      ~PhasedHaplotypeMatrix.thfreq
+      ~PhasedHaplotypeMatrix.to_hdf5
+      ~PhasedHaplotypeMatrix.ungroup
+      ~PhasedHaplotypeMatrix.ungroup_taxa
+      ~PhasedHaplotypeMatrix.ungroup_vrnt
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PhasedHaplotypeMatrix.mat
+      ~PhasedHaplotypeMatrix.mat_format
+      ~PhasedHaplotypeMatrix.mat_ndim
+      ~PhasedHaplotypeMatrix.mat_shape
+      ~PhasedHaplotypeMatrix.nphase
+      ~PhasedHaplotypeMatrix.ntaxa
+      ~PhasedHaplotypeMatrix.nvrnt
+      ~PhasedHaplotypeMatrix.phase_axis
+      ~PhasedHaplotypeMatrix.ploidy
+      ~PhasedHaplotypeMatrix.taxa
+      ~PhasedHaplotypeMatrix.taxa_axis
+      ~PhasedHaplotypeMatrix.taxa_grp
+      ~PhasedHaplotypeMatrix.taxa_grp_len
+      ~PhasedHaplotypeMatrix.taxa_grp_name
+      ~PhasedHaplotypeMatrix.taxa_grp_spix
+      ~PhasedHaplotypeMatrix.taxa_grp_stix
+      ~PhasedHaplotypeMatrix.vrnt_axis
+      ~PhasedHaplotypeMatrix.vrnt_chrgrp
+      ~PhasedHaplotypeMatrix.vrnt_chrgrp_len
+      ~PhasedHaplotypeMatrix.vrnt_chrgrp_name
+      ~PhasedHaplotypeMatrix.vrnt_chrgrp_spix
+      ~PhasedHaplotypeMatrix.vrnt_chrgrp_stix
+      ~PhasedHaplotypeMatrix.vrnt_genpos
+      ~PhasedHaplotypeMatrix.vrnt_hapalt
+      ~PhasedHaplotypeMatrix.vrnt_hapgrp
+      ~PhasedHaplotypeMatrix.vrnt_hapref
+      ~PhasedHaplotypeMatrix.vrnt_mask
+      ~PhasedHaplotypeMatrix.vrnt_name
+      ~PhasedHaplotypeMatrix.vrnt_phypos
+      ~PhasedHaplotypeMatrix.vrnt_xoprob
+   
+   

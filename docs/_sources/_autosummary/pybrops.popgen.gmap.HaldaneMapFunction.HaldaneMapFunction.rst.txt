@@ -1,0 +1,30 @@
+HaldaneMapFunction
+==================
+
+.. currentmodule:: pybrops.popgen.gmap.HaldaneMapFunction
+
+.. autoclass:: HaldaneMapFunction
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~HaldaneMapFunction.invmapfn
+      ~HaldaneMapFunction.mapfn
+      ~HaldaneMapFunction.rprob1g
+      ~HaldaneMapFunction.rprob1p
+      ~HaldaneMapFunction.rprob2g
+      ~HaldaneMapFunction.rprob2p
+   
+   
+
+   
+   
+   

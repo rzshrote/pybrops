@@ -1,0 +1,6 @@
+check\_is\_GenotypingProtocol
+=============================
+
+.. currentmodule:: pybrops.breed.prot.gt.GenotypingProtocol
+
+.. autofunction:: check_is_GenotypingProtocol

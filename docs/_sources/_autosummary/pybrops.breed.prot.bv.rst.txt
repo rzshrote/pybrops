@@ -1,0 +1,34 @@
+bv
+==
+
+.. automodule:: pybrops.breed.prot.bv
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.prot.bv.BreedingValueProtocol
+   pybrops.breed.prot.bv.MeanPhenotypicBreedingValue
+   pybrops.breed.prot.bv.TrueBreedingValue
+

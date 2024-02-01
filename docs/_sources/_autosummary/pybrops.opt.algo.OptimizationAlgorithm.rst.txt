@@ -1,0 +1,41 @@
+OptimizationAlgorithm
+=====================
+
+.. automodule:: pybrops.opt.algo.OptimizationAlgorithm
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      OptimizationAlgorithm
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_OptimizationAlgorithm
+   
+   
+
+   
+   
+   
+
+
+

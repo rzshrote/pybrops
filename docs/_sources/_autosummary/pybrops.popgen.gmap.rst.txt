@@ -1,0 +1,40 @@
+gmap
+====
+
+.. automodule:: pybrops.popgen.gmap
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.popgen.gmap.DenseGeneticMappableMatrix
+   pybrops.popgen.gmap.ExtendedGeneticMap
+   pybrops.popgen.gmap.GeneticMap
+   pybrops.popgen.gmap.GeneticMapFunction
+   pybrops.popgen.gmap.GeneticMappableMatrix
+   pybrops.popgen.gmap.HaldaneMapFunction
+   pybrops.popgen.gmap.KosambiMapFunction
+   pybrops.popgen.gmap.StandardGeneticMap
+   pybrops.popgen.gmap.util
+

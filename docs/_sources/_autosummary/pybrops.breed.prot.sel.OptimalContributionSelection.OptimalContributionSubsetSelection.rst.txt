@@ -1,0 +1,59 @@
+OptimalContributionSubsetSelection
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.OptimalContributionSelection
+
+.. autoclass:: OptimalContributionSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalContributionSubsetSelection.mosolve
+      ~OptimalContributionSubsetSelection.problem
+      ~OptimalContributionSubsetSelection.select
+      ~OptimalContributionSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalContributionSubsetSelection.cmatfcty
+      ~OptimalContributionSubsetSelection.eqcv_trans
+      ~OptimalContributionSubsetSelection.eqcv_trans_kwargs
+      ~OptimalContributionSubsetSelection.eqcv_wt
+      ~OptimalContributionSubsetSelection.ineqcv_trans
+      ~OptimalContributionSubsetSelection.ineqcv_trans_kwargs
+      ~OptimalContributionSubsetSelection.ineqcv_wt
+      ~OptimalContributionSubsetSelection.moalgo
+      ~OptimalContributionSubsetSelection.ncross
+      ~OptimalContributionSubsetSelection.ndset_trans
+      ~OptimalContributionSubsetSelection.ndset_trans_kwargs
+      ~OptimalContributionSubsetSelection.ndset_wt
+      ~OptimalContributionSubsetSelection.neqcv
+      ~OptimalContributionSubsetSelection.nineqcv
+      ~OptimalContributionSubsetSelection.nmating
+      ~OptimalContributionSubsetSelection.nobj
+      ~OptimalContributionSubsetSelection.nparent
+      ~OptimalContributionSubsetSelection.nprogeny
+      ~OptimalContributionSubsetSelection.nselindiv
+      ~OptimalContributionSubsetSelection.ntrait
+      ~OptimalContributionSubsetSelection.obj_trans
+      ~OptimalContributionSubsetSelection.obj_trans_kwargs
+      ~OptimalContributionSubsetSelection.obj_wt
+      ~OptimalContributionSubsetSelection.rng
+      ~OptimalContributionSubsetSelection.soalgo
+      ~OptimalContributionSubsetSelection.unscale
+   
+   

@@ -1,0 +1,78 @@
+OptimalPopulationValueSubsetSelectionProblem
+============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem
+
+.. autoclass:: OptimalPopulationValueSubsetSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalPopulationValueSubsetSelectionProblem.bounds
+      ~OptimalPopulationValueSubsetSelectionProblem.do
+      ~OptimalPopulationValueSubsetSelectionProblem.evalfn
+      ~OptimalPopulationValueSubsetSelectionProblem.evaluate
+      ~OptimalPopulationValueSubsetSelectionProblem.from_pgmat_gpmod
+      ~OptimalPopulationValueSubsetSelectionProblem.has_bounds
+      ~OptimalPopulationValueSubsetSelectionProblem.has_constraints
+      ~OptimalPopulationValueSubsetSelectionProblem.ideal_point
+      ~OptimalPopulationValueSubsetSelectionProblem.latentfn
+      ~OptimalPopulationValueSubsetSelectionProblem.nadir_point
+      ~OptimalPopulationValueSubsetSelectionProblem.name
+      ~OptimalPopulationValueSubsetSelectionProblem.pareto_front
+      ~OptimalPopulationValueSubsetSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalPopulationValueSubsetSelectionProblem.callback
+      ~OptimalPopulationValueSubsetSelectionProblem.data
+      ~OptimalPopulationValueSubsetSelectionProblem.decn_space
+      ~OptimalPopulationValueSubsetSelectionProblem.decn_space_lower
+      ~OptimalPopulationValueSubsetSelectionProblem.decn_space_upper
+      ~OptimalPopulationValueSubsetSelectionProblem.elementwise
+      ~OptimalPopulationValueSubsetSelectionProblem.elementwise_func
+      ~OptimalPopulationValueSubsetSelectionProblem.elementwise_runner
+      ~OptimalPopulationValueSubsetSelectionProblem.eqcv_trans
+      ~OptimalPopulationValueSubsetSelectionProblem.eqcv_trans_kwargs
+      ~OptimalPopulationValueSubsetSelectionProblem.eqcv_wt
+      ~OptimalPopulationValueSubsetSelectionProblem.exclude_from_serialization
+      ~OptimalPopulationValueSubsetSelectionProblem.haplomat
+      ~OptimalPopulationValueSubsetSelectionProblem.ineqcv_trans
+      ~OptimalPopulationValueSubsetSelectionProblem.ineqcv_trans_kwargs
+      ~OptimalPopulationValueSubsetSelectionProblem.ineqcv_wt
+      ~OptimalPopulationValueSubsetSelectionProblem.n_constr
+      ~OptimalPopulationValueSubsetSelectionProblem.n_eq_constr
+      ~OptimalPopulationValueSubsetSelectionProblem.n_ieq_constr
+      ~OptimalPopulationValueSubsetSelectionProblem.n_obj
+      ~OptimalPopulationValueSubsetSelectionProblem.n_var
+      ~OptimalPopulationValueSubsetSelectionProblem.ndecn
+      ~OptimalPopulationValueSubsetSelectionProblem.neqcv
+      ~OptimalPopulationValueSubsetSelectionProblem.nineqcv
+      ~OptimalPopulationValueSubsetSelectionProblem.nlatent
+      ~OptimalPopulationValueSubsetSelectionProblem.nobj
+      ~OptimalPopulationValueSubsetSelectionProblem.obj_trans
+      ~OptimalPopulationValueSubsetSelectionProblem.obj_trans_kwargs
+      ~OptimalPopulationValueSubsetSelectionProblem.obj_wt
+      ~OptimalPopulationValueSubsetSelectionProblem.ploidy
+      ~OptimalPopulationValueSubsetSelectionProblem.replace_nan_values_by
+      ~OptimalPopulationValueSubsetSelectionProblem.strict
+      ~OptimalPopulationValueSubsetSelectionProblem.vars
+      ~OptimalPopulationValueSubsetSelectionProblem.vtype
+      ~OptimalPopulationValueSubsetSelectionProblem.xl
+      ~OptimalPopulationValueSubsetSelectionProblem.xu
+   
+   

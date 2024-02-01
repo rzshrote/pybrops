@@ -1,0 +1,54 @@
+PhasedMatrix
+============
+
+.. currentmodule:: pybrops.core.mat.PhasedMatrix
+
+.. autoclass:: PhasedMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PhasedMatrix.adjoin
+      ~PhasedMatrix.adjoin_phase
+      ~PhasedMatrix.append
+      ~PhasedMatrix.append_phase
+      ~PhasedMatrix.concat
+      ~PhasedMatrix.concat_phase
+      ~PhasedMatrix.copy
+      ~PhasedMatrix.deepcopy
+      ~PhasedMatrix.delete
+      ~PhasedMatrix.delete_phase
+      ~PhasedMatrix.from_hdf5
+      ~PhasedMatrix.incorp
+      ~PhasedMatrix.incorp_phase
+      ~PhasedMatrix.insert
+      ~PhasedMatrix.insert_phase
+      ~PhasedMatrix.remove
+      ~PhasedMatrix.remove_phase
+      ~PhasedMatrix.select
+      ~PhasedMatrix.select_phase
+      ~PhasedMatrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PhasedMatrix.mat
+      ~PhasedMatrix.mat_ndim
+      ~PhasedMatrix.mat_shape
+      ~PhasedMatrix.nphase
+      ~PhasedMatrix.phase_axis
+   
+   

@@ -1,0 +1,96 @@
+DenseVanRadenCoancestryMatrix
+=============================
+
+.. currentmodule:: pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix
+
+.. autoclass:: DenseVanRadenCoancestryMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseVanRadenCoancestryMatrix.adjoin
+      ~DenseVanRadenCoancestryMatrix.adjoin_taxa
+      ~DenseVanRadenCoancestryMatrix.append
+      ~DenseVanRadenCoancestryMatrix.append_taxa
+      ~DenseVanRadenCoancestryMatrix.apply_jitter
+      ~DenseVanRadenCoancestryMatrix.coancestry
+      ~DenseVanRadenCoancestryMatrix.concat
+      ~DenseVanRadenCoancestryMatrix.concat_taxa
+      ~DenseVanRadenCoancestryMatrix.copy
+      ~DenseVanRadenCoancestryMatrix.deepcopy
+      ~DenseVanRadenCoancestryMatrix.delete
+      ~DenseVanRadenCoancestryMatrix.delete_taxa
+      ~DenseVanRadenCoancestryMatrix.from_csv
+      ~DenseVanRadenCoancestryMatrix.from_gmat
+      ~DenseVanRadenCoancestryMatrix.from_hdf5
+      ~DenseVanRadenCoancestryMatrix.from_pandas
+      ~DenseVanRadenCoancestryMatrix.group
+      ~DenseVanRadenCoancestryMatrix.group_taxa
+      ~DenseVanRadenCoancestryMatrix.incorp
+      ~DenseVanRadenCoancestryMatrix.incorp_taxa
+      ~DenseVanRadenCoancestryMatrix.insert
+      ~DenseVanRadenCoancestryMatrix.insert_taxa
+      ~DenseVanRadenCoancestryMatrix.inverse
+      ~DenseVanRadenCoancestryMatrix.is_grouped
+      ~DenseVanRadenCoancestryMatrix.is_grouped_taxa
+      ~DenseVanRadenCoancestryMatrix.is_positive_semidefinite
+      ~DenseVanRadenCoancestryMatrix.is_square
+      ~DenseVanRadenCoancestryMatrix.is_square_taxa
+      ~DenseVanRadenCoancestryMatrix.kinship
+      ~DenseVanRadenCoancestryMatrix.lexsort
+      ~DenseVanRadenCoancestryMatrix.lexsort_taxa
+      ~DenseVanRadenCoancestryMatrix.mat_asformat
+      ~DenseVanRadenCoancestryMatrix.max
+      ~DenseVanRadenCoancestryMatrix.max_inbreeding
+      ~DenseVanRadenCoancestryMatrix.mean
+      ~DenseVanRadenCoancestryMatrix.min
+      ~DenseVanRadenCoancestryMatrix.min_inbreeding
+      ~DenseVanRadenCoancestryMatrix.remove
+      ~DenseVanRadenCoancestryMatrix.remove_taxa
+      ~DenseVanRadenCoancestryMatrix.reorder
+      ~DenseVanRadenCoancestryMatrix.reorder_taxa
+      ~DenseVanRadenCoancestryMatrix.select
+      ~DenseVanRadenCoancestryMatrix.select_taxa
+      ~DenseVanRadenCoancestryMatrix.sort
+      ~DenseVanRadenCoancestryMatrix.sort_taxa
+      ~DenseVanRadenCoancestryMatrix.to_csv
+      ~DenseVanRadenCoancestryMatrix.to_hdf5
+      ~DenseVanRadenCoancestryMatrix.to_pandas
+      ~DenseVanRadenCoancestryMatrix.ungroup
+      ~DenseVanRadenCoancestryMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseVanRadenCoancestryMatrix.mat
+      ~DenseVanRadenCoancestryMatrix.mat_ndim
+      ~DenseVanRadenCoancestryMatrix.mat_shape
+      ~DenseVanRadenCoancestryMatrix.nsquare
+      ~DenseVanRadenCoancestryMatrix.nsquare_taxa
+      ~DenseVanRadenCoancestryMatrix.ntaxa
+      ~DenseVanRadenCoancestryMatrix.square_axes
+      ~DenseVanRadenCoancestryMatrix.square_axes_len
+      ~DenseVanRadenCoancestryMatrix.square_taxa_axes
+      ~DenseVanRadenCoancestryMatrix.square_taxa_axes_len
+      ~DenseVanRadenCoancestryMatrix.taxa
+      ~DenseVanRadenCoancestryMatrix.taxa_axis
+      ~DenseVanRadenCoancestryMatrix.taxa_grp
+      ~DenseVanRadenCoancestryMatrix.taxa_grp_len
+      ~DenseVanRadenCoancestryMatrix.taxa_grp_name
+      ~DenseVanRadenCoancestryMatrix.taxa_grp_spix
+      ~DenseVanRadenCoancestryMatrix.taxa_grp_stix
+   
+   

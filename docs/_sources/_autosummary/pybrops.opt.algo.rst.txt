@@ -1,0 +1,52 @@
+algo
+====
+
+.. automodule:: pybrops.opt.algo
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.opt.algo.BinaryGeneticAlgorithm
+   pybrops.opt.algo.BinaryOptimizationAlgorithm
+   pybrops.opt.algo.IntegerGeneticAlgorithm
+   pybrops.opt.algo.IntegerOptimizationAlgorithm
+   pybrops.opt.algo.NSGA2BinaryGeneticAlgorithm
+   pybrops.opt.algo.NSGA2IntegerGeneticAlgorithm
+   pybrops.opt.algo.NSGA2RealGeneticAlgorithm
+   pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm
+   pybrops.opt.algo.OptimizationAlgorithm
+   pybrops.opt.algo.RealGeneticAlgorithm
+   pybrops.opt.algo.RealOptimizationAlgorithm
+   pybrops.opt.algo.SortingSteepestDescentSubsetHillClimber
+   pybrops.opt.algo.SortingSubsetOptimizationAlgorithm
+   pybrops.opt.algo.SteepestDescentSubsetHillClimber
+   pybrops.opt.algo.SubsetGeneticAlgorithm
+   pybrops.opt.algo.SubsetOptimizationAlgorithm
+   pybrops.opt.algo.UnconstrainedNSGA2SetGeneticAlgorithm
+   pybrops.opt.algo.UnconstrainedOptimizationAlgorithm
+   pybrops.opt.algo.UnconstrainedSetGeneticAlgorithm
+   pybrops.opt.algo.UnconstrainedSteepestAscentSetHillClimber
+   pybrops.opt.algo.pymoo_addon
+

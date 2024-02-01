@@ -1,0 +1,59 @@
+MultiObjectiveGenomicSubsetSelection
+====================================
+
+.. currentmodule:: pybrops.breed.prot.sel.MultiObjectiveGenomicSelection
+
+.. autoclass:: MultiObjectiveGenomicSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MultiObjectiveGenomicSubsetSelection.mosolve
+      ~MultiObjectiveGenomicSubsetSelection.problem
+      ~MultiObjectiveGenomicSubsetSelection.select
+      ~MultiObjectiveGenomicSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MultiObjectiveGenomicSubsetSelection.eqcv_trans
+      ~MultiObjectiveGenomicSubsetSelection.eqcv_trans_kwargs
+      ~MultiObjectiveGenomicSubsetSelection.eqcv_wt
+      ~MultiObjectiveGenomicSubsetSelection.ineqcv_trans
+      ~MultiObjectiveGenomicSubsetSelection.ineqcv_trans_kwargs
+      ~MultiObjectiveGenomicSubsetSelection.ineqcv_wt
+      ~MultiObjectiveGenomicSubsetSelection.moalgo
+      ~MultiObjectiveGenomicSubsetSelection.ncross
+      ~MultiObjectiveGenomicSubsetSelection.ndset_trans
+      ~MultiObjectiveGenomicSubsetSelection.ndset_trans_kwargs
+      ~MultiObjectiveGenomicSubsetSelection.ndset_wt
+      ~MultiObjectiveGenomicSubsetSelection.neqcv
+      ~MultiObjectiveGenomicSubsetSelection.nineqcv
+      ~MultiObjectiveGenomicSubsetSelection.nmating
+      ~MultiObjectiveGenomicSubsetSelection.nobj
+      ~MultiObjectiveGenomicSubsetSelection.nparent
+      ~MultiObjectiveGenomicSubsetSelection.nprogeny
+      ~MultiObjectiveGenomicSubsetSelection.nselindiv
+      ~MultiObjectiveGenomicSubsetSelection.ntrait
+      ~MultiObjectiveGenomicSubsetSelection.obj_trans
+      ~MultiObjectiveGenomicSubsetSelection.obj_trans_kwargs
+      ~MultiObjectiveGenomicSubsetSelection.obj_wt
+      ~MultiObjectiveGenomicSubsetSelection.rng
+      ~MultiObjectiveGenomicSubsetSelection.soalgo
+      ~MultiObjectiveGenomicSubsetSelection.target
+      ~MultiObjectiveGenomicSubsetSelection.weight
+   
+   

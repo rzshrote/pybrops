@@ -1,0 +1,6 @@
+trans\_dot
+==========
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.trans
+
+.. autofunction:: trans_dot

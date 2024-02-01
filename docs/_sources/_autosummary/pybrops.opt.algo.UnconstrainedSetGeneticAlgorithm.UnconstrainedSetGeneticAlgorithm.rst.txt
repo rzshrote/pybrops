@@ -1,0 +1,39 @@
+UnconstrainedSetGeneticAlgorithm
+================================
+
+.. currentmodule:: pybrops.opt.algo.UnconstrainedSetGeneticAlgorithm
+
+.. autoclass:: UnconstrainedSetGeneticAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UnconstrainedSetGeneticAlgorithm.cxSet
+      ~UnconstrainedSetGeneticAlgorithm.mutSet
+      ~UnconstrainedSetGeneticAlgorithm.optimize
+      ~UnconstrainedSetGeneticAlgorithm.selRandomReplacement
+      ~UnconstrainedSetGeneticAlgorithm.selTournamentReplacement
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~UnconstrainedSetGeneticAlgorithm.M
+      ~UnconstrainedSetGeneticAlgorithm.lamb
+      ~UnconstrainedSetGeneticAlgorithm.mu
+      ~UnconstrainedSetGeneticAlgorithm.ngen
+      ~UnconstrainedSetGeneticAlgorithm.rng
+   
+   

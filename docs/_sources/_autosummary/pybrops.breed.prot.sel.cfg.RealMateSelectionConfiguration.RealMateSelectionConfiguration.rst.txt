@@ -1,0 +1,39 @@
+RealMateSelectionConfiguration
+==============================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.RealMateSelectionConfiguration
+
+.. autoclass:: RealMateSelectionConfiguration
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RealMateSelectionConfiguration.sample_xconfig
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RealMateSelectionConfiguration.ncross
+      ~RealMateSelectionConfiguration.nmating
+      ~RealMateSelectionConfiguration.nparent
+      ~RealMateSelectionConfiguration.nprogeny
+      ~RealMateSelectionConfiguration.pgmat
+      ~RealMateSelectionConfiguration.rng
+      ~RealMateSelectionConfiguration.xconfig
+      ~RealMateSelectionConfiguration.xconfig_decn
+      ~RealMateSelectionConfiguration.xconfig_xmap
+   
+   

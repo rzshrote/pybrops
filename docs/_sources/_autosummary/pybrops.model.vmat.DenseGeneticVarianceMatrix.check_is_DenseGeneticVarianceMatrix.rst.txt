@@ -1,0 +1,6 @@
+check\_is\_DenseGeneticVarianceMatrix
+=====================================
+
+.. currentmodule:: pybrops.model.vmat.DenseGeneticVarianceMatrix
+
+.. autofunction:: check_is_DenseGeneticVarianceMatrix

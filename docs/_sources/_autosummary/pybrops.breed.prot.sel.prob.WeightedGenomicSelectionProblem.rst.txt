@@ -1,0 +1,35 @@
+WeightedGenomicSelectionProblem
+===============================
+
+.. automodule:: pybrops.breed.prot.sel.prob.WeightedGenomicSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      WeightedGenomicBinarySelectionProblem
+      WeightedGenomicIntegerSelectionProblem
+      WeightedGenomicRealSelectionProblem
+      WeightedGenomicSubsetSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

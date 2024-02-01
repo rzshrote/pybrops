@@ -1,0 +1,116 @@
+GenotypeMatrix
+==============
+
+.. currentmodule:: pybrops.popgen.gmat.GenotypeMatrix
+
+.. autoclass:: GenotypeMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GenotypeMatrix.acount
+      ~GenotypeMatrix.adjoin
+      ~GenotypeMatrix.adjoin_taxa
+      ~GenotypeMatrix.adjoin_vrnt
+      ~GenotypeMatrix.afreq
+      ~GenotypeMatrix.apoly
+      ~GenotypeMatrix.append
+      ~GenotypeMatrix.append_taxa
+      ~GenotypeMatrix.append_vrnt
+      ~GenotypeMatrix.concat
+      ~GenotypeMatrix.concat_taxa
+      ~GenotypeMatrix.concat_vrnt
+      ~GenotypeMatrix.copy
+      ~GenotypeMatrix.deepcopy
+      ~GenotypeMatrix.delete
+      ~GenotypeMatrix.delete_taxa
+      ~GenotypeMatrix.delete_vrnt
+      ~GenotypeMatrix.from_hdf5
+      ~GenotypeMatrix.group
+      ~GenotypeMatrix.group_taxa
+      ~GenotypeMatrix.group_vrnt
+      ~GenotypeMatrix.gtcount
+      ~GenotypeMatrix.gtfreq
+      ~GenotypeMatrix.incorp
+      ~GenotypeMatrix.incorp_taxa
+      ~GenotypeMatrix.incorp_vrnt
+      ~GenotypeMatrix.insert
+      ~GenotypeMatrix.insert_taxa
+      ~GenotypeMatrix.insert_vrnt
+      ~GenotypeMatrix.interp_genpos
+      ~GenotypeMatrix.interp_xoprob
+      ~GenotypeMatrix.is_grouped
+      ~GenotypeMatrix.is_grouped_taxa
+      ~GenotypeMatrix.is_grouped_vrnt
+      ~GenotypeMatrix.lexsort
+      ~GenotypeMatrix.lexsort_taxa
+      ~GenotypeMatrix.lexsort_vrnt
+      ~GenotypeMatrix.maf
+      ~GenotypeMatrix.mat_asformat
+      ~GenotypeMatrix.meh
+      ~GenotypeMatrix.remove
+      ~GenotypeMatrix.remove_taxa
+      ~GenotypeMatrix.remove_vrnt
+      ~GenotypeMatrix.reorder
+      ~GenotypeMatrix.reorder_taxa
+      ~GenotypeMatrix.reorder_vrnt
+      ~GenotypeMatrix.select
+      ~GenotypeMatrix.select_taxa
+      ~GenotypeMatrix.select_vrnt
+      ~GenotypeMatrix.sort
+      ~GenotypeMatrix.sort_taxa
+      ~GenotypeMatrix.sort_vrnt
+      ~GenotypeMatrix.tacount
+      ~GenotypeMatrix.tafreq
+      ~GenotypeMatrix.to_hdf5
+      ~GenotypeMatrix.ungroup
+      ~GenotypeMatrix.ungroup_taxa
+      ~GenotypeMatrix.ungroup_vrnt
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenotypeMatrix.mat
+      ~GenotypeMatrix.mat_format
+      ~GenotypeMatrix.mat_ndim
+      ~GenotypeMatrix.mat_shape
+      ~GenotypeMatrix.nphase
+      ~GenotypeMatrix.ntaxa
+      ~GenotypeMatrix.nvrnt
+      ~GenotypeMatrix.ploidy
+      ~GenotypeMatrix.taxa
+      ~GenotypeMatrix.taxa_axis
+      ~GenotypeMatrix.taxa_grp
+      ~GenotypeMatrix.taxa_grp_len
+      ~GenotypeMatrix.taxa_grp_name
+      ~GenotypeMatrix.taxa_grp_spix
+      ~GenotypeMatrix.taxa_grp_stix
+      ~GenotypeMatrix.vrnt_axis
+      ~GenotypeMatrix.vrnt_chrgrp
+      ~GenotypeMatrix.vrnt_chrgrp_len
+      ~GenotypeMatrix.vrnt_chrgrp_name
+      ~GenotypeMatrix.vrnt_chrgrp_spix
+      ~GenotypeMatrix.vrnt_chrgrp_stix
+      ~GenotypeMatrix.vrnt_genpos
+      ~GenotypeMatrix.vrnt_hapalt
+      ~GenotypeMatrix.vrnt_hapgrp
+      ~GenotypeMatrix.vrnt_hapref
+      ~GenotypeMatrix.vrnt_mask
+      ~GenotypeMatrix.vrnt_name
+      ~GenotypeMatrix.vrnt_phypos
+      ~GenotypeMatrix.vrnt_xoprob
+   
+   

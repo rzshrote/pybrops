@@ -1,0 +1,81 @@
+GeneticMappableMatrix
+=====================
+
+.. currentmodule:: pybrops.popgen.gmap.GeneticMappableMatrix
+
+.. autoclass:: GeneticMappableMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneticMappableMatrix.adjoin
+      ~GeneticMappableMatrix.adjoin_vrnt
+      ~GeneticMappableMatrix.append
+      ~GeneticMappableMatrix.append_vrnt
+      ~GeneticMappableMatrix.concat
+      ~GeneticMappableMatrix.concat_vrnt
+      ~GeneticMappableMatrix.copy
+      ~GeneticMappableMatrix.deepcopy
+      ~GeneticMappableMatrix.delete
+      ~GeneticMappableMatrix.delete_vrnt
+      ~GeneticMappableMatrix.from_hdf5
+      ~GeneticMappableMatrix.group
+      ~GeneticMappableMatrix.group_vrnt
+      ~GeneticMappableMatrix.incorp
+      ~GeneticMappableMatrix.incorp_vrnt
+      ~GeneticMappableMatrix.insert
+      ~GeneticMappableMatrix.insert_vrnt
+      ~GeneticMappableMatrix.interp_genpos
+      ~GeneticMappableMatrix.interp_xoprob
+      ~GeneticMappableMatrix.is_grouped
+      ~GeneticMappableMatrix.is_grouped_vrnt
+      ~GeneticMappableMatrix.lexsort
+      ~GeneticMappableMatrix.lexsort_vrnt
+      ~GeneticMappableMatrix.remove
+      ~GeneticMappableMatrix.remove_vrnt
+      ~GeneticMappableMatrix.reorder
+      ~GeneticMappableMatrix.reorder_vrnt
+      ~GeneticMappableMatrix.select
+      ~GeneticMappableMatrix.select_vrnt
+      ~GeneticMappableMatrix.sort
+      ~GeneticMappableMatrix.sort_vrnt
+      ~GeneticMappableMatrix.to_hdf5
+      ~GeneticMappableMatrix.ungroup
+      ~GeneticMappableMatrix.ungroup_vrnt
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GeneticMappableMatrix.mat
+      ~GeneticMappableMatrix.mat_ndim
+      ~GeneticMappableMatrix.mat_shape
+      ~GeneticMappableMatrix.nvrnt
+      ~GeneticMappableMatrix.vrnt_axis
+      ~GeneticMappableMatrix.vrnt_chrgrp
+      ~GeneticMappableMatrix.vrnt_chrgrp_len
+      ~GeneticMappableMatrix.vrnt_chrgrp_name
+      ~GeneticMappableMatrix.vrnt_chrgrp_spix
+      ~GeneticMappableMatrix.vrnt_chrgrp_stix
+      ~GeneticMappableMatrix.vrnt_genpos
+      ~GeneticMappableMatrix.vrnt_hapalt
+      ~GeneticMappableMatrix.vrnt_hapgrp
+      ~GeneticMappableMatrix.vrnt_hapref
+      ~GeneticMappableMatrix.vrnt_mask
+      ~GeneticMappableMatrix.vrnt_name
+      ~GeneticMappableMatrix.vrnt_phypos
+      ~GeneticMappableMatrix.vrnt_xoprob
+   
+   

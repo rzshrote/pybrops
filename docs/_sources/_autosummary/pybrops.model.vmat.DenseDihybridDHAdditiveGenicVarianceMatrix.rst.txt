@@ -1,0 +1,32 @@
+DenseDihybridDHAdditiveGenicVarianceMatrix
+==========================================
+
+.. automodule:: pybrops.model.vmat.DenseDihybridDHAdditiveGenicVarianceMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseDihybridDHAdditiveGenicVarianceMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

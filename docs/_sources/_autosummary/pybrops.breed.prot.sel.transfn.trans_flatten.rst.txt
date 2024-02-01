@@ -1,0 +1,6 @@
+trans\_flatten
+==============
+
+.. currentmodule:: pybrops.breed.prot.sel.transfn
+
+.. autofunction:: trans_flatten

@@ -1,0 +1,6 @@
+check\_is\_SelectionProtocol
+============================
+
+.. currentmodule:: pybrops.breed.prot.sel.SelectionProtocol
+
+.. autofunction:: check_is_SelectionProtocol

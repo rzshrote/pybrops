@@ -1,0 +1,32 @@
+util
+====
+
+.. automodule:: pybrops.popgen.gmap.util
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      cM2d
+   
+   
+
+   
+   
+   
+
+
+

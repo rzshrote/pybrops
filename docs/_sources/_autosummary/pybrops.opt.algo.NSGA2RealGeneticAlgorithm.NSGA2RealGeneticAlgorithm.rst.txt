@@ -1,0 +1,33 @@
+NSGA2RealGeneticAlgorithm
+=========================
+
+.. currentmodule:: pybrops.opt.algo.NSGA2RealGeneticAlgorithm
+
+.. autoclass:: NSGA2RealGeneticAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~NSGA2RealGeneticAlgorithm.minimize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NSGA2RealGeneticAlgorithm.ngen
+      ~NSGA2RealGeneticAlgorithm.pop_size
+      ~NSGA2RealGeneticAlgorithm.rng
+   
+   

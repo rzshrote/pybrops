@@ -1,0 +1,6 @@
+check\_is\_EvaluationOperator
+=============================
+
+.. currentmodule:: pybrops.breed.op.eval.EvaluationOperator
+
+.. autofunction:: check_is_EvaluationOperator

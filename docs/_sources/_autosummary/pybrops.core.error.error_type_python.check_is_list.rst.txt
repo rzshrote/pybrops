@@ -1,0 +1,6 @@
+check\_is\_list
+===============
+
+.. currentmodule:: pybrops.core.error.error_type_python
+
+.. autofunction:: check_is_list

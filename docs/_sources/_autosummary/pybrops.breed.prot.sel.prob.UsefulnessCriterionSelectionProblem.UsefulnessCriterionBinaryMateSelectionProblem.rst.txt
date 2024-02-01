@@ -1,0 +1,79 @@
+UsefulnessCriterionBinaryMateSelectionProblem
+=============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem
+
+.. autoclass:: UsefulnessCriterionBinaryMateSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UsefulnessCriterionBinaryMateSelectionProblem.bounds
+      ~UsefulnessCriterionBinaryMateSelectionProblem.do
+      ~UsefulnessCriterionBinaryMateSelectionProblem.evalfn
+      ~UsefulnessCriterionBinaryMateSelectionProblem.evaluate
+      ~UsefulnessCriterionBinaryMateSelectionProblem.from_pgmat_gpmod
+      ~UsefulnessCriterionBinaryMateSelectionProblem.from_pgmat_gpmod_xmap
+      ~UsefulnessCriterionBinaryMateSelectionProblem.has_bounds
+      ~UsefulnessCriterionBinaryMateSelectionProblem.has_constraints
+      ~UsefulnessCriterionBinaryMateSelectionProblem.ideal_point
+      ~UsefulnessCriterionBinaryMateSelectionProblem.latentfn
+      ~UsefulnessCriterionBinaryMateSelectionProblem.nadir_point
+      ~UsefulnessCriterionBinaryMateSelectionProblem.name
+      ~UsefulnessCriterionBinaryMateSelectionProblem.pareto_front
+      ~UsefulnessCriterionBinaryMateSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~UsefulnessCriterionBinaryMateSelectionProblem.callback
+      ~UsefulnessCriterionBinaryMateSelectionProblem.data
+      ~UsefulnessCriterionBinaryMateSelectionProblem.decn_space
+      ~UsefulnessCriterionBinaryMateSelectionProblem.decn_space_lower
+      ~UsefulnessCriterionBinaryMateSelectionProblem.decn_space_upper
+      ~UsefulnessCriterionBinaryMateSelectionProblem.decn_space_xmap
+      ~UsefulnessCriterionBinaryMateSelectionProblem.elementwise
+      ~UsefulnessCriterionBinaryMateSelectionProblem.elementwise_func
+      ~UsefulnessCriterionBinaryMateSelectionProblem.elementwise_runner
+      ~UsefulnessCriterionBinaryMateSelectionProblem.eqcv_trans
+      ~UsefulnessCriterionBinaryMateSelectionProblem.eqcv_trans_kwargs
+      ~UsefulnessCriterionBinaryMateSelectionProblem.eqcv_wt
+      ~UsefulnessCriterionBinaryMateSelectionProblem.exclude_from_serialization
+      ~UsefulnessCriterionBinaryMateSelectionProblem.ineqcv_trans
+      ~UsefulnessCriterionBinaryMateSelectionProblem.ineqcv_trans_kwargs
+      ~UsefulnessCriterionBinaryMateSelectionProblem.ineqcv_wt
+      ~UsefulnessCriterionBinaryMateSelectionProblem.n_constr
+      ~UsefulnessCriterionBinaryMateSelectionProblem.n_eq_constr
+      ~UsefulnessCriterionBinaryMateSelectionProblem.n_ieq_constr
+      ~UsefulnessCriterionBinaryMateSelectionProblem.n_obj
+      ~UsefulnessCriterionBinaryMateSelectionProblem.n_var
+      ~UsefulnessCriterionBinaryMateSelectionProblem.ndecn
+      ~UsefulnessCriterionBinaryMateSelectionProblem.neqcv
+      ~UsefulnessCriterionBinaryMateSelectionProblem.nineqcv
+      ~UsefulnessCriterionBinaryMateSelectionProblem.nlatent
+      ~UsefulnessCriterionBinaryMateSelectionProblem.nobj
+      ~UsefulnessCriterionBinaryMateSelectionProblem.obj_trans
+      ~UsefulnessCriterionBinaryMateSelectionProblem.obj_trans_kwargs
+      ~UsefulnessCriterionBinaryMateSelectionProblem.obj_wt
+      ~UsefulnessCriterionBinaryMateSelectionProblem.replace_nan_values_by
+      ~UsefulnessCriterionBinaryMateSelectionProblem.strict
+      ~UsefulnessCriterionBinaryMateSelectionProblem.ucmat
+      ~UsefulnessCriterionBinaryMateSelectionProblem.vars
+      ~UsefulnessCriterionBinaryMateSelectionProblem.vtype
+      ~UsefulnessCriterionBinaryMateSelectionProblem.xl
+      ~UsefulnessCriterionBinaryMateSelectionProblem.xu
+   
+   

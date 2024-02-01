@@ -1,0 +1,36 @@
+L1NormGenomicSelectionProblem
+=============================
+
+.. automodule:: pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      L1NormGenomicBinarySelectionProblem
+      L1NormGenomicIntegerSelectionProblem
+      L1NormGenomicRealSelectionProblem
+      L1NormGenomicSelectionProblemMixin
+      L1NormGenomicSubsetSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

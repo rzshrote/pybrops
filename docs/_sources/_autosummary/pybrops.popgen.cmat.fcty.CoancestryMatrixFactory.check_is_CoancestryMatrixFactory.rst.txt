@@ -1,0 +1,6 @@
+check\_is\_CoancestryMatrixFactory
+==================================
+
+.. currentmodule:: pybrops.popgen.cmat.fcty.CoancestryMatrixFactory
+
+.. autofunction:: check_is_CoancestryMatrixFactory

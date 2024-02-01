@@ -1,0 +1,32 @@
+NSGA2SubsetGeneticAlgorithm
+===========================
+
+.. automodule:: pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      NSGA2SubsetGeneticAlgorithm
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,35 @@
+haplo
+=====
+
+.. automodule:: pybrops.core.util.haplo
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      haplobin
+      haplobin_bounds
+      haplomat
+      nhaploblk_chrom
+   
+   
+
+   
+   
+   
+
+
+

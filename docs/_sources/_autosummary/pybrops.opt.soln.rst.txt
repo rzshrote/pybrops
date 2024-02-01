@@ -1,0 +1,36 @@
+soln
+====
+
+.. automodule:: pybrops.opt.soln
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.opt.soln.BinarySolution
+   pybrops.opt.soln.IntegerSolution
+   pybrops.opt.soln.RealSolution
+   pybrops.opt.soln.Solution
+   pybrops.opt.soln.SubsetSolution
+

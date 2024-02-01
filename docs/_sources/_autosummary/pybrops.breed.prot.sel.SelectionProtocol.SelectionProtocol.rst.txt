@@ -1,0 +1,56 @@
+SelectionProtocol
+=================
+
+.. currentmodule:: pybrops.breed.prot.sel.SelectionProtocol
+
+.. autoclass:: SelectionProtocol
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SelectionProtocol.mosolve
+      ~SelectionProtocol.problem
+      ~SelectionProtocol.select
+      ~SelectionProtocol.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SelectionProtocol.eqcv_trans
+      ~SelectionProtocol.eqcv_trans_kwargs
+      ~SelectionProtocol.eqcv_wt
+      ~SelectionProtocol.ineqcv_trans
+      ~SelectionProtocol.ineqcv_trans_kwargs
+      ~SelectionProtocol.ineqcv_wt
+      ~SelectionProtocol.moalgo
+      ~SelectionProtocol.ncross
+      ~SelectionProtocol.ndset_trans
+      ~SelectionProtocol.ndset_trans_kwargs
+      ~SelectionProtocol.ndset_wt
+      ~SelectionProtocol.neqcv
+      ~SelectionProtocol.nineqcv
+      ~SelectionProtocol.nmating
+      ~SelectionProtocol.nobj
+      ~SelectionProtocol.nparent
+      ~SelectionProtocol.nprogeny
+      ~SelectionProtocol.nselindiv
+      ~SelectionProtocol.obj_trans
+      ~SelectionProtocol.obj_trans_kwargs
+      ~SelectionProtocol.obj_wt
+      ~SelectionProtocol.rng
+      ~SelectionProtocol.soalgo
+   
+   

@@ -1,0 +1,6 @@
+trans\_empty
+============
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.trans
+
+.. autofunction:: trans_empty

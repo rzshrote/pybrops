@@ -1,0 +1,56 @@
+RealSelectionProtocol
+=====================
+
+.. currentmodule:: pybrops.breed.prot.sel.RealSelectionProtocol
+
+.. autoclass:: RealSelectionProtocol
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RealSelectionProtocol.mosolve
+      ~RealSelectionProtocol.problem
+      ~RealSelectionProtocol.select
+      ~RealSelectionProtocol.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RealSelectionProtocol.eqcv_trans
+      ~RealSelectionProtocol.eqcv_trans_kwargs
+      ~RealSelectionProtocol.eqcv_wt
+      ~RealSelectionProtocol.ineqcv_trans
+      ~RealSelectionProtocol.ineqcv_trans_kwargs
+      ~RealSelectionProtocol.ineqcv_wt
+      ~RealSelectionProtocol.moalgo
+      ~RealSelectionProtocol.ncross
+      ~RealSelectionProtocol.ndset_trans
+      ~RealSelectionProtocol.ndset_trans_kwargs
+      ~RealSelectionProtocol.ndset_wt
+      ~RealSelectionProtocol.neqcv
+      ~RealSelectionProtocol.nineqcv
+      ~RealSelectionProtocol.nmating
+      ~RealSelectionProtocol.nobj
+      ~RealSelectionProtocol.nparent
+      ~RealSelectionProtocol.nprogeny
+      ~RealSelectionProtocol.nselindiv
+      ~RealSelectionProtocol.obj_trans
+      ~RealSelectionProtocol.obj_trans_kwargs
+      ~RealSelectionProtocol.obj_wt
+      ~RealSelectionProtocol.rng
+      ~RealSelectionProtocol.soalgo
+   
+   

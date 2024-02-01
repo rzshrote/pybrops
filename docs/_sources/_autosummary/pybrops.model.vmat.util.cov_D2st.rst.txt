@@ -1,0 +1,6 @@
+cov\_D2st
+=========
+
+.. currentmodule:: pybrops.model.vmat.util
+
+.. autofunction:: cov_D2st

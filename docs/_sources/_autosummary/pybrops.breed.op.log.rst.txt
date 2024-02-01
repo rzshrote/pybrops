@@ -1,0 +1,32 @@
+log
+===
+
+.. automodule:: pybrops.breed.op.log
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.op.log.Logbook
+

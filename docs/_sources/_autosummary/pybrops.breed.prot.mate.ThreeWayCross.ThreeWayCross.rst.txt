@@ -1,0 +1,34 @@
+ThreeWayCross
+=============
+
+.. currentmodule:: pybrops.breed.prot.mate.ThreeWayCross
+
+.. autoclass:: ThreeWayCross
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ThreeWayCross.mate
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ThreeWayCross.family_counter
+      ~ThreeWayCross.nparent
+      ~ThreeWayCross.progeny_counter
+      ~ThreeWayCross.rng
+   
+   

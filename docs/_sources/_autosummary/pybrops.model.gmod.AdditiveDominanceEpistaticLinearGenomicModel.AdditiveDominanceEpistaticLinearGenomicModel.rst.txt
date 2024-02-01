@@ -1,0 +1,91 @@
+AdditiveDominanceEpistaticLinearGenomicModel
+============================================
+
+.. currentmodule:: pybrops.model.gmod.AdditiveDominanceEpistaticLinearGenomicModel
+
+.. autoclass:: AdditiveDominanceEpistaticLinearGenomicModel
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~AdditiveDominanceEpistaticLinearGenomicModel.bulmer
+      ~AdditiveDominanceEpistaticLinearGenomicModel.bulmer_numpy
+      ~AdditiveDominanceEpistaticLinearGenomicModel.copy
+      ~AdditiveDominanceEpistaticLinearGenomicModel.daavail
+      ~AdditiveDominanceEpistaticLinearGenomicModel.dacount
+      ~AdditiveDominanceEpistaticLinearGenomicModel.dafixed
+      ~AdditiveDominanceEpistaticLinearGenomicModel.dafreq
+      ~AdditiveDominanceEpistaticLinearGenomicModel.deepcopy
+      ~AdditiveDominanceEpistaticLinearGenomicModel.faavail
+      ~AdditiveDominanceEpistaticLinearGenomicModel.facount
+      ~AdditiveDominanceEpistaticLinearGenomicModel.fafixed
+      ~AdditiveDominanceEpistaticLinearGenomicModel.fafreq
+      ~AdditiveDominanceEpistaticLinearGenomicModel.fit
+      ~AdditiveDominanceEpistaticLinearGenomicModel.fit_numpy
+      ~AdditiveDominanceEpistaticLinearGenomicModel.from_csv_dict
+      ~AdditiveDominanceEpistaticLinearGenomicModel.from_hdf5
+      ~AdditiveDominanceEpistaticLinearGenomicModel.from_pandas_dict
+      ~AdditiveDominanceEpistaticLinearGenomicModel.gebv
+      ~AdditiveDominanceEpistaticLinearGenomicModel.gebv_numpy
+      ~AdditiveDominanceEpistaticLinearGenomicModel.gegv
+      ~AdditiveDominanceEpistaticLinearGenomicModel.gegv_numpy
+      ~AdditiveDominanceEpistaticLinearGenomicModel.lsl
+      ~AdditiveDominanceEpistaticLinearGenomicModel.lsl_numpy
+      ~AdditiveDominanceEpistaticLinearGenomicModel.predict
+      ~AdditiveDominanceEpistaticLinearGenomicModel.predict_numpy
+      ~AdditiveDominanceEpistaticLinearGenomicModel.score
+      ~AdditiveDominanceEpistaticLinearGenomicModel.score_numpy
+      ~AdditiveDominanceEpistaticLinearGenomicModel.to_csv_dict
+      ~AdditiveDominanceEpistaticLinearGenomicModel.to_hdf5
+      ~AdditiveDominanceEpistaticLinearGenomicModel.to_pandas_dict
+      ~AdditiveDominanceEpistaticLinearGenomicModel.usl
+      ~AdditiveDominanceEpistaticLinearGenomicModel.usl_numpy
+      ~AdditiveDominanceEpistaticLinearGenomicModel.var_A
+      ~AdditiveDominanceEpistaticLinearGenomicModel.var_A_numpy
+      ~AdditiveDominanceEpistaticLinearGenomicModel.var_G
+      ~AdditiveDominanceEpistaticLinearGenomicModel.var_G_numpy
+      ~AdditiveDominanceEpistaticLinearGenomicModel.var_a
+      ~AdditiveDominanceEpistaticLinearGenomicModel.var_a_numpy
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~AdditiveDominanceEpistaticLinearGenomicModel.beta
+      ~AdditiveDominanceEpistaticLinearGenomicModel.hyperparams
+      ~AdditiveDominanceEpistaticLinearGenomicModel.model_name
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nexplan
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nexplan_beta
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nexplan_u
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nexplan_u_a
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nexplan_u_d
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nexplan_u_i
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nexplan_u_misc
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nparam
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nparam_beta
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nparam_u
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nparam_u_a
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nparam_u_d
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nparam_u_i
+      ~AdditiveDominanceEpistaticLinearGenomicModel.nparam_u_misc
+      ~AdditiveDominanceEpistaticLinearGenomicModel.ntrait
+      ~AdditiveDominanceEpistaticLinearGenomicModel.trait
+      ~AdditiveDominanceEpistaticLinearGenomicModel.u
+      ~AdditiveDominanceEpistaticLinearGenomicModel.u_a
+      ~AdditiveDominanceEpistaticLinearGenomicModel.u_d
+      ~AdditiveDominanceEpistaticLinearGenomicModel.u_i
+      ~AdditiveDominanceEpistaticLinearGenomicModel.u_misc
+   
+   

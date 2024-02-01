@@ -1,0 +1,6 @@
+check\_pandas\_DataFrame\_has\_columns
+======================================
+
+.. currentmodule:: pybrops.core.error.error_value_pandas
+
+.. autofunction:: check_pandas_DataFrame_has_columns

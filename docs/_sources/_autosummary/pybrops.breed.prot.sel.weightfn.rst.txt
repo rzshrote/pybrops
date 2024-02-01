@@ -1,0 +1,33 @@
+weightfn
+========
+
+.. automodule:: pybrops.breed.prot.sel.weightfn
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      weight_absolute
+      weight_one
+   
+   
+
+   
+   
+   
+
+
+

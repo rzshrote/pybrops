@@ -1,0 +1,1178 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection &#8212; pybrops 0.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/sel/UnconstrainedGeneralized1NormGenomicSelection';</script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pybrops.bree...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module implementing selection protocols for general 1-norm genomic selection</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">types</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+
+<span class="kn">from</span> <span class="nn">pybrops.opt.algo.UnconstrainedNSGA2SetGeneticAlgorithm</span> <span class="kn">import</span> <span class="n">UnconstrainedNSGA2SetGeneticAlgorithm</span>
+<span class="kn">from</span> <span class="nn">pybrops.opt.algo.UnconstrainedOptimizationAlgorithm</span> <span class="kn">import</span> <span class="n">UnconstrainedOptimizationAlgorithm</span><span class="p">,</span> <span class="n">check_is_OptimizationAlgorithm</span>
+<span class="kn">from</span> <span class="nn">pybrops.opt.algo.UnconstrainedSteepestAscentSetHillClimber</span> <span class="kn">import</span> <span class="n">UnconstrainedSteepestAscentSetHillClimber</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.UnconstrainedSelectionProtocol</span> <span class="kn">import</span> <span class="n">UnconstrainedSelectionProtocol</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.targetfn</span> <span class="kn">import</span> <span class="n">target_positive</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.weightfn</span> <span class="kn">import</span> <span class="n">weight_absolute</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_attr_python</span> <span class="kn">import</span> <span class="n">check_is_callable</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_Generator_or_RandomState</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_dict</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_int</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_str</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_isinstance</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_gt</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.random.prng</span> <span class="kn">import</span> <span class="n">global_prng</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.AdditiveLinearGenomicModel</span> <span class="kn">import</span> <span class="n">AdditiveLinearGenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.GenotypeMatrix</span> <span class="kn">import</span> <span class="n">GenotypeMatrix</span>
+
+<div class="viewcode-block" id="Generalized1NormGenomicSelection">
+<a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.html#pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection">[docs]</a>
+<span class="k">class</span> <span class="nc">Generalized1NormGenomicSelection</span><span class="p">(</span><span class="n">UnconstrainedSelectionProtocol</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    docstring for Generalized1NormGenomicSelection.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">nparent</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">ncross</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">nprogeny</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">weight</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">weight_absolute</span><span class="p">,</span>
+            <span class="n">target</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">target_positive</span><span class="p">,</span>
+            <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;single&quot;</span><span class="p">,</span>
+            <span class="n">objfn_trans</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">objfn_trans_kwargs</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">objfn_wt</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>
+            <span class="n">ndset_trans</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">ndset_trans_kwargs</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">ndset_wt</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span>
+            <span class="n">rng</span> <span class="o">=</span> <span class="n">global_prng</span><span class="p">,</span> 
+            <span class="n">soalgo</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">moalgo</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for Generalized1NormGenomicSelection.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        nparent : int</span>
+<span class="sd">            Number of parents to select.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Generalized1NormGenomicSelection</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nparent</span> <span class="o">=</span> <span class="n">nparent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ncross</span> <span class="o">=</span> <span class="n">ncross</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nprogeny</span> <span class="o">=</span> <span class="n">nprogeny</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">target</span> <span class="o">=</span> <span class="n">target</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objfn_trans</span> <span class="o">=</span> <span class="n">objfn_trans</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objfn_trans_kwargs</span> <span class="o">=</span> <span class="n">objfn_trans_kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objfn_wt</span> <span class="o">=</span> <span class="n">objfn_wt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ndset_trans</span> <span class="o">=</span> <span class="n">ndset_trans</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ndset_trans_kwargs</span> <span class="o">=</span> <span class="n">ndset_trans_kwargs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ndset_wt</span> <span class="o">=</span> <span class="n">ndset_wt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">rng</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">soalgo</span> <span class="o">=</span> <span class="n">soalgo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moalgo</span> <span class="o">=</span> <span class="n">moalgo</span>
+    
+    <span class="c1">############################ Object Properties #############################</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nparent</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of parents to select.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nparent</span>
+    <span class="nd">@nparent</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">nparent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set number of parents to select.&quot;&quot;&quot;</span>
+        <span class="n">check_is_int</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;nparent&quot;</span><span class="p">)</span>      <span class="c1"># must be int</span>
+        <span class="n">check_is_gt</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;nparent&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>    <span class="c1"># int must be &gt;0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nparent</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ncross</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of crosses per configuration.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ncross</span>
+    <span class="nd">@ncross</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">ncross</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set number of crosses per configuration.&quot;&quot;&quot;</span>
+        <span class="n">check_is_int</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;ncross&quot;</span><span class="p">)</span>       <span class="c1"># must be int</span>
+        <span class="n">check_is_gt</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;ncross&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>     <span class="c1"># int must be &gt;0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ncross</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nprogeny</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of progeny to derive from each cross configuration.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nprogeny</span>
+    <span class="nd">@nprogeny</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">nprogeny</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set number of progeny to derive from each cross configuration.&quot;&quot;&quot;</span>
+        <span class="n">check_is_int</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;nprogeny&quot;</span><span class="p">)</span>     <span class="c1"># must be int</span>
+        <span class="n">check_is_gt</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;nprogeny&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>   <span class="c1"># int must be &gt;0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_nprogeny</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Callable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Marker weights or marker weight function.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span>
+    <span class="nd">@weight</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Callable</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set marker weights or marker weight function.&quot;&quot;&quot;</span>
+        <span class="n">check_isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Callable</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Callable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Allele frequency targets or allele frequency target function.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_target</span>
+    <span class="nd">@target</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">target</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Callable</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set allele frequency targets or allele frequency target function.&quot;&quot;&quot;</span>
+        <span class="n">check_isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;target&quot;</span><span class="p">,</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Callable</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_target</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Selection method.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method</span>
+    <span class="nd">@method</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set selection method.&quot;&quot;&quot;</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;method&quot;</span><span class="p">)</span>       <span class="c1"># must be string</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>               <span class="c1"># convert to lowercase</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;single&quot;</span><span class="p">,</span> <span class="s2">&quot;pareto&quot;</span><span class="p">)</span>      <span class="c1"># method options</span>
+        <span class="c1"># if not method supported raise ValueError</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported &#39;method&#39;. Options are: &quot;</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">options</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">objfn_trans</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Objective function transformation function.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objfn_trans</span>
+    <span class="nd">@objfn_trans</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">objfn_trans</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span><span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set objective function transformation function.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>                       <span class="c1"># if given object</span>
+            <span class="n">check_is_callable</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;objfn_trans&quot;</span><span class="p">)</span> <span class="c1"># must be callable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_objfn_trans</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">objfn_trans_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Objective function transformation function keyword arguments.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objfn_trans_kwargs</span>
+    <span class="nd">@objfn_trans_kwargs</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">objfn_trans_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span><span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set objective function transformation function keyword arguments.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>                           <span class="c1"># if given None</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="p">{}</span>                              <span class="c1"># set default to empty dict</span>
+        <span class="n">check_is_dict</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;objfn_trans_kwargs&quot;</span><span class="p">)</span>  <span class="c1"># check is dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_objfn_trans_kwargs</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">objfn_wt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Objective function weights.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objfn_wt</span>
+    <span class="nd">@objfn_wt</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">objfn_wt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set objective function weights.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_objfn_wt</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ndset_trans</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Nondominated set transformation function.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ndset_trans</span>
+    <span class="nd">@ndset_trans</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">ndset_trans</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span><span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set nondominated set transformation function.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>                       <span class="c1"># if given object</span>
+            <span class="n">check_is_callable</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;ndset_trans&quot;</span><span class="p">)</span> <span class="c1"># must be callable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ndset_trans</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ndset_trans_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Nondominated set transformation function keyword arguments.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ndset_trans_kwargs</span>
+    <span class="nd">@ndset_trans_kwargs</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">ndset_trans_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span><span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set nondominated set transformation function keyword arguments.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>                           <span class="c1"># if given None</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="p">{}</span>                              <span class="c1"># set default to empty dict</span>
+        <span class="n">check_is_dict</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;ndset_trans_kwargs&quot;</span><span class="p">)</span>  <span class="c1"># check is dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ndset_trans_kwargs</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ndset_wt</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Nondominated set weights.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ndset_wt</span>
+    <span class="nd">@ndset_wt</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">ndset_wt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set nondominated set weights.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ndset_wt</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">rng</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Random number generator source.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rng</span>
+    <span class="nd">@rng</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">rng</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">Generator</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set random number generator source.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">global_prng</span>
+        <span class="n">check_is_Generator_or_RandomState</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;rng&quot;</span><span class="p">)</span> <span class="c1"># check is numpy.Generator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rng</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">soalgo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UnconstrainedOptimizationAlgorithm</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Single objective optimization algorithm.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_soalgo</span>
+    <span class="nd">@soalgo</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">soalgo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">UnconstrainedOptimizationAlgorithm</span><span class="p">,</span><span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set single objective optimization algorithm.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">UnconstrainedSteepestAscentSetHillClimber</span><span class="p">(</span><span class="n">rng</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="p">)</span>
+        <span class="n">check_is_OptimizationAlgorithm</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;soalgo&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_soalgo</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">moalgo</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UnconstrainedOptimizationAlgorithm</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Multi-objective opimization algorithm.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_moalgo</span>
+    <span class="nd">@moalgo</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">moalgo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">UnconstrainedOptimizationAlgorithm</span><span class="p">,</span><span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set multi-objective opimization algorithm.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">UnconstrainedNSGA2SetGeneticAlgorithm</span><span class="p">(</span>
+                <span class="n">ngen</span> <span class="o">=</span> <span class="mi">250</span><span class="p">,</span>     <span class="c1"># number of generations to evolve</span>
+                <span class="n">mu</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>       <span class="c1"># number of parents in population</span>
+                <span class="n">lamb</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>     <span class="c1"># number of progeny to produce</span>
+                <span class="n">M</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span>        <span class="c1"># algorithm crossover genetic map length</span>
+                <span class="n">rng</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span>  <span class="c1"># PRNG source</span>
+            <span class="p">)</span>
+        <span class="n">check_is_OptimizationAlgorithm</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;moalgo&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_moalgo</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1">############################################################################</span>
+    <span class="c1">########################## Private Object Methods ##########################</span>
+    <span class="c1">############################################################################</span>
+    <span class="k">def</span> <span class="nf">_calc_mkrwt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">:</span> <span class="n">AdditiveLinearGenomicModel</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">(</span><span class="n">gpmod</span><span class="o">.</span><span class="n">u_a</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;variable &#39;weight&#39; must be a callable function or numpy.ndarray&quot;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">_calc_tfreq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">:</span> <span class="n">AdditiveLinearGenomicModel</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">(</span><span class="n">gpmod</span><span class="o">.</span><span class="n">u_a</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;variable &#39;target&#39; must be a callable function or numpy.ndarray&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_calc_V</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gmat</span><span class="p">:</span> <span class="n">GenotypeMatrix</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">:</span> <span class="n">AdditiveLinearGenomicModel</span><span class="p">):</span>
+        <span class="c1"># get marker weights and target frequencies</span>
+        <span class="n">mkrwt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_mkrwt</span><span class="p">(</span><span class="n">gpmod</span><span class="p">)</span> <span class="c1"># (p,t)</span>
+        <span class="n">tfreq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_tfreq</span><span class="p">(</span><span class="n">gpmod</span><span class="p">)</span> <span class="c1"># (p,t)</span>
+
+        <span class="c1"># make sure mkrwt and tfreq have the same dimensions</span>
+        <span class="k">if</span> <span class="n">mkrwt</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">tfreq</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;marker weights and target allele frequencies do not have the same shape&quot;</span><span class="p">)</span>
+
+        <span class="c1"># get number of traits and taxa</span>
+        <span class="n">nvrnt</span> <span class="o">=</span> <span class="n">mkrwt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">ntrait</span> <span class="o">=</span> <span class="n">mkrwt</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">ntaxa</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">ntaxa</span>
+        <span class="n">ploidy</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">gmat</span><span class="o">.</span><span class="n">ploidy</span><span class="p">)</span>
+
+        <span class="c1"># allocate a tensor for storing distance matrices</span>
+        <span class="c1"># (n,p,t)</span>
+        <span class="n">V</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">ntaxa</span><span class="p">,</span><span class="n">nvrnt</span><span class="p">,</span><span class="n">ntrait</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;float64&quot;</span><span class="p">)</span>
+
+        <span class="c1"># get the genotype matrix as {0,1,2,...}</span>
+        <span class="c1"># divide the genotypes by the number of phases</span>
+        <span class="c1"># (n,p)</span>
+        <span class="n">Z</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">ploidy</span><span class="p">)</span> <span class="o">*</span> <span class="n">gmat</span><span class="o">.</span><span class="n">tacount</span><span class="p">()</span>
+
+        <span class="c1"># calculate a distance matrix for each trait</span>
+        <span class="k">for</span> <span class="n">trait</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntrait</span><span class="p">):</span>
+            <span class="c1"># (n,p) = (1,p) * ( (n,p) - (1,p) )</span>
+            <span class="n">V</span><span class="p">[:,:,</span><span class="n">trait</span><span class="p">]</span> <span class="o">=</span> <span class="n">mkrwt</span><span class="p">[</span><span class="kc">None</span><span class="p">,:,</span><span class="n">trait</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">Z</span> <span class="o">-</span> <span class="n">tfreq</span><span class="p">[</span><span class="kc">None</span><span class="p">,:,</span><span class="n">trait</span><span class="p">])</span>
+
+        <span class="c1"># return distance value tensor</span>
+        <span class="c1"># (n,p,t)</span>
+        <span class="k">return</span> <span class="n">V</span>
+
+    <span class="c1">############################## Object Methods ##############################</span>
+<div class="viewcode-block" id="Generalized1NormGenomicSelection.select">
+<a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.html#pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.select">[docs]</a>
+    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pgmat</span><span class="p">,</span> <span class="n">gmat</span><span class="p">,</span> <span class="n">ptdf</span><span class="p">,</span> <span class="n">bvmat</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">,</span> <span class="n">t_cur</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="n">miscout</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select parents individuals for breeding.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pgmat : PhasedGenotypeMatrix</span>
+<span class="sd">            Genomes</span>
+<span class="sd">        gmat : GenotypeMatrix</span>
+<span class="sd">            Genotypes</span>
+<span class="sd">        ptdf : pandas.DataFrame</span>
+<span class="sd">            Phenotype dataframe</span>
+<span class="sd">        bvmat : BreedingValueMatrix</span>
+<span class="sd">            Breeding value matrix</span>
+<span class="sd">        gpmod : GenomicModel</span>
+<span class="sd">            Genomic prediction model</span>
+<span class="sd">        t_cur : int</span>
+<span class="sd">            Current generation number.</span>
+<span class="sd">        t_max : int</span>
+<span class="sd">            Maximum (deadline) generation number.</span>
+<span class="sd">        miscout : dict, None, default = None</span>
+<span class="sd">            Pointer to a dictionary for miscellaneous user defined output.</span>
+<span class="sd">            If ``dict``, write to dict (may overwrite previously defined fields).</span>
+<span class="sd">            If ``None``, user defined output is not calculated or stored.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : tuple</span>
+<span class="sd">            A tuple containing four objects: ``(pgmat, sel, ncross, nprogeny)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``pgmat`` is a PhasedGenotypeMatrix of parental candidates.</span>
+<span class="sd">            - ``sel`` is a ``numpy.ndarray`` of indices specifying a cross</span>
+<span class="sd">              pattern. Each index corresponds to an individual in ``pgmat``.</span>
+<span class="sd">            - ``ncross`` is a ``numpy.ndarray`` specifying the number of</span>
+<span class="sd">              crosses to perform per cross pattern.</span>
+<span class="sd">            - ``nprogeny`` is a ``numpy.ndarray`` specifying the number of</span>
+<span class="sd">              progeny to generate per cross.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Solve problem using a single objective method</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;single&quot;</span><span class="p">:</span>
+            <span class="c1"># get vectorized objective function</span>
+            <span class="n">objfn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objfn</span><span class="p">(</span>
+                <span class="n">pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="p">,</span>
+                <span class="n">gmat</span> <span class="o">=</span> <span class="n">gmat</span><span class="p">,</span>
+                <span class="n">ptdf</span> <span class="o">=</span> <span class="n">ptdf</span><span class="p">,</span>
+                <span class="n">bvmat</span> <span class="o">=</span> <span class="n">bvmat</span><span class="p">,</span>
+                <span class="n">gpmod</span> <span class="o">=</span> <span class="n">gpmod</span><span class="p">,</span>
+                <span class="n">t_cur</span> <span class="o">=</span> <span class="n">t_cur</span><span class="p">,</span>
+                <span class="n">t_max</span> <span class="o">=</span> <span class="n">t_max</span>
+            <span class="p">)</span>
+
+            <span class="c1"># optimize using single objective algorithm</span>
+            <span class="n">sel_score</span><span class="p">,</span> <span class="n">sel</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">soalgo</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span>
+                <span class="n">objfn</span><span class="p">,</span>                              <span class="c1"># objective function</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nparent</span><span class="p">,</span>                   <span class="c1"># number of parents to select</span>
+                <span class="n">sspace</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">pgmat</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">),</span> <span class="c1"># parental indices</span>
+                <span class="n">objfn_wt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objfn_wt</span><span class="p">,</span>           <span class="c1"># maximizing function</span>
+                <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+
+            <span class="c1"># shuffle selection to ensure random mating</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">sel</span><span class="p">)</span>
+
+            <span class="c1"># add optimization details to miscellaneous output</span>
+            <span class="k">if</span> <span class="n">miscout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">miscout</span><span class="p">[</span><span class="s2">&quot;sel_score&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sel_score</span>
+                <span class="n">miscout</span><span class="p">[</span><span class="s2">&quot;sel&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sel</span>
+                <span class="n">miscout</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">misc</span><span class="p">)</span> <span class="c1"># add dict to dict</span>
+
+            <span class="k">return</span> <span class="n">pgmat</span><span class="p">,</span> <span class="n">sel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncross</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nprogeny</span>
+
+        <span class="c1"># estimate Pareto frontier, then choose from non-dominated points.</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;pareto&quot;</span><span class="p">:</span>
+            <span class="c1"># get the pareto frontier</span>
+            <span class="n">frontier</span><span class="p">,</span> <span class="n">sel_config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pareto</span><span class="p">(</span>
+                <span class="n">pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="p">,</span>
+                <span class="n">gmat</span> <span class="o">=</span> <span class="n">gmat</span><span class="p">,</span>
+                <span class="n">ptdf</span> <span class="o">=</span> <span class="n">ptdf</span><span class="p">,</span>
+                <span class="n">bvmat</span> <span class="o">=</span> <span class="n">bvmat</span><span class="p">,</span>
+                <span class="n">gpmod</span> <span class="o">=</span> <span class="n">gpmod</span><span class="p">,</span>
+                <span class="n">t_cur</span> <span class="o">=</span> <span class="n">t_cur</span><span class="p">,</span>
+                <span class="n">t_max</span> <span class="o">=</span> <span class="n">t_max</span><span class="p">,</span>
+                <span class="n">miscout</span> <span class="o">=</span> <span class="n">miscout</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+
+            <span class="c1"># get scores for each of the points along the pareto frontier</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ndset_wt</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ndset_trans</span><span class="p">(</span><span class="n">frontier</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">ndset_trans_kwargs</span><span class="p">)</span>
+
+            <span class="c1"># get index of maximum score</span>
+            <span class="n">ix</span> <span class="o">=</span> <span class="n">score</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+
+            <span class="c1"># add fields to miscout</span>
+            <span class="k">if</span> <span class="n">miscout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">miscout</span><span class="p">[</span><span class="s2">&quot;frontier&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">frontier</span>
+                <span class="n">miscout</span><span class="p">[</span><span class="s2">&quot;sel_config&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sel_config</span>
+
+            <span class="k">return</span> <span class="n">pgmat</span><span class="p">,</span> <span class="n">sel_config</span><span class="p">[</span><span class="n">ix</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncross</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nprogeny</span></div>
+
+
+<div class="viewcode-block" id="Generalized1NormGenomicSelection.objfn">
+<a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.html#pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.objfn">[docs]</a>
+    <span class="k">def</span> <span class="nf">objfn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pgmat</span><span class="p">,</span> <span class="n">gmat</span><span class="p">,</span> <span class="n">ptdf</span><span class="p">,</span> <span class="n">bvmat</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">,</span> <span class="n">t_cur</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an objective function for the provided datasets.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pgmat : PhasedGenotypeMatrix</span>
+<span class="sd">            Input phased genotype matrix containing genomes.</span>
+<span class="sd">        gmat : GenotypeMatrix</span>
+<span class="sd">            Input genotype matrix.</span>
+<span class="sd">        ptdf : pandas.DataFrame</span>
+<span class="sd">            Not used by this function.</span>
+<span class="sd">        bvmat : BreedingValueMatrix</span>
+<span class="sd">            Input breeding value matrix.</span>
+<span class="sd">        gpmod : LinearGenomicModel</span>
+<span class="sd">            Linear genomic prediction model.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        outfn : function</span>
+<span class="sd">            A selection objective function for the specified problem.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get default parameters</span>
+        <span class="n">trans</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objfn_trans</span>
+        <span class="n">trans_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objfn_trans_kwargs</span>
+
+        <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_V</span><span class="p">(</span><span class="n">gmat</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">)</span>       <span class="c1"># get Cholesky decomposition of genomic relationship matrix: (t,n,n)</span>
+
+        <span class="c1"># copy objective function and modify default values</span>
+        <span class="c1"># this avoids using functools.partial and reduces function execution time.</span>
+        <span class="n">outfn</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objfn_static</span><span class="o">.</span><span class="vm">__code__</span><span class="p">,</span>     <span class="c1"># byte code pointer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objfn_static</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">,</span>  <span class="c1"># global variables</span>
+            <span class="kc">None</span><span class="p">,</span>                           <span class="c1"># new name for the function</span>
+            <span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">trans</span><span class="p">,</span> <span class="n">trans_kwargs</span><span class="p">),</span>       <span class="c1"># default values for last 3 arguments</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objfn_static</span><span class="o">.</span><span class="vm">__closure__</span>   <span class="c1"># closure byte code pointer</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">outfn</span></div>
+
+
+<div class="viewcode-block" id="Generalized1NormGenomicSelection.objfn_vec">
+<a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.html#pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.objfn_vec">[docs]</a>
+    <span class="k">def</span> <span class="nf">objfn_vec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pgmat</span><span class="p">,</span> <span class="n">gmat</span><span class="p">,</span> <span class="n">ptdf</span><span class="p">,</span> <span class="n">bvmat</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">,</span> <span class="n">t_cur</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a vectorized objective function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get default parameters</span>
+        <span class="n">trans</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objfn_trans</span>
+        <span class="n">trans_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objfn_trans_kwargs</span>
+
+        <span class="n">V</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_V</span><span class="p">(</span><span class="n">gmat</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">)</span>       <span class="c1"># get Cholesky decomposition of genomic relationship matrix: (t,n,n)</span>
+
+        <span class="c1"># copy objective function and modify default values</span>
+        <span class="c1"># this avoids using functools.partial and reduces function execution time.</span>
+        <span class="n">outfn</span> <span class="o">=</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objfn_vec_static</span><span class="o">.</span><span class="vm">__code__</span><span class="p">,</span>     <span class="c1"># byte code pointer</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objfn_vec_static</span><span class="o">.</span><span class="vm">__globals__</span><span class="p">,</span>  <span class="c1"># global variables</span>
+            <span class="kc">None</span><span class="p">,</span>                               <span class="c1"># new name for the function</span>
+            <span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">trans</span><span class="p">,</span> <span class="n">trans_kwargs</span><span class="p">),</span>           <span class="c1"># default values for last 3 arguments</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objfn_vec_static</span><span class="o">.</span><span class="vm">__closure__</span>   <span class="c1"># closure byte code pointer</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">outfn</span></div>
+
+
+<div class="viewcode-block" id="Generalized1NormGenomicSelection.pareto">
+<a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.html#pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.pareto">[docs]</a>
+    <span class="k">def</span> <span class="nf">pareto</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pgmat</span><span class="p">,</span> <span class="n">gmat</span><span class="p">,</span> <span class="n">ptdf</span><span class="p">,</span> <span class="n">bvmat</span><span class="p">,</span> <span class="n">gpmod</span><span class="p">,</span> <span class="n">t_cur</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="n">miscout</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate a Pareto frontier for objectives.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        pgmat : PhasedGenotypeMatrix</span>
+<span class="sd">            Genomes</span>
+<span class="sd">        gmat : GenotypeMatrix</span>
+<span class="sd">            Genotypes</span>
+<span class="sd">        ptdf : pandas.DataFrame</span>
+<span class="sd">            Phenotype dataframe</span>
+<span class="sd">        bvmat : BreedingValueMatrix</span>
+<span class="sd">            Breeding value matrix</span>
+<span class="sd">        gpmod : GenomicModel</span>
+<span class="sd">            Genomic prediction model</span>
+<span class="sd">        t_cur : int</span>
+<span class="sd">            Current generation number.</span>
+<span class="sd">        t_max : int</span>
+<span class="sd">            Maximum (deadline) generation number.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : tuple</span>
+<span class="sd">            A tuple containing two objects ``(frontier, sel_config)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``frontier`` is a ``numpy.ndarray`` of shape ``(q,v)`` containing</span>
+<span class="sd">              Pareto frontier points.</span>
+<span class="sd">            - ``sel_config`` is a ``numpy.ndarray`` of shape ``(q,k)`` containing</span>
+<span class="sd">              parent selection decisions for each corresponding point in the</span>
+<span class="sd">              Pareto frontier.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``q`` is the number of points in the frontier.</span>
+<span class="sd">            - ``v`` is the number of objectives for the frontier.</span>
+<span class="sd">            - ``k`` is the number of search space decision variables.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get selection parameters</span>
+        <span class="n">nparent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nparent</span>
+        <span class="n">objfn_wt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objfn_wt</span>
+
+        <span class="c1"># get number of taxa</span>
+        <span class="n">ntaxa</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">ntaxa</span>
+
+        <span class="c1"># create objective function</span>
+        <span class="n">objfn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">objfn</span><span class="p">(</span>
+            <span class="n">pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="p">,</span>
+            <span class="n">gmat</span> <span class="o">=</span> <span class="n">gmat</span><span class="p">,</span>
+            <span class="n">ptdf</span> <span class="o">=</span> <span class="n">ptdf</span><span class="p">,</span>
+            <span class="n">bvmat</span> <span class="o">=</span> <span class="n">bvmat</span><span class="p">,</span>
+            <span class="n">gpmod</span> <span class="o">=</span> <span class="n">gpmod</span><span class="p">,</span>
+            <span class="n">t_cur</span> <span class="o">=</span> <span class="n">t_cur</span><span class="p">,</span>
+            <span class="n">t_max</span> <span class="o">=</span> <span class="n">t_max</span>
+        <span class="p">)</span>
+
+        <span class="c1"># use multi-objective optimization to approximate Pareto front.</span>
+        <span class="n">frontier</span><span class="p">,</span> <span class="n">sel_config</span><span class="p">,</span> <span class="n">misc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moalgo</span><span class="o">.</span><span class="n">optimize</span><span class="p">(</span>
+            <span class="n">objfn</span> <span class="o">=</span> <span class="n">objfn</span><span class="p">,</span>                  <span class="c1"># objective function</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">nparent</span><span class="p">,</span>                    <span class="c1"># vector length to optimize (sspace^k)</span>
+            <span class="n">sspace</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ntaxa</span><span class="p">),</span>   <span class="c1"># search space options</span>
+            <span class="n">objfn_wt</span> <span class="o">=</span> <span class="n">objfn_wt</span><span class="p">,</span>            <span class="c1"># weights to apply to each objective</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="c1"># handle miscellaneous output</span>
+        <span class="k">if</span> <span class="n">miscout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>     <span class="c1"># if miscout is provided</span>
+            <span class="n">miscout</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">misc</span><span class="p">)</span>    <span class="c1"># add &#39;misc&#39; to &#39;miscout&#39;, overwriting as needed</span>
+
+        <span class="k">return</span> <span class="n">frontier</span><span class="p">,</span> <span class="n">sel_config</span></div>
+
+
+    <span class="c1">############################################################################</span>
+    <span class="c1">############################## Static Methods ##############################</span>
+    <span class="c1">############################################################################</span>
+<div class="viewcode-block" id="Generalized1NormGenomicSelection.objfn_static">
+<a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.html#pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.objfn_static">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">objfn_static</span><span class="p">(</span><span class="n">sel</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">V</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">trans</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Score a parent selection vector according to its distance from a utopian point.</span>
+<span class="sd">        The goal is to minimize this function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sel : numpy.ndarray</span>
+<span class="sd">            A selection indices matrix of shape ``(k,)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``k`` is the number of individuals to select.</span>
+
+<span class="sd">            Each index indicates which individuals to select.</span>
+<span class="sd">            Each index in ``sel`` represents a single individual&#39;s row.</span>
+<span class="sd">        V : numpy.ndarray</span>
+<span class="sd">            A matrix of shape ``(n,p,t)`` containing distance values of individuals&#39; </span>
+<span class="sd">            alleles for each trait.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of individuals.</span>
+<span class="sd">            - ``p`` is the number of markers.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        trans : function or callable</span>
+<span class="sd">            A transformation operator to alter the output.</span>
+<span class="sd">            Function must adhere to the following standard:</span>
+
+<span class="sd">            - Must accept a single ``numpy.ndarray`` argument.</span>
+<span class="sd">            - Must return a single object, whether scalar or ``numpy.ndarray``.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Dictionary of keyword arguments to pass to ``trans`` function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dist : numpy.ndarray</span>
+<span class="sd">            A matrix of shape ``(t,)`` if ``trans`` is ``None``.</span>
+
+<span class="sd">            Distances for each target.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># calculate vector</span>
+        <span class="c1"># (n,p,t)[(k,),:] -&gt; (k,p,t)</span>
+        <span class="c1"># (k,p,t).sum(0) -&gt; (p,t)</span>
+        <span class="c1"># scalar * (p,t) -&gt; (p,t)</span>
+        <span class="c1"># | (p,t) | -&gt; (p,t)</span>
+        <span class="c1"># (p,t).sum(0) -&gt; (t,)</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">absolute</span><span class="p">((</span><span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sel</span><span class="p">))</span> <span class="o">*</span> <span class="n">V</span><span class="p">[</span><span class="n">sel</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># apply transformations if needed</span>
+        <span class="k">if</span> <span class="n">trans</span><span class="p">:</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">trans</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">dist</span></div>
+
+
+<div class="viewcode-block" id="Generalized1NormGenomicSelection.objfn_vec_static">
+<a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.html#pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection.Generalized1NormGenomicSelection.objfn_vec_static">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">objfn_vec_static</span><span class="p">(</span><span class="n">sel</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">V</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">trans</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Score a parent selection vector according to its distance from a utopian point.</span>
+<span class="sd">        The goal is to minimize this function.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sel : numpy.ndarray</span>
+<span class="sd">            A selection indices matrix of shape ``(j,k)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``j`` is the number of configurations to score.</span>
+<span class="sd">            - ``k`` is the number of individuals to select.</span>
+
+<span class="sd">            Each index indicates which individuals to select.</span>
+<span class="sd">            Each index in ``sel`` represents a single individual&#39;s row.</span>
+<span class="sd">            ``sel`` cannot be ``None``.</span>
+<span class="sd">        V : numpy.ndarray</span>
+<span class="sd">            A matrix of shape ``(n,p,t)`` containing distance values of individuals&#39; </span>
+<span class="sd">            alleles for each trait.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of individuals.</span>
+<span class="sd">            - ``p`` is the number of markers.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        trans : function or callable</span>
+<span class="sd">            A transformation operator to alter the output.</span>
+<span class="sd">            Function must adhere to the following standard:</span>
+
+<span class="sd">            - Must accept a single ``numpy.ndarray`` argument.</span>
+<span class="sd">            - Must return a single object, whether scalar or ``numpy.ndarray``.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Dictionary of keyword arguments to pass to ``trans`` function.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dist : numpy.ndarray</span>
+<span class="sd">            A matrix of shape ``(j,t)`` if ``trans`` is ``None``.</span>
+
+<span class="sd">            Distances for each target.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># calculate vector</span>
+        <span class="c1"># (n,p,t)[(j,k,),:] -&gt; (j,k,p,t)</span>
+        <span class="c1"># (j,k,p,t).sum(1) -&gt; (j,p,t)</span>
+        <span class="c1"># scalar * (j,p,t) -&gt; (j,p,t)</span>
+        <span class="c1"># | (j,p,t) | -&gt; (j,p,t)</span>
+        <span class="c1"># (j,p,t).sum(1) -&gt; (j,t)</span>
+        <span class="n">dist</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">absolute</span><span class="p">((</span><span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">sel</span><span class="p">))</span> <span class="o">*</span> <span class="n">V</span><span class="p">[</span><span class="n">sel</span><span class="p">,:,:]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># apply transformations if needed</span>
+        <span class="k">if</span> <span class="n">trans</span><span class="p">:</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">trans</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">dist</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, Robert Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+check\_is\_DenseVanRadenCoancestryMatrix
+========================================
+
+.. currentmodule:: pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix
+
+.. autofunction:: check_is_DenseVanRadenCoancestryMatrix

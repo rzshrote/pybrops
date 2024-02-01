@@ -1,0 +1,39 @@
+BinaryMateSelectionConfiguration
+================================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.BinaryMateSelectionConfiguration
+
+.. autoclass:: BinaryMateSelectionConfiguration
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BinaryMateSelectionConfiguration.sample_xconfig
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BinaryMateSelectionConfiguration.ncross
+      ~BinaryMateSelectionConfiguration.nmating
+      ~BinaryMateSelectionConfiguration.nparent
+      ~BinaryMateSelectionConfiguration.nprogeny
+      ~BinaryMateSelectionConfiguration.pgmat
+      ~BinaryMateSelectionConfiguration.rng
+      ~BinaryMateSelectionConfiguration.xconfig
+      ~BinaryMateSelectionConfiguration.xconfig_decn
+      ~BinaryMateSelectionConfiguration.xconfig_xmap
+   
+   

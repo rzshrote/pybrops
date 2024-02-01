@@ -1,0 +1,6 @@
+check\_is\_DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
+==============================================================
+
+.. currentmodule:: pybrops.model.vmat.fcty.DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
+
+.. autofunction:: check_is_DenseDihybridDHAdditiveGeneticVarianceMatrixFactory

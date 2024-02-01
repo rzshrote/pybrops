@@ -1,0 +1,6 @@
+trans\_max\_inbreeding\_constraint
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.transfn
+
+.. autofunction:: trans_max_inbreeding_constraint

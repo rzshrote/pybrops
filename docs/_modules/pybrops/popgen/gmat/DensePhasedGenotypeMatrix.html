@@ -1,0 +1,1671 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pybrops.popgen.gmat.DensePhasedGenotypeMatrix &#8212; pybrops 0.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/popgen/gmat/DensePhasedGenotypeMatrix';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pybrops.popg...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pybrops.popgen.gmat.DensePhasedGenotypeMatrix</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module providing implementations of dense phased genotype matrices and</span>
+<span class="sd">associated error checking routines.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">cyvcf2</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">DTypeLike</span><span class="p">,</span> <span class="n">ArrayLike</span>
+
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_dtype_is_int8</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_ndim</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.mat.DensePhasedTaxaVariantMatrix</span> <span class="kn">import</span> <span class="n">DensePhasedTaxaVariantMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.mat.Matrix</span> <span class="kn">import</span> <span class="n">Matrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.DenseGenotypeMatrix</span> <span class="kn">import</span> <span class="n">DenseGenotypeMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span>
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix">[docs]</a>
+<span class="k">class</span> <span class="nc">DensePhasedGenotypeMatrix</span><span class="p">(</span>
+        <span class="n">DenseGenotypeMatrix</span><span class="p">,</span>
+        <span class="n">DensePhasedTaxaVariantMatrix</span><span class="p">,</span>
+        <span class="n">PhasedGenotypeMatrix</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A concrete class for phased genoypte matrix objects.</span>
+
+<span class="sd">    The purpose of this concrete class is to implement functionality for:</span>
+<span class="sd">        1) Genotype matrix ploidy and phase metadata.</span>
+<span class="sd">        2) Genotype matrix format conversion.</span>
+<span class="sd">        3) Genotype matrix allele counting routines.</span>
+<span class="sd">        4) Genotype matrix genotype counting routines.</span>
+<span class="sd">        5) Loading phased genotype matrices from VCF and HDF5.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">mat</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_chrgrp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_phypos</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_genpos</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_xoprob</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_hapgrp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_hapalt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_hapref</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for the class DensePhasedGenotypeMatrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mat : numpy.ndarray</span>
+<span class="sd">            An int8 haplotype matrix. Must be {0,1,2} format.</span>
+<span class="sd">        taxa : numpy.ndarray, None</span>
+<span class="sd">            A numpy.ndarray of shape ``(n,)`` containing taxa names.</span>
+<span class="sd">            If ``None``, do not store any taxa name information.</span>
+<span class="sd">        taxa_grp : numpy.ndarray, None</span>
+<span class="sd">            A numpy.ndarray of shape ``(n,)`` containing taxa groupings.</span>
+<span class="sd">            If ``None``, do not store any taxa group information.</span>
+<span class="sd">        vrnt_chrgrp : numpy.ndarray, None</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing variant chromosome</span>
+<span class="sd">            group labels. If ``None``, do not store any variant chromosome group</span>
+<span class="sd">            label information.</span>
+<span class="sd">        vrnt_phypos : numpy.ndarray, None</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing variant chromosome</span>
+<span class="sd">            physical positions. If ``None``, do not store any variant chromosome</span>
+<span class="sd">            physical position information.</span>
+<span class="sd">        vrnt_name : numpy.ndarray, None</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing variant names.</span>
+<span class="sd">            If ``None``, do not store any variant names.</span>
+<span class="sd">        vrnt_genpos : numpy.ndarray, None</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing variant chromosome</span>
+<span class="sd">            genetic positions. If ``None``, do not store any variant chromosome</span>
+<span class="sd">            genetic position information.</span>
+<span class="sd">        vrnt_xoprob : numpy.ndarray, None</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing variant crossover</span>
+<span class="sd">            probabilities. If ``None``, do not store any variant crossover</span>
+<span class="sd">            probabilities.</span>
+<span class="sd">        vrnt_hapgrp : numpy.ndarray, None</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing variant haplotype</span>
+<span class="sd">            group labels. If ``None``, do not store any variant haplotype group</span>
+<span class="sd">            label information.</span>
+<span class="sd">        vrnt_hapalt : numpy.ndarray, None</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing variant alternative</span>
+<span class="sd">            alleles. If ``None``, do not store any variant alternative allele</span>
+<span class="sd">            information.</span>
+<span class="sd">        vrnt_hapref : numpy.ndarray, None</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing variant reference</span>
+<span class="sd">            alleles. If ``None``, do not store any variant reference allele</span>
+<span class="sd">            information.</span>
+<span class="sd">        vrnt_mask : numpy.ndarray, None</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing a variant mask.</span>
+<span class="sd">            If ``None``, do not store any variant mask information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: Add a mat_format option to store as {0,1,2}, {-1,0,1}, etc.</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">vrnt_chrgrp</span><span class="p">,</span>
+            <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">vrnt_phypos</span><span class="p">,</span>
+            <span class="n">vrnt_name</span> <span class="o">=</span> <span class="n">vrnt_name</span><span class="p">,</span>
+            <span class="n">vrnt_genpos</span> <span class="o">=</span> <span class="n">vrnt_genpos</span><span class="p">,</span>
+            <span class="n">vrnt_xoprob</span> <span class="o">=</span> <span class="n">vrnt_xoprob</span><span class="p">,</span>
+            <span class="n">vrnt_hapgrp</span> <span class="o">=</span> <span class="n">vrnt_hapgrp</span><span class="p">,</span>
+            <span class="n">vrnt_hapalt</span> <span class="o">=</span> <span class="n">vrnt_hapalt</span><span class="p">,</span>
+            <span class="n">vrnt_hapref</span> <span class="o">=</span> <span class="n">vrnt_hapref</span><span class="p">,</span>
+            <span class="n">vrnt_mask</span> <span class="o">=</span> <span class="n">vrnt_mask</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+    <span class="c1">#################### Matrix copying ####################</span>
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a shallow copy of the the matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            A copyt of the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create new object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">),</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">),</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">),</span>
+            <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp</span><span class="p">),</span>
+            <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_phypos</span><span class="p">),</span>
+            <span class="n">vrnt_name</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_name</span><span class="p">),</span>
+            <span class="n">vrnt_genpos</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_genpos</span><span class="p">),</span>
+            <span class="n">vrnt_xoprob</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_xoprob</span><span class="p">),</span>
+            <span class="n">vrnt_hapgrp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_hapgrp</span><span class="p">),</span>
+            <span class="n">vrnt_hapalt</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_hapalt</span><span class="p">),</span>
+            <span class="n">vrnt_hapref</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_hapref</span><span class="p">),</span>
+            <span class="n">vrnt_mask</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_mask</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># copy taxa metadata</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_name</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_name</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_stix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_stix</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_spix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_spix</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_len</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_len</span><span class="p">)</span>
+
+        <span class="c1"># copy variant metadata</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_name</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp_name</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_stix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp_stix</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_spix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp_spix</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_len</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp_len</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">memo</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a deep copy of the matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        memo : dict</span>
+<span class="sd">            Deep copy metadata.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            A deep copy of the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create new object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_phypos</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">vrnt_name</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_name</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">vrnt_genpos</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_genpos</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">vrnt_xoprob</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_xoprob</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">vrnt_hapgrp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_hapgrp</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">vrnt_hapalt</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_hapalt</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">vrnt_hapref</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_hapref</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">vrnt_mask</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_mask</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># copy taxa metadata</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_name</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_name</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_stix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_stix</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_spix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_spix</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_len</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_len</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+
+        <span class="c1"># copy variant metadata</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_name</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp_name</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_stix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp_stix</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_spix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp_spix</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_len</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp_len</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="c1">############################ Object Properties #############################</span>
+
+    <span class="c1">############### Genotype Data Properites ###############</span>
+    <span class="nd">@DenseGenotypeMatrix</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">mat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">)</span>
+        <span class="n">check_ndarray_dtype_is_int8</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">)</span>
+        <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1">############## General matrix properties ###############</span>
+    <span class="nd">@DenseGenotypeMatrix</span><span class="o">.</span><span class="n">ploidy</span><span class="o">.</span><span class="n">getter</span>
+    <span class="k">def</span> <span class="nf">ploidy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get matrix ploidy number&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">phase_axis</span><span class="p">]</span>
+
+    <span class="nd">@DenseGenotypeMatrix</span><span class="o">.</span><span class="n">mat_format</span><span class="o">.</span><span class="n">getter</span>
+    <span class="k">def</span> <span class="nf">mat_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get matrix representation format&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;{0,1,2}&quot;</span>
+
+    <span class="c1">############## Phase Metadata Properites ###############</span>
+    <span class="c1"># this property must be overwritten to what is in DensePhasedMatrix since</span>
+    <span class="c1"># DenseGenotypeMatrix overwrites it.</span>
+    <span class="nd">@DenseGenotypeMatrix</span><span class="o">.</span><span class="n">nphase</span><span class="o">.</span><span class="n">getter</span>
+    <span class="k">def</span> <span class="nf">nphase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get number of phases&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">phase_axis</span><span class="p">]</span>
+
+    <span class="nd">@DensePhasedTaxaVariantMatrix</span><span class="o">.</span><span class="n">phase_axis</span><span class="o">.</span><span class="n">getter</span>
+    <span class="k">def</span> <span class="nf">phase_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get phase axis number&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="c1">############### Taxa Metadata Properites ###############</span>
+    <span class="nd">@DenseGenotypeMatrix</span><span class="o">.</span><span class="n">taxa_axis</span><span class="o">.</span><span class="n">getter</span>
+    <span class="k">def</span> <span class="nf">taxa_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get taxa axis number&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">1</span>
+
+    <span class="c1">############# Variant Metadata Properites ##############</span>
+    <span class="nd">@DenseGenotypeMatrix</span><span class="o">.</span><span class="n">vrnt_axis</span><span class="o">.</span><span class="n">getter</span>
+    <span class="k">def</span> <span class="nf">vrnt_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get variant axis&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">2</span>
+
+    <span class="c1">############################## Object Methods ##############################</span>
+
+    <span class="c1">#################### Matrix copying ####################</span>
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.copy">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.copy">[docs]</a>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a shallow copy of the DensePhasedGenotypeMatrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            A shallow copy of the original DensePhasedGenotypeMatrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__copy__</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.deepcopy">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.deepcopy">[docs]</a>
+    <span class="k">def</span> <span class="nf">deepcopy</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">memo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a deep copy of the DensePhasedGenotypeMatrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        memo : dict</span>
+<span class="sd">            Dictionary of memo metadata.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            A deep copy of the original DensePhasedGenotypeMatrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__deepcopy__</span><span class="p">(</span><span class="n">memo</span><span class="p">)</span></div>
+
+
+    <span class="c1">################## Matrix conversion ###################</span>
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.mat_asformat">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.mat_asformat">[docs]</a>
+    <span class="k">def</span> <span class="nf">mat_asformat</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="nb">format</span><span class="p">:</span> <span class="nb">str</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get mat in a specific format type.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ---------</span>
+<span class="sd">        format : str</span>
+<span class="sd">            Desired output format. Options are &quot;{0,1,2}&quot;, &quot;{-1,0,1}&quot;, &quot;{-1,m,1}&quot;.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            Matrix in the desired output format.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;{0,1,2}&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;{-1,0,1}&quot;</span><span class="p">:</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">out</span>
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;{-1,m,1}&quot;</span><span class="p">:</span>
+            <span class="c1"># OPTIMIZE: there&#39;s probably a matrix multiplication way to do this instead of if-else</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span>    <span class="c1"># (n,p) float64</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">view</span> <span class="o">=</span> <span class="n">out</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">mean</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">view</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">out</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean</span>
+            <span class="k">return</span> <span class="n">out</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Format not recognized. Options are &quot;{0,1,2}&quot;, &quot;{-1,0,1}&quot;, &quot;{-1,m,1}&quot;.&#39;</span><span class="p">)</span></div>
+
+
+    <span class="c1">######### Matrix element copy-on-manipulation ##########</span>
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.adjoin_taxa">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.adjoin_taxa">[docs]</a>
+    <span class="k">def</span> <span class="nf">adjoin_taxa</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Matrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add additional elements to the end of the DensePhasedGenotypeMatrix along the taxa axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        values : Matrix, numpy.ndarray</span>
+<span class="sd">            Values are appended to adjoin to the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            Taxa names to adjoin to the DensePhasedGenotypeMatrix.</span>
+<span class="sd">            If values is a DenseHaplotypeMatrix that has a non-None</span>
+<span class="sd">            taxa field, providing this argument overwrites the field.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            Taxa groups to adjoin to the DensePhasedGenotypeMatrix.</span>
+<span class="sd">            If values is a DenseHaplotypeMatrix that has a non-None</span>
+<span class="sd">            taxa_grp field, providing this argument overwrites the field.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Matrix</span>
+<span class="sd">            A copy of mat with values appended to axis. Note that adjoin does</span>
+<span class="sd">            not occur in-place: a new Matrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">adjoin_taxa</span><span class="p">(</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.adjoin_vrnt">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.adjoin_vrnt">[docs]</a>
+    <span class="k">def</span> <span class="nf">adjoin_vrnt</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Matrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">vrnt_chrgrp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_phypos</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_genpos</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_xoprob</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_hapgrp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_hapalt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_hapref</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add additional elements to the end of the DensePhasedGenotypeMatrix along the variant axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        values : Matrix, numpy.ndarray</span>
+<span class="sd">            Values are appended to adjoin to the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_chrgrp : numpy.ndarray</span>
+<span class="sd">            Variant chromosome groups to adjoin to the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_phypos : numpy.ndarray</span>
+<span class="sd">            Variant chromosome physical positions to adjoin to the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_name : numpy.ndarray</span>
+<span class="sd">            Variant names to adjoin to the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_genpos : numpy.ndarray</span>
+<span class="sd">            Variant chromosome genetic positions to adjoin to the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_xoprob : numpy.ndarray</span>
+<span class="sd">            Sequential variant crossover probabilities to adjoin to the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_hapgrp : numpy.ndarray</span>
+<span class="sd">            Variant haplotype labels to adjoin to the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_hapalt : numpy.ndarray</span>
+<span class="sd">            Variant haplotype sequence.</span>
+<span class="sd">        vrnt_hapref : numpy.ndarray</span>
+<span class="sd">            Variant haplotype reference sequence.</span>
+<span class="sd">        vrnt_mask : numpy.ndarray</span>
+<span class="sd">            Variant mask to adjoin to the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Matrix</span>
+<span class="sd">            A copy of mat with values appended to axis. Note that adjoin does</span>
+<span class="sd">            not occur in-place: a new Matrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">adjoin_vrnt</span><span class="p">(</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+            <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">vrnt_chrgrp</span><span class="p">,</span>
+            <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">vrnt_phypos</span><span class="p">,</span>
+            <span class="n">vrnt_name</span> <span class="o">=</span> <span class="n">vrnt_name</span><span class="p">,</span>
+            <span class="n">vrnt_genpos</span> <span class="o">=</span> <span class="n">vrnt_genpos</span><span class="p">,</span>
+            <span class="n">vrnt_xoprob</span> <span class="o">=</span> <span class="n">vrnt_xoprob</span><span class="p">,</span>
+            <span class="n">vrnt_hapgrp</span> <span class="o">=</span> <span class="n">vrnt_hapgrp</span><span class="p">,</span>
+            <span class="n">vrnt_hapalt</span> <span class="o">=</span> <span class="n">vrnt_hapalt</span><span class="p">,</span>
+            <span class="n">vrnt_hapref</span> <span class="o">=</span> <span class="n">vrnt_hapref</span><span class="p">,</span>
+            <span class="n">vrnt_mask</span> <span class="o">=</span> <span class="n">vrnt_mask</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.delete_taxa">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.delete_taxa">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_taxa</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete sub-arrays along the taxa axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj : int, slice, or Sequence of ints</span>
+<span class="sd">            Indicate indices of sub-arrays to remove along the specified axis.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            A DensePhasedGenotypeMatrix with deleted elements. Note that concat does not occur</span>
+<span class="sd">            in-place: a new DensePhasedGenotypeMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">delete_taxa</span><span class="p">(</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.delete_vrnt">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.delete_vrnt">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_vrnt</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete sub-arrays along the variant axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj : int, slice, or Sequence of ints</span>
+<span class="sd">            Indicate indices of sub-arrays to remove along the specified axis.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            A DensePhasedGenotypeMatrix with deleted elements. Note that concat does not occur</span>
+<span class="sd">            in-place: a new DensePhasedGenotypeMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">delete_vrnt</span><span class="p">(</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.insert_taxa">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.insert_taxa">[docs]</a>
+    <span class="k">def</span> <span class="nf">insert_taxa</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Matrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Insert values along the taxa axis before the given indices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj: int, slice, or Sequence of ints</span>
+<span class="sd">            Object that defines the index or indices before which values is</span>
+<span class="sd">            inserted.</span>
+<span class="sd">        values : Matrix, numpy.ndarray</span>
+<span class="sd">            Values to insert into the matrix.</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            Taxa names to insert into the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            Taxa groups to insert into the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            A DensePhasedGenotypeMatrix with values inserted. Note that insert does not occur</span>
+<span class="sd">            in-place: a new DensePhasedGenotypeMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">insert_taxa</span><span class="p">(</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="p">,</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.insert_vrnt">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.insert_vrnt">[docs]</a>
+    <span class="k">def</span> <span class="nf">insert_vrnt</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Matrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">vrnt_chrgrp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_phypos</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_genpos</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_xoprob</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_hapgrp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_hapalt</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_hapref</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">vrnt_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Insert values along the variant axis before the given indices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj: int, slice, or Sequence of ints</span>
+<span class="sd">            Object that defines the index or indices before which values is</span>
+<span class="sd">            inserted.</span>
+<span class="sd">        values : array_like</span>
+<span class="sd">            Values to insert into the matrix.</span>
+<span class="sd">        vrnt_chrgrp : numpy.ndarray</span>
+<span class="sd">            Variant chromosome groups to insert into the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_phypos : numpy.ndarray</span>
+<span class="sd">            Variant chromosome physical positions to insert into the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_name : numpy.ndarray</span>
+<span class="sd">            Variant names to insert into the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_genpos : numpy.ndarray</span>
+<span class="sd">            Variant chromosome genetic positions to insert into the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_xoprob : numpy.ndarray</span>
+<span class="sd">            Sequential variant crossover probabilities to insert into the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_hapgrp : numpy.ndarray</span>
+<span class="sd">            Variant haplotype labels to insert into the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        vrnt_mask : numpy.ndarray</span>
+<span class="sd">            Variant mask to insert into the DensePhasedGenotypeMatrix.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            A DensePhasedGenotypeMatrix with values inserted. Note that insert does not occur</span>
+<span class="sd">            in-place: a new DensePhasedGenotypeMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">insert_vrnt</span><span class="p">(</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="p">,</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+            <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">vrnt_chrgrp</span><span class="p">,</span>
+            <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">vrnt_phypos</span><span class="p">,</span>
+            <span class="n">vrnt_name</span> <span class="o">=</span> <span class="n">vrnt_name</span><span class="p">,</span>
+            <span class="n">vrnt_genpos</span> <span class="o">=</span> <span class="n">vrnt_genpos</span><span class="p">,</span>
+            <span class="n">vrnt_xoprob</span> <span class="o">=</span> <span class="n">vrnt_xoprob</span><span class="p">,</span>
+            <span class="n">vrnt_hapgrp</span> <span class="o">=</span> <span class="n">vrnt_hapgrp</span><span class="p">,</span>
+            <span class="n">vrnt_hapalt</span> <span class="o">=</span> <span class="n">vrnt_hapalt</span><span class="p">,</span>
+            <span class="n">vrnt_hapref</span> <span class="o">=</span> <span class="n">vrnt_hapref</span><span class="p">,</span>
+            <span class="n">vrnt_mask</span> <span class="o">=</span> <span class="n">vrnt_mask</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.select_taxa">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.select_taxa">[docs]</a>
+    <span class="k">def</span> <span class="nf">select_taxa</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">indices</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select certain values from the DensePhasedGenotypeMatrix along the taxa axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        indices : array_like (Nj, ...)</span>
+<span class="sd">            The indices of the values to select.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            The output DensePhasedGenotypeMatrix with values selected. </span>
+<span class="sd">            Note that select does not occur in-place: a new DensePhasedGenotypeMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">select_taxa</span><span class="p">(</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.select_vrnt">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.select_vrnt">[docs]</a>
+    <span class="k">def</span> <span class="nf">select_vrnt</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">indices</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Select certain values from the DensePhasedGenotypeMatrix along the variant axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        indices : array_like (Nj, ...)</span>
+<span class="sd">            The indices of the values to select.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            The output DensePhasedGenotypeMatrix with values selected. Note that select does not</span>
+<span class="sd">            occur in-place: a new DensePhasedGenotypeMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">select_vrnt</span><span class="p">(</span>
+            <span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.concat_taxa">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.concat_taxa">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">concat_taxa</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">mats</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Concatenate list of DensePhasedGenotypeMatrix together along the taxa axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mats : Sequence of DensePhasedGenotypeMatrix</span>
+<span class="sd">            List of DensePhasedGenotypeMatrix to concatenate. The matrices must have the same</span>
+<span class="sd">            shape, except in the dimension corresponding to axis.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            The concatenated DensePhasedGenotypeMatrix. Note that concat does not occur in-place:</span>
+<span class="sd">            a new DensePhasedGenotypeMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">concat_taxa</span><span class="p">(</span>
+            <span class="n">mats</span> <span class="o">=</span> <span class="n">mats</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="c1"># copy metadata from source</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_name</span> <span class="o">=</span> <span class="n">mats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vrnt_chrgrp_name</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_stix</span> <span class="o">=</span> <span class="n">mats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vrnt_chrgrp_stix</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_spix</span> <span class="o">=</span> <span class="n">mats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vrnt_chrgrp_spix</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_len</span> <span class="o">=</span> <span class="n">mats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">vrnt_chrgrp_len</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.concat_vrnt">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.concat_vrnt">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">concat_vrnt</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">mats</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Concatenate list of DensePhasedGenotypeMatrix together along the variant axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mats : Sequence of DensePhasedGenotypeMatrix</span>
+<span class="sd">            List of DensePhasedGenotypeMatrix to concatenate. The matrices must have the same</span>
+<span class="sd">            shape, except in the dimension corresponding to axis.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            The concatenated matrix. Note that concat does not occur in-place:</span>
+<span class="sd">            a new DensePhasedGenotypeMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">concat_vrnt</span><span class="p">(</span>
+            <span class="n">mats</span> <span class="o">=</span> <span class="n">mats</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">############## Matrix summary statistics ###############</span>
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.tacount">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.tacount">[docs]</a>
+    <span class="k">def</span> <span class="nf">tacount</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DTypeLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allele count of the non-zero allele within each taxon.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dtype : dtype, None</span>
+<span class="sd">            The dtype of the accumulator and returned array.</span>
+<span class="sd">            If ``None``, use the native accumulator type (int or float).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            A numpy.ndarray of shape ``(n,p)`` containing allele counts of the</span>
+<span class="sd">            allele coded as ``1`` for all ``n`` individuals, for all ``p`` loci.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get accumulator type</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">integer</span><span class="p">):</span>
+                <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span>
+            <span class="k">elif</span> <span class="n">numpy</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">floating</span><span class="p">):</span>
+                <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No default accumulator type for GenotypeMatrix dtype </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">dtype</span><span class="p">))</span>
+        <span class="c1"># calculate the taxa allele sums</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase_axis</span><span class="p">,</span> 
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.tafreq">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.tafreq">[docs]</a>
+    <span class="k">def</span> <span class="nf">tafreq</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DTypeLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allele frequency of the non-zero allele within each taxon.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dtype : dtype, None</span>
+<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            A numpy.ndarray of shape ``(n,p)`` containing allele frequencies of</span>
+<span class="sd">            the allele coded as ``1`` for all ``n`` individuals, for all ``p``</span>
+<span class="sd">            loci.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rnphase</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ploidy</span>                     <span class="c1"># take the reciprocal of the ploidy number</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">rnphase</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase_axis</span><span class="p">)</span>  <span class="c1"># take sum across the phase axis (0) and divide by ploidy</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>                           <span class="c1"># if dtype is specified</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>                  <span class="c1"># ensure conversion to dtype class</span>
+            <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">:</span>                      <span class="c1"># if output dtype and desired are different</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>                   <span class="c1"># convert to correct dtype</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.acount">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.acount">[docs]</a>
+    <span class="k">def</span> <span class="nf">acount</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DTypeLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allele count of the non-zero allele across all taxa.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dtype : dtype, None</span>
+<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing allele counts of the</span>
+<span class="sd">            allele coded as ``1`` for all ``p`` loci.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">phase_axis</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">))</span>   <span class="c1"># take sum across the phase and taxa axis</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>                                   <span class="c1"># if dtype is specified</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>                          <span class="c1"># ensure conversion to dtype class</span>
+            <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">:</span>                              <span class="c1"># if output dtype and desired are different</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>                           <span class="c1"># convert to correct dtype</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.afreq">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.afreq">[docs]</a>
+    <span class="k">def</span> <span class="nf">afreq</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DTypeLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allele frequency of the non-zero allele across all taxa.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dtype : dtype, None</span>
+<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing allele frequencies of</span>
+<span class="sd">            the allele coded as ``1`` for all ``p`` loci.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rnphase</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ploidy</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">)</span>                      <span class="c1"># take 1 / (ploidy * ntaxa)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">rnphase</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">phase_axis</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">))</span> <span class="c1"># take sum across the taxa axis (0) and divide by nphase</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>                                           <span class="c1"># if dtype is specified</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>                                  <span class="c1"># ensure conversion to dtype class</span>
+            <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">:</span>                                      <span class="c1"># if output dtype and desired are different</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>                                   <span class="c1"># convert to correct dtype</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.apoly">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.apoly">[docs]</a>
+    <span class="k">def</span> <span class="nf">apoly</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DTypeLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allele polymorphism presence or absense across all loci.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dtype : dtype, None</span>
+<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing indicator variables for</span>
+<span class="sd">            whether the locus is polymorphic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># find any loci that are monomorphic for 0 allele</span>
+        <span class="n">min_mask</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase_axis</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">))</span>
+
+        <span class="c1"># find any loci that are monomorphic for 1 allele</span>
+        <span class="n">max_mask</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase_axis</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">))</span>
+
+        <span class="c1"># logical or results and take logical not</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">min_mask</span> <span class="o">|</span> <span class="n">max_mask</span><span class="p">)</span>
+
+        <span class="c1"># convert to specific dtype if needed</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>                           <span class="c1"># if dtype is specified</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>                  <span class="c1"># ensure conversion to dtype class</span>
+            <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">:</span>                      <span class="c1"># if output dtype and desired are different</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>                   <span class="c1"># convert to correct dtype</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.maf">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.maf">[docs]</a>
+    <span class="k">def</span> <span class="nf">maf</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DTypeLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Minor allele frequency across all taxa.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dtype : dtype, None</span>
+<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            A numpy.ndarray of shape ``(p,)`` containing allele frequencies for</span>
+<span class="sd">            the minor allele.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">afreq</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>     <span class="c1"># get allele frequencies</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">out</span> <span class="o">&gt;</span> <span class="mf">0.5</span>            <span class="c1"># create mask of allele frequencies &gt; 0.5</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">out</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="c1"># take 1 - allele frequency</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.meh">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.meh">[docs]</a>
+    <span class="k">def</span> <span class="nf">meh</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DTypeLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Real</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Mean expected heterozygosity across all taxa.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dtype : dtype, None</span>
+<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Real</span>
+<span class="sd">            A number representing the mean expected heterozygous.</span>
+<span class="sd">            If ``dtype`` is ``None``, then a native 64-bit floating point is</span>
+<span class="sd">            returned. Otherwise, of type specified by ``dtype``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">afreq</span><span class="p">()</span>                    <span class="c1"># get haplotype frequency (p)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">p</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>         <span class="c1"># take p*(1-p) across all loci and sum the products</span>
+        <span class="n">out</span> <span class="o">*=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ploidy</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvrnt</span><span class="p">)</span>   <span class="c1"># multiply summation by (ploidy / nvrnt)</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>               <span class="c1"># if dtype is specified</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>      <span class="c1"># ensure conversion to dtype class</span>
+            <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">:</span>          <span class="c1"># if output dtype and desired are different</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>       <span class="c1"># convert to correct dtype</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.gtcount">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.gtcount">[docs]</a>
+    <span class="k">def</span> <span class="nf">gtcount</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DTypeLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gather genotype counts for homozygous major, heterozygous, homozygous</span>
+<span class="sd">        minor for all individuals.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dtype : dtype, None</span>
+<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An ``int64`` array of shape ``(g,p)`` containing allele counts across</span>
+<span class="sd">            all ``p`` loci for each of ``g`` genotype combinations.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``out[0]`` is the count of ``0`` genotype across all loci</span>
+<span class="sd">            - ``out[1]`` is the count of ``1`` genotype across all loci</span>
+<span class="sd">            - ``out[2]`` is the count of ``2`` genotype across all loci</span>
+<span class="sd">            - ``...``</span>
+<span class="sd">            - ``out[g-1]`` is the count of ``g-1`` genotype across all loci</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ngt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nphase</span> <span class="o">+</span> <span class="mi">1</span>                   <span class="c1"># get number of genotype combos</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase_axis</span><span class="p">)</span>    <span class="c1"># get sum of all phases</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span>      <span class="c1"># allocate output array</span>
+            <span class="p">(</span><span class="n">ngt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvrnt</span><span class="p">),</span>  <span class="c1"># shape (g, p)</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;int64&#39;</span>       <span class="c1"># int64 dtype</span>
+        <span class="p">)</span>
+
+        <span class="c1"># get correct axis to sum across</span>
+        <span class="n">axis</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase_axis</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ngt</span><span class="p">):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">mat</span> <span class="o">==</span> <span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="p">)</span>   <span class="c1"># record counts for genotype &#39;i&#39;</span>
+
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>               <span class="c1"># if dtype is specified</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>      <span class="c1"># ensure conversion to dtype class</span>
+            <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">:</span>          <span class="c1"># if output dtype and desired are different</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>       <span class="c1"># convert to correct dtype</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.gtfreq">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.gtfreq">[docs]</a>
+    <span class="k">def</span> <span class="nf">gtfreq</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">dtype</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DTypeLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gather genotype frequencies for homozygous major, heterozygous,</span>
+<span class="sd">        homozygous minor across all individuals.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : numpy.ndarray</span>
+<span class="sd">            An ``float64`` array of shape ``(g,p)`` containing haplotype counts</span>
+<span class="sd">            across all ``p`` loci for all ``g`` genotype combinations.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``out[0]`` is the frequency of ``0`` genotype across all loci</span>
+<span class="sd">            - ``out[1]`` is the frequency of ``1`` genotype across all loci</span>
+<span class="sd">            - ``out[2]`` is the frequency of ``2`` genotype across all loci</span>
+<span class="sd">            - ``...``</span>
+<span class="sd">            - ``out[g-1]`` is the frequency of ``g-1`` genotype across all loci</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">recip</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntaxa</span>        <span class="c1"># get reciprocal of number of taxa</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">recip</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">gtcount</span><span class="p">()</span>    <span class="c1"># calculate genotype frequencies</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>           <span class="c1"># if dtype is specified</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">dtype</span><span class="p">)</span>  <span class="c1"># ensure conversion to dtype class</span>
+            <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="n">dtype</span><span class="p">:</span>      <span class="c1"># if output dtype and desired are different</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">dtype</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>   <span class="c1"># convert to correct dtype</span>
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">################### Matrix File I/O ####################</span>
+
+    <span class="c1">############################## Class Methods ###############################</span>
+
+    <span class="c1">################### Matrix File I/O ####################</span>
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.from_hdf5">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.from_hdf5">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_hdf5</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a DensePhasedGenotypeMatrix from an HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            HDF5 file name which to read.</span>
+<span class="sd">        groupname : str or None</span>
+<span class="sd">            HDF5 group name under which GenotypeMatrix data is stored.</span>
+<span class="sd">            If None, GenotypeMatrix is read from base HDF5 group.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        gmat : DensePhasedGenotypeMatrix</span>
+<span class="sd">            A genotype matrix read from file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">from_hdf5</span><span class="p">(</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="p">,</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="n">groupname</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DensePhasedGenotypeMatrix.from_vcf">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.DensePhasedGenotypeMatrix.from_vcf">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_vcf</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">auto_group_vrnt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Does not ensure that data is phased, just reads it as phased.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># make VCF iterator</span>
+        <span class="n">vcf</span> <span class="o">=</span> <span class="n">cyvcf2</span><span class="o">.</span><span class="n">VCF</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c1"># extract taxa names from vcf header</span>
+        <span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vcf</span><span class="o">.</span><span class="n">samples</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+
+        <span class="c1"># make empty lists to store extracted values</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">vrnt_name</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># iterate through VCF file and accumulate variants</span>
+        <span class="k">for</span> <span class="n">variant</span> <span class="ow">in</span> <span class="n">vcf</span><span class="p">:</span>
+            <span class="c1"># append chromosome integer</span>
+            <span class="n">vrnt_chrgrp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">CHROM</span><span class="p">))</span>
+
+            <span class="c1"># append variant position coordinates</span>
+            <span class="n">vrnt_phypos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">POS</span><span class="p">)</span>
+
+            <span class="c1"># append marker name</span>
+            <span class="n">vrnt_name</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">ID</span><span class="p">))</span>
+
+            <span class="c1"># extract allele states + whether they are phased or not</span>
+            <span class="n">phases</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int8</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">genotypes</span><span class="p">)</span>
+
+            <span class="c1"># check that they are all phased</span>
+            <span class="c1">#pybrops.util.check_matrix_all_value(phases[:,2], &quot;is_phased&quot;, True)</span>
+
+            <span class="c1"># TODO: maybe modify shapes here to avoid transpose and copy below?</span>
+            <span class="c1"># append genotype states</span>
+            <span class="n">mat</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">phases</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span>
+
+        <span class="c1"># convert and transpose genotype matrix</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int8</span><span class="p">(</span><span class="n">mat</span><span class="p">)</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># may want to copy()?</span>
+
+        <span class="c1"># convert to numpy.ndarray</span>
+        <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="n">vrnt_chrgrp</span><span class="p">)</span>  <span class="c1"># convert to int64 array</span>
+        <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="n">vrnt_phypos</span><span class="p">)</span>  <span class="c1"># convert to int64 array</span>
+        <span class="n">vrnt_name</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">vrnt_name</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>    <span class="c1"># convert to object array</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">vrnt_chrgrp</span><span class="p">,</span>
+            <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">vrnt_phypos</span><span class="p">,</span>
+            <span class="n">vrnt_name</span> <span class="o">=</span> <span class="n">vrnt_name</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">auto_group_vrnt</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">group_vrnt</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+</div>
+
+
+
+
+<span class="c1">################################## Utilities ###################################</span>
+<div class="viewcode-block" id="check_is_DensePhasedGenotypeMatrix">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.check_is_DensePhasedGenotypeMatrix.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.check_is_DensePhasedGenotypeMatrix">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_DensePhasedGenotypeMatrix</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{0}</span><span class="s2">&#39; must be a DensePhasedGenotypeMatrix.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_DensePhasedGenotypeMatrix_has_vrnt_xoprob">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DensePhasedGenotypeMatrix.check_DensePhasedGenotypeMatrix_has_vrnt_xoprob.html#pybrops.popgen.gmat.DensePhasedGenotypeMatrix.check_DensePhasedGenotypeMatrix_has_vrnt_xoprob">[docs]</a>
+<span class="k">def</span> <span class="nf">check_DensePhasedGenotypeMatrix_has_vrnt_xoprob</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check whether </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">vrnt_xoprob</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;DensePhasedGenotypeMatrix &#39;</span><span class="si">{0}</span><span class="s2">&#39; must have &#39;vrnt_xoprob&#39; (crossover probabilities) assigned&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, Robert Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem
+======================================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem
+
+.. autoclass:: GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.bounds
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.do
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.evalfn
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.evaluate
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.from_gmat_algpmod
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.from_numpy
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.has_bounds
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.has_constraints
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.ideal_point
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.latentfn
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.nadir_point
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.name
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.pareto_front
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.callback
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.data
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.decn_space
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.decn_space_lower
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.decn_space_upper
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.elementwise
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.elementwise_func
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.elementwise_runner
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.eqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.eqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.eqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.exclude_from_serialization
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.gwgebv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.ineqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.ineqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.ineqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.n_constr
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.n_eq_constr
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.n_ieq_constr
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.n_obj
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.n_var
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.ndecn
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.neqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.nineqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.nlatent
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.nobj
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.obj_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.obj_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.obj_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.replace_nan_values_by
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.strict
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.vars
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.vtype
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.xl
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.xu
+   
+   

@@ -1,0 +1,6 @@
+check\_is\_AdditiveDominanceLinearGenomicModel
+==============================================
+
+.. currentmodule:: pybrops.model.gmod.AdditiveDominanceLinearGenomicModel
+
+.. autofunction:: check_is_AdditiveDominanceLinearGenomicModel

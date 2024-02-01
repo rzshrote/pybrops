@@ -1,0 +1,83 @@
+MultiObjectiveGenomicSubsetSelectionProblem
+===========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.MultiObjectiveGenomicSelectionProblem
+
+.. autoclass:: MultiObjectiveGenomicSubsetSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MultiObjectiveGenomicSubsetSelectionProblem.bounds
+      ~MultiObjectiveGenomicSubsetSelectionProblem.do
+      ~MultiObjectiveGenomicSubsetSelectionProblem.evalfn
+      ~MultiObjectiveGenomicSubsetSelectionProblem.evaluate
+      ~MultiObjectiveGenomicSubsetSelectionProblem.from_gmat_gpmod
+      ~MultiObjectiveGenomicSubsetSelectionProblem.has_bounds
+      ~MultiObjectiveGenomicSubsetSelectionProblem.has_constraints
+      ~MultiObjectiveGenomicSubsetSelectionProblem.ideal_point
+      ~MultiObjectiveGenomicSubsetSelectionProblem.latentfn
+      ~MultiObjectiveGenomicSubsetSelectionProblem.nadir_point
+      ~MultiObjectiveGenomicSubsetSelectionProblem.name
+      ~MultiObjectiveGenomicSubsetSelectionProblem.pareto_front
+      ~MultiObjectiveGenomicSubsetSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MultiObjectiveGenomicSubsetSelectionProblem.callback
+      ~MultiObjectiveGenomicSubsetSelectionProblem.data
+      ~MultiObjectiveGenomicSubsetSelectionProblem.decn_space
+      ~MultiObjectiveGenomicSubsetSelectionProblem.decn_space_lower
+      ~MultiObjectiveGenomicSubsetSelectionProblem.decn_space_upper
+      ~MultiObjectiveGenomicSubsetSelectionProblem.elementwise
+      ~MultiObjectiveGenomicSubsetSelectionProblem.elementwise_func
+      ~MultiObjectiveGenomicSubsetSelectionProblem.elementwise_runner
+      ~MultiObjectiveGenomicSubsetSelectionProblem.eqcv_trans
+      ~MultiObjectiveGenomicSubsetSelectionProblem.eqcv_trans_kwargs
+      ~MultiObjectiveGenomicSubsetSelectionProblem.eqcv_wt
+      ~MultiObjectiveGenomicSubsetSelectionProblem.exclude_from_serialization
+      ~MultiObjectiveGenomicSubsetSelectionProblem.geno
+      ~MultiObjectiveGenomicSubsetSelectionProblem.ineqcv_trans
+      ~MultiObjectiveGenomicSubsetSelectionProblem.ineqcv_trans_kwargs
+      ~MultiObjectiveGenomicSubsetSelectionProblem.ineqcv_wt
+      ~MultiObjectiveGenomicSubsetSelectionProblem.mkrwt
+      ~MultiObjectiveGenomicSubsetSelectionProblem.n_constr
+      ~MultiObjectiveGenomicSubsetSelectionProblem.n_eq_constr
+      ~MultiObjectiveGenomicSubsetSelectionProblem.n_ieq_constr
+      ~MultiObjectiveGenomicSubsetSelectionProblem.n_obj
+      ~MultiObjectiveGenomicSubsetSelectionProblem.n_var
+      ~MultiObjectiveGenomicSubsetSelectionProblem.ndecn
+      ~MultiObjectiveGenomicSubsetSelectionProblem.neqcv
+      ~MultiObjectiveGenomicSubsetSelectionProblem.nineqcv
+      ~MultiObjectiveGenomicSubsetSelectionProblem.nlatent
+      ~MultiObjectiveGenomicSubsetSelectionProblem.nobj
+      ~MultiObjectiveGenomicSubsetSelectionProblem.obj_trans
+      ~MultiObjectiveGenomicSubsetSelectionProblem.obj_trans_kwargs
+      ~MultiObjectiveGenomicSubsetSelectionProblem.obj_wt
+      ~MultiObjectiveGenomicSubsetSelectionProblem.ploidy
+      ~MultiObjectiveGenomicSubsetSelectionProblem.replace_nan_values_by
+      ~MultiObjectiveGenomicSubsetSelectionProblem.strict
+      ~MultiObjectiveGenomicSubsetSelectionProblem.tfreq
+      ~MultiObjectiveGenomicSubsetSelectionProblem.thet
+      ~MultiObjectiveGenomicSubsetSelectionProblem.tmajor
+      ~MultiObjectiveGenomicSubsetSelectionProblem.tminor
+      ~MultiObjectiveGenomicSubsetSelectionProblem.vars
+      ~MultiObjectiveGenomicSubsetSelectionProblem.vtype
+      ~MultiObjectiveGenomicSubsetSelectionProblem.xl
+      ~MultiObjectiveGenomicSubsetSelectionProblem.xu
+   
+   

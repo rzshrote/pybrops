@@ -1,10 +1,12 @@
 
 <!DOCTYPE html>
 
-<html lang="en">
+
+<html lang="en" data-content_root="../../" >
+
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Breeding Value Matrices &#8212; pybrops 0.9.0 documentation</title>
   
@@ -16,106 +18,118 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-<link href="../../_static/styles/bootstrap.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=796348d33e8b1d947c94" rel="stylesheet">
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
 
   
-  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=796348d33e8b1d947c94" rel="stylesheet">
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2">
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2">
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../../_static/wider_borders.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/wider_borders.css?v=ec38ee01" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94">
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94">
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-    <script src="../../_static/jquery.js"></script>
-    <script src="../../_static/underscore.js"></script>
-    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../../_static/doctools.js"></script>
-    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'standard_usage/population_genetics/breeding_value_matrices';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Coancestry Matrices" href="coancestry_matrices.html" />
     <link rel="prev" title="Phased Genotype Matrices" href="phased_genotype_matrices.html" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="docsearch:language" content="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
   </head>
   
   
-  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="180" data-default-mode="">
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
 
   
-  <input type="checkbox" class="sidebar-toggle" name="__primary" id="__primary">
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
   <label class="overlay overlay-primary" for="__primary"></label>
-
   
-  <input type="checkbox" class="sidebar-toggle" name="__secondary" id="__secondary">
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
   <label class="overlay overlay-secondary" for="__secondary"></label>
-
   
   <div class="search-button__wrapper">
     <div class="search-button__overlay"></div>
     <div class="search-button__search-container">
-      
-<form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
   <i class="fa-solid fa-magnifying-glass"></i>
-  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search the docs ..." aria-label="Search the docs ..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form>
-    </div>
+</form></div>
   </div>
-
   
-  <nav class="bd-header navbar navbar-expand-lg bd-navbar" id="navbar-main"><div class="bd-header__inner bd-page-width">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
   <label class="sidebar-toggle primary-toggle" for="__primary">
-      <span class="fa-solid fa-bars"></span>
+    <span class="fa-solid fa-bars"></span>
   </label>
-  <div id="navbar-start">
-    
-    
   
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
 
+  
 
 <a class="navbar-brand logo" href="../../index.html">
-
   
   
   
   
-  
-  
-  
-
   
   
     <p class="title logo__title">pybrops 0.9.0 documentation</p>
   
-</a>
+</a></div>
     
   </div>
-
   
   <div class="col-lg-9 navbar-header-items">
-    <div id="navbar-center" class="mr-auto">
+    
+    <div class="me-auto navbar-header-items__center">
       
-      <div class="navbar-center-item">
-        <nav class="navbar-nav">
-    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
-        Site Navigation
-    </p>
-    <ul id="navbar-main-elements" class="navbar-nav">
-        
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../getting_started/getting_started.html">
                         Getting Started
@@ -150,98 +164,117 @@
                       </a>
                     </li>
                 
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
                     More
                 </button>
-                <div class="dropdown-menu">
+                <ul id="pst-nav-more-links" class="dropdown-menu">
                     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../contributing/contributing.html">
+                      <a class="nav-link dropdown-item nav-internal" href="../../contributing/contributing.html">
                         Contributing
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../faq/faq.html">
+                      <a class="nav-link dropdown-item nav-internal" href="../../faq/faq.html">
                         Frequently Asked Questions
                       </a>
                     </li>
                 
-                </div>
-            </div>
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
             
-    </ul>
-</nav>
-      </div>
+  </ul>
+</nav></div>
       
     </div>
-
-    <div id="navbar-end">
+    
+    
+    <div class="navbar-header-items__end">
       
-        <div class="navbar-end-item navbar-persistent--container">
+        <div class="navbar-item navbar-persistent--container">
           
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
-  <i class="fa-solid fa-magnifying-glass"></i>
-</button>
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
         </div>
       
       
-      <div class="navbar-end-item">
-        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-</button>
-      </div>
-      
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
-      </ul>
-      </div>
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
       
     </div>
+    
   </div>
-
-
   
   
     <div class="navbar-persistent--mobile">
-<button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-toggle="tooltip">
-  <i class="fa-solid fa-magnifying-glass"></i>
-</button>
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
     </div>
   
 
   
-  <label class="sidebar-toggle secondary-toggle" for="__secondary">
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
       <span class="fa-solid fa-outdent"></span>
-  </label>
+    </label>
   
-
 </div>
-  </nav>
+
+    </header>
   
 
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
       
+      
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
+
   
   <div class="sidebar-header-items sidebar-primary__section">
     
     
       <div class="sidebar-header-items__center">
-      
-      <div class="navbar-center-item">
-        <nav class="navbar-nav">
-    <p class="sidebar-header-items__title" role="heading" aria-level="1" aria-label="Site Navigation">
-        Site Navigation
-    </p>
-    <ul id="navbar-main-elements" class="navbar-nav">
         
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
                     <li class="nav-item">
                       <a class="nav-link nav-internal" href="../../getting_started/getting_started.html">
                         Getting Started
@@ -276,64 +309,66 @@
                       </a>
                     </li>
                 
-            <div class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
                     More
                 </button>
-                <div class="dropdown-menu">
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
                     
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../contributing/contributing.html">
+                      <a class="nav-link dropdown-item nav-internal" href="../../contributing/contributing.html">
                         Contributing
                       </a>
                     </li>
                 
 
                     <li class="nav-item">
-                      <a class="nav-link nav-internal" href="../../faq/faq.html">
+                      <a class="nav-link dropdown-item nav-internal" href="../../faq/faq.html">
                         Frequently Asked Questions
                       </a>
                     </li>
                 
-                </div>
-            </div>
-            
-    </ul>
-</nav>
-      </div>
-      
-      </div>
-    
 
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
     
     
-    <div class="sidebar-header-items__end">
-      
-      <div class="navbar-end-item">
-        <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-toggle="tooltip">
-    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
-    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
-    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
-</button>
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
       </div>
-      
-      <div class="navbar-end-item">
-        <ul id="navbar-icon-links" class="navbar-nav" aria-label="Icon Links">
-      </ul>
-      </div>
-      
-    </div>
     
   </div>
-
   
-  <div class="sidebar-start-items sidebar-primary__section">
-    <div class="sidebar-start-items__item"><nav class="bd-links" id="bd-docs-nav" aria-label="Section navigation">
-  <p class="bd-links__title" role="heading" aria-level="1">
-    Section Navigation
-  </p>
-  <div class="bd-toc-item navbar-nav">
-    <p aria-level="2" class="caption" role="heading"><span class="caption-text">Core Infrastructure Usage:</span></p>
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Core Infrastructure Usage:</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../core_infrastructure/random_number_generation.html">Random Number Generation</a></li>
 </ul>
@@ -387,51 +422,77 @@
 </ul>
 </li>
 </ul>
-
-  </div>
-</nav>
+</div>
+</nav></div>
     </div>
-  </div>
   
-
   
-  <div class="sidebar-end-items sidebar-primary__section">
-    <div class="sidebar-end-items__item">
-    </div>
+  <div class="sidebar-primary-items__end sidebar-primary__section">
   </div>
-
   
   <div id="rtd-footer-container"></div>
 
+
       </div>
+      
       <main id="main-content" class="bd-main">
         
         
-        <div class="bd-content">
-          <div class="bd-article-container">
-            
-            <div class="bd-header-article">
-                
-            </div>
-            
-            
-            <article class="bd-article" role="main">
+          <div class="bd-content">
+            <div class="bd-article-container">
               
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../standard_usage.html" class="nav-link">Standard PyBrOpS Usage</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Breeding...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
   <section id="breeding-value-matrices">
-<h1>Breeding Value Matrices<a class="headerlink" href="#breeding-value-matrices" title="Permalink to this heading">#</a></h1>
+<h1>Breeding Value Matrices<a class="headerlink" href="#breeding-value-matrices" title="Link to this heading">#</a></h1>
 <section id="class-family-overview">
-<h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Permalink to this heading">#</a></h2>
+<h2>Class Family Overview<a class="headerlink" href="#class-family-overview" title="Link to this heading">#</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> family of classes is used to represent breeding values as its name implies. <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> objects can be used in the estimation of genomic prediction models and to make selection decisions. Since breeding values are typically mean-centered and sometimes scaled, breeding value matrices have <code class="docutils literal notranslate"><span class="pre">location</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code> properties to reconstitute un-scaled values. <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> objects store additional taxa and trait metadata which serve as labels for rows and columns, respectively.</p>
 </section>
 <section id="summary-of-breeding-value-matrix-classes">
-<h2>Summary of Breeding Value Matrix Classes<a class="headerlink" href="#summary-of-breeding-value-matrix-classes" title="Permalink to this heading">#</a></h2>
+<h2>Summary of Breeding Value Matrix Classes<a class="headerlink" href="#summary-of-breeding-value-matrix-classes" title="Link to this heading">#</a></h2>
 <p>Breeding value matrix classes in PyBrOpS are found in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.bvmat</span></code> module. Within this module are several <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> class definitions which are summarized in the table below.</p>
-<table class="colwidths-given table" id="id1">
-<caption><span class="caption-text">Summary of breeding value matrix classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.bvmat</span></code> module</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<table class="table" id="id1">
+<caption><span class="caption-text">Summary of breeding value matrix classes in the <code class="docutils literal notranslate"><span class="pre">pybrops.popgen.bvmat</span></code> module</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
 <colgroup>
-<col style="width: 28%" />
-<col style="width: 17%" />
-<col style="width: 56%" />
+<col style="width: 27.8%" />
+<col style="width: 16.7%" />
+<col style="width: 55.6%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Class Name</p></th>
@@ -452,16 +513,16 @@
 </table>
 </section>
 <section id="breeding-value-matrix-properties">
-<h2>Breeding Value Matrix Properties<a class="headerlink" href="#breeding-value-matrix-properties" title="Permalink to this heading">#</a></h2>
+<h2>Breeding Value Matrix Properties<a class="headerlink" href="#breeding-value-matrix-properties" title="Link to this heading">#</a></h2>
 <p>Breeding value matrices have numerous properties. These properties can be grouped into three main groupings: general properties, taxa properties, and trait properties. Tables summarizing these properties can be read below.</p>
 <section id="breeding-value-matrix-general-properties">
-<h3>Breeding value matrix general properties<a class="headerlink" href="#breeding-value-matrix-general-properties" title="Permalink to this heading">#</a></h3>
+<h3>Breeding value matrix general properties<a class="headerlink" href="#breeding-value-matrix-general-properties" title="Link to this heading">#</a></h3>
 <p>Breeding value matrices share several shape properties that are common to all <code class="docutils literal notranslate"><span class="pre">Matrix</span></code> classes. In addition, breeding value matrices have <code class="docutils literal notranslate"><span class="pre">location</span></code> and <code class="docutils literal notranslate"><span class="pre">scale</span></code> properties which specify the trait mean and standard deviation, respectively. These properties are helpful if a breeding value matrix has been centered around zero and scaled to a unit standard deviation.</p>
-<table class="colwidths-given table" id="id2">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> general properties</span><a class="headerlink" href="#id2" title="Permalink to this table">#</a></caption>
+<table class="table" id="id2">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> general properties</span><a class="headerlink" href="#id2" title="Link to this table">#</a></caption>
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Property</p></th>
@@ -488,13 +549,13 @@
 </table>
 </section>
 <section id="breeding-value-matrix-taxa-properties">
-<h3>Breeding value matrix taxa properties<a class="headerlink" href="#breeding-value-matrix-taxa-properties" title="Permalink to this heading">#</a></h3>
+<h3>Breeding value matrix taxa properties<a class="headerlink" href="#breeding-value-matrix-taxa-properties" title="Link to this heading">#</a></h3>
 <p>Breeding value matrices have several taxa related properties including taxa names, taxa group identities, and sorting metadata, which can be used for quick group access and sorting.</p>
-<table class="colwidths-given table" id="id3">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> taxa properties</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
+<table class="table" id="id3">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> taxa properties</span><a class="headerlink" href="#id3" title="Link to this table">#</a></caption>
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Property</p></th>
@@ -530,13 +591,13 @@
 </table>
 </section>
 <section id="breeding-value-matrix-trait-properties">
-<h3>Breeding value matrix trait properties<a class="headerlink" href="#breeding-value-matrix-trait-properties" title="Permalink to this heading">#</a></h3>
+<h3>Breeding value matrix trait properties<a class="headerlink" href="#breeding-value-matrix-trait-properties" title="Link to this heading">#</a></h3>
 <p>Breeding value matrices have several trait related properties of which the most important is the trait names.</p>
-<table class="colwidths-given table" id="id4">
-<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> trait properties</span><a class="headerlink" href="#id4" title="Permalink to this table">#</a></caption>
+<table class="table" id="id4">
+<caption><span class="caption-text">Summary of <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> trait properties</span><a class="headerlink" href="#id4" title="Link to this table">#</a></caption>
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 67%" />
+<col style="width: 33.3%" />
+<col style="width: 66.7%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Property</p></th>
@@ -558,7 +619,7 @@
 </section>
 </section>
 <section id="loading-breeding-value-matrix-modules">
-<h2>Loading Breeding Value Matrix Modules<a class="headerlink" href="#loading-breeding-value-matrix-modules" title="Permalink to this heading">#</a></h2>
+<h2>Loading Breeding Value Matrix Modules<a class="headerlink" href="#loading-breeding-value-matrix-modules" title="Link to this heading">#</a></h2>
 <p>Breeding value matrix classes can be imported as demonstrated in the code chunk below:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># import the BreedingValueMatrix class (an abstract interface class)</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.bvmat.BreedingValueMatrix</span> <span class="kn">import</span> <span class="n">BreedingValueMatrix</span>
@@ -569,10 +630,10 @@
 </div>
 </section>
 <section id="creating-breeding-value-matrices">
-<h2>Creating Breeding Value Matrices<a class="headerlink" href="#creating-breeding-value-matrices" title="Permalink to this heading">#</a></h2>
+<h2>Creating Breeding Value Matrices<a class="headerlink" href="#creating-breeding-value-matrices" title="Link to this heading">#</a></h2>
 <p>Breeding value matrices can be created using several method including from raw NumPy arrays, from Pandas DataFrames, from CSV files, and from HDF5 files. The following subsections detail the creation or loading of breeding value matrices from these sources.</p>
 <section id="creating-breeding-value-matrices-from-numpy-arrays">
-<h3>Creating breeding value matrices from NumPy arrays<a class="headerlink" href="#creating-breeding-value-matrices-from-numpy-arrays" title="Permalink to this heading">#</a></h3>
+<h3>Creating breeding value matrices from NumPy arrays<a class="headerlink" href="#creating-breeding-value-matrices-from-numpy-arrays" title="Link to this heading">#</a></h3>
 <p>Using the <code class="docutils literal notranslate"><span class="pre">DenseBreedingValueMatrix</span></code> constructor, one can create a breeding value matrix from NumPy arrays.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># shape parameters</span>
 <span class="n">ntaxa</span> <span class="o">=</span> <span class="mi">100</span>
@@ -644,7 +705,7 @@
 </div>
 </section>
 <section id="creating-breeding-value-matrices-from-pandas-dataframes">
-<h3>Creating breeding value matrices from Pandas DataFrames<a class="headerlink" href="#creating-breeding-value-matrices-from-pandas-dataframes" title="Permalink to this heading">#</a></h3>
+<h3>Creating breeding value matrices from Pandas DataFrames<a class="headerlink" href="#creating-breeding-value-matrices-from-pandas-dataframes" title="Link to this heading">#</a></h3>
 <p>Breeding value matrices can be created from Pandas DataFrames. To do this, use the <code class="docutils literal notranslate"><span class="pre">from_pandas</span></code> class method. The code block below demonstrates how to use the <code class="docutils literal notranslate"><span class="pre">from_pandas</span></code> method to accomplish this.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create dummy pandas dataframe</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
@@ -669,7 +730,7 @@
 </div>
 </section>
 <section id="loading-breeding-value-matrices-from-csv-files">
-<h3>Loading breeding value matrices from CSV files<a class="headerlink" href="#loading-breeding-value-matrices-from-csv-files" title="Permalink to this heading">#</a></h3>
+<h3>Loading breeding value matrices from CSV files<a class="headerlink" href="#loading-breeding-value-matrices-from-csv-files" title="Link to this heading">#</a></h3>
 <p>Breeding value matrices can be read from CSV files. To read a breeding value matrix from a CSV file, use the <code class="docutils literal notranslate"><span class="pre">from_csv</span></code> class method. The following code illustrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read from a CSV file</span>
 <span class="c1"># use explicit column name identifiers as method arguments</span>
@@ -685,7 +746,7 @@
 </div>
 </section>
 <section id="loading-breeding-value-matrices-from-hdf5-files">
-<h3>Loading breeding value matrices from HDF5 files<a class="headerlink" href="#loading-breeding-value-matrices-from-hdf5-files" title="Permalink to this heading">#</a></h3>
+<h3>Loading breeding value matrices from HDF5 files<a class="headerlink" href="#loading-breeding-value-matrices-from-hdf5-files" title="Link to this heading">#</a></h3>
 <p>Most matrix object types in PyBrOpS allow for both the import and export of matrices into an HDF5 format. To read saved breeding value matrices from an HDF5 file, use the <code class="docutils literal notranslate"><span class="pre">from_hdf5</span></code> class method. The code below demonstrates the use of this method to load a breeding value matrix from an HDF5 file.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read a breeding value matrix from an HDF5 file</span>
 <span class="n">bvmat</span> <span class="o">=</span> <span class="n">DenseBreedingValueMatrix</span><span class="o">.</span><span class="n">from_hdf5</span><span class="p">(</span><span class="s2">&quot;sample_breeding_values.h5&quot;</span><span class="p">)</span>
@@ -694,10 +755,10 @@
 </section>
 </section>
 <section id="copying-breeding-value-matrices">
-<h2>Copying Breeding Value Matrices<a class="headerlink" href="#copying-breeding-value-matrices" title="Permalink to this heading">#</a></h2>
+<h2>Copying Breeding Value Matrices<a class="headerlink" href="#copying-breeding-value-matrices" title="Link to this heading">#</a></h2>
 <p>Copying breeding value matrices can be accomplished using two different methods: by shallow copying or by deep copying.</p>
 <section id="shallow-copying">
-<h3>Shallow copying<a class="headerlink" href="#shallow-copying" title="Permalink to this heading">#</a></h3>
+<h3>Shallow copying<a class="headerlink" href="#shallow-copying" title="Link to this heading">#</a></h3>
 <p>In shallow copying, references to a <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code>’s data are copied to a new breeding value matrix object. Copying is only one level deep which means that changes to the original object may affect data values in the copied object. The code below illustrates the use of the <code class="docutils literal notranslate"><span class="pre">copy</span></code> method bound to <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> objects and the base Python function <a class="reference external" href="https://docs.python.org/3/library/copy.html#copy.copy"><code class="docutils literal notranslate"><span class="pre">copy.copy</span></code></a> which can both be used to shallow copy a breeding value matrix object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># copy a breeding value matrix</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">bvmat</span><span class="p">)</span>
@@ -706,7 +767,7 @@
 </div>
 </section>
 <section id="deep-copying">
-<h3>Deep copying<a class="headerlink" href="#deep-copying" title="Permalink to this heading">#</a></h3>
+<h3>Deep copying<a class="headerlink" href="#deep-copying" title="Link to this heading">#</a></h3>
 <p>In deep copying, data in a <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> is recursively copied to a new breeding value matrix object. Copying occurs down to the deepest levels so that changes to the original object will not affect data values in the copied object. The code below illustrates the use of the <code class="docutils literal notranslate"><span class="pre">deepcopy</span></code> method bound to <code class="docutils literal notranslate"><span class="pre">BreedingValueMatrix</span></code> objects and the base Python function <a class="reference external" href="https://docs.python.org/3/library/copy.html#copy.deepcopy"><code class="docutils literal notranslate"><span class="pre">copy.deepcopy</span></code></a> which can both be used to deep copy a breeding value matrix object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># deep copy a breeding value matrix</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">bvmat</span><span class="p">)</span>
@@ -716,10 +777,10 @@
 </section>
 </section>
 <section id="copy-on-element-manipulation">
-<h2>Copy-On Element Manipulation<a class="headerlink" href="#copy-on-element-manipulation" title="Permalink to this heading">#</a></h2>
+<h2>Copy-On Element Manipulation<a class="headerlink" href="#copy-on-element-manipulation" title="Link to this heading">#</a></h2>
 <p>Breeding value matrices have several methods by which modifed copies of the original matrix can be made. These are called copy-on element manipulation methods. Matrices may have rows and/or columns adjoined, deleted, inserted, or selected. The following sections demonstrate the use of these method families.</p>
 <section id="adjoin-elements">
-<h3>Adjoin elements<a class="headerlink" href="#adjoin-elements" title="Permalink to this heading">#</a></h3>
+<h3>Adjoin elements<a class="headerlink" href="#adjoin-elements" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">adjoin</span></code> family of methods allows for rows (taxa) and columns (traits) of a breeding value matrix to be adjoined together, creating a new matrix in the process. Use of the <code class="docutils literal notranslate"><span class="pre">adjoin</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new breeding value matrix to demonstrate</span>
 <span class="n">new</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
@@ -735,7 +796,7 @@
 </div>
 </section>
 <section id="delete-elements">
-<h3>Delete elements<a class="headerlink" href="#delete-elements" title="Permalink to this heading">#</a></h3>
+<h3>Delete elements<a class="headerlink" href="#delete-elements" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">delete</span></code> family of methods allows for rows (taxa) and columns (traits) of a breeding value matrix to be removed in a copy of the original. Use of the <code class="docutils literal notranslate"><span class="pre">delete</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># delete taxa examples</span>
@@ -772,7 +833,7 @@
 </div>
 </section>
 <section id="insert-elements">
-<h3>Insert elements<a class="headerlink" href="#insert-elements" title="Permalink to this heading">#</a></h3>
+<h3>Insert elements<a class="headerlink" href="#insert-elements" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">insert</span></code> family of methods allows for rows (taxa) and columns (traits) of a breeding value matrix to be inserted into a copy of the original matrix. Use of the <code class="docutils literal notranslate"><span class="pre">insert</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create a new breeding value matrix to demonstrate</span>
 <span class="n">new</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
@@ -788,7 +849,7 @@
 </div>
 </section>
 <section id="select-elements">
-<h3>Select elements<a class="headerlink" href="#select-elements" title="Permalink to this heading">#</a></h3>
+<h3>Select elements<a class="headerlink" href="#select-elements" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">select</span></code> family of methods allows for rows (taxa) and columns (traits) of the breeding value matrix to be selected and extracted to a copy of the original matrix. Use of the <code class="docutils literal notranslate"><span class="pre">select</span></code> method family is demonstrated in the code below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># select first five taxa using a Sequence</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">select</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
@@ -802,10 +863,10 @@
 </section>
 </section>
 <section id="in-place-element-manipulation">
-<h2>In-Place Element Manipulation<a class="headerlink" href="#in-place-element-manipulation" title="Permalink to this heading">#</a></h2>
+<h2>In-Place Element Manipulation<a class="headerlink" href="#in-place-element-manipulation" title="Link to this heading">#</a></h2>
 <p>Breeding value matrices have several methods which execute in-place element manipulations. These are called in-place element manipulation methods. Breeding value matrices may have taxa rows and/or trait columns appended, removed, incorporated, or concatenated. The following sections demonstrate the use of these method families.</p>
 <section id="append-elements">
-<h3>Append elements<a class="headerlink" href="#append-elements" title="Permalink to this heading">#</a></h3>
+<h3>Append elements<a class="headerlink" href="#append-elements" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">append</span></code> family of methods allows for new rows (taxa) and columns (traits) to be appended to the breeding value matrix. The code segment below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># append breeding value matrices along the taxa axis</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>                   <span class="c1"># copy original</span>
@@ -824,7 +885,7 @@
 </div>
 </section>
 <section id="remove-elements">
-<h3>Remove elements<a class="headerlink" href="#remove-elements" title="Permalink to this heading">#</a></h3>
+<h3>Remove elements<a class="headerlink" href="#remove-elements" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">remove</span></code> family of methods allows for rows (taxa) and columns (traits) to be removed from a breeding value matrix. A demonstration of their use can be seen below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># remove taxa examples</span>
@@ -879,7 +940,7 @@
 </div>
 </section>
 <section id="incorporate-elements">
-<h3>Incorporate elements<a class="headerlink" href="#incorporate-elements" title="Permalink to this heading">#</a></h3>
+<h3>Incorporate elements<a class="headerlink" href="#incorporate-elements" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">incorp</span></code> family of methods allows for new rows (taxa) and columns (traits) to be inserted at specific locations a breeding value matrix. Use of the <code class="docutils literal notranslate"><span class="pre">incorp</span></code> family is demonstrated in the code segment below below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># incorp breeding value matrix along the taxa axis before index 0</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>                           <span class="c1"># copy original</span>
@@ -898,7 +959,7 @@
 </div>
 </section>
 <section id="concatenate-elements">
-<h3>Concatenate elements<a class="headerlink" href="#concatenate-elements" title="Permalink to this heading">#</a></h3>
+<h3>Concatenate elements<a class="headerlink" href="#concatenate-elements" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">concat</span></code> family of methods allows for multiple breeding value matrices to be concatenated to each other. The code segment below demonstrates their use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># concatenate along the taxa axis</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">bvmat</span><span class="p">,</span> <span class="n">bvmat</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
@@ -912,10 +973,10 @@
 </section>
 </section>
 <section id="grouping-and-sorting">
-<h2>Grouping and Sorting<a class="headerlink" href="#grouping-and-sorting" title="Permalink to this heading">#</a></h2>
+<h2>Grouping and Sorting<a class="headerlink" href="#grouping-and-sorting" title="Link to this heading">#</a></h2>
 <p>Breeding value matrices in PyBrOpS have several sorting and grouping focused methods. Sorting methods can be used to reorder, sort, and group taxa alphanumerically, and reorder and sort traits alphanumerically. The following sections demonstrate the use of the <code class="docutils literal notranslate"><span class="pre">reorder</span></code>, <code class="docutils literal notranslate"><span class="pre">lexsort</span></code>, <code class="docutils literal notranslate"><span class="pre">sort</span></code>, and <code class="docutils literal notranslate"><span class="pre">group</span></code> method families.</p>
 <section id="reordering-elements">
-<h3>Reordering elements<a class="headerlink" href="#reordering-elements" title="Permalink to this heading">#</a></h3>
+<h3>Reordering elements<a class="headerlink" href="#reordering-elements" title="Link to this heading">#</a></h3>
 <p>Taxa and traits in a breeding value matrix can be reordered using the <code class="docutils literal notranslate"><span class="pre">reorder</span></code> family of methods. Demonstrations of this method family are below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># taxa reordering example</span>
@@ -947,7 +1008,7 @@
 </div>
 </section>
 <section id="lexsorting-elements">
-<h3>Lexsorting elements<a class="headerlink" href="#lexsorting-elements" title="Permalink to this heading">#</a></h3>
+<h3>Lexsorting elements<a class="headerlink" href="#lexsorting-elements" title="Link to this heading">#</a></h3>
 <p>An indirect sort - or lexsort - for taxa and trait axes can be performed using the <code class="docutils literal notranslate"><span class="pre">lexsort</span></code> family of methods. The code segment below illustrates the use of this family of methods.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
 <span class="c1"># taxa lexsort example</span>
@@ -978,7 +1039,7 @@
 </div>
 </section>
 <section id="sorting-elements">
-<h3>Sorting elements<a class="headerlink" href="#sorting-elements" title="Permalink to this heading">#</a></h3>
+<h3>Sorting elements<a class="headerlink" href="#sorting-elements" title="Link to this heading">#</a></h3>
 <p>Alphanumeric sorting along taxa and trait axes can be done using the <code class="docutils literal notranslate"><span class="pre">sort</span></code> family of methods. Sorting examples are illustrated below.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make copy</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
@@ -1002,7 +1063,7 @@
 </div>
 </section>
 <section id="grouping-elements">
-<h3>Grouping elements<a class="headerlink" href="#grouping-elements" title="Permalink to this heading">#</a></h3>
+<h3>Grouping elements<a class="headerlink" href="#grouping-elements" title="Link to this heading">#</a></h3>
 <p>Grouping along only the taxa axis can be done using the <code class="docutils literal notranslate"><span class="pre">group</span></code> family of methods. The following code illustrates the use of the <code class="docutils literal notranslate"><span class="pre">group</span></code> method family along the taxa axis of a breeding value matrix.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># make copy</span>
 <span class="n">tmp</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">()</span>
@@ -1023,10 +1084,10 @@
 </section>
 </section>
 <section id="summary-statistics">
-<h2>Summary Statistics<a class="headerlink" href="#summary-statistics" title="Permalink to this heading">#</a></h2>
+<h2>Summary Statistics<a class="headerlink" href="#summary-statistics" title="Link to this heading">#</a></h2>
 <p>Various summary statistics can be calculated from breeding value matrices. PyBrOpS offers several common statistical routines which are described in the subsections below.</p>
 <section id="maximum-breeding-values-for-each-trait">
-<h3>Maximum breeding values for each trait<a class="headerlink" href="#maximum-breeding-values-for-each-trait" title="Permalink to this heading">#</a></h3>
+<h3>Maximum breeding values for each trait<a class="headerlink" href="#maximum-breeding-values-for-each-trait" title="Link to this heading">#</a></h3>
 <p>The maximum breeding value for each trait may be calculated using the <code class="docutils literal notranslate"><span class="pre">tmax</span></code> method. The code below illustrates this method’s use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the maximum breeding values for each trait</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">tmax</span><span class="p">()</span>
@@ -1039,7 +1100,7 @@
 </div>
 </section>
 <section id="minimum-breeding-values-for-each-trait">
-<h3>Minimum breeding values for each trait<a class="headerlink" href="#minimum-breeding-values-for-each-trait" title="Permalink to this heading">#</a></h3>
+<h3>Minimum breeding values for each trait<a class="headerlink" href="#minimum-breeding-values-for-each-trait" title="Link to this heading">#</a></h3>
 <p>The minimum breeding values for each trait may be calculated using the <code class="docutils literal notranslate"><span class="pre">tmax</span></code> method. The code below illustrates this method’s use.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the minimum breeding values for each trait</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">tmin</span><span class="p">()</span>
@@ -1052,7 +1113,7 @@
 </div>
 </section>
 <section id="mean-breeding-values-for-each-trait">
-<h3>Mean breeding values for each trait<a class="headerlink" href="#mean-breeding-values-for-each-trait" title="Permalink to this heading">#</a></h3>
+<h3>Mean breeding values for each trait<a class="headerlink" href="#mean-breeding-values-for-each-trait" title="Link to this heading">#</a></h3>
 <p>The mean breeding value for each trait may be calculated using the <code class="docutils literal notranslate"><span class="pre">tmean</span></code> method. The code below illustrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the mean breeding values for each trait</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">tmean</span><span class="p">()</span>
@@ -1060,7 +1121,7 @@
 </div>
 </section>
 <section id="breeding-value-ranges-for-each-trait">
-<h3>Breeding value ranges for each trait<a class="headerlink" href="#breeding-value-ranges-for-each-trait" title="Permalink to this heading">#</a></h3>
+<h3>Breeding value ranges for each trait<a class="headerlink" href="#breeding-value-ranges-for-each-trait" title="Link to this heading">#</a></h3>
 <p>The breeding value range for each trait may be calculated using the <code class="docutils literal notranslate"><span class="pre">trange</span></code> method. The code below illustrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the breeding value ranges for each trait</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">trange</span><span class="p">()</span>
@@ -1068,7 +1129,7 @@
 </div>
 </section>
 <section id="breeding-value-standard-deviations-for-each-trait">
-<h3>Breeding value standard deviations for each trait<a class="headerlink" href="#breeding-value-standard-deviations-for-each-trait" title="Permalink to this heading">#</a></h3>
+<h3>Breeding value standard deviations for each trait<a class="headerlink" href="#breeding-value-standard-deviations-for-each-trait" title="Link to this heading">#</a></h3>
 <p>The breeding value standard deviation for each trait may be calculated using the <code class="docutils literal notranslate"><span class="pre">trange</span></code> method. The code below illustrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the breeding value standard deviations for each trait</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">tstd</span><span class="p">()</span>
@@ -1076,7 +1137,7 @@
 </div>
 </section>
 <section id="breeding-value-variances-for-each-trait">
-<h3>Breeding value variances for each trait<a class="headerlink" href="#breeding-value-variances-for-each-trait" title="Permalink to this heading">#</a></h3>
+<h3>Breeding value variances for each trait<a class="headerlink" href="#breeding-value-variances-for-each-trait" title="Link to this heading">#</a></h3>
 <p>The breeding value variance for each trait may be calculated using the <code class="docutils literal notranslate"><span class="pre">trange</span></code> method. The code below illustrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the breeding value variances for each trait</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">tvar</span><span class="p">()</span>
@@ -1084,7 +1145,7 @@
 </div>
 </section>
 <section id="unscaling-and-de-centering-breeding-values">
-<h3>Unscaling and de-centering breeding values<a class="headerlink" href="#unscaling-and-de-centering-breeding-values" title="Permalink to this heading">#</a></h3>
+<h3>Unscaling and de-centering breeding values<a class="headerlink" href="#unscaling-and-de-centering-breeding-values" title="Link to this heading">#</a></h3>
 <p>A de-transformed (unscaled and de-centered) breeding value matrix may be calculated using the <code class="docutils literal notranslate"><span class="pre">unscale</span></code> method. The code below illustrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># de-transform a breeding value matrix</span>
 <span class="n">out</span> <span class="o">=</span> <span class="n">bvmat</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
@@ -1093,10 +1154,10 @@
 </section>
 </section>
 <section id="exporting-breeding-value-matrices">
-<h2>Exporting Breeding Value Matrices<a class="headerlink" href="#exporting-breeding-value-matrices" title="Permalink to this heading">#</a></h2>
+<h2>Exporting Breeding Value Matrices<a class="headerlink" href="#exporting-breeding-value-matrices" title="Link to this heading">#</a></h2>
 <p>Breeding value matrices may be exported to multiple formats including Pandas DataFrames, CSV files, and HDF5 files. The following subsections provide export examples.</p>
 <section id="exporting-to-pandas-dataframe">
-<h3>Exporting to Pandas DataFrame<a class="headerlink" href="#exporting-to-pandas-dataframe" title="Permalink to this heading">#</a></h3>
+<h3>Exporting to Pandas DataFrame<a class="headerlink" href="#exporting-to-pandas-dataframe" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">to_pandas</span></code> method can be used to export a breeding value matrix to a Pandas DataFrame. Column names may be optionally provided to override default column names.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># export to a pandas.DataFrame</span>
 <span class="c1"># use default column names to export</span>
@@ -1105,7 +1166,7 @@
 </div>
 </section>
 <section id="exporting-to-csv">
-<h3>Exporting to CSV<a class="headerlink" href="#exporting-to-csv" title="Permalink to this heading">#</a></h3>
+<h3>Exporting to CSV<a class="headerlink" href="#exporting-to-csv" title="Link to this heading">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">to_csv</span></code> method can be used to export a breeding value matrix to a CSV file. Column names may be optionally provided to override default column names.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># export to a CSV</span>
 <span class="c1"># use default column names to export</span>
@@ -1114,7 +1175,7 @@
 </div>
 </section>
 <section id="exporting-to-hdf5">
-<h3>Exporting to HDF5<a class="headerlink" href="#exporting-to-hdf5" title="Permalink to this heading">#</a></h3>
+<h3>Exporting to HDF5<a class="headerlink" href="#exporting-to-hdf5" title="Link to this heading">#</a></h3>
 <p>Most matrix object types in PyBrOpS allow for the export of matrices into an HDF5 format. To write breeding value matrices to an HDF5 file, use the <code class="docutils literal notranslate"><span class="pre">to_hdf5</span></code> method. The code below demonstrates the use of this method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># write a breeding value matrix to an HDF5 file</span>
 <span class="n">bvmat</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span><span class="s2">&quot;saved_breeding_values.h5&quot;</span><span class="p">)</span>
@@ -1125,338 +1186,166 @@
 </section>
 
 
-            </article>
-            
-            
-            
-            <footer class="bd-footer-article">
-                <!-- Previous / next buttons -->
-<div class='prev-next-area'>
-  <a class='left-prev' id="prev-link" href="phased_genotype_matrices.html" title="previous page">
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="phased_genotype_matrices.html"
+       title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
-          <p class="prev-next-subtitle">previous</p>
-          <p class="prev-next-title">Phased Genotype Matrices</p>
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Phased Genotype Matrices</p>
       </div>
-  </a>
-  <a class='right-next' id="next-link" href="coancestry_matrices.html" title="next page">
-  <div class="prev-next-info">
-      <p class="prev-next-subtitle">next</p>
-      <p class="prev-next-title">Coancestry Matrices</p>
-  </div>
-  <i class="fa-solid fa-angle-right"></i>
-  </a>
+    </a>
+    <a class="right-next"
+       href="coancestry_matrices.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Coancestry Matrices</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
-            </footer>
-            
-          </div>
-          
-          
-          
-            <div class="bd-sidebar-secondary bd-toc">
+                </footer>
               
-<div class="toc-item">
-  
-<div class="tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-</div>
-<nav id="bd-toc-nav" class="page-toc">
-    <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#class-family-overview">
-   Class Family Overview
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#summary-of-breeding-value-matrix-classes">
-   Summary of Breeding Value Matrix Classes
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#breeding-value-matrix-properties">
-   Breeding Value Matrix Properties
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#breeding-value-matrix-general-properties">
-     Breeding value matrix general properties
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#breeding-value-matrix-taxa-properties">
-     Breeding value matrix taxa properties
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#breeding-value-matrix-trait-properties">
-     Breeding value matrix trait properties
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#loading-breeding-value-matrix-modules">
-   Loading Breeding Value Matrix Modules
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#creating-breeding-value-matrices">
-   Creating Breeding Value Matrices
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#creating-breeding-value-matrices-from-numpy-arrays">
-     Creating breeding value matrices from NumPy arrays
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#creating-breeding-value-matrices-from-pandas-dataframes">
-     Creating breeding value matrices from Pandas DataFrames
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#loading-breeding-value-matrices-from-csv-files">
-     Loading breeding value matrices from CSV files
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#loading-breeding-value-matrices-from-hdf5-files">
-     Loading breeding value matrices from HDF5 files
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#copying-breeding-value-matrices">
-   Copying Breeding Value Matrices
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#shallow-copying">
-     Shallow copying
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#deep-copying">
-     Deep copying
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#copy-on-element-manipulation">
-   Copy-On Element Manipulation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#adjoin-elements">
-     Adjoin elements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#delete-elements">
-     Delete elements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#insert-elements">
-     Insert elements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#select-elements">
-     Select elements
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#in-place-element-manipulation">
-   In-Place Element Manipulation
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#append-elements">
-     Append elements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#remove-elements">
-     Remove elements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#incorporate-elements">
-     Incorporate elements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#concatenate-elements">
-     Concatenate elements
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#grouping-and-sorting">
-   Grouping and Sorting
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#reordering-elements">
-     Reordering elements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#lexsorting-elements">
-     Lexsorting elements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#sorting-elements">
-     Sorting elements
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#grouping-elements">
-     Grouping elements
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#summary-statistics">
-   Summary Statistics
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#maximum-breeding-values-for-each-trait">
-     Maximum breeding values for each trait
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#minimum-breeding-values-for-each-trait">
-     Minimum breeding values for each trait
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#mean-breeding-values-for-each-trait">
-     Mean breeding values for each trait
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#breeding-value-ranges-for-each-trait">
-     Breeding value ranges for each trait
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#breeding-value-standard-deviations-for-each-trait">
-     Breeding value standard deviations for each trait
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#breeding-value-variances-for-each-trait">
-     Breeding value variances for each trait
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#unscaling-and-de-centering-breeding-values">
-     Unscaling and de-centering breeding values
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exporting-breeding-value-matrices">
-   Exporting Breeding Value Matrices
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exporting-to-pandas-dataframe">
-     Exporting to Pandas DataFrame
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exporting-to-csv">
-     Exporting to CSV
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#exporting-to-hdf5">
-     Exporting to HDF5
-    </a>
-   </li>
-  </ul>
- </li>
-</ul>
-
-</nav>
-</div>
-
-<div class="toc-item">
-  
-<div id="searchbox"></div>
-</div>
-
-<div class="toc-item">
-  
-</div>
-
-<div class="toc-item">
-  
-</div>
-
             </div>
-          
-          
-        </div>
-        <footer class="bd-footer-content">
-          <div class="bd-footer-content__inner">
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#class-family-overview">Class Family Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-of-breeding-value-matrix-classes">Summary of Breeding Value Matrix Classes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#breeding-value-matrix-properties">Breeding Value Matrix Properties</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#breeding-value-matrix-general-properties">Breeding value matrix general properties</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#breeding-value-matrix-taxa-properties">Breeding value matrix taxa properties</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#breeding-value-matrix-trait-properties">Breeding value matrix trait properties</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-breeding-value-matrix-modules">Loading Breeding Value Matrix Modules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-breeding-value-matrices">Creating Breeding Value Matrices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-breeding-value-matrices-from-numpy-arrays">Creating breeding value matrices from NumPy arrays</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-breeding-value-matrices-from-pandas-dataframes">Creating breeding value matrices from Pandas DataFrames</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-breeding-value-matrices-from-csv-files">Loading breeding value matrices from CSV files</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-breeding-value-matrices-from-hdf5-files">Loading breeding value matrices from HDF5 files</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copying-breeding-value-matrices">Copying Breeding Value Matrices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shallow-copying">Shallow copying</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deep-copying">Deep copying</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#copy-on-element-manipulation">Copy-On Element Manipulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#adjoin-elements">Adjoin elements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#delete-elements">Delete elements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#insert-elements">Insert elements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#select-elements">Select elements</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#in-place-element-manipulation">In-Place Element Manipulation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#append-elements">Append elements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#remove-elements">Remove elements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#incorporate-elements">Incorporate elements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#concatenate-elements">Concatenate elements</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grouping-and-sorting">Grouping and Sorting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reordering-elements">Reordering elements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lexsorting-elements">Lexsorting elements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#sorting-elements">Sorting elements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#grouping-elements">Grouping elements</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary-statistics">Summary Statistics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#maximum-breeding-values-for-each-trait">Maximum breeding values for each trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#minimum-breeding-values-for-each-trait">Minimum breeding values for each trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mean-breeding-values-for-each-trait">Mean breeding values for each trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#breeding-value-ranges-for-each-trait">Breeding value ranges for each trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#breeding-value-standard-deviations-for-each-trait">Breeding value standard deviations for each trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#breeding-value-variances-for-each-trait">Breeding value variances for each trait</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unscaling-and-de-centering-breeding-values">Unscaling and de-centering breeding values</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting-breeding-value-matrices">Exporting Breeding Value Matrices</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting-to-pandas-dataframe">Exporting to Pandas DataFrame</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting-to-csv">Exporting to CSV</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#exporting-to-hdf5">Exporting to HDF5</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
             
           </div>
-        </footer>
+          <footer class="bd-footer-content">
+            
+          </footer>
         
       </main>
     </div>
   </div>
-
   
-    
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=796348d33e8b1d947c94"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=796348d33e8b1d947c94"></script>
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
 
-  <footer class="bd-footer"><div class="bd-footer__inner container">
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
   
-  <div class="footer-item">
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
     
-<p class="copyright">
-
-    &copy; Copyright 2023, Robert Shrote.<br>
-
-</p>
-
-  </div>
-  
-  <div class="footer-item">
-    <p class="theme-version">
-    Built with the
-    <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">
-        PyData Sphinx Theme
-    </a>
-    0.12.0.
-</p>
-  </div>
-  
-  <div class="footer-item">
+      © Copyright 2023, Robert Shrote.
+      <br/>
     
-<p class="sphinx-version">
-Created using <a href="http://sphinx-doc.org/">Sphinx</a> 5.3.0.<br>
-</p>
+  </p>
+</div>
+      
+        <div class="footer-item">
 
-  </div>
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
   
 </div>
+
   </footer>
   </body>
 </html>

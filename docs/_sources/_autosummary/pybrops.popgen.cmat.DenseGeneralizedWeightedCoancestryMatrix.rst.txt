@@ -1,0 +1,41 @@
+DenseGeneralizedWeightedCoancestryMatrix
+========================================
+
+.. automodule:: pybrops.popgen.cmat.DenseGeneralizedWeightedCoancestryMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseGeneralizedWeightedCoancestryMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseGeneralizedWeightedCoancestryMatrix
+   
+   
+
+   
+   
+   
+
+
+

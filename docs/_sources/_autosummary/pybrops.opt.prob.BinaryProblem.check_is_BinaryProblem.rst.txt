@@ -1,0 +1,6 @@
+check\_is\_BinaryProblem
+========================
+
+.. currentmodule:: pybrops.opt.prob.BinaryProblem
+
+.. autofunction:: check_is_BinaryProblem

@@ -1,0 +1,77 @@
+OptimalHaploidValueBinarySelectionProblem
+=========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem
+
+.. autoclass:: OptimalHaploidValueBinarySelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalHaploidValueBinarySelectionProblem.bounds
+      ~OptimalHaploidValueBinarySelectionProblem.do
+      ~OptimalHaploidValueBinarySelectionProblem.evalfn
+      ~OptimalHaploidValueBinarySelectionProblem.evaluate
+      ~OptimalHaploidValueBinarySelectionProblem.from_pgmat_gpmod
+      ~OptimalHaploidValueBinarySelectionProblem.has_bounds
+      ~OptimalHaploidValueBinarySelectionProblem.has_constraints
+      ~OptimalHaploidValueBinarySelectionProblem.ideal_point
+      ~OptimalHaploidValueBinarySelectionProblem.latentfn
+      ~OptimalHaploidValueBinarySelectionProblem.nadir_point
+      ~OptimalHaploidValueBinarySelectionProblem.name
+      ~OptimalHaploidValueBinarySelectionProblem.pareto_front
+      ~OptimalHaploidValueBinarySelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalHaploidValueBinarySelectionProblem.callback
+      ~OptimalHaploidValueBinarySelectionProblem.data
+      ~OptimalHaploidValueBinarySelectionProblem.decn_space
+      ~OptimalHaploidValueBinarySelectionProblem.decn_space_lower
+      ~OptimalHaploidValueBinarySelectionProblem.decn_space_upper
+      ~OptimalHaploidValueBinarySelectionProblem.elementwise
+      ~OptimalHaploidValueBinarySelectionProblem.elementwise_func
+      ~OptimalHaploidValueBinarySelectionProblem.elementwise_runner
+      ~OptimalHaploidValueBinarySelectionProblem.eqcv_trans
+      ~OptimalHaploidValueBinarySelectionProblem.eqcv_trans_kwargs
+      ~OptimalHaploidValueBinarySelectionProblem.eqcv_wt
+      ~OptimalHaploidValueBinarySelectionProblem.exclude_from_serialization
+      ~OptimalHaploidValueBinarySelectionProblem.ineqcv_trans
+      ~OptimalHaploidValueBinarySelectionProblem.ineqcv_trans_kwargs
+      ~OptimalHaploidValueBinarySelectionProblem.ineqcv_wt
+      ~OptimalHaploidValueBinarySelectionProblem.n_constr
+      ~OptimalHaploidValueBinarySelectionProblem.n_eq_constr
+      ~OptimalHaploidValueBinarySelectionProblem.n_ieq_constr
+      ~OptimalHaploidValueBinarySelectionProblem.n_obj
+      ~OptimalHaploidValueBinarySelectionProblem.n_var
+      ~OptimalHaploidValueBinarySelectionProblem.ndecn
+      ~OptimalHaploidValueBinarySelectionProblem.neqcv
+      ~OptimalHaploidValueBinarySelectionProblem.nineqcv
+      ~OptimalHaploidValueBinarySelectionProblem.nlatent
+      ~OptimalHaploidValueBinarySelectionProblem.nobj
+      ~OptimalHaploidValueBinarySelectionProblem.obj_trans
+      ~OptimalHaploidValueBinarySelectionProblem.obj_trans_kwargs
+      ~OptimalHaploidValueBinarySelectionProblem.obj_wt
+      ~OptimalHaploidValueBinarySelectionProblem.ohvmat
+      ~OptimalHaploidValueBinarySelectionProblem.replace_nan_values_by
+      ~OptimalHaploidValueBinarySelectionProblem.strict
+      ~OptimalHaploidValueBinarySelectionProblem.vars
+      ~OptimalHaploidValueBinarySelectionProblem.vtype
+      ~OptimalHaploidValueBinarySelectionProblem.xl
+      ~OptimalHaploidValueBinarySelectionProblem.xu
+   
+   

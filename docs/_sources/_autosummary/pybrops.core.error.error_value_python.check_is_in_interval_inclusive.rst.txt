@@ -1,0 +1,6 @@
+check\_is\_in\_interval\_inclusive
+==================================
+
+.. currentmodule:: pybrops.core.error.error_value_python
+
+.. autofunction:: check_is_in_interval_inclusive

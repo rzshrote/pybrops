@@ -1,0 +1,6 @@
+human2bytes
+===========
+
+.. currentmodule:: pybrops.core.util.subroutines
+
+.. autofunction:: human2bytes

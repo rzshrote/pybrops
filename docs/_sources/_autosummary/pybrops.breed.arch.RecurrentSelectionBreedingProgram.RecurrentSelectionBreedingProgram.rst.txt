@@ -1,0 +1,51 @@
+RecurrentSelectionBreedingProgram
+=================================
+
+.. currentmodule:: pybrops.breed.arch.RecurrentSelectionBreedingProgram
+
+.. autoclass:: RecurrentSelectionBreedingProgram
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RecurrentSelectionBreedingProgram.advance
+      ~RecurrentSelectionBreedingProgram.evolve
+      ~RecurrentSelectionBreedingProgram.initialize
+      ~RecurrentSelectionBreedingProgram.is_initialized
+      ~RecurrentSelectionBreedingProgram.reset
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RecurrentSelectionBreedingProgram.bval
+      ~RecurrentSelectionBreedingProgram.evalop
+      ~RecurrentSelectionBreedingProgram.geno
+      ~RecurrentSelectionBreedingProgram.genome
+      ~RecurrentSelectionBreedingProgram.gmod
+      ~RecurrentSelectionBreedingProgram.initop
+      ~RecurrentSelectionBreedingProgram.mateop
+      ~RecurrentSelectionBreedingProgram.pheno
+      ~RecurrentSelectionBreedingProgram.pselop
+      ~RecurrentSelectionBreedingProgram.sselop
+      ~RecurrentSelectionBreedingProgram.start_bval
+      ~RecurrentSelectionBreedingProgram.start_geno
+      ~RecurrentSelectionBreedingProgram.start_genome
+      ~RecurrentSelectionBreedingProgram.start_gmod
+      ~RecurrentSelectionBreedingProgram.start_pheno
+      ~RecurrentSelectionBreedingProgram.t_cur
+      ~RecurrentSelectionBreedingProgram.t_max
+   
+   

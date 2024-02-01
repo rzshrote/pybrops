@@ -1,0 +1,6 @@
+check\_is\_ThreeWayCross
+========================
+
+.. currentmodule:: pybrops.breed.prot.mate.ThreeWayCross
+
+.. autofunction:: check_is_ThreeWayCross

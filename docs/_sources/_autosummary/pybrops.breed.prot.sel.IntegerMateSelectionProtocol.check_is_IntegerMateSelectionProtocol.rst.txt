@@ -1,0 +1,6 @@
+check\_is\_IntegerMateSelectionProtocol
+=======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.IntegerMateSelectionProtocol
+
+.. autofunction:: check_is_IntegerMateSelectionProtocol

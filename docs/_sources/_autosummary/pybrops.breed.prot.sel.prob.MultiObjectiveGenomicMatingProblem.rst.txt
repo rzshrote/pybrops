@@ -1,0 +1,33 @@
+MultiObjectiveGenomicMatingProblem
+==================================
+
+.. automodule:: pybrops.breed.prot.sel.prob.MultiObjectiveGenomicMatingProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      MultiObjectiveGenomicMatingProblemMixin
+      MultiObjectiveGenomicSubsetMatingProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

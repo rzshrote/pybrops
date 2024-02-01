@@ -1,0 +1,47 @@
+pcvmat
+======
+
+.. automodule:: pybrops.model.pcvmat
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.model.pcvmat.AdditiveProgenyGeneticCovarianceMatrix
+   pybrops.model.pcvmat.AdditiveProgenyGenicCovarianceMatrix
+   pybrops.model.pcvmat.DenseAdditiveProgenyGeneticCovarianceMatrix
+   pybrops.model.pcvmat.DenseAdditiveProgenyGenicCovarianceMatrix
+   pybrops.model.pcvmat.DenseDihybridDHAdditiveProgenyGeneticCovarianceMatrix
+   pybrops.model.pcvmat.DenseDihybridDHAdditiveProgenyGenicCovarianceMatrix
+   pybrops.model.pcvmat.DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix
+   pybrops.model.pcvmat.DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix
+   pybrops.model.pcvmat.DenseProgenyGeneticCovarianceMatrix
+   pybrops.model.pcvmat.DenseProgenyGenicCovarianceMatrix
+   pybrops.model.pcvmat.DenseThreeWayDHAdditiveProgenyGeneticCovarianceMatrix
+   pybrops.model.pcvmat.DenseThreeWayDHAdditiveProgenyGenicCovarianceMatrix
+   pybrops.model.pcvmat.DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix
+   pybrops.model.pcvmat.DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix
+   pybrops.model.pcvmat.ProgenyGeneticCovarianceMatrix
+   pybrops.model.pcvmat.ProgenyGenicCovarianceMatrix
+

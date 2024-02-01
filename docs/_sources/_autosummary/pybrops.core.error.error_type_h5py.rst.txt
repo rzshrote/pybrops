@@ -1,0 +1,32 @@
+error\_type\_h5py
+=================
+
+.. automodule:: pybrops.core.error.error_type_h5py
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_h5py_File
+   
+   
+
+   
+   
+   
+
+
+

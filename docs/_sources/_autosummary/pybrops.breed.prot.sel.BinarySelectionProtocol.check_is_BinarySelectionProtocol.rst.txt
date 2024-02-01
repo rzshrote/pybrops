@@ -1,0 +1,6 @@
+check\_is\_BinarySelectionProtocol
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.BinarySelectionProtocol
+
+.. autofunction:: check_is_BinarySelectionProtocol

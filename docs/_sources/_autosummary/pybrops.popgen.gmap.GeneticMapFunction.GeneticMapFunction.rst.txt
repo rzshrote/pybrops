@@ -1,0 +1,30 @@
+GeneticMapFunction
+==================
+
+.. currentmodule:: pybrops.popgen.gmap.GeneticMapFunction
+
+.. autoclass:: GeneticMapFunction
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneticMapFunction.invmapfn
+      ~GeneticMapFunction.mapfn
+      ~GeneticMapFunction.rprob1g
+      ~GeneticMapFunction.rprob1p
+      ~GeneticMapFunction.rprob2g
+      ~GeneticMapFunction.rprob2p
+   
+   
+
+   
+   
+   

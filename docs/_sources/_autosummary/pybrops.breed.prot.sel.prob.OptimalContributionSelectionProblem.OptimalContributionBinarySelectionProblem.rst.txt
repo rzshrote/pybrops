@@ -1,0 +1,78 @@
+OptimalContributionBinarySelectionProblem
+=========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem
+
+.. autoclass:: OptimalContributionBinarySelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalContributionBinarySelectionProblem.bounds
+      ~OptimalContributionBinarySelectionProblem.do
+      ~OptimalContributionBinarySelectionProblem.evalfn
+      ~OptimalContributionBinarySelectionProblem.evaluate
+      ~OptimalContributionBinarySelectionProblem.from_bvmat_gmat
+      ~OptimalContributionBinarySelectionProblem.has_bounds
+      ~OptimalContributionBinarySelectionProblem.has_constraints
+      ~OptimalContributionBinarySelectionProblem.ideal_point
+      ~OptimalContributionBinarySelectionProblem.latentfn
+      ~OptimalContributionBinarySelectionProblem.nadir_point
+      ~OptimalContributionBinarySelectionProblem.name
+      ~OptimalContributionBinarySelectionProblem.pareto_front
+      ~OptimalContributionBinarySelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalContributionBinarySelectionProblem.C
+      ~OptimalContributionBinarySelectionProblem.callback
+      ~OptimalContributionBinarySelectionProblem.data
+      ~OptimalContributionBinarySelectionProblem.decn_space
+      ~OptimalContributionBinarySelectionProblem.decn_space_lower
+      ~OptimalContributionBinarySelectionProblem.decn_space_upper
+      ~OptimalContributionBinarySelectionProblem.ebv
+      ~OptimalContributionBinarySelectionProblem.elementwise
+      ~OptimalContributionBinarySelectionProblem.elementwise_func
+      ~OptimalContributionBinarySelectionProblem.elementwise_runner
+      ~OptimalContributionBinarySelectionProblem.eqcv_trans
+      ~OptimalContributionBinarySelectionProblem.eqcv_trans_kwargs
+      ~OptimalContributionBinarySelectionProblem.eqcv_wt
+      ~OptimalContributionBinarySelectionProblem.exclude_from_serialization
+      ~OptimalContributionBinarySelectionProblem.ineqcv_trans
+      ~OptimalContributionBinarySelectionProblem.ineqcv_trans_kwargs
+      ~OptimalContributionBinarySelectionProblem.ineqcv_wt
+      ~OptimalContributionBinarySelectionProblem.n_constr
+      ~OptimalContributionBinarySelectionProblem.n_eq_constr
+      ~OptimalContributionBinarySelectionProblem.n_ieq_constr
+      ~OptimalContributionBinarySelectionProblem.n_obj
+      ~OptimalContributionBinarySelectionProblem.n_var
+      ~OptimalContributionBinarySelectionProblem.ndecn
+      ~OptimalContributionBinarySelectionProblem.neqcv
+      ~OptimalContributionBinarySelectionProblem.nineqcv
+      ~OptimalContributionBinarySelectionProblem.nlatent
+      ~OptimalContributionBinarySelectionProblem.nobj
+      ~OptimalContributionBinarySelectionProblem.obj_trans
+      ~OptimalContributionBinarySelectionProblem.obj_trans_kwargs
+      ~OptimalContributionBinarySelectionProblem.obj_wt
+      ~OptimalContributionBinarySelectionProblem.replace_nan_values_by
+      ~OptimalContributionBinarySelectionProblem.strict
+      ~OptimalContributionBinarySelectionProblem.vars
+      ~OptimalContributionBinarySelectionProblem.vtype
+      ~OptimalContributionBinarySelectionProblem.xl
+      ~OptimalContributionBinarySelectionProblem.xu
+   
+   

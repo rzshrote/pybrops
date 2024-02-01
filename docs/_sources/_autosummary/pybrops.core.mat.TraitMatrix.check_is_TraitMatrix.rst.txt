@@ -1,0 +1,6 @@
+check\_is\_TraitMatrix
+======================
+
+.. currentmodule:: pybrops.core.mat.TraitMatrix
+
+.. autofunction:: check_is_TraitMatrix

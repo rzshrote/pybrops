@@ -1,0 +1,6 @@
+target\_positive
+================
+
+.. currentmodule:: pybrops.breed.prot.sel.targetfn
+
+.. autofunction:: target_positive

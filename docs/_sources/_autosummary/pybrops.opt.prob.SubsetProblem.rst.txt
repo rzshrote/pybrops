@@ -1,0 +1,43 @@
+SubsetProblem
+=============
+
+.. automodule:: pybrops.opt.prob.SubsetProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      SubsetProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_SubsetProblem_is_multi_objective
+      check_SubsetProblem_is_single_objective
+      check_is_SubsetProblem
+   
+   
+
+   
+   
+   
+
+
+

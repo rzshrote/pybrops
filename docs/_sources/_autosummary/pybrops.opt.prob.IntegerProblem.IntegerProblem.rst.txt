@@ -1,0 +1,67 @@
+IntegerProblem
+==============
+
+.. currentmodule:: pybrops.opt.prob.IntegerProblem
+
+.. autoclass:: IntegerProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~IntegerProblem.bounds
+      ~IntegerProblem.do
+      ~IntegerProblem.evalfn
+      ~IntegerProblem.evaluate
+      ~IntegerProblem.has_bounds
+      ~IntegerProblem.has_constraints
+      ~IntegerProblem.ideal_point
+      ~IntegerProblem.nadir_point
+      ~IntegerProblem.name
+      ~IntegerProblem.pareto_front
+      ~IntegerProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~IntegerProblem.callback
+      ~IntegerProblem.data
+      ~IntegerProblem.decn_space
+      ~IntegerProblem.decn_space_lower
+      ~IntegerProblem.decn_space_upper
+      ~IntegerProblem.elementwise
+      ~IntegerProblem.elementwise_func
+      ~IntegerProblem.elementwise_runner
+      ~IntegerProblem.eqcv_wt
+      ~IntegerProblem.exclude_from_serialization
+      ~IntegerProblem.ineqcv_wt
+      ~IntegerProblem.n_constr
+      ~IntegerProblem.n_eq_constr
+      ~IntegerProblem.n_ieq_constr
+      ~IntegerProblem.n_obj
+      ~IntegerProblem.n_var
+      ~IntegerProblem.ndecn
+      ~IntegerProblem.neqcv
+      ~IntegerProblem.nineqcv
+      ~IntegerProblem.nobj
+      ~IntegerProblem.obj_wt
+      ~IntegerProblem.replace_nan_values_by
+      ~IntegerProblem.strict
+      ~IntegerProblem.vars
+      ~IntegerProblem.vtype
+      ~IntegerProblem.xl
+      ~IntegerProblem.xu
+   
+   

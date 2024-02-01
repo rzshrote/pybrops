@@ -1,0 +1,36 @@
+UsefulnessCriterionSelectionProblem
+===================================
+
+.. automodule:: pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      UsefulnessCriterionBinaryMateSelectionProblem
+      UsefulnessCriterionIntegerMateSelectionProblem
+      UsefulnessCriterionRealMateSelectionProblem
+      UsefulnessCriterionSelectionProblemMixin
+      UsefulnessCriterionSubsetMateSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

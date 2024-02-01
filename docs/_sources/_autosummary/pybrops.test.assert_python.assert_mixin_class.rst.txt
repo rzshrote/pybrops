@@ -1,0 +1,6 @@
+assert\_mixin\_class
+====================
+
+.. currentmodule:: pybrops.test.assert_python
+
+.. autofunction:: assert_mixin_class

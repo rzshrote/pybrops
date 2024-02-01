@@ -1,0 +1,6 @@
+check\_is\_Generator\_or\_RandomState
+=====================================
+
+.. currentmodule:: pybrops.core.error.error_type_numpy
+
+.. autofunction:: check_is_Generator_or_RandomState

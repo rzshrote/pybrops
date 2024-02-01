@@ -1,0 +1,6 @@
+check\_is\_PrunableMatrix
+=========================
+
+.. currentmodule:: pybrops.core.mat.PrunableMatrix
+
+.. autofunction:: check_is_PrunableMatrix

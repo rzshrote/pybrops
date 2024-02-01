@@ -1,0 +1,58 @@
+EstimatedBreedingValueRealSelection
+===================================
+
+.. currentmodule:: pybrops.breed.prot.sel.EstimatedBreedingValueSelection
+
+.. autoclass:: EstimatedBreedingValueRealSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~EstimatedBreedingValueRealSelection.mosolve
+      ~EstimatedBreedingValueRealSelection.problem
+      ~EstimatedBreedingValueRealSelection.select
+      ~EstimatedBreedingValueRealSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EstimatedBreedingValueRealSelection.eqcv_trans
+      ~EstimatedBreedingValueRealSelection.eqcv_trans_kwargs
+      ~EstimatedBreedingValueRealSelection.eqcv_wt
+      ~EstimatedBreedingValueRealSelection.ineqcv_trans
+      ~EstimatedBreedingValueRealSelection.ineqcv_trans_kwargs
+      ~EstimatedBreedingValueRealSelection.ineqcv_wt
+      ~EstimatedBreedingValueRealSelection.moalgo
+      ~EstimatedBreedingValueRealSelection.ncross
+      ~EstimatedBreedingValueRealSelection.ndset_trans
+      ~EstimatedBreedingValueRealSelection.ndset_trans_kwargs
+      ~EstimatedBreedingValueRealSelection.ndset_wt
+      ~EstimatedBreedingValueRealSelection.neqcv
+      ~EstimatedBreedingValueRealSelection.nineqcv
+      ~EstimatedBreedingValueRealSelection.nmating
+      ~EstimatedBreedingValueRealSelection.nobj
+      ~EstimatedBreedingValueRealSelection.nparent
+      ~EstimatedBreedingValueRealSelection.nprogeny
+      ~EstimatedBreedingValueRealSelection.nselindiv
+      ~EstimatedBreedingValueRealSelection.ntrait
+      ~EstimatedBreedingValueRealSelection.obj_trans
+      ~EstimatedBreedingValueRealSelection.obj_trans_kwargs
+      ~EstimatedBreedingValueRealSelection.obj_wt
+      ~EstimatedBreedingValueRealSelection.rng
+      ~EstimatedBreedingValueRealSelection.soalgo
+      ~EstimatedBreedingValueRealSelection.unscale
+   
+   

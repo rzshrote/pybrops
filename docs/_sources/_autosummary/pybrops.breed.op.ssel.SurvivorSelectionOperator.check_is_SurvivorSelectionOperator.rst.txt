@@ -1,0 +1,6 @@
+check\_is\_SurvivorSelectionOperator
+====================================
+
+.. currentmodule:: pybrops.breed.op.ssel.SurvivorSelectionOperator
+
+.. autofunction:: check_is_SurvivorSelectionOperator

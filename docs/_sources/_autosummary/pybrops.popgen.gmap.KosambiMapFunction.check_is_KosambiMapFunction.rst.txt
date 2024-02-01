@@ -1,0 +1,6 @@
+check\_is\_KosambiMapFunction
+=============================
+
+.. currentmodule:: pybrops.popgen.gmap.KosambiMapFunction
+
+.. autofunction:: check_is_KosambiMapFunction

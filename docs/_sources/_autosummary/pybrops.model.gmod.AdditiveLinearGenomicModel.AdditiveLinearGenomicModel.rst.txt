@@ -1,0 +1,85 @@
+AdditiveLinearGenomicModel
+==========================
+
+.. currentmodule:: pybrops.model.gmod.AdditiveLinearGenomicModel
+
+.. autoclass:: AdditiveLinearGenomicModel
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~AdditiveLinearGenomicModel.bulmer
+      ~AdditiveLinearGenomicModel.bulmer_numpy
+      ~AdditiveLinearGenomicModel.copy
+      ~AdditiveLinearGenomicModel.daavail
+      ~AdditiveLinearGenomicModel.dacount
+      ~AdditiveLinearGenomicModel.dafixed
+      ~AdditiveLinearGenomicModel.dafreq
+      ~AdditiveLinearGenomicModel.deepcopy
+      ~AdditiveLinearGenomicModel.faavail
+      ~AdditiveLinearGenomicModel.facount
+      ~AdditiveLinearGenomicModel.fafixed
+      ~AdditiveLinearGenomicModel.fafreq
+      ~AdditiveLinearGenomicModel.fit
+      ~AdditiveLinearGenomicModel.fit_numpy
+      ~AdditiveLinearGenomicModel.from_csv_dict
+      ~AdditiveLinearGenomicModel.from_hdf5
+      ~AdditiveLinearGenomicModel.from_pandas_dict
+      ~AdditiveLinearGenomicModel.gebv
+      ~AdditiveLinearGenomicModel.gebv_numpy
+      ~AdditiveLinearGenomicModel.gegv
+      ~AdditiveLinearGenomicModel.gegv_numpy
+      ~AdditiveLinearGenomicModel.lsl
+      ~AdditiveLinearGenomicModel.lsl_numpy
+      ~AdditiveLinearGenomicModel.predict
+      ~AdditiveLinearGenomicModel.predict_numpy
+      ~AdditiveLinearGenomicModel.score
+      ~AdditiveLinearGenomicModel.score_numpy
+      ~AdditiveLinearGenomicModel.to_csv_dict
+      ~AdditiveLinearGenomicModel.to_hdf5
+      ~AdditiveLinearGenomicModel.to_pandas_dict
+      ~AdditiveLinearGenomicModel.usl
+      ~AdditiveLinearGenomicModel.usl_numpy
+      ~AdditiveLinearGenomicModel.var_A
+      ~AdditiveLinearGenomicModel.var_A_numpy
+      ~AdditiveLinearGenomicModel.var_G
+      ~AdditiveLinearGenomicModel.var_G_numpy
+      ~AdditiveLinearGenomicModel.var_a
+      ~AdditiveLinearGenomicModel.var_a_numpy
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~AdditiveLinearGenomicModel.beta
+      ~AdditiveLinearGenomicModel.hyperparams
+      ~AdditiveLinearGenomicModel.model_name
+      ~AdditiveLinearGenomicModel.nexplan
+      ~AdditiveLinearGenomicModel.nexplan_beta
+      ~AdditiveLinearGenomicModel.nexplan_u
+      ~AdditiveLinearGenomicModel.nexplan_u_a
+      ~AdditiveLinearGenomicModel.nexplan_u_misc
+      ~AdditiveLinearGenomicModel.nparam
+      ~AdditiveLinearGenomicModel.nparam_beta
+      ~AdditiveLinearGenomicModel.nparam_u
+      ~AdditiveLinearGenomicModel.nparam_u_a
+      ~AdditiveLinearGenomicModel.nparam_u_misc
+      ~AdditiveLinearGenomicModel.ntrait
+      ~AdditiveLinearGenomicModel.trait
+      ~AdditiveLinearGenomicModel.u
+      ~AdditiveLinearGenomicModel.u_a
+      ~AdditiveLinearGenomicModel.u_misc
+   
+   

@@ -1,0 +1,41 @@
+DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
+===================================================
+
+.. automodule:: pybrops.model.vmat.fcty.DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseDihybridDHAdditiveGeneticVarianceMatrixFactory
+   
+   
+
+   
+   
+   
+
+
+

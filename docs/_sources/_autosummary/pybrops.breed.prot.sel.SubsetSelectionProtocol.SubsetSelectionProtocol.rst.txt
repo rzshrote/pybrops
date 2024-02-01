@@ -1,0 +1,56 @@
+SubsetSelectionProtocol
+=======================
+
+.. currentmodule:: pybrops.breed.prot.sel.SubsetSelectionProtocol
+
+.. autoclass:: SubsetSelectionProtocol
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SubsetSelectionProtocol.mosolve
+      ~SubsetSelectionProtocol.problem
+      ~SubsetSelectionProtocol.select
+      ~SubsetSelectionProtocol.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SubsetSelectionProtocol.eqcv_trans
+      ~SubsetSelectionProtocol.eqcv_trans_kwargs
+      ~SubsetSelectionProtocol.eqcv_wt
+      ~SubsetSelectionProtocol.ineqcv_trans
+      ~SubsetSelectionProtocol.ineqcv_trans_kwargs
+      ~SubsetSelectionProtocol.ineqcv_wt
+      ~SubsetSelectionProtocol.moalgo
+      ~SubsetSelectionProtocol.ncross
+      ~SubsetSelectionProtocol.ndset_trans
+      ~SubsetSelectionProtocol.ndset_trans_kwargs
+      ~SubsetSelectionProtocol.ndset_wt
+      ~SubsetSelectionProtocol.neqcv
+      ~SubsetSelectionProtocol.nineqcv
+      ~SubsetSelectionProtocol.nmating
+      ~SubsetSelectionProtocol.nobj
+      ~SubsetSelectionProtocol.nparent
+      ~SubsetSelectionProtocol.nprogeny
+      ~SubsetSelectionProtocol.nselindiv
+      ~SubsetSelectionProtocol.obj_trans
+      ~SubsetSelectionProtocol.obj_trans_kwargs
+      ~SubsetSelectionProtocol.obj_wt
+      ~SubsetSelectionProtocol.rng
+      ~SubsetSelectionProtocol.soalgo
+   
+   

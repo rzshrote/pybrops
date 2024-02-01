@@ -1,0 +1,105 @@
+DenseTwoWayDHAdditiveGeneticVarianceMatrix
+==========================================
+
+.. currentmodule:: pybrops.model.vmat.DenseTwoWayDHAdditiveGeneticVarianceMatrix
+
+.. autoclass:: DenseTwoWayDHAdditiveGeneticVarianceMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.adjoin
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.adjoin_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.adjoin_trait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.append
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.append_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.append_trait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.concat
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.concat_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.concat_trait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.copy
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.deepcopy
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.delete
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.delete_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.delete_trait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_algmod
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_csv
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_gmod
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_hdf5
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_pandas
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.group
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.group_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.incorp
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.incorp_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.incorp_trait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.insert
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.insert_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.insert_trait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.is_grouped
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.is_grouped_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.is_square
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.is_square_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.lexsort
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.lexsort_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.lexsort_trait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.remove
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.remove_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.remove_trait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.reorder
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.reorder_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.reorder_trait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.select
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.select_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.select_trait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.sort
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.sort_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.sort_trait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.to_csv
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.to_hdf5
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.to_pandas
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.ungroup
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.epgc
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.female_axis
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.male_axis
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.mat
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.mat_ndim
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.mat_shape
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.nfemale
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.nmale
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.nsquare
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.nsquare_taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.ntaxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.ntrait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.square_axes
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.square_axes_len
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.square_taxa_axes
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.square_taxa_axes_len
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.taxa
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.taxa_axis
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.taxa_grp
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.taxa_grp_len
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.taxa_grp_name
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.taxa_grp_spix
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.taxa_grp_stix
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.trait
+      ~DenseTwoWayDHAdditiveGeneticVarianceMatrix.trait_axis
+   
+   

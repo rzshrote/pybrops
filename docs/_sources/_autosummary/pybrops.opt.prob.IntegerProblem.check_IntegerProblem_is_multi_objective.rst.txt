@@ -1,0 +1,6 @@
+check\_IntegerProblem\_is\_multi\_objective
+===========================================
+
+.. currentmodule:: pybrops.opt.prob.IntegerProblem
+
+.. autofunction:: check_IntegerProblem_is_multi_objective

@@ -1,0 +1,36 @@
+MeanExpectedHeterozygositySelection
+===================================
+
+.. automodule:: pybrops.breed.prot.sel.MeanExpectedHeterozygositySelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      MeanExpectedHeterozygosityBinarySelection
+      MeanExpectedHeterozygosityIntegerSelection
+      MeanExpectedHeterozygosityRealSelection
+      MeanExpectedHeterozygositySelectionMixin
+      MeanExpectedHeterozygositySubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

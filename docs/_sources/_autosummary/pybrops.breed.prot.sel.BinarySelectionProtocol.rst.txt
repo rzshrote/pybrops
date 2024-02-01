@@ -1,0 +1,41 @@
+BinarySelectionProtocol
+=======================
+
+.. automodule:: pybrops.breed.prot.sel.BinarySelectionProtocol
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      BinarySelectionProtocol
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_BinarySelectionProtocol
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,6 @@
+check\_is\_InitializationOperator
+=================================
+
+.. currentmodule:: pybrops.breed.op.init.InitializationOperator
+
+.. autofunction:: check_is_InitializationOperator

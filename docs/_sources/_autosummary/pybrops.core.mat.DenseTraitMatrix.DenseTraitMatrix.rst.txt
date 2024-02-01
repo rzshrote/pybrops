@@ -1,0 +1,61 @@
+DenseTraitMatrix
+================
+
+.. currentmodule:: pybrops.core.mat.DenseTraitMatrix
+
+.. autoclass:: DenseTraitMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseTraitMatrix.adjoin
+      ~DenseTraitMatrix.adjoin_trait
+      ~DenseTraitMatrix.append
+      ~DenseTraitMatrix.append_trait
+      ~DenseTraitMatrix.concat
+      ~DenseTraitMatrix.concat_trait
+      ~DenseTraitMatrix.copy
+      ~DenseTraitMatrix.deepcopy
+      ~DenseTraitMatrix.delete
+      ~DenseTraitMatrix.delete_trait
+      ~DenseTraitMatrix.from_hdf5
+      ~DenseTraitMatrix.incorp
+      ~DenseTraitMatrix.incorp_trait
+      ~DenseTraitMatrix.insert
+      ~DenseTraitMatrix.insert_trait
+      ~DenseTraitMatrix.lexsort
+      ~DenseTraitMatrix.lexsort_trait
+      ~DenseTraitMatrix.remove
+      ~DenseTraitMatrix.remove_trait
+      ~DenseTraitMatrix.reorder
+      ~DenseTraitMatrix.reorder_trait
+      ~DenseTraitMatrix.select
+      ~DenseTraitMatrix.select_trait
+      ~DenseTraitMatrix.sort
+      ~DenseTraitMatrix.sort_trait
+      ~DenseTraitMatrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseTraitMatrix.mat
+      ~DenseTraitMatrix.mat_ndim
+      ~DenseTraitMatrix.mat_shape
+      ~DenseTraitMatrix.ntrait
+      ~DenseTraitMatrix.trait
+      ~DenseTraitMatrix.trait_axis
+   
+   

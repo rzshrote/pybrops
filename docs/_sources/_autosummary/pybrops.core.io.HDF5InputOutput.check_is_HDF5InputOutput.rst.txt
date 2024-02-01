@@ -1,0 +1,6 @@
+check\_is\_HDF5InputOutput
+==========================
+
+.. currentmodule:: pybrops.core.io.HDF5InputOutput
+
+.. autofunction:: check_is_HDF5InputOutput

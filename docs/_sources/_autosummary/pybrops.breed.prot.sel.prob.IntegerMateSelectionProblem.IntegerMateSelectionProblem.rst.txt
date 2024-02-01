@@ -1,0 +1,76 @@
+IntegerMateSelectionProblem
+===========================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.IntegerMateSelectionProblem
+
+.. autoclass:: IntegerMateSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~IntegerMateSelectionProblem.bounds
+      ~IntegerMateSelectionProblem.do
+      ~IntegerMateSelectionProblem.evalfn
+      ~IntegerMateSelectionProblem.evaluate
+      ~IntegerMateSelectionProblem.has_bounds
+      ~IntegerMateSelectionProblem.has_constraints
+      ~IntegerMateSelectionProblem.ideal_point
+      ~IntegerMateSelectionProblem.latentfn
+      ~IntegerMateSelectionProblem.nadir_point
+      ~IntegerMateSelectionProblem.name
+      ~IntegerMateSelectionProblem.pareto_front
+      ~IntegerMateSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~IntegerMateSelectionProblem.callback
+      ~IntegerMateSelectionProblem.data
+      ~IntegerMateSelectionProblem.decn_space
+      ~IntegerMateSelectionProblem.decn_space_lower
+      ~IntegerMateSelectionProblem.decn_space_upper
+      ~IntegerMateSelectionProblem.decn_space_xmap
+      ~IntegerMateSelectionProblem.elementwise
+      ~IntegerMateSelectionProblem.elementwise_func
+      ~IntegerMateSelectionProblem.elementwise_runner
+      ~IntegerMateSelectionProblem.eqcv_trans
+      ~IntegerMateSelectionProblem.eqcv_trans_kwargs
+      ~IntegerMateSelectionProblem.eqcv_wt
+      ~IntegerMateSelectionProblem.exclude_from_serialization
+      ~IntegerMateSelectionProblem.ineqcv_trans
+      ~IntegerMateSelectionProblem.ineqcv_trans_kwargs
+      ~IntegerMateSelectionProblem.ineqcv_wt
+      ~IntegerMateSelectionProblem.n_constr
+      ~IntegerMateSelectionProblem.n_eq_constr
+      ~IntegerMateSelectionProblem.n_ieq_constr
+      ~IntegerMateSelectionProblem.n_obj
+      ~IntegerMateSelectionProblem.n_var
+      ~IntegerMateSelectionProblem.ndecn
+      ~IntegerMateSelectionProblem.neqcv
+      ~IntegerMateSelectionProblem.nineqcv
+      ~IntegerMateSelectionProblem.nlatent
+      ~IntegerMateSelectionProblem.nobj
+      ~IntegerMateSelectionProblem.obj_trans
+      ~IntegerMateSelectionProblem.obj_trans_kwargs
+      ~IntegerMateSelectionProblem.obj_wt
+      ~IntegerMateSelectionProblem.replace_nan_values_by
+      ~IntegerMateSelectionProblem.strict
+      ~IntegerMateSelectionProblem.vars
+      ~IntegerMateSelectionProblem.vtype
+      ~IntegerMateSelectionProblem.xl
+      ~IntegerMateSelectionProblem.xu
+   
+   

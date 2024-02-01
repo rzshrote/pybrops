@@ -1,0 +1,32 @@
+MeanPhenotypicBreedingValue
+===========================
+
+.. automodule:: pybrops.breed.prot.bv.MeanPhenotypicBreedingValue
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      MeanPhenotypicBreedingValue
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

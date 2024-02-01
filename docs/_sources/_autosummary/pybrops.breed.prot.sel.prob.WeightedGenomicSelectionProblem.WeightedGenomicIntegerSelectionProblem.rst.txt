@@ -1,0 +1,78 @@
+WeightedGenomicIntegerSelectionProblem
+======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.WeightedGenomicSelectionProblem
+
+.. autoclass:: WeightedGenomicIntegerSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~WeightedGenomicIntegerSelectionProblem.bounds
+      ~WeightedGenomicIntegerSelectionProblem.do
+      ~WeightedGenomicIntegerSelectionProblem.evalfn
+      ~WeightedGenomicIntegerSelectionProblem.evaluate
+      ~WeightedGenomicIntegerSelectionProblem.from_gmat_algpmod
+      ~WeightedGenomicIntegerSelectionProblem.from_numpy
+      ~WeightedGenomicIntegerSelectionProblem.has_bounds
+      ~WeightedGenomicIntegerSelectionProblem.has_constraints
+      ~WeightedGenomicIntegerSelectionProblem.ideal_point
+      ~WeightedGenomicIntegerSelectionProblem.latentfn
+      ~WeightedGenomicIntegerSelectionProblem.nadir_point
+      ~WeightedGenomicIntegerSelectionProblem.name
+      ~WeightedGenomicIntegerSelectionProblem.pareto_front
+      ~WeightedGenomicIntegerSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~WeightedGenomicIntegerSelectionProblem.callback
+      ~WeightedGenomicIntegerSelectionProblem.data
+      ~WeightedGenomicIntegerSelectionProblem.decn_space
+      ~WeightedGenomicIntegerSelectionProblem.decn_space_lower
+      ~WeightedGenomicIntegerSelectionProblem.decn_space_upper
+      ~WeightedGenomicIntegerSelectionProblem.elementwise
+      ~WeightedGenomicIntegerSelectionProblem.elementwise_func
+      ~WeightedGenomicIntegerSelectionProblem.elementwise_runner
+      ~WeightedGenomicIntegerSelectionProblem.eqcv_trans
+      ~WeightedGenomicIntegerSelectionProblem.eqcv_trans_kwargs
+      ~WeightedGenomicIntegerSelectionProblem.eqcv_wt
+      ~WeightedGenomicIntegerSelectionProblem.exclude_from_serialization
+      ~WeightedGenomicIntegerSelectionProblem.gwgebv
+      ~WeightedGenomicIntegerSelectionProblem.ineqcv_trans
+      ~WeightedGenomicIntegerSelectionProblem.ineqcv_trans_kwargs
+      ~WeightedGenomicIntegerSelectionProblem.ineqcv_wt
+      ~WeightedGenomicIntegerSelectionProblem.n_constr
+      ~WeightedGenomicIntegerSelectionProblem.n_eq_constr
+      ~WeightedGenomicIntegerSelectionProblem.n_ieq_constr
+      ~WeightedGenomicIntegerSelectionProblem.n_obj
+      ~WeightedGenomicIntegerSelectionProblem.n_var
+      ~WeightedGenomicIntegerSelectionProblem.ndecn
+      ~WeightedGenomicIntegerSelectionProblem.neqcv
+      ~WeightedGenomicIntegerSelectionProblem.nineqcv
+      ~WeightedGenomicIntegerSelectionProblem.nlatent
+      ~WeightedGenomicIntegerSelectionProblem.nobj
+      ~WeightedGenomicIntegerSelectionProblem.obj_trans
+      ~WeightedGenomicIntegerSelectionProblem.obj_trans_kwargs
+      ~WeightedGenomicIntegerSelectionProblem.obj_wt
+      ~WeightedGenomicIntegerSelectionProblem.replace_nan_values_by
+      ~WeightedGenomicIntegerSelectionProblem.strict
+      ~WeightedGenomicIntegerSelectionProblem.vars
+      ~WeightedGenomicIntegerSelectionProblem.vtype
+      ~WeightedGenomicIntegerSelectionProblem.xl
+      ~WeightedGenomicIntegerSelectionProblem.xu
+   
+   

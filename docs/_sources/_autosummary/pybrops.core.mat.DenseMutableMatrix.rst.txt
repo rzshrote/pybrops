@@ -1,0 +1,41 @@
+DenseMutableMatrix
+==================
+
+.. automodule:: pybrops.core.mat.DenseMutableMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseMutableMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseMutableMatrix
+   
+   
+
+   
+   
+   
+
+
+

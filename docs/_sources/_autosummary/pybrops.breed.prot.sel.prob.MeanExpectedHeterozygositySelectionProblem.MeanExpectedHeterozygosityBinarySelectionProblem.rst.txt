@@ -1,0 +1,77 @@
+MeanExpectedHeterozygosityBinarySelectionProblem
+================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.MeanExpectedHeterozygositySelectionProblem
+
+.. autoclass:: MeanExpectedHeterozygosityBinarySelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.bounds
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.do
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.evalfn
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.evaluate
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.from_gmat
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.has_bounds
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.has_constraints
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.ideal_point
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.latentfn
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.nadir_point
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.name
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.pareto_front
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.C
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.callback
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.data
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.decn_space
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.decn_space_lower
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.decn_space_upper
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.elementwise
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.elementwise_func
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.elementwise_runner
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.eqcv_trans
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.eqcv_trans_kwargs
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.eqcv_wt
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.exclude_from_serialization
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.ineqcv_trans
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.ineqcv_trans_kwargs
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.ineqcv_wt
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.n_constr
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.n_eq_constr
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.n_ieq_constr
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.n_obj
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.n_var
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.ndecn
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.neqcv
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.nineqcv
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.nlatent
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.nobj
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.obj_trans
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.obj_trans_kwargs
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.obj_wt
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.replace_nan_values_by
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.strict
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.vars
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.vtype
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.xl
+      ~MeanExpectedHeterozygosityBinarySelectionProblem.xu
+   
+   

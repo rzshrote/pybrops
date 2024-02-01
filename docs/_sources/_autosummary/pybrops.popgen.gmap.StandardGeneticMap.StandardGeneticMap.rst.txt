@@ -1,0 +1,65 @@
+StandardGeneticMap
+==================
+
+.. currentmodule:: pybrops.popgen.gmap.StandardGeneticMap
+
+.. autoclass:: StandardGeneticMap
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~StandardGeneticMap.build_spline
+      ~StandardGeneticMap.congruence
+      ~StandardGeneticMap.copy
+      ~StandardGeneticMap.deepcopy
+      ~StandardGeneticMap.from_csv
+      ~StandardGeneticMap.from_pandas
+      ~StandardGeneticMap.gdist1g
+      ~StandardGeneticMap.gdist1p
+      ~StandardGeneticMap.gdist2g
+      ~StandardGeneticMap.gdist2p
+      ~StandardGeneticMap.group
+      ~StandardGeneticMap.has_spline
+      ~StandardGeneticMap.interp_genpos
+      ~StandardGeneticMap.interp_gmap
+      ~StandardGeneticMap.is_congruent
+      ~StandardGeneticMap.is_grouped
+      ~StandardGeneticMap.lexsort
+      ~StandardGeneticMap.remove
+      ~StandardGeneticMap.remove_discrepancies
+      ~StandardGeneticMap.reorder
+      ~StandardGeneticMap.select
+      ~StandardGeneticMap.sort
+      ~StandardGeneticMap.to_csv
+      ~StandardGeneticMap.to_pandas
+      ~StandardGeneticMap.ungroup
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~StandardGeneticMap.nvrnt
+      ~StandardGeneticMap.spline
+      ~StandardGeneticMap.spline_fill_value
+      ~StandardGeneticMap.spline_kind
+      ~StandardGeneticMap.vrnt_chrgrp
+      ~StandardGeneticMap.vrnt_chrgrp_len
+      ~StandardGeneticMap.vrnt_chrgrp_name
+      ~StandardGeneticMap.vrnt_chrgrp_spix
+      ~StandardGeneticMap.vrnt_chrgrp_stix
+      ~StandardGeneticMap.vrnt_genpos
+      ~StandardGeneticMap.vrnt_phypos
+   
+   

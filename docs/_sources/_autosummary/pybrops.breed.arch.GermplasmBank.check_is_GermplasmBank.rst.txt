@@ -1,0 +1,6 @@
+check\_is\_GermplasmBank
+========================
+
+.. currentmodule:: pybrops.breed.arch.GermplasmBank
+
+.. autofunction:: check_is_GermplasmBank

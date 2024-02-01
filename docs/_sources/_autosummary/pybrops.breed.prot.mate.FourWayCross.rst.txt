@@ -1,0 +1,41 @@
+FourWayCross
+============
+
+.. automodule:: pybrops.breed.prot.mate.FourWayCross
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      FourWayCross
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_FourWayCross
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,26 @@
+AdditiveGenicVarianceMatrixFactory
+==================================
+
+.. currentmodule:: pybrops.model.vmat.fcty.AdditiveGenicVarianceMatrixFactory
+
+.. autoclass:: AdditiveGenicVarianceMatrixFactory
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~AdditiveGenicVarianceMatrixFactory.from_algmod
+      ~AdditiveGenicVarianceMatrixFactory.from_gmod
+   
+   
+
+   
+   
+   

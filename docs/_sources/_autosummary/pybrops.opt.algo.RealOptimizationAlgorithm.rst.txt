@@ -1,0 +1,41 @@
+RealOptimizationAlgorithm
+=========================
+
+.. automodule:: pybrops.opt.algo.RealOptimizationAlgorithm
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      RealOptimizationAlgorithm
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_RealOptimizationAlgorithm
+   
+   
+
+   
+   
+   
+
+
+

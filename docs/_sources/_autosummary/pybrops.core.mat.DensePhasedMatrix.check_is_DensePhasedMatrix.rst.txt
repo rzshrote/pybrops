@@ -1,0 +1,6 @@
+check\_is\_DensePhasedMatrix
+============================
+
+.. currentmodule:: pybrops.core.mat.DensePhasedMatrix
+
+.. autofunction:: check_is_DensePhasedMatrix

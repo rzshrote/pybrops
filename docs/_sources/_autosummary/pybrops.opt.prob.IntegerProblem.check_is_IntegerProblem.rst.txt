@@ -1,0 +1,6 @@
+check\_is\_IntegerProblem
+=========================
+
+.. currentmodule:: pybrops.opt.prob.IntegerProblem
+
+.. autofunction:: check_is_IntegerProblem

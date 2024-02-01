@@ -1,0 +1,58 @@
+WeightedGenomicRealSelection
+============================
+
+.. currentmodule:: pybrops.breed.prot.sel.WeightedGenomicSelection
+
+.. autoclass:: WeightedGenomicRealSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~WeightedGenomicRealSelection.mosolve
+      ~WeightedGenomicRealSelection.problem
+      ~WeightedGenomicRealSelection.select
+      ~WeightedGenomicRealSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~WeightedGenomicRealSelection.alpha
+      ~WeightedGenomicRealSelection.eqcv_trans
+      ~WeightedGenomicRealSelection.eqcv_trans_kwargs
+      ~WeightedGenomicRealSelection.eqcv_wt
+      ~WeightedGenomicRealSelection.ineqcv_trans
+      ~WeightedGenomicRealSelection.ineqcv_trans_kwargs
+      ~WeightedGenomicRealSelection.ineqcv_wt
+      ~WeightedGenomicRealSelection.moalgo
+      ~WeightedGenomicRealSelection.ncross
+      ~WeightedGenomicRealSelection.ndset_trans
+      ~WeightedGenomicRealSelection.ndset_trans_kwargs
+      ~WeightedGenomicRealSelection.ndset_wt
+      ~WeightedGenomicRealSelection.neqcv
+      ~WeightedGenomicRealSelection.nineqcv
+      ~WeightedGenomicRealSelection.nmating
+      ~WeightedGenomicRealSelection.nobj
+      ~WeightedGenomicRealSelection.nparent
+      ~WeightedGenomicRealSelection.nprogeny
+      ~WeightedGenomicRealSelection.nselindiv
+      ~WeightedGenomicRealSelection.ntrait
+      ~WeightedGenomicRealSelection.obj_trans
+      ~WeightedGenomicRealSelection.obj_trans_kwargs
+      ~WeightedGenomicRealSelection.obj_wt
+      ~WeightedGenomicRealSelection.rng
+      ~WeightedGenomicRealSelection.soalgo
+   
+   

@@ -1,0 +1,6 @@
+check\_is\_Matrix
+=================
+
+.. currentmodule:: pybrops.core.mat.Matrix
+
+.. autofunction:: check_is_Matrix

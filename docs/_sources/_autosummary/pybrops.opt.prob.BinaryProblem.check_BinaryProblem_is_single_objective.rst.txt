@@ -1,0 +1,6 @@
+check\_BinaryProblem\_is\_single\_objective
+===========================================
+
+.. currentmodule:: pybrops.opt.prob.BinaryProblem
+
+.. autofunction:: check_BinaryProblem_is_single_objective

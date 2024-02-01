@@ -1,0 +1,58 @@
+GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection
+===============================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection
+
+.. autoclass:: GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.mosolve
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.problem
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.select
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.alpha
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.eqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.eqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.eqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.ineqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.ineqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.ineqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.moalgo
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.ncross
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.ndset_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.ndset_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.ndset_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.neqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.nineqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.nmating
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.nobj
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.nparent
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.nprogeny
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.nselindiv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.ntrait
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.obj_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.obj_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.obj_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.rng
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection.soalgo
+   
+   

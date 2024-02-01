@@ -1,0 +1,23 @@
+L1NormGenomicSelection
+======================
+
+.. automodule:: pybrops.breed.prot.sel.L1NormGenomicSelection
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

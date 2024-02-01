@@ -1,0 +1,33 @@
+UsefulnessCriterionSelectionProblemMixin
+========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem
+
+.. autoclass:: UsefulnessCriterionSelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UsefulnessCriterionSelectionProblemMixin.from_pgmat_gpmod
+      ~UsefulnessCriterionSelectionProblemMixin.from_pgmat_gpmod_xmap
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~UsefulnessCriterionSelectionProblemMixin.nlatent
+      ~UsefulnessCriterionSelectionProblemMixin.ucmat
+   
+   

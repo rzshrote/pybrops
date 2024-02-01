@@ -1,0 +1,57 @@
+RandomIntegerSelection
+======================
+
+.. currentmodule:: pybrops.breed.prot.sel.RandomSelection
+
+.. autoclass:: RandomIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RandomIntegerSelection.mosolve
+      ~RandomIntegerSelection.problem
+      ~RandomIntegerSelection.select
+      ~RandomIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RandomIntegerSelection.eqcv_trans
+      ~RandomIntegerSelection.eqcv_trans_kwargs
+      ~RandomIntegerSelection.eqcv_wt
+      ~RandomIntegerSelection.ineqcv_trans
+      ~RandomIntegerSelection.ineqcv_trans_kwargs
+      ~RandomIntegerSelection.ineqcv_wt
+      ~RandomIntegerSelection.moalgo
+      ~RandomIntegerSelection.ncross
+      ~RandomIntegerSelection.ndset_trans
+      ~RandomIntegerSelection.ndset_trans_kwargs
+      ~RandomIntegerSelection.ndset_wt
+      ~RandomIntegerSelection.neqcv
+      ~RandomIntegerSelection.nineqcv
+      ~RandomIntegerSelection.nmating
+      ~RandomIntegerSelection.nobj
+      ~RandomIntegerSelection.nparent
+      ~RandomIntegerSelection.nprogeny
+      ~RandomIntegerSelection.nselindiv
+      ~RandomIntegerSelection.ntrait
+      ~RandomIntegerSelection.obj_trans
+      ~RandomIntegerSelection.obj_trans_kwargs
+      ~RandomIntegerSelection.obj_wt
+      ~RandomIntegerSelection.rng
+      ~RandomIntegerSelection.soalgo
+   
+   

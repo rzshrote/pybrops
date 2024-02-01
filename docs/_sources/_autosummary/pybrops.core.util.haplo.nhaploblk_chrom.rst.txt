@@ -1,0 +1,6 @@
+nhaploblk\_chrom
+================
+
+.. currentmodule:: pybrops.core.util.haplo
+
+.. autofunction:: nhaploblk_chrom

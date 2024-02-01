@@ -1,0 +1,6 @@
+check\_ndarray\_is\_hypercube
+=============================
+
+.. currentmodule:: pybrops.core.error.error_value_numpy
+
+.. autofunction:: check_ndarray_is_hypercube

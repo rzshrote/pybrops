@@ -1,0 +1,33 @@
+SubsetGeneticAlgorithm
+======================
+
+.. currentmodule:: pybrops.opt.algo.SubsetGeneticAlgorithm
+
+.. autoclass:: SubsetGeneticAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SubsetGeneticAlgorithm.minimize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SubsetGeneticAlgorithm.ngen
+      ~SubsetGeneticAlgorithm.pop_size
+      ~SubsetGeneticAlgorithm.rng
+   
+   

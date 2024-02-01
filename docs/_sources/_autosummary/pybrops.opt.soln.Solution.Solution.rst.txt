@@ -1,0 +1,44 @@
+Solution
+========
+
+.. currentmodule:: pybrops.opt.soln.Solution
+
+.. autoclass:: Solution
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Solution.decn_space
+      ~Solution.decn_space_lower
+      ~Solution.decn_space_upper
+      ~Solution.eqcv_wt
+      ~Solution.ineqcv_wt
+      ~Solution.ndecn
+      ~Solution.neqcv
+      ~Solution.nineqcv
+      ~Solution.nobj
+      ~Solution.nsoln
+      ~Solution.obj_wt
+      ~Solution.soln_decn
+      ~Solution.soln_eqcv
+      ~Solution.soln_ineqcv
+      ~Solution.soln_obj
+   
+   

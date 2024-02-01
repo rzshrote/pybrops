@@ -1,0 +1,25 @@
+IntegerSimulatedBinaryCrossover
+===============================
+
+.. currentmodule:: pybrops.opt.algo.pymoo_addon
+
+.. autoclass:: IntegerSimulatedBinaryCrossover
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~IntegerSimulatedBinaryCrossover.do
+   
+   
+
+   
+   
+   

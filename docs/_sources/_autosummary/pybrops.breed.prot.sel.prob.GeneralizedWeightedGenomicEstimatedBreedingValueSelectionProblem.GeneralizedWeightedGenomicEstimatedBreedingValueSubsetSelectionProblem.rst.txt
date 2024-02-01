@@ -1,0 +1,78 @@
+GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem
+======================================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem
+
+.. autoclass:: GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.bounds
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.do
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.evalfn
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.evaluate
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.from_gmat_algpmod
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.from_numpy
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.has_bounds
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.has_constraints
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.ideal_point
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.latentfn
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.nadir_point
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.name
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.pareto_front
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.callback
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.data
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.decn_space
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.decn_space_lower
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.decn_space_upper
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.elementwise
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.elementwise_func
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.elementwise_runner
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.eqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.eqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.eqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.exclude_from_serialization
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.gwgebv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.ineqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.ineqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.ineqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.n_constr
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.n_eq_constr
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.n_ieq_constr
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.n_obj
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.n_var
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.ndecn
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.neqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.nineqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.nlatent
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.nobj
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.obj_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.obj_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.obj_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.replace_nan_values_by
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.strict
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.vars
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.vtype
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.xl
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.xu
+   
+   

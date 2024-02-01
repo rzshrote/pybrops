@@ -1,0 +1,77 @@
+RandomIntegerSelectionProblem
+=============================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.RandomSelectionProblem
+
+.. autoclass:: RandomIntegerSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RandomIntegerSelectionProblem.bounds
+      ~RandomIntegerSelectionProblem.do
+      ~RandomIntegerSelectionProblem.evalfn
+      ~RandomIntegerSelectionProblem.evaluate
+      ~RandomIntegerSelectionProblem.from_object
+      ~RandomIntegerSelectionProblem.has_bounds
+      ~RandomIntegerSelectionProblem.has_constraints
+      ~RandomIntegerSelectionProblem.ideal_point
+      ~RandomIntegerSelectionProblem.latentfn
+      ~RandomIntegerSelectionProblem.nadir_point
+      ~RandomIntegerSelectionProblem.name
+      ~RandomIntegerSelectionProblem.pareto_front
+      ~RandomIntegerSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RandomIntegerSelectionProblem.callback
+      ~RandomIntegerSelectionProblem.data
+      ~RandomIntegerSelectionProblem.decn_space
+      ~RandomIntegerSelectionProblem.decn_space_lower
+      ~RandomIntegerSelectionProblem.decn_space_upper
+      ~RandomIntegerSelectionProblem.elementwise
+      ~RandomIntegerSelectionProblem.elementwise_func
+      ~RandomIntegerSelectionProblem.elementwise_runner
+      ~RandomIntegerSelectionProblem.eqcv_trans
+      ~RandomIntegerSelectionProblem.eqcv_trans_kwargs
+      ~RandomIntegerSelectionProblem.eqcv_wt
+      ~RandomIntegerSelectionProblem.exclude_from_serialization
+      ~RandomIntegerSelectionProblem.ineqcv_trans
+      ~RandomIntegerSelectionProblem.ineqcv_trans_kwargs
+      ~RandomIntegerSelectionProblem.ineqcv_wt
+      ~RandomIntegerSelectionProblem.n_constr
+      ~RandomIntegerSelectionProblem.n_eq_constr
+      ~RandomIntegerSelectionProblem.n_ieq_constr
+      ~RandomIntegerSelectionProblem.n_obj
+      ~RandomIntegerSelectionProblem.n_var
+      ~RandomIntegerSelectionProblem.ndecn
+      ~RandomIntegerSelectionProblem.neqcv
+      ~RandomIntegerSelectionProblem.nineqcv
+      ~RandomIntegerSelectionProblem.nlatent
+      ~RandomIntegerSelectionProblem.nobj
+      ~RandomIntegerSelectionProblem.obj_trans
+      ~RandomIntegerSelectionProblem.obj_trans_kwargs
+      ~RandomIntegerSelectionProblem.obj_wt
+      ~RandomIntegerSelectionProblem.rbv
+      ~RandomIntegerSelectionProblem.replace_nan_values_by
+      ~RandomIntegerSelectionProblem.strict
+      ~RandomIntegerSelectionProblem.vars
+      ~RandomIntegerSelectionProblem.vtype
+      ~RandomIntegerSelectionProblem.xl
+      ~RandomIntegerSelectionProblem.xu
+   
+   

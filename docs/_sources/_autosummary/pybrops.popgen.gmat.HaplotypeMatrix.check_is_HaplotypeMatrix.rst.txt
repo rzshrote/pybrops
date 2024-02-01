@@ -1,0 +1,6 @@
+check\_is\_HaplotypeMatrix
+==========================
+
+.. currentmodule:: pybrops.popgen.gmat.HaplotypeMatrix
+
+.. autofunction:: check_is_HaplotypeMatrix

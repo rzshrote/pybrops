@@ -1,0 +1,6 @@
+haplobin
+========
+
+.. currentmodule:: pybrops.core.util.haplo
+
+.. autofunction:: haplobin

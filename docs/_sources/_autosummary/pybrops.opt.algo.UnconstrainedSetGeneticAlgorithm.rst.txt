@@ -1,0 +1,32 @@
+UnconstrainedSetGeneticAlgorithm
+================================
+
+.. automodule:: pybrops.opt.algo.UnconstrainedSetGeneticAlgorithm
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      UnconstrainedSetGeneticAlgorithm
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

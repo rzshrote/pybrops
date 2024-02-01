@@ -1,0 +1,6 @@
+assert\_concrete\_property
+==========================
+
+.. currentmodule:: pybrops.test.assert_python
+
+.. autofunction:: assert_concrete_property

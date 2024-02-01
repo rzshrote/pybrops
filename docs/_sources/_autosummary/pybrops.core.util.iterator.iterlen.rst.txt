@@ -1,0 +1,6 @@
+iterlen
+=======
+
+.. currentmodule:: pybrops.core.util.iterator
+
+.. autofunction:: iterlen

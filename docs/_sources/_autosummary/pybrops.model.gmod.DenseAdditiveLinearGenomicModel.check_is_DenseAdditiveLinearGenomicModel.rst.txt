@@ -1,0 +1,6 @@
+check\_is\_DenseAdditiveLinearGenomicModel
+==========================================
+
+.. currentmodule:: pybrops.model.gmod.DenseAdditiveLinearGenomicModel
+
+.. autofunction:: check_is_DenseAdditiveLinearGenomicModel

@@ -1,0 +1,86 @@
+DenseTaxaTraitMatrix
+====================
+
+.. currentmodule:: pybrops.core.mat.DenseTaxaTraitMatrix
+
+.. autoclass:: DenseTaxaTraitMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseTaxaTraitMatrix.adjoin
+      ~DenseTaxaTraitMatrix.adjoin_taxa
+      ~DenseTaxaTraitMatrix.adjoin_trait
+      ~DenseTaxaTraitMatrix.append
+      ~DenseTaxaTraitMatrix.append_taxa
+      ~DenseTaxaTraitMatrix.append_trait
+      ~DenseTaxaTraitMatrix.concat
+      ~DenseTaxaTraitMatrix.concat_taxa
+      ~DenseTaxaTraitMatrix.concat_trait
+      ~DenseTaxaTraitMatrix.copy
+      ~DenseTaxaTraitMatrix.deepcopy
+      ~DenseTaxaTraitMatrix.delete
+      ~DenseTaxaTraitMatrix.delete_taxa
+      ~DenseTaxaTraitMatrix.delete_trait
+      ~DenseTaxaTraitMatrix.from_hdf5
+      ~DenseTaxaTraitMatrix.group
+      ~DenseTaxaTraitMatrix.group_taxa
+      ~DenseTaxaTraitMatrix.incorp
+      ~DenseTaxaTraitMatrix.incorp_taxa
+      ~DenseTaxaTraitMatrix.incorp_trait
+      ~DenseTaxaTraitMatrix.insert
+      ~DenseTaxaTraitMatrix.insert_taxa
+      ~DenseTaxaTraitMatrix.insert_trait
+      ~DenseTaxaTraitMatrix.is_grouped
+      ~DenseTaxaTraitMatrix.is_grouped_taxa
+      ~DenseTaxaTraitMatrix.lexsort
+      ~DenseTaxaTraitMatrix.lexsort_taxa
+      ~DenseTaxaTraitMatrix.lexsort_trait
+      ~DenseTaxaTraitMatrix.remove
+      ~DenseTaxaTraitMatrix.remove_taxa
+      ~DenseTaxaTraitMatrix.remove_trait
+      ~DenseTaxaTraitMatrix.reorder
+      ~DenseTaxaTraitMatrix.reorder_taxa
+      ~DenseTaxaTraitMatrix.reorder_trait
+      ~DenseTaxaTraitMatrix.select
+      ~DenseTaxaTraitMatrix.select_taxa
+      ~DenseTaxaTraitMatrix.select_trait
+      ~DenseTaxaTraitMatrix.sort
+      ~DenseTaxaTraitMatrix.sort_taxa
+      ~DenseTaxaTraitMatrix.sort_trait
+      ~DenseTaxaTraitMatrix.to_hdf5
+      ~DenseTaxaTraitMatrix.ungroup
+      ~DenseTaxaTraitMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseTaxaTraitMatrix.mat
+      ~DenseTaxaTraitMatrix.mat_ndim
+      ~DenseTaxaTraitMatrix.mat_shape
+      ~DenseTaxaTraitMatrix.ntaxa
+      ~DenseTaxaTraitMatrix.ntrait
+      ~DenseTaxaTraitMatrix.taxa
+      ~DenseTaxaTraitMatrix.taxa_axis
+      ~DenseTaxaTraitMatrix.taxa_grp
+      ~DenseTaxaTraitMatrix.taxa_grp_len
+      ~DenseTaxaTraitMatrix.taxa_grp_name
+      ~DenseTaxaTraitMatrix.taxa_grp_spix
+      ~DenseTaxaTraitMatrix.taxa_grp_stix
+      ~DenseTaxaTraitMatrix.trait
+      ~DenseTaxaTraitMatrix.trait_axis
+   
+   

@@ -1,0 +1,6 @@
+check\_is\_HaldaneMapFunction
+=============================
+
+.. currentmodule:: pybrops.popgen.gmap.HaldaneMapFunction
+
+.. autofunction:: check_is_HaldaneMapFunction

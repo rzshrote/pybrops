@@ -1,0 +1,37 @@
+util
+====
+
+.. automodule:: pybrops.core.util
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.core.util.arrayix
+   pybrops.core.util.h5py
+   pybrops.core.util.haplo
+   pybrops.core.util.iterator
+   pybrops.core.util.pareto
+   pybrops.core.util.subroutines
+

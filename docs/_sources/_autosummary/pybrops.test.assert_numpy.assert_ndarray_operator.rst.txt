@@ -1,0 +1,6 @@
+assert\_ndarray\_operator
+=========================
+
+.. currentmodule:: pybrops.test.assert_numpy
+
+.. autofunction:: assert_ndarray_operator

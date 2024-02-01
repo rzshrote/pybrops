@@ -1,0 +1,50 @@
+PopulationAlleleUnavailabilitySelection
+=======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.UnconstrainedPopulationAlleleUnavailabilitySelection
+
+.. autoclass:: PopulationAlleleUnavailabilitySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PopulationAlleleUnavailabilitySelection.objfn
+      ~PopulationAlleleUnavailabilitySelection.objfn_static
+      ~PopulationAlleleUnavailabilitySelection.objfn_vec
+      ~PopulationAlleleUnavailabilitySelection.objfn_vec_static
+      ~PopulationAlleleUnavailabilitySelection.pareto
+      ~PopulationAlleleUnavailabilitySelection.select
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PopulationAlleleUnavailabilitySelection.method
+      ~PopulationAlleleUnavailabilitySelection.moalgo
+      ~PopulationAlleleUnavailabilitySelection.ncross
+      ~PopulationAlleleUnavailabilitySelection.ndset_trans
+      ~PopulationAlleleUnavailabilitySelection.ndset_trans_kwargs
+      ~PopulationAlleleUnavailabilitySelection.ndset_wt
+      ~PopulationAlleleUnavailabilitySelection.nparent
+      ~PopulationAlleleUnavailabilitySelection.nprogeny
+      ~PopulationAlleleUnavailabilitySelection.objfn_trans
+      ~PopulationAlleleUnavailabilitySelection.objfn_trans_kwargs
+      ~PopulationAlleleUnavailabilitySelection.objfn_wt
+      ~PopulationAlleleUnavailabilitySelection.rng
+      ~PopulationAlleleUnavailabilitySelection.soalgo
+      ~PopulationAlleleUnavailabilitySelection.target
+      ~PopulationAlleleUnavailabilitySelection.weight
+   
+   

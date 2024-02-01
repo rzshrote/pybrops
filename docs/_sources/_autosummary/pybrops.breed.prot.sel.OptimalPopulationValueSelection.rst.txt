@@ -1,0 +1,33 @@
+OptimalPopulationValueSelection
+===============================
+
+.. automodule:: pybrops.breed.prot.sel.OptimalPopulationValueSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      OptimalPopulationValueSelectionMixin
+      OptimalPopulationValueSubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

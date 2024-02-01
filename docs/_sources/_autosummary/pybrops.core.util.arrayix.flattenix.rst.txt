@@ -1,0 +1,6 @@
+flattenix
+=========
+
+.. currentmodule:: pybrops.core.util.arrayix
+
+.. autofunction:: flattenix

@@ -1,0 +1,6 @@
+check\_is\_BreedingNode
+=======================
+
+.. currentmodule:: pybrops.breed.arch.BreedingNode
+
+.. autofunction:: check_is_BreedingNode

@@ -1,0 +1,6 @@
+check\_is\_TwoWayDHCross
+========================
+
+.. currentmodule:: pybrops.breed.prot.mate.TwoWayDHCross
+
+.. autofunction:: check_is_TwoWayDHCross

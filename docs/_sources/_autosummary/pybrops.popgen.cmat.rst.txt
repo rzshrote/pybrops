@@ -1,0 +1,38 @@
+cmat
+====
+
+.. automodule:: pybrops.popgen.cmat
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.popgen.cmat.CoancestryMatrix
+   pybrops.popgen.cmat.DenseCoancestryMatrix
+   pybrops.popgen.cmat.DenseGeneralizedWeightedCoancestryMatrix
+   pybrops.popgen.cmat.DenseMolecularCoancestryMatrix
+   pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix
+   pybrops.popgen.cmat.DenseYangCoancestryMatrix
+   pybrops.popgen.cmat.fcty
+

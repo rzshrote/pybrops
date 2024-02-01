@@ -1,0 +1,37 @@
+op
+==
+
+.. automodule:: pybrops.breed.op
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.op.eval
+   pybrops.breed.op.init
+   pybrops.breed.op.log
+   pybrops.breed.op.mate
+   pybrops.breed.op.psel
+   pybrops.breed.op.ssel
+

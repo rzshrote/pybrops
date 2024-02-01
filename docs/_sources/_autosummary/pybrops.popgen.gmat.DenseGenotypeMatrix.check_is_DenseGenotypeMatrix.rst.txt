@@ -1,0 +1,6 @@
+check\_is\_DenseGenotypeMatrix
+==============================
+
+.. currentmodule:: pybrops.popgen.gmat.DenseGenotypeMatrix
+
+.. autofunction:: check_is_DenseGenotypeMatrix

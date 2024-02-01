@@ -1,0 +1,59 @@
+OptimalHaploidValueRealSelection
+================================
+
+.. currentmodule:: pybrops.breed.prot.sel.OptimalHaploidValueSelection
+
+.. autoclass:: OptimalHaploidValueRealSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalHaploidValueRealSelection.mosolve
+      ~OptimalHaploidValueRealSelection.problem
+      ~OptimalHaploidValueRealSelection.select
+      ~OptimalHaploidValueRealSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalHaploidValueRealSelection.eqcv_trans
+      ~OptimalHaploidValueRealSelection.eqcv_trans_kwargs
+      ~OptimalHaploidValueRealSelection.eqcv_wt
+      ~OptimalHaploidValueRealSelection.ineqcv_trans
+      ~OptimalHaploidValueRealSelection.ineqcv_trans_kwargs
+      ~OptimalHaploidValueRealSelection.ineqcv_wt
+      ~OptimalHaploidValueRealSelection.moalgo
+      ~OptimalHaploidValueRealSelection.ncross
+      ~OptimalHaploidValueRealSelection.ndset_trans
+      ~OptimalHaploidValueRealSelection.ndset_trans_kwargs
+      ~OptimalHaploidValueRealSelection.ndset_wt
+      ~OptimalHaploidValueRealSelection.neqcv
+      ~OptimalHaploidValueRealSelection.nhaploblk
+      ~OptimalHaploidValueRealSelection.nineqcv
+      ~OptimalHaploidValueRealSelection.nmating
+      ~OptimalHaploidValueRealSelection.nobj
+      ~OptimalHaploidValueRealSelection.nparent
+      ~OptimalHaploidValueRealSelection.nprogeny
+      ~OptimalHaploidValueRealSelection.nselindiv
+      ~OptimalHaploidValueRealSelection.ntrait
+      ~OptimalHaploidValueRealSelection.obj_trans
+      ~OptimalHaploidValueRealSelection.obj_trans_kwargs
+      ~OptimalHaploidValueRealSelection.obj_wt
+      ~OptimalHaploidValueRealSelection.rng
+      ~OptimalHaploidValueRealSelection.soalgo
+      ~OptimalHaploidValueRealSelection.unique_parents
+   
+   

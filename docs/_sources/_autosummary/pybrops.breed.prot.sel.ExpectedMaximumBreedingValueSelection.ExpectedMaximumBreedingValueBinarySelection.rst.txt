@@ -1,0 +1,60 @@
+ExpectedMaximumBreedingValueBinarySelection
+===========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.ExpectedMaximumBreedingValueSelection
+
+.. autoclass:: ExpectedMaximumBreedingValueBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ExpectedMaximumBreedingValueBinarySelection.mosolve
+      ~ExpectedMaximumBreedingValueBinarySelection.problem
+      ~ExpectedMaximumBreedingValueBinarySelection.select
+      ~ExpectedMaximumBreedingValueBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ExpectedMaximumBreedingValueBinarySelection.eqcv_trans
+      ~ExpectedMaximumBreedingValueBinarySelection.eqcv_trans_kwargs
+      ~ExpectedMaximumBreedingValueBinarySelection.eqcv_wt
+      ~ExpectedMaximumBreedingValueBinarySelection.ineqcv_trans
+      ~ExpectedMaximumBreedingValueBinarySelection.ineqcv_trans_kwargs
+      ~ExpectedMaximumBreedingValueBinarySelection.ineqcv_wt
+      ~ExpectedMaximumBreedingValueBinarySelection.mateprot
+      ~ExpectedMaximumBreedingValueBinarySelection.moalgo
+      ~ExpectedMaximumBreedingValueBinarySelection.ncross
+      ~ExpectedMaximumBreedingValueBinarySelection.ndset_trans
+      ~ExpectedMaximumBreedingValueBinarySelection.ndset_trans_kwargs
+      ~ExpectedMaximumBreedingValueBinarySelection.ndset_wt
+      ~ExpectedMaximumBreedingValueBinarySelection.neqcv
+      ~ExpectedMaximumBreedingValueBinarySelection.nineqcv
+      ~ExpectedMaximumBreedingValueBinarySelection.nmating
+      ~ExpectedMaximumBreedingValueBinarySelection.nobj
+      ~ExpectedMaximumBreedingValueBinarySelection.nparent
+      ~ExpectedMaximumBreedingValueBinarySelection.nprogeny
+      ~ExpectedMaximumBreedingValueBinarySelection.nrep
+      ~ExpectedMaximumBreedingValueBinarySelection.nselindiv
+      ~ExpectedMaximumBreedingValueBinarySelection.ntrait
+      ~ExpectedMaximumBreedingValueBinarySelection.obj_trans
+      ~ExpectedMaximumBreedingValueBinarySelection.obj_trans_kwargs
+      ~ExpectedMaximumBreedingValueBinarySelection.obj_wt
+      ~ExpectedMaximumBreedingValueBinarySelection.rng
+      ~ExpectedMaximumBreedingValueBinarySelection.soalgo
+      ~ExpectedMaximumBreedingValueBinarySelection.unique_parents
+   
+   

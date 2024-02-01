@@ -1,0 +1,6 @@
+check\_is\_gteq
+===============
+
+.. currentmodule:: pybrops.core.error.error_value_python
+
+.. autofunction:: check_is_gteq

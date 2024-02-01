@@ -1,0 +1,6 @@
+check\_is\_RecurrentSelectionBreedingProgram
+============================================
+
+.. currentmodule:: pybrops.breed.arch.RecurrentSelectionBreedingProgram
+
+.. autofunction:: check_is_RecurrentSelectionBreedingProgram

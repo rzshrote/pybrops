@@ -1,0 +1,77 @@
+L1NormGenomicRealSelectionProblem
+=================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem
+
+.. autoclass:: L1NormGenomicRealSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~L1NormGenomicRealSelectionProblem.bounds
+      ~L1NormGenomicRealSelectionProblem.do
+      ~L1NormGenomicRealSelectionProblem.evalfn
+      ~L1NormGenomicRealSelectionProblem.evaluate
+      ~L1NormGenomicRealSelectionProblem.from_numpy
+      ~L1NormGenomicRealSelectionProblem.has_bounds
+      ~L1NormGenomicRealSelectionProblem.has_constraints
+      ~L1NormGenomicRealSelectionProblem.ideal_point
+      ~L1NormGenomicRealSelectionProblem.latentfn
+      ~L1NormGenomicRealSelectionProblem.nadir_point
+      ~L1NormGenomicRealSelectionProblem.name
+      ~L1NormGenomicRealSelectionProblem.pareto_front
+      ~L1NormGenomicRealSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~L1NormGenomicRealSelectionProblem.V
+      ~L1NormGenomicRealSelectionProblem.callback
+      ~L1NormGenomicRealSelectionProblem.data
+      ~L1NormGenomicRealSelectionProblem.decn_space
+      ~L1NormGenomicRealSelectionProblem.decn_space_lower
+      ~L1NormGenomicRealSelectionProblem.decn_space_upper
+      ~L1NormGenomicRealSelectionProblem.elementwise
+      ~L1NormGenomicRealSelectionProblem.elementwise_func
+      ~L1NormGenomicRealSelectionProblem.elementwise_runner
+      ~L1NormGenomicRealSelectionProblem.eqcv_trans
+      ~L1NormGenomicRealSelectionProblem.eqcv_trans_kwargs
+      ~L1NormGenomicRealSelectionProblem.eqcv_wt
+      ~L1NormGenomicRealSelectionProblem.exclude_from_serialization
+      ~L1NormGenomicRealSelectionProblem.ineqcv_trans
+      ~L1NormGenomicRealSelectionProblem.ineqcv_trans_kwargs
+      ~L1NormGenomicRealSelectionProblem.ineqcv_wt
+      ~L1NormGenomicRealSelectionProblem.n_constr
+      ~L1NormGenomicRealSelectionProblem.n_eq_constr
+      ~L1NormGenomicRealSelectionProblem.n_ieq_constr
+      ~L1NormGenomicRealSelectionProblem.n_obj
+      ~L1NormGenomicRealSelectionProblem.n_var
+      ~L1NormGenomicRealSelectionProblem.ndecn
+      ~L1NormGenomicRealSelectionProblem.neqcv
+      ~L1NormGenomicRealSelectionProblem.nineqcv
+      ~L1NormGenomicRealSelectionProblem.nlatent
+      ~L1NormGenomicRealSelectionProblem.nobj
+      ~L1NormGenomicRealSelectionProblem.obj_trans
+      ~L1NormGenomicRealSelectionProblem.obj_trans_kwargs
+      ~L1NormGenomicRealSelectionProblem.obj_wt
+      ~L1NormGenomicRealSelectionProblem.replace_nan_values_by
+      ~L1NormGenomicRealSelectionProblem.strict
+      ~L1NormGenomicRealSelectionProblem.vars
+      ~L1NormGenomicRealSelectionProblem.vtype
+      ~L1NormGenomicRealSelectionProblem.xl
+      ~L1NormGenomicRealSelectionProblem.xu
+   
+   

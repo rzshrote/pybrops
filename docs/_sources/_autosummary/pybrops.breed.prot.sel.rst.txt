@@ -1,0 +1,69 @@
+sel
+===
+
+.. automodule:: pybrops.breed.prot.sel
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.prot.sel.BinaryMateSelectionProtocol
+   pybrops.breed.prot.sel.BinarySelectionProtocol
+   pybrops.breed.prot.sel.EstimatedBreedingValueSelection
+   pybrops.breed.prot.sel.ExpectedMaximumBreedingValueSelection
+   pybrops.breed.prot.sel.FamilyEstimatedBreedingValueSelection
+   pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection
+   pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection
+   pybrops.breed.prot.sel.GenotypeBuilderSelection
+   pybrops.breed.prot.sel.IntegerMateSelectionProtocol
+   pybrops.breed.prot.sel.IntegerSelectionProtocol
+   pybrops.breed.prot.sel.L1NormGenomicSelection
+   pybrops.breed.prot.sel.L2NormGenomicSelection
+   pybrops.breed.prot.sel.MateSelectionProtocol
+   pybrops.breed.prot.sel.MeanExpectedHeterozygositySelection
+   pybrops.breed.prot.sel.MeanGenomicRelationshipSelection
+   pybrops.breed.prot.sel.MultiObjectiveGenomicSelection
+   pybrops.breed.prot.sel.OptimalContributionSelection
+   pybrops.breed.prot.sel.OptimalHaploidValueSelection
+   pybrops.breed.prot.sel.OptimalPopulationValueSelection
+   pybrops.breed.prot.sel.RandomSelection
+   pybrops.breed.prot.sel.RealMateSelectionProtocol
+   pybrops.breed.prot.sel.RealSelectionProtocol
+   pybrops.breed.prot.sel.SelectionProtocol
+   pybrops.breed.prot.sel.SubsetMateSelectionProtocol
+   pybrops.breed.prot.sel.SubsetSelectionProtocol
+   pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection
+   pybrops.breed.prot.sel.UnconstrainedMultiObjectiveGenomicMating
+   pybrops.breed.prot.sel.UnconstrainedPopulationAlleleFrequencyDistanceSelection
+   pybrops.breed.prot.sel.UnconstrainedPopulationAlleleUnavailabilitySelection
+   pybrops.breed.prot.sel.UnconstrainedSelectionProtocol
+   pybrops.breed.prot.sel.UsefulnessCriterionSelection
+   pybrops.breed.prot.sel.WeightedGenomicSelection
+   pybrops.breed.prot.sel.cfg
+   pybrops.breed.prot.sel.prob
+   pybrops.breed.prot.sel.soln
+   pybrops.breed.prot.sel.targetfn
+   pybrops.breed.prot.sel.transfn
+   pybrops.breed.prot.sel.weightfn
+

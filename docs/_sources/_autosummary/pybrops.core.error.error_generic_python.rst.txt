@@ -1,0 +1,32 @@
+error\_generic\_python
+======================
+
+.. automodule:: pybrops.core.error.error_generic_python
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      generic_check_isinstance
+   
+   
+
+   
+   
+   
+
+
+

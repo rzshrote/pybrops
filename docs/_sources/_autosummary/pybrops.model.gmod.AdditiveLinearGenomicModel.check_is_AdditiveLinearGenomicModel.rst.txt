@@ -1,0 +1,6 @@
+check\_is\_AdditiveLinearGenomicModel
+=====================================
+
+.. currentmodule:: pybrops.model.gmod.AdditiveLinearGenomicModel
+
+.. autofunction:: check_is_AdditiveLinearGenomicModel

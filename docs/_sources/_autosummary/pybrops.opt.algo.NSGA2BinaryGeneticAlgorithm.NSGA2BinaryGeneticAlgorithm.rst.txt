@@ -1,0 +1,33 @@
+NSGA2BinaryGeneticAlgorithm
+===========================
+
+.. currentmodule:: pybrops.opt.algo.NSGA2BinaryGeneticAlgorithm
+
+.. autoclass:: NSGA2BinaryGeneticAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~NSGA2BinaryGeneticAlgorithm.minimize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NSGA2BinaryGeneticAlgorithm.ngen
+      ~NSGA2BinaryGeneticAlgorithm.pop_size
+      ~NSGA2BinaryGeneticAlgorithm.rng
+   
+   

@@ -1,0 +1,32 @@
+MeanGenomicRelationshipSelectionProblemMixin
+============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem
+
+.. autoclass:: MeanGenomicRelationshipSelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanGenomicRelationshipSelectionProblemMixin.from_gmat
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanGenomicRelationshipSelectionProblemMixin.C
+      ~MeanGenomicRelationshipSelectionProblemMixin.nlatent
+   
+   

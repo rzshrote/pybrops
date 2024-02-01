@@ -1,0 +1,32 @@
+NSGA2RealGeneticAlgorithm
+=========================
+
+.. automodule:: pybrops.opt.algo.NSGA2RealGeneticAlgorithm
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      NSGA2RealGeneticAlgorithm
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

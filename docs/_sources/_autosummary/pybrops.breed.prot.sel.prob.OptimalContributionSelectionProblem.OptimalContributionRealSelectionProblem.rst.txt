@@ -1,0 +1,78 @@
+OptimalContributionRealSelectionProblem
+=======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem
+
+.. autoclass:: OptimalContributionRealSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalContributionRealSelectionProblem.bounds
+      ~OptimalContributionRealSelectionProblem.do
+      ~OptimalContributionRealSelectionProblem.evalfn
+      ~OptimalContributionRealSelectionProblem.evaluate
+      ~OptimalContributionRealSelectionProblem.from_bvmat_gmat
+      ~OptimalContributionRealSelectionProblem.has_bounds
+      ~OptimalContributionRealSelectionProblem.has_constraints
+      ~OptimalContributionRealSelectionProblem.ideal_point
+      ~OptimalContributionRealSelectionProblem.latentfn
+      ~OptimalContributionRealSelectionProblem.nadir_point
+      ~OptimalContributionRealSelectionProblem.name
+      ~OptimalContributionRealSelectionProblem.pareto_front
+      ~OptimalContributionRealSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalContributionRealSelectionProblem.C
+      ~OptimalContributionRealSelectionProblem.callback
+      ~OptimalContributionRealSelectionProblem.data
+      ~OptimalContributionRealSelectionProblem.decn_space
+      ~OptimalContributionRealSelectionProblem.decn_space_lower
+      ~OptimalContributionRealSelectionProblem.decn_space_upper
+      ~OptimalContributionRealSelectionProblem.ebv
+      ~OptimalContributionRealSelectionProblem.elementwise
+      ~OptimalContributionRealSelectionProblem.elementwise_func
+      ~OptimalContributionRealSelectionProblem.elementwise_runner
+      ~OptimalContributionRealSelectionProblem.eqcv_trans
+      ~OptimalContributionRealSelectionProblem.eqcv_trans_kwargs
+      ~OptimalContributionRealSelectionProblem.eqcv_wt
+      ~OptimalContributionRealSelectionProblem.exclude_from_serialization
+      ~OptimalContributionRealSelectionProblem.ineqcv_trans
+      ~OptimalContributionRealSelectionProblem.ineqcv_trans_kwargs
+      ~OptimalContributionRealSelectionProblem.ineqcv_wt
+      ~OptimalContributionRealSelectionProblem.n_constr
+      ~OptimalContributionRealSelectionProblem.n_eq_constr
+      ~OptimalContributionRealSelectionProblem.n_ieq_constr
+      ~OptimalContributionRealSelectionProblem.n_obj
+      ~OptimalContributionRealSelectionProblem.n_var
+      ~OptimalContributionRealSelectionProblem.ndecn
+      ~OptimalContributionRealSelectionProblem.neqcv
+      ~OptimalContributionRealSelectionProblem.nineqcv
+      ~OptimalContributionRealSelectionProblem.nlatent
+      ~OptimalContributionRealSelectionProblem.nobj
+      ~OptimalContributionRealSelectionProblem.obj_trans
+      ~OptimalContributionRealSelectionProblem.obj_trans_kwargs
+      ~OptimalContributionRealSelectionProblem.obj_wt
+      ~OptimalContributionRealSelectionProblem.replace_nan_values_by
+      ~OptimalContributionRealSelectionProblem.strict
+      ~OptimalContributionRealSelectionProblem.vars
+      ~OptimalContributionRealSelectionProblem.vtype
+      ~OptimalContributionRealSelectionProblem.xl
+      ~OptimalContributionRealSelectionProblem.xu
+   
+   

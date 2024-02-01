@@ -1,0 +1,6 @@
+check\_is\_BinarySelectionProblem
+=================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.BinarySelectionProblem
+
+.. autofunction:: check_is_BinarySelectionProblem

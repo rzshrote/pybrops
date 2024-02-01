@@ -1,0 +1,59 @@
+error\_type\_numpy
+==================
+
+.. automodule:: pybrops.core.error.error_type_numpy
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_Generator
+      check_is_Generator_or_RandomState
+      check_is_Integral_or_ndarray
+      check_is_Number_or_ndarray
+      check_is_RandomState
+      check_is_Real_or_ndarray
+      check_is_ndarray
+      check_is_str_or_ndarray
+      check_ndarray_dtype
+      check_ndarray_dtype_is_bool
+      check_ndarray_dtype_is_bool_or_integer
+      check_ndarray_dtype_is_bool_or_number
+      check_ndarray_dtype_is_float16
+      check_ndarray_dtype_is_float32
+      check_ndarray_dtype_is_float64
+      check_ndarray_dtype_is_floating
+      check_ndarray_dtype_is_int16
+      check_ndarray_dtype_is_int32
+      check_ndarray_dtype_is_int64
+      check_ndarray_dtype_is_int8
+      check_ndarray_dtype_is_integer
+      check_ndarray_dtype_is_integer_or_floating
+      check_ndarray_dtype_is_number
+      check_ndarray_dtype_is_object
+      check_ndarray_dtype_is_object_or_string
+      check_ndarray_dtype_is_real
+      check_ndarray_dtype_is_string
+      check_ndarray_dtype_is_unicode
+   
+   
+
+   
+   
+   
+
+
+

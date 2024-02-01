@@ -1,0 +1,1010 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pybrops.core.error.error_value_python &#8212; pybrops 0.9.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/core/error/error_value_python';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 0.9.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pybrops.core...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pybrops.core.error.error_value_python</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module to check Python values.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;check_is_not_None&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_len&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_len_eq&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_all_equal&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_is_eq&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_is_gt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_is_gteq&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_is_lt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_is_lteq&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_is_in_interval_inclusive&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_str_value&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_dict_has_keys&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_dict_keys_all_type&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_dict_values_all_type&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_dict_values_have_equal_len&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check_dict_values_len_eq&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span>
+
+<span class="c1">################################################################################</span>
+<span class="c1">############################### check functions ################################</span>
+<span class="c1">################################################################################</span>
+<div class="viewcode-block" id="check_is_not_None">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_is_not_None.html#pybrops.core.error.error_value_python.check_is_not_None">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_not_None</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if an object is not None.</span>
+<span class="sd">    Raise error if object is None.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        Any Python object</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the Python object for use in the error message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not &#39;None&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_len">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_len.html#pybrops.core.error.error_value_python.check_len">[docs]</a>
+<span class="k">def</span> <span class="nf">check_len</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vlen</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if an object has a length equal to a provided value.</span>
+<span class="sd">    Raise error if object length is not equal to provided value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        Any Python object</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the Python object for use in the error message.</span>
+<span class="sd">    vlen : int</span>
+<span class="sd">        Expected length of the Python object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">vlen</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;the length of &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not equal to </span><span class="si">{1}</span><span class="s2">: received length </span><span class="si">{2}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span><span class="n">vlen</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="check_len_eq">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_len_eq.html#pybrops.core.error.error_value_python.check_len_eq">[docs]</a>
+<span class="k">def</span> <span class="nf">check_len_eq</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">wname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check is two objects have the same lengths.</span>
+<span class="sd">    Raise error if object lengths are not equivalent.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        The first Python object for which to compare lengths.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the first Python object for which to compare lengths.</span>
+<span class="sd">    w : object</span>
+<span class="sd">        The second Python object for which to compare lengths.</span>
+<span class="sd">    wname : str</span>
+<span class="sd">        Name of the second Python object for which to compare lengths.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;the lengths of &#39;</span><span class="si">{0}</span><span class="s2">&#39; and &#39;</span><span class="si">{1}</span><span class="s2">&#39; are not equivalent: received lengths </span><span class="si">{2}</span><span class="s2"> and </span><span class="si">{3}</span><span class="s2">, respectively&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span><span class="n">wname</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="check_all_equal">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_all_equal.html#pybrops.core.error.error_value_python.check_all_equal">[docs]</a>
+<span class="k">def</span> <span class="nf">check_all_equal</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check whether an object&#39;s elements are all equivalent.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        A Python object.</span>
+<span class="sd">    vname : object</span>
+<span class="sd">        Name of the Python object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">viter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">e0</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">viter</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+        <span class="k">return</span> <span class="c1"># length is 1, therefore all elements are equivalent</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">e0</span> <span class="o">!=</span> <span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">viter</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;not all elements in </span><span class="si">{0}</span><span class="s2"> are equal to </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">e0</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_is_eq">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_is_eq.html#pybrops.core.error.error_value_python.check_is_eq">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_eq</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a Python object is equivalent to another Python object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        A Python object.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the Python object for use in the error message.</span>
+<span class="sd">    value : object</span>
+<span class="sd">        Expected value of the input Python object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not equal to </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_is_neq">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_is_neq.html#pybrops.core.error.error_value_python.check_is_neq">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_neq</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a Python object is not equal to another Python object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        A Python object.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the Python object for use in the error message.</span>
+<span class="sd">    value : object</span>
+<span class="sd">        Expected value of the input Python object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; is equal to </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_is_gt">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_is_gt.html#pybrops.core.error.error_value_python.check_is_gt">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_gt</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a Python object is greater than another Python object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        A Python object.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the Python object for use in the error message.</span>
+<span class="sd">    value : object</span>
+<span class="sd">        Lower value of the input Python object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not greater than </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_is_gteq">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_is_gteq.html#pybrops.core.error.error_value_python.check_is_gteq">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_gteq</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a Python object is greater than or equal to another Python object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        A Python object.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the Python object for use in the error message.</span>
+<span class="sd">    value : object</span>
+<span class="sd">        Lower value of the input Python object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not greater than or equal to </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_is_lt">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_is_lt.html#pybrops.core.error.error_value_python.check_is_lt">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_lt</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a Python object is less than another Python object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        A Python object.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the Python object for use in the error message.</span>
+<span class="sd">    value : object</span>
+<span class="sd">        Upper value of the input Python object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;=</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not less than </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_is_lteq">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_is_lteq.html#pybrops.core.error.error_value_python.check_is_lteq">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_lteq</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a Python object is less than or equal to another Python object.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        A Python object.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the Python object for use in the error message.</span>
+<span class="sd">    value : object</span>
+<span class="sd">        Upper value of the input Python object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="o">&gt;</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not less than or equal to </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_is_in_interval_inclusive">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_is_in_interval_inclusive.html#pybrops.core.error.error_value_python.check_is_in_interval_inclusive">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_in_interval_inclusive</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vmin</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vmax</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a value is in a specified interval (inclusive).</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        Input numerical value.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the variable of which to test.</span>
+<span class="sd">    vmin : object</span>
+<span class="sd">        Minimum value for the input value.</span>
+<span class="sd">    vmax : object</span>
+<span class="sd">        Maximum value for the input value.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : outtype</span>
+<span class="sd">        outdesc</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">v</span> <span class="o">&lt;</span> <span class="n">vmin</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">v</span> <span class="o">&gt;</span> <span class="n">vmax</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not in interval [</span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">]&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_is_in_interval_exclusive">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_is_in_interval_exclusive.html#pybrops.core.error.error_value_python.check_is_in_interval_exclusive">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_in_interval_exclusive</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vmin</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vmax</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a value is in a specified interval (exclusive).</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        Input numerical value.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the variable of which to test.</span>
+<span class="sd">    vmin : object</span>
+<span class="sd">        Minimum value for the input value.</span>
+<span class="sd">    vmax : object</span>
+<span class="sd">        Maximum value for the input value.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : outtype</span>
+<span class="sd">        outdesc</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">v</span> <span class="o">&lt;=</span> <span class="n">vmin</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">v</span> <span class="o">&gt;=</span> <span class="n">vmax</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; is not in interval (</span><span class="si">{1}</span><span class="s2">, </span><span class="si">{2}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">vmin</span><span class="p">,</span> <span class="n">vmax</span><span class="p">))</span></div>
+
+
+<span class="c1">##################################################</span>
+<span class="c1">########### Dictionary check functions ###########</span>
+<span class="c1">##################################################</span>
+
+<div class="viewcode-block" id="check_dict_has_keys">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_dict_has_keys.html#pybrops.core.error.error_value_python.check_dict_has_keys">[docs]</a>
+<span class="k">def</span> <span class="nf">check_dict_has_keys</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span><span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a set of keys can be found among the keys of a provided ``dict``.</span>
+<span class="sd">    If any of the keys cannot be found within the dict, then raise an error.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : dict</span>
+<span class="sd">        Dictionary to check for keys.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name assigned to the dictionary.</span>
+<span class="sd">    args : Tuple[object,...]</span>
+<span class="sd">        A tuple of keys for which to search in the input dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">keys</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">e</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">keys</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">args</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dict &#39;</span><span class="si">{0}</span><span class="s2">&#39; must have keys: </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_dict_keys_all_type">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_dict_keys_all_type.html#pybrops.core.error.error_value_python.check_dict_keys_all_type">[docs]</a>
+<span class="k">def</span> <span class="nf">check_dict_keys_all_type</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vtype</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if all keys in a dictionary are of a specific type.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : dict</span>
+<span class="sd">        Dictionary in which to check keys.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name assigned to the dictionary.</span>
+<span class="sd">    vtype : type</span>
+<span class="sd">        Expected type of the keys in the dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">vtype</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;not all keys in dict &#39;</span><span class="si">{0}</span><span class="s2">&#39; are of type </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">vtype</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="check_dict_values_all_type">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_dict_values_all_type.html#pybrops.core.error.error_value_python.check_dict_values_all_type">[docs]</a>
+<span class="k">def</span> <span class="nf">check_dict_values_all_type</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vtype</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if all values in a dictionary have a specific type.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : dict</span>
+<span class="sd">        Dictionary in which to check values.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name assigned to the dictionary.</span>
+<span class="sd">    vtype : type</span>
+<span class="sd">        Expected type of the values in the dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">vtype</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;not all values in dict &#39;</span><span class="si">{0}</span><span class="s2">&#39; are of type </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">vtype</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="check_dict_values_have_equal_len">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_dict_values_have_equal_len.html#pybrops.core.error.error_value_python.check_dict_values_have_equal_len">[docs]</a>
+<span class="k">def</span> <span class="nf">check_dict_values_have_equal_len</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if all values in a ``dict`` have a equal lengths.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : dict</span>
+<span class="sd">        Dictionary in which to check values.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name assigned to the dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">viter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">e0</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">viter</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="n">l0</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">e0</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">!=</span> <span class="n">l0</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">viter</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;not all values in dict &#39;</span><span class="si">{0}</span><span class="s2">&#39; have equal length == </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">l0</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_dict_values_len_eq">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_dict_values_len_eq.html#pybrops.core.error.error_value_python.check_dict_values_len_eq">[docs]</a>
+<span class="k">def</span> <span class="nf">check_dict_values_len_eq</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vlen</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if all values in a ``dict`` have a specific length.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : dict</span>
+<span class="sd">        Dictionary in which to check values.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name assigned to the dictionary.</span>
+<span class="sd">    vlen : int</span>
+<span class="sd">        Expected length for each value in the dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">viter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">e0</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">viter</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;dict &#39;</span><span class="si">{0}</span><span class="s2">&#39; is empty&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">!=</span> <span class="n">vlen</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">viter</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;not all values in dict &#39;</span><span class="si">{0}</span><span class="s2">&#39; have length == </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">vlen</span><span class="p">))</span></div>
+
+
+<span class="c1">##################################################</span>
+<span class="c1">############# String check functions #############</span>
+<span class="c1">##################################################</span>
+
+<div class="viewcode-block" id="check_str_value">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_str_value.html#pybrops.core.error.error_value_python.check_str_value">[docs]</a>
+<span class="k">def</span> <span class="nf">check_str_value</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a string has an accepted value:</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : str</span>
+<span class="sd">        Input string.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the variable for the string.</span>
+<span class="sd">    args : tuple</span>
+<span class="sd">        Acceptable values for the string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;string &#39;</span><span class="si">{0}</span><span class="s2">&#39; must be one of: </span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span></div>
+
+
+<span class="c1">##################################################</span>
+<span class="c1">############# Tuple check functions ##############</span>
+<span class="c1">##################################################</span>
+
+<div class="viewcode-block" id="check_tuple_len_eq">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_tuple_len_eq.html#pybrops.core.error.error_value_python.check_tuple_len_eq">[docs]</a>
+<span class="k">def</span> <span class="nf">check_tuple_len_eq</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vlen</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a tuple has a length equal to a provided value.</span>
+<span class="sd">    Raise error if object length is not equal to provided value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : tuple</span>
+<span class="sd">        A Python tuple</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the Python tuple for use in the error message.</span>
+<span class="sd">    vlen : int</span>
+<span class="sd">        Expected length of the Python tuple.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="n">vlen</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;tuple &#39;</span><span class="si">{0}</span><span class="s2">&#39; must have length equal to </span><span class="si">{1}</span><span class="s2"> but received length </span><span class="si">{2}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">vname</span><span class="p">,</span>
+                <span class="n">vlen</span><span class="p">,</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span></div>
+
+
+<span class="c1">##################################################</span>
+<span class="c1">############ Sequence check functions ############</span>
+<span class="c1">##################################################</span>
+
+<div class="viewcode-block" id="check_Sequence_has_value">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_Sequence_has_value.html#pybrops.core.error.error_value_python.check_Sequence_has_value">[docs]</a>
+<span class="k">def</span> <span class="nf">check_Sequence_has_value</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a ``Sequence`` contains a required value.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : Sequence</span>
+<span class="sd">        Input ``Sequence``.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the ``Sequence`` variable.</span>
+<span class="sd">    value : object</span>
+<span class="sd">        A required value that the ``Sequence`` must contain.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Sequence &#39;</span><span class="si">{0}</span><span class="s2">&#39; must have value &#39;</span><span class="si">{1}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span><span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_Sequence_has_values">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_Sequence_has_values.html#pybrops.core.error.error_value_python.check_Sequence_has_values">[docs]</a>
+<span class="k">def</span> <span class="nf">check_Sequence_has_values</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a ``Sequence`` contains all required values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : Sequence</span>
+<span class="sd">        Input ``Sequence``.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the ``Sequence`` variable.</span>
+<span class="sd">    args : tuple</span>
+<span class="sd">        Required values that the ``Sequence`` must contain.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Sequence &#39;</span><span class="si">{0}</span><span class="s2">&#39; must have value &#39;</span><span class="si">{1}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span><span class="n">value</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_Sequence_has_index">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_Sequence_has_index.html#pybrops.core.error.error_value_python.check_Sequence_has_index">[docs]</a>
+<span class="k">def</span> <span class="nf">check_Sequence_has_index</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ix</span><span class="p">:</span> <span class="n">Integral</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a ``Sequence`` contains a required index.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : Sequence</span>
+<span class="sd">        Input ``Sequence``.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the ``Sequence`` variable.</span>
+<span class="sd">    ix : object</span>
+<span class="sd">        A required index that the ``Sequence`` must contain.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">ix</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">ix</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Sequence &#39;</span><span class="si">{0}</span><span class="s2">&#39; must have index &#39;</span><span class="si">{1}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span><span class="n">ix</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="check_Sequence_has_indices">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_python.check_Sequence_has_indices.html#pybrops.core.error.error_value_python.check_Sequence_has_indices">[docs]</a>
+<span class="k">def</span> <span class="nf">check_Sequence_has_indices</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Integral</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a ``Sequence`` contains required indices.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : Sequence</span>
+<span class="sd">        Input ``Sequence``.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of the ``Sequence`` variable.</span>
+<span class="sd">    args : tuple</span>
+<span class="sd">        Required indices that the ``Sequence`` must contain.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ix</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">ix</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Sequence &#39;</span><span class="si">{0}</span><span class="s2">&#39; must have index &#39;</span><span class="si">{1}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">,</span><span class="n">ix</span><span class="p">))</span></div>
+
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2023, Robert Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

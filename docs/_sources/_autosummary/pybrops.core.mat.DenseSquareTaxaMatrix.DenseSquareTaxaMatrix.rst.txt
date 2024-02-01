@@ -1,0 +1,80 @@
+DenseSquareTaxaMatrix
+=====================
+
+.. currentmodule:: pybrops.core.mat.DenseSquareTaxaMatrix
+
+.. autoclass:: DenseSquareTaxaMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseSquareTaxaMatrix.adjoin
+      ~DenseSquareTaxaMatrix.adjoin_taxa
+      ~DenseSquareTaxaMatrix.append
+      ~DenseSquareTaxaMatrix.append_taxa
+      ~DenseSquareTaxaMatrix.concat
+      ~DenseSquareTaxaMatrix.concat_taxa
+      ~DenseSquareTaxaMatrix.copy
+      ~DenseSquareTaxaMatrix.deepcopy
+      ~DenseSquareTaxaMatrix.delete
+      ~DenseSquareTaxaMatrix.delete_taxa
+      ~DenseSquareTaxaMatrix.from_hdf5
+      ~DenseSquareTaxaMatrix.group
+      ~DenseSquareTaxaMatrix.group_taxa
+      ~DenseSquareTaxaMatrix.incorp
+      ~DenseSquareTaxaMatrix.incorp_taxa
+      ~DenseSquareTaxaMatrix.insert
+      ~DenseSquareTaxaMatrix.insert_taxa
+      ~DenseSquareTaxaMatrix.is_grouped
+      ~DenseSquareTaxaMatrix.is_grouped_taxa
+      ~DenseSquareTaxaMatrix.is_square
+      ~DenseSquareTaxaMatrix.is_square_taxa
+      ~DenseSquareTaxaMatrix.lexsort
+      ~DenseSquareTaxaMatrix.lexsort_taxa
+      ~DenseSquareTaxaMatrix.remove
+      ~DenseSquareTaxaMatrix.remove_taxa
+      ~DenseSquareTaxaMatrix.reorder
+      ~DenseSquareTaxaMatrix.reorder_taxa
+      ~DenseSquareTaxaMatrix.select
+      ~DenseSquareTaxaMatrix.select_taxa
+      ~DenseSquareTaxaMatrix.sort
+      ~DenseSquareTaxaMatrix.sort_taxa
+      ~DenseSquareTaxaMatrix.to_hdf5
+      ~DenseSquareTaxaMatrix.ungroup
+      ~DenseSquareTaxaMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseSquareTaxaMatrix.mat
+      ~DenseSquareTaxaMatrix.mat_ndim
+      ~DenseSquareTaxaMatrix.mat_shape
+      ~DenseSquareTaxaMatrix.nsquare
+      ~DenseSquareTaxaMatrix.nsquare_taxa
+      ~DenseSquareTaxaMatrix.ntaxa
+      ~DenseSquareTaxaMatrix.square_axes
+      ~DenseSquareTaxaMatrix.square_axes_len
+      ~DenseSquareTaxaMatrix.square_taxa_axes
+      ~DenseSquareTaxaMatrix.square_taxa_axes_len
+      ~DenseSquareTaxaMatrix.taxa
+      ~DenseSquareTaxaMatrix.taxa_axis
+      ~DenseSquareTaxaMatrix.taxa_grp
+      ~DenseSquareTaxaMatrix.taxa_grp_len
+      ~DenseSquareTaxaMatrix.taxa_grp_name
+      ~DenseSquareTaxaMatrix.taxa_grp_spix
+      ~DenseSquareTaxaMatrix.taxa_grp_stix
+   
+   

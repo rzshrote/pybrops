@@ -1,0 +1,60 @@
+ExpectedMaximumBreedingValueIntegerSelection
+============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.ExpectedMaximumBreedingValueSelection
+
+.. autoclass:: ExpectedMaximumBreedingValueIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ExpectedMaximumBreedingValueIntegerSelection.mosolve
+      ~ExpectedMaximumBreedingValueIntegerSelection.problem
+      ~ExpectedMaximumBreedingValueIntegerSelection.select
+      ~ExpectedMaximumBreedingValueIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ExpectedMaximumBreedingValueIntegerSelection.eqcv_trans
+      ~ExpectedMaximumBreedingValueIntegerSelection.eqcv_trans_kwargs
+      ~ExpectedMaximumBreedingValueIntegerSelection.eqcv_wt
+      ~ExpectedMaximumBreedingValueIntegerSelection.ineqcv_trans
+      ~ExpectedMaximumBreedingValueIntegerSelection.ineqcv_trans_kwargs
+      ~ExpectedMaximumBreedingValueIntegerSelection.ineqcv_wt
+      ~ExpectedMaximumBreedingValueIntegerSelection.mateprot
+      ~ExpectedMaximumBreedingValueIntegerSelection.moalgo
+      ~ExpectedMaximumBreedingValueIntegerSelection.ncross
+      ~ExpectedMaximumBreedingValueIntegerSelection.ndset_trans
+      ~ExpectedMaximumBreedingValueIntegerSelection.ndset_trans_kwargs
+      ~ExpectedMaximumBreedingValueIntegerSelection.ndset_wt
+      ~ExpectedMaximumBreedingValueIntegerSelection.neqcv
+      ~ExpectedMaximumBreedingValueIntegerSelection.nineqcv
+      ~ExpectedMaximumBreedingValueIntegerSelection.nmating
+      ~ExpectedMaximumBreedingValueIntegerSelection.nobj
+      ~ExpectedMaximumBreedingValueIntegerSelection.nparent
+      ~ExpectedMaximumBreedingValueIntegerSelection.nprogeny
+      ~ExpectedMaximumBreedingValueIntegerSelection.nrep
+      ~ExpectedMaximumBreedingValueIntegerSelection.nselindiv
+      ~ExpectedMaximumBreedingValueIntegerSelection.ntrait
+      ~ExpectedMaximumBreedingValueIntegerSelection.obj_trans
+      ~ExpectedMaximumBreedingValueIntegerSelection.obj_trans_kwargs
+      ~ExpectedMaximumBreedingValueIntegerSelection.obj_wt
+      ~ExpectedMaximumBreedingValueIntegerSelection.rng
+      ~ExpectedMaximumBreedingValueIntegerSelection.soalgo
+      ~ExpectedMaximumBreedingValueIntegerSelection.unique_parents
+   
+   

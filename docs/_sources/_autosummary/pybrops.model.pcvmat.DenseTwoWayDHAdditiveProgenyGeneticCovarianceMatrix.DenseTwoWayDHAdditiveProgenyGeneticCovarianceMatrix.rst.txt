@@ -1,0 +1,109 @@
+DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix
+===================================================
+
+.. currentmodule:: pybrops.model.pcvmat.DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix
+
+.. autoclass:: DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.adjoin
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.adjoin_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.adjoin_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.append
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.append_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.append_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.concat
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.concat_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.concat_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.copy
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.deepcopy
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.delete
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.delete_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.delete_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.from_algmod
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.from_csv
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.from_gmod
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.from_hdf5
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.from_pandas
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.group
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.group_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.incorp
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.incorp_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.incorp_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.insert
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.insert_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.insert_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.is_grouped
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.is_grouped_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.is_square
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.is_square_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.is_square_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.lexsort
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.lexsort_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.lexsort_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.remove
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.remove_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.remove_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.reorder
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.reorder_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.reorder_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.select
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.select_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.select_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.sort
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.sort_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.sort_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.to_csv
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.to_hdf5
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.to_pandas
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.ungroup
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.epgc
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.female_axis
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.male_axis
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.mat
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.mat_ndim
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.mat_shape
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.nfemale
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.nmale
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.nsquare
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.nsquare_taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.nsquare_trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.ntaxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.ntrait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.square_axes
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.square_axes_len
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.square_taxa_axes
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.square_taxa_axes_len
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.square_trait_axes
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.square_trait_axes_len
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.taxa
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.taxa_axis
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.taxa_grp
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.taxa_grp_len
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.taxa_grp_name
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.taxa_grp_spix
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.taxa_grp_stix
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.trait
+      ~DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.trait_axis
+   
+   

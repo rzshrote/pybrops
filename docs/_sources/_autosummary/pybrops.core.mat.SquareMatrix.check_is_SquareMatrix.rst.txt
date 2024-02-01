@@ -1,0 +1,6 @@
+check\_is\_SquareMatrix
+=======================
+
+.. currentmodule:: pybrops.core.mat.SquareMatrix
+
+.. autofunction:: check_is_SquareMatrix

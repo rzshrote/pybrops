@@ -1,0 +1,6 @@
+check\_file\_exists
+===================
+
+.. currentmodule:: pybrops.core.error.error_io_python
+
+.. autofunction:: check_file_exists

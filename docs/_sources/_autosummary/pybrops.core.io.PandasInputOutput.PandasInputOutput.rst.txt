@@ -1,0 +1,26 @@
+PandasInputOutput
+=================
+
+.. currentmodule:: pybrops.core.io.PandasInputOutput
+
+.. autoclass:: PandasInputOutput
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PandasInputOutput.from_pandas
+      ~PandasInputOutput.to_pandas
+   
+   
+
+   
+   
+   

@@ -1,0 +1,59 @@
+OptimalContributionBinarySelection
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.OptimalContributionSelection
+
+.. autoclass:: OptimalContributionBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalContributionBinarySelection.mosolve
+      ~OptimalContributionBinarySelection.problem
+      ~OptimalContributionBinarySelection.select
+      ~OptimalContributionBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalContributionBinarySelection.cmatfcty
+      ~OptimalContributionBinarySelection.eqcv_trans
+      ~OptimalContributionBinarySelection.eqcv_trans_kwargs
+      ~OptimalContributionBinarySelection.eqcv_wt
+      ~OptimalContributionBinarySelection.ineqcv_trans
+      ~OptimalContributionBinarySelection.ineqcv_trans_kwargs
+      ~OptimalContributionBinarySelection.ineqcv_wt
+      ~OptimalContributionBinarySelection.moalgo
+      ~OptimalContributionBinarySelection.ncross
+      ~OptimalContributionBinarySelection.ndset_trans
+      ~OptimalContributionBinarySelection.ndset_trans_kwargs
+      ~OptimalContributionBinarySelection.ndset_wt
+      ~OptimalContributionBinarySelection.neqcv
+      ~OptimalContributionBinarySelection.nineqcv
+      ~OptimalContributionBinarySelection.nmating
+      ~OptimalContributionBinarySelection.nobj
+      ~OptimalContributionBinarySelection.nparent
+      ~OptimalContributionBinarySelection.nprogeny
+      ~OptimalContributionBinarySelection.nselindiv
+      ~OptimalContributionBinarySelection.ntrait
+      ~OptimalContributionBinarySelection.obj_trans
+      ~OptimalContributionBinarySelection.obj_trans_kwargs
+      ~OptimalContributionBinarySelection.obj_wt
+      ~OptimalContributionBinarySelection.rng
+      ~OptimalContributionBinarySelection.soalgo
+      ~OptimalContributionBinarySelection.unscale
+   
+   

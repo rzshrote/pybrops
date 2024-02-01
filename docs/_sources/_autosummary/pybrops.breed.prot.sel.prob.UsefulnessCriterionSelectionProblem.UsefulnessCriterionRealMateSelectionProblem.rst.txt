@@ -1,0 +1,79 @@
+UsefulnessCriterionRealMateSelectionProblem
+===========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem
+
+.. autoclass:: UsefulnessCriterionRealMateSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UsefulnessCriterionRealMateSelectionProblem.bounds
+      ~UsefulnessCriterionRealMateSelectionProblem.do
+      ~UsefulnessCriterionRealMateSelectionProblem.evalfn
+      ~UsefulnessCriterionRealMateSelectionProblem.evaluate
+      ~UsefulnessCriterionRealMateSelectionProblem.from_pgmat_gpmod
+      ~UsefulnessCriterionRealMateSelectionProblem.from_pgmat_gpmod_xmap
+      ~UsefulnessCriterionRealMateSelectionProblem.has_bounds
+      ~UsefulnessCriterionRealMateSelectionProblem.has_constraints
+      ~UsefulnessCriterionRealMateSelectionProblem.ideal_point
+      ~UsefulnessCriterionRealMateSelectionProblem.latentfn
+      ~UsefulnessCriterionRealMateSelectionProblem.nadir_point
+      ~UsefulnessCriterionRealMateSelectionProblem.name
+      ~UsefulnessCriterionRealMateSelectionProblem.pareto_front
+      ~UsefulnessCriterionRealMateSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~UsefulnessCriterionRealMateSelectionProblem.callback
+      ~UsefulnessCriterionRealMateSelectionProblem.data
+      ~UsefulnessCriterionRealMateSelectionProblem.decn_space
+      ~UsefulnessCriterionRealMateSelectionProblem.decn_space_lower
+      ~UsefulnessCriterionRealMateSelectionProblem.decn_space_upper
+      ~UsefulnessCriterionRealMateSelectionProblem.decn_space_xmap
+      ~UsefulnessCriterionRealMateSelectionProblem.elementwise
+      ~UsefulnessCriterionRealMateSelectionProblem.elementwise_func
+      ~UsefulnessCriterionRealMateSelectionProblem.elementwise_runner
+      ~UsefulnessCriterionRealMateSelectionProblem.eqcv_trans
+      ~UsefulnessCriterionRealMateSelectionProblem.eqcv_trans_kwargs
+      ~UsefulnessCriterionRealMateSelectionProblem.eqcv_wt
+      ~UsefulnessCriterionRealMateSelectionProblem.exclude_from_serialization
+      ~UsefulnessCriterionRealMateSelectionProblem.ineqcv_trans
+      ~UsefulnessCriterionRealMateSelectionProblem.ineqcv_trans_kwargs
+      ~UsefulnessCriterionRealMateSelectionProblem.ineqcv_wt
+      ~UsefulnessCriterionRealMateSelectionProblem.n_constr
+      ~UsefulnessCriterionRealMateSelectionProblem.n_eq_constr
+      ~UsefulnessCriterionRealMateSelectionProblem.n_ieq_constr
+      ~UsefulnessCriterionRealMateSelectionProblem.n_obj
+      ~UsefulnessCriterionRealMateSelectionProblem.n_var
+      ~UsefulnessCriterionRealMateSelectionProblem.ndecn
+      ~UsefulnessCriterionRealMateSelectionProblem.neqcv
+      ~UsefulnessCriterionRealMateSelectionProblem.nineqcv
+      ~UsefulnessCriterionRealMateSelectionProblem.nlatent
+      ~UsefulnessCriterionRealMateSelectionProblem.nobj
+      ~UsefulnessCriterionRealMateSelectionProblem.obj_trans
+      ~UsefulnessCriterionRealMateSelectionProblem.obj_trans_kwargs
+      ~UsefulnessCriterionRealMateSelectionProblem.obj_wt
+      ~UsefulnessCriterionRealMateSelectionProblem.replace_nan_values_by
+      ~UsefulnessCriterionRealMateSelectionProblem.strict
+      ~UsefulnessCriterionRealMateSelectionProblem.ucmat
+      ~UsefulnessCriterionRealMateSelectionProblem.vars
+      ~UsefulnessCriterionRealMateSelectionProblem.vtype
+      ~UsefulnessCriterionRealMateSelectionProblem.xl
+      ~UsefulnessCriterionRealMateSelectionProblem.xu
+   
+   

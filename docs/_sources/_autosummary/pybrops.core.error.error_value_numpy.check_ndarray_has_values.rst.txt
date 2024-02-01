@@ -1,0 +1,6 @@
+check\_ndarray\_has\_values
+===========================
+
+.. currentmodule:: pybrops.core.error.error_value_numpy
+
+.. autofunction:: check_ndarray_has_values

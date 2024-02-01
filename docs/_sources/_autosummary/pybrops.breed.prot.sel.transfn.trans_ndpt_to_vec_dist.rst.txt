@@ -1,0 +1,6 @@
+trans\_ndpt\_to\_vec\_dist
+==========================
+
+.. currentmodule:: pybrops.breed.prot.sel.transfn
+
+.. autofunction:: trans_ndpt_to_vec_dist

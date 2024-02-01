@@ -1,0 +1,33 @@
+random
+======
+
+.. automodule:: pybrops.core.random
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.core.random.prng
+   pybrops.core.random.sampling
+

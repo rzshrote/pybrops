@@ -1,0 +1,45 @@
+SquareMatrix
+============
+
+.. currentmodule:: pybrops.core.mat.SquareMatrix
+
+.. autoclass:: SquareMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SquareMatrix.adjoin
+      ~SquareMatrix.concat
+      ~SquareMatrix.copy
+      ~SquareMatrix.deepcopy
+      ~SquareMatrix.delete
+      ~SquareMatrix.from_hdf5
+      ~SquareMatrix.insert
+      ~SquareMatrix.is_square
+      ~SquareMatrix.select
+      ~SquareMatrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SquareMatrix.mat
+      ~SquareMatrix.mat_ndim
+      ~SquareMatrix.mat_shape
+      ~SquareMatrix.nsquare
+      ~SquareMatrix.square_axes
+      ~SquareMatrix.square_axes_len
+   
+   

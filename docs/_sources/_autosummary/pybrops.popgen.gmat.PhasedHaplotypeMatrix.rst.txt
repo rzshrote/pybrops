@@ -1,0 +1,41 @@
+PhasedHaplotypeMatrix
+=====================
+
+.. automodule:: pybrops.popgen.gmat.PhasedHaplotypeMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      PhasedHaplotypeMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_PhasedHaplotypeMatrix
+   
+   
+
+   
+   
+   
+
+
+

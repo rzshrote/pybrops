@@ -1,0 +1,6 @@
+check\_is\_PhasedMatrix
+=======================
+
+.. currentmodule:: pybrops.core.mat.PhasedMatrix
+
+.. autofunction:: check_is_PhasedMatrix

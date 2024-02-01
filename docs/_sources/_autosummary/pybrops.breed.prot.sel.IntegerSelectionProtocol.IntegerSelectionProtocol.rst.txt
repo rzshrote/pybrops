@@ -1,0 +1,56 @@
+IntegerSelectionProtocol
+========================
+
+.. currentmodule:: pybrops.breed.prot.sel.IntegerSelectionProtocol
+
+.. autoclass:: IntegerSelectionProtocol
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~IntegerSelectionProtocol.mosolve
+      ~IntegerSelectionProtocol.problem
+      ~IntegerSelectionProtocol.select
+      ~IntegerSelectionProtocol.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~IntegerSelectionProtocol.eqcv_trans
+      ~IntegerSelectionProtocol.eqcv_trans_kwargs
+      ~IntegerSelectionProtocol.eqcv_wt
+      ~IntegerSelectionProtocol.ineqcv_trans
+      ~IntegerSelectionProtocol.ineqcv_trans_kwargs
+      ~IntegerSelectionProtocol.ineqcv_wt
+      ~IntegerSelectionProtocol.moalgo
+      ~IntegerSelectionProtocol.ncross
+      ~IntegerSelectionProtocol.ndset_trans
+      ~IntegerSelectionProtocol.ndset_trans_kwargs
+      ~IntegerSelectionProtocol.ndset_wt
+      ~IntegerSelectionProtocol.neqcv
+      ~IntegerSelectionProtocol.nineqcv
+      ~IntegerSelectionProtocol.nmating
+      ~IntegerSelectionProtocol.nobj
+      ~IntegerSelectionProtocol.nparent
+      ~IntegerSelectionProtocol.nprogeny
+      ~IntegerSelectionProtocol.nselindiv
+      ~IntegerSelectionProtocol.obj_trans
+      ~IntegerSelectionProtocol.obj_trans_kwargs
+      ~IntegerSelectionProtocol.obj_wt
+      ~IntegerSelectionProtocol.rng
+      ~IntegerSelectionProtocol.soalgo
+   
+   

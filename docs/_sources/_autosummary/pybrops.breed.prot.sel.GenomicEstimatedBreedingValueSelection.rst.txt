@@ -1,0 +1,36 @@
+GenomicEstimatedBreedingValueSelection
+======================================
+
+.. automodule:: pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      GenomicEstimatedBreedingValueBinarySelection
+      GenomicEstimatedBreedingValueIntegerSelection
+      GenomicEstimatedBreedingValueRealSelection
+      GenomicEstimatedBreedingValueSelectionMixin
+      GenomicEstimatedBreedingValueSubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

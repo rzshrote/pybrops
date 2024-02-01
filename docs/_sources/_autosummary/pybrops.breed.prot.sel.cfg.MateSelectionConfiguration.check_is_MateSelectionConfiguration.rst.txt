@@ -1,0 +1,6 @@
+check\_is\_MateSelectionConfiguration
+=====================================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.MateSelectionConfiguration
+
+.. autofunction:: check_is_MateSelectionConfiguration

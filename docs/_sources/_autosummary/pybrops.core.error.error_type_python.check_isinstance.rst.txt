@@ -1,0 +1,6 @@
+check\_isinstance
+=================
+
+.. currentmodule:: pybrops.core.error.error_type_python
+
+.. autofunction:: check_isinstance

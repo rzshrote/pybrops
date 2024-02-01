@@ -1,0 +1,6 @@
+check\_is\_DenseGenomicEstimatedBreedingValueMatrix
+===================================================
+
+.. currentmodule:: pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix
+
+.. autofunction:: check_is_DenseGenomicEstimatedBreedingValueMatrix

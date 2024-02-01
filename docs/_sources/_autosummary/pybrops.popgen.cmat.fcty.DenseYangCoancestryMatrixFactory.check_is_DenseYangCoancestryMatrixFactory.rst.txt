@@ -1,0 +1,6 @@
+check\_is\_DenseYangCoancestryMatrixFactory
+===========================================
+
+.. currentmodule:: pybrops.popgen.cmat.fcty.DenseYangCoancestryMatrixFactory
+
+.. autofunction:: check_is_DenseYangCoancestryMatrixFactory

@@ -1,0 +1,6 @@
+trans\_identity
+===============
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.trans
+
+.. autofunction:: trans_identity

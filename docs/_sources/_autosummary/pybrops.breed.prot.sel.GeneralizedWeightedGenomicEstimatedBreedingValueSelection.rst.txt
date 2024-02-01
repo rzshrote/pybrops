@@ -1,0 +1,36 @@
+GeneralizedWeightedGenomicEstimatedBreedingValueSelection
+=========================================================
+
+.. automodule:: pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection
+      GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection
+      GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection
+      GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin
+      GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,6 @@
+check\_is\_GenicVarianceMatrixFactory
+=====================================
+
+.. currentmodule:: pybrops.model.vmat.fcty.GenicVarianceMatrixFactory
+
+.. autofunction:: check_is_GenicVarianceMatrixFactory

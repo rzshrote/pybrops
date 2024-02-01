@@ -1,0 +1,126 @@
+DensePhasedGenotypeMatrix
+=========================
+
+.. currentmodule:: pybrops.popgen.gmat.DensePhasedGenotypeMatrix
+
+.. autoclass:: DensePhasedGenotypeMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DensePhasedGenotypeMatrix.acount
+      ~DensePhasedGenotypeMatrix.adjoin
+      ~DensePhasedGenotypeMatrix.adjoin_phase
+      ~DensePhasedGenotypeMatrix.adjoin_taxa
+      ~DensePhasedGenotypeMatrix.adjoin_vrnt
+      ~DensePhasedGenotypeMatrix.afreq
+      ~DensePhasedGenotypeMatrix.apoly
+      ~DensePhasedGenotypeMatrix.append
+      ~DensePhasedGenotypeMatrix.append_phase
+      ~DensePhasedGenotypeMatrix.append_taxa
+      ~DensePhasedGenotypeMatrix.append_vrnt
+      ~DensePhasedGenotypeMatrix.concat
+      ~DensePhasedGenotypeMatrix.concat_phase
+      ~DensePhasedGenotypeMatrix.concat_taxa
+      ~DensePhasedGenotypeMatrix.concat_vrnt
+      ~DensePhasedGenotypeMatrix.copy
+      ~DensePhasedGenotypeMatrix.deepcopy
+      ~DensePhasedGenotypeMatrix.delete
+      ~DensePhasedGenotypeMatrix.delete_phase
+      ~DensePhasedGenotypeMatrix.delete_taxa
+      ~DensePhasedGenotypeMatrix.delete_vrnt
+      ~DensePhasedGenotypeMatrix.from_hdf5
+      ~DensePhasedGenotypeMatrix.from_vcf
+      ~DensePhasedGenotypeMatrix.group
+      ~DensePhasedGenotypeMatrix.group_taxa
+      ~DensePhasedGenotypeMatrix.group_vrnt
+      ~DensePhasedGenotypeMatrix.gtcount
+      ~DensePhasedGenotypeMatrix.gtfreq
+      ~DensePhasedGenotypeMatrix.incorp
+      ~DensePhasedGenotypeMatrix.incorp_phase
+      ~DensePhasedGenotypeMatrix.incorp_taxa
+      ~DensePhasedGenotypeMatrix.incorp_vrnt
+      ~DensePhasedGenotypeMatrix.insert
+      ~DensePhasedGenotypeMatrix.insert_phase
+      ~DensePhasedGenotypeMatrix.insert_taxa
+      ~DensePhasedGenotypeMatrix.insert_vrnt
+      ~DensePhasedGenotypeMatrix.interp_genpos
+      ~DensePhasedGenotypeMatrix.interp_xoprob
+      ~DensePhasedGenotypeMatrix.is_grouped
+      ~DensePhasedGenotypeMatrix.is_grouped_taxa
+      ~DensePhasedGenotypeMatrix.is_grouped_vrnt
+      ~DensePhasedGenotypeMatrix.lexsort
+      ~DensePhasedGenotypeMatrix.lexsort_taxa
+      ~DensePhasedGenotypeMatrix.lexsort_vrnt
+      ~DensePhasedGenotypeMatrix.maf
+      ~DensePhasedGenotypeMatrix.mat_asformat
+      ~DensePhasedGenotypeMatrix.meh
+      ~DensePhasedGenotypeMatrix.remove
+      ~DensePhasedGenotypeMatrix.remove_phase
+      ~DensePhasedGenotypeMatrix.remove_taxa
+      ~DensePhasedGenotypeMatrix.remove_vrnt
+      ~DensePhasedGenotypeMatrix.reorder
+      ~DensePhasedGenotypeMatrix.reorder_taxa
+      ~DensePhasedGenotypeMatrix.reorder_vrnt
+      ~DensePhasedGenotypeMatrix.select
+      ~DensePhasedGenotypeMatrix.select_phase
+      ~DensePhasedGenotypeMatrix.select_taxa
+      ~DensePhasedGenotypeMatrix.select_vrnt
+      ~DensePhasedGenotypeMatrix.sort
+      ~DensePhasedGenotypeMatrix.sort_taxa
+      ~DensePhasedGenotypeMatrix.sort_vrnt
+      ~DensePhasedGenotypeMatrix.tacount
+      ~DensePhasedGenotypeMatrix.tafreq
+      ~DensePhasedGenotypeMatrix.to_hdf5
+      ~DensePhasedGenotypeMatrix.ungroup
+      ~DensePhasedGenotypeMatrix.ungroup_taxa
+      ~DensePhasedGenotypeMatrix.ungroup_vrnt
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DensePhasedGenotypeMatrix.mat
+      ~DensePhasedGenotypeMatrix.mat_format
+      ~DensePhasedGenotypeMatrix.mat_ndim
+      ~DensePhasedGenotypeMatrix.mat_shape
+      ~DensePhasedGenotypeMatrix.nphase
+      ~DensePhasedGenotypeMatrix.ntaxa
+      ~DensePhasedGenotypeMatrix.nvrnt
+      ~DensePhasedGenotypeMatrix.phase_axis
+      ~DensePhasedGenotypeMatrix.ploidy
+      ~DensePhasedGenotypeMatrix.taxa
+      ~DensePhasedGenotypeMatrix.taxa_axis
+      ~DensePhasedGenotypeMatrix.taxa_grp
+      ~DensePhasedGenotypeMatrix.taxa_grp_len
+      ~DensePhasedGenotypeMatrix.taxa_grp_name
+      ~DensePhasedGenotypeMatrix.taxa_grp_spix
+      ~DensePhasedGenotypeMatrix.taxa_grp_stix
+      ~DensePhasedGenotypeMatrix.vrnt_axis
+      ~DensePhasedGenotypeMatrix.vrnt_chrgrp
+      ~DensePhasedGenotypeMatrix.vrnt_chrgrp_len
+      ~DensePhasedGenotypeMatrix.vrnt_chrgrp_name
+      ~DensePhasedGenotypeMatrix.vrnt_chrgrp_spix
+      ~DensePhasedGenotypeMatrix.vrnt_chrgrp_stix
+      ~DensePhasedGenotypeMatrix.vrnt_genpos
+      ~DensePhasedGenotypeMatrix.vrnt_hapalt
+      ~DensePhasedGenotypeMatrix.vrnt_hapgrp
+      ~DensePhasedGenotypeMatrix.vrnt_hapref
+      ~DensePhasedGenotypeMatrix.vrnt_mask
+      ~DensePhasedGenotypeMatrix.vrnt_name
+      ~DensePhasedGenotypeMatrix.vrnt_phypos
+      ~DensePhasedGenotypeMatrix.vrnt_xoprob
+   
+   

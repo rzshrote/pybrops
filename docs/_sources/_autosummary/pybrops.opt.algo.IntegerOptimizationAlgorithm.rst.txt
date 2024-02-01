@@ -1,0 +1,41 @@
+IntegerOptimizationAlgorithm
+============================
+
+.. automodule:: pybrops.opt.algo.IntegerOptimizationAlgorithm
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      IntegerOptimizationAlgorithm
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_IntegerOptimizationAlgorithm
+   
+   
+
+   
+   
+   
+
+
+

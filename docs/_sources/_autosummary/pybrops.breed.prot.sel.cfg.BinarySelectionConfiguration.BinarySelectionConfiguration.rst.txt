@@ -1,0 +1,38 @@
+BinarySelectionConfiguration
+============================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration
+
+.. autoclass:: BinarySelectionConfiguration
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BinarySelectionConfiguration.sample_xconfig
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BinarySelectionConfiguration.ncross
+      ~BinarySelectionConfiguration.nmating
+      ~BinarySelectionConfiguration.nparent
+      ~BinarySelectionConfiguration.nprogeny
+      ~BinarySelectionConfiguration.pgmat
+      ~BinarySelectionConfiguration.rng
+      ~BinarySelectionConfiguration.xconfig
+      ~BinarySelectionConfiguration.xconfig_decn
+   
+   

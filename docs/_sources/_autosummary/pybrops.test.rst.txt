@@ -1,0 +1,33 @@
+test
+====
+
+.. automodule:: pybrops.test
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.test.assert_numpy
+   pybrops.test.assert_python
+

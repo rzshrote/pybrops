@@ -1,0 +1,36 @@
+OptimalHaploidValueSelectionProblem
+===================================
+
+.. automodule:: pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      OptimalHaploidValueBinarySelectionProblem
+      OptimalHaploidValueIntegerSelectionProblem
+      OptimalHaploidValueRealSelectionProblem
+      OptimalHaploidValueSelectionProblemMixin
+      OptimalHaploidValueSubsetSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

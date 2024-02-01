@@ -1,0 +1,6 @@
+check\_is\_IntegerSelectionProblem
+==================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.IntegerSelectionProblem
+
+.. autofunction:: check_is_IntegerSelectionProblem

@@ -1,0 +1,6 @@
+check\_ndarray\_dtype
+=====================
+
+.. currentmodule:: pybrops.core.error.error_type_numpy
+
+.. autofunction:: check_ndarray_dtype

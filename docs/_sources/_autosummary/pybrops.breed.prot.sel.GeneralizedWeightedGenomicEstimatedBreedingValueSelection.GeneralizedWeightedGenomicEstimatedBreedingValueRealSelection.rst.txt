@@ -1,0 +1,58 @@
+GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection
+=============================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection
+
+.. autoclass:: GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.mosolve
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.problem
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.select
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.alpha
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.eqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.eqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.eqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.ineqcv_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.ineqcv_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.ineqcv_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.moalgo
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.ncross
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.ndset_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.ndset_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.ndset_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.neqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.nineqcv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.nmating
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.nobj
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.nparent
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.nprogeny
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.nselindiv
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.ntrait
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.obj_trans
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.obj_trans_kwargs
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.obj_wt
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.rng
+      ~GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection.soalgo
+   
+   

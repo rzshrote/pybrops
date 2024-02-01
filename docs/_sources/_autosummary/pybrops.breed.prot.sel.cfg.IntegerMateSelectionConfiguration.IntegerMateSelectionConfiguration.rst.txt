@@ -1,0 +1,39 @@
+IntegerMateSelectionConfiguration
+=================================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.IntegerMateSelectionConfiguration
+
+.. autoclass:: IntegerMateSelectionConfiguration
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~IntegerMateSelectionConfiguration.sample_xconfig
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~IntegerMateSelectionConfiguration.ncross
+      ~IntegerMateSelectionConfiguration.nmating
+      ~IntegerMateSelectionConfiguration.nparent
+      ~IntegerMateSelectionConfiguration.nprogeny
+      ~IntegerMateSelectionConfiguration.pgmat
+      ~IntegerMateSelectionConfiguration.rng
+      ~IntegerMateSelectionConfiguration.xconfig
+      ~IntegerMateSelectionConfiguration.xconfig_decn
+      ~IntegerMateSelectionConfiguration.xconfig_xmap
+   
+   

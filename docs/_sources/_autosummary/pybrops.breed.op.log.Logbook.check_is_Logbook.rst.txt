@@ -1,0 +1,6 @@
+check\_is\_Logbook
+==================
+
+.. currentmodule:: pybrops.breed.op.log.Logbook
+
+.. autofunction:: check_is_Logbook

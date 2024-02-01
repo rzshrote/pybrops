@@ -1,0 +1,6 @@
+check\_is\_GeneticVarianceMatrix
+================================
+
+.. currentmodule:: pybrops.model.vmat.GeneticVarianceMatrix
+
+.. autofunction:: check_is_GeneticVarianceMatrix

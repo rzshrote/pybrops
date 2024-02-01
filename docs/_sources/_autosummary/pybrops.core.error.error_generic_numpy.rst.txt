@@ -1,0 +1,38 @@
+error\_generic\_numpy
+=====================
+
+.. automodule:: pybrops.core.error.error_generic_numpy
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      generic_check_ndarray_eq
+      generic_check_ndarray_is_square
+      generic_check_ndarray_ndim
+      generic_check_ndarray_ndim_gteq
+      generic_check_ndarray_shape
+      generic_check_ndarray_size
+      generic_check_ndarray_sum
+   
+   
+
+   
+   
+   
+
+
+

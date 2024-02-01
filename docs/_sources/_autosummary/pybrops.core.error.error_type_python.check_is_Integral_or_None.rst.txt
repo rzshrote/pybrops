@@ -1,0 +1,6 @@
+check\_is\_Integral\_or\_None
+=============================
+
+.. currentmodule:: pybrops.core.error.error_type_python
+
+.. autofunction:: check_is_Integral_or_None

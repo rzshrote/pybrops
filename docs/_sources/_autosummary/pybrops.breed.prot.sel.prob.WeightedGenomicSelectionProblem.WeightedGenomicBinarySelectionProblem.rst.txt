@@ -1,0 +1,78 @@
+WeightedGenomicBinarySelectionProblem
+=====================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.WeightedGenomicSelectionProblem
+
+.. autoclass:: WeightedGenomicBinarySelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~WeightedGenomicBinarySelectionProblem.bounds
+      ~WeightedGenomicBinarySelectionProblem.do
+      ~WeightedGenomicBinarySelectionProblem.evalfn
+      ~WeightedGenomicBinarySelectionProblem.evaluate
+      ~WeightedGenomicBinarySelectionProblem.from_gmat_algpmod
+      ~WeightedGenomicBinarySelectionProblem.from_numpy
+      ~WeightedGenomicBinarySelectionProblem.has_bounds
+      ~WeightedGenomicBinarySelectionProblem.has_constraints
+      ~WeightedGenomicBinarySelectionProblem.ideal_point
+      ~WeightedGenomicBinarySelectionProblem.latentfn
+      ~WeightedGenomicBinarySelectionProblem.nadir_point
+      ~WeightedGenomicBinarySelectionProblem.name
+      ~WeightedGenomicBinarySelectionProblem.pareto_front
+      ~WeightedGenomicBinarySelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~WeightedGenomicBinarySelectionProblem.callback
+      ~WeightedGenomicBinarySelectionProblem.data
+      ~WeightedGenomicBinarySelectionProblem.decn_space
+      ~WeightedGenomicBinarySelectionProblem.decn_space_lower
+      ~WeightedGenomicBinarySelectionProblem.decn_space_upper
+      ~WeightedGenomicBinarySelectionProblem.elementwise
+      ~WeightedGenomicBinarySelectionProblem.elementwise_func
+      ~WeightedGenomicBinarySelectionProblem.elementwise_runner
+      ~WeightedGenomicBinarySelectionProblem.eqcv_trans
+      ~WeightedGenomicBinarySelectionProblem.eqcv_trans_kwargs
+      ~WeightedGenomicBinarySelectionProblem.eqcv_wt
+      ~WeightedGenomicBinarySelectionProblem.exclude_from_serialization
+      ~WeightedGenomicBinarySelectionProblem.gwgebv
+      ~WeightedGenomicBinarySelectionProblem.ineqcv_trans
+      ~WeightedGenomicBinarySelectionProblem.ineqcv_trans_kwargs
+      ~WeightedGenomicBinarySelectionProblem.ineqcv_wt
+      ~WeightedGenomicBinarySelectionProblem.n_constr
+      ~WeightedGenomicBinarySelectionProblem.n_eq_constr
+      ~WeightedGenomicBinarySelectionProblem.n_ieq_constr
+      ~WeightedGenomicBinarySelectionProblem.n_obj
+      ~WeightedGenomicBinarySelectionProblem.n_var
+      ~WeightedGenomicBinarySelectionProblem.ndecn
+      ~WeightedGenomicBinarySelectionProblem.neqcv
+      ~WeightedGenomicBinarySelectionProblem.nineqcv
+      ~WeightedGenomicBinarySelectionProblem.nlatent
+      ~WeightedGenomicBinarySelectionProblem.nobj
+      ~WeightedGenomicBinarySelectionProblem.obj_trans
+      ~WeightedGenomicBinarySelectionProblem.obj_trans_kwargs
+      ~WeightedGenomicBinarySelectionProblem.obj_wt
+      ~WeightedGenomicBinarySelectionProblem.replace_nan_values_by
+      ~WeightedGenomicBinarySelectionProblem.strict
+      ~WeightedGenomicBinarySelectionProblem.vars
+      ~WeightedGenomicBinarySelectionProblem.vtype
+      ~WeightedGenomicBinarySelectionProblem.xl
+      ~WeightedGenomicBinarySelectionProblem.xu
+   
+   

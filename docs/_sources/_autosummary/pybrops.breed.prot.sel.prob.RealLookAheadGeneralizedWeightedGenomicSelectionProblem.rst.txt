@@ -1,0 +1,32 @@
+RealLookAheadGeneralizedWeightedGenomicSelectionProblem
+=======================================================
+
+.. automodule:: pybrops.breed.prot.sel.prob.RealLookAheadGeneralizedWeightedGenomicSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      RealLookAheadGeneralizedWeightedGenomicSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

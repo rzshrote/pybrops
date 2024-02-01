@@ -1,0 +1,102 @@
+DenseEstimatedBreedingValueMatrix
+=================================
+
+.. currentmodule:: pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix
+
+.. autoclass:: DenseEstimatedBreedingValueMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseEstimatedBreedingValueMatrix.adjoin
+      ~DenseEstimatedBreedingValueMatrix.adjoin_taxa
+      ~DenseEstimatedBreedingValueMatrix.adjoin_trait
+      ~DenseEstimatedBreedingValueMatrix.append
+      ~DenseEstimatedBreedingValueMatrix.append_taxa
+      ~DenseEstimatedBreedingValueMatrix.append_trait
+      ~DenseEstimatedBreedingValueMatrix.concat
+      ~DenseEstimatedBreedingValueMatrix.concat_taxa
+      ~DenseEstimatedBreedingValueMatrix.concat_trait
+      ~DenseEstimatedBreedingValueMatrix.copy
+      ~DenseEstimatedBreedingValueMatrix.deepcopy
+      ~DenseEstimatedBreedingValueMatrix.delete
+      ~DenseEstimatedBreedingValueMatrix.delete_taxa
+      ~DenseEstimatedBreedingValueMatrix.delete_trait
+      ~DenseEstimatedBreedingValueMatrix.from_csv
+      ~DenseEstimatedBreedingValueMatrix.from_hdf5
+      ~DenseEstimatedBreedingValueMatrix.from_numpy
+      ~DenseEstimatedBreedingValueMatrix.from_pandas
+      ~DenseEstimatedBreedingValueMatrix.group
+      ~DenseEstimatedBreedingValueMatrix.group_taxa
+      ~DenseEstimatedBreedingValueMatrix.incorp
+      ~DenseEstimatedBreedingValueMatrix.incorp_taxa
+      ~DenseEstimatedBreedingValueMatrix.incorp_trait
+      ~DenseEstimatedBreedingValueMatrix.insert
+      ~DenseEstimatedBreedingValueMatrix.insert_taxa
+      ~DenseEstimatedBreedingValueMatrix.insert_trait
+      ~DenseEstimatedBreedingValueMatrix.is_grouped
+      ~DenseEstimatedBreedingValueMatrix.is_grouped_taxa
+      ~DenseEstimatedBreedingValueMatrix.lexsort
+      ~DenseEstimatedBreedingValueMatrix.lexsort_taxa
+      ~DenseEstimatedBreedingValueMatrix.lexsort_trait
+      ~DenseEstimatedBreedingValueMatrix.remove
+      ~DenseEstimatedBreedingValueMatrix.remove_taxa
+      ~DenseEstimatedBreedingValueMatrix.remove_trait
+      ~DenseEstimatedBreedingValueMatrix.reorder
+      ~DenseEstimatedBreedingValueMatrix.reorder_taxa
+      ~DenseEstimatedBreedingValueMatrix.reorder_trait
+      ~DenseEstimatedBreedingValueMatrix.select
+      ~DenseEstimatedBreedingValueMatrix.select_taxa
+      ~DenseEstimatedBreedingValueMatrix.select_trait
+      ~DenseEstimatedBreedingValueMatrix.sort
+      ~DenseEstimatedBreedingValueMatrix.sort_taxa
+      ~DenseEstimatedBreedingValueMatrix.sort_trait
+      ~DenseEstimatedBreedingValueMatrix.targmax
+      ~DenseEstimatedBreedingValueMatrix.targmin
+      ~DenseEstimatedBreedingValueMatrix.tmax
+      ~DenseEstimatedBreedingValueMatrix.tmean
+      ~DenseEstimatedBreedingValueMatrix.tmin
+      ~DenseEstimatedBreedingValueMatrix.to_csv
+      ~DenseEstimatedBreedingValueMatrix.to_hdf5
+      ~DenseEstimatedBreedingValueMatrix.to_pandas
+      ~DenseEstimatedBreedingValueMatrix.trange
+      ~DenseEstimatedBreedingValueMatrix.tstd
+      ~DenseEstimatedBreedingValueMatrix.tvar
+      ~DenseEstimatedBreedingValueMatrix.ungroup
+      ~DenseEstimatedBreedingValueMatrix.ungroup_taxa
+      ~DenseEstimatedBreedingValueMatrix.unscale
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseEstimatedBreedingValueMatrix.location
+      ~DenseEstimatedBreedingValueMatrix.mat
+      ~DenseEstimatedBreedingValueMatrix.mat_ndim
+      ~DenseEstimatedBreedingValueMatrix.mat_shape
+      ~DenseEstimatedBreedingValueMatrix.ntaxa
+      ~DenseEstimatedBreedingValueMatrix.ntrait
+      ~DenseEstimatedBreedingValueMatrix.scale
+      ~DenseEstimatedBreedingValueMatrix.taxa
+      ~DenseEstimatedBreedingValueMatrix.taxa_axis
+      ~DenseEstimatedBreedingValueMatrix.taxa_grp
+      ~DenseEstimatedBreedingValueMatrix.taxa_grp_len
+      ~DenseEstimatedBreedingValueMatrix.taxa_grp_name
+      ~DenseEstimatedBreedingValueMatrix.taxa_grp_spix
+      ~DenseEstimatedBreedingValueMatrix.taxa_grp_stix
+      ~DenseEstimatedBreedingValueMatrix.trait
+      ~DenseEstimatedBreedingValueMatrix.trait_axis
+   
+   

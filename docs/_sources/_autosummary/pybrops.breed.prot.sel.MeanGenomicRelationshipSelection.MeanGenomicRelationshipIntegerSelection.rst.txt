@@ -1,0 +1,57 @@
+MeanGenomicRelationshipIntegerSelection
+=======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.MeanGenomicRelationshipSelection
+
+.. autoclass:: MeanGenomicRelationshipIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanGenomicRelationshipIntegerSelection.mosolve
+      ~MeanGenomicRelationshipIntegerSelection.problem
+      ~MeanGenomicRelationshipIntegerSelection.select
+      ~MeanGenomicRelationshipIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanGenomicRelationshipIntegerSelection.cmatfcty
+      ~MeanGenomicRelationshipIntegerSelection.eqcv_trans
+      ~MeanGenomicRelationshipIntegerSelection.eqcv_trans_kwargs
+      ~MeanGenomicRelationshipIntegerSelection.eqcv_wt
+      ~MeanGenomicRelationshipIntegerSelection.ineqcv_trans
+      ~MeanGenomicRelationshipIntegerSelection.ineqcv_trans_kwargs
+      ~MeanGenomicRelationshipIntegerSelection.ineqcv_wt
+      ~MeanGenomicRelationshipIntegerSelection.moalgo
+      ~MeanGenomicRelationshipIntegerSelection.ncross
+      ~MeanGenomicRelationshipIntegerSelection.ndset_trans
+      ~MeanGenomicRelationshipIntegerSelection.ndset_trans_kwargs
+      ~MeanGenomicRelationshipIntegerSelection.ndset_wt
+      ~MeanGenomicRelationshipIntegerSelection.neqcv
+      ~MeanGenomicRelationshipIntegerSelection.nineqcv
+      ~MeanGenomicRelationshipIntegerSelection.nmating
+      ~MeanGenomicRelationshipIntegerSelection.nobj
+      ~MeanGenomicRelationshipIntegerSelection.nparent
+      ~MeanGenomicRelationshipIntegerSelection.nprogeny
+      ~MeanGenomicRelationshipIntegerSelection.nselindiv
+      ~MeanGenomicRelationshipIntegerSelection.obj_trans
+      ~MeanGenomicRelationshipIntegerSelection.obj_trans_kwargs
+      ~MeanGenomicRelationshipIntegerSelection.obj_wt
+      ~MeanGenomicRelationshipIntegerSelection.rng
+      ~MeanGenomicRelationshipIntegerSelection.soalgo
+   
+   

@@ -1,0 +1,6 @@
+srange
+======
+
+.. currentmodule:: pybrops.core.util.subroutines
+
+.. autofunction:: srange

@@ -1,0 +1,6 @@
+check\_dict\_keys\_all\_type
+============================
+
+.. currentmodule:: pybrops.core.error.error_value_python
+
+.. autofunction:: check_dict_keys_all_type

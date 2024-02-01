@@ -1,0 +1,6 @@
+check\_is\_RealOptimizationAlgorithm
+====================================
+
+.. currentmodule:: pybrops.opt.algo.RealOptimizationAlgorithm
+
+.. autofunction:: check_is_RealOptimizationAlgorithm

@@ -1,0 +1,6 @@
+target\_stabilizing
+===================
+
+.. currentmodule:: pybrops.breed.prot.sel.targetfn
+
+.. autofunction:: target_stabilizing

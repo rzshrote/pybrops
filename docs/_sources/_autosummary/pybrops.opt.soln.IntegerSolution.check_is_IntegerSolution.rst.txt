@@ -1,0 +1,6 @@
+check\_is\_IntegerSolution
+==========================
+
+.. currentmodule:: pybrops.opt.soln.IntegerSolution
+
+.. autofunction:: check_is_IntegerSolution

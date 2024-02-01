@@ -1,0 +1,75 @@
+IntegerSelectionProblem
+=======================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.IntegerSelectionProblem
+
+.. autoclass:: IntegerSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~IntegerSelectionProblem.bounds
+      ~IntegerSelectionProblem.do
+      ~IntegerSelectionProblem.evalfn
+      ~IntegerSelectionProblem.evaluate
+      ~IntegerSelectionProblem.has_bounds
+      ~IntegerSelectionProblem.has_constraints
+      ~IntegerSelectionProblem.ideal_point
+      ~IntegerSelectionProblem.latentfn
+      ~IntegerSelectionProblem.nadir_point
+      ~IntegerSelectionProblem.name
+      ~IntegerSelectionProblem.pareto_front
+      ~IntegerSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~IntegerSelectionProblem.callback
+      ~IntegerSelectionProblem.data
+      ~IntegerSelectionProblem.decn_space
+      ~IntegerSelectionProblem.decn_space_lower
+      ~IntegerSelectionProblem.decn_space_upper
+      ~IntegerSelectionProblem.elementwise
+      ~IntegerSelectionProblem.elementwise_func
+      ~IntegerSelectionProblem.elementwise_runner
+      ~IntegerSelectionProblem.eqcv_trans
+      ~IntegerSelectionProblem.eqcv_trans_kwargs
+      ~IntegerSelectionProblem.eqcv_wt
+      ~IntegerSelectionProblem.exclude_from_serialization
+      ~IntegerSelectionProblem.ineqcv_trans
+      ~IntegerSelectionProblem.ineqcv_trans_kwargs
+      ~IntegerSelectionProblem.ineqcv_wt
+      ~IntegerSelectionProblem.n_constr
+      ~IntegerSelectionProblem.n_eq_constr
+      ~IntegerSelectionProblem.n_ieq_constr
+      ~IntegerSelectionProblem.n_obj
+      ~IntegerSelectionProblem.n_var
+      ~IntegerSelectionProblem.ndecn
+      ~IntegerSelectionProblem.neqcv
+      ~IntegerSelectionProblem.nineqcv
+      ~IntegerSelectionProblem.nlatent
+      ~IntegerSelectionProblem.nobj
+      ~IntegerSelectionProblem.obj_trans
+      ~IntegerSelectionProblem.obj_trans_kwargs
+      ~IntegerSelectionProblem.obj_wt
+      ~IntegerSelectionProblem.replace_nan_values_by
+      ~IntegerSelectionProblem.strict
+      ~IntegerSelectionProblem.vars
+      ~IntegerSelectionProblem.vtype
+      ~IntegerSelectionProblem.xl
+      ~IntegerSelectionProblem.xu
+   
+   

@@ -1,0 +1,6 @@
+check\_RealProblem\_is\_single\_objective
+=========================================
+
+.. currentmodule:: pybrops.opt.prob.RealProblem
+
+.. autofunction:: check_RealProblem_is_single_objective

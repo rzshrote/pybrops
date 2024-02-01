@@ -1,0 +1,6 @@
+check\_SubsetProblem\_is\_single\_objective
+===========================================
+
+.. currentmodule:: pybrops.opt.prob.SubsetProblem
+
+.. autofunction:: check_SubsetProblem_is_single_objective

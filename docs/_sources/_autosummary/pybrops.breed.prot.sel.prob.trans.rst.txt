@@ -1,0 +1,37 @@
+trans
+=====
+
+.. automodule:: pybrops.breed.prot.sel.prob.trans
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      trans_decnvec_sum_eq
+      trans_dot
+      trans_empty
+      trans_identity
+      trans_ndpt_to_vec_dist
+      trans_sum
+   
+   
+
+   
+   
+   
+
+
+

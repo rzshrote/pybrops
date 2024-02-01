@@ -1,0 +1,57 @@
+L2NormGenomicSubsetSelection
+============================
+
+.. currentmodule:: pybrops.breed.prot.sel.L2NormGenomicSelection
+
+.. autoclass:: L2NormGenomicSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~L2NormGenomicSubsetSelection.mosolve
+      ~L2NormGenomicSubsetSelection.problem
+      ~L2NormGenomicSubsetSelection.select
+      ~L2NormGenomicSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~L2NormGenomicSubsetSelection.cmatfcty
+      ~L2NormGenomicSubsetSelection.eqcv_trans
+      ~L2NormGenomicSubsetSelection.eqcv_trans_kwargs
+      ~L2NormGenomicSubsetSelection.eqcv_wt
+      ~L2NormGenomicSubsetSelection.ineqcv_trans
+      ~L2NormGenomicSubsetSelection.ineqcv_trans_kwargs
+      ~L2NormGenomicSubsetSelection.ineqcv_wt
+      ~L2NormGenomicSubsetSelection.moalgo
+      ~L2NormGenomicSubsetSelection.ncross
+      ~L2NormGenomicSubsetSelection.ndset_trans
+      ~L2NormGenomicSubsetSelection.ndset_trans_kwargs
+      ~L2NormGenomicSubsetSelection.ndset_wt
+      ~L2NormGenomicSubsetSelection.neqcv
+      ~L2NormGenomicSubsetSelection.nineqcv
+      ~L2NormGenomicSubsetSelection.nmating
+      ~L2NormGenomicSubsetSelection.nobj
+      ~L2NormGenomicSubsetSelection.nparent
+      ~L2NormGenomicSubsetSelection.nprogeny
+      ~L2NormGenomicSubsetSelection.nselindiv
+      ~L2NormGenomicSubsetSelection.obj_trans
+      ~L2NormGenomicSubsetSelection.obj_trans_kwargs
+      ~L2NormGenomicSubsetSelection.obj_wt
+      ~L2NormGenomicSubsetSelection.rng
+      ~L2NormGenomicSubsetSelection.soalgo
+   
+   

@@ -1,0 +1,86 @@
+TaxaTraitMatrix
+===============
+
+.. currentmodule:: pybrops.core.mat.TaxaTraitMatrix
+
+.. autoclass:: TaxaTraitMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~TaxaTraitMatrix.adjoin
+      ~TaxaTraitMatrix.adjoin_taxa
+      ~TaxaTraitMatrix.adjoin_trait
+      ~TaxaTraitMatrix.append
+      ~TaxaTraitMatrix.append_taxa
+      ~TaxaTraitMatrix.append_trait
+      ~TaxaTraitMatrix.concat
+      ~TaxaTraitMatrix.concat_taxa
+      ~TaxaTraitMatrix.concat_trait
+      ~TaxaTraitMatrix.copy
+      ~TaxaTraitMatrix.deepcopy
+      ~TaxaTraitMatrix.delete
+      ~TaxaTraitMatrix.delete_taxa
+      ~TaxaTraitMatrix.delete_trait
+      ~TaxaTraitMatrix.from_hdf5
+      ~TaxaTraitMatrix.group
+      ~TaxaTraitMatrix.group_taxa
+      ~TaxaTraitMatrix.incorp
+      ~TaxaTraitMatrix.incorp_taxa
+      ~TaxaTraitMatrix.incorp_trait
+      ~TaxaTraitMatrix.insert
+      ~TaxaTraitMatrix.insert_taxa
+      ~TaxaTraitMatrix.insert_trait
+      ~TaxaTraitMatrix.is_grouped
+      ~TaxaTraitMatrix.is_grouped_taxa
+      ~TaxaTraitMatrix.lexsort
+      ~TaxaTraitMatrix.lexsort_taxa
+      ~TaxaTraitMatrix.lexsort_trait
+      ~TaxaTraitMatrix.remove
+      ~TaxaTraitMatrix.remove_taxa
+      ~TaxaTraitMatrix.remove_trait
+      ~TaxaTraitMatrix.reorder
+      ~TaxaTraitMatrix.reorder_taxa
+      ~TaxaTraitMatrix.reorder_trait
+      ~TaxaTraitMatrix.select
+      ~TaxaTraitMatrix.select_taxa
+      ~TaxaTraitMatrix.select_trait
+      ~TaxaTraitMatrix.sort
+      ~TaxaTraitMatrix.sort_taxa
+      ~TaxaTraitMatrix.sort_trait
+      ~TaxaTraitMatrix.to_hdf5
+      ~TaxaTraitMatrix.ungroup
+      ~TaxaTraitMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~TaxaTraitMatrix.mat
+      ~TaxaTraitMatrix.mat_ndim
+      ~TaxaTraitMatrix.mat_shape
+      ~TaxaTraitMatrix.ntaxa
+      ~TaxaTraitMatrix.ntrait
+      ~TaxaTraitMatrix.taxa
+      ~TaxaTraitMatrix.taxa_axis
+      ~TaxaTraitMatrix.taxa_grp
+      ~TaxaTraitMatrix.taxa_grp_len
+      ~TaxaTraitMatrix.taxa_grp_name
+      ~TaxaTraitMatrix.taxa_grp_spix
+      ~TaxaTraitMatrix.taxa_grp_stix
+      ~TaxaTraitMatrix.trait
+      ~TaxaTraitMatrix.trait_axis
+   
+   

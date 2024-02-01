@@ -1,0 +1,50 @@
+PopulationAlleleFrequencyDistanceSelection
+==========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.UnconstrainedPopulationAlleleFrequencyDistanceSelection
+
+.. autoclass:: PopulationAlleleFrequencyDistanceSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PopulationAlleleFrequencyDistanceSelection.objfn
+      ~PopulationAlleleFrequencyDistanceSelection.objfn_static
+      ~PopulationAlleleFrequencyDistanceSelection.objfn_vec
+      ~PopulationAlleleFrequencyDistanceSelection.objfn_vec_static
+      ~PopulationAlleleFrequencyDistanceSelection.pareto
+      ~PopulationAlleleFrequencyDistanceSelection.select
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PopulationAlleleFrequencyDistanceSelection.method
+      ~PopulationAlleleFrequencyDistanceSelection.moalgo
+      ~PopulationAlleleFrequencyDistanceSelection.ncross
+      ~PopulationAlleleFrequencyDistanceSelection.ndset_trans
+      ~PopulationAlleleFrequencyDistanceSelection.ndset_trans_kwargs
+      ~PopulationAlleleFrequencyDistanceSelection.ndset_wt
+      ~PopulationAlleleFrequencyDistanceSelection.nparent
+      ~PopulationAlleleFrequencyDistanceSelection.nprogeny
+      ~PopulationAlleleFrequencyDistanceSelection.objfn_trans
+      ~PopulationAlleleFrequencyDistanceSelection.objfn_trans_kwargs
+      ~PopulationAlleleFrequencyDistanceSelection.objfn_wt
+      ~PopulationAlleleFrequencyDistanceSelection.rng
+      ~PopulationAlleleFrequencyDistanceSelection.soalgo
+      ~PopulationAlleleFrequencyDistanceSelection.target
+      ~PopulationAlleleFrequencyDistanceSelection.weight
+   
+   

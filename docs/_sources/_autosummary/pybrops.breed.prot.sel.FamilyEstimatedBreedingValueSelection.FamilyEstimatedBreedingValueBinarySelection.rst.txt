@@ -1,0 +1,57 @@
+FamilyEstimatedBreedingValueBinarySelection
+===========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.FamilyEstimatedBreedingValueSelection
+
+.. autoclass:: FamilyEstimatedBreedingValueBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~FamilyEstimatedBreedingValueBinarySelection.mosolve
+      ~FamilyEstimatedBreedingValueBinarySelection.problem
+      ~FamilyEstimatedBreedingValueBinarySelection.select
+      ~FamilyEstimatedBreedingValueBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FamilyEstimatedBreedingValueBinarySelection.eqcv_trans
+      ~FamilyEstimatedBreedingValueBinarySelection.eqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueBinarySelection.eqcv_wt
+      ~FamilyEstimatedBreedingValueBinarySelection.ineqcv_trans
+      ~FamilyEstimatedBreedingValueBinarySelection.ineqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueBinarySelection.ineqcv_wt
+      ~FamilyEstimatedBreedingValueBinarySelection.moalgo
+      ~FamilyEstimatedBreedingValueBinarySelection.ncross
+      ~FamilyEstimatedBreedingValueBinarySelection.ndset_trans
+      ~FamilyEstimatedBreedingValueBinarySelection.ndset_trans_kwargs
+      ~FamilyEstimatedBreedingValueBinarySelection.ndset_wt
+      ~FamilyEstimatedBreedingValueBinarySelection.neqcv
+      ~FamilyEstimatedBreedingValueBinarySelection.nineqcv
+      ~FamilyEstimatedBreedingValueBinarySelection.nmating
+      ~FamilyEstimatedBreedingValueBinarySelection.nobj
+      ~FamilyEstimatedBreedingValueBinarySelection.nparent
+      ~FamilyEstimatedBreedingValueBinarySelection.nprogeny
+      ~FamilyEstimatedBreedingValueBinarySelection.nselindiv
+      ~FamilyEstimatedBreedingValueBinarySelection.ntrait
+      ~FamilyEstimatedBreedingValueBinarySelection.obj_trans
+      ~FamilyEstimatedBreedingValueBinarySelection.obj_trans_kwargs
+      ~FamilyEstimatedBreedingValueBinarySelection.obj_wt
+      ~FamilyEstimatedBreedingValueBinarySelection.rng
+      ~FamilyEstimatedBreedingValueBinarySelection.soalgo
+   
+   

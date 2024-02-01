@@ -1,0 +1,32 @@
+MultiObjectiveGenomicSelectionMixin
+===================================
+
+.. currentmodule:: pybrops.breed.prot.sel.MultiObjectiveGenomicSelection
+
+.. autoclass:: MultiObjectiveGenomicSelectionMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MultiObjectiveGenomicSelectionMixin.ntrait
+      ~MultiObjectiveGenomicSelectionMixin.target
+      ~MultiObjectiveGenomicSelectionMixin.weight
+   
+   

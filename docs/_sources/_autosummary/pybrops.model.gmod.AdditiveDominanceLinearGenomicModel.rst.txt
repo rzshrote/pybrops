@@ -1,0 +1,41 @@
+AdditiveDominanceLinearGenomicModel
+===================================
+
+.. automodule:: pybrops.model.gmod.AdditiveDominanceLinearGenomicModel
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      AdditiveDominanceLinearGenomicModel
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_AdditiveDominanceLinearGenomicModel
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,25 @@
+InitializationOperator
+======================
+
+.. currentmodule:: pybrops.breed.op.init.InitializationOperator
+
+.. autoclass:: InitializationOperator
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~InitializationOperator.initialize
+   
+   
+
+   
+   
+   

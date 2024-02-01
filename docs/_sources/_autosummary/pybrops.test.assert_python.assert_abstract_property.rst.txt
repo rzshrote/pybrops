@@ -1,0 +1,6 @@
+assert\_abstract\_property
+==========================
+
+.. currentmodule:: pybrops.test.assert_python
+
+.. autofunction:: assert_abstract_property

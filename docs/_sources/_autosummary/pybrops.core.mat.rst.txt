@@ -1,0 +1,63 @@
+mat
+===
+
+.. automodule:: pybrops.core.mat
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.core.mat.DenseMatrix
+   pybrops.core.mat.DenseMutableMatrix
+   pybrops.core.mat.DensePhasedMatrix
+   pybrops.core.mat.DensePhasedTaxaVariantMatrix
+   pybrops.core.mat.DenseSquareMatrix
+   pybrops.core.mat.DenseSquareTaxaMatrix
+   pybrops.core.mat.DenseSquareTaxaSquareTraitMatrix
+   pybrops.core.mat.DenseSquareTaxaTraitMatrix
+   pybrops.core.mat.DenseSquareTraitMatrix
+   pybrops.core.mat.DenseTaxaMatrix
+   pybrops.core.mat.DenseTaxaTraitMatrix
+   pybrops.core.mat.DenseTaxaVariantMatrix
+   pybrops.core.mat.DenseTraitMatrix
+   pybrops.core.mat.DenseVariantMatrix
+   pybrops.core.mat.GroupableMatrix
+   pybrops.core.mat.Matrix
+   pybrops.core.mat.MutableMatrix
+   pybrops.core.mat.PhasedMatrix
+   pybrops.core.mat.PhasedTaxaVariantMatrix
+   pybrops.core.mat.PrunableMatrix
+   pybrops.core.mat.SortableMatrix
+   pybrops.core.mat.SquareMatrix
+   pybrops.core.mat.SquareTaxaMatrix
+   pybrops.core.mat.SquareTaxaSquareTraitMatrix
+   pybrops.core.mat.SquareTaxaTraitMatrix
+   pybrops.core.mat.SquareTraitMatrix
+   pybrops.core.mat.TaxaMatrix
+   pybrops.core.mat.TaxaTraitMatrix
+   pybrops.core.mat.TaxaVariantMatrix
+   pybrops.core.mat.TraitMatrix
+   pybrops.core.mat.VariantMatrix
+   pybrops.core.mat.util
+

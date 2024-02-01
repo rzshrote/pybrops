@@ -1,0 +1,32 @@
+mate
+====
+
+.. automodule:: pybrops.breed.op.mate
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.op.mate.MatingOperator
+

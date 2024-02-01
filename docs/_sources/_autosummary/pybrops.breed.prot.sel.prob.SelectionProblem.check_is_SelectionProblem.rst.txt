@@ -1,0 +1,6 @@
+check\_is\_SelectionProblem
+===========================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.SelectionProblem
+
+.. autofunction:: check_is_SelectionProblem

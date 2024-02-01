@@ -1,0 +1,61 @@
+prob
+====
+
+.. automodule:: pybrops.breed.prot.sel.prob
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.prot.sel.prob.BinaryMateSelectionProblem
+   pybrops.breed.prot.sel.prob.BinarySelectionProblem
+   pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem
+   pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem
+   pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem
+   pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem
+   pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem
+   pybrops.breed.prot.sel.prob.GenotypeBuilderSelectionProblem
+   pybrops.breed.prot.sel.prob.IntegerMateSelectionProblem
+   pybrops.breed.prot.sel.prob.IntegerSelectionProblem
+   pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem
+   pybrops.breed.prot.sel.prob.L2NormGenomicSelectionProblem
+   pybrops.breed.prot.sel.prob.MateSelectionProblem
+   pybrops.breed.prot.sel.prob.MeanExpectedHeterozygositySelectionProblem
+   pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem
+   pybrops.breed.prot.sel.prob.MultiObjectiveGenomicMatingProblem
+   pybrops.breed.prot.sel.prob.MultiObjectiveGenomicSelectionProblem
+   pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem
+   pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem
+   pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem
+   pybrops.breed.prot.sel.prob.RandomSelectionProblem
+   pybrops.breed.prot.sel.prob.RealLookAheadGeneralizedWeightedGenomicSelectionProblem
+   pybrops.breed.prot.sel.prob.RealMateSelectionProblem
+   pybrops.breed.prot.sel.prob.RealSelectionProblem
+   pybrops.breed.prot.sel.prob.SelectionProblem
+   pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem
+   pybrops.breed.prot.sel.prob.SubsetSelectionProblem
+   pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem
+   pybrops.breed.prot.sel.prob.WeightedGenomicSelectionProblem
+   pybrops.breed.prot.sel.prob.trans
+

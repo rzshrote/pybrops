@@ -1,0 +1,30 @@
+KosambiMapFunction
+==================
+
+.. currentmodule:: pybrops.popgen.gmap.KosambiMapFunction
+
+.. autoclass:: KosambiMapFunction
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~KosambiMapFunction.invmapfn
+      ~KosambiMapFunction.mapfn
+      ~KosambiMapFunction.rprob1g
+      ~KosambiMapFunction.rprob1p
+      ~KosambiMapFunction.rprob2g
+      ~KosambiMapFunction.rprob2p
+   
+   
+
+   
+   
+   

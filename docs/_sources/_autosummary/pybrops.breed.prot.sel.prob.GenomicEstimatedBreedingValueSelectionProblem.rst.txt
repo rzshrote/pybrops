@@ -1,0 +1,36 @@
+GenomicEstimatedBreedingValueSelectionProblem
+=============================================
+
+.. automodule:: pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      GenomicEstimatedBreedingValueBinarySelectionProblem
+      GenomicEstimatedBreedingValueIntegerSelectionProblem
+      GenomicEstimatedBreedingValueRealSelectionProblem
+      GenomicEstimatedBreedingValueSelectionProblemMixin
+      GenomicEstimatedBreedingValueSubsetSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

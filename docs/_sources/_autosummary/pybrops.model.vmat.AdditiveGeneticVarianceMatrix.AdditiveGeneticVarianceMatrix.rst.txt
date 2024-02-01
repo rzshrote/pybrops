@@ -1,0 +1,101 @@
+AdditiveGeneticVarianceMatrix
+=============================
+
+.. currentmodule:: pybrops.model.vmat.AdditiveGeneticVarianceMatrix
+
+.. autoclass:: AdditiveGeneticVarianceMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~AdditiveGeneticVarianceMatrix.adjoin
+      ~AdditiveGeneticVarianceMatrix.adjoin_taxa
+      ~AdditiveGeneticVarianceMatrix.adjoin_trait
+      ~AdditiveGeneticVarianceMatrix.append
+      ~AdditiveGeneticVarianceMatrix.append_taxa
+      ~AdditiveGeneticVarianceMatrix.append_trait
+      ~AdditiveGeneticVarianceMatrix.concat
+      ~AdditiveGeneticVarianceMatrix.concat_taxa
+      ~AdditiveGeneticVarianceMatrix.concat_trait
+      ~AdditiveGeneticVarianceMatrix.copy
+      ~AdditiveGeneticVarianceMatrix.deepcopy
+      ~AdditiveGeneticVarianceMatrix.delete
+      ~AdditiveGeneticVarianceMatrix.delete_taxa
+      ~AdditiveGeneticVarianceMatrix.delete_trait
+      ~AdditiveGeneticVarianceMatrix.from_algmod
+      ~AdditiveGeneticVarianceMatrix.from_csv
+      ~AdditiveGeneticVarianceMatrix.from_gmod
+      ~AdditiveGeneticVarianceMatrix.from_hdf5
+      ~AdditiveGeneticVarianceMatrix.from_pandas
+      ~AdditiveGeneticVarianceMatrix.group
+      ~AdditiveGeneticVarianceMatrix.group_taxa
+      ~AdditiveGeneticVarianceMatrix.incorp
+      ~AdditiveGeneticVarianceMatrix.incorp_taxa
+      ~AdditiveGeneticVarianceMatrix.incorp_trait
+      ~AdditiveGeneticVarianceMatrix.insert
+      ~AdditiveGeneticVarianceMatrix.insert_taxa
+      ~AdditiveGeneticVarianceMatrix.insert_trait
+      ~AdditiveGeneticVarianceMatrix.is_grouped
+      ~AdditiveGeneticVarianceMatrix.is_grouped_taxa
+      ~AdditiveGeneticVarianceMatrix.is_square
+      ~AdditiveGeneticVarianceMatrix.is_square_taxa
+      ~AdditiveGeneticVarianceMatrix.lexsort
+      ~AdditiveGeneticVarianceMatrix.lexsort_taxa
+      ~AdditiveGeneticVarianceMatrix.lexsort_trait
+      ~AdditiveGeneticVarianceMatrix.remove
+      ~AdditiveGeneticVarianceMatrix.remove_taxa
+      ~AdditiveGeneticVarianceMatrix.remove_trait
+      ~AdditiveGeneticVarianceMatrix.reorder
+      ~AdditiveGeneticVarianceMatrix.reorder_taxa
+      ~AdditiveGeneticVarianceMatrix.reorder_trait
+      ~AdditiveGeneticVarianceMatrix.select
+      ~AdditiveGeneticVarianceMatrix.select_taxa
+      ~AdditiveGeneticVarianceMatrix.select_trait
+      ~AdditiveGeneticVarianceMatrix.sort
+      ~AdditiveGeneticVarianceMatrix.sort_taxa
+      ~AdditiveGeneticVarianceMatrix.sort_trait
+      ~AdditiveGeneticVarianceMatrix.to_csv
+      ~AdditiveGeneticVarianceMatrix.to_hdf5
+      ~AdditiveGeneticVarianceMatrix.to_pandas
+      ~AdditiveGeneticVarianceMatrix.ungroup
+      ~AdditiveGeneticVarianceMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~AdditiveGeneticVarianceMatrix.epgc
+      ~AdditiveGeneticVarianceMatrix.mat
+      ~AdditiveGeneticVarianceMatrix.mat_ndim
+      ~AdditiveGeneticVarianceMatrix.mat_shape
+      ~AdditiveGeneticVarianceMatrix.nsquare
+      ~AdditiveGeneticVarianceMatrix.nsquare_taxa
+      ~AdditiveGeneticVarianceMatrix.ntaxa
+      ~AdditiveGeneticVarianceMatrix.ntrait
+      ~AdditiveGeneticVarianceMatrix.square_axes
+      ~AdditiveGeneticVarianceMatrix.square_axes_len
+      ~AdditiveGeneticVarianceMatrix.square_taxa_axes
+      ~AdditiveGeneticVarianceMatrix.square_taxa_axes_len
+      ~AdditiveGeneticVarianceMatrix.taxa
+      ~AdditiveGeneticVarianceMatrix.taxa_axis
+      ~AdditiveGeneticVarianceMatrix.taxa_grp
+      ~AdditiveGeneticVarianceMatrix.taxa_grp_len
+      ~AdditiveGeneticVarianceMatrix.taxa_grp_name
+      ~AdditiveGeneticVarianceMatrix.taxa_grp_spix
+      ~AdditiveGeneticVarianceMatrix.taxa_grp_stix
+      ~AdditiveGeneticVarianceMatrix.trait
+      ~AdditiveGeneticVarianceMatrix.trait_axis
+   
+   

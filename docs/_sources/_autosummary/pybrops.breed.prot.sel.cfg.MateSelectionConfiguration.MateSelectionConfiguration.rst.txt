@@ -1,0 +1,36 @@
+MateSelectionConfiguration
+==========================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.MateSelectionConfiguration
+
+.. autoclass:: MateSelectionConfiguration
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MateSelectionConfiguration.ncross
+      ~MateSelectionConfiguration.nmating
+      ~MateSelectionConfiguration.nparent
+      ~MateSelectionConfiguration.nprogeny
+      ~MateSelectionConfiguration.pgmat
+      ~MateSelectionConfiguration.xconfig
+      ~MateSelectionConfiguration.xconfig_xmap
+   
+   

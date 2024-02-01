@@ -1,0 +1,33 @@
+RealGeneticAlgorithm
+====================
+
+.. currentmodule:: pybrops.opt.algo.RealGeneticAlgorithm
+
+.. autoclass:: RealGeneticAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RealGeneticAlgorithm.minimize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RealGeneticAlgorithm.ngen
+      ~RealGeneticAlgorithm.pop_size
+      ~RealGeneticAlgorithm.rng
+   
+   

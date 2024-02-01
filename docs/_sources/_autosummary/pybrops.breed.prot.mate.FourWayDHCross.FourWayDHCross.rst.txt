@@ -1,0 +1,34 @@
+FourWayDHCross
+==============
+
+.. currentmodule:: pybrops.breed.prot.mate.FourWayDHCross
+
+.. autoclass:: FourWayDHCross
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~FourWayDHCross.mate
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FourWayDHCross.family_counter
+      ~FourWayDHCross.nparent
+      ~FourWayDHCross.progeny_counter
+      ~FourWayDHCross.rng
+   
+   

@@ -1,0 +1,6 @@
+check\_is\_BreedingProgram
+==========================
+
+.. currentmodule:: pybrops.breed.arch.BreedingProgram
+
+.. autofunction:: check_is_BreedingProgram

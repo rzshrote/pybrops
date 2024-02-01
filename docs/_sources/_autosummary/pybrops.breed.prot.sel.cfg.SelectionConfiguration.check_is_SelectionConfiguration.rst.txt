@@ -1,0 +1,6 @@
+check\_is\_SelectionConfiguration
+=================================
+
+.. currentmodule:: pybrops.breed.prot.sel.cfg.SelectionConfiguration
+
+.. autofunction:: check_is_SelectionConfiguration

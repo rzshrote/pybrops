@@ -1,0 +1,33 @@
+prng
+====
+
+.. automodule:: pybrops.core.random.prng
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      seed
+      spawn
+   
+   
+
+   
+   
+   
+
+
+

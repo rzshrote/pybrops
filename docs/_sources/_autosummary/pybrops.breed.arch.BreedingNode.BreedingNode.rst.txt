@@ -1,0 +1,36 @@
+BreedingNode
+============
+
+.. currentmodule:: pybrops.breed.arch.BreedingNode
+
+.. autoclass:: BreedingNode
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BreedingNode.bval
+      ~BreedingNode.geno
+      ~BreedingNode.genome
+      ~BreedingNode.gmod
+      ~BreedingNode.pheno
+      ~BreedingNode.t_cur
+      ~BreedingNode.t_max
+   
+   

@@ -1,0 +1,6 @@
+check\_is\_IntegerMateSelectionSolution
+=======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.IntegerMateSelectionSolution
+
+.. autofunction:: check_is_IntegerMateSelectionSolution

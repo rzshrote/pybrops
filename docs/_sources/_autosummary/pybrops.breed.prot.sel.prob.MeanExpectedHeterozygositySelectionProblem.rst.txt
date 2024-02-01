@@ -1,0 +1,36 @@
+MeanExpectedHeterozygositySelectionProblem
+==========================================
+
+.. automodule:: pybrops.breed.prot.sel.prob.MeanExpectedHeterozygositySelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      MeanExpectedHeterozygosityBinarySelectionProblem
+      MeanExpectedHeterozygosityIntegerSelectionProblem
+      MeanExpectedHeterozygosityRealSelectionProblem
+      MeanExpectedHeterozygositySelectionProblemMixin
+      MeanExpectedHeterozygositySubsetSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

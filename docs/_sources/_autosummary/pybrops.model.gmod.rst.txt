@@ -1,0 +1,40 @@
+gmod
+====
+
+.. automodule:: pybrops.model.gmod
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.model.gmod.AdditiveDominanceEpistaticLinearGenomicModel
+   pybrops.model.gmod.AdditiveDominanceLinearGenomicModel
+   pybrops.model.gmod.AdditiveLinearGenomicModel
+   pybrops.model.gmod.CoancestryLinearGenomicModel
+   pybrops.model.gmod.DenseAdditiveLinearGenomicModel
+   pybrops.model.gmod.DenseLinearGenomicModel
+   pybrops.model.gmod.GenomicModel
+   pybrops.model.gmod.LinearGenomicModel
+   pybrops.model.gmod.NonlinearGenomicModel
+

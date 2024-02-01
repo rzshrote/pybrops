@@ -1,0 +1,58 @@
+OptimalPopulationValueSubsetSelection
+=====================================
+
+.. currentmodule:: pybrops.breed.prot.sel.OptimalPopulationValueSelection
+
+.. autoclass:: OptimalPopulationValueSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalPopulationValueSubsetSelection.mosolve
+      ~OptimalPopulationValueSubsetSelection.problem
+      ~OptimalPopulationValueSubsetSelection.select
+      ~OptimalPopulationValueSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalPopulationValueSubsetSelection.eqcv_trans
+      ~OptimalPopulationValueSubsetSelection.eqcv_trans_kwargs
+      ~OptimalPopulationValueSubsetSelection.eqcv_wt
+      ~OptimalPopulationValueSubsetSelection.ineqcv_trans
+      ~OptimalPopulationValueSubsetSelection.ineqcv_trans_kwargs
+      ~OptimalPopulationValueSubsetSelection.ineqcv_wt
+      ~OptimalPopulationValueSubsetSelection.moalgo
+      ~OptimalPopulationValueSubsetSelection.ncross
+      ~OptimalPopulationValueSubsetSelection.ndset_trans
+      ~OptimalPopulationValueSubsetSelection.ndset_trans_kwargs
+      ~OptimalPopulationValueSubsetSelection.ndset_wt
+      ~OptimalPopulationValueSubsetSelection.neqcv
+      ~OptimalPopulationValueSubsetSelection.nhaploblk
+      ~OptimalPopulationValueSubsetSelection.nineqcv
+      ~OptimalPopulationValueSubsetSelection.nmating
+      ~OptimalPopulationValueSubsetSelection.nobj
+      ~OptimalPopulationValueSubsetSelection.nparent
+      ~OptimalPopulationValueSubsetSelection.nprogeny
+      ~OptimalPopulationValueSubsetSelection.nselindiv
+      ~OptimalPopulationValueSubsetSelection.ntrait
+      ~OptimalPopulationValueSubsetSelection.obj_trans
+      ~OptimalPopulationValueSubsetSelection.obj_trans_kwargs
+      ~OptimalPopulationValueSubsetSelection.obj_wt
+      ~OptimalPopulationValueSubsetSelection.rng
+      ~OptimalPopulationValueSubsetSelection.soalgo
+   
+   

@@ -1,0 +1,57 @@
+MeanGenomicRelationshipBinarySelection
+======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.MeanGenomicRelationshipSelection
+
+.. autoclass:: MeanGenomicRelationshipBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MeanGenomicRelationshipBinarySelection.mosolve
+      ~MeanGenomicRelationshipBinarySelection.problem
+      ~MeanGenomicRelationshipBinarySelection.select
+      ~MeanGenomicRelationshipBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MeanGenomicRelationshipBinarySelection.cmatfcty
+      ~MeanGenomicRelationshipBinarySelection.eqcv_trans
+      ~MeanGenomicRelationshipBinarySelection.eqcv_trans_kwargs
+      ~MeanGenomicRelationshipBinarySelection.eqcv_wt
+      ~MeanGenomicRelationshipBinarySelection.ineqcv_trans
+      ~MeanGenomicRelationshipBinarySelection.ineqcv_trans_kwargs
+      ~MeanGenomicRelationshipBinarySelection.ineqcv_wt
+      ~MeanGenomicRelationshipBinarySelection.moalgo
+      ~MeanGenomicRelationshipBinarySelection.ncross
+      ~MeanGenomicRelationshipBinarySelection.ndset_trans
+      ~MeanGenomicRelationshipBinarySelection.ndset_trans_kwargs
+      ~MeanGenomicRelationshipBinarySelection.ndset_wt
+      ~MeanGenomicRelationshipBinarySelection.neqcv
+      ~MeanGenomicRelationshipBinarySelection.nineqcv
+      ~MeanGenomicRelationshipBinarySelection.nmating
+      ~MeanGenomicRelationshipBinarySelection.nobj
+      ~MeanGenomicRelationshipBinarySelection.nparent
+      ~MeanGenomicRelationshipBinarySelection.nprogeny
+      ~MeanGenomicRelationshipBinarySelection.nselindiv
+      ~MeanGenomicRelationshipBinarySelection.obj_trans
+      ~MeanGenomicRelationshipBinarySelection.obj_trans_kwargs
+      ~MeanGenomicRelationshipBinarySelection.obj_wt
+      ~MeanGenomicRelationshipBinarySelection.rng
+      ~MeanGenomicRelationshipBinarySelection.soalgo
+   
+   

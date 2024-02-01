@@ -1,0 +1,45 @@
+MateSelectionSolution
+=====================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.MateSelectionSolution
+
+.. autoclass:: MateSelectionSolution
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MateSelectionSolution.decn_space
+      ~MateSelectionSolution.decn_space_lower
+      ~MateSelectionSolution.decn_space_upper
+      ~MateSelectionSolution.decn_space_xmap
+      ~MateSelectionSolution.eqcv_wt
+      ~MateSelectionSolution.ineqcv_wt
+      ~MateSelectionSolution.ndecn
+      ~MateSelectionSolution.neqcv
+      ~MateSelectionSolution.nineqcv
+      ~MateSelectionSolution.nobj
+      ~MateSelectionSolution.nsoln
+      ~MateSelectionSolution.obj_wt
+      ~MateSelectionSolution.soln_decn
+      ~MateSelectionSolution.soln_eqcv
+      ~MateSelectionSolution.soln_ineqcv
+      ~MateSelectionSolution.soln_obj
+   
+   

@@ -1,0 +1,41 @@
+CoancestryMatrix
+================
+
+.. automodule:: pybrops.popgen.cmat.CoancestryMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      CoancestryMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_CoancestryMatrix
+   
+   
+
+   
+   
+   
+
+
+

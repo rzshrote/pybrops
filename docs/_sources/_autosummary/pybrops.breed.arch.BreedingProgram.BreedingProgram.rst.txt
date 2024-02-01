@@ -1,0 +1,51 @@
+BreedingProgram
+===============
+
+.. currentmodule:: pybrops.breed.arch.BreedingProgram
+
+.. autoclass:: BreedingProgram
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~BreedingProgram.advance
+      ~BreedingProgram.evolve
+      ~BreedingProgram.initialize
+      ~BreedingProgram.is_initialized
+      ~BreedingProgram.reset
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BreedingProgram.bval
+      ~BreedingProgram.evalop
+      ~BreedingProgram.geno
+      ~BreedingProgram.genome
+      ~BreedingProgram.gmod
+      ~BreedingProgram.initop
+      ~BreedingProgram.mateop
+      ~BreedingProgram.pheno
+      ~BreedingProgram.pselop
+      ~BreedingProgram.sselop
+      ~BreedingProgram.start_bval
+      ~BreedingProgram.start_geno
+      ~BreedingProgram.start_genome
+      ~BreedingProgram.start_gmod
+      ~BreedingProgram.start_pheno
+      ~BreedingProgram.t_cur
+      ~BreedingProgram.t_max
+   
+   

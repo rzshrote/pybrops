@@ -1,0 +1,40 @@
+io
+==
+
+.. automodule:: pybrops.core.io
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.core.io.CSVDictInputOutput
+   pybrops.core.io.CSVInputOutput
+   pybrops.core.io.DictInputOutput
+   pybrops.core.io.HDF5InputOutput
+   pybrops.core.io.NPYInputOutput
+   pybrops.core.io.NPZInputOutput
+   pybrops.core.io.NumPyInputOutput
+   pybrops.core.io.PandasDictInputOutput
+   pybrops.core.io.PandasInputOutput
+

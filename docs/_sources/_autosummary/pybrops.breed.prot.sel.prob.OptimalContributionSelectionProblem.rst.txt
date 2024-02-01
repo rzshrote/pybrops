@@ -1,0 +1,36 @@
+OptimalContributionSelectionProblem
+===================================
+
+.. automodule:: pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      OptimalContributionBinarySelectionProblem
+      OptimalContributionIntegerSelectionProblem
+      OptimalContributionRealSelectionProblem
+      OptimalContributionSelectionProblemMixin
+      OptimalContributionSubsetSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

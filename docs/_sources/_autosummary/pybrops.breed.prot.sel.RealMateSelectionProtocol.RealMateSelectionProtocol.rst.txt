@@ -1,0 +1,56 @@
+RealMateSelectionProtocol
+=========================
+
+.. currentmodule:: pybrops.breed.prot.sel.RealMateSelectionProtocol
+
+.. autoclass:: RealMateSelectionProtocol
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RealMateSelectionProtocol.mosolve
+      ~RealMateSelectionProtocol.problem
+      ~RealMateSelectionProtocol.select
+      ~RealMateSelectionProtocol.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RealMateSelectionProtocol.eqcv_trans
+      ~RealMateSelectionProtocol.eqcv_trans_kwargs
+      ~RealMateSelectionProtocol.eqcv_wt
+      ~RealMateSelectionProtocol.ineqcv_trans
+      ~RealMateSelectionProtocol.ineqcv_trans_kwargs
+      ~RealMateSelectionProtocol.ineqcv_wt
+      ~RealMateSelectionProtocol.moalgo
+      ~RealMateSelectionProtocol.ncross
+      ~RealMateSelectionProtocol.ndset_trans
+      ~RealMateSelectionProtocol.ndset_trans_kwargs
+      ~RealMateSelectionProtocol.ndset_wt
+      ~RealMateSelectionProtocol.neqcv
+      ~RealMateSelectionProtocol.nineqcv
+      ~RealMateSelectionProtocol.nmating
+      ~RealMateSelectionProtocol.nobj
+      ~RealMateSelectionProtocol.nparent
+      ~RealMateSelectionProtocol.nprogeny
+      ~RealMateSelectionProtocol.nselindiv
+      ~RealMateSelectionProtocol.obj_trans
+      ~RealMateSelectionProtocol.obj_trans_kwargs
+      ~RealMateSelectionProtocol.obj_wt
+      ~RealMateSelectionProtocol.rng
+      ~RealMateSelectionProtocol.soalgo
+   
+   

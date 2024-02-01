@@ -1,0 +1,58 @@
+GenomicEstimatedBreedingValueBinarySelection
+============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection
+
+.. autoclass:: GenomicEstimatedBreedingValueBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~GenomicEstimatedBreedingValueBinarySelection.mosolve
+      ~GenomicEstimatedBreedingValueBinarySelection.problem
+      ~GenomicEstimatedBreedingValueBinarySelection.select
+      ~GenomicEstimatedBreedingValueBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~GenomicEstimatedBreedingValueBinarySelection.eqcv_trans
+      ~GenomicEstimatedBreedingValueBinarySelection.eqcv_trans_kwargs
+      ~GenomicEstimatedBreedingValueBinarySelection.eqcv_wt
+      ~GenomicEstimatedBreedingValueBinarySelection.ineqcv_trans
+      ~GenomicEstimatedBreedingValueBinarySelection.ineqcv_trans_kwargs
+      ~GenomicEstimatedBreedingValueBinarySelection.ineqcv_wt
+      ~GenomicEstimatedBreedingValueBinarySelection.moalgo
+      ~GenomicEstimatedBreedingValueBinarySelection.ncross
+      ~GenomicEstimatedBreedingValueBinarySelection.ndset_trans
+      ~GenomicEstimatedBreedingValueBinarySelection.ndset_trans_kwargs
+      ~GenomicEstimatedBreedingValueBinarySelection.ndset_wt
+      ~GenomicEstimatedBreedingValueBinarySelection.neqcv
+      ~GenomicEstimatedBreedingValueBinarySelection.nineqcv
+      ~GenomicEstimatedBreedingValueBinarySelection.nmating
+      ~GenomicEstimatedBreedingValueBinarySelection.nobj
+      ~GenomicEstimatedBreedingValueBinarySelection.nparent
+      ~GenomicEstimatedBreedingValueBinarySelection.nprogeny
+      ~GenomicEstimatedBreedingValueBinarySelection.nselindiv
+      ~GenomicEstimatedBreedingValueBinarySelection.ntrait
+      ~GenomicEstimatedBreedingValueBinarySelection.obj_trans
+      ~GenomicEstimatedBreedingValueBinarySelection.obj_trans_kwargs
+      ~GenomicEstimatedBreedingValueBinarySelection.obj_wt
+      ~GenomicEstimatedBreedingValueBinarySelection.rng
+      ~GenomicEstimatedBreedingValueBinarySelection.soalgo
+      ~GenomicEstimatedBreedingValueBinarySelection.unscale
+   
+   

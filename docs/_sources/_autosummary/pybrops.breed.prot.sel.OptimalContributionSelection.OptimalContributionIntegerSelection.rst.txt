@@ -1,0 +1,59 @@
+OptimalContributionIntegerSelection
+===================================
+
+.. currentmodule:: pybrops.breed.prot.sel.OptimalContributionSelection
+
+.. autoclass:: OptimalContributionIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~OptimalContributionIntegerSelection.mosolve
+      ~OptimalContributionIntegerSelection.problem
+      ~OptimalContributionIntegerSelection.select
+      ~OptimalContributionIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~OptimalContributionIntegerSelection.cmatfcty
+      ~OptimalContributionIntegerSelection.eqcv_trans
+      ~OptimalContributionIntegerSelection.eqcv_trans_kwargs
+      ~OptimalContributionIntegerSelection.eqcv_wt
+      ~OptimalContributionIntegerSelection.ineqcv_trans
+      ~OptimalContributionIntegerSelection.ineqcv_trans_kwargs
+      ~OptimalContributionIntegerSelection.ineqcv_wt
+      ~OptimalContributionIntegerSelection.moalgo
+      ~OptimalContributionIntegerSelection.ncross
+      ~OptimalContributionIntegerSelection.ndset_trans
+      ~OptimalContributionIntegerSelection.ndset_trans_kwargs
+      ~OptimalContributionIntegerSelection.ndset_wt
+      ~OptimalContributionIntegerSelection.neqcv
+      ~OptimalContributionIntegerSelection.nineqcv
+      ~OptimalContributionIntegerSelection.nmating
+      ~OptimalContributionIntegerSelection.nobj
+      ~OptimalContributionIntegerSelection.nparent
+      ~OptimalContributionIntegerSelection.nprogeny
+      ~OptimalContributionIntegerSelection.nselindiv
+      ~OptimalContributionIntegerSelection.ntrait
+      ~OptimalContributionIntegerSelection.obj_trans
+      ~OptimalContributionIntegerSelection.obj_trans_kwargs
+      ~OptimalContributionIntegerSelection.obj_wt
+      ~OptimalContributionIntegerSelection.rng
+      ~OptimalContributionIntegerSelection.soalgo
+      ~OptimalContributionIntegerSelection.unscale
+   
+   

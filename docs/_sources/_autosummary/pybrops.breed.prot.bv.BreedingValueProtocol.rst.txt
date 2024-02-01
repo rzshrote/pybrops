@@ -1,0 +1,41 @@
+BreedingValueProtocol
+=====================
+
+.. automodule:: pybrops.breed.prot.bv.BreedingValueProtocol
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      BreedingValueProtocol
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_BreedingValueProtocol
+   
+   
+
+   
+   
+   
+
+
+

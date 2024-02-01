@@ -1,0 +1,67 @@
+Problem
+=======
+
+.. currentmodule:: pybrops.opt.prob.Problem
+
+.. autoclass:: Problem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~Problem.bounds
+      ~Problem.do
+      ~Problem.evalfn
+      ~Problem.evaluate
+      ~Problem.has_bounds
+      ~Problem.has_constraints
+      ~Problem.ideal_point
+      ~Problem.nadir_point
+      ~Problem.name
+      ~Problem.pareto_front
+      ~Problem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~Problem.callback
+      ~Problem.data
+      ~Problem.decn_space
+      ~Problem.decn_space_lower
+      ~Problem.decn_space_upper
+      ~Problem.elementwise
+      ~Problem.elementwise_func
+      ~Problem.elementwise_runner
+      ~Problem.eqcv_wt
+      ~Problem.exclude_from_serialization
+      ~Problem.ineqcv_wt
+      ~Problem.n_constr
+      ~Problem.n_eq_constr
+      ~Problem.n_ieq_constr
+      ~Problem.n_obj
+      ~Problem.n_var
+      ~Problem.ndecn
+      ~Problem.neqcv
+      ~Problem.nineqcv
+      ~Problem.nobj
+      ~Problem.obj_wt
+      ~Problem.replace_nan_values_by
+      ~Problem.strict
+      ~Problem.vars
+      ~Problem.vtype
+      ~Problem.xl
+      ~Problem.xu
+   
+   

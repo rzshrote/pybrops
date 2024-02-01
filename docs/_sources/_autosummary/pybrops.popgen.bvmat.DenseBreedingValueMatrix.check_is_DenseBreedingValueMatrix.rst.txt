@@ -1,0 +1,6 @@
+check\_is\_DenseBreedingValueMatrix
+===================================
+
+.. currentmodule:: pybrops.popgen.bvmat.DenseBreedingValueMatrix
+
+.. autofunction:: check_is_DenseBreedingValueMatrix

@@ -1,0 +1,77 @@
+EstimatedBreedingValueIntegerSelectionProblem
+=============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.EstimatedBreedingValueSelectionProblem
+
+.. autoclass:: EstimatedBreedingValueIntegerSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~EstimatedBreedingValueIntegerSelectionProblem.bounds
+      ~EstimatedBreedingValueIntegerSelectionProblem.do
+      ~EstimatedBreedingValueIntegerSelectionProblem.evalfn
+      ~EstimatedBreedingValueIntegerSelectionProblem.evaluate
+      ~EstimatedBreedingValueIntegerSelectionProblem.from_bvmat
+      ~EstimatedBreedingValueIntegerSelectionProblem.has_bounds
+      ~EstimatedBreedingValueIntegerSelectionProblem.has_constraints
+      ~EstimatedBreedingValueIntegerSelectionProblem.ideal_point
+      ~EstimatedBreedingValueIntegerSelectionProblem.latentfn
+      ~EstimatedBreedingValueIntegerSelectionProblem.nadir_point
+      ~EstimatedBreedingValueIntegerSelectionProblem.name
+      ~EstimatedBreedingValueIntegerSelectionProblem.pareto_front
+      ~EstimatedBreedingValueIntegerSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EstimatedBreedingValueIntegerSelectionProblem.callback
+      ~EstimatedBreedingValueIntegerSelectionProblem.data
+      ~EstimatedBreedingValueIntegerSelectionProblem.decn_space
+      ~EstimatedBreedingValueIntegerSelectionProblem.decn_space_lower
+      ~EstimatedBreedingValueIntegerSelectionProblem.decn_space_upper
+      ~EstimatedBreedingValueIntegerSelectionProblem.ebv
+      ~EstimatedBreedingValueIntegerSelectionProblem.elementwise
+      ~EstimatedBreedingValueIntegerSelectionProblem.elementwise_func
+      ~EstimatedBreedingValueIntegerSelectionProblem.elementwise_runner
+      ~EstimatedBreedingValueIntegerSelectionProblem.eqcv_trans
+      ~EstimatedBreedingValueIntegerSelectionProblem.eqcv_trans_kwargs
+      ~EstimatedBreedingValueIntegerSelectionProblem.eqcv_wt
+      ~EstimatedBreedingValueIntegerSelectionProblem.exclude_from_serialization
+      ~EstimatedBreedingValueIntegerSelectionProblem.ineqcv_trans
+      ~EstimatedBreedingValueIntegerSelectionProblem.ineqcv_trans_kwargs
+      ~EstimatedBreedingValueIntegerSelectionProblem.ineqcv_wt
+      ~EstimatedBreedingValueIntegerSelectionProblem.n_constr
+      ~EstimatedBreedingValueIntegerSelectionProblem.n_eq_constr
+      ~EstimatedBreedingValueIntegerSelectionProblem.n_ieq_constr
+      ~EstimatedBreedingValueIntegerSelectionProblem.n_obj
+      ~EstimatedBreedingValueIntegerSelectionProblem.n_var
+      ~EstimatedBreedingValueIntegerSelectionProblem.ndecn
+      ~EstimatedBreedingValueIntegerSelectionProblem.neqcv
+      ~EstimatedBreedingValueIntegerSelectionProblem.nineqcv
+      ~EstimatedBreedingValueIntegerSelectionProblem.nlatent
+      ~EstimatedBreedingValueIntegerSelectionProblem.nobj
+      ~EstimatedBreedingValueIntegerSelectionProblem.obj_trans
+      ~EstimatedBreedingValueIntegerSelectionProblem.obj_trans_kwargs
+      ~EstimatedBreedingValueIntegerSelectionProblem.obj_wt
+      ~EstimatedBreedingValueIntegerSelectionProblem.replace_nan_values_by
+      ~EstimatedBreedingValueIntegerSelectionProblem.strict
+      ~EstimatedBreedingValueIntegerSelectionProblem.vars
+      ~EstimatedBreedingValueIntegerSelectionProblem.vtype
+      ~EstimatedBreedingValueIntegerSelectionProblem.xl
+      ~EstimatedBreedingValueIntegerSelectionProblem.xu
+   
+   

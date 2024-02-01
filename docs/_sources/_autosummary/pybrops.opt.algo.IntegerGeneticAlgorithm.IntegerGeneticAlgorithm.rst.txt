@@ -1,0 +1,33 @@
+IntegerGeneticAlgorithm
+=======================
+
+.. currentmodule:: pybrops.opt.algo.IntegerGeneticAlgorithm
+
+.. autoclass:: IntegerGeneticAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~IntegerGeneticAlgorithm.minimize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~IntegerGeneticAlgorithm.ngen
+      ~IntegerGeneticAlgorithm.pop_size
+      ~IntegerGeneticAlgorithm.rng
+   
+   

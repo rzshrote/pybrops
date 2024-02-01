@@ -1,0 +1,6 @@
+check\_path\_exists
+===================
+
+.. currentmodule:: pybrops.core.error.error_io_python
+
+.. autofunction:: check_path_exists

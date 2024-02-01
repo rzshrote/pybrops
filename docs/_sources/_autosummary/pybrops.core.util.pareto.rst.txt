@@ -1,0 +1,32 @@
+pareto
+======
+
+.. automodule:: pybrops.core.util.pareto
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      is_pareto_efficient
+   
+   
+
+   
+   
+   
+
+
+

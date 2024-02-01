@@ -1,0 +1,6 @@
+check\_is\_TaxaTraitMatrix
+==========================
+
+.. currentmodule:: pybrops.core.mat.TaxaTraitMatrix
+
+.. autofunction:: check_is_TaxaTraitMatrix

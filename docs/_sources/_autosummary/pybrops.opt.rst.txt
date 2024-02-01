@@ -1,0 +1,34 @@
+opt
+===
+
+.. automodule:: pybrops.opt
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.opt.algo
+   pybrops.opt.prob
+   pybrops.opt.soln
+

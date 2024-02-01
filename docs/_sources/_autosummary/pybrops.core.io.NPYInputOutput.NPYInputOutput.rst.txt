@@ -1,0 +1,26 @@
+NPYInputOutput
+==============
+
+.. currentmodule:: pybrops.core.io.NPYInputOutput
+
+.. autoclass:: NPYInputOutput
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~NPYInputOutput.from_npy
+      ~NPYInputOutput.to_npy
+   
+   
+
+   
+   
+   

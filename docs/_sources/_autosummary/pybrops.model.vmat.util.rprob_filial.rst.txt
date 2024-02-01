@@ -1,0 +1,6 @@
+rprob\_filial
+=============
+
+.. currentmodule:: pybrops.model.vmat.util
+
+.. autofunction:: rprob_filial

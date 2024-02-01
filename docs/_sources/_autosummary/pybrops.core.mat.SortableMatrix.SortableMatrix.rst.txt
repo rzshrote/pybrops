@@ -1,0 +1,47 @@
+SortableMatrix
+==============
+
+.. currentmodule:: pybrops.core.mat.SortableMatrix
+
+.. autoclass:: SortableMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~SortableMatrix.adjoin
+      ~SortableMatrix.append
+      ~SortableMatrix.concat
+      ~SortableMatrix.copy
+      ~SortableMatrix.deepcopy
+      ~SortableMatrix.delete
+      ~SortableMatrix.from_hdf5
+      ~SortableMatrix.incorp
+      ~SortableMatrix.insert
+      ~SortableMatrix.lexsort
+      ~SortableMatrix.remove
+      ~SortableMatrix.reorder
+      ~SortableMatrix.select
+      ~SortableMatrix.sort
+      ~SortableMatrix.to_hdf5
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SortableMatrix.mat
+      ~SortableMatrix.mat_ndim
+      ~SortableMatrix.mat_shape
+   
+   

@@ -1,0 +1,58 @@
+EstimatedBreedingValueBinarySelection
+=====================================
+
+.. currentmodule:: pybrops.breed.prot.sel.EstimatedBreedingValueSelection
+
+.. autoclass:: EstimatedBreedingValueBinarySelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~EstimatedBreedingValueBinarySelection.mosolve
+      ~EstimatedBreedingValueBinarySelection.problem
+      ~EstimatedBreedingValueBinarySelection.select
+      ~EstimatedBreedingValueBinarySelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EstimatedBreedingValueBinarySelection.eqcv_trans
+      ~EstimatedBreedingValueBinarySelection.eqcv_trans_kwargs
+      ~EstimatedBreedingValueBinarySelection.eqcv_wt
+      ~EstimatedBreedingValueBinarySelection.ineqcv_trans
+      ~EstimatedBreedingValueBinarySelection.ineqcv_trans_kwargs
+      ~EstimatedBreedingValueBinarySelection.ineqcv_wt
+      ~EstimatedBreedingValueBinarySelection.moalgo
+      ~EstimatedBreedingValueBinarySelection.ncross
+      ~EstimatedBreedingValueBinarySelection.ndset_trans
+      ~EstimatedBreedingValueBinarySelection.ndset_trans_kwargs
+      ~EstimatedBreedingValueBinarySelection.ndset_wt
+      ~EstimatedBreedingValueBinarySelection.neqcv
+      ~EstimatedBreedingValueBinarySelection.nineqcv
+      ~EstimatedBreedingValueBinarySelection.nmating
+      ~EstimatedBreedingValueBinarySelection.nobj
+      ~EstimatedBreedingValueBinarySelection.nparent
+      ~EstimatedBreedingValueBinarySelection.nprogeny
+      ~EstimatedBreedingValueBinarySelection.nselindiv
+      ~EstimatedBreedingValueBinarySelection.ntrait
+      ~EstimatedBreedingValueBinarySelection.obj_trans
+      ~EstimatedBreedingValueBinarySelection.obj_trans_kwargs
+      ~EstimatedBreedingValueBinarySelection.obj_wt
+      ~EstimatedBreedingValueBinarySelection.rng
+      ~EstimatedBreedingValueBinarySelection.soalgo
+      ~EstimatedBreedingValueBinarySelection.unscale
+   
+   

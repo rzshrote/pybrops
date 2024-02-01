@@ -1,0 +1,32 @@
+init
+====
+
+.. automodule:: pybrops.breed.op.init
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.breed.op.init.InitializationOperator
+

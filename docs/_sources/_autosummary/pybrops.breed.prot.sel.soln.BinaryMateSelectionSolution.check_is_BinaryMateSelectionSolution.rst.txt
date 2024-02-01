@@ -1,0 +1,6 @@
+check\_is\_BinaryMateSelectionSolution
+======================================
+
+.. currentmodule:: pybrops.breed.prot.sel.soln.BinaryMateSelectionSolution
+
+.. autofunction:: check_is_BinaryMateSelectionSolution

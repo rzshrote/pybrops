@@ -1,0 +1,6 @@
+check\_is\_pandas\_DataFrame
+============================
+
+.. currentmodule:: pybrops.core.error.error_type_pandas
+
+.. autofunction:: check_is_pandas_DataFrame

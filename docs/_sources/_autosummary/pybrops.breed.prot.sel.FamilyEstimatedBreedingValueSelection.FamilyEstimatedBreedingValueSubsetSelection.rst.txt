@@ -1,0 +1,57 @@
+FamilyEstimatedBreedingValueSubsetSelection
+===========================================
+
+.. currentmodule:: pybrops.breed.prot.sel.FamilyEstimatedBreedingValueSelection
+
+.. autoclass:: FamilyEstimatedBreedingValueSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~FamilyEstimatedBreedingValueSubsetSelection.mosolve
+      ~FamilyEstimatedBreedingValueSubsetSelection.problem
+      ~FamilyEstimatedBreedingValueSubsetSelection.select
+      ~FamilyEstimatedBreedingValueSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FamilyEstimatedBreedingValueSubsetSelection.eqcv_trans
+      ~FamilyEstimatedBreedingValueSubsetSelection.eqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueSubsetSelection.eqcv_wt
+      ~FamilyEstimatedBreedingValueSubsetSelection.ineqcv_trans
+      ~FamilyEstimatedBreedingValueSubsetSelection.ineqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueSubsetSelection.ineqcv_wt
+      ~FamilyEstimatedBreedingValueSubsetSelection.moalgo
+      ~FamilyEstimatedBreedingValueSubsetSelection.ncross
+      ~FamilyEstimatedBreedingValueSubsetSelection.ndset_trans
+      ~FamilyEstimatedBreedingValueSubsetSelection.ndset_trans_kwargs
+      ~FamilyEstimatedBreedingValueSubsetSelection.ndset_wt
+      ~FamilyEstimatedBreedingValueSubsetSelection.neqcv
+      ~FamilyEstimatedBreedingValueSubsetSelection.nineqcv
+      ~FamilyEstimatedBreedingValueSubsetSelection.nmating
+      ~FamilyEstimatedBreedingValueSubsetSelection.nobj
+      ~FamilyEstimatedBreedingValueSubsetSelection.nparent
+      ~FamilyEstimatedBreedingValueSubsetSelection.nprogeny
+      ~FamilyEstimatedBreedingValueSubsetSelection.nselindiv
+      ~FamilyEstimatedBreedingValueSubsetSelection.ntrait
+      ~FamilyEstimatedBreedingValueSubsetSelection.obj_trans
+      ~FamilyEstimatedBreedingValueSubsetSelection.obj_trans_kwargs
+      ~FamilyEstimatedBreedingValueSubsetSelection.obj_wt
+      ~FamilyEstimatedBreedingValueSubsetSelection.rng
+      ~FamilyEstimatedBreedingValueSubsetSelection.soalgo
+   
+   

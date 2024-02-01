@@ -1,0 +1,6 @@
+check\_is\_PhenotypingProtocol
+==============================
+
+.. currentmodule:: pybrops.breed.prot.pt.PhenotypingProtocol
+
+.. autofunction:: check_is_PhenotypingProtocol

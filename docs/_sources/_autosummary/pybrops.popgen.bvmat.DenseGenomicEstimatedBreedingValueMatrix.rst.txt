@@ -1,0 +1,41 @@
+DenseGenomicEstimatedBreedingValueMatrix
+========================================
+
+.. automodule:: pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseGenomicEstimatedBreedingValueMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseGenomicEstimatedBreedingValueMatrix
+   
+   
+
+   
+   
+   
+
+
+

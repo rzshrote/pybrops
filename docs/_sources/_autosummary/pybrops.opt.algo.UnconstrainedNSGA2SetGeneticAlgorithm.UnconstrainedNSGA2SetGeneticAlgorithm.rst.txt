@@ -1,0 +1,37 @@
+UnconstrainedNSGA2SetGeneticAlgorithm
+=====================================
+
+.. currentmodule:: pybrops.opt.algo.UnconstrainedNSGA2SetGeneticAlgorithm
+
+.. autoclass:: UnconstrainedNSGA2SetGeneticAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UnconstrainedNSGA2SetGeneticAlgorithm.cxSet
+      ~UnconstrainedNSGA2SetGeneticAlgorithm.mutSet
+      ~UnconstrainedNSGA2SetGeneticAlgorithm.optimize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~UnconstrainedNSGA2SetGeneticAlgorithm.M
+      ~UnconstrainedNSGA2SetGeneticAlgorithm.lamb
+      ~UnconstrainedNSGA2SetGeneticAlgorithm.mu
+      ~UnconstrainedNSGA2SetGeneticAlgorithm.ngen
+      ~UnconstrainedNSGA2SetGeneticAlgorithm.rng
+   
+   

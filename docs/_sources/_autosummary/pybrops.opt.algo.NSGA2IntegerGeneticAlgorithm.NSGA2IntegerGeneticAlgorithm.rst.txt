@@ -1,0 +1,33 @@
+NSGA2IntegerGeneticAlgorithm
+============================
+
+.. currentmodule:: pybrops.opt.algo.NSGA2IntegerGeneticAlgorithm
+
+.. autoclass:: NSGA2IntegerGeneticAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~NSGA2IntegerGeneticAlgorithm.minimize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NSGA2IntegerGeneticAlgorithm.ngen
+      ~NSGA2IntegerGeneticAlgorithm.pop_size
+      ~NSGA2IntegerGeneticAlgorithm.rng
+   
+   

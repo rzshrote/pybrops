@@ -1,0 +1,57 @@
+FamilyEstimatedBreedingValueIntegerSelection
+============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.FamilyEstimatedBreedingValueSelection
+
+.. autoclass:: FamilyEstimatedBreedingValueIntegerSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~FamilyEstimatedBreedingValueIntegerSelection.mosolve
+      ~FamilyEstimatedBreedingValueIntegerSelection.problem
+      ~FamilyEstimatedBreedingValueIntegerSelection.select
+      ~FamilyEstimatedBreedingValueIntegerSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~FamilyEstimatedBreedingValueIntegerSelection.eqcv_trans
+      ~FamilyEstimatedBreedingValueIntegerSelection.eqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueIntegerSelection.eqcv_wt
+      ~FamilyEstimatedBreedingValueIntegerSelection.ineqcv_trans
+      ~FamilyEstimatedBreedingValueIntegerSelection.ineqcv_trans_kwargs
+      ~FamilyEstimatedBreedingValueIntegerSelection.ineqcv_wt
+      ~FamilyEstimatedBreedingValueIntegerSelection.moalgo
+      ~FamilyEstimatedBreedingValueIntegerSelection.ncross
+      ~FamilyEstimatedBreedingValueIntegerSelection.ndset_trans
+      ~FamilyEstimatedBreedingValueIntegerSelection.ndset_trans_kwargs
+      ~FamilyEstimatedBreedingValueIntegerSelection.ndset_wt
+      ~FamilyEstimatedBreedingValueIntegerSelection.neqcv
+      ~FamilyEstimatedBreedingValueIntegerSelection.nineqcv
+      ~FamilyEstimatedBreedingValueIntegerSelection.nmating
+      ~FamilyEstimatedBreedingValueIntegerSelection.nobj
+      ~FamilyEstimatedBreedingValueIntegerSelection.nparent
+      ~FamilyEstimatedBreedingValueIntegerSelection.nprogeny
+      ~FamilyEstimatedBreedingValueIntegerSelection.nselindiv
+      ~FamilyEstimatedBreedingValueIntegerSelection.ntrait
+      ~FamilyEstimatedBreedingValueIntegerSelection.obj_trans
+      ~FamilyEstimatedBreedingValueIntegerSelection.obj_trans_kwargs
+      ~FamilyEstimatedBreedingValueIntegerSelection.obj_wt
+      ~FamilyEstimatedBreedingValueIntegerSelection.rng
+      ~FamilyEstimatedBreedingValueIntegerSelection.soalgo
+   
+   

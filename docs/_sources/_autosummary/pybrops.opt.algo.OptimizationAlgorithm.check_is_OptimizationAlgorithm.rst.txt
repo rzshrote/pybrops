@@ -1,0 +1,6 @@
+check\_is\_OptimizationAlgorithm
+================================
+
+.. currentmodule:: pybrops.opt.algo.OptimizationAlgorithm
+
+.. autofunction:: check_is_OptimizationAlgorithm

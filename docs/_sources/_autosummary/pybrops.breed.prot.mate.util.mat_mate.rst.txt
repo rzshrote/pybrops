@@ -1,0 +1,6 @@
+mat\_mate
+=========
+
+.. currentmodule:: pybrops.breed.prot.mate.util
+
+.. autofunction:: mat_mate

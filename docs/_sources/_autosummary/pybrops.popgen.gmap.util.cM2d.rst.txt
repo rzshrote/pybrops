@@ -1,0 +1,6 @@
+cM2d
+====
+
+.. currentmodule:: pybrops.popgen.gmap.util
+
+.. autofunction:: cM2d

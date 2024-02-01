@@ -1,0 +1,69 @@
+NonlinearGenomicModel
+=====================
+
+.. currentmodule:: pybrops.model.gmod.NonlinearGenomicModel
+
+.. autoclass:: NonlinearGenomicModel
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~NonlinearGenomicModel.bulmer
+      ~NonlinearGenomicModel.bulmer_numpy
+      ~NonlinearGenomicModel.copy
+      ~NonlinearGenomicModel.daavail
+      ~NonlinearGenomicModel.dacount
+      ~NonlinearGenomicModel.dafixed
+      ~NonlinearGenomicModel.dafreq
+      ~NonlinearGenomicModel.deepcopy
+      ~NonlinearGenomicModel.faavail
+      ~NonlinearGenomicModel.facount
+      ~NonlinearGenomicModel.fafixed
+      ~NonlinearGenomicModel.fafreq
+      ~NonlinearGenomicModel.fit
+      ~NonlinearGenomicModel.fit_numpy
+      ~NonlinearGenomicModel.from_hdf5
+      ~NonlinearGenomicModel.gebv
+      ~NonlinearGenomicModel.gebv_numpy
+      ~NonlinearGenomicModel.gegv
+      ~NonlinearGenomicModel.gegv_numpy
+      ~NonlinearGenomicModel.lsl
+      ~NonlinearGenomicModel.lsl_numpy
+      ~NonlinearGenomicModel.predict
+      ~NonlinearGenomicModel.predict_numpy
+      ~NonlinearGenomicModel.score
+      ~NonlinearGenomicModel.score_numpy
+      ~NonlinearGenomicModel.to_hdf5
+      ~NonlinearGenomicModel.usl
+      ~NonlinearGenomicModel.usl_numpy
+      ~NonlinearGenomicModel.var_A
+      ~NonlinearGenomicModel.var_A_numpy
+      ~NonlinearGenomicModel.var_G
+      ~NonlinearGenomicModel.var_G_numpy
+      ~NonlinearGenomicModel.var_a
+      ~NonlinearGenomicModel.var_a_numpy
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NonlinearGenomicModel.hyperparams
+      ~NonlinearGenomicModel.model_name
+      ~NonlinearGenomicModel.nexplan
+      ~NonlinearGenomicModel.nparam
+      ~NonlinearGenomicModel.ntrait
+      ~NonlinearGenomicModel.trait
+   
+   

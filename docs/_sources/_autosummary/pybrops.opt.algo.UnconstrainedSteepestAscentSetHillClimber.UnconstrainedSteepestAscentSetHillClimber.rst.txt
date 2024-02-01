@@ -1,0 +1,32 @@
+UnconstrainedSteepestAscentSetHillClimber
+=========================================
+
+.. currentmodule:: pybrops.opt.algo.UnconstrainedSteepestAscentSetHillClimber
+
+.. autoclass:: UnconstrainedSteepestAscentSetHillClimber
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~UnconstrainedSteepestAscentSetHillClimber.optimize
+      ~UnconstrainedSteepestAscentSetHillClimber.optimize_vec
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~UnconstrainedSteepestAscentSetHillClimber.rng
+   
+   

@@ -1,0 +1,6 @@
+check\_is\_ImmigrationOperator
+==============================
+
+.. currentmodule:: pybrops.breed.arch.ImmigrationOperator
+
+.. autofunction:: check_is_ImmigrationOperator

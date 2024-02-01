@@ -1,0 +1,76 @@
+RealMateSelectionProblem
+========================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.RealMateSelectionProblem
+
+.. autoclass:: RealMateSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~RealMateSelectionProblem.bounds
+      ~RealMateSelectionProblem.do
+      ~RealMateSelectionProblem.evalfn
+      ~RealMateSelectionProblem.evaluate
+      ~RealMateSelectionProblem.has_bounds
+      ~RealMateSelectionProblem.has_constraints
+      ~RealMateSelectionProblem.ideal_point
+      ~RealMateSelectionProblem.latentfn
+      ~RealMateSelectionProblem.nadir_point
+      ~RealMateSelectionProblem.name
+      ~RealMateSelectionProblem.pareto_front
+      ~RealMateSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~RealMateSelectionProblem.callback
+      ~RealMateSelectionProblem.data
+      ~RealMateSelectionProblem.decn_space
+      ~RealMateSelectionProblem.decn_space_lower
+      ~RealMateSelectionProblem.decn_space_upper
+      ~RealMateSelectionProblem.decn_space_xmap
+      ~RealMateSelectionProblem.elementwise
+      ~RealMateSelectionProblem.elementwise_func
+      ~RealMateSelectionProblem.elementwise_runner
+      ~RealMateSelectionProblem.eqcv_trans
+      ~RealMateSelectionProblem.eqcv_trans_kwargs
+      ~RealMateSelectionProblem.eqcv_wt
+      ~RealMateSelectionProblem.exclude_from_serialization
+      ~RealMateSelectionProblem.ineqcv_trans
+      ~RealMateSelectionProblem.ineqcv_trans_kwargs
+      ~RealMateSelectionProblem.ineqcv_wt
+      ~RealMateSelectionProblem.n_constr
+      ~RealMateSelectionProblem.n_eq_constr
+      ~RealMateSelectionProblem.n_ieq_constr
+      ~RealMateSelectionProblem.n_obj
+      ~RealMateSelectionProblem.n_var
+      ~RealMateSelectionProblem.ndecn
+      ~RealMateSelectionProblem.neqcv
+      ~RealMateSelectionProblem.nineqcv
+      ~RealMateSelectionProblem.nlatent
+      ~RealMateSelectionProblem.nobj
+      ~RealMateSelectionProblem.obj_trans
+      ~RealMateSelectionProblem.obj_trans_kwargs
+      ~RealMateSelectionProblem.obj_wt
+      ~RealMateSelectionProblem.replace_nan_values_by
+      ~RealMateSelectionProblem.strict
+      ~RealMateSelectionProblem.vars
+      ~RealMateSelectionProblem.vtype
+      ~RealMateSelectionProblem.xl
+      ~RealMateSelectionProblem.xu
+   
+   
