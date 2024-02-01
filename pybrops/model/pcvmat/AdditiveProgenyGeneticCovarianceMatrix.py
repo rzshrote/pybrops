@@ -89,4 +89,4 @@ def check_is_AdditiveProgenyGeneticCovarianceMatrix(v: object, vname: str) -> No
         Name of variable to print in ``TypeError`` message.
     """
     if not isinstance(v, AdditiveProgenyGeneticCovarianceMatrix):
-        raise TypeError("'{0}' must be a AdditiveProgenyGeneticCovarianceMatrix".format(vname))
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,AdditiveProgenyGeneticCovarianceMatrix.__name__,type(v).__name__))

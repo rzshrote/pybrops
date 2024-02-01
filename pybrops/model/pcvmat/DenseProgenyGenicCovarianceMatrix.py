@@ -6,11 +6,13 @@ storing dense genic covariance estimates.
 import copy
 from typing import Optional
 import numpy
-from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.mat.DenseSquareTaxaTraitMatrix import DenseSquareTaxaTraitMatrix
 from pybrops.model.pcvmat.ProgenyGenicCovarianceMatrix import ProgenyGenicCovarianceMatrix
 
-class DenseProgenyGenicCovarianceMatrix(DenseSquareTaxaTraitMatrix,ProgenyGenicCovarianceMatrix):
+class DenseProgenyGenicCovarianceMatrix(
+        DenseSquareTaxaTraitMatrix,
+        ProgenyGenicCovarianceMatrix,
+    ):
     """
     A semi-concrete class for dense genic covariance matrices.
 
@@ -68,10 +70,6 @@ class DenseProgenyGenicCovarianceMatrix(DenseSquareTaxaTraitMatrix,ProgenyGenicC
     def epgc(self) -> tuple:
         """Description for property epgc."""
         return (0.5, 0.5)
-    @epgc.setter
-    def epgc(self, value: tuple) -> None:
-        """Set data for property epgc."""
-        error_readonly("epgc")
 
     ############################## Object Methods ##############################
 
@@ -122,7 +120,8 @@ class DenseProgenyGenicCovarianceMatrix(DenseSquareTaxaTraitMatrix,ProgenyGenicC
 ################################## Utilities ###################################
 def check_is_DenseProgenyGenicCovarianceMatrix(v: object, vname: str) -> None:
     """
-    Check if object is of type ``DenseProgenyGenicCovarianceMatrix``. Otherwise raise ``TypeError``.
+    Check if object is of type ``DenseProgenyGenicCovarianceMatrix``.
+    Otherwise raise ``TypeError``.
 
     Parameters
     ----------
@@ -132,4 +131,4 @@ def check_is_DenseProgenyGenicCovarianceMatrix(v: object, vname: str) -> None:
         Name of variable to print in ``TypeError`` message.
     """
     if not isinstance(v, DenseProgenyGenicCovarianceMatrix):
-        raise TypeError("'{0}' must be a DenseProgenyGenicCovarianceMatrix".format(vname))
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,DenseProgenyGenicCovarianceMatrix.__name__,type(v).__name__))

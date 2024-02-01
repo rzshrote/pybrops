@@ -1155,7 +1155,7 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMa
                                 # (t,cb)*(t,cb) -> (t,cb)
                                 # (t,cb).sum(1) -> (t,)
                                 varA_part31 = (reffect31 @ D1 * ceffect31).sum(1)
-                                varA_part32 = (reffect32 @ D1 * ceffect31).sum(1)
+                                varA_part32 = (reffect32 @ D1 * ceffect32).sum(1)
 
                                 # only do lower triangle since symmetrical within each slice
                                 for male1 in range(0,female1):  # varA col index
@@ -1169,11 +1169,11 @@ class DenseFourWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMa
 
                                     # calculate effect differences
                                     reffect41 = rdgeno41 * ru # (rb,)*(t,rb) -> (t,rb)
-                                    ceffect41 = rdgeno41 * cu # (cb,)*(t,cb) -> (t,cb)
+                                    ceffect41 = cdgeno41 * cu # (cb,)*(t,cb) -> (t,cb)
                                     reffect42 = rdgeno42 * ru # (rb,)*(t,rb) -> (t,rb)
-                                    ceffect42 = rdgeno42 * cu # (cb,)*(t,cb) -> (t,cb)
+                                    ceffect42 = cdgeno42 * cu # (cb,)*(t,cb) -> (t,cb)
                                     reffect43 = rdgeno43 * ru # (rb,)*(t,rb) -> (t,rb)
-                                    ceffect43 = rdgeno43 * cu # (cb,)*(t,cb) -> (t,cb)
+                                    ceffect43 = cdgeno43 * cu # (cb,)*(t,cb) -> (t,cb)
 
                                     # calculate varA parts for crosses with male
                                     # (t,rb)x(rb,cb) -> (t,cb)

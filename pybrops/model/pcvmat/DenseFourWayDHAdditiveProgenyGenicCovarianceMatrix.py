@@ -71,20 +71,20 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
     def mat(self, value: numpy.ndarray) -> None:
         """Set pointer to raw numpy.ndarray object."""
         check_is_ndarray(value, "mat")
-        check_ndarray_ndim(value, "mat", 5) # (ntaxa,ntaxa,ntaxa,ntaxa,ntrait)
+        check_ndarray_ndim(value, "mat", 6) # (ntaxa,ntaxa,ntaxa,ntaxa,ntrait,ntrait)
         self._mat = value
 
     ############## Square Metadata Properties ##############
-    @DenseAdditiveProgenyGenicCovarianceMatrix.square_axes.getter
-    def square_axes(self) -> tuple:
-        """Get axis indices for axes that are square"""
+    @DenseAdditiveProgenyGenicCovarianceMatrix.square_taxa_axes.getter
+    def square_taxa_axes(self) -> tuple:
+        """Axis indices for taxa axes that are square."""
         return (0,1,2,3) # (female2, male2, female1, male1)
 
+    @DenseAdditiveProgenyGenicCovarianceMatrix.square_trait_axes.getter
+    def square_trait_axes(self) -> tuple:
+        return (4,5) # (trait1, trait2) covariance matrix
+
     #################### Trait metadata ####################
-    @DenseAdditiveProgenyGenicCovarianceMatrix.trait_axis.getter
-    def trait_axis(self) -> int:
-        """Axis along which traits are stored."""
-        return 4
 
     ######## Expected parental genome contributions ########
     @DenseAdditiveProgenyGenicCovarianceMatrix.epgc.getter
@@ -147,8 +147,9 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             female1_grp_col: Optional[str] = "female1_grp",
             male1_col: str = "male1",
             male1_grp_col: Optional[str] = "male1_grp",
-            trait_col: str = "trait",
-            variance_col: str = "covariance",
+            trait1_col: str = "trait1",
+            trait2_col: str = "trait2",
+            covariance_col: str = "covariance",
             **kwargs: dict
         ) -> pandas.DataFrame:
         """
@@ -180,10 +181,10 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
         male1_grp_col : str, None, default = "male1_grp"
             Name of the column to which to write male 1 taxa groups.
 
-        trait_col : str, default = "trait"
+        trait1_col : str, default = "trait"
             Name of the column to which to write trait taxa names.
 
-        variance_col : str, default = "covariance"
+        covariance_col : str, default = "covariance"
             Name of the column to which to write covariance taxa names.
 
         kwargs : dict
@@ -212,33 +213,26 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
         if male1_grp_col is not None:
             check_is_str(male1_grp_col, "male1_grp_col")
             
-        check_is_str(trait_col, "trait_col")
-        check_is_str(variance_col, "variance_col")
-
-        # calculate how much zero fill we need
-        taxazfill = math.ceil(math.log10(self.ntaxa))+1
-        traitzfill = math.ceil(math.log10(self.ntrait))+1
+        check_is_str(trait1_col, "trait1_col")
+        check_is_str(trait2_col, "trait2_col")
+        check_is_str(covariance_col, "covariance_col")
 
         # get names for taxa
         if self.taxa is None:
-            taxa = numpy.array(
-                ["Taxon"+str(e).zfill(taxazfill) for e in range(self.ntaxa)],
-                dtype = object
-            )
+            nzero = math.ceil(math.log10(self.ntaxa))+1
+            taxa = numpy.array(["Taxon"+str(e).zfill(nzero) for e in range(self.ntaxa)], dtype = object)
         else:
             taxa = self.taxa
 
         # get names for traits
         if self.trait is None:
-            trait = numpy.array(
-                ["Trait"+str(e).zfill(traitzfill) for e in range(self.ntrait)],
-                dtype = object
-            )
+            nzero = math.ceil(math.log10(self.ntrait))+1
+            trait = numpy.array(["Trait"+str(e).zfill(nzero) for e in range(self.ntrait)], dtype = object)
         else:
             trait = self.trait
 
         # calculate flattened array and corresponding axis indices
-        flatmat, (female2ix, male2ix, female1ix, male1ix, traitix) = flattenix(self.mat)
+        flatmat, (female2ix, male2ix, female1ix, male1ix, trait1ix, trait2ix) = flattenix(self.mat)
 
         # make dictionary to store output columns in specific column ordering
         out_dict = {}
@@ -263,8 +257,9 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             values = None if self.taxa_grp is None else self.taxa_grp[male1ix]
             out_dict.update({male1_grp_col: values})
         # add trait and covariance values
-        out_dict.update({trait_col: trait[traitix]})
-        out_dict.update({variance_col: flatmat})
+        out_dict.update({trait1_col: trait[trait1ix]})
+        out_dict.update({trait2_col: trait[trait2ix]})
+        out_dict.update({covariance_col: flatmat})
 
         # create a pandas DataFrame from the data
         out = pandas.DataFrame(out_dict, **kwargs)
@@ -282,8 +277,9 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             female1_grp_col: Optional[str] = "female1_grp",
             male1_col: str = "male1",
             male1_grp_col: Optional[str] = "male1_grp",
-            trait_col: str = "trait",
-            variance_col: str = "covariance",
+            trait1_col: str = "trait1",
+            trait2_col: str = "trait2",
+            covariance_col: str = "covariance",
             sep: str = ',', 
             header: bool = True, 
             index: bool = False, 
@@ -321,10 +317,10 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
         male1_grp_col : str, None, default = "male1_grp"
             Name of the column to which to write male 1 taxa groups.
 
-        trait_col : str, default = "trait"
+        trait1_col : str, default = "trait"
             Name of the column to which to write trait taxa names.
 
-        variance_col : str, default = "covariance"
+        covariance_col : str, default = "covariance"
             Name of the column to which to write covariance taxa names.
 
         sep : str, default = ","
@@ -349,8 +345,9 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             female1_grp_col = female1_grp_col,
             male1_col       = male1_col,
             male1_grp_col   = male1_grp_col,
-            trait_col       = trait_col,
-            variance_col    = variance_col,
+            trait1_col       = trait1_col,
+            trait2_col       = trait2_col,
+            covariance_col    = covariance_col,
         )
 
         # export using pandas
@@ -441,8 +438,9 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             female1_grp_col: Optional[Union[str,Integral]] = "female1_grp",
             male1_col: Union[str,Integral] = "male1",
             male1_grp_col: Optional[Union[str,Integral]] = "male1_grp",
-            trait_col: Union[str,Integral] = "trait",
-            variance_col: Union[str,Integral] = "covariance",
+            trait1_col: Union[str,Integral] = "trait1",
+            trait2_col: Union[str,Integral] = "trait2",
+            covariance_col: Union[str,Integral] = "covariance",
             **kwargs: dict
         ) -> 'DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix':
         """
@@ -477,10 +475,10 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
         male1_grp_col : str, Integral, None, default = "male1_grp"
             Name or index of the column from which to read male 1 taxa names.
 
-        trait_col : str, Integral, default = "trait"
+        trait1_col : str, Integral, default = "trait"
             Name or index of the column from which to read trait taxa names.
 
-        variance_col : str, Integral, default = "covariance"
+        covariance_col : str, Integral, default = "covariance"
             Name or index of the column from which to read covariance taxa names.
 
         kwargs : dict
@@ -581,33 +579,44 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             else:
                 check_is_str_or_Integral(male1_grp_col, "male1_grp_col")
         
-        # trait_col
-        if isinstance(trait_col, str):
-            check_pandas_DataFrame_has_column(df, "df", trait_col)
-            trait_colix = df.columns.get_loc(trait_col)
-        elif isinstance(trait_col, Integral):
-            check_pandas_DataFrame_has_column_index(df, "df", trait_col)
-            trait_colix = trait_col
+        # trait1_col
+        if isinstance(trait1_col, str):
+            check_pandas_DataFrame_has_column(df, "df", trait1_col)
+            trait1_colix = df.columns.get_loc(trait1_col)
+        elif isinstance(trait1_col, Integral):
+            check_pandas_DataFrame_has_column_index(df, "df", trait1_col)
+            trait1_colix = trait1_col
         else:
-            check_is_str_or_Integral(trait_col, "trait_col")
+            check_is_str_or_Integral(trait1_col, "trait1_col")
         
-        # variance_col
-        if isinstance(variance_col, str):
-            check_pandas_DataFrame_has_column(df, "df", variance_col)
-            variance_colix = df.columns.get_loc(variance_col)
-        elif isinstance(variance_col, Integral):
-            check_pandas_DataFrame_has_column_index(df, "df", variance_col)
-            variance_colix = variance_col
+        # trait2_col
+        if isinstance(trait2_col, str):
+            check_pandas_DataFrame_has_column(df, "df", trait2_col)
+            trait2_colix = df.columns.get_loc(trait2_col)
+        elif isinstance(trait2_col, Integral):
+            check_pandas_DataFrame_has_column_index(df, "df", trait2_col)
+            trait2_colix = trait2_col
         else:
-            check_is_str_or_Integral(variance_col, "variance_col")
+            check_is_str_or_Integral(trait2_col, "trait2_col")
+        
+        # covariance_col
+        if isinstance(covariance_col, str):
+            check_pandas_DataFrame_has_column(df, "df", covariance_col)
+            covariance_colix = df.columns.get_loc(covariance_col)
+        elif isinstance(covariance_col, Integral):
+            check_pandas_DataFrame_has_column_index(df, "df", covariance_col)
+            covariance_colix = covariance_col
+        else:
+            check_is_str_or_Integral(covariance_col, "covariance_col")
         
         # get required data columns (type numpy.ndarray)
         female2_data  = df.iloc[:,female2_colix ].to_numpy(dtype = object)
         male2_data    = df.iloc[:,male2_colix   ].to_numpy(dtype = object)
         female1_data  = df.iloc[:,female1_colix ].to_numpy(dtype = object)
         male1_data    = df.iloc[:,male1_colix   ].to_numpy(dtype = object)
-        trait_data    = df.iloc[:,trait_colix   ].to_numpy(dtype = object)
-        variance_data = df.iloc[:,variance_colix].to_numpy(dtype = float)
+        trait1_data    = df.iloc[:,trait1_colix   ].to_numpy(dtype = object)
+        trait2_data    = df.iloc[:,trait2_colix   ].to_numpy(dtype = object)
+        covariance_data = df.iloc[:,covariance_colix].to_numpy(dtype = float)
 
         # get unique female2, male2, female1, male1 taxa (type numpy.ndarray)
         female2_taxa, female2_taxaix = numpy.unique(female2_data, return_index = True)
@@ -635,7 +644,10 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             male1ix  [  male1_data == taxon] = i
         
         # calculate unique trait values, trait indices
-        trait, traitix = numpy.unique(trait_data, return_inverse = True)
+        trait1, trait1ix = numpy.unique(trait1_data, return_inverse = True)
+        trait2, trait2ix = numpy.unique(trait2_data, return_inverse = True)
+
+        trait = numpy.union1d(trait1, trait2)
 
         # get optional taxa group data
         taxa_grp = None
@@ -683,7 +695,7 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
         mat = numpy.full((nfemale2,nmale2,nfemale1,nmale1,ntrait), numpy.nan, dtype = float)
 
         # overwrite NaN values with covariance values
-        mat[female2ix,male2ix,female1ix,male1ix,traitix] = variance_data
+        mat[female2ix,male2ix,female1ix,male1ix,trait1ix,trait2ix] = covariance_data
 
         # construct an object
         out = cls(
@@ -707,8 +719,9 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             female1_grp_col: Optional[Union[str,Integral]] = "female1_grp",
             male1_col: Union[str,Integral] = "male1",
             male1_grp_col: Optional[Union[str,Integral]] = "male1_grp",
-            trait_col: Union[str,Integral] = "trait",
-            variance_col: Union[str,Integral] = "covariance",
+            trait1_col: Union[str,Integral] = "trait1",
+            trait2_col: Union[str,Integral] = "trait2",
+            covariance_col: Union[str,Integral] = "covariance",
             sep: str = ',',
             header: int = 0,
             **kwargs: dict
@@ -745,10 +758,10 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
         male1_grp_col : str, Integral, None, default = "male1"
             Name or index of the column from which to read male 1 taxa names.
 
-        trait_col : str, Integral, default = "trait"
+        trait1_col : str, Integral, default = "trait"
             Name or index of the column from which to read trait taxa names.
 
-        variance_col : str, Integral, default = "covariance"
+        covariance_col : str, Integral, default = "covariance"
             Name or index of the column from which to read covariance taxa names.
 
         kwargs : dict
@@ -776,8 +789,9 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
             female1_grp_col = female1_grp_col,
             male1_col = male1_col,
             male1_grp_col = male1_grp_col,
-            trait_col = trait_col,
-            variance_col = variance_col,
+            trait1_col = trait1_col,
+            trait2_col = trait2_col,
+            covariance_col = covariance_col,
         )
 
         return out
@@ -990,13 +1004,9 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
         tafreq = pgmat.tafreq()                 # (n,p) allele frequencies within taxon
         u = algmod.u_a                          # (p,t) marker effect coefficients
         
-        # calculate individual locus covariance coeffients for binomial distributions
-        # (p,t) -> (p,t)
-        varcoef = (ploidy * u)**2
-
         # allocate a square matrix for each pairwise covariance
-        var_a = numpy.empty(
-            (ntaxa,ntaxa,ntrait),               # (n,n,t) covariance matrix
+        cov_a = numpy.empty(
+            (ntaxa,ntaxa,ntrait,ntrait),               # (n,n,t) covariance matrix
             dtype = float
         )
 
@@ -1010,19 +1020,27 @@ class DenseFourWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGen
                         # (4,) . (4,p) -> (p,)
                         p = numpy.dot(epgc, tafreq[(female2,male2,female1,male1),:])
 
-                        # calculate the covariance
+                        # calculate the diagonal matrix elements as p(1-p)
                         # scalar - (p,1) -> (p,1)
-                        # (p,t) * (p,1) * (p,1) -> (p,t)
-                        # (p,t).sum(0) -> (t,)
-                        v = (varcoef * p[:,None] * (1.0 - p[:,None])).sum(0)
+                        # (p,1) * (p,1) -> (p,t)
+                        d = p[:,None] * (1.0 - p[:,None])
+
+                        # calculate the covariance
+                        # (p,t) * (p,1) -> (p,t)
+                        # (p,t).T -> (t,p)
+                        # (t,p) @ (p,t) -> (t,t)
+                        cov = ((u * d).T) @ u
+
+                        # multiply by the ploidy
+                        cov *= ploidy
 
                         # store in matrix and copy to lower since matrix is symmetrical
-                        var_a[female2,male2,female1,male1,:] = v
-                        var_a[female2,male2,male1,female1,:] = v
+                        cov_a[female2,male2,female1,male1,:,:] = cov
+                        cov_a[female2,male2,male1,female1,:,:] = cov
 
         # construct output
         out = cls(
-            mat = var_a,
+            mat = cov_a,
             taxa = pgmat.taxa,
             taxa_grp = pgmat.taxa_grp,
             trait = algmod.trait

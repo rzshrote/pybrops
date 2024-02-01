@@ -9,11 +9,11 @@ import numpy
 from pybrops.model.pcvmat.DenseProgenyGenicCovarianceMatrix import DenseProgenyGenicCovarianceMatrix
 from pybrops.model.pcvmat.AdditiveProgenyGenicCovarianceMatrix import AdditiveProgenyGenicCovarianceMatrix
 
-# TODO: implement me
-class DenseAdditiveProgenyGenicCovarianceMatrix(DenseProgenyGenicCovarianceMatrix,AdditiveProgenyGenicCovarianceMatrix):
+class DenseAdditiveProgenyGenicCovarianceMatrix(
+        DenseProgenyGenicCovarianceMatrix,
+        AdditiveProgenyGenicCovarianceMatrix,
+    ):
     """
-    UNDER CONSTRUCTION!
-
     A semi-concrete class for dense additive genetic covariance matrices.
 
     The purpose of this semi-concrete class is to provide functionality for:
@@ -76,7 +76,8 @@ class DenseAdditiveProgenyGenicCovarianceMatrix(DenseProgenyGenicCovarianceMatri
 ################################## Utilities ###################################
 def check_is_DenseAdditiveProgenyGenicCovarianceMatrix(v: object, vname: str) -> None:
     """
-    Check if object is of type ``DenseAdditiveProgenyGenicCovarianceMatrix``. Otherwise raise ``TypeError``.
+    Check if object is of type ``DenseAdditiveProgenyGenicCovarianceMatrix``.
+    Otherwise raise ``TypeError``.
 
     Parameters
     ----------
@@ -86,4 +87,4 @@ def check_is_DenseAdditiveProgenyGenicCovarianceMatrix(v: object, vname: str) ->
         Name of variable to print in ``TypeError`` message.
     """
     if not isinstance(v, DenseAdditiveProgenyGenicCovarianceMatrix):
-        raise TypeError("'{0}' must be a DenseAdditiveProgenyGenicCovarianceMatrix".format(vname))
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,DenseAdditiveProgenyGenicCovarianceMatrix.__name__,type(v).__name__))

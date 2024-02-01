@@ -76,20 +76,20 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
     def mat(self, value: numpy.ndarray) -> None:
         """Set pointer to raw numpy.ndarray object."""
         check_is_ndarray(value, "mat")
-        check_ndarray_ndim(value, "mat", 5) # (ntaxa,ntaxa,ntaxa,ntaxa,ntrait)
+        check_ndarray_ndim(value, "mat", 6) # (ntaxa,ntaxa,ntaxa,ntaxa,ntrait,ntrait)
         self._mat = value
 
     ############## Square Metadata Properties ##############
-    @DenseAdditiveProgenyGeneticCovarianceMatrix.square_axes.getter
-    def square_axes(self) -> tuple:
-        """Get axis indices for axes that are square"""
+    @DenseAdditiveProgenyGeneticCovarianceMatrix.square_taxa_axes.getter
+    def square_taxa_axes(self) -> tuple:
+        """Axis indices for taxa axes that are square."""
         return (0,1,2,3) # (female2, male2, female1, male1)
 
+    @DenseAdditiveProgenyGeneticCovarianceMatrix.square_trait_axes.getter
+    def square_trait_axes(self) -> tuple:
+        return (4,5) # (trait1, trait2) covariance matrix
+
     #################### Trait metadata ####################
-    @DenseAdditiveProgenyGeneticCovarianceMatrix.trait_axis.getter
-    def trait_axis(self) -> int:
-        """Axis along which traits are stored."""
-        return 4
 
     ######## Expected parental genome contributions ########
     @DenseAdditiveProgenyGeneticCovarianceMatrix.epgc.getter
@@ -152,8 +152,9 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
             female1_grp_col: Optional[str] = "female1_grp",
             male1_col: str = "male1",
             male1_grp_col: Optional[str] = "male1_grp",
-            trait_col: str = "trait",
-            variance_col: str = "covariance",
+            trait1_col: str = "trait1",
+            trait2_col: str = "trait2",
+            covariance_col: str = "covariance",
             **kwargs: dict
         ) -> pandas.DataFrame:
         """
@@ -217,33 +218,26 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
         if male1_grp_col is not None:
             check_is_str(male1_grp_col, "male1_grp_col")
             
-        check_is_str(trait_col, "trait_col")
-        check_is_str(variance_col, "variance_col")
+        check_is_str(trait1_col, "trait1_col")
+        check_is_str(trait2_col, "trait2_col")
+        check_is_str(covariance_col, "variance_col")
 
-        # calculate how much zero fill we need
-        taxazfill = math.ceil(math.log10(self.ntaxa))+1
-        traitzfill = math.ceil(math.log10(self.ntrait))+1
-
-        # get names for taxa
+        # if taxa is None, give default names of TaxonXXX, where X is the number.
         if self.taxa is None:
-            taxa = numpy.array(
-                ["Taxon"+str(e).zfill(taxazfill) for e in range(self.ntaxa)],
-                dtype = object
-            )
+            nzero = math.ceil(math.log10(self.ntaxa))+1
+            taxa = numpy.array(["Taxon"+str(e).zfill(nzero) for e in range(self.ntaxa)], dtype = object)
         else:
             taxa = self.taxa
 
-        # get names for traits
+        # if trait is None, give default names of TraitXXX, where X is the number.
         if self.trait is None:
-            trait = numpy.array(
-                ["Trait"+str(e).zfill(traitzfill) for e in range(self.ntrait)],
-                dtype = object
-            )
+            nzero = math.ceil(math.log10(self.ntrait))+1
+            trait = numpy.array(["Trait"+str(e).zfill(nzero) for e in range(self.ntrait)], dtype = object)
         else:
             trait = self.trait
 
         # calculate flattened array and corresponding axis indices
-        flatmat, (female2ix, male2ix, female1ix, male1ix, traitix) = flattenix(self.mat)
+        flatmat, (female2ix,male2ix,female1ix,male1ix,trait1ix,trait2ix) = flattenix(self.mat)
 
         # make dictionary to store output columns in specific column ordering
         out_dict = {}
@@ -268,8 +262,9 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
             values = None if self.taxa_grp is None else self.taxa_grp[male1ix]
             out_dict.update({male1_grp_col: values})
         # add trait and covariance values
-        out_dict.update({trait_col: trait[traitix]})
-        out_dict.update({variance_col: flatmat})
+        out_dict.update({trait1_col: trait[trait1ix]})
+        out_dict.update({trait2_col: trait[trait2ix]})
+        out_dict.update({covariance_col: flatmat})
 
         # create a pandas DataFrame from the data
         out = pandas.DataFrame(out_dict, **kwargs)
@@ -287,8 +282,9 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
             female1_grp_col: Optional[str] = "female1_grp",
             male1_col: str = "male1",
             male1_grp_col: Optional[str] = "male1_grp",
-            trait_col: str = "trait",
-            variance_col: str = "covariance",
+            trait1_col: str = "trait1",
+            trait2_col: str = "trait2",
+            covariance_col: str = "covariance",
             sep: str = ',', 
             header: bool = True, 
             index: bool = False, 
@@ -354,8 +350,9 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
             female1_grp_col = female1_grp_col,
             male1_col       = male1_col,
             male1_grp_col   = male1_grp_col,
-            trait_col       = trait_col,
-            variance_col    = variance_col,
+            trait1_col      = trait1_col,
+            trait2_col      = trait2_col,
+            covariance_col  = covariance_col,
         )
 
         # export using pandas
@@ -446,8 +443,9 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
             female1_grp_col: Optional[Union[str,Integral]] = "female1_grp",
             male1_col: Union[str,Integral] = "male1",
             male1_grp_col: Optional[Union[str,Integral]] = "male1_grp",
-            trait_col: Union[str,Integral] = "trait",
-            variance_col: Union[str,Integral] = "covariance",
+            trait1_col: Union[str,Integral] = "trait1",
+            trait2_col: Union[str,Integral] = "trait2",
+            covariance_col: Union[str,Integral] = "covariance",
             **kwargs: dict
         ) -> 'DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix':
         """
@@ -586,33 +584,44 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
             else:
                 check_is_str_or_Integral(male1_grp_col, "male1_grp_col")
         
-        # trait_col
-        if isinstance(trait_col, str):
-            check_pandas_DataFrame_has_column(df, "df", trait_col)
-            trait_colix = df.columns.get_loc(trait_col)
-        elif isinstance(trait_col, Integral):
-            check_pandas_DataFrame_has_column_index(df, "df", trait_col)
-            trait_colix = trait_col
+        # trait1_col
+        if isinstance(trait1_col, str):
+            check_pandas_DataFrame_has_column(df, "df", trait1_col)
+            trait1_colix = df.columns.get_loc(trait1_col)
+        elif isinstance(trait1_col, Integral):
+            check_pandas_DataFrame_has_column_index(df, "df", trait1_col)
+            trait1_colix = trait1_col
         else:
-            check_is_str_or_Integral(trait_col, "trait_col")
+            check_is_str_or_Integral(trait1_col, "trait1_col")
+        
+        # trait2_col
+        if isinstance(trait2_col, str):
+            check_pandas_DataFrame_has_column(df, "df", trait2_col)
+            trait2_colix = df.columns.get_loc(trait2_col)
+        elif isinstance(trait2_col, Integral):
+            check_pandas_DataFrame_has_column_index(df, "df", trait2_col)
+            trait2_colix = trait2_col
+        else:
+            check_is_str_or_Integral(trait2_col, "trait2_col")
         
         # variance_col
-        if isinstance(variance_col, str):
-            check_pandas_DataFrame_has_column(df, "df", variance_col)
-            variance_colix = df.columns.get_loc(variance_col)
-        elif isinstance(variance_col, Integral):
-            check_pandas_DataFrame_has_column_index(df, "df", variance_col)
-            variance_colix = variance_col
+        if isinstance(covariance_col, str):
+            check_pandas_DataFrame_has_column(df, "df", covariance_col)
+            covariance_colix = df.columns.get_loc(covariance_col)
+        elif isinstance(covariance_col, Integral):
+            check_pandas_DataFrame_has_column_index(df, "df", covariance_col)
+            covariance_colix = covariance_col
         else:
-            check_is_str_or_Integral(variance_col, "variance_col")
+            check_is_str_or_Integral(covariance_col, "variance_col")
         
         # get required data columns (type numpy.ndarray)
-        female2_data  = df.iloc[:,female2_colix ].to_numpy(dtype = object)
-        male2_data    = df.iloc[:,male2_colix   ].to_numpy(dtype = object)
-        female1_data  = df.iloc[:,female1_colix ].to_numpy(dtype = object)
-        male1_data    = df.iloc[:,male1_colix   ].to_numpy(dtype = object)
-        trait_data    = df.iloc[:,trait_colix   ].to_numpy(dtype = object)
-        variance_data = df.iloc[:,variance_colix].to_numpy(dtype = float)
+        female2_data    = df.iloc[:,female2_colix   ].to_numpy(dtype = object)
+        male2_data      = df.iloc[:,male2_colix     ].to_numpy(dtype = object)
+        female1_data    = df.iloc[:,female1_colix   ].to_numpy(dtype = object)
+        male1_data      = df.iloc[:,male1_colix     ].to_numpy(dtype = object)
+        trait1_data     = df.iloc[:,trait1_colix    ].to_numpy(dtype = object)
+        trait2_data     = df.iloc[:,trait2_colix    ].to_numpy(dtype = object)
+        covariance_data = df.iloc[:,covariance_colix].to_numpy(dtype = float)
 
         # get unique female2, male2, female1, male1 taxa (type numpy.ndarray)
         female2_taxa, female2_taxaix = numpy.unique(female2_data, return_index = True)
@@ -640,7 +649,11 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
             male1ix  [  male1_data == taxon] = i
         
         # calculate unique trait values, trait indices
-        trait, traitix = numpy.unique(trait_data, return_inverse = True)
+        trait1, trait1ix = numpy.unique(trait1_data, return_inverse = True)
+        trait2, trait2ix = numpy.unique(trait2_data, return_inverse = True)
+
+        # get all unique traits
+        trait = numpy.union1d(trait1, trait2)
 
         # get optional taxa group data
         taxa_grp = None
@@ -685,10 +698,10 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
         ntrait = len(trait)
 
         # allocate NaN array for covariance matrix
-        mat = numpy.full((nfemale2,nmale2,nfemale1,nmale1,ntrait), numpy.nan, dtype = float)
+        mat = numpy.full((nfemale2,nmale2,nfemale1,nmale1,ntrait,ntrait), numpy.nan, dtype = float)
 
         # overwrite NaN values with covariance values
-        mat[female2ix,male2ix,female1ix,male1ix,traitix] = variance_data
+        mat[female2ix,male2ix,female1ix,male1ix,trait1ix,trait2ix] = covariance_data
 
         # construct an object
         out = cls(
@@ -712,8 +725,9 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
             female1_grp_col: Optional[Union[str,Integral]] = "female1_grp",
             male1_col: Union[str,Integral] = "male1",
             male1_grp_col: Optional[Union[str,Integral]] = "male1_grp",
-            trait_col: Union[str,Integral] = "trait",
-            variance_col: Union[str,Integral] = "covariance",
+            trait1_col: Union[str,Integral] = "trait1",
+            trait2_col: Union[str,Integral] = "trait2",
+            covariance_col: Union[str,Integral] = "covariance",
             sep: str = ',',
             header: int = 0,
             **kwargs: dict
@@ -781,8 +795,9 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
             female1_grp_col = female1_grp_col,
             male1_col = male1_col,
             male1_grp_col = male1_grp_col,
-            trait_col = trait_col,
-            variance_col = variance_col,
+            trait1_col = trait1_col,
+            trait2_col = trait2_col,
+            covariance_col = covariance_col,
         )
 
         return out
@@ -1132,10 +1147,8 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
 
                             # calculate the dot product for each trait to get a
                             # partial covariance sum for male2-female2
-                            # (t,rb)x(rb,cb) -> (t,cb)
-                            # (t,cb)*(t,cb) -> (t,cb)
-                            # (t,cb).sum(1) -> (t,)
-                            varA_part21 = (reffect21 @ D2 * ceffect21).sum(1)
+                            # (t,rb)@(rb,cb)@(cb,t) -> (t,t)
+                            varA_part21 = reffect21 @ D2 @ ceffect21.T
 
                             for female1 in range(0,ntaxa):      # varA row index
                                 # calculate genotype differences for row, col
@@ -1151,11 +1164,9 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
                                 ceffect32 = cdgeno32 * cu # (cb,)*(t,cb) -> (t,cb)
 
                                 # calculate varA part for female1
-                                # (t,rb)x(rb,cb) -> (t,cb)
-                                # (t,cb)*(t,cb) -> (t,cb)
-                                # (t,cb).sum(1) -> (t,)
-                                varA_part31 = (reffect31 @ D1 * ceffect31).sum(1)
-                                varA_part32 = (reffect32 @ D1 * ceffect31).sum(1)
+                                # (t,rb)@(rb,cb)@(cb,t) -> (t,cb)
+                                varA_part31 = reffect31 @ D1 @ ceffect31.T
+                                varA_part32 = reffect32 @ D1 @ ceffect32.T
 
                                 # only do lower triangle since symmetrical within each slice
                                 for male1 in range(0,female1):  # varA col index
@@ -1169,27 +1180,25 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
 
                                     # calculate effect differences
                                     reffect41 = rdgeno41 * ru # (rb,)*(t,rb) -> (t,rb)
-                                    ceffect41 = rdgeno41 * cu # (cb,)*(t,cb) -> (t,cb)
+                                    ceffect41 = cdgeno41 * cu # (cb,)*(t,cb) -> (t,cb)
                                     reffect42 = rdgeno42 * ru # (rb,)*(t,rb) -> (t,rb)
-                                    ceffect42 = rdgeno42 * cu # (cb,)*(t,cb) -> (t,cb)
+                                    ceffect42 = cdgeno42 * cu # (cb,)*(t,cb) -> (t,cb)
                                     reffect43 = rdgeno43 * ru # (rb,)*(t,rb) -> (t,rb)
-                                    ceffect43 = rdgeno43 * cu # (cb,)*(t,cb) -> (t,cb)
+                                    ceffect43 = cdgeno43 * cu # (cb,)*(t,cb) -> (t,cb)
 
                                     # calculate varA parts for crosses with male
-                                    # (t,rb)x(rb,cb) -> (t,cb)
-                                    # (t,cb)*(t,cb) -> (t,cb)
-                                    # (t,cb).sum(1) -> (t,)
-                                    varA_part41 = (reffect41 @ D1 * ceffect41).sum(1)
-                                    varA_part42 = (reffect42 @ D1 * ceffect42).sum(1)
-                                    varA_part43 = (reffect43 @ D2 * ceffect43).sum(1)
+                                    # (t,rb)@(rb,cb)@(cb,t) -> (t,cb)
+                                    varA_part41 = reffect41 @ D1 @ ceffect41.T
+                                    varA_part42 = reffect42 @ D1 @ ceffect42.T
+                                    varA_part43 = reffect43 @ D2 @ ceffect43.T
 
                                     # calculate varA part for this matrix chunk
-                                    # (t,) + (t,) + (t,) + (t,) + (t,) + (t,) -> (t,)
+                                    # (t,t) + (t,t) + (t,t) + (t,t) + (t,t) + (t,t) -> (t,t)
                                     varA_part = varA_part21 + varA_part31 + varA_part32 + varA_part41 + varA_part42 + varA_part43
 
                                     # add this partial covariance to the lower triangle
-                                    # (1,1,1,1,t) + (t,) -> (1,1,1,1,t)
-                                    varA_mat[female2,male2,female1,male1,:] += varA_part
+                                    # (1,1,1,1,t,t) + (t,t) -> (1,1,1,1,t,t)
+                                    varA_mat[female2,male2,female1,male1,:,:] += varA_part
 
         # divide entire matrix by 4 to get covariance per the equation
         # multiplication is faster computationally
@@ -1200,7 +1209,7 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
         # copy lower triangle to the upper since varA matrix is symmetrical within each slice
         for female1 in range(1, ntaxa):
             for male1 in range(0, female1):
-                varA_mat[:,:,male1,female1,:] = varA_mat[:,:,female1,male1,:]
+                varA_mat[:,:,male1,female1,:,:] = varA_mat[:,:,female1,male1,:,:]
 
         # construct output
         out = cls(

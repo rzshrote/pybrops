@@ -166,4 +166,4 @@ def check_is_DenseProgenyGeneticCovarianceMatrix(v: object, vname: str) -> None:
         Name of variable to print in ``TypeError`` message.
     """
     if not isinstance(v, DenseProgenyGeneticCovarianceMatrix):
-        raise TypeError("'{0}' must be a DenseProgenyGeneticCovarianceMatrix".format(vname))
+        raise TypeError("variable '{0}' must be of type '{1}' but received type '{2}'".format(vname,DenseProgenyGeneticCovarianceMatrix.__name__,type(v).__name__))
