@@ -6,11 +6,11 @@ import setuptools
 setup_location = "." # pathlib.Path(__file__).parents[1]
 
 # package metadata: general descriptors
-pybrops_name = "PyBrOpS"
-pybrops_version = "0.9.0"
+pybrops_name = "pybrops"
+pybrops_version = "1.0.0"
 pybrops_author = "Robert Z. Shrote"
 pybrops_author_email = "shrotero@msu.edu"
-pybrops_description = "Python package for numerical breeding optimizations"
+pybrops_description = "Python package for breeding program numerical optimization and simulation"
 with open("README.md", "r", encoding = "utf-8") as readme_file:
     pybrops_description_long = readme_file.read()
     pybrops_description_long_type = "text/markdown"
@@ -25,7 +25,7 @@ pybrops_project_url = {
 pybrops_license = "Apache License 2.0"
 pybrops_classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: Apache Software License",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
 
@@ -39,8 +39,6 @@ pybrops_requirements_install = [
     "pymoo",
     "cyvcf2",
     "h5py",
-    "pytest",
-    "pytest-datadir"
 ]
 
 # package metadata: package locations
