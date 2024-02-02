@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pybrops.model.pcvmat.DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix &#8212; pybrops 0.9.0 documentation</title>
+    <title>pybrops.model.pcvmat.DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix &#8212; pybrops 1.0.1 documentation</title>
   
   
   
@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=39bb1c6d"></script>
+    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/model/pcvmat/DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix';</script>
@@ -113,7 +113,7 @@
   
   
   
-    <p class="title logo__title">pybrops 0.9.0 documentation</p>
+    <p class="title logo__title">pybrops 1.0.1 documentation</p>
   
 </a></div>
     
@@ -964,7 +964,7 @@ document.write(`
             <span class="n">female_grp_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">female_grp_colix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">taxon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">taxa</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">taxon</span> <span class="ow">in</span> <span class="n">female_taxa</span><span class="p">:</span>
-                    <span class="n">ix</span> <span class="o">=</span> <span class="n">female_taxaix</span><span class="p">[</span><span class="n">female_taxa</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">]</span>
+                    <span class="n">ix</span> <span class="o">=</span> <span class="n">female_taxaix</span><span class="p">[</span><span class="n">female_taxa</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                     <span class="n">taxa_grp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">female_grp_data</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">male_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -972,7 +972,7 @@ document.write(`
             <span class="n">male_grp_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">male_grp_colix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">taxon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">taxa</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">taxon</span> <span class="ow">in</span> <span class="n">male_taxa</span><span class="p">:</span>
-                    <span class="n">ix</span> <span class="o">=</span> <span class="n">male_taxaix</span><span class="p">[</span><span class="n">male_taxa</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">]</span>
+                    <span class="n">ix</span> <span class="o">=</span> <span class="n">male_taxaix</span><span class="p">[</span><span class="n">male_taxa</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
                     <span class="n">taxa_grp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">male_grp_data</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
 
         <span class="c1"># get array dimensions</span>
@@ -1479,7 +1479,7 @@ document.write(`
 
   <p class="copyright">
     
-      © Copyright 2023, Robert Shrote.
+      © Copyright 2024, Robert Z. Shrote.
       <br/>
     
   </p>
