@@ -21,7 +21,7 @@ devel-dependencies: devel-virtualenv
 # instructions for installing an editable package for local testing
 devel-install: devel-virtualenv devel-dependencies
 	# activate virtual environment and install
-	. env/bin/activate && python3 -m pip install --editable .
+	. env/bin/activate && python3 -m pip install --editable src/
 
 # instructions for building the package
 build:

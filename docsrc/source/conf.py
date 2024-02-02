@@ -21,11 +21,11 @@ def setup(app):
 # -- Project information -----------------------------------------------------
 
 project = 'pybrops'
-copyright = '2023, Robert Shrote'
-author = 'Robert Shrote'
+copyright = '2024, Robert Z. Shrote'
+author = 'Robert Z. Shrote'
 
 # The full version, including alpha/beta/rc tags
-release = '0.9.0'
+release = '1.0.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -61,7 +61,6 @@ exclude_patterns = []
 autosummary_generate = True
 # autosummary_imported_members = True
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
-
 autosummary_generate = True  # Turn on sphinx.ext.autosummary
 autoclass_content = "both"  # Add __init__ doc (ie. params) to class summaries
 html_show_sourcelink = False  # Remove 'view source code' from top of page (for html, not python)
