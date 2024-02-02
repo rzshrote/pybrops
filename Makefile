@@ -30,13 +30,12 @@ build-dependencies:
 	python3 -m pip install --upgrade twine
 
 # instructions for building the package
-build:
-	echo "build instructions not written yet"
-	# python3 -m build
+build: build-dependencies
+	python3 -m build
 
-# instructions for building the package distribution
-dist:
-	echo "distribution build instructions not written yet"
+# instructions for distributing the package
+dist: build
+	python3 -m twine upload dist/*
 
 # instructions for building the package documentation in html format
 doc-html:
@@ -52,3 +51,6 @@ doc-pdf:
 # instructions for cleaning the virtual environment
 clean-devel-virtualenv:
 	rm -rf env/
+
+clean-dist:
+	rm -rf dist/
