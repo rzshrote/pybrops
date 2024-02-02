@@ -39,6 +39,8 @@ pybrops_requirements_install = [
     "pymoo",
     "cyvcf2",
     "h5py",
+    "DEAP",
+    "pytest",
 ]
 
 # package metadata: package locations

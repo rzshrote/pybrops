@@ -1,5 +1,4 @@
 import numpy
-import pytest
 
 def assert_ndarray_operator(op, v, w):
     """
