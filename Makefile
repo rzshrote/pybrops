@@ -34,7 +34,7 @@ build: build-dependencies
 	python3 -m build
 
 # instructions for distributing the package
-dist: build
+dist: clean-dist build
 	python3 -m twine upload dist/*
 
 # instructions for building the package documentation in html format

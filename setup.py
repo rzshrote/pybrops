@@ -7,7 +7,7 @@ setup_location = "." # pathlib.Path(__file__).parents[1]
 
 # package metadata: general descriptors
 pybrops_name = "pybrops"
-pybrops_version = "1.0.0"
+pybrops_version = "1.0.1"
 pybrops_author = "Robert Z. Shrote"
 pybrops_author_email = "shrotero@msu.edu"
 pybrops_description = "Python package for breeding program numerical optimization and simulation"
