@@ -12,6 +12,7 @@ import copy
 from numbers import Integral, Real
 from typing import Optional, Sequence, Union
 import numpy
+from numpy.typing import ArrayLike
 import h5py
 import pandas
 from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
@@ -264,11 +265,202 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         return copy.deepcopy(self, memo)
 
     ######### Matrix element copy-on-manipulation ##########
-    # FIXME: super adjoin, delete, insert, select, ... for location, scale bug
+    def adjoin_taxa(
+            self, 
+            values: Union[BreedingValueMatrix,numpy.ndarray], 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseBreedingValueMatrix':
+        """
+        Add additional elements to the end of the TaxaMatrix along the taxa
+        axis. Copy-on-manipulation routine.
 
-    def select_taxa(self, indices, **kwargs: dict):
+        Parameters
+        ----------
+        values : BreedingValueMatrix, numpy.ndarray
+            Values to be appended to append to the Matrix.
+            If numpy.ndarray, assumed to be unscaled.
+        taxa : numpy.ndarray
+            Taxa names to adjoin to the Matrix.
+            If values is a DenseBreedingValueMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to adjoin to the Matrix.
+            If values is a DenseBreedingValueMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DenseBreedingValueMatrix
+            A copy of the TaxaMatrix with values appended to the taxa axis
+            Note that adjoin does not occur in-place: a new Matrix is allocated
+            and filled.
+        """
+        # extract mat values
+        if isinstance(values, self.__class__):
+            if taxa is None:
+                taxa = values.taxa
+            if taxa_grp is None:
+                taxa_grp = values.taxa_grp
+            # unscale values
+            values = values.unscale()
+        elif not isinstance(values, numpy.ndarray):
+            raise ValueError("cannot adjoin: 'values' must be of type {0} or numpy.ndarray".format(self.__class__))
+
+        # perform error checks before allocating memory
+        if values.ndim != self.mat_ndim:
+            raise ValueError("cannot adjoin: 'values' must have ndim == {0}".format(self.mat_ndim))
+        for i,(j,k) in enumerate(zip(values.shape, self.mat_shape)):
+            if (i != self.taxa_axis) and (j != k):
+                raise ValueError("cannot adjoin: axis lengths incompatible for axis {0}".format(i))
+        if (self._taxa is not None) and (taxa is None):
+            taxa = numpy.empty(values.shape[self.taxa_axis], dtype = "object")   # fill with None
+        if (self._taxa_grp is not None) and (taxa_grp is None):
+            raise TypeError("cannot adjoin: 'taxa_grp' argument is required")
+
+        # adjoin values
+        values = numpy.append(self.unscale(), values, axis = self.taxa_axis)
+        if self._taxa is not None:
+            taxa = numpy.append(self.taxa, taxa, axis = 0)
+        if self._taxa_grp is not None:
+            taxa_grp = numpy.append(self.taxa_grp, taxa_grp, axis = 0)
+
+        # construct output from numpy
+        out = self.__class__.from_numpy(
+            mat = values,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            trait = self.trait,
+            **kwargs
+        )
+
+        return out
+
+    def delete_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            **kwargs: dict
+        ) -> 'DenseBreedingValueMatrix':
+        """
+        Delete sub-arrays along the taxa axis.
+
+        Parameters
+        ----------
+        obj : int, slice, or Sequence of ints
+            Indicate indices of sub-arrays to remove along the specified axis.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DenseBreedingValueMatrix
+            A DenseBreedingValueMatrix with deleted elements. Note that concat does not occur
+            in-place: a new DenseBreedingValueMatrix is allocated and filled.
+        """
+        # get values
+        mat = self.unscale()
+        taxa = self.taxa
+        taxa_grp = self.taxa_grp
+        trait = self.trait
+
+        # delete values
+        mat = numpy.delete(mat, obj, axis = self.taxa_axis)
+        if taxa is not None:
+            taxa = numpy.delete(taxa, obj, axis = 0)
+        if taxa_grp is not None:
+            taxa_grp = numpy.delete(taxa_grp, obj, axis = 0)
+
+        out = self.__class__.from_numpy(
+            mat = mat,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            trait = trait,
+            **kwargs
+        )
+
+        return out
+
+    def insert_taxa(
+            self, 
+            obj: Union[int,slice,Sequence], 
+            values: Union[BreedingValueMatrix,numpy.ndarray], 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseBreedingValueMatrix':
+        """
+        Insert values along the taxa axis before the given indices.
+
+        Parameters
+        ----------
+        obj: int, slice, or Sequence of ints
+            Object that defines the index or indices before which values is
+            inserted.
+        values : BreedingValueMatrix, numpy.ndarray
+            Values to insert into the matrix.
+        taxa : numpy.ndarray
+            Taxa names to insert into the Matrix.
+        taxa_grp : numpy.ndarray
+            Taxa groups to insert into the Matrix.
+        kwargs : dict
+            Additional keyword arguments.
+
+        Returns
+        -------
+        out : DenseBreedingValueMatrix
+            A DenseBreedingValueMatrix with values inserted. Note that insert does not occur
+            in-place: a new DenseBreedingValueMatrix is allocated and filled.
+        """
+        # extract mat values
+        if isinstance(values, self.__class__):
+            if taxa is None:
+                taxa = values.taxa
+            if taxa_grp is None:
+                taxa_grp = values.taxa_grp
+            values = values.unscale()
+        elif not isinstance(values, numpy.ndarray):
+            raise ValueError("'values' must be of type {0} or numpy.ndarray".format(self.__class__))
+
+        # perform error checks before allocating memory
+        if values.ndim != self.mat_ndim:
+            raise ValueError("cannot insert: 'values' must have ndim == {0}".format(self.mat_ndim))
+        for i,(j,k) in enumerate(zip(values.shape, self.mat_shape)):
+            if (i != self.taxa_axis) and (j != k):
+                raise ValueError("cannot insert: axis lengths incompatible for axis {0}".format(i))
+        if (self._taxa is not None) and (taxa is None):
+            taxa = numpy.empty(values.shape[self.taxa_axis], dtype = "object")   # fill with None
+        if (self._taxa_grp is not None) and (taxa_grp is None):
+            raise TypeError("cannot insert: 'taxa_grp' argument is required")
+
+        # insert values
+        values = numpy.insert(self.unscale(), obj, values, axis = self.taxa_axis)
+        if self._taxa is not None:
+            taxa = numpy.insert(self._taxa, obj, taxa, axis = 0)
+        if self._taxa_grp is not None:
+            taxa_grp = numpy.insert(self._taxa_grp, obj, taxa_grp, axis = 0)
+
+        # create output
+        out = self.__class__.from_numpy(
+            mat = values,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            trait = self.trait,
+            **kwargs
+        )
+
+        return out
+
+    def select_taxa(
+            self, 
+            indices: ArrayLike, 
+            **kwargs: dict
+        ) -> 'DenseBreedingValueMatrix':
         """
         Select certain values from the Matrix along the taxa axis.
+        Selection re-centers and re-scales breeding values to mean zero and unit variance.
 
         Parameters
         ----------
@@ -286,10 +478,13 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         # check for array_like
         check_is_array_like(indices, "indices")
 
-        # get values
-        mat = self.unscale()        # get unscaled values
-        taxa = self._taxa
-        taxa_grp = self._taxa_grp
+        # get unscaled values
+        mat = self.unscale()
+
+        # get taxa, taxa group, trait labels
+        taxa = self.taxa
+        taxa_grp = self.taxa_grp
+        trait = self.trait
 
         # select values
         mat = numpy.take(mat, indices, axis = self.taxa_axis)
@@ -298,18 +493,12 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         if taxa_grp is not None:
             taxa_grp = numpy.take(taxa_grp, indices, axis = 0)
 
-        # re-calculate breeding values
-        location = mat.mean(0)          # recalculate location
-        scale = mat.std(0)              # recalculate scale
-        mat = (mat - location) / scale  # mean center and scale values
-
-        # construct output
-        out = self.__class__(
+        # construct output from numpy, which conducts centering, scaling, etc.
+        out = self.__class__.from_numpy(
             mat = mat,
-            location = location,
-            scale = scale,
             taxa = taxa,
             taxa_grp = taxa_grp,
+            trait = trait,
             **kwargs
         )
 
@@ -705,6 +894,73 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
 
     ################### Matrix File I/O ####################
     @classmethod
+    def from_numpy(
+            cls, 
+            mat: numpy.ndarray, 
+            taxa: Optional[numpy.ndarray] = None, 
+            taxa_grp: Optional[numpy.ndarray] = None, 
+            trait: Optional[numpy.ndarray] = None, 
+            **kwargs: dict
+        ) -> 'DenseBreedingValueMatrix':
+        """
+        Construct a DenseBreedingValueMatrix from a numpy.ndarray.
+        Calculates mean-centering and scaling to unit variance.
+
+        Parameters
+        ----------
+        a : numpy.ndarray
+            A ``float64`` matrix of shape ``(n,t)``.
+
+            Where:
+
+            - ``n`` is the number of taxa.
+            - ``t`` is the number of traits.
+        taxa : numpy.ndarray
+            An array of taxa names.
+        taxa_grp : numpy.ndarray
+            An array of taxa groups.
+        trait : numpy.ndarray
+            An array of trait names.
+
+        Returns
+        -------
+        out : DenseBreedingValueMatrix
+            Output breeding value matrix.
+        """
+        # check inputs
+        check_ndarray_ndim(mat, "mat", 2)
+
+        # calculate location parameters
+        # (n,t) -> (t,)
+        location = numpy.nanmean(mat, axis = 0)
+
+        # calculate scale parameters
+        # (n,t) -> (t,)
+        scale = numpy.nanstd(mat, axis = 0)
+
+        # if scale == 0.0, set to 1.0 (do not scale)
+        scale[scale == 0.0] = 1.0
+
+        # mean center and scale values
+        # scalar / (t,) -> (t,)
+        # (t,) * ( (n,t) - (t,) ) -> (n,t)
+        # multiply since multiplication is faster than division for floating points
+        mat = (1.0 / scale) * (mat - location) 
+
+        # construct output
+        out = cls(
+            mat = mat,
+            location = location,
+            scale = scale,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            trait = trait,
+            **kwargs
+        )
+
+        return out
+
+    @classmethod
     def from_pandas(
             cls, 
             df: pandas.DataFrame,
@@ -807,15 +1063,13 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         # extract trait and matrix data
         trait = df.columns[colmask].to_numpy(dtype = object)
         mat = df.iloc[:,colmask].to_numpy(dtype = float)
-            
-        # construct output object
-        out = cls(
-            mat = mat, 
-            location = location, 
-            scale = scale, 
-            taxa = taxa, 
-            taxa_grp = taxa_grp, 
-            trait = trait, 
+        
+        # construct output from numpy
+        out = cls.from_numpy(
+            mat = mat,
+            taxa = taxa,
+            taxa_grp = taxa_grp,
+            trait = trait,
             **kwargs
         )
 
@@ -975,74 +1229,6 @@ class DenseBreedingValueMatrix(DenseTaxaTraitMatrix,BreedingValueMatrix):
         ######################################################### create object
         gmat = cls(**data_dict)                                 # create object from read data
         return gmat
-
-    @classmethod
-    def from_numpy(
-            cls, 
-            mat: numpy.ndarray, 
-            taxa: Optional[numpy.ndarray] = None, 
-            taxa_grp: Optional[numpy.ndarray] = None, 
-            trait: Optional[numpy.ndarray] = None, 
-            **kwargs: dict
-        ) -> 'DenseBreedingValueMatrix':
-        """
-        Construct a DenseBreedingValueMatrix from a numpy.ndarray.
-        Calculates mean-centering and scaling to unit variance.
-
-        Parameters
-        ----------
-        a : numpy.ndarray
-            A ``float64`` matrix of shape ``(n,t)``.
-
-            Where:
-
-            - ``n`` is the number of taxa.
-            - ``t`` is the number of traits.
-        taxa : numpy.ndarray
-            An array of taxa names.
-        taxa_grp : numpy.ndarray
-            An array of taxa groups.
-        trait : numpy.ndarray
-            An array of trait names.
-
-        Returns
-        -------
-        out : DenseBreedingValueMatrix
-            Output breeding value matrix.
-        """
-        # check inputs
-        check_ndarray_ndim(mat, "mat", 2)
-
-        # calculate location parameters
-        # (n,t) -> (t,)
-        location = numpy.nanmean(mat, axis = 0)
-
-        # calculate scale parameters
-        # (n,t) -> (t,)
-        scale = numpy.nanstd(mat, axis = 0)
-
-        # if scale < tolerance, set to 1.0 (do not scale)
-        mask = (scale == 0.0)
-        scale[mask] = 1.0
-
-        # mean center and scale values
-        # scalar / (t,) -> (t,)
-        # (t,) * ( (n,t) - (t,) ) -> (n,t)
-        # multiply since multiplication is faster than division for floating points
-        mat = (1.0 / scale) * (mat - location) 
-
-        # construct output
-        out = cls(
-            mat = mat,
-            location = location,
-            scale = scale,
-            taxa = taxa,
-            taxa_grp = taxa_grp,
-            trait = trait,
-            **kwargs
-        )
-
-        return out
 
 
 
