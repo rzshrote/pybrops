@@ -283,6 +283,166 @@ class ReducedExchangeMutation(Mutation):
         
         return Xm
 
+class MultiObjectiveStochasticHillClimberMutation(Mutation):
+    """
+    Perform a memetic subset exchange mutation.
+    """
+
+    ################ Special object methods ################
+    def __init__(
+            self,
+            setspace: np.ndarray,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for SubsetMutation.
+        
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments used for cooperative inheritance.
+        """
+        super(MultiObjectiveStochasticHillClimberMutation, self).__init__(**kwargs)
+        self.setspace = setspace
+
+    ###################### Properties ######################
+    @property
+    def setspace(self) -> np.ndarray:
+        """Set space from which to sample elements."""
+        return self._setspace
+    @setspace.setter
+    def setspace(self, value: np.ndarray) -> None:
+        """Set the set space from which to sample elements."""
+        if not isinstance(value, np.ndarray):
+            raise TypeError("'setspace' must be of type numpy.ndarray")
+        self._setspace = value
+    
+    ### Helper methods ###
+    def hillclimb(self, problem: Problem, x: np.ndarray, **kwargs):
+        # initialize the leader solution
+        lead_soln = x.copy()
+
+        # get the chromosome length
+        clen = len(lead_soln)
+
+        # get search space elements not in current leader solution
+        wrkss = self.setspace[np.logical_not(np.in1d(self.setspace, lead_soln))]
+
+        # evaluate the lead solution
+        lead_soln_constraints = {}
+        problem._evaluate_elementwise(lead_soln, lead_soln_constraints)
+
+        # for each element in the solution vector
+        for i in range(len(lead_soln)):
+            # randomlyu choose an index
+            j = np.random.choice(len(wrkss))
+            pass
+
+        # get starting solution score and constraint violations
+        gbest_obj, gbest_ineqcv, gbest_eqcv = prob.evalfn(gbest_soln)
+        gbest_score = gbest_obj.sum()
+        gbest_cv = gbest_ineqcv.sum() + gbest_eqcv.sum()
+
+        # hillclimber
+        while True:
+            best_i = None
+            best_j = None
+            best_obj, best_ineqcv, best_eqcv = gbest_obj, gbest_ineqcv, gbest_eqcv
+            best_score = gbest_score
+            best_cv = gbest_cv
+            # for each element in the solution vector
+            for i in range(len(gbest_soln)):
+                # for each element not in the solution vector, but in the decision space
+                for j in range(len(wrkss)):
+                    # exchange values to propose new solution
+                    gbest_soln[i], wrkss[j] = wrkss[j], gbest_soln[i]
+                    # score proposed solution
+                    prop_obj, prop_ineqcv, prop_eqcv = prob.evalfn(gbest_soln)
+                    prop_score = prop_obj.sum()
+                    prop_cv = prop_ineqcv.sum() + prop_eqcv.sum()
+                    # determine if the proposed solution is better
+                    # always prefer less constraint violation first
+                    if prop_cv < best_cv:
+                        best_i = i
+                        best_j = j
+                        best_obj, best_ineqcv, best_eqcv = prop_obj, prop_ineqcv, prop_eqcv
+                        best_score = prop_score
+                        best_cv = prop_cv
+                    # if constraint violations are identical, prefer better (min) score
+                    elif (prop_cv == best_cv) and (prop_score < best_score):
+                        best_i = i
+                        best_j = j
+                        best_obj, best_ineqcv, best_eqcv = prop_obj, prop_ineqcv, prop_eqcv
+                        best_score = prop_score
+                        best_cv = prop_cv
+                    # exchange values back to original solution
+                    gbest_soln[i], wrkss[j] = wrkss[j], gbest_soln[i]
+            if (best_i is None) or (best_j is None):
+                break
+            gbest_soln[best_i], wrkss[best_j] = wrkss[best_j], gbest_soln[best_i] # exchange values
+            gbest_obj, gbest_ineqcv, gbest_eqcv = best_obj, best_ineqcv, best_eqcv
+            gbest_score = best_score
+            gbest_cv = best_cv
+
+    ########### Abstract method implementations ############
+    def _do(
+            self, 
+            problem: Problem, 
+            X: np.ndarray, 
+            **kwargs: dict
+        ) -> np.ndarray:
+        """
+        Perform exchange mutation for subsets.
+
+        Parameters
+        ----------
+        problem : Problem
+            An optimization problem.
+        X : numpy.ndarray
+            An array of shape ``(n_indiv, n_var)`` containing individuals which to mutate.
+            This array is unmodified by this function.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape ``(n_parents, n_matings, n_var)`` containing progeny chromosomes.
+        """
+        # get number of individuals, variables from X array
+        n_indiv, n_var = X.shape
+
+        # create list to store output chromosomes
+        out_ls = []
+
+        for i in range(n_indiv):
+            out_ls += self.hillclimb(problem, X[i,:])
+
+        # copy the individual chromosomes
+        Xm = X.copy()
+
+        # get the probability that a locus is mutated along the chromosome
+        p = self.get_prob_var(problem)
+        p = np.array(p) if hasattr(p, "__len__") else np.repeat(p, n_var)
+
+        # for each individual
+        for i in range(n_indiv):
+            mab = ~np.isin(Xm[i,:],self.setspace)   # get mask for indiv not in set space
+            mba = ~np.isin(self.setspace,Xm[i,:])   # get mask for set space not in indiv
+            ap = Xm[i,mab]                          # get reduced indiv chromosome
+            pp = p[mab]                             # get reduced indiv mutation probability
+            bp = self.setspace[mba]                 # get reduced setspace chromosome
+            mex = np.random.random(len(pp)) < pp    # get mutation locations
+            nex = mex.sum()                         # get number of mutations
+            ap[mex] = np.random.choice(bp, nex)     # randomly assign new alleles to reduced indiv chromosome
+            Xm[i,mab] = ap                          # overwrite mutations to indiv
+        
+        return Xm
+    
+        out = numpy.stack(out_ls)
+        return out
+
+
 class IntegerSimulatedBinaryCrossover(SimulatedBinaryCrossover):
     def _do(
             self, 
