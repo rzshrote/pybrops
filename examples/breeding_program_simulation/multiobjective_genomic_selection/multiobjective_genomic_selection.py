@@ -25,6 +25,7 @@ from pybrops.breed.op.ssel.SurvivorSelectionOperator import SurvivorSelectionOpe
 from pybrops.breed.prot.bv.MeanPhenotypicBreedingValue import MeanPhenotypicBreedingValue
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
+from pybrops.breed.prot.mate.TwoWayCross import TwoWayCross
 from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 from pybrops.breed.prot.pt.G_E_Phenotyping import G_E_Phenotyping
 from pybrops.breed.prot.sel.EstimatedBreedingValueSelection import EstimatedBreedingValueSubsetSelection
@@ -51,7 +52,7 @@ ncross = 20         # number of cross configurations (20, 2-way crosses)
 nparent = 2         # number of parents per cross configuration (2-way crosses)
 nmating = 1         # number of times to perform cross configuration
 nprogeny = 80       # number of progenies per cross attempt
-nrandmate = 20      # number of random intermatings
+nrandmate = 10      # number of random intermatings
 nburnin = 10        # number of burnin generations
 ngen = 10           # number of simulation generations
 nrep = 1            # number of simulation replications
@@ -62,9 +63,9 @@ nindiv_fam = 4      # number of individuals to select per family for within-fami
 nmating_fam = 1     # number of times to perform cross configuration for within-family selection 
 nprogeny_fam = 80   # number of progenies to generate for within-family selection
 
-##
-## Loading Genetic Map Data from a Text File
-## =========================================
+#
+# Loading Genetic Map Data from a Text File
+# -----------------------------------------
 
 # read genetic map from a CSV-like file
 gmap = StandardGeneticMap.from_csv(
@@ -79,16 +80,16 @@ gmap = StandardGeneticMap.from_csv(
     header              = 0,     # index of the header row
 )
 
-##
-## Creating a Genetic Map Function
-## ===============================
+#
+# Creating a Genetic Map Function
+# -------------------------------
 
 # use Haldane map function to calculate crossover probabilities
 gmapfn = HaldaneMapFunction()
 
-##
-## Loading Genome Data from a VCF File
-## ===================================
+#
+# Loading Genome Data from a VCF File
+# -----------------------------------
 
 # read phased genetic markers from a vcf file
 fndr_pgmat = DensePhasedGenotypeMatrix.from_vcf(
@@ -99,9 +100,27 @@ fndr_pgmat = DensePhasedGenotypeMatrix.from_vcf(
 # interpolate genetic map positions
 fndr_pgmat.interp_xoprob(gmap, gmapfn)
 
-##
-## Constructing a Bi-Trait Genomic Model
-## =====================================
+#
+# Sampling founders and markers from the loaded VCF file
+# ------------------------------------------------------
+
+# get indices of random selections
+# randomly choose ``nfounder`` indices from ``ntaxa``
+sel = numpy.random.choice(fndr_pgmat.ntaxa, nfndr, replace=False)
+
+# select founder individuals
+fndr_pgmat = fndr_pgmat.select_taxa(sel)
+
+# get indices of random markers
+# randomly choose ``nqtl`` indices from ``nvrnt``
+sel = numpy.random.choice(fndr_pgmat.nvrnt, nqtl, replace=False)
+
+# select markers
+fndr_pgmat = fndr_pgmat.select_vrnt(sel)
+
+#
+# Constructing a Bi-Trait Genomic Model
+# -------------------------------------
 
 # create trait means (intercepts) for model
 beta = numpy.array([[10.0, 25.0]], dtype = float)
@@ -132,18 +151,49 @@ algmod_true = DenseAdditiveLinearGenomicModel(
 )
 
 ##
-## Determine the Founder Population
-## --------------------------------
+## Constructing the Founder Population
+## ===================================
 
-# get indices of random selections
-# randomly choose ``nfounder`` indices from ``ntaxa``
-sel = numpy.random.choice(fndr_pgmat.ntaxa, nfndr, replace=False)
+#
+# Randomly Intermate founders for ``nrandmate`` Generations
+# ---------------------------------------------------------
 
-# sort indices for random founder selections
-sel.sort()
+# create 2-way cross object
+mate2way = TwoWayCross()
 
-# select founder individuals
-fndr_pgmat = fndr_pgmat.select_taxa(sel)
+# randomly select and pair founders
+xconfig = numpy.random.choice(nfndr, nfndr, replace = False)
+xconfig = xconfig.reshape(nfndr // 2, 2)
+
+# randomly intermate ``nfndr`` founders to create initial hybrids
+fndr_pgmat = mate2way.mate(
+    pgmat = fndr_pgmat,
+    xconfig = xconfig,
+    nmating = nmating,
+    nprogeny = nprogeny,
+)
+
+# randomly intermate for ``nrandmate`` generations
+# each individual in the population is randomly mated with another individual
+# and creates a single progeny so that the population size is held constant
+for gen in range(1,nrandmate+1):
+    # randomly select and pair ``ntaxa`` parents
+    ntaxa = fndr_pgmat.ntaxa
+    xconfig = numpy.empty((ntaxa,2), dtype = int)
+    xconfig[:,0] = numpy.random.choice(ntaxa, ntaxa, replace = False)
+    xconfig[:,1] = numpy.random.choice(ntaxa, ntaxa, replace = False)
+    # randomly intermate ``ntaxa`` parents
+    fndr_pgmat = mate2way.mate(
+        pgmat = fndr_pgmat,
+        xconfig = xconfig,
+        nmating = 1,
+        nprogeny = 1,
+    )
+    print("Random Intermating:", gen)
+
+##
+## Construct bootstrap cohort structure to begin burnin
+## ====================================================
 
 #
 # Create Mating Protocols for Burn-In
@@ -167,7 +217,7 @@ gtprot = DenseUnphasedGenotyping()
 ptprot = G_E_Phenotyping(algmod_true, 4, 1)
 
 # set the heritability using the founder population
-ptprot.set_h2(0.4, fndr_pgmat)
+ptprot.set_h2(numpy.array([0.4, 0.6]), fndr_pgmat)
 
 #
 # Create Breeing Value Estimation Protocols for Burn-In
@@ -271,9 +321,13 @@ fndr_genome["cand"] = fndr_genome["main"].select_taxa(ix)
 fndr_geno["cand"]   = fndr_geno["main"].select_taxa(ix)
 fndr_bval["cand"]   = fndr_bval["main"].select_taxa(ix) # breeding values have been recentered and rescaled
 
-###
-### Define breeding program operators
-### =================================
+##
+## Define breeding program operators
+## =================================
+
+#
+# Define parent selection operator for initialization operator
+# ------------------------------------------------------------
 
 class MyInitParentSelectionOperator(ParentSelectionOperator):
     """
@@ -311,6 +365,10 @@ class MyInitParentSelectionOperator(ParentSelectionOperator):
         )
         return mcfg, genome, geno, pheno, bval, gmod
 
+#
+# Define mating operator for initialization operator
+# --------------------------------------------------
+
 class MyInitMatingOperator(MatingOperator):
     def __init__(self, pcnt, fcnt, **kwargs):
         super(MyInitMatingOperator, self).__init__(**kwargs)
@@ -330,6 +388,10 @@ class MyInitMatingOperator(MatingOperator):
         genome["queue"].append(progeny)                 # add progeny to queue in genome dict
         return genome, geno, pheno, bval, gmod
 
+#
+# Define evaluation operator for initialization operator
+# ------------------------------------------------------
+
 class MyInitEvaluationOperator(EvaluationOperator):
     def __init__(self, gpmod, var_err, **kwargs):
         self.gtprot = DenseUnphasedGenotyping()
@@ -345,6 +407,10 @@ class MyInitEvaluationOperator(EvaluationOperator):
         bval["main"] = self.bvprot.estimate(pheno["main"], geno["main"])        # estimate breeding values after phenotyping
         return genome, geno, pheno, bval, gmod
 
+#
+# Define survivor selection operator for initialization operator
+# --------------------------------------------------------------
+
 class MyInitSurvivorSelectionOperator(SurvivorSelectionOperator):
     def __init__(self, nindiv_fam):
         self.nindiv_fam = nindiv_fam
@@ -356,6 +422,10 @@ class MyInitSurvivorSelectionOperator(SurvivorSelectionOperator):
         geno["cand"]   = geno["main"].select_taxa(ix)
         bval["cand"]   = bval["main"].select_taxa(ix) # breeding values have been recentered and rescaled
         return genome, geno, pheno, bval, gmod
+
+#
+# Define initialization operator for universal breeding algorithm
+# ---------------------------------------------------------------
 
 class MyInitializationOperator(InitializationOperator):
     def __init__(self, fndr_genome, fndr_geno, fndr_pheno, fndr_bval, fndr_gmod, pselop, mateop, evalop, sselop, burnin, **kwargs):
@@ -419,6 +489,10 @@ class MyInitializationOperator(InitializationOperator):
                 print("Burn-in generation {0} of {1}".format(_+1, self.burnin))
         return self.genome, self.geno, self.pheno, self.bval, self.gmod
 
+#
+# Define parent selection operator for universal breeding algorithm
+# -----------------------------------------------------------------
+
 class MyParentSelectionOperator(ParentSelectionOperator):
     def __init__(self):
         self.pselprot = GenomicEstimatedBreedingValueSubsetSelection(
@@ -450,6 +524,10 @@ class MyParentSelectionOperator(ParentSelectionOperator):
         )
         return mcfg, genome, geno, pheno, bval, gmod
 
+#
+# Define mating operator for universal breeding algorithm
+# -------------------------------------------------------
+
 class MyMatingOperator(MatingOperator):
     def __init__(self, pcnt, fcnt, **kwargs):
         self.mprot = TwoWayDHCross(
@@ -469,6 +547,10 @@ class MyMatingOperator(MatingOperator):
         genome["queue"].append(progeny)                 # add progeny to queue in genome dict
         return genome, geno, pheno, bval, gmod
 
+#
+# Define evaluation operator for universal breeding algorithm
+# -----------------------------------------------------------
+
 class MyEvaluationOperator(EvaluationOperator):
     def __init__(self, gpmod, var_err, **kwargs):
         self.gtprot = DenseUnphasedGenotyping()
@@ -484,6 +566,10 @@ class MyEvaluationOperator(EvaluationOperator):
         bval["main"] = self.bvprot.estimate(pheno["main"], genome["main"])      # estimate breeding values after phenotyping
         return genome, geno, pheno, bval, gmod
 
+#
+# Define survivor selection operator for universal breeding algorithm
+# -------------------------------------------------------------------
+
 class MySurvivorSelectionOperator(SurvivorSelectionOperator):
     def __init__(self, nindiv_fam):
         self.nindiv_fam = nindiv_fam
@@ -495,6 +581,10 @@ class MySurvivorSelectionOperator(SurvivorSelectionOperator):
         geno["cand"]   = geno["main"].select_taxa(ix)
         bval["cand"]   = bval["main"].select_taxa(ix) # breeding values have been recentered and rescaled
         return genome, geno, pheno, bval, gmod
+
+#
+# Define logbook to collect simulation data
+# -----------------------------------------
 
 class MyLogbook(Logbook):
     def __init__(self):
@@ -751,9 +841,15 @@ class MyLogbook(Logbook):
         }
         self.rep = 0
     def write(self, filename):
-        pandas_df = pandas.DataFrame(self.data)
-        pandas_df.to_csv(filename, index = False)
+        out_df = self.to_pandas()
+        out_df.to_csv(filename, index = False)
     def write_frontier(self, filename):
+        out_df = self.to_pandas_frontier()
+        out_df.to_csv(filename, index = False)
+    def to_pandas(self):
+        out_df = pandas.DataFrame(self.data)
+        return out_df
+    def to_pandas_frontier(self):
         tmp_df_ls = []
         for i in range(len(self.data_frontier["frontier"])):
             tmp_df = pandas.DataFrame(
@@ -762,16 +858,27 @@ class MyLogbook(Logbook):
             )
             tmp_df["t_cur"] = self.data["t_cur"][i]
             tmp_df_ls.append(tmp_df)
-        pandas_df = pandas.concat(tmp_df_ls)
-        pandas_df.to_csv(filename, index = False)
+        out_df = pandas.concat(tmp_df_ls)
+        return out_df
 
-### create init operators ###
+##
+## Simulation Setup
+## ================
+
+#
+# Create operators used by initialization operator
+# ------------------------------------------------
+
 init_pselop = MyInitParentSelectionOperator()
 init_mateop = MyInitMatingOperator(mate2waydh.progeny_counter, mate2waydh.family_counter)
 init_evalop = MyInitEvaluationOperator(algmod_true, ptprot.var_err)
 init_sselop = MyInitSurvivorSelectionOperator(nindiv_fam)
 
-### create main operators ###
+#
+# Create main operators for universal breeding algorithm
+# ------------------------------------------------------
+
+# construct operators
 initop = MyInitializationOperator(
     fndr_genome = fndr_genome,
     fndr_geno = fndr_geno,
@@ -790,6 +897,11 @@ evalop = MyEvaluationOperator(algmod_true, ptprot.var_err)
 sselop = MySurvivorSelectionOperator(nindiv_fam)
 lbook = MyLogbook()
 
+#
+# Assemble universal breeding algorithm from operators
+# ----------------------------------------------------
+
+# create a recurrent selection object using constructed operators
 rsprog = RecurrentSelectionBreedingProgram(
     initop = initop,
     pselop = pselop,
@@ -799,8 +911,112 @@ rsprog = RecurrentSelectionBreedingProgram(
     t_max = 20
 )
 
+#
+# Evolve the breeding program
+# ---------------------------
+
 # evolve the population
 rsprog.evolve(nrep = 1, ngen = ngen, lbook = lbook, verbose = True)
 
-lbook.write("multiobjective_genomic_selection_program.csv")
-lbook.write_frontier("multiobjective_genomic_selection_program_frontier.csv")
+#
+# Export simulation results to a ``pandas.DataFrame``
+# ---------------------------------------------------
+
+# export results as pandas dataframe
+program_df = lbook.to_pandas()
+program_frontier_df = lbook.to_pandas_frontier()
+
+# write dataframes to files
+program_df.to_csv("multiobjective_genomic_selection_program.csv", index = False)
+program_frontier_df.to_csv("multiobjective_genomic_selection_program_frontier.csv", index = False)
+
+##
+## Plot results
+## ============
+
+#
+# Import libraries and set global variables
+# -----------------------------------------
+
+# import data and plotting libraries
+import pandas
+from matplotlib import pyplot
+import seaborn
+
+# set default font to use in plots to something that isn't completely ugly
+from matplotlib import rcParams
+rcParams['font.family'] = 'Liberation Serif'
+
+#
+# Import data from breakpoint
+# ---------------------------
+
+# breakpoint for testing: read from file
+program_df = pandas.read_csv("multiobjective_genomic_selection_program.csv")
+program_frontier_df = pandas.read_csv("multiobjective_genomic_selection_program_frontier.csv")
+
+# negate frontiers to reflect mean GEVBs (since objectives are -GEBV)
+program_frontier_df["syn1"] *= -1.0
+program_frontier_df["syn2"] *= -1.0
+
+#
+# Plot Pareto frontiers over time
+# -------------------------------
+
+# plot frontiers over time
+pyplot.figure(figsize=(7,7))
+seaborn.scatterplot(
+    data = program_frontier_df,
+    x = "syn1",
+    y = "syn2",
+    hue = "t_cur",
+)
+pyplot.title("Pareto Frontier for Multi-Objective Conventional Genomic Selection Over Time")
+pyplot.xlabel("Synthetic Trait 1 Breeding Value: Selection Mean (h² = 0.4)")
+pyplot.ylabel("Synthetic Trait 2 Breeding Value: Selection Mean (h² = 0.6)")
+pyplot.legend(title = "Generation")
+pyplot.savefig("multiobjective_genomic_selection_program_frontier.png")
+pyplot.close()
+
+#
+# Plot mean expected heterozygosity over time
+# -------------------------------------------
+
+# plot MEH over time
+pyplot.figure(figsize = (7,7))
+seaborn.lineplot(
+    data = program_df,
+    x = "t_cur",
+    y = "main_meh",
+)
+pyplot.title("Multi-Objective Conventional Genomic Selection Over Time")
+# pyplot.suptitle("Mean Expected Heterozygosity")
+pyplot.xlabel("Generation")
+pyplot.ylabel("Mean Expected Heterozygosity")
+pyplot.savefig("multiobjective_genomic_selection_mean_expected_heterozygosity.png")
+pyplot.close()
+
+#
+# Plot population mean breeding values over time
+# ----------------------------------------------
+
+# plot population mean over time
+pyplot.figure(figsize = (7,7))
+pyplot.plot(
+    program_df["main_true_mean_syn1"], 
+    program_df["main_true_mean_syn2"],
+    color = ("black",0.4),
+)
+seaborn.scatterplot(
+    data = program_df,
+    x = "main_true_mean_syn1",
+    y = "main_true_mean_syn2",
+    hue = "t_cur",
+)
+pyplot.title("Multi-Objective Conventional Genomic Selection Over Time")
+# pyplot.suptitle("Mean Expected Heterozygosity")
+pyplot.xlabel("Synthetic Trait 1 Breeding Value: Population Mean (h² = 0.4)")
+pyplot.ylabel("Synthetic Trait 2 Breeding Value: Population Mean (h² = 0.6)")
+pyplot.legend(title = "Generation")
+pyplot.savefig("multiobjective_genomic_selection_breeding_values.png")
+pyplot.close()

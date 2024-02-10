@@ -253,7 +253,7 @@ class SelectionProblem(Problem,metaclass=ABCMeta):
             out.update({key:val for key,val in zip(["F","G","H"],vals) if len(val) > 0})
         # if x is a matrix or other, score each row and update output dictionary
         else:
-            vals = [self.evalfn(v *args, **kwargs) for v in x]  # evaluate each vector
+            vals = [self.evalfn(v, *args, **kwargs) for v in x] # evaluate each vector
             obj = numpy.stack([e[0] for e in vals])             # extract objective function evaluations
             ineqcv = numpy.stack([e[1] for e in vals])          # extract inequality constraint evaluations
             eqcv = numpy.stack([e[2] for e in vals])            # extract equality constraint evaluations

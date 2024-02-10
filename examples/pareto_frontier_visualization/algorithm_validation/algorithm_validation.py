@@ -13,6 +13,10 @@ import numpy
 from matplotlib import pyplot
 import pybrops
 from pybrops.breed.prot.sel.GenomicEstimatedBreedingValueSelection import GenomicEstimatedBreedingValueSubsetSelection
+from pybrops.opt.algo.NSGA2MemeticSubsetGeneticAlgorithm import NSGA2SteepestDescentSubsetGeneticAlgorithm
+from pybrops.opt.algo.NSGA2MemeticSubsetGeneticAlgorithm import NSGA2StochasticDescentSubsetGeneticAlgorithm
+from pybrops.opt.algo.NSGA2MemeticSubsetGeneticAlgorithm import NSGA2MutatorASubsetGeneticAlgorithm
+from pybrops.opt.algo.NSGA2MemeticSubsetGeneticAlgorithm import NSGA2MutatorBSubsetGeneticAlgorithm
 from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
@@ -140,10 +144,23 @@ def ineqcv_trans(
 
 # create custom multi-objective algorithm for optimization
 # use NSGA-II and evolve for 1000 generations
-moalgo = NSGA2SubsetGeneticAlgorithm(
-    ngen = 500,    # number of generations to evolve
+moalgo1 = NSGA2SubsetGeneticAlgorithm(
+    ngen = 1000,    # number of generations to evolve
     pop_size = 100  # number of parents in population
 )
+
+# moalgo2 = NSGA2SteepestDescentSubsetGeneticAlgorithm(
+#     ngen = 500,
+#     pop_size = 100,
+#     phc = 0.15,
+# )
+
+# moalgo3 = NSGA2StochasticDescentSubsetGeneticAlgorithm(
+#     ngen = 500,
+#     pop_size = 100,
+#     phc = 0.15,
+#     nhcstep = None,
+# )
 
 # create a hillclimber algorithm
 hillclimber = SteepestDescentSubsetHillClimber()
@@ -153,7 +170,7 @@ hillclimber = SteepestDescentSubsetHillClimber()
 ## ===========================================
 
 # construct a subset selection object for GEBV selection
-selprot_unconstrained = GenomicEstimatedBreedingValueSubsetSelection(
+selprot_unconstrained1 = GenomicEstimatedBreedingValueSubsetSelection(
     ntrait = 2,         # number of traits to expect from GEBV matrix
     unscale = True,     # unscale GEBVs so that units are in unscaled trait values
     ncross = 10,        # number of breeding crosses to select
@@ -161,8 +178,30 @@ selprot_unconstrained = GenomicEstimatedBreedingValueSubsetSelection(
     nmating = 1,        # number of times parents are mated per cross
     nprogeny = 40,      # number of progenies to derive from a mating event
     nobj = 2,           # number of objectives (ntrait)
-    moalgo = moalgo,    # custom multi-objective algorithm
+    moalgo = moalgo1,   # custom multi-objective algorithm
 )
+
+# selprot_unconstrained2 = GenomicEstimatedBreedingValueSubsetSelection(
+#     ntrait = 2,         # number of traits to expect from GEBV matrix
+#     unscale = True,     # unscale GEBVs so that units are in unscaled trait values
+#     ncross = 10,        # number of breeding crosses to select
+#     nparent = 2,        # number of parents per breeding cross to select
+#     nmating = 1,        # number of times parents are mated per cross
+#     nprogeny = 40,      # number of progenies to derive from a mating event
+#     nobj = 2,           # number of objectives (ntrait)
+#     moalgo = moalgo2,   # custom multi-objective algorithm
+# )
+
+# selprot_unconstrained3 = GenomicEstimatedBreedingValueSubsetSelection(
+#     ntrait = 2,         # number of traits to expect from GEBV matrix
+#     unscale = True,     # unscale GEBVs so that units are in unscaled trait values
+#     ncross = 10,        # number of breeding crosses to select
+#     nparent = 2,        # number of parents per breeding cross to select
+#     nmating = 1,        # number of times parents are mated per cross
+#     nprogeny = 40,      # number of progenies to derive from a mating event
+#     nobj = 2,           # number of objectives (ntrait)
+#     moalgo = moalgo3,   # custom multi-objective algorithm
+# )
 
 selprot_max0 = GenomicEstimatedBreedingValueSubsetSelection(
     ntrait = 2,         # number of traits to expect from GEBV matrix
@@ -250,7 +289,7 @@ selprot_constrained4 = GenomicEstimatedBreedingValueSubsetSelection(
 ## Estimating the Pareto Frontier
 ## ==============================
 
-selprob_unconstrained = selprot_unconstrained.problem(
+selprob_unconstrained = selprot_unconstrained1.problem(
     pgmat = None,       # argument not utilized
     gmat = gmat,        # ``gmat`` argument required
     ptdf = None,        # argument not utilized
@@ -261,8 +300,8 @@ selprob_unconstrained = selprot_unconstrained.problem(
 )
 
 # estimate pareto frontier using optimization algorithm
-print("Estimating Pareto Frontier ... ", end = "")
-selsoln_unconstrained = selprot_unconstrained.mosolve(
+print("Estimating Pareto Frontier ... ", end = "", flush = True)
+selsoln_unconstrained1 = selprot_unconstrained1.mosolve(
     pgmat = None,       # argument not utilized
     gmat = gmat,        # ``gmat`` argument required
     ptdf = None,        # argument not utilized
@@ -271,10 +310,28 @@ selsoln_unconstrained = selprot_unconstrained.mosolve(
     t_cur = 0,          # argument not utilized
     t_max = 0,          # argument not utilized
 )
-print("Done")
+# selsoln_unconstrained2 = selprot_unconstrained2.mosolve(
+#     pgmat = None,       # argument not utilized
+#     gmat = gmat,        # ``gmat`` argument required
+#     ptdf = None,        # argument not utilized
+#     bvmat = None,       # argument not utilized
+#     gpmod = algmod,     # ``gpmod`` argument required
+#     t_cur = 0,          # argument not utilized
+#     t_max = 0,          # argument not utilized
+# )
+# selsoln_unconstrained3 = selprot_unconstrained3.mosolve(
+#     pgmat = None,       # argument not utilized
+#     gmat = gmat,        # ``gmat`` argument required
+#     ptdf = None,        # argument not utilized
+#     bvmat = None,       # argument not utilized
+#     gpmod = algmod,     # ``gpmod`` argument required
+#     t_cur = 0,          # argument not utilized
+#     t_max = 0,          # argument not utilized
+# )
+print("Done", flush = True)
 
 # use epsilon constraint method to estimate single solution point
-print("Validating Pareto Frontier using Hillclimber ... ", end = "")
+print("Validating Pareto Frontier using Hillclimber ... ", end = "", flush = True)
 selsoln_max0 = selprot_max0.sosolve(
     pgmat = None,       # argument not utilized
     gmat = gmat,        # ``gmat`` argument required
@@ -329,7 +386,7 @@ selsoln_constrained4 = selprot_constrained4.sosolve(
     t_cur = 0,          # argument not utilized
     t_max = 0,          # argument not utilized
 )
-print("Done")
+print("Done", flush = True)
 
 # evaluate constrained selection
 obj1, ineq1, eq1 = selprob_unconstrained.evalfn(selsoln_constrained1.soln_decn[0])
@@ -345,18 +402,25 @@ obj6, ineq6, eq6 = selprob_unconstrained.evalfn(selsoln_max1.soln_decn[0])
 
 # get the pareto frontier
 # negate the objectives to get the mean GEBV since optimization problems are always minimizing
-xdata_unconstrained = -selsoln_unconstrained.soln_obj[:,0]
-ydata_unconstrained = -selsoln_unconstrained.soln_obj[:,1]
+xdata_unconstrained1 = -selsoln_unconstrained1.soln_obj[:,0]
+ydata_unconstrained1 = -selsoln_unconstrained1.soln_obj[:,1]
+# xdata_unconstrained2 = -selsoln_unconstrained2.soln_obj[:,0]
+# ydata_unconstrained2 = -selsoln_unconstrained2.soln_obj[:,1]
+# xdata_unconstrained3 = -selsoln_unconstrained3.soln_obj[:,0]
+# ydata_unconstrained3 = -selsoln_unconstrained3.soln_obj[:,1]
 xdata_constrained = -numpy.array([obj1[0],obj2[0],obj3[0],obj4[0],obj5[0],obj6[0]])
 ydata_constrained = -numpy.array([obj1[1],obj2[1],obj3[1],obj4[1],obj5[1],obj6[1]])
 
 # create static figure
 fig = pyplot.figure()
 ax = pyplot.axes()
-ax.scatter(xdata_unconstrained, ydata_unconstrained, label = "NSGA-II")
+ax.scatter(xdata_unconstrained1, ydata_unconstrained1, label = "NSGA-II")
+# ax.scatter(xdata_unconstrained2, ydata_unconstrained2, label = "Steepest Descent NSGA-II")
+# ax.scatter(xdata_unconstrained3, ydata_unconstrained3, label = "Stochastic Descent NSGA-II")
 ax.scatter(xdata_constrained, ydata_constrained, label = "Hillclimber")
 ax.set_title("Bi-Objective GEBV Selection Pareto Frontier")
 ax.set_xlabel("Synthetic Trait 1 Mean GEBV")
 ax.set_ylabel("Synthetic Trait 2 Mean GEBV")
+ax.legend(loc = "lower left")
 pyplot.savefig("biobjective_GEBV_pareto_frontier.png", dpi = 250)
 pyplot.close(fig)
