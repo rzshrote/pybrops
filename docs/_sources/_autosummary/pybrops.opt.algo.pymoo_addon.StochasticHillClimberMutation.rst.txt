@@ -1,0 +1,34 @@
+StochasticHillClimberMutation
+=============================
+
+.. currentmodule:: pybrops.opt.algo.pymoo_addon
+
+.. autoclass:: StochasticHillClimberMutation
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~StochasticHillClimberMutation.do
+      ~StochasticHillClimberMutation.get_prob_var
+      ~StochasticHillClimberMutation.hillclimb
+      ~StochasticHillClimberMutation.reduced_exchange
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~StochasticHillClimberMutation.setspace
+   
+   

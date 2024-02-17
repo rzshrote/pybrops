@@ -425,6 +425,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
 <span class="kn">import</span> <span class="nn">h5py</span>
 <span class="kn">import</span> <span class="nn">pandas</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_pandas</span> <span class="kn">import</span> <span class="n">check_is_pandas_DataFrame</span>
@@ -685,13 +686,213 @@ document.write(`
 
 
     <span class="c1">######### Matrix element copy-on-manipulation ##########</span>
-    <span class="c1"># FIXME: super adjoin, delete, insert, select, ... for location, scale bug</span>
+<div class="viewcode-block" id="DenseBreedingValueMatrix.adjoin_taxa">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.adjoin_taxa">[docs]</a>
+    <span class="k">def</span> <span class="nf">adjoin_taxa</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BreedingValueMatrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add additional elements to the end of the TaxaMatrix along the taxa</span>
+<span class="sd">        axis. Copy-on-manipulation routine.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        values : BreedingValueMatrix, numpy.ndarray</span>
+<span class="sd">            Values to be appended to append to the Matrix.</span>
+<span class="sd">            If numpy.ndarray, assumed to be unscaled.</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            Taxa names to adjoin to the Matrix.</span>
+<span class="sd">            If values is a DenseBreedingValueMatrix that has a non-None</span>
+<span class="sd">            taxa field, providing this argument overwrites the field.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            Taxa groups to adjoin to the Matrix.</span>
+<span class="sd">            If values is a DenseBreedingValueMatrix that has a non-None</span>
+<span class="sd">            taxa_grp field, providing this argument overwrites the field.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseBreedingValueMatrix</span>
+<span class="sd">            A copy of the TaxaMatrix with values appended to the taxa axis</span>
+<span class="sd">            Note that adjoin does not occur in-place: a new Matrix is allocated</span>
+<span class="sd">            and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># extract mat values</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">taxa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">taxa</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">taxa</span>
+            <span class="k">if</span> <span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">taxa_grp</span>
+            <span class="c1"># unscale values</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot adjoin: &#39;values&#39; must be of type </span><span class="si">{0}</span><span class="s2"> or numpy.ndarray&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">))</span>
+
+        <span class="c1"># perform error checks before allocating memory</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot adjoin: &#39;values&#39; must have ndim == </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_shape</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">j</span> <span class="o">!=</span> <span class="n">k</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot adjoin: axis lengths incompatible for axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_taxa</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">taxa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;object&quot;</span><span class="p">)</span>   <span class="c1"># fill with None</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_taxa_grp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;cannot adjoin: &#39;taxa_grp&#39; argument is required&quot;</span><span class="p">)</span>
+
+        <span class="c1"># adjoin values</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unscale</span><span class="p">(),</span> <span class="n">values</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_taxa</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span> <span class="n">taxa</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_taxa_grp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">,</span> <span class="n">taxa_grp</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># construct output from numpy</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.delete_taxa">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.delete_taxa">[docs]</a>
+    <span class="k">def</span> <span class="nf">delete_taxa</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete sub-arrays along the taxa axis.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj : int, slice, or Sequence of ints</span>
+<span class="sd">            Indicate indices of sub-arrays to remove along the specified axis.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseBreedingValueMatrix</span>
+<span class="sd">            A DenseBreedingValueMatrix with deleted elements. Note that concat does not occur</span>
+<span class="sd">            in-place: a new DenseBreedingValueMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get values</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
+        <span class="n">taxa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span>
+        <span class="n">taxa_grp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span>
+        <span class="n">trait</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span>
+
+        <span class="c1"># delete values</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">taxa</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">taxa</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">taxa_grp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">taxa_grp</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseBreedingValueMatrix.insert_taxa">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.insert_taxa">[docs]</a>
+    <span class="k">def</span> <span class="nf">insert_taxa</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">obj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
+            <span class="n">values</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BreedingValueMatrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Insert values along the taxa axis before the given indices.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        obj: int, slice, or Sequence of ints</span>
+<span class="sd">            Object that defines the index or indices before which values is</span>
+<span class="sd">            inserted.</span>
+<span class="sd">        values : BreedingValueMatrix, numpy.ndarray</span>
+<span class="sd">            Values to insert into the matrix.</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            Taxa names to insert into the Matrix.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            Taxa groups to insert into the Matrix.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseBreedingValueMatrix</span>
+<span class="sd">            A DenseBreedingValueMatrix with values inserted. Note that insert does not occur</span>
+<span class="sd">            in-place: a new DenseBreedingValueMatrix is allocated and filled.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># extract mat values</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">taxa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">taxa</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">taxa</span>
+            <span class="k">if</span> <span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">taxa_grp</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&#39;values&#39; must be of type </span><span class="si">{0}</span><span class="s2"> or numpy.ndarray&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">))</span>
+
+        <span class="c1"># perform error checks before allocating memory</span>
+        <span class="k">if</span> <span class="n">values</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot insert: &#39;values&#39; must have ndim == </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,(</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_shape</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">j</span> <span class="o">!=</span> <span class="n">k</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot insert: axis lengths incompatible for axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_taxa</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">taxa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s2">&quot;object&quot;</span><span class="p">)</span>   <span class="c1"># fill with None</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_taxa_grp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;cannot insert: &#39;taxa_grp&#39; argument is required&quot;</span><span class="p">)</span>
+
+        <span class="c1"># insert values</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unscale</span><span class="p">(),</span> <span class="n">obj</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_taxa</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_taxa</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">taxa</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_taxa_grp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_taxa_grp</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">taxa_grp</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># create output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">values</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
 
 <div class="viewcode-block" id="DenseBreedingValueMatrix.select_taxa">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.select_taxa">[docs]</a>
-    <span class="k">def</span> <span class="nf">select_taxa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">select_taxa</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">indices</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Select certain values from the Matrix along the taxa axis.</span>
+<span class="sd">        Selection re-centers and re-scales breeding values to mean zero and unit variance.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -709,10 +910,13 @@ document.write(`
         <span class="c1"># check for array_like</span>
         <span class="n">check_is_array_like</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="s2">&quot;indices&quot;</span><span class="p">)</span>
 
-        <span class="c1"># get values</span>
-        <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>        <span class="c1"># get unscaled values</span>
-        <span class="n">taxa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_taxa</span>
-        <span class="n">taxa_grp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_taxa_grp</span>
+        <span class="c1"># get unscaled values</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
+
+        <span class="c1"># get taxa, taxa group, trait labels</span>
+        <span class="n">taxa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span>
+        <span class="n">taxa_grp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span>
+        <span class="n">trait</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span>
 
         <span class="c1"># select values</span>
         <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_axis</span><span class="p">)</span>
@@ -721,18 +925,12 @@ document.write(`
         <span class="k">if</span> <span class="n">taxa_grp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">taxa_grp</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
 
-        <span class="c1"># re-calculate breeding values</span>
-        <span class="n">location</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>          <span class="c1"># recalculate location</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">mat</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>              <span class="c1"># recalculate scale</span>
-        <span class="n">mat</span> <span class="o">=</span> <span class="p">(</span><span class="n">mat</span> <span class="o">-</span> <span class="n">location</span><span class="p">)</span> <span class="o">/</span> <span class="n">scale</span>  <span class="c1"># mean center and scale values</span>
-
-        <span class="c1"># construct output</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+        <span class="c1"># construct output from numpy, which conducts centering, scaling, etc.</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
             <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
-            <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="p">,</span>
-            <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span>
             <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
             <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
@@ -1164,6 +1362,76 @@ document.write(`
     <span class="c1">############################## Class Methods ###############################</span>
 
     <span class="c1">################### Matrix File I/O ####################</span>
+<div class="viewcode-block" id="DenseBreedingValueMatrix.from_numpy">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.from_numpy">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_numpy</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">mat</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct a DenseBreedingValueMatrix from a numpy.ndarray.</span>
+<span class="sd">        Calculates mean-centering and scaling to unit variance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        a : numpy.ndarray</span>
+<span class="sd">            A ``float64`` matrix of shape ``(n,t)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of taxa.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            An array of taxa names.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            An array of taxa groups.</span>
+<span class="sd">        trait : numpy.ndarray</span>
+<span class="sd">            An array of trait names.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseBreedingValueMatrix</span>
+<span class="sd">            Output breeding value matrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check inputs</span>
+        <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># calculate location parameters</span>
+        <span class="c1"># (n,t) -&gt; (t,)</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># calculate scale parameters</span>
+        <span class="c1"># (n,t) -&gt; (t,)</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># if scale == 0.0, set to 1.0 (do not scale)</span>
+        <span class="n">scale</span><span class="p">[</span><span class="n">scale</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="c1"># mean center and scale values</span>
+        <span class="c1"># scalar / (t,) -&gt; (t,)</span>
+        <span class="c1"># (t,) * ( (n,t) - (t,) ) -&gt; (n,t)</span>
+        <span class="c1"># multiply since multiplication is faster than division for floating points</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">mat</span> <span class="o">-</span> <span class="n">location</span><span class="p">)</span> 
+
+        <span class="c1"># construct output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="p">,</span>
+            <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
 <div class="viewcode-block" id="DenseBreedingValueMatrix.from_pandas">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.from_pandas">[docs]</a>
     <span class="nd">@classmethod</span>
@@ -1269,15 +1537,13 @@ document.write(`
         <span class="c1"># extract trait and matrix data</span>
         <span class="n">trait</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">colmask</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
         <span class="n">mat</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">colmask</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
-            
-        <span class="c1"># construct output object</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span> 
-            <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="p">,</span> 
-            <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span> 
-            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span> 
-            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span> 
-            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span> 
+        
+        <span class="c1"># construct output from numpy</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
 
@@ -1443,77 +1709,6 @@ document.write(`
         <span class="c1">######################################################### create object</span>
         <span class="n">gmat</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">data_dict</span><span class="p">)</span>                                 <span class="c1"># create object from read data</span>
         <span class="k">return</span> <span class="n">gmat</span></div>
-
-
-<div class="viewcode-block" id="DenseBreedingValueMatrix.from_numpy">
-<a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.html#pybrops.popgen.bvmat.DenseBreedingValueMatrix.DenseBreedingValueMatrix.from_numpy">[docs]</a>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_numpy</span><span class="p">(</span>
-            <span class="bp">cls</span><span class="p">,</span> 
-            <span class="n">mat</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
-            <span class="n">taxa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
-            <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
-            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseBreedingValueMatrix&#39;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Construct a DenseBreedingValueMatrix from a numpy.ndarray.</span>
-<span class="sd">        Calculates mean-centering and scaling to unit variance.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        a : numpy.ndarray</span>
-<span class="sd">            A ``float64`` matrix of shape ``(n,t)``.</span>
-
-<span class="sd">            Where:</span>
-
-<span class="sd">            - ``n`` is the number of taxa.</span>
-<span class="sd">            - ``t`` is the number of traits.</span>
-<span class="sd">        taxa : numpy.ndarray</span>
-<span class="sd">            An array of taxa names.</span>
-<span class="sd">        taxa_grp : numpy.ndarray</span>
-<span class="sd">            An array of taxa groups.</span>
-<span class="sd">        trait : numpy.ndarray</span>
-<span class="sd">            An array of trait names.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        out : DenseBreedingValueMatrix</span>
-<span class="sd">            Output breeding value matrix.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># check inputs</span>
-        <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="s2">&quot;mat&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-
-        <span class="c1"># calculate location parameters</span>
-        <span class="c1"># (n,t) -&gt; (t,)</span>
-        <span class="n">location</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-
-        <span class="c1"># calculate scale parameters</span>
-        <span class="c1"># (n,t) -&gt; (t,)</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
-
-        <span class="c1"># if scale &lt; tolerance, set to 1.0 (do not scale)</span>
-        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">)</span>
-        <span class="n">scale</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
-
-        <span class="c1"># mean center and scale values</span>
-        <span class="c1"># scalar / (t,) -&gt; (t,)</span>
-        <span class="c1"># (t,) * ( (n,t) - (t,) ) -&gt; (n,t)</span>
-        <span class="c1"># multiply since multiplication is faster than division for floating points</span>
-        <span class="n">mat</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">scale</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">mat</span> <span class="o">-</span> <span class="n">location</span><span class="p">)</span> 
-
-        <span class="c1"># construct output</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
-            <span class="n">location</span> <span class="o">=</span> <span class="n">location</span><span class="p">,</span>
-            <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span>
-            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
-            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
-            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">out</span></div>
 </div>
 
 

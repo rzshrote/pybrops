@@ -1,0 +1,6 @@
+assert\_function\_raises\_NotImplementedError
+=============================================
+
+.. currentmodule:: pybrops.test.assert_python
+
+.. autofunction:: assert_function_raises_NotImplementedError

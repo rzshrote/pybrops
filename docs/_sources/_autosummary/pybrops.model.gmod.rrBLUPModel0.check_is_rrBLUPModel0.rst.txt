@@ -1,0 +1,6 @@
+check\_is\_rrBLUPModel0
+=======================
+
+.. currentmodule:: pybrops.model.gmod.rrBLUPModel0
+
+.. autofunction:: check_is_rrBLUPModel0

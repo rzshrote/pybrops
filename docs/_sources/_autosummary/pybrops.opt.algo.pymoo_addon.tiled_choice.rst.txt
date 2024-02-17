@@ -1,0 +1,6 @@
+tiled\_choice
+=============
+
+.. currentmodule:: pybrops.opt.algo.pymoo_addon
+
+.. autofunction:: tiled_choice

@@ -24,18 +24,24 @@ assert\_python
       assert_abstract_function
       assert_abstract_method
       assert_abstract_property
+      assert_class_documentation
       assert_concrete_class
       assert_concrete_function
       assert_concrete_method
       assert_concrete_property
       assert_concrete_property_fget
       assert_docstring
+      assert_function_documentation
+      assert_function_not_raises_NotImplementedError
+      assert_function_raises_NotImplementedError
       assert_hasattr
+      assert_method_documentation
       assert_mixin_class
-      assert_not_raise_NotImplementedError
-      assert_raise_NotImplementedError
+      assert_module_documentation
+      assert_property_documentation
       assert_semiabstract_class
       not_raises
+      raises
    
    
 

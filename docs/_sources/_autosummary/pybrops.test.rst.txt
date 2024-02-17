@@ -28,6 +28,5 @@ test
    :template: custom-module-template.rst
    :recursive:
 
-   pybrops.test.assert_numpy
    pybrops.test.assert_python
 

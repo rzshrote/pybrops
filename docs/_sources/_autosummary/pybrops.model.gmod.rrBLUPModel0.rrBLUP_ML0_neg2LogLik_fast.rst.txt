@@ -1,0 +1,6 @@
+rrBLUP\_ML0\_neg2LogLik\_fast
+=============================
+
+.. currentmodule:: pybrops.model.gmod.rrBLUPModel0
+
+.. autofunction:: rrBLUP_ML0_neg2LogLik_fast

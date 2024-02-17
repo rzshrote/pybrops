@@ -1,0 +1,6 @@
+rrBLUP\_ML0\_calc\_ridge
+========================
+
+.. currentmodule:: pybrops.model.gmod.rrBLUPModel0
+
+.. autofunction:: rrBLUP_ML0_calc_ridge

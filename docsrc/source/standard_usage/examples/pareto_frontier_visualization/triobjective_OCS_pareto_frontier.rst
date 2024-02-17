@@ -14,10 +14,12 @@ To begin, we import the modules we will be using into the Python namespace. To m
     import os
     import numpy
     from matplotlib import pyplot
+    from matplotlib import rcParams
+    rcParams['font.family'] = 'Liberation Serif' # set default font
     from PIL import Image
     import pybrops
     from pybrops.breed.prot.sel.OptimalContributionSelection import OptimalContributionSubsetSelection
-    from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
+    from pybrops.opt.algo.NSGA3SubsetGeneticAlgorithm import NSGA3SubsetGeneticAlgorithm
     from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
     from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
     from pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory import DenseMolecularCoancestryMatrixFactory
@@ -99,9 +101,10 @@ Since the subset search space is large (there are 942 candidate individuals from
 .. code-block:: python
 
     # create custom multi-objective algorithm for optimization
-    algo = NSGA2SubsetGeneticAlgorithm(
+    algo = NSGA3SubsetGeneticAlgorithm(
         ngen = 1500,    # number of generations to evolve
-        pop_size = 100  # number of parents in population
+        pop_size = 100, # number of parents in population
+        nrefpts = 91,   # number of reference points for optimization
     )
 
 Next, we'll construct an optimal contribution selection protocol object. For this example, we desire to select 10 pairs of individuals (20 individuals total) from the 942 candidates in the genotype matrix. The code below demonstrates how this object is constructed.
@@ -154,18 +157,24 @@ After optimizing the objectives, we can use ``matplotlib`` or any other plotting
     basename = "triobjective_OCS_pareto_frontier"
 
     # get axis data
-    xdata =  selsoln.soln_obj[:,0] # 2 * mean kinship
-    ydata = -selsoln.soln_obj[:,1] # negate to get EBV
-    zdata = -selsoln.soln_obj[:,2] # negate to get EBV
+    x =  selsoln.soln_obj[:,0] # 2 * mean kinship (additive relationship/inbreeding)
+    y = -selsoln.soln_obj[:,1] # negate to get EBV
+    z = -selsoln.soln_obj[:,2] # negate to get EBV
+    z2 = numpy.ones(shape = x.shape) * min(z)
 
     # create static figure
-    fig = pyplot.figure()
-    ax = pyplot.axes(projection = '3d')
-    ax.scatter3D(xdata, ydata, zdata)
+    fig = pyplot.figure(figsize=(5,5))
+    ax = pyplot.axes(projection = "3d")
+    ax.scatter(x, y, z, color = "blue")
+    for i,j,k,h in zip(x,y,z,z2):
+        a = 0.5 * (i - min(x)) / (max(x) - min(x)) + 0.5
+        ax.plot([i,i],[j,j],[k,h], color="cornflowerblue", alpha = a)
+
     ax.set_title("Multi-Objective Optimal Contribution Selection Pareto Frontier")
     ax.set_xlabel("Inbreeding")
     ax.set_ylabel("Synthetic Trait 1 Mean EBV")
     ax.set_zlabel("Synthetic Trait 2 Mean EBV")
+    ax.view_init(elev = 30., azim = 32)
     pyplot.savefig(basename + ".png", dpi = 250)
     pyplot.close(fig)
 
@@ -192,7 +201,7 @@ Since there are three objectives, visualization of the estimated Pareto frontier
     for i in range(360):
         fig = pyplot.figure()
         ax = pyplot.axes(projection = '3d')
-        ax.scatter3D(xdata, ydata, zdata)
+        ax.scatter3D(x, y, z)
         ax.set_title("Multi-Objective Optimal Contribution Selection Pareto Frontier")
         ax.set_xlabel("Inbreeding")
         ax.set_ylabel("Synthetic Trait 1 Mean EBV")

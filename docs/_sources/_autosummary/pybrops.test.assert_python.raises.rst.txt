@@ -1,0 +1,6 @@
+raises
+======
+
+.. currentmodule:: pybrops.test.assert_python
+
+.. autofunction:: raises

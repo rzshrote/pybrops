@@ -34,8 +34,10 @@ algo
    pybrops.opt.algo.IntegerOptimizationAlgorithm
    pybrops.opt.algo.NSGA2BinaryGeneticAlgorithm
    pybrops.opt.algo.NSGA2IntegerGeneticAlgorithm
+   pybrops.opt.algo.NSGA2MemeticSubsetGeneticAlgorithm
    pybrops.opt.algo.NSGA2RealGeneticAlgorithm
    pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm
+   pybrops.opt.algo.NSGA3SubsetGeneticAlgorithm
    pybrops.opt.algo.OptimizationAlgorithm
    pybrops.opt.algo.RealGeneticAlgorithm
    pybrops.opt.algo.RealOptimizationAlgorithm

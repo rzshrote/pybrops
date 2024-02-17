@@ -1,0 +1,34 @@
+NSGA3SubsetGeneticAlgorithm
+===========================
+
+.. currentmodule:: pybrops.opt.algo.NSGA3SubsetGeneticAlgorithm
+
+.. autoclass:: NSGA3SubsetGeneticAlgorithm
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~NSGA3SubsetGeneticAlgorithm.minimize
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NSGA3SubsetGeneticAlgorithm.ngen
+      ~NSGA3SubsetGeneticAlgorithm.nrefpts
+      ~NSGA3SubsetGeneticAlgorithm.pop_size
+      ~NSGA3SubsetGeneticAlgorithm.rng
+   
+   

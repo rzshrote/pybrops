@@ -1650,3 +1650,291 @@ class MutatorB(Mutation):
         
         return Xm
 
+class MutatorF(Mutation):
+    """
+    Perform a memetic subset exchange mutation (Mutation F).
+    """
+
+    ################ Special object methods ################
+    def __init__(
+            self,
+            setspace: np.ndarray,
+            phc: float,
+            maxhc: int | None = None,
+            maxhcstep: int | None = None,
+            **kwargs: dict
+        ) -> None:
+        """
+        Constructor for SubsetMutation.
+        
+        Parameters
+        ----------
+        setspace : numpy.ndarray
+            Set space of which individuals are a discrete subset.
+        phc : float
+            Probability that an individiual is hillclimbed.
+        maxhc : int
+            Maximum number of solutions to test in a hillclimb.
+            If None, then set to the number of loci in an individual's chromosome.
+        maxhcstep : int
+            Maximum number of steps (assignment of new leader solutions) to take.
+            If None, then set to the maximum number of solutions tested.
+        kwargs : dict
+            Additional keyword arguments used for cooperative inheritance.
+        """
+        super(StochasticHillClimberMutation, self).__init__(**kwargs)
+        self.setspace = setspace
+        self.phc = phc
+        self.maxhc = maxhc
+        self.maxhcstep = maxhcstep
+
+    ###################### Properties ######################
+    @property
+    def setspace(self) -> np.ndarray:
+        """Set space from which to sample elements."""
+        return self._setspace
+    @setspace.setter
+    def setspace(self, value: np.ndarray) -> None:
+        """Set the set space from which to sample elements."""
+        if not isinstance(value, np.ndarray):
+            raise TypeError("'setspace' must be of type numpy.ndarray")
+        self._setspace = value
+    
+    ### Helper methods ###
+    def reduced_exchange(self, problem: Problem, x: np.ndarray, *args, **kwargs) -> np.ndarray:
+        """
+        Perform a reduced exchange mutation
+        """
+        # get the probability that a locus is mutated along the chromosome
+        p = self.get_prob_var(problem)
+        p = np.array(p) if hasattr(p, "__len__") else np.repeat(p, len(x))
+
+        # mutate the individual
+        mab = ~np.isin(x,self.setspace)      # get mask for indiv not in set space
+        mba = ~np.isin(self.setspace,x)      # get mask for set space not in indiv
+        ap = x[mab]                          # get reduced indiv chromosome
+        pp = p[mab]                          # get reduced indiv mutation probability
+        bp = self.setspace[mba]              # get reduced setspace chromosome
+        mex = np.random.random(len(pp)) < pp # get mutation locations
+        nex = mex.sum()                      # get number of mutations
+        ap[mex] = np.random.choice(bp, nex)  # randomly assign new alleles to reduced indiv chromosome
+        x[mab] = ap                          # overwrite mutations to indiv
+
+        return x
+
+    def hillclimb(self, problem: Problem, x: np.ndarray, *args, **kwargs) -> np.ndarray:
+        """
+        Hillclimb mutation for a single individual.
+
+        Parameters
+        ----------
+        problem : pymoo.core.problem.Problem
+            Problem object.
+        x : numpy.ndarray
+            Chromosome of a single individual.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            Chromosome of a single individual.
+        """
+        # store the origin individual
+        ori = Individual()
+        ori.X = x.copy()
+        ori_evals = problem.evaluate(ori.X, *args, return_as_dictionary=True, **kwargs)
+        ori.set_by_dict(**ori_evals)
+
+        # copy and evaluate input individual (current leader)
+        lead = Individual()
+        lead.X = x.copy()
+        lead_evals = problem.evaluate(lead.X, *args, return_as_dictionary = True, **kwargs)
+        lead.set_by_dict(**lead_evals)
+
+        # get search space elements not in original leader individual
+        alleles = self.setspace[np.logical_not(np.in1d(self.setspace, lead.X))]
+
+        # calculate the number of loci and number of alternative alleles
+        nloci = len(lead.X)
+        nalleles = len(alleles)
+
+        # calculate the number of hillclimb/mutation attempts
+        maxhc = nloci if self.maxhc is None else self.maxhc
+        maxhcstep = self.maxhc if self.maxhcstep is None else self.maxhcstep
+
+        # calculate the loci to mutate using a tiled sampling method
+        lociix = tiled_choice(nloci, maxhc)
+
+        # create lists to house non-dominated individuals
+        ndom = []
+
+        # add leader to the non-dominated list
+        ndom.append(lead)
+
+        # get minimums of each objective for non-dominated individuals
+        ndom_min = lead.X.copy()
+
+        # create counter varables
+        i = 0           # counter for iterating over lociix
+        nhc = 0         # counter for number of hillclimb attempts (solutions tested)
+        nhcstep = 0     # counter for number of hillclimb steps made
+
+        while nhc < maxhc and nhcstep < maxhcstep:
+            # get index of allele to exchange
+            j = np.random.choice(nalleles)
+
+            # copy the leader, modify the copy, evaluate new solution
+            prop = Individual()
+            prop = copy.deepcopy(lead)
+            prop.X[i], alleles[j] = alleles[j], prop.X[i]
+            prop_evals = problem.evaluate(prop.X, *args, return_as_dictionary = True, **kwargs)
+            prop.set_by_dict(**prop_evals)
+
+            # get dominance relationships between proposed and non-dominated pool
+            ndrel = np.array([get_relation(prop, indiv) for indiv in ndom])
+
+            # determine if the proposed solution beats any of the minimums
+            prop_isextreme = np.any(prop.X < ndom_min)
+
+            # if proposed is dominated by at least one non-dominated individual, reject and revert
+            if np.any(ndrel == -1):
+                prop.X[i], alleles[j] = alleles[j], prop.X[i]
+
+            elif None:
+                pass
+
+            # for each individual in the non-dominated list
+            for indiv in ndom:
+                # get dominance relationship between proposed and individual in non-dominated set
+                rel = get_relation(prop, indiv)
+            
+                # if proposed is dominated by a non-dominated solution, reject and revert
+                if rel == -1:
+                    break
+            
+                # if the lead is non-dominated by the proposed solution, stash the 
+                # proposed and return lead vector back to its original state.
+                elif rel == 0:
+                    # if proposed solution 
+                    if np.any(prop.X < ndom_min):
+                        ndom.append(prop)
+                        lead = prop
+                    prop.X[i], alleles[j] = alleles[j], prop.X[i]
+
+                # if the lead dominates the proposed solution, 
+                # return the lead vector back to its original state
+                elif rel == 1:
+                    prop.X[i], alleles[j] = alleles[j], prop.X[i]
+
+            # increment counters
+            nhcstep += 1
+            i += 1      # increment to next lociix value
+            nhc += 1    # increment to next hillclimb attempt
+
+        # for each locus index
+        for i in lociix:
+            # get index of allele to exchange
+            j = np.random.choice(nalleles)
+
+            # copy the leader, modify the copy, evaluate new solution
+            prop = Individual()
+            prop = copy.deepcopy(lead)
+            prop.X[i], alleles[j] = alleles[j], prop.X[i]
+            prop_evals = problem.evaluate(prop.X, *args, return_as_dictionary = True, **kwargs)
+            prop.set_by_dict(**prop_evals)
+            
+            # get dominance relationship between two individuals
+            rel = get_relation(lead, prop)
+            
+            # if lead is dominated by proposed solution, keep the proposed as the new leader
+            if rel == -1:
+                lead_improved = True
+                lead = prop
+            
+            # if the lead is non-dominated by the proposed solution, stash the 
+            # proposed and return lead vector back to its original state.
+            elif rel == 0:
+                ndom.append(prop)
+                prop.X[i], alleles[j] = alleles[j], prop.X[i]
+
+            # if the lead dominates the proposed solution, 
+            # return the lead vector back to its original state
+            elif rel == 1:
+                prop.X[i], alleles[j] = alleles[j], prop.X[i]
+
+        # if the leader was improved, add to non-dominated individuals, otherwise keep out
+        if lead_improved:
+            ndom.append(lead)
+        
+        # if there is nothing to select from, revert to simple mutation
+        if len(ndom) == 0:
+            return self.reduced_exchange(problem, x, *args, **kwargs)
+
+        # create a new population from non-dominated individual pool
+        pop = Population(individuals = ndom)
+
+        # perform non-dominated sorting on populations
+        nds = NonDominatedSorting()
+
+        # get non-dominated front indices
+        ix = nds.do(pop.get("F"), only_non_dominated_front = True)
+
+        # subset population for individuals along the non-dominated front
+        pop = pop[ix]
+
+        # get F values for population
+        F = pop.get("F")
+
+        # identify the indices of the extreme individuals
+        Famax = np.argmin(F, axis = 0)
+
+        # randomly select an index of an extreme individual to select
+        Fix = np.random.choice(Famax)
+
+        # select that individual
+        indiv = pop[Fix]
+
+        # get chromosome of individual
+        out = indiv.X
+
+        return out
+
+    ########### Abstract method implementations ############
+    def _do(
+            self, 
+            problem: Problem, 
+            X: np.ndarray, 
+            **kwargs: dict
+        ) -> np.ndarray:
+        """
+        Perform exchange mutation for subsets + hillclimb
+
+        Parameters
+        ----------
+        problem : Problem
+            An optimization problem.
+        X : numpy.ndarray
+            An array of shape ``(n_indiv, n_var)`` containing individuals which to mutate.
+            This array is unmodified by this function.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            An array of shape ``(n_parents, n_matings, n_var)`` containing progeny chromosomes.
+        """
+        # get number of individuals, variables from X array
+        n_indiv, n_var = X.shape
+
+        # copy the individual chromosomes
+        Xm = X.copy()
+
+        for i in range(n_indiv):
+            rnd = np.random.random()
+            if rnd < self.phc:
+                Xm[i,:] = self.hillclimb(problem, Xm[i,:])
+            else:
+                Xm[i,:] = self.reduced_exchange(problem, Xm[i,:])
+        
+        return Xm
+

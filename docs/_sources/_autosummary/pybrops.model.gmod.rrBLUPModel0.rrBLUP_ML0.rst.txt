@@ -1,0 +1,6 @@
+rrBLUP\_ML0
+===========
+
+.. currentmodule:: pybrops.model.gmod.rrBLUPModel0
+
+.. autofunction:: rrBLUP_ML0
