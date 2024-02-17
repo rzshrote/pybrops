@@ -1,0 +1,34 @@
+MutatorA
+========
+
+.. currentmodule:: pybrops.opt.algo.pymoo_addon
+
+.. autoclass:: MutatorA
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MutatorA.do
+      ~MutatorA.get_prob_var
+      ~MutatorA.hillclimb
+      ~MutatorA.reduced_exchange
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MutatorA.setspace
+   
+   

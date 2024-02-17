@@ -32,4 +32,5 @@ Breeding Program Simulation Examples
     :maxdepth: 1
     :caption: Simulation of Multi-trait Breeding Programs
     
+    Bi-Trait Genotypic Selection <breeding_program_simulation/multiobjective_genomic_selection>
     Constrained Bi-Trait Phenotypic Selection <breeding_program_simulation/constrained_bitrait_phenotypic_selection>

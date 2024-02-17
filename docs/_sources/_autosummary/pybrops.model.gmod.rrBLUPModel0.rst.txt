@@ -1,0 +1,52 @@
+rrBLUPModel0
+============
+
+.. automodule:: pybrops.model.gmod.rrBLUPModel0
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      rrBLUPModel0
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_rrBLUPModel0
+      gauss_seidel
+      rrBLUP_ML0
+      rrBLUP_ML0_calc_G
+      rrBLUP_ML0_calc_ZtZplI
+      rrBLUP_ML0_calc_Zty
+      rrBLUP_ML0_calc_d_V
+      rrBLUP_ML0_calc_etasq
+      rrBLUP_ML0_calc_ridge
+      rrBLUP_ML0_center_y
+      rrBLUP_ML0_neg2LogLik_fast
+      rrBLUP_ML0_nonzero_d_V
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,10 +1,38 @@
 from abc import ABCMeta
 import inspect
-import pytest
+from typing import Callable, Generator
 from contextlib import contextmanager
 
 @contextmanager
-def not_raises(*ForbiddenExceptions) -> None:
+def raises(*ExpectedExceptions: tuple[Exception]) -> Generator:
+    """
+    Ensure that a function raises an expected exception or one of an expected 
+    set of exceptions.
+    
+    Parameters
+    ----------
+    ExpectedExceptions : tuple
+        A tuple of expected exception(s).
+    """
+    # try to do anything in ``with`` context
+    try:
+        yield
+
+    # catch any expected exceptions and ignore them as they are expected
+    except ExpectedExceptions as e:
+        pass
+
+    # catch any unexpected exceptions and raise assertion error
+    except Exception as e:
+        raise AssertionError("unexpected exception {0} raised".format(type(e).__name__))
+
+    # if no exceptions raised, raise an assertion error
+    else:
+        names = ", ".join(e.__name__ for e in ExpectedExceptions)
+        raise AssertionError("did not raise any of the following exceptions: {0}".format(names))
+
+@contextmanager
+def not_raises(*ForbiddenExceptions) -> Generator:
     """
     Ensure that method does not raise an ForbiddenException.
 
@@ -13,10 +41,17 @@ def not_raises(*ForbiddenExceptions) -> None:
     ForbiddenException : Exception
         Forbidden Exception.
     """
+    # try to do anything in ``with`` context
     try:
         yield
+
+    # catch any forbidden exceptions and raise assertion error as they should 
+    # not exist
     except ForbiddenExceptions as e:
-        raise AssertionError("{0} raised".format(type(e).__name__))
+        raise AssertionError("forbidden exception {0} raised".format(type(e).__name__))
+
+    # catch any remaining exceptions and ignore them since we only care about 
+    # whether a forbidden exception was raised
     except Exception:
         pass
 
@@ -29,12 +64,212 @@ def assert_docstring(obj: object) -> None:
     obj : object
         Any Python object to test for a docstring.
     """
-    # test for having a docstring
-    assert hasattr(obj, "__doc__")      # make sure we have the attribute
-    assert isinstance(obj.__doc__, str) # make sure attribute is a string
-    assert len(obj.__doc__) > 0         # make sure docstring is not empty
+    # make sure we have the attribute
+    assert hasattr(obj, "__doc__")
+    
+    # make sure attribute is a string
+    assert isinstance(obj.__doc__, str)
+    
+    # make sure docstring is not empty
+    assert len(obj.__doc__) > 0
 
-def assert_raise_NotImplementedError(fn) -> None:
+def assert_function_documentation(fn: Callable) -> None:
+    """
+    Test a function for complete documentation.
+
+    Parameters
+    ----------
+    fn : function
+        A function for which to test documentation.
+    """
+    # assert inputs are correct
+    assert isinstance(fn, Callable) # assert callable(fn)
+
+    # assert input is a function
+    # this will fail if input function is a builtin function
+    assert inspect.isfunction(fn)
+
+    # get function signature
+    fn_signature = inspect.signature(fn)
+
+    # test each parameter for type hint
+    for param, hint in fn_signature.parameters.items():
+        if ":" not in hint:
+            raise AssertionError("in function '{0}': parameter {1} does not have a type hint".format(fn.__name__,param))
+
+    # make sure we have a docstring attribute
+    assert hasattr(fn, "__doc__")
+
+    # make sure our docstring is a string
+    assert isinstance(fn.__doc__, str)
+
+    # make sure our docstring length is greater than zero
+    assert len(fn.__doc__) > 0
+
+    # make sure our parameters are in the docstring
+    for param in fn_signature.parameters.keys():
+        if param not in fn.__doc__:
+            raise AssertionError("in function '{0}': parameter {1} not present in docstring".format(fn.__name__,param))
+
+def assert_property_documentation(obj: type, name: str) -> None:
+    """
+    Test a property for complete documentation.
+
+    Parameters
+    ----------
+    obj : type
+        Object type for which the method is attached.
+    name : str
+        Name of the method to test.
+    """
+    # assert inputs are correct
+    assert isinstance(obj, type)
+    assert isinstance(name, str)
+
+    # assert that the type has the method
+    assert hasattr(obj, name)
+
+    # get the property
+    prop = getattr(obj, name)
+
+    # assert that the object is a property
+    assert isinstance(prop, property)
+
+    # assert that the property has
+    assert hasattr(prop, "__doc__")
+
+    # make sure our docstring is a string
+    assert isinstance(prop.__doc__, str)
+
+    # make sure our docstring length is greater than zero
+    assert len(prop.__doc__) > 0
+
+    # test documentation for fget, fset, fdel
+    for propmet in ("fget","fset","fdel"):
+        # test the method of the property
+        if hasattr(prop, propmet) and (getattr(prop, propmet) is not None):
+            # get the method
+            met = getattr(prop, "fget")
+
+            # assert that the object is a method
+            # this will fail if input function is a builtin method
+            assert inspect.ismethod(met)
+
+            # get method signature
+            met_signature = inspect.signature(met)
+
+            # test each parameter for type hint
+            for param, hint in met_signature.parameters.items():
+                if ":" not in hint:
+                    raise AssertionError("in property '{0}.{1}.{2}': parameter {3} does not have a type hint".format(obj.__name__,name,met.__name__,param))
+
+            # make sure we have a docstring attribute
+            assert hasattr(met, "__doc__")
+
+            # make sure our docstring is a string
+            assert isinstance(met.__doc__, str)
+
+            # make sure our docstring length is greater than zero
+            assert len(met.__doc__) > 0
+
+            # don't test for parameter names in docstring since these docs are 
+            # typically smaller
+
+def assert_method_documentation(obj: type, name: str) -> None:
+    """
+    Test a method for complete documentation.
+
+    Parameters
+    ----------
+    obj : type
+        Object type for which the method is attached.
+    name : str
+        Name of the method to test.
+    """
+    # assert inputs are correct
+    assert isinstance(obj, type)
+    assert isinstance(name, str)
+
+    # assert that the type has the method
+    assert hasattr(obj, name)
+
+    # get the method
+    met = getattr(obj, name)
+
+    # assert that the object is a method
+    # this will fail if input function is a builtin method
+    assert inspect.ismethod(met)
+
+    # get method signature
+    met_signature = inspect.signature(met)
+
+    # test each parameter for type hint
+    for param, hint in met_signature.parameters.items():
+        if ":" not in hint:
+            raise AssertionError("in method '{0}.{1}': parameter {2} does not have a type hint".format(obj.__name__,met.__name__,param))
+
+    # make sure we have a docstring attribute
+    assert hasattr(met, "__doc__")
+
+    # make sure our docstring is a string
+    assert isinstance(met.__doc__, str)
+
+    # make sure our docstring length is greater than zero
+    assert len(met.__doc__) > 0
+
+    # make sure our parameters are in the docstring
+    for param in met_signature.parameters.keys():
+        if param not in met.__doc__:
+            raise AssertionError("in method '{0}.{1}': parameter {2} not present in docstring".format(obj.__name__,met.__name__,param))
+
+def assert_class_documentation(obj: type) -> None:
+    """
+    Test a class for complete documentation.
+
+    Parameters
+    ----------
+    obj : type
+        Object type to test.
+    """
+    # assert inputs are correct
+    assert isinstance(obj, type)
+
+    # assert that the object is a class
+    assert inspect.isclass(obj)
+
+    # make sure we have a docstring attribute
+    assert hasattr(obj, "__doc__")
+
+    # make sure our docstring is a string
+    assert isinstance(obj.__doc__, str)
+
+    # make sure our docstring length is greater than zero
+    assert len(obj.__doc__) > 0
+
+def assert_module_documentation(obj: object) -> None:
+    """
+    Test a module for complete documentation.
+
+    Parameters
+    ----------
+    obj : 
+    """
+    # assert input type is correct
+    assert isinstance(obj, object)
+
+    # assert that the object is a module
+    assert inspect.ismodule(obj)
+
+    # make sure we have a docstring attribute
+    assert hasattr(obj, "__doc__")
+
+    # make sure our docstring is a string
+    assert isinstance(obj.__doc__, str)
+
+    # make sure our docstring length is greater than zero
+    assert len(obj.__doc__) > 0
+
+def assert_function_raises_NotImplementedError(fn: Callable) -> None:
     """
     Test that a function raises NotImplementedError.
 
@@ -44,7 +279,7 @@ def assert_raise_NotImplementedError(fn) -> None:
         Function to test.
     """
     # test for raises NotImplementedError
-    with pytest.raises(NotImplementedError):
+    with raises(NotImplementedError):
         # get signature parameters
         p = inspect.signature(fn).parameters
 
@@ -54,7 +289,7 @@ def assert_raise_NotImplementedError(fn) -> None:
         # test for raises NotImplementedError
         fn(**kwargs)
 
-def assert_not_raise_NotImplementedError(fn) -> None:
+def assert_function_not_raises_NotImplementedError(fn: Callable) -> None:
     """
     Test that a function does not raise NotImplementedError.
 
@@ -87,7 +322,7 @@ def assert_abstract_function(fn) -> None:
         An abstract method.
     """
     assert_docstring(fn)                    # assert for having a docstring
-    assert_raise_NotImplementedError(fn)    # assert that function is abstract
+    assert_function_raises_NotImplementedError(fn)    # assert that function is abstract
 
 def assert_concrete_function(fn) -> None:
     """
@@ -102,7 +337,7 @@ def assert_concrete_function(fn) -> None:
         An abstract method.
     """
     assert_docstring(fn)                        # assert for having a docstring
-    assert_not_raise_NotImplementedError(fn)    # assert that function is abstract
+    assert_function_not_raises_NotImplementedError(fn)    # assert that function is abstract
 
 def assert_hasattr(obj: object, attr: str) -> None:
     """

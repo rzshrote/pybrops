@@ -419,8 +419,9 @@ class DenseAdditiveLinearGenomicModel(
         return self.__deepcopy__(memo)
 
     ####### methods for model fitting and prediction #######
+    @classmethod
     def fit_numpy(
-            self, 
+            cls, 
             Y: numpy.ndarray, 
             X: numpy.ndarray, 
             Z: numpy.ndarray, 
@@ -444,8 +445,9 @@ class DenseAdditiveLinearGenomicModel(
         """
         raise AttributeError("DenseAdditiveLinearGenomicModel is read-only")
 
+    @classmethod
     def fit(
-            self, 
+            cls, 
             ptobj: object, 
             cvobj: numpy.ndarray, 
             gtobj: Union[GenotypeMatrix,numpy.ndarray], 

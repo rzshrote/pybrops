@@ -1,0 +1,6 @@
+dominates
+=========
+
+.. currentmodule:: pybrops.opt.algo.pymoo_addon
+
+.. autofunction:: dominates

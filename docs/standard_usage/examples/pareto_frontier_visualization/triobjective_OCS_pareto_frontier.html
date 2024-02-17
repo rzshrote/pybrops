@@ -418,6 +418,7 @@ document.write(`
 <li class="toctree-l2"><a class="reference internal" href="germplasm_panel_reduction.html">Germplasm panel reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../breeding_program_simulation/single_trait_phenotypic_selection.html">Single-Trait Phenotypic Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../breeding_program_simulation/constrained_single_trait_phenotypic_selection.html">Constrained Single-Trait Phenotypic Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../breeding_program_simulation/multiobjective_genomic_selection.html">Bi-Trait Genotypic Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../breeding_program_simulation/constrained_bitrait_phenotypic_selection.html">Constrained Bi-Trait Phenotypic Selection</a></li>
 </ul>
 </li>
@@ -491,10 +492,12 @@ document.write(`
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.family&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Liberation Serif&#39;</span> <span class="c1"># set default font</span>
 <span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 <span class="kn">import</span> <span class="nn">pybrops</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.OptimalContributionSelection</span> <span class="kn">import</span> <span class="n">OptimalContributionSubsetSelection</span>
-<span class="kn">from</span> <span class="nn">pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm</span> <span class="kn">import</span> <span class="n">NSGA2SubsetGeneticAlgorithm</span>
+<span class="kn">from</span> <span class="nn">pybrops.opt.algo.NSGA3SubsetGeneticAlgorithm</span> <span class="kn">import</span> <span class="n">NSGA3SubsetGeneticAlgorithm</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.gmod.DenseAdditiveLinearGenomicModel</span> <span class="kn">import</span> <span class="n">DenseAdditiveLinearGenomicModel</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.DenseGenotypeMatrix</span> <span class="kn">import</span> <span class="n">DenseGenotypeMatrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory</span> <span class="kn">import</span> <span class="n">DenseMolecularCoancestryMatrixFactory</span>
@@ -564,9 +567,10 @@ document.write(`
 </div>
 <p>Since the subset search space is large (there are 942 candidate individuals from which to choose), we’ll want to provide a multi-objective optimization algorithm different from the default that will be able to optimize our weighted genomic selection problem. We’ll make a slight variation on the default <code class="docutils literal notranslate"><span class="pre">NSGA2SubsetGeneticAlgorithm</span></code> and increase the number of algorithm generations from 250 to 1000.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create custom multi-objective algorithm for optimization</span>
-<span class="n">algo</span> <span class="o">=</span> <span class="n">NSGA2SubsetGeneticAlgorithm</span><span class="p">(</span>
+<span class="n">algo</span> <span class="o">=</span> <span class="n">NSGA3SubsetGeneticAlgorithm</span><span class="p">(</span>
     <span class="n">ngen</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">,</span>    <span class="c1"># number of generations to evolve</span>
-    <span class="n">pop_size</span> <span class="o">=</span> <span class="mi">100</span>  <span class="c1"># number of parents in population</span>
+    <span class="n">pop_size</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="c1"># number of parents in population</span>
+    <span class="n">nrefpts</span> <span class="o">=</span> <span class="mi">91</span><span class="p">,</span>   <span class="c1"># number of reference points for optimization</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -612,18 +616,24 @@ document.write(`
 <span class="n">basename</span> <span class="o">=</span> <span class="s2">&quot;triobjective_OCS_pareto_frontier&quot;</span>
 
 <span class="c1"># get axis data</span>
-<span class="n">xdata</span> <span class="o">=</span>  <span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># 2 * mean kinship</span>
-<span class="n">ydata</span> <span class="o">=</span> <span class="o">-</span><span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># negate to get EBV</span>
-<span class="n">zdata</span> <span class="o">=</span> <span class="o">-</span><span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># negate to get EBV</span>
+<span class="n">x</span> <span class="o">=</span>  <span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># 2 * mean kinship (additive relationship/inbreeding)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># negate to get EBV</span>
+<span class="n">z</span> <span class="o">=</span> <span class="o">-</span><span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># negate to get EBV</span>
+<span class="n">z2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
 <span class="c1"># create static figure</span>
-<span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span> <span class="o">=</span> <span class="s1">&#39;3d&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter3D</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span> <span class="n">zdata</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span> <span class="o">=</span> <span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">h</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">z2</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.5</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">],[</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="p">],[</span><span class="n">k</span><span class="p">,</span><span class="n">h</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;cornflowerblue&quot;</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">a</span><span class="p">)</span>
+
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Multi-Objective Optimal Contribution Selection Pareto Frontier&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Inbreeding&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 1 Mean EBV&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 2 Mean EBV&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span> <span class="o">=</span> <span class="mf">30.</span><span class="p">,</span> <span class="n">azim</span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span>
 <span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">basename</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">250</span><span class="p">)</span>
 <span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 </pre></div>
@@ -646,7 +656,7 @@ document.write(`
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">360</span><span class="p">):</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
     <span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span> <span class="o">=</span> <span class="s1">&#39;3d&#39;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">scatter3D</span><span class="p">(</span><span class="n">xdata</span><span class="p">,</span> <span class="n">ydata</span><span class="p">,</span> <span class="n">zdata</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter3D</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Multi-Objective Optimal Contribution Selection Pareto Frontier&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Inbreeding&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 1 Mean EBV&quot;</span><span class="p">)</span>

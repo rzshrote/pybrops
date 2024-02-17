@@ -12,10 +12,12 @@
 import os
 import numpy
 from matplotlib import pyplot
+from matplotlib import rcParams
+rcParams['font.family'] = 'Liberation Serif' # set default font
 from PIL import Image
 import pybrops
 from pybrops.breed.prot.sel.OptimalContributionSelection import OptimalContributionSubsetSelection
-from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
+from pybrops.opt.algo.NSGA3SubsetGeneticAlgorithm import NSGA3SubsetGeneticAlgorithm
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory import DenseMolecularCoancestryMatrixFactory
@@ -77,9 +79,10 @@ bvmat = algmod.gebv(gtobj = gmat)
 ibscmatfcty = DenseMolecularCoancestryMatrixFactory()
 
 # create custom multi-objective algorithm for optimization
-algo = NSGA2SubsetGeneticAlgorithm(
+algo = NSGA3SubsetGeneticAlgorithm(
     ngen = 1500,    # number of generations to evolve
-    pop_size = 100  # number of parents in population
+    pop_size = 100, # number of parents in population
+    nrefpts = 91,   # number of reference points for optimization
 )
 
 # construct a subset selection problem for OCS
@@ -123,18 +126,24 @@ selsoln = selprot.mosolve(
 basename = "triobjective_OCS_pareto_frontier"
 
 # get axis data
-xdata =  selsoln.soln_obj[:,0] # 2 * mean kinship
-ydata = -selsoln.soln_obj[:,1] # negate to get EBV
-zdata = -selsoln.soln_obj[:,2] # negate to get EBV
+x =  selsoln.soln_obj[:,0] # 2 * mean kinship (additive relationship/inbreeding)
+y = -selsoln.soln_obj[:,1] # negate to get EBV
+z = -selsoln.soln_obj[:,2] # negate to get EBV
+z2 = numpy.ones(shape = x.shape) * min(z)
 
 # create static figure
-fig = pyplot.figure()
-ax = pyplot.axes(projection = '3d')
-ax.scatter3D(xdata, ydata, zdata)
+fig = pyplot.figure(figsize=(5,5))
+ax = pyplot.axes(projection = "3d")
+ax.scatter(x, y, z, color = "blue")
+for i,j,k,h in zip(x,y,z,z2):
+    a = 0.5 * (i - min(x)) / (max(x) - min(x)) + 0.5
+    ax.plot([i,i],[j,j],[k,h], color="cornflowerblue", alpha = a)
+
 ax.set_title("Multi-Objective Optimal Contribution Selection Pareto Frontier")
 ax.set_xlabel("Inbreeding")
 ax.set_ylabel("Synthetic Trait 1 Mean EBV")
 ax.set_zlabel("Synthetic Trait 2 Mean EBV")
+ax.view_init(elev = 30., azim = 32)
 pyplot.savefig(basename + ".png", dpi = 250)
 pyplot.close(fig)
 
@@ -154,7 +163,7 @@ if not os.path.isdir(outdir):
 for i in range(360):
     fig = pyplot.figure()
     ax = pyplot.axes(projection = '3d')
-    ax.scatter3D(xdata, ydata, zdata)
+    ax.scatter3D(x, y, z)
     ax.set_title("Multi-Objective Optimal Contribution Selection Pareto Frontier")
     ax.set_xlabel("Inbreeding")
     ax.set_ylabel("Synthetic Trait 1 Mean EBV")

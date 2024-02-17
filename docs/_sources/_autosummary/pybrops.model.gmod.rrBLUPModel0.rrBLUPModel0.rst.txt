@@ -1,0 +1,86 @@
+rrBLUPModel0
+============
+
+.. currentmodule:: pybrops.model.gmod.rrBLUPModel0
+
+.. autoclass:: rrBLUPModel0
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~rrBLUPModel0.bulmer
+      ~rrBLUPModel0.bulmer_numpy
+      ~rrBLUPModel0.copy
+      ~rrBLUPModel0.daavail
+      ~rrBLUPModel0.dacount
+      ~rrBLUPModel0.dafixed
+      ~rrBLUPModel0.dafreq
+      ~rrBLUPModel0.deepcopy
+      ~rrBLUPModel0.faavail
+      ~rrBLUPModel0.facount
+      ~rrBLUPModel0.fafixed
+      ~rrBLUPModel0.fafreq
+      ~rrBLUPModel0.fit
+      ~rrBLUPModel0.fit_numpy
+      ~rrBLUPModel0.from_csv_dict
+      ~rrBLUPModel0.from_hdf5
+      ~rrBLUPModel0.from_pandas_dict
+      ~rrBLUPModel0.gebv
+      ~rrBLUPModel0.gebv_numpy
+      ~rrBLUPModel0.gegv
+      ~rrBLUPModel0.gegv_numpy
+      ~rrBLUPModel0.lsl
+      ~rrBLUPModel0.lsl_numpy
+      ~rrBLUPModel0.predict
+      ~rrBLUPModel0.predict_numpy
+      ~rrBLUPModel0.score
+      ~rrBLUPModel0.score_numpy
+      ~rrBLUPModel0.to_csv_dict
+      ~rrBLUPModel0.to_hdf5
+      ~rrBLUPModel0.to_pandas_dict
+      ~rrBLUPModel0.usl
+      ~rrBLUPModel0.usl_numpy
+      ~rrBLUPModel0.var_A
+      ~rrBLUPModel0.var_A_numpy
+      ~rrBLUPModel0.var_G
+      ~rrBLUPModel0.var_G_numpy
+      ~rrBLUPModel0.var_a
+      ~rrBLUPModel0.var_a_numpy
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~rrBLUPModel0.beta
+      ~rrBLUPModel0.hyperparams
+      ~rrBLUPModel0.method
+      ~rrBLUPModel0.model_name
+      ~rrBLUPModel0.nexplan
+      ~rrBLUPModel0.nexplan_beta
+      ~rrBLUPModel0.nexplan_u
+      ~rrBLUPModel0.nexplan_u_a
+      ~rrBLUPModel0.nexplan_u_misc
+      ~rrBLUPModel0.nparam
+      ~rrBLUPModel0.nparam_beta
+      ~rrBLUPModel0.nparam_u
+      ~rrBLUPModel0.nparam_u_a
+      ~rrBLUPModel0.nparam_u_misc
+      ~rrBLUPModel0.ntrait
+      ~rrBLUPModel0.trait
+      ~rrBLUPModel0.u
+      ~rrBLUPModel0.u_a
+      ~rrBLUPModel0.u_misc
+   
+   

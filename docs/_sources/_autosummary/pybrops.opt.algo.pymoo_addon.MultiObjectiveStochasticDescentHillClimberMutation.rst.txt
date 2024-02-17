@@ -1,0 +1,33 @@
+MultiObjectiveStochasticDescentHillClimberMutation
+==================================================
+
+.. currentmodule:: pybrops.opt.algo.pymoo_addon
+
+.. autoclass:: MultiObjectiveStochasticDescentHillClimberMutation
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MultiObjectiveStochasticDescentHillClimberMutation.do
+      ~MultiObjectiveStochasticDescentHillClimberMutation.get_prob_var
+      ~MultiObjectiveStochasticDescentHillClimberMutation.hillclimb
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MultiObjectiveStochasticDescentHillClimberMutation.setspace
+   
+   

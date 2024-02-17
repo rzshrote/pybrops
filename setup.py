@@ -40,7 +40,6 @@ pybrops_requirements_install = [
     "cyvcf2",
     "h5py",
     "DEAP",
-    "pytest",
 ]
 
 # package metadata: package locations

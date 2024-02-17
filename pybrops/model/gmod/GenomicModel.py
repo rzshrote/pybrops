@@ -158,9 +158,10 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         raise NotImplementedError("method is abstract")
 
     ####### methods for model fitting and prediction #######
+    @classmethod
     @abstractmethod
     def fit_numpy(
-            self, 
+            cls, 
             Y: numpy.ndarray, 
             X: numpy.ndarray, 
             Z: numpy.ndarray, 
@@ -182,9 +183,10 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         """
         raise NotImplementedError("method is abstract")
 
+    @classmethod
     @abstractmethod
     def fit(
-            self, 
+            cls, 
             ptobj: Union[BreedingValueMatrix,pandas.DataFrame,numpy.ndarray], 
             cvobj: numpy.ndarray, 
             gtobj: Union[GenotypeMatrix,numpy.ndarray], 
@@ -208,6 +210,7 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         """
         raise NotImplementedError("method is abstract")
 
+    ######## methods for estimated breeding values #########
     @abstractmethod
     def predict_numpy(
             self, 

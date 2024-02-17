@@ -413,13 +413,44 @@ document.write(`
   <h1>Source code for pybrops.test.assert_python</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
 <span class="kn">import</span> <span class="nn">inspect</span>
-<span class="kn">import</span> <span class="nn">pytest</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Generator</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+
+<div class="viewcode-block" id="raises">
+<a class="viewcode-back" href="../../../_autosummary/pybrops.test.assert_python.raises.html#pybrops.test.assert_python.raises">[docs]</a>
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">raises</span><span class="p">(</span><span class="o">*</span><span class="n">ExpectedExceptions</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="ne">Exception</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ensure that a function raises an expected exception or one of an expected </span>
+<span class="sd">    set of exceptions.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ExpectedExceptions : tuple</span>
+<span class="sd">        A tuple of expected exception(s).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># try to do anything in ``with`` context</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+
+    <span class="c1"># catch any expected exceptions and ignore them as they are expected</span>
+    <span class="k">except</span> <span class="n">ExpectedExceptions</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+    <span class="c1"># catch any unexpected exceptions and raise assertion error</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;unexpected exception </span><span class="si">{0}</span><span class="s2"> raised&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
+    <span class="c1"># if no exceptions raised, raise an assertion error</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="vm">__name__</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">ExpectedExceptions</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;did not raise any of the following exceptions: </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">names</span><span class="p">))</span></div>
+
 
 <div class="viewcode-block" id="not_raises">
 <a class="viewcode-back" href="../../../_autosummary/pybrops.test.assert_python.not_raises.html#pybrops.test.assert_python.not_raises">[docs]</a>
 <span class="nd">@contextmanager</span>
-<span class="k">def</span> <span class="nf">not_raises</span><span class="p">(</span><span class="o">*</span><span class="n">ForbiddenExceptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">not_raises</span><span class="p">(</span><span class="o">*</span><span class="n">ForbiddenExceptions</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Ensure that method does not raise an ForbiddenException.</span>
 
@@ -428,10 +459,17 @@ document.write(`
 <span class="sd">    ForbiddenException : Exception</span>
 <span class="sd">        Forbidden Exception.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># try to do anything in ``with`` context</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">yield</span>
+
+    <span class="c1"># catch any forbidden exceptions and raise assertion error as they should </span>
+    <span class="c1"># not exist</span>
     <span class="k">except</span> <span class="n">ForbiddenExceptions</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{0}</span><span class="s2"> raised&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;forbidden exception </span><span class="si">{0}</span><span class="s2"> raised&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
+    <span class="c1"># catch any remaining exceptions and ignore them since we only care about </span>
+    <span class="c1"># whether a forbidden exception was raised</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="k">pass</span></div>
 
@@ -447,15 +485,230 @@ document.write(`
 <span class="sd">    obj : object</span>
 <span class="sd">        Any Python object to test for a docstring.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># test for having a docstring</span>
-    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;__doc__&quot;</span><span class="p">)</span>      <span class="c1"># make sure we have the attribute</span>
-    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="c1"># make sure attribute is a string</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>         <span class="c1"># make sure docstring is not empty</span></div>
+    <span class="c1"># make sure we have the attribute</span>
+    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;__doc__&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># make sure attribute is a string</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    
+    <span class="c1"># make sure docstring is not empty</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
 
 
-<div class="viewcode-block" id="assert_raise_NotImplementedError">
-<a class="viewcode-back" href="../../../_autosummary/pybrops.test.assert_python.assert_raise_NotImplementedError.html#pybrops.test.assert_python.assert_raise_NotImplementedError">[docs]</a>
-<span class="k">def</span> <span class="nf">assert_raise_NotImplementedError</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="assert_function_documentation">
+<a class="viewcode-back" href="../../../_autosummary/pybrops.test.assert_python.assert_function_documentation.html#pybrops.test.assert_python.assert_function_documentation">[docs]</a>
+<span class="k">def</span> <span class="nf">assert_function_documentation</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test a function for complete documentation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fn : function</span>
+<span class="sd">        A function for which to test documentation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># assert inputs are correct</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">Callable</span><span class="p">)</span> <span class="c1"># assert callable(fn)</span>
+
+    <span class="c1"># assert input is a function</span>
+    <span class="c1"># this will fail if input function is a builtin function</span>
+    <span class="k">assert</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isfunction</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+    <span class="c1"># get function signature</span>
+    <span class="n">fn_signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+    <span class="c1"># test each parameter for type hint</span>
+    <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">hint</span> <span class="ow">in</span> <span class="n">fn_signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s2">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hint</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;in function &#39;</span><span class="si">{0}</span><span class="s2">&#39;: parameter </span><span class="si">{1}</span><span class="s2"> does not have a type hint&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="n">param</span><span class="p">))</span>
+
+    <span class="c1"># make sure we have a docstring attribute</span>
+    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s2">&quot;__doc__&quot;</span><span class="p">)</span>
+
+    <span class="c1"># make sure our docstring is a string</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># make sure our docstring length is greater than zero</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="c1"># make sure our parameters are in the docstring</span>
+    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">fn_signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">param</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fn</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;in function &#39;</span><span class="si">{0}</span><span class="s2">&#39;: parameter </span><span class="si">{1}</span><span class="s2"> not present in docstring&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fn</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="n">param</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="assert_property_documentation">
+<a class="viewcode-back" href="../../../_autosummary/pybrops.test.assert_python.assert_property_documentation.html#pybrops.test.assert_python.assert_property_documentation">[docs]</a>
+<span class="k">def</span> <span class="nf">assert_property_documentation</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test a property for complete documentation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : type</span>
+<span class="sd">        Object type for which the method is attached.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name of the method to test.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># assert inputs are correct</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># assert that the type has the method</span>
+    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># get the property</span>
+    <span class="n">prop</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># assert that the object is a property</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="nb">property</span><span class="p">)</span>
+
+    <span class="c1"># assert that the property has</span>
+    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="s2">&quot;__doc__&quot;</span><span class="p">)</span>
+
+    <span class="c1"># make sure our docstring is a string</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># make sure our docstring length is greater than zero</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">prop</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="c1"># test documentation for fget, fset, fdel</span>
+    <span class="k">for</span> <span class="n">propmet</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;fget&quot;</span><span class="p">,</span><span class="s2">&quot;fset&quot;</span><span class="p">,</span><span class="s2">&quot;fdel&quot;</span><span class="p">):</span>
+        <span class="c1"># test the method of the property</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">propmet</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="n">propmet</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># get the method</span>
+            <span class="n">met</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">prop</span><span class="p">,</span> <span class="s2">&quot;fget&quot;</span><span class="p">)</span>
+
+            <span class="c1"># assert that the object is a method</span>
+            <span class="c1"># this will fail if input function is a builtin method</span>
+            <span class="k">assert</span> <span class="n">inspect</span><span class="o">.</span><span class="n">ismethod</span><span class="p">(</span><span class="n">met</span><span class="p">)</span>
+
+            <span class="c1"># get method signature</span>
+            <span class="n">met_signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">met</span><span class="p">)</span>
+
+            <span class="c1"># test each parameter for type hint</span>
+            <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">hint</span> <span class="ow">in</span> <span class="n">met_signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s2">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hint</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;in property &#39;</span><span class="si">{0}</span><span class="s2">.</span><span class="si">{1}</span><span class="s2">.</span><span class="si">{2}</span><span class="s2">&#39;: parameter </span><span class="si">{3}</span><span class="s2"> does not have a type hint&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">met</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="n">param</span><span class="p">))</span>
+
+            <span class="c1"># make sure we have a docstring attribute</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">met</span><span class="p">,</span> <span class="s2">&quot;__doc__&quot;</span><span class="p">)</span>
+
+            <span class="c1"># make sure our docstring is a string</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">met</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+            <span class="c1"># make sure our docstring length is greater than zero</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">met</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+
+
+            <span class="c1"># don&#39;t test for parameter names in docstring since these docs are </span>
+            <span class="c1"># typically smaller</span>
+
+<div class="viewcode-block" id="assert_method_documentation">
+<a class="viewcode-back" href="../../../_autosummary/pybrops.test.assert_python.assert_method_documentation.html#pybrops.test.assert_python.assert_method_documentation">[docs]</a>
+<span class="k">def</span> <span class="nf">assert_method_documentation</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test a method for complete documentation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : type</span>
+<span class="sd">        Object type for which the method is attached.</span>
+<span class="sd">    name : str</span>
+<span class="sd">        Name of the method to test.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># assert inputs are correct</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># assert that the type has the method</span>
+    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># get the method</span>
+    <span class="n">met</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+    <span class="c1"># assert that the object is a method</span>
+    <span class="c1"># this will fail if input function is a builtin method</span>
+    <span class="k">assert</span> <span class="n">inspect</span><span class="o">.</span><span class="n">ismethod</span><span class="p">(</span><span class="n">met</span><span class="p">)</span>
+
+    <span class="c1"># get method signature</span>
+    <span class="n">met_signature</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">met</span><span class="p">)</span>
+
+    <span class="c1"># test each parameter for type hint</span>
+    <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">hint</span> <span class="ow">in</span> <span class="n">met_signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s2">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hint</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;in method &#39;</span><span class="si">{0}</span><span class="s2">.</span><span class="si">{1}</span><span class="s2">&#39;: parameter </span><span class="si">{2}</span><span class="s2"> does not have a type hint&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="n">met</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="n">param</span><span class="p">))</span>
+
+    <span class="c1"># make sure we have a docstring attribute</span>
+    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">met</span><span class="p">,</span> <span class="s2">&quot;__doc__&quot;</span><span class="p">)</span>
+
+    <span class="c1"># make sure our docstring is a string</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">met</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># make sure our docstring length is greater than zero</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">met</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="c1"># make sure our parameters are in the docstring</span>
+    <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">met_signature</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">param</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">met</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s2">&quot;in method &#39;</span><span class="si">{0}</span><span class="s2">.</span><span class="si">{1}</span><span class="s2">&#39;: parameter </span><span class="si">{2}</span><span class="s2"> not present in docstring&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="n">met</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span><span class="n">param</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="assert_class_documentation">
+<a class="viewcode-back" href="../../../_autosummary/pybrops.test.assert_python.assert_class_documentation.html#pybrops.test.assert_python.assert_class_documentation">[docs]</a>
+<span class="k">def</span> <span class="nf">assert_class_documentation</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="nb">type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test a class for complete documentation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : type</span>
+<span class="sd">        Object type to test.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># assert inputs are correct</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span>
+
+    <span class="c1"># assert that the object is a class</span>
+    <span class="k">assert</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="c1"># make sure we have a docstring attribute</span>
+    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;__doc__&quot;</span><span class="p">)</span>
+
+    <span class="c1"># make sure our docstring is a string</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># make sure our docstring length is greater than zero</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="assert_module_documentation">
+<a class="viewcode-back" href="../../../_autosummary/pybrops.test.assert_python.assert_module_documentation.html#pybrops.test.assert_python.assert_module_documentation">[docs]</a>
+<span class="k">def</span> <span class="nf">assert_module_documentation</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test a module for complete documentation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj : </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># assert input type is correct</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
+
+    <span class="c1"># assert that the object is a module</span>
+    <span class="k">assert</span> <span class="n">inspect</span><span class="o">.</span><span class="n">ismodule</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="c1"># make sure we have a docstring attribute</span>
+    <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;__doc__&quot;</span><span class="p">)</span>
+
+    <span class="c1"># make sure our docstring is a string</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># make sure our docstring length is greater than zero</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="assert_function_raises_NotImplementedError">
+<a class="viewcode-back" href="../../../_autosummary/pybrops.test.assert_python.assert_function_raises_NotImplementedError.html#pybrops.test.assert_python.assert_function_raises_NotImplementedError">[docs]</a>
+<span class="k">def</span> <span class="nf">assert_function_raises_NotImplementedError</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test that a function raises NotImplementedError.</span>
 
@@ -465,7 +718,7 @@ document.write(`
 <span class="sd">        Function to test.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># test for raises NotImplementedError</span>
-    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">raises</span><span class="p">(</span><span class="ne">NotImplementedError</span><span class="p">):</span>
         <span class="c1"># get signature parameters</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span>
 
@@ -476,9 +729,9 @@ document.write(`
         <span class="n">fn</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="assert_not_raise_NotImplementedError">
-<a class="viewcode-back" href="../../../_autosummary/pybrops.test.assert_python.assert_not_raise_NotImplementedError.html#pybrops.test.assert_python.assert_not_raise_NotImplementedError">[docs]</a>
-<span class="k">def</span> <span class="nf">assert_not_raise_NotImplementedError</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="assert_function_not_raises_NotImplementedError">
+<a class="viewcode-back" href="../../../_autosummary/pybrops.test.assert_python.assert_function_not_raises_NotImplementedError.html#pybrops.test.assert_python.assert_function_not_raises_NotImplementedError">[docs]</a>
+<span class="k">def</span> <span class="nf">assert_function_not_raises_NotImplementedError</span><span class="p">(</span><span class="n">fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test that a function does not raise NotImplementedError.</span>
 
@@ -514,7 +767,7 @@ document.write(`
 <span class="sd">        An abstract method.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">assert_docstring</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>                    <span class="c1"># assert for having a docstring</span>
-    <span class="n">assert_raise_NotImplementedError</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>    <span class="c1"># assert that function is abstract</span></div>
+    <span class="n">assert_function_raises_NotImplementedError</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>    <span class="c1"># assert that function is abstract</span></div>
 
 
 <div class="viewcode-block" id="assert_concrete_function">
@@ -532,7 +785,7 @@ document.write(`
 <span class="sd">        An abstract method.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">assert_docstring</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>                        <span class="c1"># assert for having a docstring</span>
-    <span class="n">assert_not_raise_NotImplementedError</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>    <span class="c1"># assert that function is abstract</span></div>
+    <span class="n">assert_function_not_raises_NotImplementedError</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>    <span class="c1"># assert that function is abstract</span></div>
 
 
 <div class="viewcode-block" id="assert_hasattr">

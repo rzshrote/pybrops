@@ -1,0 +1,33 @@
+MultiObjectiveSteepestDescentHillClimberMutation
+================================================
+
+.. currentmodule:: pybrops.opt.algo.pymoo_addon
+
+.. autoclass:: MultiObjectiveSteepestDescentHillClimberMutation
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~MultiObjectiveSteepestDescentHillClimberMutation.do
+      ~MultiObjectiveSteepestDescentHillClimberMutation.get_prob_var
+      ~MultiObjectiveSteepestDescentHillClimberMutation.hillclimb
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~MultiObjectiveSteepestDescentHillClimberMutation.setspace
+   
+   

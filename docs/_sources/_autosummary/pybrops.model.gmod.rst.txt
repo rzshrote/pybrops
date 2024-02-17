@@ -37,4 +37,5 @@ gmod
    pybrops.model.gmod.GenomicModel
    pybrops.model.gmod.LinearGenomicModel
    pybrops.model.gmod.NonlinearGenomicModel
+   pybrops.model.gmod.rrBLUPModel0
 

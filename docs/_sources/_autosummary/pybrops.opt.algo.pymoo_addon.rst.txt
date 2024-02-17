@@ -14,8 +14,15 @@ pymoo\_addon
    
       IntegerPolynomialMutation
       IntegerSimulatedBinaryCrossover
+      MultiObjectiveSteepestDescentHillClimberMutation
+      MultiObjectiveStochasticDescentHillClimberMutation
+      MultiObjectiveStochasticHillClimberMutation
+      MutatorA
+      MutatorB
+      MutatorF
       ReducedExchangeCrossover
       ReducedExchangeMutation
+      StochasticHillClimberMutation
       SubsetRandomSampling
    
    
@@ -25,6 +32,16 @@ pymoo\_addon
    
 
    
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      dominates
+      tiled_choice
    
    
 

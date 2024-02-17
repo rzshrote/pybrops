@@ -1,0 +1,1435 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pybrops.model.gmod.rrBLUPModel0 &#8212; pybrops 1.0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/model/gmod/rrBLUPModel0';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 1.0.1 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pybrops.mode...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pybrops.model.gmod.rrBLUPModel0</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module containing RR-BLUP genomic prediction classes for a very simple </span>
+<span class="sd">intercept + marker effects model.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span><span class="p">,</span> <span class="n">check_is_Real</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len_eq</span><span class="p">,</span> <span class="n">check_ndarray_ndim</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_gteq</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.DenseAdditiveLinearGenomicModel</span> <span class="kn">import</span> <span class="n">DenseAdditiveLinearGenomicModel</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span><span class="p">,</span> <span class="n">Bounds</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.bvmat.BreedingValueMatrix</span> <span class="kn">import</span> <span class="n">BreedingValueMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.GenotypeMatrix</span> <span class="kn">import</span> <span class="n">GenotypeMatrix</span>
+
+<div class="viewcode-block" id="rrBLUP_ML0_calc_G">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_calc_G.html#pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_calc_G">[docs]</a>
+<span class="k">def</span> <span class="nf">rrBLUP_ML0_calc_G</span><span class="p">(</span><span class="n">Z</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate a genomic relationship matrix from a marker matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Z : numpy.ndarray</span>
+<span class="sd">        A genotype matrix of shape ``(nobs,nmkr)``.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    G : numpy.ndarray</span>
+<span class="sd">        A genomic relationship matrix of shape ``(nobs,nobs)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># copy and convert data to floating point representation</span>
+    <span class="c1"># (nobs,nmkr) -&gt; (nobs,nmkr)</span>
+    <span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="c1"># center each column around the mean marker value</span>
+    <span class="c1"># (nobs,nmkr) - (1,nmkr) -&gt; (nobs,nmkr)</span>
+    <span class="n">Z</span> <span class="o">-=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># scale each column by the standard deviation of the marker value</span>
+    <span class="c1"># (nobs,nmkr) * (1,nmkr) -&gt; (nobs,nmkr)</span>
+    <span class="n">Z</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">keepdims</span> <span class="o">=</span> <span class="kc">True</span><span class="p">))</span>
+    <span class="c1"># take the outer product to get the genomic relationship matrix</span>
+    <span class="c1"># (nobs,nmkr) @ (nmkr,nobs) -&gt; (nobs,nobs)</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">Z</span> <span class="o">@</span> <span class="n">Z</span><span class="o">.</span><span class="n">T</span>
+    <span class="c1"># scale the matrix by the mean diagonal value</span>
+    <span class="c1"># (nobs,nobs) * scalar -&gt; (nobs,nobs)</span>
+    <span class="n">G</span> <span class="o">*=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">G</span><span class="p">)))</span>
+    <span class="c1"># return genomic relationship matrix</span>
+    <span class="k">return</span> <span class="n">G</span></div>
+
+
+<div class="viewcode-block" id="rrBLUP_ML0_center_y">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_center_y.html#pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_center_y">[docs]</a>
+<span class="k">def</span> <span class="nf">rrBLUP_ML0_center_y</span><span class="p">(</span><span class="n">y</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Center y values around zero.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y : numpy.ndarray</span>
+<span class="sd">        A vector of observations of shape ``(nobs,)``.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : numpy.ndarray</span>
+<span class="sd">        A vector of observations of shape ``(nobs,)`` centered around zero.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># center trait data around mean</span>
+    <span class="c1"># (nobs,) - scalar -&gt; (nobs,)</span>
+    <span class="k">return</span> <span class="n">y</span> <span class="o">-</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="rrBLUP_ML0_calc_d_V">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_calc_d_V.html#pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_calc_d_V">[docs]</a>
+<span class="k">def</span> <span class="nf">rrBLUP_ML0_calc_d_V</span><span class="p">(</span><span class="n">G</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the spectral decomposition of a (symmetric) genomic relationship matrix.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    G : numpy.ndarray</span>
+<span class="sd">        A genomic relationship matrix of shape ``(nobs,nobs)``.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : tuple</span>
+<span class="sd">        A tuple containing ``(d,V)``.</span>
+<span class="sd">        </span>
+<span class="sd">        Where::</span>
+<span class="sd">        - ``d`` is a vector of shape ``(nobs,)`` representing the diagonal of the spectral decomposition.</span>
+<span class="sd">        - ``V`` is a matrix of shape ``(nobs,nobs)`` representing the orthonormal basis of the spectral decomposition.</span>
+
+<span class="sd">        Entries are sorted from highest eigenvalue to lowest eigenvalue.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># take the spectral decomposition of the (symmetric) G matrix.</span>
+    <span class="c1"># (nobs,nobs) -&gt; eigenvalues = (nobs,), eigenvectors = (nobs,nobs)</span>
+    <span class="n">d</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigh</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    <span class="c1"># get indices for highest to lowest eigenvalues</span>
+    <span class="c1"># (nobs,)</span>
+    <span class="n">ix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">d</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="c1"># reorder eigenvalues from highest to lowest</span>
+    <span class="c1"># (nobs,)[(nobs,)] -&gt; (nobs,)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+    <span class="c1"># reorder eigenvectors from highest to lowest</span>
+    <span class="c1"># (nobs,)[(nobs,)] -&gt; (nobs,)</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">V</span><span class="p">[:,</span><span class="n">ix</span><span class="p">]</span>
+    <span class="c1"># return spectral decomposition</span>
+    <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">V</span></div>
+
+
+<div class="viewcode-block" id="rrBLUP_ML0_nonzero_d_V">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_nonzero_d_V.html#pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_nonzero_d_V">[docs]</a>
+<span class="k">def</span> <span class="nf">rrBLUP_ML0_nonzero_d_V</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">V</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">tol</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extract nonzero components of eigenvalues and eigenvectors from a spectral decomposition.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    d : numpy.ndarray</span>
+<span class="sd">        A vector of shape ``(nobs,)`` representing the diagonal of the spectral decomposition.</span>
+<span class="sd">    V : numpy.ndarray</span>
+<span class="sd">        A matrix of shape ``(nobs,nobs)`` representing the orthonormal basis of the spectral decomposition.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : tuple</span>
+<span class="sd">        A tuple containing ``(d,V)``.</span>
+<span class="sd">        </span>
+<span class="sd">        Where::</span>
+<span class="sd">        - ``d`` is a vector of shape ``(ncomp,)`` representing the diagonal of the spectral decomposition.</span>
+<span class="sd">        - ``V`` is a matrix of shape ``(nobs,ncomp)`` representing the orthonormal basis of the spectral decomposition.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># for the spectral decomposition, construct a mask for eigenvalues greater than approximately zero</span>
+    <span class="c1"># (nobs,) -&gt; (nobs,) </span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="n">tol</span>
+    <span class="c1"># extract eigenvalues that are greater than approximately zero</span>
+    <span class="c1"># (nobs,) -&gt; (ncomp,)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+    <span class="c1"># extract eigenvectors for eigenvalues that are greater than approximately zero</span>
+    <span class="c1"># (nobs,nobs) -&gt; (nobs,ncomp)</span>
+    <span class="n">V</span> <span class="o">=</span> <span class="n">V</span><span class="p">[:,</span><span class="n">mask</span><span class="p">]</span>
+    <span class="c1"># return values</span>
+    <span class="k">return</span> <span class="n">d</span><span class="p">,</span> <span class="n">V</span></div>
+
+
+<div class="viewcode-block" id="rrBLUP_ML0_calc_etasq">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_calc_etasq.html#pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_calc_etasq">[docs]</a>
+<span class="k">def</span> <span class="nf">rrBLUP_ML0_calc_etasq</span><span class="p">(</span><span class="n">V</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate eta squared values for fast computation of likelihoods.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    V : numpy.ndarray</span>
+<span class="sd">        A matrix of shape ``(nobs,ncomp)`` containing the non-zero eigenvectors of the spectral decomposition.</span>
+<span class="sd">    y : numpy.ndarray</span>
+<span class="sd">        A vector of shape ``(nobs,)`` containing zero centered observations.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    etasq : numpy.ndarray</span>
+<span class="sd">        A vector of shape ``(ncomp,)`` containing squared eta values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># calculate V.T @ y to get eta values</span>
+    <span class="c1"># (ncomp,nobs) @ (nobs,) -&gt; (ncomp,)</span>
+    <span class="n">eta</span> <span class="o">=</span> <span class="n">V</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span>
+    <span class="c1"># square eta values</span>
+    <span class="c1"># (ncomp,)^2 -&gt; (ncomp,)</span>
+    <span class="n">etasq</span> <span class="o">=</span> <span class="n">eta</span><span class="o">**</span><span class="mi">2</span>
+    <span class="c1"># return values</span>
+    <span class="k">return</span> <span class="n">etasq</span></div>
+
+
+<div class="viewcode-block" id="rrBLUP_ML0_neg2LogLik_fast">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_neg2LogLik_fast.html#pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_neg2LogLik_fast">[docs]</a>
+<span class="k">def</span> <span class="nf">rrBLUP_ML0_neg2LogLik_fast</span><span class="p">(</span><span class="n">logVarComp</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">etasq</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">d</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="n">Integral</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Real</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    -2 log-likelihood function for ML estimation.</span>
+<span class="sd">    In optimization, this function is to be minimized.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    logVarComp : numpy.ndarray</span>
+<span class="sd">        A vector of shape (2,) containing parameter estimates in the log scale (log(varE),log(varU)).</span>
+<span class="sd">        The log scale is used for more efficient search since the search space is (0,Inf).</span>
+<span class="sd">    etasq : numpy.ndarray</span>
+<span class="sd">        A vector of shape ``(ncomp,)`` containing squared eta values.</span>
+<span class="sd">    d : numpy.ndarray</span>
+<span class="sd">        A vector of shape (ncomp,) containing non-zero eigenvalues for the genomic relationship matrix.</span>
+<span class="sd">    n : Integral</span>
+<span class="sd">        Number of observations (nobs).</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : Real</span>
+<span class="sd">        Scalar value proportional to the -2 log-likelihood for ML estimation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># variance components</span>
+    <span class="n">varE</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logVarComp</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">varU</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">logVarComp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1"># calculate the ratio between genetic variance and error variance</span>
+    <span class="n">lamb</span> <span class="o">=</span> <span class="n">varU</span> <span class="o">/</span> <span class="n">varE</span>
+    <span class="c1"># calculate diagonal values for varU * G + varE * I matrix spectral decomposition</span>
+    <span class="n">dStar</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">*</span> <span class="n">lamb</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># calculate log-determinant using sum of logs of diagonal matrix</span>
+    <span class="n">sumLogD</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">dStar</span><span class="p">))</span>
+    <span class="c1"># calculate -2 * log-likelihood</span>
+    <span class="n">n2ll</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">varE</span><span class="p">)</span> <span class="o">+</span> <span class="n">sumLogD</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">etasq</span> <span class="o">/</span> <span class="n">dStar</span><span class="p">))</span> <span class="o">/</span> <span class="n">varE</span><span class="p">)</span>
+    <span class="c1"># return -2 * log-likelihood</span>
+    <span class="k">return</span> <span class="n">n2ll</span></div>
+
+
+<div class="viewcode-block" id="rrBLUP_ML0_calc_ridge">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_calc_ridge.html#pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_calc_ridge">[docs]</a>
+<span class="k">def</span> <span class="nf">rrBLUP_ML0_calc_ridge</span><span class="p">(</span><span class="n">varE</span><span class="p">:</span> <span class="n">Real</span><span class="p">,</span> <span class="n">varU</span><span class="p">:</span> <span class="n">Real</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Real</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the ridge parameter.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    varE : Real</span>
+<span class="sd">        Error variance.</span>
+<span class="sd">    varU : Real</span>
+<span class="sd">        Marker variance.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : Real</span>
+<span class="sd">        The ridge parameter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">varE</span> <span class="o">/</span> <span class="n">varU</span></div>
+
+
+<div class="viewcode-block" id="rrBLUP_ML0_calc_ZtZplI">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_calc_ZtZplI.html#pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_calc_ZtZplI">[docs]</a>
+<span class="k">def</span> <span class="nf">rrBLUP_ML0_calc_ZtZplI</span><span class="p">(</span><span class="n">Z</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ridge</span><span class="p">:</span> <span class="n">Real</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate (Z&#39;Z + lambda * I).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Z : numpy.ndarray</span>
+<span class="sd">        A genotype matrix of shape ``(nobs,nmkr)``.</span>
+<span class="sd">    ridge : Real</span>
+<span class="sd">        The ridge parameter, lambda. Must be non-negative.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : numpy.ndarray</span>
+<span class="sd">        The calculated matrix of shape ``(nmkr,nmkr)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># calculate marker covariance matrix: Z&#39;Z</span>
+    <span class="c1"># (nmkr,nobs) @ (nobs,nmkr) -&gt; (nmkr,nmkr)</span>
+    <span class="n">ZtZplI</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">Z</span>
+    <span class="c1"># extract a view of the diagonal for which to add the ridge parameter</span>
+    <span class="n">diagZtZplI</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">einsum</span><span class="p">(</span><span class="s1">&#39;ii-&gt;i&#39;</span><span class="p">,</span> <span class="n">ZtZplI</span><span class="p">)</span>
+    <span class="c1"># add ridge parameter to diagonal of Z&#39;Z</span>
+    <span class="c1"># (nmkr,) + scalar -&gt; (nmkr,)</span>
+    <span class="n">diagZtZplI</span> <span class="o">+=</span> <span class="n">ridge</span>
+    <span class="c1"># return values</span>
+    <span class="k">return</span> <span class="n">ZtZplI</span></div>
+
+
+<div class="viewcode-block" id="rrBLUP_ML0_calc_Zty">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_calc_Zty.html#pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0_calc_Zty">[docs]</a>
+<span class="k">def</span> <span class="nf">rrBLUP_ML0_calc_Zty</span><span class="p">(</span><span class="n">Z</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate Z&#39;y.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    Z : numpy.ndarray</span>
+<span class="sd">        A genotype matrix of shape ``(nobs,nmkr)``.</span>
+<span class="sd">    y : numpy.ndarray</span>
+<span class="sd">        A vector of shape ``(nobs,)`` containing zero centered observations.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : numpy.ndarray</span>
+<span class="sd">        A vector of shape ``(nmrk,)``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># calculate Z&#39;y</span>
+    <span class="c1"># (nmkr,nobs) @ (nobs,) -&gt; (nmkr,)</span>
+    <span class="n">Zty</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">y</span>
+    <span class="c1"># return values</span>
+    <span class="k">return</span> <span class="n">Zty</span></div>
+
+
+<div class="viewcode-block" id="gauss_seidel">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.gauss_seidel.html#pybrops.model.gmod.rrBLUPModel0.gauss_seidel">[docs]</a>
+<span class="k">def</span> <span class="nf">gauss_seidel</span><span class="p">(</span><span class="n">A</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">atol</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">maxiter</span><span class="p">:</span> <span class="n">Integral</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Solve the equation Ax = b using the Gauss-Seidel method.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    A : numpy.ndarray</span>
+<span class="sd">        A diagonal dominant or symmetric positive definite matrix of shape (nmkr,nmkr).</span>
+<span class="sd">    b : numpy.ndarray</span>
+<span class="sd">        A vector of shape (nmkr,).</span>
+<span class="sd">    atol : Real</span>
+<span class="sd">        Absolute tolerance. Iterate until the sum of absolute differences </span>
+<span class="sd">        between successive iterations is less than this value or ``maxiter``</span>
+<span class="sd">        is reached.</span>
+<span class="sd">        Must be non-negative.</span>
+<span class="sd">    maxiter : Integral</span>
+<span class="sd">        Maximum number of iterations.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x : numpy.ndarray</span>
+<span class="sd">        Solution to the system of equations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># get number of markers</span>
+    <span class="n">nmkr</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="c1"># allocate memory for the previous x estimate</span>
+    <span class="n">xprev</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nmkr</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="c1"># allocate memory for the current x estimate</span>
+    <span class="n">xcurr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nmkr</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="c1"># number of iterations</span>
+    <span class="n">niter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># absolute difference</span>
+    <span class="n">adiff</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">atol</span>
+    <span class="c1"># main loop</span>
+    <span class="k">while</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">adiff</span> <span class="o">&gt;</span> <span class="n">atol</span><span class="p">)</span> <span class="ow">and</span> <span class="n">niter</span> <span class="o">&lt;</span> <span class="n">maxiter</span><span class="p">:</span>
+        <span class="c1"># copy current x values to previous x values without memory allocation</span>
+        <span class="n">xprev</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">xcurr</span>
+        <span class="c1"># modify current x values using the Gauss-Seidel procedure</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nmkr</span><span class="p">):</span>
+            <span class="n">xcurr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,:</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xcurr</span><span class="p">[:</span><span class="n">i</span><span class="p">])</span> <span class="o">-</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xcurr</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]))</span> <span class="o">/</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">]</span>
+        <span class="c1"># calculate the absolute difference between iterations</span>
+        <span class="n">adiff</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xcurr</span> <span class="o">-</span> <span class="n">xprev</span><span class="p">)</span>
+        <span class="c1"># increment the iteration number</span>
+        <span class="n">niter</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="c1"># return estimates</span>
+    <span class="k">return</span> <span class="n">xcurr</span></div>
+
+
+<div class="viewcode-block" id="rrBLUP_ML0">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0.html#pybrops.model.gmod.rrBLUPModel0.rrBLUP_ML0">[docs]</a>
+<span class="k">def</span> <span class="nf">rrBLUP_ML0</span><span class="p">(</span><span class="n">y</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Z</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">varlb</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span> <span class="n">varub</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1e5</span><span class="p">,</span> <span class="n">gsatol</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="n">gsmaxiter</span><span class="p">:</span> <span class="n">Integral</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ridge regression BLUP for the simple model::</span>
+
+<span class="sd">    y = Zu + e</span>
+
+<span class="sd">    Where::</span>
+<span class="sd">        - ``y`` are observations.</span>
+<span class="sd">        - ``Z`` is a design matrix for genetic markers.</span>
+<span class="sd">        - ``u`` are marker effects which follow the distribution ``MVN(0, varU * I)``.</span>
+<span class="sd">        - ``e`` are errors which follow the distribution ``MVN(0, varE * I)``.</span>
+<span class="sd">    </span>
+<span class="sd">    Uses the EMMA formulation to solve for ``varE`` and ``varU``.</span>
+<span class="sd">    Uses the Nelder-Mead method to optimize for variance components.</span>
+<span class="sd">    Marker effects are estimated using the Gauss-Seidel method.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    y : numpy.ndarray</span>
+<span class="sd">        A vector of observations of shape ``(nobs,)``. If not mean centered, will be centered around zero.</span>
+<span class="sd">    Z : numpy.ndarray</span>
+<span class="sd">        A genotype matrix of shape ``(nobs,nmkr)``.</span>
+<span class="sd">    varlb : Real</span>
+<span class="sd">        Lower bound permitted for variance component estimation.</span>
+<span class="sd">        Must be non-negative.</span>
+<span class="sd">    varub : Real</span>
+<span class="sd">        Upper bound permitted for variance component estimation.</span>
+<span class="sd">        Must be non-negative and greater than ``varlb``.</span>
+<span class="sd">    gsatol : Real</span>
+<span class="sd">        Absolute tolerance for the Gauss-Seidel method.</span>
+<span class="sd">        Iterate until the sum of absolute differences between successive </span>
+<span class="sd">        iterations is less than this value or ``maxiter`` is reached.</span>
+<span class="sd">        Must be non-negative.</span>
+<span class="sd">    gsmaxiter : Integral</span>
+<span class="sd">        Maximum number of iterations for the Gauss-Seidel method.</span>
+<span class="sd">        Must be non-negative.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : dict</span>
+<span class="sd">        A dictionary of output values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># check input types</span>
+    <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">)</span>
+    <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+    <span class="n">check_is_Real</span><span class="p">(</span><span class="n">varlb</span><span class="p">,</span> <span class="s2">&quot;varlb&quot;</span><span class="p">)</span>
+    <span class="n">check_is_Real</span><span class="p">(</span><span class="n">varub</span><span class="p">,</span> <span class="s2">&quot;varub&quot;</span><span class="p">)</span>
+    <span class="n">check_is_Real</span><span class="p">(</span><span class="n">gsatol</span><span class="p">,</span> <span class="s2">&quot;gsatol&quot;</span><span class="p">)</span>
+    <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">gsmaxiter</span><span class="p">,</span> <span class="s2">&quot;gsmaxiter&quot;</span><span class="p">)</span>
+
+    <span class="c1"># check input values</span>
+    <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">check_ndarray_axis_len_eq</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+    <span class="n">check_is_gteq</span><span class="p">(</span><span class="n">varlb</span><span class="p">,</span> <span class="s2">&quot;varlb&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">check_is_gteq</span><span class="p">(</span><span class="n">varub</span><span class="p">,</span> <span class="s2">&quot;varub&quot;</span><span class="p">,</span> <span class="n">varlb</span><span class="p">)</span>
+    <span class="n">check_is_gteq</span><span class="p">(</span><span class="n">gsatol</span><span class="p">,</span> <span class="s2">&quot;gsatol&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">check_is_gteq</span><span class="p">(</span><span class="n">gsmaxiter</span><span class="p">,</span> <span class="s2">&quot;gsmaxiter&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># get the mean of y (the intercept)</span>
+    <span class="c1"># (nobs,) -&gt; scalar</span>
+    <span class="n">meanY</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="c1"># center trait data around mean</span>
+    <span class="c1"># (nobs,)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rrBLUP_ML0_center_y</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># get the number of observations</span>
+    <span class="c1"># scalar</span>
+    <span class="n">nobs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># create genomic relationship matrix</span>
+    <span class="c1"># (nobs,nobs)</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">rrBLUP_ML0_calc_G</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span>
+
+    <span class="c1"># take the spectral decomposition of the (symmetric) G matrix.</span>
+    <span class="c1"># (nobs,nobs) -&gt; eigenvalues = (nobs,), eigenvectors = (nobs,nobs)</span>
+    <span class="n">d</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">rrBLUP_ML0_calc_d_V</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+
+    <span class="c1"># remove zero components</span>
+    <span class="c1"># eigenvalues = (nobs,), eigenvectors = (nobs,nobs) -&gt; eigenvalues = (ncomp,), eigenvectors = (nobs,ncomp)</span>
+    <span class="n">d</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">rrBLUP_ML0_nonzero_d_V</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">V</span><span class="p">)</span>
+
+    <span class="c1"># calculate eta squared values</span>
+    <span class="c1"># (ncomp,)</span>
+    <span class="n">etasq</span> <span class="o">=</span> <span class="n">rrBLUP_ML0_calc_etasq</span><span class="p">(</span><span class="n">V</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># calculate variance of y</span>
+    <span class="c1"># (nobs,) -&gt; scalar</span>
+    <span class="n">varY</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+
+    <span class="c1"># calculate initial estimates of log(varE) and log(varU); set each to half of varY</span>
+    <span class="c1"># scalar</span>
+    <span class="n">logVarE0</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">varY</span><span class="p">)</span>
+    <span class="n">logVarU0</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">varY</span><span class="p">)</span>
+
+    <span class="c1"># construct inital starting position</span>
+    <span class="c1"># (2,)</span>
+    <span class="n">logVarComp0</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">logVarE0</span><span class="p">,</span> <span class="n">logVarU0</span><span class="p">])</span>
+
+    <span class="c1"># construct search space boundaries</span>
+    <span class="n">bounds</span> <span class="o">=</span> <span class="n">Bounds</span><span class="p">(</span>
+        <span class="n">lb</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">varlb</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">logVarComp0</span><span class="p">)),</span>
+        <span class="n">ub</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">varub</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">logVarComp0</span><span class="p">)),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># optimize for the variance components using Nelder-Mead algorithm</span>
+    <span class="n">soln</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span>
+        <span class="n">fun</span> <span class="o">=</span> <span class="n">rrBLUP_ML0_neg2LogLik_fast</span><span class="p">,</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="n">logVarComp0</span><span class="p">,</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">etasq</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">nobs</span><span class="p">),</span>
+        <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;Nelder-Mead&#39;</span><span class="p">,</span>
+        <span class="n">bounds</span> <span class="o">=</span> <span class="n">bounds</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># get the solution values</span>
+    <span class="n">varE</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">soln</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">varU</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">soln</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># calculate the ridge parameter</span>
+    <span class="n">ridge</span> <span class="o">=</span> <span class="n">rrBLUP_ML0_calc_ridge</span><span class="p">(</span><span class="n">varE</span><span class="p">,</span> <span class="n">varU</span><span class="p">)</span>
+
+    <span class="c1"># calculate (Z&#39;Z + lambda * I)</span>
+    <span class="n">ZtZplI</span> <span class="o">=</span> <span class="n">rrBLUP_ML0_calc_ZtZplI</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">ridge</span><span class="p">)</span>
+
+    <span class="c1"># calculate Z&#39;y</span>
+    <span class="n">Zty</span> <span class="o">=</span> <span class="n">rrBLUP_ML0_calc_Zty</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="c1"># solve for (Z&#39;Z + lambda * I)u = Z&#39;y using the Gauss-Seidel method</span>
+    <span class="n">uhat</span> <span class="o">=</span> <span class="n">gauss_seidel</span><span class="p">(</span><span class="n">ZtZplI</span><span class="p">,</span> <span class="n">Zty</span><span class="p">,</span> <span class="n">gsatol</span><span class="p">,</span> <span class="n">gsmaxiter</span><span class="p">)</span>
+
+    <span class="c1"># calculate heritability</span>
+    <span class="n">h2</span> <span class="o">=</span> <span class="n">varU</span> <span class="o">/</span> <span class="p">(</span><span class="n">varU</span> <span class="o">+</span> <span class="n">varE</span><span class="p">)</span>
+
+    <span class="c1"># reconstruct the log-likelihood (minus constant)</span>
+    <span class="n">logLik</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">soln</span><span class="o">.</span><span class="n">fun</span>
+
+    <span class="c1"># get intercept incidence matrix</span>
+    <span class="c1"># (nobs,1)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">nobs</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="mf">1.0</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+
+    <span class="c1"># get intercept</span>
+    <span class="c1"># (1,)</span>
+    <span class="n">betahat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">meanY</span><span class="p">])</span>
+
+    <span class="c1"># calculate y hat</span>
+    <span class="n">yhat</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">betahat</span><span class="p">)</span> <span class="o">+</span> <span class="n">Z</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">uhat</span><span class="p">)</span>
+
+    <span class="c1"># create output dictionary</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># ridge regression elements</span>
+        <span class="s2">&quot;yhat&quot;</span><span class="p">:</span> <span class="n">yhat</span><span class="p">,</span>
+        <span class="s2">&quot;X&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">,</span>
+        <span class="s2">&quot;betahat&quot;</span><span class="p">:</span> <span class="n">betahat</span><span class="p">,</span>
+        <span class="s2">&quot;Z&quot;</span><span class="p">:</span> <span class="n">Z</span><span class="p">,</span>
+        <span class="s2">&quot;uhat&quot;</span><span class="p">:</span> <span class="n">uhat</span><span class="p">,</span>
+        <span class="c1"># variance estimates</span>
+        <span class="s2">&quot;varE&quot;</span><span class="p">:</span> <span class="n">varE</span><span class="p">,</span>
+        <span class="s2">&quot;varU&quot;</span><span class="p">:</span> <span class="n">varU</span><span class="p">,</span>
+        <span class="s2">&quot;h2&quot;</span><span class="p">:</span> <span class="n">h2</span><span class="p">,</span>
+        <span class="s2">&quot;logLik&quot;</span><span class="p">:</span> <span class="n">logLik</span><span class="p">,</span>
+        <span class="c1"># optimization solution object</span>
+        <span class="s2">&quot;soln&quot;</span><span class="p">:</span> <span class="n">soln</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="rrBLUPModel0">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUPModel0.html#pybrops.model.gmod.rrBLUPModel0.rrBLUPModel0">[docs]</a>
+<span class="k">class</span> <span class="nc">rrBLUPModel0</span><span class="p">(</span><span class="n">DenseAdditiveLinearGenomicModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The rrBLUPModel0 class represents a simple RR-BLUP model with an intercept </span>
+<span class="sd">    (fixed) and marker effects (random).</span>
+
+<span class="sd">    An rrBLUPModel0 is a Multivariate Multiple Linear Regression model defined as:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\mathbf{Y} = \\mathbf{XB} + \\mathbf{ZU} + \\mathbf{E}</span>
+
+<span class="sd">    Where:</span>
+
+<span class="sd">    - :math:`\\mathbf{Y}` is a matrix of response variables of shape ``(n,t)``.</span>
+<span class="sd">    - :math:`\\mathbf{X}` is a matrix of ones for the intercept of shape ``(n,1)``.</span>
+<span class="sd">    - :math:`\\mathbf{B}` is a matrix of intercept coefficients of shape ``(1,t)``.</span>
+<span class="sd">    - :math:`\\mathbf{Z}` is a matrix of random effect predictors of shape ``(n,p)``.</span>
+<span class="sd">    - :math:`\\mathbf{U}` is a matrix of random effect regression coefficients of shape ``(p,t)``.</span>
+<span class="sd">    - :math:`\\mathbf{E}` is a matrix of error terms of shape ``(n,t)``.</span>
+
+<span class="sd">    Block matrix modifications to :</span>
+
+<span class="sd">    :math:`\\mathbf{Z}` and :math:`\\mathbf{U}` can be decomposed into block</span>
+<span class="sd">    matrices pertaining to different sets of effects:</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\mathbf{Z} = \\begin{bmatrix} \\mathbf{Z_{misc}} &amp; \\mathbf{Z_{a}} \\end{bmatrix}</span>
+
+<span class="sd">    Where:</span>
+
+<span class="sd">    - :math:`\\mathbf{Z_{misc}}` is a matrix of miscellaneous random effect predictors of shape ``(n,p_misc)``</span>
+<span class="sd">    - :math:`\\mathbf{Z_{a}}` is a matrix of additive genomic marker predictors of shape ``(n,p_a)``</span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">        \\mathbf{U} = \\begin{bmatrix} \\mathbf{U_{misc}} \\\\ \\mathbf{U_{a}} \\end{bmatrix}</span>
+
+<span class="sd">    Where:</span>
+
+<span class="sd">    - :math:`\\mathbf{U_{misc}}` is a matrix of miscellaneous random effects of shape ``(p_misc,t)``</span>
+<span class="sd">    - :math:`\\mathbf{U_{a}}` is a matrix of additive genomic marker effects of shape ``(p_a,t)``</span>
+
+<span class="sd">    Shape definitions:</span>
+
+<span class="sd">    - ``n`` is the number of individuals</span>
+<span class="sd">    - ``p`` is the number of random effect predictors.</span>
+<span class="sd">    - ``p_misc`` is the number of miscellaneous random effect predictors.</span>
+<span class="sd">    - ``p_a`` is the number of additive genomic marker predictors.</span>
+<span class="sd">    - The sum of ``p_misc`` and ``p_a`` equals ``p``.</span>
+<span class="sd">    - ``t`` is the number of traits</span>
+
+<span class="sd">    From Prototype class docstring:</span>
+
+<span class="sd">    RR-BLUP model for fitting a single random effect and a single intercept fixed effect for a single trait.</span>
+<span class="sd">    If multiple traits are provided, fit independent models for each trait.</span>
+
+<span class="sd">    For a single trait, the model is::</span>
+
+<span class="sd">    y = Xb + Zu + e</span>
+
+<span class="sd">    Where::</span>
+<span class="sd">        - ``y`` are observations.</span>
+<span class="sd">        - ``X`` is a matrix of ones for the incidence of the slope.</span>
+<span class="sd">        - ``b`` is the intercept.</span>
+<span class="sd">        - ``Z`` is a design matrix for genetic markers.</span>
+<span class="sd">        - ``u`` are marker effects which follow the distribution ``MVN(0, varU * I)``.</span>
+<span class="sd">        - ``e`` are errors which follow the distribution ``MVN(0, varE * I)``.</span>
+
+<span class="sd">    For a single trait, if the observations (y) are mean centered, then the model becomes::</span>
+
+<span class="sd">    y = Zu + e</span>
+
+<span class="sd">    Where::</span>
+<span class="sd">        - ``y`` are observations.</span>
+<span class="sd">        - ``Z`` is a design matrix for genetic markers.</span>
+<span class="sd">        - ``u`` are marker effects which follow the distribution ``MVN(0, varU * I)``.</span>
+<span class="sd">        - ``e`` are errors which follow the distribution ``MVN(0, varE * I)``.</span>
+
+<span class="sd">    Multiple traits are concatenated together into the model::</span>
+
+<span class="sd">    Y = XB + ZU + E</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">beta</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="n">u_misc</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span> 
+            <span class="n">u_a</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ML&quot;</span><span class="p">,</span>
+            <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">hyperparams</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for rrBLUPModel0 class.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        beta : numpy.ndarray</span>
+<span class="sd">            A ``float64`` fixed effect regression coefficient matrix of shape</span>
+<span class="sd">            ``(q,t)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``q`` is the number of fixed effect predictors (e.g. environments).</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        </span>
+<span class="sd">        u_misc : numpy.ndarray, None</span>
+<span class="sd">            A ``float64`` random effect regression coefficient matrix of shape</span>
+<span class="sd">            ``(p_misc,t)`` containing miscellaneous effects.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``p_misc`` is the number of miscellaneous random effect predictors.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+
+<span class="sd">            If ``None``, then set to an empty array of shape ``(0,t)``.</span>
+<span class="sd">        </span>
+<span class="sd">        u_a : numpy.ndarray, None</span>
+<span class="sd">            A ``float64`` random effect regression coefficient matrix of shape</span>
+<span class="sd">            ``(p_a,t)`` containing additive marker effects.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``p_a`` is the number of additive marker effect predictors.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+
+<span class="sd">            If ``None``, then set to an empty array of shape ``(0,t)``.</span>
+<span class="sd">        </span>
+<span class="sd">        trait : numpy.ndarray, None</span>
+<span class="sd">            An ``object`` array of shape ``(t,)`` containing the names of traits.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        </span>
+<span class="sd">        method : str</span>
+<span class="sd">            Fitting method to use. Options are ``{&quot;ML&quot;}``.</span>
+<span class="sd">            </span>
+<span class="sd">        model_name : str, None</span>
+<span class="sd">            Name of the model.</span>
+<span class="sd">        </span>
+<span class="sd">        hyperparams : dict, None</span>
+<span class="sd">            Model parameters.</span>
+<span class="sd">        </span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Used for cooperative inheritance. Dictionary passing unused</span>
+<span class="sd">            arguments to the parent class constructor.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># call super constructor</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">rrBLUPModel0</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">beta</span><span class="p">,</span> 
+            <span class="n">u_misc</span><span class="p">,</span> 
+            <span class="n">u_a</span><span class="p">,</span> 
+            <span class="n">trait</span><span class="p">,</span> 
+            <span class="n">model_name</span><span class="p">,</span> 
+            <span class="n">hyperparams</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="c1"># save method metadata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">=</span> <span class="n">method</span>
+
+    <span class="c1">#################### Model copying #####################</span>
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;rrBLUPModel0&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a shallow copy of the GenomicModel.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : rrBLUPModel0</span>
+<span class="sd">            A shallow copy of the model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">beta</span>        <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">),</span>
+            <span class="n">u_misc</span>      <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_misc</span><span class="p">),</span>
+            <span class="n">u_a</span>         <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_a</span><span class="p">),</span>
+            <span class="n">trait</span>       <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">),</span>
+            <span class="n">method</span>      <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">),</span>
+            <span class="n">model_name</span>  <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">),</span>
+            <span class="n">hyperparams</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparams</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">memo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;rrBLUPModel0&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a deep copy of the GenomicModel.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        memo : dict</span>
+<span class="sd">            Dictionary of memo metadata.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : rrBLUPModel0</span>
+<span class="sd">            A deep copy of the model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">beta</span>        <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">u_misc</span>      <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_misc</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">u_a</span>         <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">u_a</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">trait</span>       <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">method</span>      <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">model_name</span>  <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">hyperparams</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparams</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="c1">############################ Object Properties #############################</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Method to be used to fit the RR-BLUP model.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_method</span>
+    <span class="nd">@method</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the method to fit the RR-BLUP model.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;method&#39; must be of type ``str``, but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;ML&quot;</span><span class="p">,)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;str &#39;method&#39; must be one of ``method == </span><span class="si">{0}</span><span class="s2">``, but received ``method == </span><span class="si">{1}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">options</span><span class="p">,</span><span class="n">value</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_method</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c1">############################## Object Methods ##############################</span>
+
+    <span class="c1">#################### Model copying #####################</span>
+<div class="viewcode-block" id="rrBLUPModel0.copy">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUPModel0.html#pybrops.model.gmod.rrBLUPModel0.rrBLUPModel0.copy">[docs]</a>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;rrBLUPModel0&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a shallow copy of the GenomicModel.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : GenomicModel</span>
+<span class="sd">            A shallow copy of the original GenomicModel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__copy__</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="rrBLUPModel0.deepcopy">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUPModel0.html#pybrops.model.gmod.rrBLUPModel0.rrBLUPModel0.deepcopy">[docs]</a>
+    <span class="k">def</span> <span class="nf">deepcopy</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">memo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;rrBLUPModel0&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a deep copy of the GenomicModel.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        memo : dict</span>
+<span class="sd">            Dictionary of memo metadata.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : GenomicModel</span>
+<span class="sd">            A deep copy of the original GenomicModel</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__deepcopy__</span><span class="p">(</span><span class="n">memo</span><span class="p">)</span></div>
+
+
+    <span class="c1">####### methods for model fitting and prediction #######</span>
+<div class="viewcode-block" id="rrBLUPModel0.fit_numpy">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUPModel0.html#pybrops.model.gmod.rrBLUPModel0.rrBLUPModel0.fit_numpy">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">fit_numpy</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">Y</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="n">X</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="n">Z</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ML&quot;</span><span class="p">,</span>
+            <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">hyperparams</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;rrBLUPModel0&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit a dense, additive linear genomic model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        Y : numpy.ndarray</span>
+<span class="sd">            A phenotype matrix of shape (n,t).</span>
+<span class="sd">        X : numpy.ndarray</span>
+<span class="sd">            Not used by this model. Assumed to be ``(n,q)`` matrix of ones.</span>
+<span class="sd">        Z : numpy.ndarray</span>
+<span class="sd">            A genotypes matrix of shape (n,p).</span>
+<span class="sd">        trait : numpy.ndarray</span>
+<span class="sd">            A trait name array of shape (t,).</span>
+<span class="sd">        method : str</span>
+<span class="sd">            Fitting method to use. Options are ``{&quot;ML&quot;}``.</span>
+<span class="sd">        model_name : str, None</span>
+<span class="sd">            Name of the model.</span>
+<span class="sd">        hyperparams : dict, None</span>
+<span class="sd">            Model parameters.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+        <span class="c1"># check_is_ndarray(X, &quot;X&quot;) # ignored by this model</span>
+        <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
+
+        <span class="c1"># shape checks</span>
+        <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># check_ndarray_ndim(X, &quot;X&quot;, 2) # ignored by this model</span>
+        <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># convert data types to floating if needed</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">floating</span><span class="p">):</span>
+            <span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">floating</span><span class="p">):</span>
+            <span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="c1"># get number of traits</span>
+        <span class="c1"># scalar = t</span>
+        <span class="n">ntrait</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># for each trait, fit a model</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">rrBLUP_ML0</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">Z</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntrait</span><span class="p">)]</span>
+
+        <span class="c1"># aggregate intercepts and stack estimates</span>
+        <span class="c1"># (1,t)</span>
+        <span class="n">beta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">models</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;betahat&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntrait</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># aggregate marker effects and stack estimates</span>
+        <span class="c1"># (p,t)</span>
+        <span class="n">u_a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">models</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;uhat&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntrait</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># create output</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span><span class="p">,</span>
+            <span class="n">u_misc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">u_a</span> <span class="o">=</span> <span class="n">u_a</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="p">,</span>
+            <span class="n">model_name</span> <span class="o">=</span> <span class="n">model_name</span><span class="p">,</span>
+            <span class="n">hyperparams</span> <span class="o">=</span> <span class="n">hyperparams</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="rrBLUPModel0.fit">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUPModel0.html#pybrops.model.gmod.rrBLUPModel0.rrBLUPModel0.fit">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">ptobj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BreedingValueMatrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">cvobj</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="n">gtobj</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">GenotypeMatrix</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ML&quot;</span><span class="p">,</span>
+            <span class="n">model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">hyperparams</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;rrBLUPModel0&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fit a dense, additive linear genomic model.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ptobj : BreedingValueMatrix, numpy.ndarray</span>
+<span class="sd">            An object containing phenotype data. Must be a matrix of breeding</span>
+<span class="sd">            values or a phenotype data frame.</span>
+<span class="sd">        cvobj : numpy.ndarray</span>
+<span class="sd">            An object containing covariate data.</span>
+<span class="sd">        gtobj : GenotypeMatrix, numpy.ndarray</span>
+<span class="sd">            An object containing genotype data. Must be a matrix of genotype</span>
+<span class="sd">            values.</span>
+<span class="sd">        trait : numpy.ndarray, None</span>
+<span class="sd">            A trait name array of shape (t,).</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># process ptobj</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ptobj</span><span class="p">,</span> <span class="n">BreedingValueMatrix</span><span class="p">):</span>
+            <span class="n">Y</span> <span class="o">=</span> <span class="n">ptobj</span><span class="o">.</span><span class="n">unscale</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ptobj</span><span class="p">,</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;not implmented yet&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ptobj</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">Y</span> <span class="o">=</span> <span class="n">ptobj</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;must be BreedingValueMatrix, pandas.DataFrame, numpy.ndarray&quot;</span><span class="p">)</span>
+
+        <span class="c1"># process cvobj (ignored)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># process gtobj</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gtobj</span><span class="p">,</span> <span class="n">GenotypeMatrix</span><span class="p">):</span>
+            <span class="n">Z</span> <span class="o">=</span> <span class="n">gtobj</span><span class="o">.</span><span class="n">mat_asformat</span><span class="p">(</span><span class="s2">&quot;{0,1,2}&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gtobj</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">Z</span> <span class="o">=</span> <span class="n">gtobj</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;must be GenotypeMatrix, numpy.ndarray&quot;</span><span class="p">)</span>
+
+        <span class="c1"># fit the model</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">fit_numpy</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">trait</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">hyperparams</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+</div>
+
+
+
+
+<span class="c1">################################## Utilities ###################################</span>
+<div class="viewcode-block" id="check_is_rrBLUPModel0">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.check_is_rrBLUPModel0.html#pybrops.model.gmod.rrBLUPModel0.check_is_rrBLUPModel0">[docs]</a>
+<span class="k">def</span> <span class="nf">check_is_rrBLUPModel0</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if object is of type rrBLUPModel0. Otherwise raise TypeError.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        Any Python object to test.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of variable to print in TypeError message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">rrBLUPModel0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; must be a rrBLUPModel0&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Robert Z. Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

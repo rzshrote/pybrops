@@ -1,0 +1,6 @@
+gauss\_seidel
+=============
+
+.. currentmodule:: pybrops.model.gmod.rrBLUPModel0
+
+.. autofunction:: gauss_seidel
