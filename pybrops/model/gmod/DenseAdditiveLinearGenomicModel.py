@@ -378,10 +378,6 @@ class DenseAdditiveLinearGenomicModel(
     def ntrait(self) -> int:
         """Number of traits predicted by the model."""
         return self._beta.shape[1]
-    @ntrait.setter
-    def ntrait(self, value: int) -> None:
-        """Set the number of traits predicted by the model"""
-        error_readonly("ntrait")
 
     ############################## Object Methods ##############################
 

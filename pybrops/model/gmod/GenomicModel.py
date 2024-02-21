@@ -114,11 +114,6 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
     def ntrait(self) -> int:
         """Number of traits predicted by the model."""
         raise NotImplementedError("property is abstract")
-    @ntrait.setter
-    @abstractmethod
-    def ntrait(self, value: int) -> None:
-        """Set the number of traits predicted by the model"""
-        raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################
 
