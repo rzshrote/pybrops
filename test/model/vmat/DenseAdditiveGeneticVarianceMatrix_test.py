@@ -2,9 +2,9 @@ import pytest
 import numpy
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import check_is_DenseAdditiveGeneticVarianceMatrix
@@ -48,13 +48,13 @@ def mat(mat_float64, mat_taxa, mat_taxa_grp):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(DenseAdditiveGeneticVarianceMatrix)
+    assert_class_documentation(DenseAdditiveGeneticVarianceMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(DenseAdditiveGeneticVarianceMatrix, "__init__")
+    assert_method_isconcrete(DenseAdditiveGeneticVarianceMatrix, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -68,7 +68,7 @@ def test_init_is_concrete():
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_DenseAdditiveGeneticVarianceMatrix_is_concrete():
-    assert_concrete_function(check_is_DenseAdditiveGeneticVarianceMatrix)
+    assert_function_isconcrete(check_is_DenseAdditiveGeneticVarianceMatrix)
 
 def test_check_is_DenseAdditiveGeneticVarianceMatrix(mat):
     with not_raises(TypeError):

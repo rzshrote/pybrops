@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.IntegerSelectionConfiguration import IntegerSele
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.soln.IntegerSelectionSolution import IntegerSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -131,23 +131,23 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(ExpectedMaximumBreedingValueIntegerSelection)
+    assert_class_documentation(ExpectedMaximumBreedingValueIntegerSelection)
 
 ############################# Test concrete methods ############################
 def test_init_is_concrete():
-    assert_concrete_method(ExpectedMaximumBreedingValueIntegerSelection, "__init__")
+    assert_method_isconcrete(ExpectedMaximumBreedingValueIntegerSelection, "__init__")
 
 def test_problem_is_concrete():
-    assert_concrete_method(ExpectedMaximumBreedingValueIntegerSelection, "problem")
+    assert_method_isconcrete(ExpectedMaximumBreedingValueIntegerSelection, "problem")
 
 def test_sosolve_is_concrete():
-    assert_concrete_method(ExpectedMaximumBreedingValueIntegerSelection, "sosolve")
+    assert_method_isconcrete(ExpectedMaximumBreedingValueIntegerSelection, "sosolve")
 
 def test_mosolve_is_concrete():
-    assert_concrete_method(ExpectedMaximumBreedingValueIntegerSelection, "mosolve")
+    assert_method_isconcrete(ExpectedMaximumBreedingValueIntegerSelection, "mosolve")
 
 def test_select_is_concrete():
-    assert_concrete_method(ExpectedMaximumBreedingValueIntegerSelection, "select")
+    assert_method_isconcrete(ExpectedMaximumBreedingValueIntegerSelection, "select")
 
 ###################### Test concrete method functionality ######################
 def test_problem(

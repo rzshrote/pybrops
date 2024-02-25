@@ -2,7 +2,7 @@ import pytest
 from pybrops.breed.prot.sel.soln.IntegerMateSelectionSolution import IntegerMateSelectionSolution
 from pybrops.breed.prot.sel.soln.IntegerMateSelectionSolution import IntegerMateSelectionSolution
 from pybrops.breed.prot.sel.soln.IntegerMateSelectionSolution import check_is_IntegerMateSelectionSolution
-from pybrops.test.assert_python import assert_docstring, assert_concrete_class, not_raises
+from pybrops.test.assert_python import assert_class_documentation, assert_class_isconcrete, not_raises
 
 from .common_fixtures import *
 
@@ -47,11 +47,11 @@ def selsoln(
 
 ################### Test class abstract/concrete properties ####################
 def test_IntegerMateSelectionSolution_is_concrete():
-    assert_concrete_class(IntegerMateSelectionSolution)
+    assert_class_isconcrete(IntegerMateSelectionSolution)
 
 ############################## Test class docstring ############################
 def test_IntegerMateSelectionSolution_docstring():
-    assert_docstring(IntegerMateSelectionSolution)
+    assert_class_documentation(IntegerMateSelectionSolution)
 
 ############################# Test class utilities #############################
 def test_check_is_IntegerMateSelectionSolution(selsoln):

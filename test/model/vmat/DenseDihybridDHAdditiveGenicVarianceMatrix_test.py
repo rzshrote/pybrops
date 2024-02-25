@@ -5,9 +5,9 @@ import numpy
 import h5py
 from pybrops.model.vmat.DenseDihybridDHAdditiveGenicVarianceMatrix import DenseDihybridDHAdditiveGenicVarianceMatrix
 
-from pybrops.test.assert_python import assert_concrete_property, not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_property_isconcrete, not_raises
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 from .common_fixtures import *
 
@@ -65,13 +65,13 @@ def vmat(mat, taxa, taxa_grp, trait):
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(DenseDihybridDHAdditiveGenicVarianceMatrix)
+    assert_class_documentation(DenseDihybridDHAdditiveGenicVarianceMatrix)
 
 ########################### Test concrete properties ###########################
 
 ### mat
 def test_mat_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGenicVarianceMatrix, "mat")
+    assert_property_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "mat")
 
 def test_mat_fget(vmat):
     assert isinstance(vmat.mat, numpy.ndarray)
@@ -92,41 +92,41 @@ def test_mat_fset_ValueError(vmat):
 
 ### square_axes
 def test_square_axes_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGenicVarianceMatrix, "square_axes")
+    assert_property_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "square_axes")
 
 ### trait_axis
 def test_trait_axis_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGenicVarianceMatrix, "trait_axis")
+    assert_property_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "trait_axis")
 
 ### epgc
 def test_epgc_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGenicVarianceMatrix, "epgc")
+    assert_property_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "epgc")
 
 ### nfemale
 def test_nfemale_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGenicVarianceMatrix, "nfemale")
+    assert_property_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "nfemale")
 
 ### female_axis
 def test_female_axis_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGenicVarianceMatrix, "female_axis")
+    assert_property_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "female_axis")
 
 ### nmale
 def test_nmale_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGenicVarianceMatrix, "nmale")
+    assert_property_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "nmale")
 
 ### male_axis
 def test_male_axis_is_concrete():
-    assert_concrete_property(DenseDihybridDHAdditiveGenicVarianceMatrix, "male_axis")
+    assert_property_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "male_axis")
 
 ############################# Test concrete methods ############################
 
 ### __init__
 def test___init___is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGenicVarianceMatrix, "__init__")
+    assert_method_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "__init__")
 
 ### to_pandas
 def test_to_pandas_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGenicVarianceMatrix, "to_pandas")
+    assert_method_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "to_pandas")
 
 def test_to_pandas(vmat):
     # define column names
@@ -185,7 +185,7 @@ def test_to_pandas(vmat):
 
 ### to_csv
 def test_to_csv_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGenicVarianceMatrix, "to_csv")
+    assert_method_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "to_csv")
 
 def test_to_csv(vmat):
     filename = "test_dhdh_vmat.csv"
@@ -211,7 +211,7 @@ def test_to_csv(vmat):
 
 ### to_hdf5
 def test_to_hdf5_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGenicVarianceMatrix, "to_hdf5")
+    assert_method_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "to_hdf5")
 
 def test_to_hdf5(vmat):
     filename = "test_dhdh_vmat.h5"
@@ -238,7 +238,7 @@ def test_to_hdf5(vmat):
 
 ### from_pandas
 def test_from_pandas_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGenicVarianceMatrix, "from_pandas")
+    assert_method_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "from_pandas")
 
 def test_from_pandas(vmat, ntaxa, ntrait):
     # export
@@ -278,7 +278,7 @@ def test_from_pandas(vmat, ntaxa, ntrait):
 
 ### from_csv
 def test_from_csv_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGenicVarianceMatrix, "from_csv")
+    assert_method_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "from_csv")
 
 def test_from_csv(vmat, ntaxa, ntrait):
     filename = "test_dhdh_vmat.csv"
@@ -326,7 +326,7 @@ def test_from_csv(vmat, ntaxa, ntrait):
 
 ### from_hdf5
 def test_from_hdf5_is_concrete():
-    assert_concrete_method(DenseDihybridDHAdditiveGenicVarianceMatrix, "from_hdf5")
+    assert_method_isconcrete(DenseDihybridDHAdditiveGenicVarianceMatrix, "from_hdf5")
 
 def test_from_hdf5(vmat):
     filename = "test_dhdh_vmat.h5"

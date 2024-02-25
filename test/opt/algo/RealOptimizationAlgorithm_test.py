@@ -2,7 +2,7 @@ import pytest
 
 from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm, check_is_RealOptimizationAlgorithm
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
-from pybrops.test.assert_python import assert_abstract_class, assert_abstract_method, assert_docstring, not_raises
+from pybrops.test.assert_python import assert_class_isabstract, assert_method_isabstract, assert_class_documentation, not_raises
 
 class DummyOptimizationAlgorithm(OptimizationAlgorithm):
     def minimize(self, prob, miscout, **kwargs):
@@ -18,17 +18,17 @@ def algo():
 
 ################### Test class abstract/concrete properties ####################
 def test_RealOptimizationAlgorithm_is_semiabstract():
-    assert_abstract_class(RealOptimizationAlgorithm)
+    assert_class_isabstract(RealOptimizationAlgorithm)
 
 ############################## Test class docstring ############################
 def test_RealOptimizationAlgorithm_docstring():
-    assert_docstring(RealOptimizationAlgorithm)
+    assert_class_documentation(RealOptimizationAlgorithm)
 
 ############################# Test class properties ############################
 
 ############################## Test class methods ##############################
 def test_RealOptimizationAlgorithm_minimize_is_abstract():
-    assert_abstract_method(RealOptimizationAlgorithm, "minimize")
+    assert_method_isabstract(RealOptimizationAlgorithm, "minimize")
 
 ############################# Test class utilities #############################
 def test_check_is_RealOptimizationAlgorithm(algo):

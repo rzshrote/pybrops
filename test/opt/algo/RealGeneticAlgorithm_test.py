@@ -2,7 +2,7 @@ import os
 import pytest
 from pybrops.opt.algo.RealGeneticAlgorithm import RealGeneticAlgorithm
 from pybrops.opt.soln.RealSolution import RealSolution
-from pybrops.test.assert_python import assert_concrete_class, assert_concrete_method, assert_concrete_property, assert_docstring, not_raises
+from pybrops.test.assert_python import assert_class_isconcrete, assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, not_raises
 from .common_fixtures import *
 
 @pytest.fixture
@@ -20,17 +20,17 @@ def algo(
 
 ################### Test class abstract/concrete properties ####################
 def test_RealGeneticAlgorithm_is_concrete():
-    assert_concrete_class(RealGeneticAlgorithm)
+    assert_class_isconcrete(RealGeneticAlgorithm)
 
 ############################## Test class docstring ############################
 def test_RealGeneticAlgorithm_docstring():
-    assert_docstring(RealGeneticAlgorithm)
+    assert_class_documentation(RealGeneticAlgorithm)
 
 ############################# Test class properties ############################
 
 ### ngen ###
 def test_RealGeneticAlgorithm_ngen_is_concrete():
-    assert_concrete_property(RealGeneticAlgorithm, "ngen")
+    assert_property_isconcrete(RealGeneticAlgorithm, "ngen")
 
 def test_ngen_fget(algo, common_ngen):
     assert algo.ngen == common_ngen
@@ -71,7 +71,7 @@ def test_ngen_fdel(algo):
 
 ### pop_size ###
 def test_RealGeneticAlgorithm_pop_size_is_concrete():
-    assert_concrete_property(RealGeneticAlgorithm, "pop_size")
+    assert_property_isconcrete(RealGeneticAlgorithm, "pop_size")
 
 def test_pop_size_fget(algo, common_pop_size):
     assert algo.pop_size == common_pop_size
@@ -112,7 +112,7 @@ def test_pop_size_fdel(algo):
 
 ### rng ###
 def test_RealGeneticAlgorithm_rng_is_concrete():
-    assert_concrete_property(RealGeneticAlgorithm, "rng")
+    assert_property_isconcrete(RealGeneticAlgorithm, "rng")
 
 def test_rng_fget(algo, common_rng):
     assert algo.rng == common_rng
@@ -139,7 +139,7 @@ def test_rng_fdel(algo):
 
 ### minimize ###
 def test_RealGeneticAlgorithm_minimize_is_concrete():
-    assert_concrete_method(RealGeneticAlgorithm, "minimize")
+    assert_method_isconcrete(RealGeneticAlgorithm, "minimize")
 
 def test_minimize_single(algo, common_sum_prob_real_single):
     soln = algo.minimize(common_sum_prob_real_single)

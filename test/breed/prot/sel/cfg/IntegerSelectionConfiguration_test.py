@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from pybrops.test.assert_python import assert_concrete_method, assert_concrete_property, assert_docstring, assert_concrete_class, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, assert_class_isconcrete, not_raises
 from pybrops.breed.prot.sel.cfg.IntegerSelectionConfiguration import IntegerSelectionConfiguration
 
 from .common_fixtures import *
@@ -28,17 +28,17 @@ def selcfg(
 
 ################### Test class abstract/concrete properties ####################
 def test_IntegerSelectionConfiguration_is_concrete():
-    assert_concrete_class(IntegerSelectionConfiguration)
+    assert_class_isconcrete(IntegerSelectionConfiguration)
 
 ############################## Test class docstring ############################
 def test_IntegerSelectionConfiguration_docstring():
-    assert_docstring(IntegerSelectionConfiguration)
+    assert_class_documentation(IntegerSelectionConfiguration)
 
 ############################# Test class properties ############################
 
 ### xconfig_decn ###
 def test_IntegerSelectionConfiguration_xconfig_decn_is_concrete():
-    assert_concrete_property(IntegerSelectionConfiguration, "xconfig_decn")
+    assert_property_isconcrete(IntegerSelectionConfiguration, "xconfig_decn")
 
 def test_xconfig_decn_fget(selcfg, common_xconfig_decn_integer):
     assert numpy.all(selcfg.xconfig_decn == common_xconfig_decn_integer)
@@ -73,7 +73,7 @@ def test_xconfig_decn_fdel(selcfg):
 
 ############################## Test class methods ##############################
 def test_IntegerSelectionConfiguration_sample_xconfig_is_concrete():
-    assert_concrete_method(IntegerSelectionConfiguration, "sample_xconfig")
+    assert_method_isconcrete(IntegerSelectionConfiguration, "sample_xconfig")
 
 def test_sample_xconfig(selcfg):
     original_xconfig = selcfg.xconfig

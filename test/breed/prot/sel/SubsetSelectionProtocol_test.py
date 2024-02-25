@@ -1,7 +1,7 @@
 import pytest
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import check_is_SubsetSelectionProtocol
-from pybrops.test.assert_python import assert_abstract_method, assert_concrete_method, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_method_isabstract, assert_method_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 from .common_fixtures_large import *
 
 class DummySubsetSelectionProtocol(SubsetSelectionProtocol):
@@ -61,24 +61,24 @@ def selsoln(
 
 ################### Test class abstract/concrete properties ####################
 def test_SubsetSelectionProtocol_is_semiabstract():
-    assert_semiabstract_class(SubsetSelectionProtocol)
+    assert_class_issemiabstract(SubsetSelectionProtocol)
 
 ############################## Test class docstring ############################
 def test_SubsetSelectionProtocol_docstring():
-    assert_docstring(SubsetSelectionProtocol)
+    assert_class_documentation(SubsetSelectionProtocol)
 
 ############################## Test class methods ##############################
 def test_SubsetSelectionProtocol_problem_is_abstract():
-    assert_abstract_method(SubsetSelectionProtocol, "problem")
+    assert_method_isabstract(SubsetSelectionProtocol, "problem")
 
 def test_SubsetSelectionProtocol_sosolve_is_concrete():
-    assert_concrete_method(SubsetSelectionProtocol, "sosolve")
+    assert_method_isconcrete(SubsetSelectionProtocol, "sosolve")
 
 def test_SubsetSelectionProtocol_mosolve_is_concrete():
-    assert_concrete_method(SubsetSelectionProtocol, "mosolve")
+    assert_method_isconcrete(SubsetSelectionProtocol, "mosolve")
 
 def test_SubsetSelectionProtocol_select_is_concrete():
-    assert_concrete_method(SubsetSelectionProtocol, "select")
+    assert_method_isconcrete(SubsetSelectionProtocol, "select")
 
 ############################# Test class utilities #############################
 def test_check_is_SubsetSelectionProtocol(selsoln):

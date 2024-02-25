@@ -21,7 +21,11 @@ from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybrops.core.mat.DensePhasedMatrix import DensePhasedMatrix
 from pybrops.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix
 
-class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,PhasedTaxaVariantMatrix):
+class DensePhasedTaxaVariantMatrix(
+        DenseTaxaVariantMatrix,
+        DensePhasedMatrix,
+        PhasedTaxaVariantMatrix,
+    ):
     """
     A concrete class implementing dense matrices with phase, taxa, and variant
     metadata.
@@ -864,6 +868,13 @@ class DensePhasedTaxaVariantMatrix(DenseTaxaVariantMatrix,DensePhasedMatrix,Phas
         ) -> bool:
         """
         Determine whether the Matrix has been sorted and grouped.
+
+        Parameters
+        ----------
+        axis : int
+            Axis to test for sorting and grouping
+        kwargs : dict
+            Additional keyword arguments
 
         Returns
         -------

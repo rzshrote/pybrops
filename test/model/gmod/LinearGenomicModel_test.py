@@ -1,10 +1,10 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 from pybrops.model.gmod.LinearGenomicModel import check_is_LinearGenomicModel
@@ -21,22 +21,22 @@ def gmod():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(LinearGenomicModel)
+    assert_class_documentation(LinearGenomicModel)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(LinearGenomicModel, "__init__")
+    assert_method_isconcrete(LinearGenomicModel, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
 def test_beta_is_abstract():
-    assert_abstract_property(LinearGenomicModel, "beta")
+    assert_property_isabstract(LinearGenomicModel, "beta")
 
 def test_u_is_abstract():
-    assert_abstract_property(LinearGenomicModel, "u")
+    assert_property_isabstract(LinearGenomicModel, "u")
 
 ################################################################################
 ############################# Test abstract methods ############################
@@ -46,7 +46,7 @@ def test_u_is_abstract():
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_LinearGenomicModel_is_concrete():
-    assert_concrete_function(check_is_LinearGenomicModel)
+    assert_function_isconcrete(check_is_LinearGenomicModel)
 
 ################################################################################
 ######################### Test class utility functions #########################

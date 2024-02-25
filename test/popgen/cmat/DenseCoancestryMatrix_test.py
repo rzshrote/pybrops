@@ -3,10 +3,10 @@ import numpy
 import os
 from os.path import isfile
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.cmat.DenseCoancestryMatrix import check_is_DenseCoancestryMatrix
@@ -43,13 +43,13 @@ def cmat(A_mat_float64):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(DenseCoancestryMatrix)
+    assert_class_documentation(DenseCoancestryMatrix)
 
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
 def test_from_gmat_is_abstract():
-    assert_abstract_method(DenseCoancestryMatrix, "from_gmat")
+    assert_method_isabstract(DenseCoancestryMatrix, "from_gmat")
 
 ################################################################################
 ############################ Test Class Properties #############################
@@ -81,11 +81,11 @@ def test_mat_fdel(cmat, A_mat_float64):
 
 ### __init__
 def test_init_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "__init__")
+    assert_method_isconcrete(DenseCoancestryMatrix, "__init__")
 
 ### mat_asformat
 def test_mat_asformat_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "mat_asformat")
+    assert_method_isconcrete(DenseCoancestryMatrix, "mat_asformat")
 
 def test_mat_asformat_coancestry(cmat, A_mat_float64):
     A = cmat.mat_asformat("coancestry")
@@ -105,7 +105,7 @@ def test_mat_asformat_ValueError(cmat):
 
 ### coancestry
 def test_coancestry_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "coancestry")
+    assert_method_isconcrete(DenseCoancestryMatrix, "coancestry")
 
 def test_coancestry_2tuple(cmat, A_mat_float64):
     n = A_mat_float64.shape[0]
@@ -135,7 +135,7 @@ def test_coancestry_list_tuple(cmat, A_mat_float64):
 
 ### kinship
 def test_kinship_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "kinship")
+    assert_method_isconcrete(DenseCoancestryMatrix, "kinship")
 
 def test_kinship_2tuple(cmat, A_mat_float64):
     n = A_mat_float64.shape[0]
@@ -165,7 +165,7 @@ def test_kinship_list_tuple(cmat, A_mat_float64):
 
 ### is_positive_semidefinite
 def test_is_positive_semidefinite_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "is_positive_semidefinite")
+    assert_method_isconcrete(DenseCoancestryMatrix, "is_positive_semidefinite")
 
 def test_is_positive_semidefinite(cmat):
     assert cmat.is_positive_semidefinite()
@@ -175,14 +175,14 @@ def test_is_positive_semidefinite_eigvaltol(cmat):
 
 ### apply_jitter
 def test_apply_jitter_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "apply_jitter")
+    assert_method_isconcrete(DenseCoancestryMatrix, "apply_jitter")
 
 def test_apply_jitter(cmat):
     assert cmat.apply_jitter()
 
 ### max_inbreeding
 def test_max_inbreeding_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "max_inbreeding")
+    assert_method_isconcrete(DenseCoancestryMatrix, "max_inbreeding")
 
 def test_max_inbreeding_coancestry(cmat):
     tmp = None
@@ -206,7 +206,7 @@ def test_max_inbreeding_ValueError(cmat):
 
 ### min_inbreeding
 def test_min_inbreeding_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "min_inbreeding")
+    assert_method_isconcrete(DenseCoancestryMatrix, "min_inbreeding")
 
 def test_min_inbreeding_TypeError(cmat):
     with pytest.raises(TypeError):
@@ -218,7 +218,7 @@ def test_min_inbreeding_ValueError(cmat):
 
 ### inverse
 def test_inverse_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "inverse")
+    assert_method_isconcrete(DenseCoancestryMatrix, "inverse")
 
 def test_inverse_coancestry(cmat):
     tmp = None
@@ -242,7 +242,7 @@ def test_inverse_ValueError(cmat):
 
 ### max
 def test_max_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "max")
+    assert_method_isconcrete(DenseCoancestryMatrix, "max")
 
 def test_max_coancestry(cmat):
     tmp = None
@@ -258,7 +258,7 @@ def test_max_kinship(cmat):
 
 ### mean
 def test_mean_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "mean")
+    assert_method_isconcrete(DenseCoancestryMatrix, "mean")
 
 def test_mean_coancestry(cmat):
     tmp = None
@@ -274,7 +274,7 @@ def test_mean_kinship(cmat):
 
 ### min
 def test_min_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "min")
+    assert_method_isconcrete(DenseCoancestryMatrix, "min")
 
 def test_min_coancestry(cmat):
     tmp = None
@@ -290,7 +290,7 @@ def test_min_kinship(cmat):
 
 ### to_pandas
 def test_to_pandas_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "to_pandas")
+    assert_method_isconcrete(DenseCoancestryMatrix, "to_pandas")
 
 def test_to_pandas(cmat):
     # None values
@@ -365,7 +365,7 @@ def test_to_pandas_taxa_ValueError(cmat):
 
 ### to_csv
 def test_to_csv_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "to_csv")
+    assert_method_isconcrete(DenseCoancestryMatrix, "to_csv")
 
 def test_to_csv(cmat):
     filename = "sample_coancestry_matrix.csv"
@@ -374,7 +374,7 @@ def test_to_csv(cmat):
 
 ### to_hdf5
 def test_to_hdf5_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "to_hdf5")
+    assert_method_isconcrete(DenseCoancestryMatrix, "to_hdf5")
 
 def test_to_hdf5(cmat):
     filename = "sample_coancestry_matrix.h5"
@@ -385,7 +385,7 @@ def test_to_hdf5(cmat):
 
 ### from_pandas
 def test_from_pandas_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "from_pandas")
+    assert_method_isconcrete(DenseCoancestryMatrix, "from_pandas")
 
 def test_from_pandas(cmat):
     # None values
@@ -528,7 +528,7 @@ def test_from_pandas_taxa(cmat):
 
 ### from_csv
 def test_from_csv_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "from_csv")
+    assert_method_isconcrete(DenseCoancestryMatrix, "from_csv")
 
 def test_from_csv(cmat):
     filename = "saved_coancestry_matrix.csv"
@@ -538,13 +538,13 @@ def test_from_csv(cmat):
 
 ### from_hdf5
 def test_from_hdf5_is_concrete():
-    assert_concrete_method(DenseCoancestryMatrix, "from_hdf5")
+    assert_method_isconcrete(DenseCoancestryMatrix, "from_hdf5")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_DenseCoancestryMatrix_is_concrete():
-    assert_concrete_function(check_is_DenseCoancestryMatrix)
+    assert_function_isconcrete(check_is_DenseCoancestryMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################

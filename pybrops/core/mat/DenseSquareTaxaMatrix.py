@@ -235,11 +235,11 @@ class DenseSquareTaxaMatrix(
             The axis along which values are adjoined.
         taxa : numpy.ndarray
             Taxa names to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseSquareTaxaMatrix that has a non-None
             taxa field, providing this argument overwrites the field.
         taxa_grp : numpy.ndarray
             Taxa groups to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseSquareTaxaMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
@@ -282,11 +282,11 @@ class DenseSquareTaxaMatrix(
             Values are appended to append to the Matrix.
         taxa : numpy.ndarray
             Taxa names to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseSquareTaxaMatrix that has a non-None
             taxa field, providing this argument overwrites the field.
         taxa_grp : numpy.ndarray
             Taxa groups to adjoin to the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseSquareTaxaMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
@@ -474,11 +474,11 @@ class DenseSquareTaxaMatrix(
             The axis along which values are inserted.
         taxa : numpy.ndarray
             Taxa names to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseSquareTaxaMatrix that has a non-None
             taxa field, providing this argument overwrites the field.
         taxa_grp : numpy.ndarray
             Taxa groups to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseSquareTaxaMatrix that has a non-None
             taxa_grp field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
@@ -727,7 +727,7 @@ class DenseSquareTaxaMatrix(
         if len(mats) <= 0:
             raise ValueError("need at least one Matrix to concatenate")
 
-        # ensure that all items in mats are DenseHaplotypeMatrix
+        # ensure that all items in mats are DenseSquareTaxaMatrix
         for i,v in enumerate(mats):
             generic_check_isinstance(v, "mats[{0}]".format(i), cls)
 
@@ -769,7 +769,7 @@ class DenseSquareTaxaMatrix(
         taxa_grp = None if taxa_grp_ls is None else numpy.concatenate(taxa_grp_ls, axis = 0)
 
         # TODO: decide if first element in list is good source of information
-        # concatenate everything and put into new DenseHaplotypeMatrix
+        # concatenate everything and put into new DenseSquareTaxaMatrix
         # use first element as source of variant data
         out = cls(
             mat = mat,
@@ -794,12 +794,22 @@ class DenseSquareTaxaMatrix(
 
         Parameters
         ----------
-        values : DenseHaplotypeMatrix, numpy.ndarray
+        values : DenseSquareTaxaMatrix, numpy.ndarray
             Values are appended to append to the matrix.
             Must be of type int8.
             Must be of shape (m, n, p)
         axis : int
             The axis along which values are appended.
+        taxa : numpy.ndarray
+            Taxa names to append to the Matrix.
+            If values is a DenseSquareTaxaMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to append to the Matrix.
+            If values is a DenseSquareTaxaMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # get axis
         axis = get_axis(axis, self.mat_ndim)
@@ -981,6 +991,14 @@ class DenseSquareTaxaMatrix(
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
+        taxa : numpy.ndarray
+            Taxa names to corporate into the Matrix.
+            If values is a DenseSquareTaxaMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to incorporate into the Matrix.
+            If values is a DenseSquareTaxaMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -1032,7 +1050,7 @@ class DenseSquareTaxaMatrix(
                 taxa_grp = values.taxa_grp
             values = values.mat
         elif not isinstance(values, numpy.ndarray):
-            raise ValueError("'values' must be of type DenseHaplotypeMatrix or numpy.ndarray")
+            raise ValueError("'values' must be of type DenseSquareTaxaMatrix or numpy.ndarray")
 
         # perform error checks before allocating memory
         if values.ndim != self.mat_ndim:
@@ -1077,6 +1095,8 @@ class DenseSquareTaxaMatrix(
             sort key.
         axis : int
             The axis of the Matrix over which to sort values.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------
@@ -1105,7 +1125,7 @@ class DenseSquareTaxaMatrix(
 
         Parameters
         ----------
-        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+        keys : A (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
         kwargs : dict
@@ -1113,7 +1133,7 @@ class DenseSquareTaxaMatrix(
 
         Returns
         -------
-        indices : (N,) ndarray of ints
+        indices : A (N,) ndarray of ints
             Array of indices that sort the keys along the specified axis.
         """
         # default error message
@@ -1161,6 +1181,8 @@ class DenseSquareTaxaMatrix(
             Indices of where to place elements.
         axis : int
             The axis over which to reorder values.
+        kwargs : dict
+            Additional keyword arguments.
         """
         axis = get_axis(axis, self.mat_ndim)                   # transform axis number to an index
 
@@ -1180,7 +1202,7 @@ class DenseSquareTaxaMatrix(
 
         Parameters
         ----------
-        indices : (N,) ndarray of ints
+        indices : A (N,) ndarray of ints
             Array of indices that reorder the matrix along the specified axis.
         kwargs : dict
             Additional keyword arguments.
@@ -1214,6 +1236,8 @@ class DenseSquareTaxaMatrix(
             sort key.
         axis : int
             The axis over which to sort values.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -1234,6 +1258,13 @@ class DenseSquareTaxaMatrix(
         ) -> None:
         """
         Sort matrix along axis, then populate grouping indices for the axis.
+
+        Parameters
+        ----------
+        axis : int
+            The axis along which values should be grouped.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -1280,6 +1311,13 @@ class DenseSquareTaxaMatrix(
         ) -> bool:
         """
         Determine whether the Matrix has been sorted and grouped.
+
+        Parameters
+        ----------
+        axis : int
+            Axis along which to test for grouping.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------

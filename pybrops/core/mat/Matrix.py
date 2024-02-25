@@ -9,14 +9,17 @@ __all__ = [
 
 from abc import ABCMeta, abstractmethod
 import numpy
-from typing import Union
+from typing import Iterator, Union
 
 from typing import Sequence
 from numpy.typing import ArrayLike
 
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 
-class Matrix(HDF5InputOutput,metaclass=ABCMeta):
+class Matrix(
+        HDF5InputOutput,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for matrix wrapper objects.
 
@@ -35,363 +38,790 @@ class Matrix(HDF5InputOutput,metaclass=ABCMeta):
 
     ############## Forward numeric operators ###############
     @abstractmethod
-    def __add__(self, value):
+    def __add__(self, value: object) -> object:
         """
-        Return self + value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __sub__(self, value):
-        """
-        Return self - value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __mul__(self, value):
-        """
-        Return self * value.
+        Elementwise add matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to add.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the addition.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __matmul__(self, value):
+    def __sub__(self, value: object) -> object:
         """
-        Return self @ value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __truediv__(self, value):
-        """
-        Return self / value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __floordiv__(self, value):
-        """
-        Return self // value.
+        Elementwise subtract matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to subtract.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the subtraction.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __mod__(self, value):
+    def __mul__(self, value: object) -> object:
         """
-        Return self % value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __divmod__(self, value):
-        """
-        Return divmod(self, value).
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __pow__(self, value):
-        """
-        Return self ** value.
+        Elementwise multiply matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to multiply.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the multiplication.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __lshift__(self, value):
+    def __matmul__(self, value: object) -> object:
         """
-        Return self << value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __rshift__(self, value):
-        """
-        Return self >> value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __and__(self, value):
-        """
-        Return self & value.
+        Multiply matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to matrix multiply.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the matrix multiplication.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __xor__(self, value):
+    def __truediv__(self, value: object) -> object:
         """
-        Return self ^ value.
+        Elementwise divide matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to divide.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the division.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __or__(self, value):
+    def __floordiv__(self, value: object) -> object:
         """
-        Return self | value.
+        Elementwise floor divide matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to floor divide.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the floor division.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __mod__(self, value: object) -> object:
+        """
+        Elementwise modulo matrices
+
+        Parameters
+        ----------
+        value : object
+            Object which to modulo.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the modulo.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __divmod__(self, value: object) -> object:
+        """
+        Elementwise divmod matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to divmod.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the divmod.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __pow__(self, value: object) -> object:
+        """
+        Elementwise exponent matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to exponentiate.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the exponentiation.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __lshift__(self, value: object) -> object:
+        """
+        Elementwise bitwise left shift matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to left shift.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the left shift.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __rshift__(self, value: object) -> object:
+        """
+        Elementwise bitwise right shift matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to right shift.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the right shift.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __and__(self, value: object) -> object:
+        """
+        Elementwise bitwise AND matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise AND.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the bitwise AND.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __xor__(self, value: object) -> object:
+        """
+        Elementwise bitwise XOR matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise XOR.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the bitwise XOR.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __or__(self, value: object) -> object:
+        """
+        Elementwise bitwise OR matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise OR.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the bitwise OR.
         """
         raise NotImplementedError("method is abstract")
 
     ############# Backwards numeric operators ##############
     @abstractmethod
-    def __radd__(self, value):
+    def __radd__(self, value: object) -> object:
         """
-        Return value + self.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __rsub__(self, value):
-        """
-        Return value - self.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __rmul__(self, value):
-        """
-        Return value * self.
+        Reverse elementwise add matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to add.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the addition.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __rmatmul__(self, value):
+    def __rsub__(self, value: object) -> object:
         """
-        Return value @ self.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __rtruediv__(self, value):
-        """
-        Return value / self.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __rfloordiv__(self, value):
-        """
-        Return value // self.
+        Reverse elementwise subtract matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to subtract.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the subtraction.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __rmod__(self, value):
+    def __rmul__(self, value: object) -> object:
         """
-        Return value % self.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __rdivmod__(self, value):
-        """
-        Return divmod(value, self).
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __rlshift__(self, value):
-        """
-        Return value << self.
+        Reverse elementwise multiply matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to multiply.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the multiplication.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __rrshift__(self, value):
+    def __rmatmul__(self, value: object) -> object:
         """
-        Return value >> self.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __rand__(self, value):
-        """
-        Return value & self.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __rxor__(self, value):
-        """
-        Return value ^ self.
+        Reverse multiply matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to matrix multiply.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the matrix multiplication.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __ror__(self, value):
+    def __rtruediv__(self, value: object) -> object:
         """
-        Return value | self.
+        Reverse elementwise divide matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to divide.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the division.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __rfloordiv__(self, value: object) -> object:
+        """
+        Reverse elementwise floor divide matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to floor divide.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the floor division.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __rmod__(self, value: object) -> object:
+        """
+        Reverse elementwise modulus matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to modulo.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the modulo.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __rdivmod__(self, value: object) -> object:
+        """
+        Reverse elementwise divmod matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to divmod.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the divmod.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __rlshift__(self, value: object) -> object:
+        """
+        Reverse elementwise bitwise left shift matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to left shift.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the left shift.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __rrshift__(self, value: object) -> object:
+        """
+        Reverse elementwise bitwise right shift matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to right shift.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the right shift.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __rand__(self, value: object) -> object:
+        """
+        Reverse elementwise bitwise AND matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise AND.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the bitwise AND.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __rxor__(self, value: object) -> object:
+        """
+        Reverse elementwise bitwise XOR matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise XOR.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the bitwise XOR.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __ror__(self, value: object) -> object:
+        """
+        Reverse elementwise bitwise OR matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise OR.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the bitwise OR.
         """
         raise NotImplementedError("method is abstract")
 
     ############# Augmented numeric operators ##############
     @abstractmethod
-    def __iadd__(self, value):
+    def __iadd__(self, value: object) -> None:
         """
-        Return self += value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __isub__(self, value):
-        """
-        Return self -= value.
+        Elementwise add assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to add.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __imul__(self, value):
+    def __isub__(self, value: object) -> None:
         """
-        Return self *= value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __imatmul__(self, value):
-        """
-        Return self @= value.
+        Elementwise subtract assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to subtract.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __itruediv__(self, value):
+    def __imul__(self, value: object) -> None:
         """
-        Return self /= value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __ifloordiv__(self, value):
-        """
-        Return self //= value.
+        Elementwise multiply assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to multiply.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __imod__(self, value):
+    def __imatmul__(self, value: object) -> None:
         """
-        Return self %= value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __ipow__(self, value):
-        """
-        Return self **= value.
+        Multiply assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to matrix multiply.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __ilshift__(self, value):
+    def __itruediv__(self, value: object) -> None:
         """
-        Return self <<= value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __irshift__(self, value):
-        """
-        Return self >>= value.
+        Elementwise true divide assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to divide.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __iand__(self, value):
+    def __ifloordiv__(self, value: object) -> None:
         """
-        Return self &= value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __ixor__(self, value):
-        """
-        Return self ^= value.
+        Elementwise floor divide assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to floor divide.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __ior__(self, value):
+    def __imod__(self, value: object) -> None:
         """
-        Return self |= value.
+        Elementwise modulus assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to modulo.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __ipow__(self, value: object) -> None:
+        """
+        Elementwise exponent assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to exponentiate.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __ilshift__(self, value: object) -> None:
+        """
+        Elementwise left shift assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to left shift.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __irshift__(self, value: object) -> None:
+        """
+        Elementwise right shift assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to right shift.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __iand__(self, value: object) -> None:
+        """
+        Elementwise bitwise AND assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise AND.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __ixor__(self, value: object) -> None:
+        """
+        Elementwise bitwise XOR assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise XOR.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __ior__(self, value: object) -> None:
+        """
+        Elementwise bitwise OR assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise OR.
         """
         raise NotImplementedError("method is abstract")
 
     ################## Logical operators ###################
     @abstractmethod
-    def __lt__(self, value):
+    def __lt__(self, value: object) -> object:
         """
-        Return self < value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __le__(self, value):
-        """
-        Return self <= value.
-        """
-        raise NotImplementedError("method is abstract")
-
-    @abstractmethod
-    def __eq__(self, value):
-        """
-        Return self == value.
+        Elementwise less than comparison matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to compare.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the comparision.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __ne__(self, value):
+    def __le__(self, value: object) -> object:
         """
-        Return self != value.
+        Elementwise less than or equal to comparison matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to compare.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the comparision.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __gt__(self, value):
+    def __eq__(self, value: object) -> object:
         """
-        Return self > value.
+        Elementwise equal to comparison matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to compare.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the comparision.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __ge__(self, value):
+    def __ne__(self, value: object) -> object:
         """
-        Return self >= value.
+        Elementwise not equal to comparison matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to compare.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the comparision.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __gt__(self, value: object) -> object:
+        """
+        Elementwise greater than comparison matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to compare.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the comparision.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def __ge__(self, value: object) -> object:
+        """
+        Elementwise greater than or equal to comparison matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to compare.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the comparision.
         """
         raise NotImplementedError("method is abstract")
 
     ################# Container operators ##################
     @abstractmethod
-    def __len__(self):
+    def __len__(self) -> int:
         """
-        Get the length of the raw underlying matrix.
+        Get the length of the Matrix.
+
+        Returns
+        -------
+        out : int
+            The length of the Matrix.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __getitem__(self, key):
+    def __getitem__(self, key: object) -> object:
         """
-        Get a specific key within the raw underlying matrix.
+        Get an item from the Matrix.
+
+        Parameters
+        ----------
+        key : object
+            Key of the item which to get.
+        
+        Returns
+        -------
+        out : object
+            Item at the provided key.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: object, value: object) -> None:
         """
-        Set a specific key within the raw underlying matrix.
+        Set an item in the Matrix.
+
+        Parameters
+        ----------
+        key : object
+            Key of the item which to set.
+        value : object
+            Value of the item to wich to set.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __delitem__(self, key):
+    def __delitem__(self, key: object) -> None:
         """
-        Delete a specific key within the raw underlying matrix.
+        Delete an item in the Matrix.
+
+        Parameters
+        ----------
+        key : object
+            Key of the item which to delete.
         """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod
-    def __iter__(self):
+    def __iter__(self) -> Iterator:
         """
-        Create an iterator of the raw underlying matrix.
+        Get an iterator for the Matrix.
+
+        Returns
+        -------
+        out : Iterator
+            An iterator for the Matrix.
         """
         raise NotImplementedError("method is abstract")
 

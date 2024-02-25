@@ -76,7 +76,7 @@ class MutableMatrix(Matrix,metaclass=ABCMeta):
             obj: Union[int,slice,Sequence], 
             values: Union[Matrix,numpy.ndarray], 
             axis: int, 
-            **kwargs
+            **kwargs: dict
         ) -> None:
         """
         Incorporate values along the given axis before the given indices.

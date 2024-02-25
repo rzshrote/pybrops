@@ -1,9 +1,9 @@
 import numpy
 import pytest
 
-from pybrops.test.assert_python import assert_concrete_function, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_abstract_method
+from pybrops.test.assert_python import assert_function_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_method_isabstract
 
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem, check_is_RealSelectionProblem
 
@@ -141,7 +141,7 @@ def prob(
 ############################## Test class docstring ############################
 ################################################################################
 def test_RealSelectionProblem_docstring():
-    assert_docstring(RealSelectionProblem)
+    assert_class_documentation(RealSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -151,7 +151,7 @@ def test_RealSelectionProblem_docstring():
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(RealSelectionProblem, "__init__")
+    assert_method_isconcrete(RealSelectionProblem, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -161,13 +161,13 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_latentfn_is_abstract(prob):
-    assert_abstract_method(prob, "latentfn")
+    assert_method_isabstract(prob, "latentfn")
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_RealSelectionProblem_is_concrete():
-    assert_concrete_function(check_is_RealSelectionProblem)
+    assert_function_isconcrete(check_is_RealSelectionProblem)
 
 def test_check_is_RealSelectionProblem(prob):
     with not_raises(TypeError):

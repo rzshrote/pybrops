@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelect
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -119,23 +119,23 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(WeightedGenomicSubsetSelection)
+    assert_class_documentation(WeightedGenomicSubsetSelection)
 
 ############################# Test concrete methods ############################
 def test_init_is_concrete():
-    assert_concrete_method(WeightedGenomicSubsetSelection, "__init__")
+    assert_method_isconcrete(WeightedGenomicSubsetSelection, "__init__")
 
 def test_problem_is_concrete():
-    assert_concrete_method(WeightedGenomicSubsetSelection, "problem")
+    assert_method_isconcrete(WeightedGenomicSubsetSelection, "problem")
 
 def test_sosolve_is_concrete():
-    assert_concrete_method(WeightedGenomicSubsetSelection, "sosolve")
+    assert_method_isconcrete(WeightedGenomicSubsetSelection, "sosolve")
 
 def test_mosolve_is_concrete():
-    assert_concrete_method(WeightedGenomicSubsetSelection, "mosolve")
+    assert_method_isconcrete(WeightedGenomicSubsetSelection, "mosolve")
 
 def test_select_is_concrete():
-    assert_concrete_method(WeightedGenomicSubsetSelection, "select")
+    assert_method_isconcrete(WeightedGenomicSubsetSelection, "select")
 
 ###################### Test concrete method functionality ######################
 def test_problem(

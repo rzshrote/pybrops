@@ -2,10 +2,10 @@ import pytest
 import numpy
 import copy
 
-from pybrops.test.assert_python import assert_concrete_property, not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_classmethod_isconcrete, assert_property_isconcrete, not_raises
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.core.mat.DenseSquareTaxaSquareTraitMatrix import DenseSquareTaxaSquareTraitMatrix
 from pybrops.core.mat.DenseSquareTaxaSquareTraitMatrix import check_is_DenseSquareTaxaSquareTraitMatrix
@@ -86,76 +86,76 @@ def mat(mat_float64, taxa_object, taxa_grp_int64, trait_object):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(DenseSquareTaxaSquareTraitMatrix)
+    assert_class_documentation(DenseSquareTaxaSquareTraitMatrix)
 
 ################################################################################
 ############################ Test Class Properties #############################
 ################################################################################
 def test_nsquare_is_concrete():
-    assert_concrete_property(DenseSquareTaxaSquareTraitMatrix, "nsquare")
+    assert_property_isconcrete(DenseSquareTaxaSquareTraitMatrix, "nsquare")
 
 def test_square_axes_is_concrete():
-    assert_concrete_property(DenseSquareTaxaSquareTraitMatrix, "square_axes")
+    assert_property_isconcrete(DenseSquareTaxaSquareTraitMatrix, "square_axes")
 
 def test_square_axes_len_is_concrete():
-    assert_concrete_property(DenseSquareTaxaSquareTraitMatrix, "square_axes_len")
+    assert_property_isconcrete(DenseSquareTaxaSquareTraitMatrix, "square_axes_len")
 
 def test_square_taxa_axes_is_concrete():
-    assert_concrete_property(DenseSquareTaxaSquareTraitMatrix, "square_taxa_axes")
+    assert_property_isconcrete(DenseSquareTaxaSquareTraitMatrix, "square_taxa_axes")
 
 def test_square_trait_axes_is_concrete():
-    assert_concrete_property(DenseSquareTaxaSquareTraitMatrix, "square_trait_axes")
+    assert_property_isconcrete(DenseSquareTaxaSquareTraitMatrix, "square_trait_axes")
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "__init__")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "__init__")
 
 def test_is_square_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "is_square")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "is_square")
 
 def test_adjoin_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "adjoin")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "adjoin")
 
 def test_delete_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "delete")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "delete")
 
 def test_insert_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "insert")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "insert")
 
 def test_select_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "select")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "select")
 
 def test_concat_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "concat")
+    assert_classmethod_isconcrete(DenseSquareTaxaSquareTraitMatrix, "concat")
 
 def test_append_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "append")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "append")
 
 def test_remove_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "remove")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "remove")
 
 def test_incorp_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "incorp")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "incorp")
 
 def test_lexsort_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "lexsort")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "lexsort")
 
 def test_reorder_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "reorder")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "reorder")
 
 def test_sort_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "sort")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "sort")
 
 def test_group_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "group")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "group")
 
 def test_ungroup_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "ungroup")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "ungroup")
 
 def test_is_grouped_is_concrete():
-    assert_concrete_method(DenseSquareTaxaSquareTraitMatrix, "is_grouped")
+    assert_method_isconcrete(DenseSquareTaxaSquareTraitMatrix, "is_grouped")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -560,7 +560,7 @@ def test_is_grouped(mat):
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_DenseSquareTaxaSquareTraitMatrix_is_concrete():
-    assert_concrete_function(check_is_DenseSquareTaxaSquareTraitMatrix)
+    assert_function_isconcrete(check_is_DenseSquareTaxaSquareTraitMatrix)
 
 def test_check_is_DenseSquareTaxaSquareTraitMatrix(mat):
     with not_raises(TypeError):

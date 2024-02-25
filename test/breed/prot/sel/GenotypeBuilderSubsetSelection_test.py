@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelect
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -127,17 +127,17 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(GenotypeBuilderSubsetSelection)
+    assert_class_documentation(GenotypeBuilderSubsetSelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(GenotypeBuilderSubsetSelection, "__init__")
+    assert_method_isconcrete(GenotypeBuilderSubsetSelection, "__init__")
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(GenotypeBuilderSubsetSelection, "problem")
+    assert_method_isconcrete(GenotypeBuilderSubsetSelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -208,7 +208,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(GenotypeBuilderSubsetSelection, "sosolve")
+    assert_method_isconcrete(GenotypeBuilderSubsetSelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -249,7 +249,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(GenotypeBuilderSubsetSelection, "mosolve")
+    assert_method_isconcrete(GenotypeBuilderSubsetSelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -307,7 +307,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(GenotypeBuilderSubsetSelection, "select")
+    assert_method_isconcrete(GenotypeBuilderSubsetSelection, "select")
 
 def test_select(
         selprot_single,

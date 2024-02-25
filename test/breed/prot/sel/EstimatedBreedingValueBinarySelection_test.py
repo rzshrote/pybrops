@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration import BinarySelect
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.soln.BinarySelectionSolution import BinarySelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 
 ################################ Test fixtures #################################
@@ -120,23 +120,23 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(EstimatedBreedingValueBinarySelection)
+    assert_class_documentation(EstimatedBreedingValueBinarySelection)
 
 ############################# Test concrete methods ############################
 def test_init_is_concrete():
-    assert_concrete_method(EstimatedBreedingValueBinarySelection, "__init__")
+    assert_method_isconcrete(EstimatedBreedingValueBinarySelection, "__init__")
 
 def test_problem_is_concrete():
-    assert_concrete_method(EstimatedBreedingValueBinarySelection, "problem")
+    assert_method_isconcrete(EstimatedBreedingValueBinarySelection, "problem")
 
 def test_sosolve_is_concrete():
-    assert_concrete_method(EstimatedBreedingValueBinarySelection, "sosolve")
+    assert_method_isconcrete(EstimatedBreedingValueBinarySelection, "sosolve")
 
 def test_mosolve_is_concrete():
-    assert_concrete_method(EstimatedBreedingValueBinarySelection, "mosolve")
+    assert_method_isconcrete(EstimatedBreedingValueBinarySelection, "mosolve")
 
 def test_select_is_concrete():
-    assert_concrete_method(EstimatedBreedingValueBinarySelection, "select")
+    assert_method_isconcrete(EstimatedBreedingValueBinarySelection, "select")
 
 ###################### Test concrete method functionality ######################
 def test_problem(

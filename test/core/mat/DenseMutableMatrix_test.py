@@ -2,12 +2,12 @@ import pytest
 import numpy
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_function
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_function_isabstract
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.DenseMutableMatrix import check_is_DenseMutableMatrix
@@ -32,19 +32,19 @@ def mat(mat_float64):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(DenseMutableMatrix)
+    assert_class_documentation(DenseMutableMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(DenseMutableMatrix, "__init__")
+    assert_method_isconcrete(DenseMutableMatrix, "__init__")
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_DenseMutableMatrix_is_concrete():
-    assert_concrete_function(check_is_DenseMutableMatrix)
+    assert_function_isconcrete(check_is_DenseMutableMatrix)
 
 def test_check_is_DenseMutableMatrix(mat):
     with not_raises(TypeError):

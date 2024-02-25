@@ -1,9 +1,9 @@
 import numpy
 import pytest
 
-from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_property_isconcrete
 
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 from pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem import FamilyEstimatedBreedingValueSubsetSelectionProblem
@@ -153,7 +153,7 @@ def bvmat(ebv, familyid):
 ############################## Test class docstring ############################
 ################################################################################
 def test_SubsetConventionalSelectionProblem_docstring():
-    assert_docstring(FamilyEstimatedBreedingValueSubsetSelectionProblem)
+    assert_class_documentation(FamilyEstimatedBreedingValueSubsetSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -163,7 +163,7 @@ def test_SubsetConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(FamilyEstimatedBreedingValueSubsetSelectionProblem, "nlatent")
+    assert_property_isconcrete(FamilyEstimatedBreedingValueSubsetSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait, familyid):
     assert prob.nlatent == (ntrait + len(numpy.unique(familyid)))
@@ -172,7 +172,7 @@ def test_nlatent_fget(prob, ntrait, familyid):
 ### ebv ###
 ############
 def test_ebv_is_concrete():
-    assert_concrete_property(FamilyEstimatedBreedingValueSubsetSelectionProblem, "ebv")
+    assert_property_isconcrete(FamilyEstimatedBreedingValueSubsetSelectionProblem, "ebv")
 
 def test_ebv_fget(prob, ntaxa, ntrait):
     assert isinstance(prob.ebv, numpy.ndarray)
@@ -212,13 +212,13 @@ def test_ebv_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(FamilyEstimatedBreedingValueSubsetSelectionProblem, "__init__")
+    assert_method_isconcrete(FamilyEstimatedBreedingValueSubsetSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_concrete_method(prob, "latentfn")
+    assert_method_isconcrete(prob, "latentfn")
 
 def test_latentfn(prob, ntaxa, ebv, familyid):
     x = numpy.random.choice(ntaxa, ntaxa // 2)

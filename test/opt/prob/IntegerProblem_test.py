@@ -1,9 +1,9 @@
 import numpy
 import pytest
-from pybrops.test.assert_python import assert_concrete_function, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_function_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_property_isconcrete
 from pybrops.opt.prob.IntegerProblem import IntegerProblem, check_is_IntegerProblem
 
 ################################################################################
@@ -83,7 +83,7 @@ def prob(
 ############################## Test class docstring ############################
 ################################################################################
 def test_IntegerProblem_docstring():
-    assert_docstring(IntegerProblem)
+    assert_class_documentation(IntegerProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -97,7 +97,7 @@ def test_IntegerProblem_docstring():
 ### decn_space ###
 ##################
 def test_decn_space_is_concrete():
-    assert_concrete_property(IntegerProblem, "decn_space")
+    assert_property_isconcrete(IntegerProblem, "decn_space")
 
 def test_decn_space_fget(prob, ndecn):
     assert isinstance(prob.decn_space, numpy.ndarray) or (prob.decn_space is None)
@@ -138,7 +138,7 @@ def test_decn_space_fdel(prob):
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(IntegerProblem, "__init__")
+    assert_method_isconcrete(IntegerProblem, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -148,16 +148,16 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_evalfn_is_abstract(prob):
-    assert_abstract_method(prob, "evalfn")
+    assert_method_isabstract(prob, "evalfn")
 
 def test__evaluate_is_abstract(prob):
-    assert_abstract_method(prob, "_evaluate")
+    assert_method_isabstract(prob, "_evaluate")
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_IntegerProblem_is_concrete():
-    assert_concrete_function(check_is_IntegerProblem)
+    assert_function_isconcrete(check_is_IntegerProblem)
 
 def test_check_is_IntegerProblem(prob):
     with not_raises(TypeError):

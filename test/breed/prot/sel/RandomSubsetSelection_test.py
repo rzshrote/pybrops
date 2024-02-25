@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelect
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 
 ################################ Test fixtures #################################
@@ -120,23 +120,23 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(RandomSubsetSelection)
+    assert_class_documentation(RandomSubsetSelection)
 
 ############################# Test concrete methods ############################
 def test_init_is_concrete():
-    assert_concrete_method(RandomSubsetSelection, "__init__")
+    assert_method_isconcrete(RandomSubsetSelection, "__init__")
 
 def test_problem_is_concrete():
-    assert_concrete_method(RandomSubsetSelection, "problem")
+    assert_method_isconcrete(RandomSubsetSelection, "problem")
 
 def test_sosolve_is_concrete():
-    assert_concrete_method(RandomSubsetSelection, "sosolve")
+    assert_method_isconcrete(RandomSubsetSelection, "sosolve")
 
 def test_mosolve_is_concrete():
-    assert_concrete_method(RandomSubsetSelection, "mosolve")
+    assert_method_isconcrete(RandomSubsetSelection, "mosolve")
 
 def test_select_is_concrete():
-    assert_concrete_method(RandomSubsetSelection, "select")
+    assert_method_isconcrete(RandomSubsetSelection, "select")
 
 ###################### Test concrete method functionality ######################
 def test_problem(

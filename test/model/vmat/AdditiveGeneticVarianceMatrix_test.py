@@ -1,10 +1,10 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import check_is_AdditiveGeneticVarianceMatrix
@@ -21,13 +21,13 @@ def mat():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(AdditiveGeneticVarianceMatrix)
+    assert_class_documentation(AdditiveGeneticVarianceMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(AdditiveGeneticVarianceMatrix, "__init__")
+    assert_method_isconcrete(AdditiveGeneticVarianceMatrix, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -37,13 +37,13 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_from_algmod_is_abstract():
-    assert_abstract_method(AdditiveGeneticVarianceMatrix, "from_algmod")
+    assert_method_isabstract(AdditiveGeneticVarianceMatrix, "from_algmod")
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_AdditiveGeneticVarianceMatrix_is_concrete():
-    assert_concrete_function(check_is_AdditiveGeneticVarianceMatrix)
+    assert_function_isconcrete(check_is_AdditiveGeneticVarianceMatrix)
 
 def test_check_is_AdditiveGeneticVarianceMatrix(mat):
     with not_raises(TypeError):

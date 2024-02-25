@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from pybrops.test.assert_python import assert_concrete_method, assert_concrete_property, assert_docstring, assert_concrete_class, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, assert_class_isconcrete, not_raises
 from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelectionConfiguration
 
 from .common_fixtures import *
@@ -28,17 +28,17 @@ def selcfg(
 
 ################### Test class abstract/concrete properties ####################
 def test_SubsetSelectionConfiguration_is_concrete():
-    assert_concrete_class(SubsetSelectionConfiguration)
+    assert_class_isconcrete(SubsetSelectionConfiguration)
 
 ############################## Test class docstring ############################
 def test_SubsetSelectionConfiguration_docstring():
-    assert_docstring(SubsetSelectionConfiguration)
+    assert_class_documentation(SubsetSelectionConfiguration)
 
 ############################# Test class properties ############################
 
 ### xconfig_decn ###
 def test_SubsetSelectionConfiguration_xconfig_decn_is_concrete():
-    assert_concrete_property(SubsetSelectionConfiguration, "xconfig_decn")
+    assert_property_isconcrete(SubsetSelectionConfiguration, "xconfig_decn")
 
 def test_xconfig_decn_fget(selcfg, common_xconfig_decn_subset):
     assert numpy.all(selcfg.xconfig_decn == common_xconfig_decn_subset)
@@ -67,7 +67,7 @@ def test_xconfig_decn_fdel(selcfg):
 
 ############################## Test class methods ##############################
 def test_SubsetSelectionConfiguration_sample_xconfig_is_concrete():
-    assert_concrete_method(SubsetSelectionConfiguration, "sample_xconfig")
+    assert_method_isconcrete(SubsetSelectionConfiguration, "sample_xconfig")
 
 def test_sample_xconfig(selcfg):
     original_xconfig = selcfg.xconfig

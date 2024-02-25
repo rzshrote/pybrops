@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.RealSelectionConfiguration import RealSelectionC
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.soln.RealSelectionSolution import RealSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 
 ################################ Test fixtures #################################
@@ -120,23 +120,23 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(RandomRealSelection)
+    assert_class_documentation(RandomRealSelection)
 
 ############################# Test concrete methods ############################
 def test_init_is_concrete():
-    assert_concrete_method(RandomRealSelection, "__init__")
+    assert_method_isconcrete(RandomRealSelection, "__init__")
 
 def test_problem_is_concrete():
-    assert_concrete_method(RandomRealSelection, "problem")
+    assert_method_isconcrete(RandomRealSelection, "problem")
 
 def test_sosolve_is_concrete():
-    assert_concrete_method(RandomRealSelection, "sosolve")
+    assert_method_isconcrete(RandomRealSelection, "sosolve")
 
 def test_mosolve_is_concrete():
-    assert_concrete_method(RandomRealSelection, "mosolve")
+    assert_method_isconcrete(RandomRealSelection, "mosolve")
 
 def test_select_is_concrete():
-    assert_concrete_method(RandomRealSelection, "select")
+    assert_method_isconcrete(RandomRealSelection, "select")
 
 ###################### Test concrete method functionality ######################
 def test_problem(

@@ -1,7 +1,7 @@
 import numpy
 import pytest
 from pybrops.breed.prot.sel.OptimalHaploidValueSelection import OptimalHaploidValueSelectionMixin
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_mixin_class, not_raises
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, assert_class_ismixin, not_raises
 from .common_fixtures_large import *
 
 ################################ Test fixtures #################################
@@ -20,17 +20,17 @@ def selmix(
 
 ################### Test class abstract/concrete properties ####################
 def test_OptimalHaploidValueSelectionMixin_is_mixin():
-    assert_mixin_class(OptimalHaploidValueSelectionMixin)
+    assert_class_ismixin(OptimalHaploidValueSelectionMixin)
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(OptimalHaploidValueSelectionMixin)
+    assert_class_documentation(OptimalHaploidValueSelectionMixin)
 
 ############################ Test class properties #############################
 
 ### ntrait ###
 def test_OptimalHaploidValueSelectionMixin_ntrait_is_concrete():
-    assert_concrete_property(OptimalHaploidValueSelectionMixin, "ntrait")
+    assert_property_isconcrete(OptimalHaploidValueSelectionMixin, "ntrait")
 
 def test_ntrait_fget(selmix, common_ntrait):
     assert selmix.ntrait == common_ntrait
@@ -69,7 +69,7 @@ def test_ntrait_fdel(selmix):
 
 ### nhaploblk ###
 def test_OptimalHaploidValueSelectionMixin_nhaploblk_is_concrete():
-    assert_concrete_property(OptimalHaploidValueSelectionMixin, "nhaploblk")
+    assert_property_isconcrete(OptimalHaploidValueSelectionMixin, "nhaploblk")
 
 def test_nhaploblk_fget(selmix, common_nhaploblk):
     assert selmix.nhaploblk == common_nhaploblk
@@ -108,7 +108,7 @@ def test_nhaploblk_fdel(selmix):
 
 ### unique_parents ###
 def test_OptimalHaploidValueSelectionMixin_unique_parents_is_concrete():
-    assert_concrete_property(OptimalHaploidValueSelectionMixin, "unique_parents")
+    assert_property_isconcrete(OptimalHaploidValueSelectionMixin, "unique_parents")
 
 def test_unique_parents_fget(selmix, common_unique_parents):
     assert isinstance(selmix.unique_parents, bool)

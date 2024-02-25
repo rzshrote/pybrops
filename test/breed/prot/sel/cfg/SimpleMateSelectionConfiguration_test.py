@@ -1,6 +1,6 @@
 import pytest
 from pybrops.breed.prot.sel.cfg.SimpleMateSelectionConfiguration import SimpleMateSelectionConfiguration
-from pybrops.test.assert_python import assert_concrete_class, assert_concrete_property, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_class_isconcrete, assert_property_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 
 from .common_fixtures import *
 
@@ -27,17 +27,17 @@ def selcfg(
 
 ################### Test class abstract/concrete properties ####################
 def test_SimpleMateSelectionConfiguration_is_semiabstract():
-    assert_concrete_class(SimpleMateSelectionConfiguration)
+    assert_class_isconcrete(SimpleMateSelectionConfiguration)
 
 ############################## Test class docstring ############################
 def test_SimpleMateSelectionConfiguration_docstring():
-    assert_docstring(SimpleMateSelectionConfiguration)
+    assert_class_documentation(SimpleMateSelectionConfiguration)
 
 ############################# Test class properties ############################
 
 ### __init__ ###
 def test_SimpleMateSelectionConfiguration_init_is_concrete():
-    assert_concrete_property(SimpleMateSelectionConfiguration, "__init__")
+    assert_property_isconcrete(SimpleMateSelectionConfiguration, "__init__")
 
 def test_init(selcfg):
     assert selcfg is not None

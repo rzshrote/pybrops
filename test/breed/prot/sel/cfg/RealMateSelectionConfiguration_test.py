@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from pybrops.test.assert_python import assert_concrete_method, assert_docstring, assert_concrete_class
+from pybrops.test.assert_python import assert_method_isconcrete, assert_class_documentation, assert_class_isconcrete
 from pybrops.breed.prot.sel.cfg.RealMateSelectionConfiguration import RealMateSelectionConfiguration
 
 from .common_fixtures import *
@@ -30,17 +30,17 @@ def selcfg(
 
 ################### Test class abstract/concrete properties ####################
 def test_RealMateSelectionConfiguration_is_concrete():
-    assert_concrete_class(RealMateSelectionConfiguration)
+    assert_class_isconcrete(RealMateSelectionConfiguration)
 
 ############################## Test class docstring ############################
 def test_RealMateSelectionConfiguration_docstring():
-    assert_docstring(RealMateSelectionConfiguration)
+    assert_class_documentation(RealMateSelectionConfiguration)
 
 ############################# Test class properties ############################
 
 ############################## Test class methods ##############################
 def test_RealMateSelectionConfiguration_sample_xconfig_is_concrete():
-    assert_concrete_method(RealMateSelectionConfiguration, "sample_xconfig")
+    assert_method_isconcrete(RealMateSelectionConfiguration, "sample_xconfig")
 
 def test_sample_xconfig(selcfg):
     original_xconfig = selcfg.xconfig

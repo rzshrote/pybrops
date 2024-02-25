@@ -1,7 +1,7 @@
 import pytest
 from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProtocol
 from pybrops.breed.prot.sel.IntegerSelectionProtocol import check_is_IntegerSelectionProtocol
-from pybrops.test.assert_python import assert_abstract_method, assert_concrete_method, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_method_isabstract, assert_method_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 from .common_fixtures_large import *
 
 class DummyIntegerSelectionProtocol(IntegerSelectionProtocol):
@@ -61,24 +61,24 @@ def selsoln(
 
 ################### Test class abstract/concrete properties ####################
 def test_IntegerSelectionProtocol_is_semiabstract():
-    assert_semiabstract_class(IntegerSelectionProtocol)
+    assert_class_issemiabstract(IntegerSelectionProtocol)
 
 ############################## Test class docstring ############################
 def test_IntegerSelectionProtocol_docstring():
-    assert_docstring(IntegerSelectionProtocol)
+    assert_class_documentation(IntegerSelectionProtocol)
 
 ############################## Test class methods ##############################
 def test_IntegerSelectionProtocol_problem_is_abstract():
-    assert_abstract_method(IntegerSelectionProtocol, "problem")
+    assert_method_isabstract(IntegerSelectionProtocol, "problem")
 
 def test_IntegerSelectionProtocol_sosolve_is_concrete():
-    assert_concrete_method(IntegerSelectionProtocol, "sosolve")
+    assert_method_isconcrete(IntegerSelectionProtocol, "sosolve")
 
 def test_IntegerSelectionProtocol_mosolve_is_concrete():
-    assert_concrete_method(IntegerSelectionProtocol, "mosolve")
+    assert_method_isconcrete(IntegerSelectionProtocol, "mosolve")
 
 def test_IntegerSelectionProtocol_select_is_concrete():
-    assert_concrete_method(IntegerSelectionProtocol, "select")
+    assert_method_isconcrete(IntegerSelectionProtocol, "select")
 
 ############################# Test class utilities #############################
 def test_check_is_IntegerSelectionProtocol(selsoln):

@@ -2,7 +2,7 @@ import pytest
 from pybrops.breed.prot.sel.soln.RealMateSelectionSolution import RealMateSelectionSolution
 from pybrops.breed.prot.sel.soln.RealMateSelectionSolution import RealMateSelectionSolution
 from pybrops.breed.prot.sel.soln.RealMateSelectionSolution import check_is_RealMateSelectionSolution
-from pybrops.test.assert_python import assert_docstring, assert_concrete_class, not_raises
+from pybrops.test.assert_python import assert_class_documentation, assert_class_isconcrete, not_raises
 
 from .common_fixtures import *
 
@@ -47,11 +47,11 @@ def selsoln(
 
 ################### Test class abstract/concrete properties ####################
 def test_RealMateSelectionSolution_is_concrete():
-    assert_concrete_class(RealMateSelectionSolution)
+    assert_class_isconcrete(RealMateSelectionSolution)
 
 ############################## Test class docstring ############################
 def test_RealMateSelectionSolution_docstring():
-    assert_docstring(RealMateSelectionSolution)
+    assert_class_documentation(RealMateSelectionSolution)
 
 ############################# Test class utilities #############################
 def test_check_is_RealMateSelectionSolution(selsoln):

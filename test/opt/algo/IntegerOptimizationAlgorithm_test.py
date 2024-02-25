@@ -2,7 +2,7 @@ import pytest
 
 from pybrops.opt.algo.IntegerOptimizationAlgorithm import IntegerOptimizationAlgorithm, check_is_IntegerOptimizationAlgorithm
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
-from pybrops.test.assert_python import assert_abstract_class, assert_abstract_method, assert_docstring, not_raises
+from pybrops.test.assert_python import assert_class_isabstract, assert_method_isabstract, assert_class_documentation, not_raises
 
 class DummyOptimizationAlgorithm(OptimizationAlgorithm):
     def minimize(self, prob, miscout, **kwargs):
@@ -18,17 +18,17 @@ def algo():
 
 ################### Test class abstract/concrete properties ####################
 def test_IntegerOptimizationAlgorithm_is_semiabstract():
-    assert_abstract_class(IntegerOptimizationAlgorithm)
+    assert_class_isabstract(IntegerOptimizationAlgorithm)
 
 ############################## Test class docstring ############################
 def test_IntegerOptimizationAlgorithm_docstring():
-    assert_docstring(IntegerOptimizationAlgorithm)
+    assert_class_documentation(IntegerOptimizationAlgorithm)
 
 ############################# Test class properties ############################
 
 ############################## Test class methods ##############################
 def test_IntegerOptimizationAlgorithm_minimize_is_abstract():
-    assert_abstract_method(IntegerOptimizationAlgorithm, "minimize")
+    assert_method_isabstract(IntegerOptimizationAlgorithm, "minimize")
 
 ############################# Test class utilities #############################
 def test_check_is_IntegerOptimizationAlgorithm(algo):

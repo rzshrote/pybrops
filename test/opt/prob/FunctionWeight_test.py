@@ -1,7 +1,7 @@
 import pytest
 
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 from pybrops.opt.prob.FunctionWeight import FunctionWeight, MaximizingFunctionWeight, MinimizingFunctionWeight
 
@@ -44,61 +44,61 @@ def maxfw_max(fw_wt):
 ############################## Test class docstring ############################
 ################################################################################
 def test_FunctionWeight_docstring():
-    assert_docstring(FunctionWeight)
+    assert_class_documentation(FunctionWeight)
 
 def test_MaximizingFunctionWeight_docstring():
-    assert_docstring(MaximizingFunctionWeight)
+    assert_class_documentation(MaximizingFunctionWeight)
 
 def test_MinimizingFunctionWeight_docstring():
-    assert_docstring(MinimizingFunctionWeight)
+    assert_class_documentation(MinimizingFunctionWeight)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_FunctionWeight_init_is_concrete():
-    assert_concrete_method(FunctionWeight, "__init__")
+    assert_method_isconcrete(FunctionWeight, "__init__")
 
 def test_MaximizingFunctionWeight_init_is_concrete():
-    assert_concrete_method(MaximizingFunctionWeight, "__init__")
+    assert_method_isconcrete(MaximizingFunctionWeight, "__init__")
 
 def test_MinimizingFunctionWeight_init_is_concrete():
-    assert_concrete_method(MinimizingFunctionWeight, "__init__")
+    assert_method_isconcrete(MinimizingFunctionWeight, "__init__")
 
 def test_FunctionWeight_float_is_concrete():
-    assert_concrete_method(FunctionWeight, "__float__")
+    assert_method_isconcrete(FunctionWeight, "__float__")
 
 def test_MaximizingFunctionWeight_float_is_concrete():
-    assert_concrete_method(MaximizingFunctionWeight, "__float__")
+    assert_method_isconcrete(MaximizingFunctionWeight, "__float__")
 
 def test_MinimizingFunctionWeight_float_is_concrete():
-    assert_concrete_method(MinimizingFunctionWeight, "__float__")
+    assert_method_isconcrete(MinimizingFunctionWeight, "__float__")
 
 def test_FunctionWeight_int_is_concrete():
-    assert_concrete_method(FunctionWeight, "__int__")
+    assert_method_isconcrete(FunctionWeight, "__int__")
 
 def test_MaximizingFunctionWeight_int_is_concrete():
-    assert_concrete_method(MaximizingFunctionWeight, "__int__")
+    assert_method_isconcrete(MaximizingFunctionWeight, "__int__")
 
 def test_MinimizingFunctionWeight_int_is_concrete():
-    assert_concrete_method(MinimizingFunctionWeight, "__int__")
+    assert_method_isconcrete(MinimizingFunctionWeight, "__int__")
 
 def test_FunctionWeight_str_is_concrete():
-    assert_concrete_method(FunctionWeight, "__str__")
+    assert_method_isconcrete(FunctionWeight, "__str__")
 
 def test_MaximizingFunctionWeight_str_is_concrete():
-    assert_concrete_method(MaximizingFunctionWeight, "__str__")
+    assert_method_isconcrete(MaximizingFunctionWeight, "__str__")
 
 def test_MinimizingFunctionWeight_str_is_concrete():
-    assert_concrete_method(MinimizingFunctionWeight, "__str__")
+    assert_method_isconcrete(MinimizingFunctionWeight, "__str__")
 
 def test_FunctionWeight_repr_is_concrete():
-    assert_concrete_method(FunctionWeight, "__repr__")
+    assert_method_isconcrete(FunctionWeight, "__repr__")
 
 def test_MaximizingFunctionWeight_repr_is_concrete():
-    assert_concrete_method(MaximizingFunctionWeight, "__repr__")
+    assert_method_isconcrete(MaximizingFunctionWeight, "__repr__")
 
 def test_MinimizingFunctionWeight_repr_is_concrete():
-    assert_concrete_method(MinimizingFunctionWeight, "__repr__")
+    assert_method_isconcrete(MinimizingFunctionWeight, "__repr__")
 
 ################################################################################
 ############################ Test Class Properties #############################

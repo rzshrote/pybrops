@@ -1,7 +1,7 @@
 import numpy
 import pytest
 from pybrops.breed.prot.sel.OptimalPopulationValueSelection import OptimalPopulationValueSelectionMixin
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_mixin_class, not_raises
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, assert_class_ismixin, not_raises
 from .common_fixtures_large import *
 
 ################################ Test fixtures #################################
@@ -18,17 +18,17 @@ def selmix(
 
 ################### Test class abstract/concrete properties ####################
 def test_OptimalPopulationValueSelectionMixin_is_mixin():
-    assert_mixin_class(OptimalPopulationValueSelectionMixin)
+    assert_class_ismixin(OptimalPopulationValueSelectionMixin)
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(OptimalPopulationValueSelectionMixin)
+    assert_class_documentation(OptimalPopulationValueSelectionMixin)
 
 ############################ Test class properties #############################
 
 ### ntrait ###
 def test_OptimalPopulationValueSelectionMixin_ntrait_is_concrete():
-    assert_concrete_property(OptimalPopulationValueSelectionMixin, "ntrait")
+    assert_property_isconcrete(OptimalPopulationValueSelectionMixin, "ntrait")
 
 def test_ntrait_fget(selmix, common_ntrait):
     assert selmix.ntrait == common_ntrait
@@ -67,7 +67,7 @@ def test_ntrait_fdel(selmix):
 
 ### nhaploblk ###
 def test_OptimalPopulationValueSelectionMixin_nhaploblk_is_concrete():
-    assert_concrete_property(OptimalPopulationValueSelectionMixin, "nhaploblk")
+    assert_property_isconcrete(OptimalPopulationValueSelectionMixin, "nhaploblk")
 
 def test_nhaploblk_fget(selmix, common_nhaploblk):
     assert selmix.nhaploblk == common_nhaploblk

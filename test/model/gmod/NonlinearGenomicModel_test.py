@@ -1,9 +1,9 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.model.gmod.NonlinearGenomicModel import NonlinearGenomicModel
 from pybrops.model.gmod.NonlinearGenomicModel import check_is_NonlinearGenomicModel
@@ -20,13 +20,13 @@ def gmod():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(NonlinearGenomicModel)
+    assert_class_documentation(NonlinearGenomicModel)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(NonlinearGenomicModel, "__init__")
+    assert_method_isconcrete(NonlinearGenomicModel, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -40,7 +40,7 @@ def test_init_is_concrete():
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_NonlinearGenomicModel_is_concrete():
-    assert_concrete_function(check_is_NonlinearGenomicModel)
+    assert_function_isconcrete(check_is_NonlinearGenomicModel)
 
 ################################################################################
 ######################### Test class utility functions #########################

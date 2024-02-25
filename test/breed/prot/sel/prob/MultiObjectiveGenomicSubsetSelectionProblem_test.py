@@ -5,9 +5,9 @@ from pybrops.breed.prot.sel.prob.MultiObjectiveGenomicSelectionProblem import Mu
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_property_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -198,7 +198,7 @@ def tfreq(gmat, gpmod):
 ############################## Test class docstring ############################
 ################################################################################
 def test_SubsetConventionalSelectionProblem_docstring():
-    assert_docstring(MultiObjectiveGenomicSubsetSelectionProblem)
+    assert_class_documentation(MultiObjectiveGenomicSubsetSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -208,7 +208,7 @@ def test_SubsetConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(MultiObjectiveGenomicSubsetSelectionProblem, "nlatent")
+    assert_property_isconcrete(MultiObjectiveGenomicSubsetSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == 2 * ntrait
@@ -217,7 +217,7 @@ def test_nlatent_fget(prob, ntrait):
 ### geno ###
 ############
 def test_geno_is_concrete():
-    assert_concrete_property(MultiObjectiveGenomicSubsetSelectionProblem, "geno")
+    assert_property_isconcrete(MultiObjectiveGenomicSubsetSelectionProblem, "geno")
 
 def test_geno_fget(prob, ntaxa, nvrnt):
     assert isinstance(prob.geno, numpy.ndarray)
@@ -253,7 +253,7 @@ def test_geno_fdel(prob):
 ### ploidy ###
 ############
 def test_ploidy_is_concrete():
-    assert_concrete_property(MultiObjectiveGenomicSubsetSelectionProblem, "ploidy")
+    assert_property_isconcrete(MultiObjectiveGenomicSubsetSelectionProblem, "ploidy")
 
 def test_ploidy_fget(prob, ntaxa, nvrnt):
     assert isinstance(prob.ploidy, Integral)
@@ -286,7 +286,7 @@ def test_ploidy_fdel(prob):
 ### mkrwt ###
 ############
 def test_mkrwt_is_concrete():
-    assert_concrete_property(MultiObjectiveGenomicSubsetSelectionProblem, "mkrwt")
+    assert_property_isconcrete(MultiObjectiveGenomicSubsetSelectionProblem, "mkrwt")
 
 def test_mkrwt_fget(prob, ntrait, nvrnt):
     assert isinstance(prob.mkrwt, numpy.ndarray)
@@ -322,7 +322,7 @@ def test_mkrwt_fdel(prob):
 ### tfreq ###
 ############
 def test_tfreq_is_concrete():
-    assert_concrete_property(MultiObjectiveGenomicSubsetSelectionProblem, "tfreq")
+    assert_property_isconcrete(MultiObjectiveGenomicSubsetSelectionProblem, "tfreq")
 
 def test_tfreq_fget(prob, ntrait, nvrnt):
     assert isinstance(prob.tfreq, numpy.ndarray)
@@ -362,13 +362,13 @@ def test_tfreq_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(MultiObjectiveGenomicSubsetSelectionProblem, "__init__")
+    assert_method_isconcrete(MultiObjectiveGenomicSubsetSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_concrete_method(prob, "latentfn")
+    assert_method_isconcrete(prob, "latentfn")
 
 def test_latentfn(prob, ntaxa, geno):
     x = numpy.random.choice(ntaxa, ntaxa // 2)

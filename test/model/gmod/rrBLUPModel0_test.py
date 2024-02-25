@@ -17,7 +17,7 @@ from pybrops.model.gmod.rrBLUPModel0 import rrBLUP_ML0_calc_ZtZplI
 from pybrops.model.gmod.rrBLUPModel0 import rrBLUP_ML0_calc_Zty
 from pybrops.model.gmod.rrBLUPModel0 import gauss_seidel
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.test.assert_python import assert_concrete_function, assert_concrete_method, assert_docstring, not_raises
+from pybrops.test.assert_python import assert_function_isconcrete, assert_method_isconcrete, assert_class_documentation, not_raises
 
 ################################ Test fixtures #################################
 
@@ -296,7 +296,7 @@ def test_rrBLUP_ML0(wheat_yvec, wheat_Zmat):
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(rrBLUPModel0)
+    assert_class_documentation(rrBLUPModel0)
 
 ############################ Test Class Properties #############################
 
@@ -322,11 +322,11 @@ def test_algmod_params_fget(algmod, algmod_params):
 
 ### __init__
 def test___init___is_concrete():
-    assert_concrete_method(rrBLUPModel0, "__init__")
+    assert_method_isconcrete(rrBLUPModel0, "__init__")
 
 ### __copy__
 def test___copy___is_concrete():
-    assert_concrete_method(rrBLUPModel0, "__copy__")
+    assert_method_isconcrete(rrBLUPModel0, "__copy__")
 
 def test___copy__(algmod):
     tmp = algmod.__copy__()
@@ -348,7 +348,7 @@ def test___copy__(algmod):
 
 ### __deepcopy__
 def test___deepcopy___is_concrete():
-    assert_concrete_method(rrBLUPModel0, "__deepcopy__")
+    assert_method_isconcrete(rrBLUPModel0, "__deepcopy__")
 
 def test___deepcopy__(algmod):
     tmp = algmod.__deepcopy__()
@@ -374,7 +374,7 @@ def test___deepcopy__(algmod):
 
 ### copy
 def test_copy_is_concrete():
-    assert_concrete_method(rrBLUPModel0, "copy")
+    assert_method_isconcrete(rrBLUPModel0, "copy")
 
 def test_copy(algmod):
     tmp = algmod.copy()
@@ -388,7 +388,7 @@ def test_copy(algmod):
 
 ### deepcopy
 def test_deepcopy_is_concrete():
-    assert_concrete_method(rrBLUPModel0, "deepcopy")
+    assert_method_isconcrete(rrBLUPModel0, "deepcopy")
 
 def test_deepcopy(algmod):
     tmp = algmod.deepcopy()
@@ -404,7 +404,7 @@ def test_deepcopy(algmod):
 
 ### fit_numpy
 def test_fit_numpy_is_concrete():
-    assert_concrete_method(rrBLUPModel0, "fit_numpy")
+    assert_method_isconcrete(rrBLUPModel0, "fit_numpy")
 
 def test_fit_numpy(wheat_Ymat, wheat_Zmat):
     model = rrBLUPModel0.fit_numpy(wheat_Ymat, None, wheat_Zmat)
@@ -412,7 +412,7 @@ def test_fit_numpy(wheat_Ymat, wheat_Zmat):
 
 ### fit
 def test_fit_is_concrete():
-    assert_concrete_method(rrBLUPModel0, "fit")
+    assert_method_isconcrete(rrBLUPModel0, "fit")
 
 def test_fit(bvmat, pgmat):
     model = rrBLUPModel0.fit(bvmat, None, pgmat)
@@ -422,7 +422,7 @@ def test_fit(bvmat, pgmat):
 
 ### check_is_rrBLUPModel0
 def test_check_is_rrBLUPModel0_is_concrete():
-    assert_concrete_function(check_is_rrBLUPModel0)
+    assert_function_isconcrete(check_is_rrBLUPModel0)
 
 def test_check_is_rrBLUPModel0(algmod):
     with not_raises(TypeError):

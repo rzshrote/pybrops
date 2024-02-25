@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelect
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_concrete_class, assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_isconcrete, assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -119,17 +119,17 @@ def selprot_multi(
 
 ################### Test class abstract/concrete properties ####################
 def test_L2NormGenomicSubsetSelection_is_concrete():
-    assert_concrete_class(L2NormGenomicSubsetSelection)
+    assert_class_isconcrete(L2NormGenomicSubsetSelection)
 
 ############################## Test class docstring ############################
 def test_L2NormGenomicSubsetSelection_docstring():
-    assert_docstring(L2NormGenomicSubsetSelection)
+    assert_class_documentation(L2NormGenomicSubsetSelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(L2NormGenomicSubsetSelection, "__init__")
+    assert_method_isconcrete(L2NormGenomicSubsetSelection, "__init__")
 
 def test_init(selprot_single, selprot_multi):
     assert selprot_single is not None
@@ -137,7 +137,7 @@ def test_init(selprot_single, selprot_multi):
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(L2NormGenomicSubsetSelection, "problem")
+    assert_method_isconcrete(L2NormGenomicSubsetSelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -208,7 +208,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(L2NormGenomicSubsetSelection, "sosolve")
+    assert_method_isconcrete(L2NormGenomicSubsetSelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -249,7 +249,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(L2NormGenomicSubsetSelection, "mosolve")
+    assert_method_isconcrete(L2NormGenomicSubsetSelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -307,7 +307,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(L2NormGenomicSubsetSelection, "select")
+    assert_method_isconcrete(L2NormGenomicSubsetSelection, "select")
 
 def test_select(
         selprot_single,

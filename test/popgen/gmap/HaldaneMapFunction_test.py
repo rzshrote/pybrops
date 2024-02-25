@@ -2,9 +2,9 @@ import pytest
 import numpy
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
@@ -25,31 +25,31 @@ def mapfn():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(HaldaneMapFunction)
+    assert_class_documentation(HaldaneMapFunction)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(HaldaneMapFunction, "__init__")
+    assert_method_isconcrete(HaldaneMapFunction, "__init__")
 
 def test_mapfn_is_concrete():
-    assert_concrete_method(HaldaneMapFunction, "mapfn")
+    assert_method_isconcrete(HaldaneMapFunction, "mapfn")
 
 def test_mapfn_is_concrete():
-    assert_concrete_method(HaldaneMapFunction, "invmapfn")
+    assert_method_isconcrete(HaldaneMapFunction, "invmapfn")
 
 def test_mapfn_is_concrete():
-    assert_concrete_method(HaldaneMapFunction, "rprob1g")
+    assert_method_isconcrete(HaldaneMapFunction, "rprob1g")
 
 def test_mapfn_is_concrete():
-    assert_concrete_method(HaldaneMapFunction, "rprob2g")
+    assert_method_isconcrete(HaldaneMapFunction, "rprob2g")
 
 def test_mapfn_is_concrete():
-    assert_concrete_method(HaldaneMapFunction, "rprob1p")
+    assert_method_isconcrete(HaldaneMapFunction, "rprob1p")
 
 def test_mapfn_is_concrete():
-    assert_concrete_method(HaldaneMapFunction, "rprob2p")
+    assert_method_isconcrete(HaldaneMapFunction, "rprob2p")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -117,7 +117,7 @@ def test_invmapfn_NaN(mapfn):
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_HaldaneMapFunction_is_concrete():
-    assert_concrete_function(check_is_HaldaneMapFunction)
+    assert_function_isconcrete(check_is_HaldaneMapFunction)
 
 ################################################################################
 ######################### Test class utility functions #########################

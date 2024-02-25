@@ -1,13 +1,13 @@
 import inspect
 import pytest
 
-from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_function
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_classmethod_isabstract, not_raises
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_function_isabstract
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.core.mat.TraitMatrix import TraitMatrix
 from pybrops.core.mat.TraitMatrix import check_is_TraitMatrix
@@ -24,64 +24,62 @@ def mat():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(TraitMatrix)
+    assert_class_documentation(TraitMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
-    assert_concrete_method(TraitMatrix, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
 def test_trait_is_abstract():
-    assert_abstract_property(TraitMatrix, "trait")
+    assert_property_isabstract(TraitMatrix, "trait")
 
 def test_ntrait_is_abstract():
-    assert_abstract_property(TraitMatrix, "ntrait")
+    assert_property_isabstract(TraitMatrix, "ntrait")
 
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
 def test_adjoin_trait_is_abstract():
-    assert_abstract_method(TraitMatrix, "adjoin_trait")
+    assert_method_isabstract(TraitMatrix, "adjoin_trait")
 
 def test_delete_trait_is_abstract():
-    assert_abstract_method(TraitMatrix, "delete_trait")
+    assert_method_isabstract(TraitMatrix, "delete_trait")
 
 def test_insert_trait_is_abstract():
-    assert_abstract_method(TraitMatrix, "insert_trait")
+    assert_method_isabstract(TraitMatrix, "insert_trait")
 
 def test_select_trait_is_abstract():
-    assert_abstract_method(TraitMatrix, "select_trait")
+    assert_method_isabstract(TraitMatrix, "select_trait")
 
 def test_concat_trait_is_abstract():
-    assert_abstract_method(TraitMatrix, "concat_trait")
+    assert_classmethod_isabstract(TraitMatrix, "concat_trait")
 
 def test_append_trait_is_abstract():
-    assert_abstract_method(TraitMatrix, "append_trait")
+    assert_method_isabstract(TraitMatrix, "append_trait")
 
 def test_remove_trait_is_abstract():
-    assert_abstract_method(TraitMatrix, "remove_trait")
+    assert_method_isabstract(TraitMatrix, "remove_trait")
 
 def test_incorp_trait_is_abstract():
-    assert_abstract_method(TraitMatrix, "incorp_trait")
+    assert_method_isabstract(TraitMatrix, "incorp_trait")
 
 def test_lexsort_trait_is_abstract():
-    assert_abstract_method(TraitMatrix, "lexsort_trait")
+    assert_method_isabstract(TraitMatrix, "lexsort_trait")
 
 def test_reorder_trait_is_abstract():
-    assert_abstract_method(TraitMatrix, "reorder_trait")
+    assert_method_isabstract(TraitMatrix, "reorder_trait")
 
 def test_sort_trait_is_abstract():
-    assert_abstract_method(TraitMatrix, "sort_trait")
+    assert_method_isabstract(TraitMatrix, "sort_trait")
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_TraitMatrix_is_concrete():
-    assert_concrete_function(check_is_TraitMatrix)
+    assert_function_isconcrete(check_is_TraitMatrix)
 
 def test_check_is_TraitMatrix(mat):
     with not_raises(TypeError):

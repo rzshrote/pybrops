@@ -10,7 +10,7 @@ __all__ = [
 import copy
 import numpy
 import h5py
-from typing import Optional, Sequence, Union
+from typing import Iterator, Optional, Sequence, Union
 from numpy.typing import ArrayLike
 
 from pybrops.core.error.error_io_python import check_file_exists
@@ -42,6 +42,8 @@ class DenseMatrix(Matrix):
             **kwargs: dict
         ) -> None:
         """
+        Construct a dense matrix object.
+
         Parameters
         ----------
         mat : numpy.ndarray
@@ -49,205 +51,744 @@ class DenseMatrix(Matrix):
         kwargs : dict
             Additional keyword arguments.
         """
-        super(DenseMatrix, self).__init__(**kwargs)
         self.mat = mat
 
     ############## Forward numeric operators ###############
-    def __add__(self, value):
-        """Elementwise add matrices"""
+    def __add__(self, value: object) -> object:
+        """
+        Elementwise add matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to add.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the addition.
+        """
         return self._mat + value
 
-    def __sub__(self, value):
-        """Elementwise subtract matrices"""
+    def __sub__(self, value: object) -> object:
+        """
+        Elementwise subtract matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to subtract.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the subtraction.
+        """
         return self._mat - value
 
-    def __mul__(self, value):
-        """Elementwise multiply matrices"""
+    def __mul__(self, value: object) -> object:
+        """
+        Elementwise multiply matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to multiply.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the multiplication.
+        """
         return self._mat * value
 
-    def __matmul__(self, value):
-        """Multiply matrices"""
+    def __matmul__(self, value: object) -> object:
+        """
+        Multiply matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to matrix multiply.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the matrix multiplication.
+        """
         return self._mat @ value
 
-    def __truediv__(self, value):
-        """Elementwise divide matrices"""
+    def __truediv__(self, value: object) -> object:
+        """
+        Elementwise divide matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to divide.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the division.
+        """
         return self._mat / value
 
-    def __floordiv__(self, value):
-        """Elementwise floor divide matrices"""
+    def __floordiv__(self, value: object) -> object:
+        """
+        Elementwise floor divide matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to floor divide.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the floor division.
+        """
         return self._mat // value
 
-    def __mod__(self, value):
-        """Elementwise modulus matrices"""
+    def __mod__(self, value: object) -> object:
+        """
+        Elementwise modulo matrices
+
+        Parameters
+        ----------
+        value : object
+            Object which to modulo.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the modulo.
+        """
         return self._mat % value
 
-    def __divmod__(self, value):
-        """Elementwise divmod matrices"""
+    def __divmod__(self, value: object) -> object:
+        """
+        Elementwise divmod matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to divmod.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the divmod.
+        """
         return divmod(self._mat, value)
 
-    def __pow__(self, value):
-        """Elementwise exponent matrices"""
+    def __pow__(self, value: object) -> object:
+        """
+        Elementwise exponent matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to exponentiate.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the exponentiation.
+        """
         return self._mat ** value
 
-    def __lshift__(self, value):
-        """Elementwise bitwise left shift matrices"""
+    def __lshift__(self, value: object) -> object:
+        """
+        Elementwise bitwise left shift matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to left shift.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the left shift.
+        """
         return self._mat << value
 
-    def __rshift__(self, value):
-        """Elementwise bitwise right shift matrices"""
+    def __rshift__(self, value: object) -> object:
+        """
+        Elementwise bitwise right shift matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to right shift.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the right shift.
+        """
         return self._mat >> value
 
-    def __and__(self, value):
-        """Elementwise bitwise and matrices"""
+    def __and__(self, value: object) -> object:
+        """
+        Elementwise bitwise AND matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise AND.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the bitwise AND.
+        """
         return self._mat & value
 
-    def __xor__(self, value):
-        """Elementwise bitwise xor matrices"""
+    def __xor__(self, value: object) -> object:
+        """
+        Elementwise bitwise XOR matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise XOR.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the bitwise XOR.
+        """
         return self._mat ^ value
 
-    def __or__(self, value):
-        """Elementwise bitwise or matrices"""
+    def __or__(self, value: object) -> object:
+        """
+        Elementwise bitwise OR matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise OR.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the bitwise OR.
+        """
         return self._mat | value
 
     ############# Backwards numeric operators ##############
-    def __radd__(self, value):
-        """Reverse elementwise add matrices"""
+    def __radd__(self, value: object) -> object:
+        """
+        Reverse elementwise add matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to add.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the addition.
+        """
         return value + self._mat
 
-    def __rsub__(self, value):
-        """Reverse elementwise subtract matrices"""
+    def __rsub__(self, value: object) -> object:
+        """
+        Reverse elementwise subtract matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to subtract.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the subtraction.
+        """
         return value - self._mat
 
-    def __rmul__(self, value):
-        """Reverse elementwise multiply matrices"""
+    def __rmul__(self, value: object) -> object:
+        """
+        Reverse elementwise multiply matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to multiply.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the multiplication.
+        """
         return value * self._mat
 
-    def __rmatmul__(self, value):
-        """Reverse multiply matrices"""
+    def __rmatmul__(self, value: object) -> object:
+        """
+        Reverse multiply matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to matrix multiply.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the matrix multiplication.
+        """
         return value @ self._mat
 
-    def __rtruediv__(self, value):
-        """Reverse elementwise divide matrices"""
+    def __rtruediv__(self, value: object) -> object:
+        """
+        Reverse elementwise divide matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to divide.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the division.
+        """
         return value / self._mat
 
-    def __rfloordiv__(self, value):
-        """Reverse elementwise floor divide matrices"""
+    def __rfloordiv__(self, value: object) -> object:
+        """
+        Reverse elementwise floor divide matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to floor divide.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the floor division.
+        """
         return value // self._mat
 
-    def __rmod__(self, value):
-        """Reverse elementwise modulus matrices"""
+    def __rmod__(self, value: object) -> object:
+        """
+        Reverse elementwise modulus matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to modulo.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the modulo.
+        """
         return value % self._mat
 
-    def __rdivmod__(self, value):
-        """Reverse elementwise divmod matrices"""
+    def __rdivmod__(self, value: object) -> object:
+        """
+        Reverse elementwise divmod matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to divmod.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the divmod.
+        """
         return divmod(value, self._mat)
 
-    def __rlshift__(self, value):
-        """Reverse elementwise bitwise left shift matrices"""
+    def __rlshift__(self, value: object) -> object:
+        """
+        Reverse elementwise bitwise left shift matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to left shift.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the left shift.
+        """
         return value << self._mat
 
-    def __rrshift__(self, value):
-        """Reverse elementwise bitwise right shift matrices"""
+    def __rrshift__(self, value: object) -> object:
+        """
+        Reverse elementwise bitwise right shift matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to right shift.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the right shift.
+        """
         return value >> self._mat
 
-    def __rand__(self, value):
-        """Reverse elementwise bitwise and matrices"""
+    def __rand__(self, value: object) -> object:
+        """
+        Reverse elementwise bitwise AND matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise AND.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the bitwise AND.
+        """
         return value & self._mat
 
-    def __rxor__(self, value):
-        """Reverse elementwise bitwise xor matrices"""
+    def __rxor__(self, value: object) -> object:
+        """
+        Reverse elementwise bitwise XOR matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise XOR.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the bitwise XOR.
+        """
         return value ^ self._mat
 
-    def __ror__(self, value):
-        """Reverse elementwise bitwise or matrices"""
+    def __ror__(self, value: object) -> object:
+        """
+        Reverse elementwise bitwise OR matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise OR.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the bitwise OR.
+        """
         return value | self._mat
 
     ############# Augmented numeric operators ##############
-    def __iadd__(self, value):
-        """Elementwise add assign matrices"""
+    def __iadd__(self, value: object) -> None:
+        """
+        Elementwise add assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to add.
+        """
         self._mat += value
 
-    def __isub__(self, value):
-        """Elementwise subtract assign matrices"""
+    def __isub__(self, value: object) -> None:
+        """
+        Elementwise subtract assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to subtract.
+        """
         self._mat -= value
 
-    def __imul__(self, value):
-        """Elementwise multiply assign matrices"""
+    def __imul__(self, value: object) -> None:
+        """
+        Elementwise multiply assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to multiply.
+        """
         self._mat *= value
 
-    def __imatmul__(self, value):
-        """Multiply assign matrices"""
+    def __imatmul__(self, value: object) -> None:
+        """
+        Multiply assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to matrix multiply.
+        """
         self._mat @= value
 
-    def __itruediv__(self, value):
-        """Elementwise true divide assign matrices"""
+    def __itruediv__(self, value: object) -> None:
+        """
+        Elementwise true divide assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to divide.
+        """
         self._mat /= value
 
-    def __ifloordiv__(self, value):
-        """Elementwise floor divide assign matrices"""
+    def __ifloordiv__(self, value: object) -> None:
+        """
+        Elementwise floor divide assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to floor divide.
+        """
         self._mat //= value
 
-    def __imod__(self, value):
-        """Elementwise modulus assign matrices"""
+    def __imod__(self, value: object) -> None:
+        """
+        Elementwise modulus assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to modulo.
+        """
         self._mat %= value
 
-    def __ipow__(self, value):
-        """Elementwise exponent assign matrices"""
+    def __ipow__(self, value: object) -> None:
+        """
+        Elementwise exponent assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to exponentiate.
+        """
         self._mat **= value
 
-    def __ilshift__(self, value):
-        """Elementwise left shift assign matrices"""
+    def __ilshift__(self, value: object) -> None:
+        """
+        Elementwise left shift assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to left shift.
+        """
         self._mat <<= value
 
-    def __irshift__(self, value):
-        """Elementwise right shift assign matrices"""
+    def __irshift__(self, value: object) -> None:
+        """
+        Elementwise right shift assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to right shift.
+        """
         self._mat >>= value
 
-    def __iand__(self, value):
-        """Elementwise bitwise and assign matrices"""
+    def __iand__(self, value: object) -> None:
+        """
+        Elementwise bitwise AND assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise AND.
+        """
         self._mat &= value
 
-    def __ixor__(self, value):
-        """Elementwise bitwise xor assign matrices"""
+    def __ixor__(self, value: object) -> None:
+        """
+        Elementwise bitwise XOR assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise XOR.
+        """
         self._mat ^= value
 
-    def __ior__(self, value):
-        """Elementwise bitwise or assign matrices"""
+    def __ior__(self, value: object) -> None:
+        """
+        Elementwise bitwise OR assign matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to bitwise OR.
+        """
         self._mat |= value
 
     ################## Logical operators ###################
-    def __lt__(self, value):
+    def __lt__(self, value: object) -> object:
+        """
+        Elementwise less than comparison matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to compare.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the comparision.
+        """
         return self._mat < value
 
-    def __le__(self, value):
+    def __le__(self, value: object) -> object:
+        """
+        Elementwise less than or equal to comparison matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to compare.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the comparision.
+        """
         return self._mat <= value
 
-    def __eq__(self, value):
+    def __eq__(self, value: object) -> object:
+        """
+        Elementwise equal to comparison matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to compare.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the comparision.
+        """
         return self._mat == value
 
-    def __ne__(self, value):
+    def __ne__(self, value: object) -> object:
+        """
+        Elementwise not equal to comparison matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to compare.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the comparision.
+        """
         return self._mat != value
 
-    def __gt__(self, value):
+    def __gt__(self, value: object) -> object:
+        """
+        Elementwise greater than comparison matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to compare.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the comparision.
+        """
         return self._mat > value
 
-    def __ge__(self, value):
+    def __ge__(self, value: object) -> object:
+        """
+        Elementwise greater than or equal to comparison matrices
+        
+        Parameters
+        ----------
+        value : object
+            Object which to compare.
+        
+        Returns
+        -------
+        out : object
+            An object resulting from the comparision.
+        """
         return self._mat >= value
 
     ################# Container operators ##################
-    def __len__(self):
+    def __len__(self) -> int:
+        """
+        Get the length of the Matrix.
+
+        Returns
+        -------
+        out : int
+            The length of the Matrix.
+        """
         return len(self._mat)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: object) -> object:
+        """
+        Get an item from the Matrix.
+
+        Parameters
+        ----------
+        key : object
+            Key of the item which to get.
+        
+        Returns
+        -------
+        out : object
+            Item at the provided key.
+        """
         return self._mat[key]
 
-    def __setitem__(self, key, value):
+    def __setitem__(self, key: object, value: object) -> None:
+        """
+        Set an item in the Matrix.
+
+        Parameters
+        ----------
+        key : object
+            Key of the item which to set.
+        value : object
+            Value of the item to wich to set.
+        """
         self._mat[key] = value
 
-    def __delitem__(self, key):
+    def __delitem__(self, key: object) -> None:
+        """
+        Delete an item in the Matrix.
+
+        Parameters
+        ----------
+        key : object
+            Key of the item which to delete.
+        """
         del self._mat[key]
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator:
+        """
+        Get an iterator for the Matrix.
+
+        Returns
+        -------
+        out : Iterator
+            An iterator for the Matrix.
+        """
         return iter(self._mat)
 
     #################### Matrix copying ####################

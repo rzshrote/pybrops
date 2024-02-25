@@ -2,7 +2,7 @@ import pytest
 from pybrops.breed.prot.sel.soln.SubsetMateSelectionSolution import SubsetMateSelectionSolution
 from pybrops.breed.prot.sel.soln.SubsetMateSelectionSolution import SubsetMateSelectionSolution
 from pybrops.breed.prot.sel.soln.SubsetMateSelectionSolution import check_is_SubsetMateSelectionSolution
-from pybrops.test.assert_python import assert_docstring, assert_concrete_class, not_raises
+from pybrops.test.assert_python import assert_class_documentation, assert_class_isconcrete, not_raises
 
 from .common_fixtures import *
 
@@ -47,11 +47,11 @@ def selsoln(
 
 ################### Test class abstract/concrete properties ####################
 def test_SubsetMateSelectionSolution_is_concrete():
-    assert_concrete_class(SubsetMateSelectionSolution)
+    assert_class_isconcrete(SubsetMateSelectionSolution)
 
 ############################## Test class docstring ############################
 def test_SubsetMateSelectionSolution_docstring():
-    assert_docstring(SubsetMateSelectionSolution)
+    assert_class_documentation(SubsetMateSelectionSolution)
 
 ############################# Test class utilities #############################
 def test_check_is_SubsetMateSelectionSolution(selsoln):

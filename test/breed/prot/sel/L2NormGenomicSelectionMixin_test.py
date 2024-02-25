@@ -2,7 +2,7 @@ import numpy
 import pytest
 from pybrops.breed.prot.sel.L2NormGenomicSelection import L2NormGenomicSelectionMixin
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_mixin_class, not_raises
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, assert_class_ismixin, not_raises
 from .common_fixtures_large import *
 
 ################################ Test fixtures #################################
@@ -17,17 +17,17 @@ def selmix(
 
 ################### Test class abstract/concrete properties ####################
 def test_L2NormGenomicSelectionMixin_is_mixin():
-    assert_mixin_class(L2NormGenomicSelectionMixin)
+    assert_class_ismixin(L2NormGenomicSelectionMixin)
 
 ############################## Test class docstring ############################
 def test_L2NormGenomicSelectionMixin_docstring():
-    assert_docstring(L2NormGenomicSelectionMixin)
+    assert_class_documentation(L2NormGenomicSelectionMixin)
 
 ############################ Test class properties #############################
 
 ### cmatfcty ###
 def test_L2NormGenomicSelectionMixin_cmatfcty_is_concrete():
-    assert_concrete_property(L2NormGenomicSelectionMixin, "cmatfcty")
+    assert_property_isconcrete(L2NormGenomicSelectionMixin, "cmatfcty")
 
 def test_cmatfcty_fget(selmix, common_cmatfcty):
     assert isinstance(selmix.cmatfcty, CoancestryMatrixFactory)

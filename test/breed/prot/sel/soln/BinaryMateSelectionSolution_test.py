@@ -2,7 +2,7 @@ import pytest
 from pybrops.breed.prot.sel.soln.BinaryMateSelectionSolution import BinaryMateSelectionSolution
 from pybrops.breed.prot.sel.soln.BinaryMateSelectionSolution import BinaryMateSelectionSolution
 from pybrops.breed.prot.sel.soln.BinaryMateSelectionSolution import check_is_BinaryMateSelectionSolution
-from pybrops.test.assert_python import assert_docstring, assert_concrete_class, not_raises
+from pybrops.test.assert_python import assert_class_documentation, assert_class_isconcrete, not_raises
 
 from .common_fixtures import *
 
@@ -47,11 +47,11 @@ def selsoln(
 
 ################### Test class abstract/concrete properties ####################
 def test_BinaryMateSelectionSolution_is_concrete():
-    assert_concrete_class(BinaryMateSelectionSolution)
+    assert_class_isconcrete(BinaryMateSelectionSolution)
 
 ############################## Test class docstring ############################
 def test_BinaryMateSelectionSolution_docstring():
-    assert_docstring(BinaryMateSelectionSolution)
+    assert_class_documentation(BinaryMateSelectionSolution)
 
 ############################# Test class utilities #############################
 def test_check_is_BinaryMateSelectionSolution(selsoln):

@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelect
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_concrete_class, assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_isconcrete, assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -127,21 +127,21 @@ def selprot_multi(
 
 ################### Test class abstract/concrete properties ####################
 def test_OptimalHaploidValueSubsetSelection_is_concrete():
-    assert_concrete_class(OptimalHaploidValueSubsetSelection)
+    assert_class_isconcrete(OptimalHaploidValueSubsetSelection)
 
 ############################## Test class docstring ############################
 def test_OptimalHaploidValueSubsetSelection_docstring():
-    assert_docstring(OptimalHaploidValueSubsetSelection)
+    assert_class_documentation(OptimalHaploidValueSubsetSelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(OptimalHaploidValueSubsetSelection, "__init__")
+    assert_method_isconcrete(OptimalHaploidValueSubsetSelection, "__init__")
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(OptimalHaploidValueSubsetSelection, "problem")
+    assert_method_isconcrete(OptimalHaploidValueSubsetSelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -212,7 +212,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(OptimalHaploidValueSubsetSelection, "sosolve")
+    assert_method_isconcrete(OptimalHaploidValueSubsetSelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -253,7 +253,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(OptimalHaploidValueSubsetSelection, "mosolve")
+    assert_method_isconcrete(OptimalHaploidValueSubsetSelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -311,7 +311,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(OptimalHaploidValueSubsetSelection, "select")
+    assert_method_isconcrete(OptimalHaploidValueSubsetSelection, "select")
 
 def test_select(
         selprot_single,

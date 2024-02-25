@@ -3,9 +3,9 @@ import pytest
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 
-from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_property_isconcrete
 
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 from pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem import L1NormGenomicSubsetSelectionProblem
@@ -176,7 +176,7 @@ def tfreq(gmat, gpmod):
 ############################## Test class docstring ############################
 ################################################################################
 def test_SubsetConventionalSelectionProblem_docstring():
-    assert_docstring(L1NormGenomicSubsetSelectionProblem)
+    assert_class_documentation(L1NormGenomicSubsetSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -186,7 +186,7 @@ def test_SubsetConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(L1NormGenomicSubsetSelectionProblem, "nlatent")
+    assert_property_isconcrete(L1NormGenomicSubsetSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == ntrait
@@ -195,7 +195,7 @@ def test_nlatent_fget(prob, ntrait):
 ### V ###
 ############
 def test_V_is_concrete():
-    assert_concrete_property(L1NormGenomicSubsetSelectionProblem, "V")
+    assert_property_isconcrete(L1NormGenomicSubsetSelectionProblem, "V")
 
 def test_V_fget(prob, ntaxa, ntrait, nvrnt):
     assert isinstance(prob.V, numpy.ndarray)
@@ -235,13 +235,13 @@ def test_V_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(L1NormGenomicSubsetSelectionProblem, "__init__")
+    assert_method_isconcrete(L1NormGenomicSubsetSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_concrete_method(prob, "latentfn")
+    assert_method_isconcrete(prob, "latentfn")
 
 def test_latentfn(prob, ntaxa, V):
     x = numpy.random.binomial(1, 0.5, ntaxa)

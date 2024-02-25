@@ -1,11 +1,11 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
@@ -22,64 +22,64 @@ def mat():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(GenotypeMatrix)
+    assert_class_documentation(GenotypeMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(GenotypeMatrix, "__init__")
+    assert_method_isconcrete(GenotypeMatrix, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
 def test_ploidy_is_abstract():
-    assert_abstract_property(GenotypeMatrix, "ploidy")
+    assert_property_isabstract(GenotypeMatrix, "ploidy")
 
 def test_nphase_is_abstract():
-    assert_abstract_property(GenotypeMatrix, "nphase")
+    assert_property_isabstract(GenotypeMatrix, "nphase")
 
 def test_mat_format_is_abstract():
-    assert_abstract_property(GenotypeMatrix, "mat_format")
+    assert_property_isabstract(GenotypeMatrix, "mat_format")
 
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
 def test_mat_asformat_is_abstract():
-    assert_abstract_method(GenotypeMatrix, "mat_asformat")
+    assert_method_isabstract(GenotypeMatrix, "mat_asformat")
 
 def test_tacount_is_abstract():
-    assert_abstract_method(GenotypeMatrix, "tacount")
+    assert_method_isabstract(GenotypeMatrix, "tacount")
 
 def test_tafreq_is_abstract():
-    assert_abstract_method(GenotypeMatrix, "tafreq")
+    assert_method_isabstract(GenotypeMatrix, "tafreq")
 
 def test_acount_is_abstract():
-    assert_abstract_method(GenotypeMatrix, "acount")
+    assert_method_isabstract(GenotypeMatrix, "acount")
 
 def test_afreq_is_abstract():
-    assert_abstract_method(GenotypeMatrix, "afreq")
+    assert_method_isabstract(GenotypeMatrix, "afreq")
 
 def test_apoly_is_abstract():
-    assert_abstract_method(GenotypeMatrix, "apoly")
+    assert_method_isabstract(GenotypeMatrix, "apoly")
 
 def test_maf_is_abstract():
-    assert_abstract_method(GenotypeMatrix, "maf")
+    assert_method_isabstract(GenotypeMatrix, "maf")
 
 def test_meh_is_abstract():
-    assert_abstract_method(GenotypeMatrix, "meh")
+    assert_method_isabstract(GenotypeMatrix, "meh")
 
 def test_gtcount_is_abstract():
-    assert_abstract_method(GenotypeMatrix, "gtcount")
+    assert_method_isabstract(GenotypeMatrix, "gtcount")
 
 def test_gtfreq_is_abstract():
-    assert_abstract_method(GenotypeMatrix, "gtfreq")
+    assert_method_isabstract(GenotypeMatrix, "gtfreq")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_GenotypeMatrix_is_concrete():
-    assert_concrete_function(check_is_GenotypeMatrix)
+    assert_function_isconcrete(check_is_GenotypeMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################

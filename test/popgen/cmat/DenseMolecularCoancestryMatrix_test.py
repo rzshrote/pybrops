@@ -2,9 +2,9 @@ import pytest
 import numpy
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import DenseMolecularCoancestryMatrix
 from pybrops.popgen.cmat.DenseMolecularCoancestryMatrix import check_is_DenseMolecularCoancestryMatrix
@@ -79,13 +79,13 @@ def gmat_numpy(X_mat_int8):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(DenseMolecularCoancestryMatrix)
+    assert_class_documentation(DenseMolecularCoancestryMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(DenseMolecularCoancestryMatrix, "__init__")
+    assert_method_isconcrete(DenseMolecularCoancestryMatrix, "__init__")
 
 ################################################################################
 ############################ Test Class Properties #############################
@@ -116,7 +116,7 @@ def test_from_gmat_pgmat_vs_gmat(cmat_pgmat_sample, cmat_gmat_sample):
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_DenseMolecularCoancestryMatrix_is_concrete():
-    assert_concrete_function(check_is_DenseMolecularCoancestryMatrix)
+    assert_function_isconcrete(check_is_DenseMolecularCoancestryMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################

@@ -1,7 +1,7 @@
 import numpy
 import pytest
 from pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection import GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_mixin_class, not_raises
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, assert_class_ismixin, not_raises
 from .common_fixtures_large import *
 
 ################################ Test fixtures #################################
@@ -18,17 +18,17 @@ def selmix(
 
 ################### Test class abstract/concrete properties ####################
 def test_GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin_is_mixin():
-    assert_mixin_class(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin)
+    assert_class_ismixin(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin)
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin)
+    assert_class_documentation(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin)
 
 ############################ Test class properties #############################
 
 ### ntrait ###
 def test_GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin_ntrait_is_concrete():
-    assert_concrete_property(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin, "ntrait")
+    assert_property_isconcrete(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin, "ntrait")
 
 def test_ntrait_fget(selmix, common_ntrait):
     assert selmix.ntrait == common_ntrait
@@ -67,7 +67,7 @@ def test_ntrait_fdel(selmix):
 
 ### alpha ###
 def test_GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin_alpha_is_concrete():
-    assert_concrete_property(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin, "alpha")
+    assert_property_isconcrete(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin, "alpha")
 
 def test_alpha_fget(selmix, common_alpha):
     assert selmix.alpha == common_alpha

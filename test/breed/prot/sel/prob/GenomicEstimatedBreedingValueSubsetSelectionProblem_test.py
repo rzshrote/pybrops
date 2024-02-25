@@ -4,9 +4,9 @@ import pytest
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
-from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_property_isconcrete
 from pybrops.breed.prot.sel.prob.GenomicEstimatedBreedingValueSelectionProblem import GenomicEstimatedBreedingValueSubsetSelectionProblem
 
 ################################################################################
@@ -184,7 +184,7 @@ def gpmod(nvrnt, ntrait, trait_mean, trait_cov):
 ############################## Test class docstring ############################
 ################################################################################
 def test_SubsetConventionalSelectionProblem_docstring():
-    assert_docstring(GenomicEstimatedBreedingValueSubsetSelectionProblem)
+    assert_class_documentation(GenomicEstimatedBreedingValueSubsetSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -194,7 +194,7 @@ def test_SubsetConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(GenomicEstimatedBreedingValueSubsetSelectionProblem, "nlatent")
+    assert_property_isconcrete(GenomicEstimatedBreedingValueSubsetSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == ntrait
@@ -203,7 +203,7 @@ def test_nlatent_fget(prob, ntrait):
 ### gebv ###
 ############
 def test_gebv_is_concrete():
-    assert_concrete_property(GenomicEstimatedBreedingValueSubsetSelectionProblem, "gebv")
+    assert_property_isconcrete(GenomicEstimatedBreedingValueSubsetSelectionProblem, "gebv")
 
 def test_gebv_fget(prob, ntaxa, ntrait):
     assert isinstance(prob.gebv, numpy.ndarray)
@@ -243,13 +243,13 @@ def test_gebv_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(GenomicEstimatedBreedingValueSubsetSelectionProblem, "__init__")
+    assert_method_isconcrete(GenomicEstimatedBreedingValueSubsetSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_concrete_method(prob, "latentfn")
+    assert_method_isconcrete(prob, "latentfn")
 
 def test_latentfn(prob, ntaxa, gebv):
     x = numpy.random.choice(ntaxa, ntaxa // 2)

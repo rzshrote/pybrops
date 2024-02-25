@@ -3,12 +3,12 @@ import numpy
 import copy
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_function
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_function_isabstract
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import check_is_DenseGenotypeMatrix
@@ -167,91 +167,91 @@ def mat(mat_int8, taxa_object, taxa_grp_int64, vrnt_chrgrp_int64, vrnt_phypos_in
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(DenseGenotypeMatrix)
+    assert_class_documentation(DenseGenotypeMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "__init__")
+    assert_method_isconcrete(DenseGenotypeMatrix, "__init__")
 
 def test_copy_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "__copy__")
+    assert_method_isconcrete(DenseGenotypeMatrix, "__copy__")
 
 def test_deepcopy_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "__deepcopy__")
+    assert_method_isconcrete(DenseGenotypeMatrix, "__deepcopy__")
 
 def test_adjoin_taxa_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "adjoin_taxa")
+    assert_method_isconcrete(DenseGenotypeMatrix, "adjoin_taxa")
 
 def test_adjoin_vrnt_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "adjoin_vrnt")
+    assert_method_isconcrete(DenseGenotypeMatrix, "adjoin_vrnt")
 
 def test_delete_taxa_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "delete_taxa")
+    assert_method_isconcrete(DenseGenotypeMatrix, "delete_taxa")
 
 def test_delete_vrnt_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "delete_vrnt")
+    assert_method_isconcrete(DenseGenotypeMatrix, "delete_vrnt")
 
 def test_insert_taxa_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "insert_taxa")
+    assert_method_isconcrete(DenseGenotypeMatrix, "insert_taxa")
 
 def test_insert_vrnt_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "insert_vrnt")
+    assert_method_isconcrete(DenseGenotypeMatrix, "insert_vrnt")
 
 def test_select_taxa_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "select_taxa")
+    assert_method_isconcrete(DenseGenotypeMatrix, "select_taxa")
 
 def test_select_vrnt_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "select_vrnt")
+    assert_method_isconcrete(DenseGenotypeMatrix, "select_vrnt")
 
 def test_concat_taxa_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "concat_taxa")
+    assert_method_isconcrete(DenseGenotypeMatrix, "concat_taxa")
 
 def test_concat_vrnt_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "concat_vrnt")
+    assert_method_isconcrete(DenseGenotypeMatrix, "concat_vrnt")
 
 def test_append_taxa_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "append_taxa")
+    assert_method_isconcrete(DenseGenotypeMatrix, "append_taxa")
 
 def test_append_vrnt_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "append_vrnt")
+    assert_method_isconcrete(DenseGenotypeMatrix, "append_vrnt")
 
 def test_remove_taxa_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "remove_taxa")
+    assert_method_isconcrete(DenseGenotypeMatrix, "remove_taxa")
 
 def test_remove_vrnt_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "remove_vrnt")
+    assert_method_isconcrete(DenseGenotypeMatrix, "remove_vrnt")
 
 def test_incorp_taxa_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "incorp_taxa")
+    assert_method_isconcrete(DenseGenotypeMatrix, "incorp_taxa")
 
 def test_incorp_vrnt_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "incorp_vrnt")
+    assert_method_isconcrete(DenseGenotypeMatrix, "incorp_vrnt")
 
 def test_tacount_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "tacount")
+    assert_method_isconcrete(DenseGenotypeMatrix, "tacount")
 
 def test_tafreq_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "tafreq")
+    assert_method_isconcrete(DenseGenotypeMatrix, "tafreq")
 
 def test_acount_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "acount")
+    assert_method_isconcrete(DenseGenotypeMatrix, "acount")
 
 def test_afreq_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "afreq")
+    assert_method_isconcrete(DenseGenotypeMatrix, "afreq")
 
 def test_maf_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "maf")
+    assert_method_isconcrete(DenseGenotypeMatrix, "maf")
 
 def test_meh_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "meh")
+    assert_method_isconcrete(DenseGenotypeMatrix, "meh")
 
 def test_gtcount_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "gtcount")
+    assert_method_isconcrete(DenseGenotypeMatrix, "gtcount")
 
 def test_gtfreq_is_concrete():
-    assert_concrete_method(DenseGenotypeMatrix, "gtfreq")
+    assert_method_isconcrete(DenseGenotypeMatrix, "gtfreq")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -818,7 +818,7 @@ def test_meh_float32(mat, mat_int8, mat_ploidy):
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_DenseGenotypeMatrix_is_concrete():
-    assert_concrete_function(check_is_DenseGenotypeMatrix)
+    assert_function_isconcrete(check_is_DenseGenotypeMatrix)
 
 def test_check_is_DenseGenotypeMatrix(mat):
     with not_raises(TypeError):

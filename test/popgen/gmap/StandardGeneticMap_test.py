@@ -3,7 +3,7 @@ import numpy
 import pytest
 from os.path import isfile
 from pybrops.popgen.gmap.StandardGeneticMap import StandardGeneticMap, check_is_StandardGeneticMap
-from pybrops.test.assert_python import assert_concrete_function, assert_concrete_method, assert_concrete_property, assert_docstring, not_raises
+from pybrops.test.assert_python import assert_function_isconcrete, assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, not_raises
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -36,7 +36,7 @@ def gmap(shared_datadir):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(StandardGeneticMap)
+    assert_class_documentation(StandardGeneticMap)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -44,7 +44,7 @@ def test_class_docstring():
 
 ### nvrnt
 def test_nvrnt_is_concrete():
-    assert_concrete_property(StandardGeneticMap, "nvrnt")
+    assert_property_isconcrete(StandardGeneticMap, "nvrnt")
 
 def test_nvrnt_fget(gmap):
     assert isinstance(gmap.nvrnt, Integral)
@@ -60,7 +60,7 @@ def test_nvrnt_fdel_AttributeError(gmap):
 
 ### vrnt_chrgrp
 def test_vrnt_chrgrp_is_concrete():
-    assert_concrete_property(StandardGeneticMap, "vrnt_chrgrp")
+    assert_property_isconcrete(StandardGeneticMap, "vrnt_chrgrp")
 
 def test_vrnt_chrgrp_fget(gmap):
     with not_raises(Exception):
@@ -94,7 +94,7 @@ def test_vrnt_chrgrp_fdel_AttributeError(gmap):
 
 ### vrnt_phypos
 def test_vrnt_phypos_is_concrete():
-    assert_concrete_property(StandardGeneticMap, "vrnt_phypos")
+    assert_property_isconcrete(StandardGeneticMap, "vrnt_phypos")
 
 def test_vrnt_phypos_fget(gmap):
     with not_raises(Exception):
@@ -128,7 +128,7 @@ def test_vrnt_phypos_fdel_AttributeError(gmap):
 
 ### vrnt_genpos
 def test_vrnt_genpos_is_concrete():
-    assert_concrete_property(StandardGeneticMap, "vrnt_genpos")
+    assert_property_isconcrete(StandardGeneticMap, "vrnt_genpos")
 
 def test_vrnt_genpos_fget(gmap):
     with not_raises(Exception):
@@ -162,7 +162,7 @@ def test_vrnt_genpos_fdel_AttributeError(gmap):
 
 ### vrnt_genpos_name
 def test_vrnt_chrgrp_name_is_concrete():
-    assert_concrete_property(StandardGeneticMap, "vrnt_chrgrp_name")
+    assert_property_isconcrete(StandardGeneticMap, "vrnt_chrgrp_name")
 
 def test_vrnt_chrgrp_name_fget(gmap):
     with not_raises(Exception):
@@ -197,7 +197,7 @@ def test_vrnt_chrgrp_name_fdel_AttributeError(gmap):
 
 ### vrnt_chrgrp_stix
 def test_vrnt_chrgrp_stix_is_concrete():
-    assert_concrete_property(StandardGeneticMap, "vrnt_chrgrp_stix")
+    assert_property_isconcrete(StandardGeneticMap, "vrnt_chrgrp_stix")
 
 def test_vrnt_chrgrp_stix_fget(gmap):
     with not_raises(Exception):
@@ -232,7 +232,7 @@ def test_vrnt_chrgrp_stix_fdel_AttributeError(gmap):
 
 ### vrnt_chrgrp_spix
 def test_vrnt_chrgrp_spix_is_concrete():
-    assert_concrete_property(StandardGeneticMap, "vrnt_chrgrp_spix")
+    assert_property_isconcrete(StandardGeneticMap, "vrnt_chrgrp_spix")
 
 def test_vrnt_chrgrp_spix_fget(gmap):
     with not_raises(Exception):
@@ -267,7 +267,7 @@ def test_vrnt_chrgrp_spix_fdel_AttributeError(gmap):
 
 ### vrnt_chrgrp_len
 def test_vrnt_chrgrp_len_is_concrete():
-    assert_concrete_property(StandardGeneticMap, "vrnt_chrgrp_len")
+    assert_property_isconcrete(StandardGeneticMap, "vrnt_chrgrp_len")
 
 def test_vrnt_chrgrp_len_fget(gmap):
     with not_raises(Exception):
@@ -302,7 +302,7 @@ def test_vrnt_chrgrp_len_fdel_AttributeError(gmap):
 
 ### spline
 def test_spline_is_concrete():
-    assert_concrete_property(StandardGeneticMap, "spline")
+    assert_property_isconcrete(StandardGeneticMap, "spline")
 
 def test_spline_fget(gmap):
     with not_raises(Exception):
@@ -335,7 +335,7 @@ def test_spline_fdel_AttributeError(gmap):
 
 ### spline_kind
 def test_spline_kind_is_concrete():
-    assert_concrete_property(StandardGeneticMap, "spline_kind")
+    assert_property_isconcrete(StandardGeneticMap, "spline_kind")
 
 def test_spline_kind_fget(gmap):
     with not_raises(Exception):
@@ -359,7 +359,7 @@ def test_spline_kind_fdel_AttributeError(gmap):
 
 ### spline_fill_value
 def test_spline_fill_value_is_concrete():
-    assert_concrete_property(StandardGeneticMap, "spline_fill_value")
+    assert_property_isconcrete(StandardGeneticMap, "spline_fill_value")
 
 def test_spline_fill_value_fget(gmap):
     with not_raises(Exception):
@@ -389,18 +389,18 @@ def test_spline_fill_value_fdel_AttributeError(gmap):
 
 ### __init__
 def test___init___is_concrete():
-    assert_concrete_method(StandardGeneticMap, "__init__")
+    assert_method_isconcrete(StandardGeneticMap, "__init__")
 
 ### __len__
 def test___len___is_concrete():
-    assert_concrete_method(StandardGeneticMap, "__len__")
+    assert_method_isconcrete(StandardGeneticMap, "__len__")
 
 def test___len__(gmap):
     assert len(gmap) == len(gmap.vrnt_chrgrp)
 
 ### __copy__
 def test___copy___is_concrete():
-    assert_concrete_method(StandardGeneticMap, "__copy__")
+    assert_method_isconcrete(StandardGeneticMap, "__copy__")
 
 def test___copy__(gmap):
     tmp = gmap.__copy__()
@@ -417,7 +417,7 @@ def test___copy__(gmap):
 
 ### __deepcopy__
 def test___deepcopy___is_concrete():
-    assert_concrete_method(StandardGeneticMap, "__deepcopy__")
+    assert_method_isconcrete(StandardGeneticMap, "__deepcopy__")
 
 def test___deepcopy__(gmap):
     tmp = gmap.__deepcopy__()
@@ -434,7 +434,7 @@ def test___deepcopy__(gmap):
 
 ### copy()
 def test_copy_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "copy")
+    assert_method_isconcrete(StandardGeneticMap, "copy")
 
 def test_copy(gmap):
     tmp = gmap.copy()
@@ -451,7 +451,7 @@ def test_copy(gmap):
 
 ### deepcopy()
 def test_deepcopy_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "deepcopy")
+    assert_method_isconcrete(StandardGeneticMap, "deepcopy")
 
 def test_deepcopy(gmap):
     tmp = gmap.deepcopy()
@@ -468,7 +468,7 @@ def test_deepcopy(gmap):
 
 ### lexsort()
 def test_lexsort_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "lexsort")
+    assert_method_isconcrete(StandardGeneticMap, "lexsort")
 
 def test_lexsort_None(gmap):
     output = gmap.lexsort(keys = None)
@@ -484,7 +484,7 @@ def test_lexsort_tuple(gmap):
 
 ### reorder()
 def test_reorder_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "reorder")
+    assert_method_isconcrete(StandardGeneticMap, "reorder")
 
 def test_reorder(gmap):
     tmp = gmap.deepcopy()
@@ -501,7 +501,7 @@ def test_reorder(gmap):
 
 ### sort()
 def test_sort_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "sort")
+    assert_method_isconcrete(StandardGeneticMap, "sort")
 
 def test_sort(gmap):
     tmp = gmap.deepcopy()
@@ -518,7 +518,7 @@ def test_sort(gmap):
 
 ### group()
 def test_group_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "group")
+    assert_method_isconcrete(StandardGeneticMap, "group")
 
 def test_group(gmap):
     tmp = gmap.deepcopy()
@@ -536,7 +536,7 @@ def test_group(gmap):
 
 ### ungroup()
 def test_ungroup_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "ungroup")
+    assert_method_isconcrete(StandardGeneticMap, "ungroup")
 
 def test_ungroup(gmap):
     assert gmap.is_grouped()
@@ -545,7 +545,7 @@ def test_ungroup(gmap):
 
 ### is_grouped()
 def test_is_grouped_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "is_grouped")
+    assert_method_isconcrete(StandardGeneticMap, "is_grouped")
 
 def test_is_grouped(gmap):
     tmp = gmap.deepcopy()
@@ -558,7 +558,7 @@ def test_is_grouped(gmap):
 
 ### congruence()
 def test_congruence_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "congruence")
+    assert_method_isconcrete(StandardGeneticMap, "congruence")
 
 def test_congruence(gmap, gmap_uncorrected):
     out = gmap.congruence()
@@ -570,7 +570,7 @@ def test_congruence(gmap, gmap_uncorrected):
 
 ### is_congruent()
 def test_is_congruent_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "is_congruent")
+    assert_method_isconcrete(StandardGeneticMap, "is_congruent")
 
 def test_is_congruent(gmap, gmap_uncorrected):
     assert gmap.is_congruent()
@@ -578,7 +578,7 @@ def test_is_congruent(gmap, gmap_uncorrected):
 
 ### remove_discrepancies()
 def test_remove_discrepancies_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "remove_discrepancies")
+    assert_method_isconcrete(StandardGeneticMap, "remove_discrepancies")
 
 def test_remove_discrepancies(gmap_uncorrected):
     tmp = gmap_uncorrected.deepcopy()
@@ -587,7 +587,7 @@ def test_remove_discrepancies(gmap_uncorrected):
 
 ### remove()
 def test_remove_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "remove")
+    assert_method_isconcrete(StandardGeneticMap, "remove")
 
 def test_remove(gmap):
     # test with grouped gmap
@@ -616,7 +616,7 @@ def test_remove(gmap):
 
 ### select()
 def test_select_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "select")
+    assert_method_isconcrete(StandardGeneticMap, "select")
 
 def test_select(gmap):
     # test with grouped gmap
@@ -645,7 +645,7 @@ def test_select(gmap):
 
 ### build_spline()
 def test_build_spline_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "build_spline")
+    assert_method_isconcrete(StandardGeneticMap, "build_spline")
 
 def test_build_spline(gmap):
     gmap.spline = None
@@ -659,7 +659,7 @@ def test_build_spline(gmap):
 
 ### has_spline()
 def test_has_spline_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "has_spline")
+    assert_method_isconcrete(StandardGeneticMap, "has_spline")
 
 def test_has_spline(gmap):
     assert gmap.has_spline()
@@ -668,7 +668,7 @@ def test_has_spline(gmap):
 
 ### interp_genpos()
 def test_interp_genpos_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "interp_genpos")
+    assert_method_isconcrete(StandardGeneticMap, "interp_genpos")
 
 def test_interp_genpos(gmap):
     genpos = gmap.interp_genpos(gmap.vrnt_chrgrp, gmap.vrnt_phypos)
@@ -677,7 +677,7 @@ def test_interp_genpos(gmap):
 
 ### interp_gmap()
 def test_interp_gmap_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "interp_gmap")
+    assert_method_isconcrete(StandardGeneticMap, "interp_gmap")
 
 def test_interp_gmap(gmap):
     tmp = gmap.interp_gmap(gmap.vrnt_chrgrp, gmap.vrnt_phypos)
@@ -686,7 +686,7 @@ def test_interp_gmap(gmap):
 
 ### gdist1g()
 def test_gdist1g_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "gdist1g")
+    assert_method_isconcrete(StandardGeneticMap, "gdist1g")
 
 def test_gdist1g(gmap):
     out = gmap.gdist1g(gmap.vrnt_chrgrp, gmap.vrnt_genpos)
@@ -698,7 +698,7 @@ def test_gdist1g(gmap):
 
 ### gdist1p()
 def test_gdist1p_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "gdist1p")
+    assert_method_isconcrete(StandardGeneticMap, "gdist1p")
 
 def test_gdist1p(gmap):
     out = gmap.gdist1p(gmap.vrnt_chrgrp, gmap.vrnt_phypos)
@@ -710,7 +710,7 @@ def test_gdist1p(gmap):
 
 ### gdist2g()
 def test_gdist2g_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "gdist2g")
+    assert_method_isconcrete(StandardGeneticMap, "gdist2g")
 
 def test_gdist2g(gmap):
     out = gmap.gdist2g(gmap.vrnt_chrgrp, gmap.vrnt_genpos)
@@ -721,7 +721,7 @@ def test_gdist2g(gmap):
 
 ### gdist2p()
 def test_gdist2p_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "gdist2p")
+    assert_method_isconcrete(StandardGeneticMap, "gdist2p")
 
 def test_gdist2p(gmap):
     out = gmap.gdist2p(gmap.vrnt_chrgrp, gmap.vrnt_phypos)
@@ -732,7 +732,7 @@ def test_gdist2p(gmap):
 
 ### to_pandas()
 def test_to_pandas_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "to_pandas")
+    assert_method_isconcrete(StandardGeneticMap, "to_pandas")
 
 def test_to_pandas(gmap):
     df = gmap.to_pandas("chr","pos","cM")
@@ -742,7 +742,7 @@ def test_to_pandas(gmap):
 
 ### to_csv()
 def test_to_csv_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "to_csv")
+    assert_method_isconcrete(StandardGeneticMap, "to_csv")
 
 def test_to_csv(gmap):
     fout = "genetic_map.csv"
@@ -751,7 +751,7 @@ def test_to_csv(gmap):
 
 ### from_pandas()
 def test_from_pandas_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "from_pandas")
+    assert_method_isconcrete(StandardGeneticMap, "from_pandas")
 
 def test_from_pandas(gmap):
     df = gmap.to_pandas()
@@ -760,7 +760,7 @@ def test_from_pandas(gmap):
 
 ### from_csv()
 def test_from_csv_is_concrete():
-    assert_concrete_method(StandardGeneticMap, "from_csv")
+    assert_method_isconcrete(StandardGeneticMap, "from_csv")
 
 def test_from_csv(gmap):
     fin = "genetic_map.csv"
@@ -773,7 +773,7 @@ def test_from_csv(gmap):
 
 ### check_is_StandardGeneticMap
 def test_check_is_StandardGeneticMap_is_concrete():
-    assert_concrete_function(check_is_StandardGeneticMap)
+    assert_function_isconcrete(check_is_StandardGeneticMap)
 
 def test_check_is_StandardGeneticMap():
     with pytest.raises(TypeError):

@@ -1,10 +1,10 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
 from pybrops.breed.prot.gt.GenotypingProtocol import check_is_GenotypingProtocol
@@ -21,13 +21,13 @@ def bvprot():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(GenotypingProtocol)
+    assert_class_documentation(GenotypingProtocol)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(GenotypingProtocol, "__init__")
+    assert_method_isconcrete(GenotypingProtocol, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -37,13 +37,13 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_genotype_is_abstract():
-    assert_abstract_method(GenotypingProtocol, "genotype")
+    assert_method_isabstract(GenotypingProtocol, "genotype")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_GenotypingProtocol_is_concrete():
-    assert_concrete_function(check_is_GenotypingProtocol)
+    assert_function_isconcrete(check_is_GenotypingProtocol)
 
 ################################################################################
 ######################### Test class utility functions #########################

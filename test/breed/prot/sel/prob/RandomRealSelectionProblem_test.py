@@ -2,9 +2,9 @@ import numpy
 import pytest
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 
-from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_property_isconcrete
 
 from pybrops.breed.prot.sel.prob.RandomSelectionProblem import RandomRealSelectionProblem
 
@@ -146,7 +146,7 @@ def bvmat(rbv):
 ############################## Test class docstring ############################
 ################################################################################
 def test_RealConventionalSelectionProblem_docstring():
-    assert_docstring(RandomRealSelectionProblem)
+    assert_class_documentation(RandomRealSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -156,7 +156,7 @@ def test_RealConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(RandomRealSelectionProblem, "nlatent")
+    assert_property_isconcrete(RandomRealSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == ntrait
@@ -165,7 +165,7 @@ def test_nlatent_fget(prob, ntrait):
 ### rbv ###
 ############
 def test_rbv_is_concrete():
-    assert_concrete_property(RandomRealSelectionProblem, "rbv")
+    assert_property_isconcrete(RandomRealSelectionProblem, "rbv")
 
 def test_rbv_fget(prob, ntaxa, ntrait):
     assert isinstance(prob.rbv, numpy.ndarray)
@@ -205,13 +205,13 @@ def test_rbv_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(RandomRealSelectionProblem, "__init__")
+    assert_method_isconcrete(RandomRealSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_concrete_method(prob, "latentfn")
+    assert_method_isconcrete(prob, "latentfn")
 
 def test_latentfn(prob, ndecn, rbv):
     x = numpy.random.random(ndecn)

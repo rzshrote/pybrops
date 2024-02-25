@@ -1,7 +1,7 @@
 import numpy
 import pytest
 from pybrops.breed.prot.sel.ExpectedMaximumBreedingValueSelection import ExpectedMaximumBreedingValueSelectionMixin
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_mixin_class, not_raises
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, assert_class_ismixin, not_raises
 from .common_fixtures_large import *
 
 ################################ Test fixtures #################################
@@ -22,17 +22,17 @@ def selmix(
 
 ################### Test class abstract/concrete properties ####################
 def test_ExpectedMaximumBreedingValueSelectionMixin_is_mixin():
-    assert_mixin_class(ExpectedMaximumBreedingValueSelectionMixin)
+    assert_class_ismixin(ExpectedMaximumBreedingValueSelectionMixin)
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(ExpectedMaximumBreedingValueSelectionMixin)
+    assert_class_documentation(ExpectedMaximumBreedingValueSelectionMixin)
 
 ############################ Test class properties #############################
 
 ### ntrait ###
 def test_ExpectedMaximumBreedingValueSelectionMixin_ntrait_is_concrete():
-    assert_concrete_property(ExpectedMaximumBreedingValueSelectionMixin, "ntrait")
+    assert_property_isconcrete(ExpectedMaximumBreedingValueSelectionMixin, "ntrait")
 
 def test_ntrait_fget(selmix, common_ntrait):
     assert selmix.ntrait == common_ntrait
@@ -71,7 +71,7 @@ def test_ntrait_fdel(selmix):
 
 ### nrep ###
 def test_ExpectedMaximumBreedingValueSelectionMixin_nrep_is_concrete():
-    assert_concrete_property(ExpectedMaximumBreedingValueSelectionMixin, "nrep")
+    assert_property_isconcrete(ExpectedMaximumBreedingValueSelectionMixin, "nrep")
 
 def test_nrep_fget(selmix, common_nrep):
     assert selmix.nrep == common_nrep
@@ -110,7 +110,7 @@ def test_nrep_fdel(selmix):
 
 ### mateprot ###
 def test_ExpectedMaximumBreedingValueSelectionMixin_mateprot_is_concrete():
-    assert_concrete_property(ExpectedMaximumBreedingValueSelectionMixin, "mateprot")
+    assert_property_isconcrete(ExpectedMaximumBreedingValueSelectionMixin, "mateprot")
 
 def test_mateprot_fget(selmix, common_mateprot):
     assert selmix.mateprot == common_mateprot
@@ -131,7 +131,7 @@ def test_mateprot_fdel(selmix):
 
 ### unique_parents ###
 def test_ExpectedMaximumBreedingValueSelectionMixin_unique_parents_is_concrete():
-    assert_concrete_property(ExpectedMaximumBreedingValueSelectionMixin, "unique_parents")
+    assert_property_isconcrete(ExpectedMaximumBreedingValueSelectionMixin, "unique_parents")
 
 def test_unique_parents_fget(selmix, common_unique_parents):
     assert selmix.unique_parents == common_unique_parents

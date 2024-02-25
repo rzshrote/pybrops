@@ -2,7 +2,7 @@ import os
 import pytest
 from pybrops.opt.algo.SubsetGeneticAlgorithm import SubsetGeneticAlgorithm
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
-from pybrops.test.assert_python import assert_concrete_class, assert_concrete_method, assert_concrete_property, assert_docstring, not_raises
+from pybrops.test.assert_python import assert_class_isconcrete, assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, not_raises
 from .common_fixtures import *
 
 @pytest.fixture
@@ -20,17 +20,17 @@ def algo(
 
 ################### Test class abstract/concrete properties ####################
 def test_SubsetGeneticAlgorithm_is_concrete():
-    assert_concrete_class(SubsetGeneticAlgorithm)
+    assert_class_isconcrete(SubsetGeneticAlgorithm)
 
 ############################## Test class docstring ############################
 def test_SubsetGeneticAlgorithm_docstring():
-    assert_docstring(SubsetGeneticAlgorithm)
+    assert_class_documentation(SubsetGeneticAlgorithm)
 
 ############################# Test class properties ############################
 
 ### ngen ###
 def test_SubsetGeneticAlgorithm_ngen_is_concrete():
-    assert_concrete_property(SubsetGeneticAlgorithm, "ngen")
+    assert_property_isconcrete(SubsetGeneticAlgorithm, "ngen")
 
 def test_ngen_fget(algo, common_ngen):
     assert algo.ngen == common_ngen
@@ -71,7 +71,7 @@ def test_ngen_fdel(algo):
 
 ### pop_size ###
 def test_SubsetGeneticAlgorithm_pop_size_is_concrete():
-    assert_concrete_property(SubsetGeneticAlgorithm, "pop_size")
+    assert_property_isconcrete(SubsetGeneticAlgorithm, "pop_size")
 
 def test_pop_size_fget(algo, common_pop_size):
     assert algo.pop_size == common_pop_size
@@ -112,7 +112,7 @@ def test_pop_size_fdel(algo):
 
 ### rng ###
 def test_SubsetGeneticAlgorithm_rng_is_concrete():
-    assert_concrete_property(SubsetGeneticAlgorithm, "rng")
+    assert_property_isconcrete(SubsetGeneticAlgorithm, "rng")
 
 def test_rng_fget(algo, common_rng):
     assert algo.rng == common_rng
@@ -139,7 +139,7 @@ def test_rng_fdel(algo):
 
 ### minimize ###
 def test_SubsetGeneticAlgorithm_minimize_is_concrete():
-    assert_concrete_method(SubsetGeneticAlgorithm, "minimize")
+    assert_method_isconcrete(SubsetGeneticAlgorithm, "minimize")
 
 def test_minimize_single(algo, common_sum_prob_subset_single):
     soln = algo.minimize(common_sum_prob_subset_single)

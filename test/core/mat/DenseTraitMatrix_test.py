@@ -2,13 +2,13 @@ import pytest
 import numpy
 import copy
 
-from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_function
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_classmethod_isconcrete, not_raises
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_function_isabstract
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.core.mat.DenseTraitMatrix import DenseTraitMatrix
 from pybrops.core.mat.DenseTraitMatrix import check_is_DenseTraitMatrix
@@ -40,46 +40,46 @@ def mat(mat_float64, trait_object):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(DenseTraitMatrix)
+    assert_class_documentation(DenseTraitMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(DenseTraitMatrix, "__init__")
+    assert_method_isconcrete(DenseTraitMatrix, "__init__")
 
 def test_copy_is_concrete():
-    assert_concrete_method(DenseTraitMatrix, "__copy__")
+    assert_method_isconcrete(DenseTraitMatrix, "__copy__")
 
 def test_deepcopy_is_concrete():
-    assert_concrete_method(DenseTraitMatrix, "__deepcopy__")
+    assert_method_isconcrete(DenseTraitMatrix, "__deepcopy__")
 
 def test_adjoin_trait_is_concrete():
-    assert_concrete_method(DenseTraitMatrix, "adjoin_trait")
+    assert_method_isconcrete(DenseTraitMatrix, "adjoin_trait")
 
 def test_delete_trait_is_concrete():
-    assert_concrete_method(DenseTraitMatrix, "delete_trait")
+    assert_method_isconcrete(DenseTraitMatrix, "delete_trait")
 
 def test_insert_trait_is_concrete():
-    assert_concrete_method(DenseTraitMatrix, "insert_trait")
+    assert_method_isconcrete(DenseTraitMatrix, "insert_trait")
 
 def test_select_trait_is_concrete():
-    assert_concrete_method(DenseTraitMatrix, "select_trait")
+    assert_method_isconcrete(DenseTraitMatrix, "select_trait")
 
 def test_concat_trait_is_concrete():
-    assert_concrete_method(DenseTraitMatrix, "concat_trait")
+    assert_classmethod_isconcrete(DenseTraitMatrix, "concat_trait")
 
 def test_append_trait_is_concrete():
-    assert_concrete_method(DenseTraitMatrix, "append_trait")
+    assert_method_isconcrete(DenseTraitMatrix, "append_trait")
 
 def test_remove_trait_is_concrete():
-    assert_concrete_method(DenseTraitMatrix, "remove_trait")
+    assert_method_isconcrete(DenseTraitMatrix, "remove_trait")
 
 def test_incorp_trait_is_concrete():
-    assert_concrete_method(DenseTraitMatrix, "incorp_trait")
+    assert_method_isconcrete(DenseTraitMatrix, "incorp_trait")
 
 def test_lexsort_trait_is_concrete():
-    assert_concrete_method(DenseTraitMatrix, "lexsort_trait")
+    assert_method_isconcrete(DenseTraitMatrix, "lexsort_trait")
 
 # TODO: # FIXME: not_raises fails for an edge case
 # def test_sort_trait_is_concrete():
@@ -286,7 +286,7 @@ def test_sort_trait_tuple(mat, mat_float64, trait_object, trait_lexsort_indices)
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_DenseTraitMatrix_is_concrete():
-    assert_concrete_function(check_is_DenseTraitMatrix)
+    assert_function_isconcrete(check_is_DenseTraitMatrix)
 
 def test_check_is_DenseTraitMatrix(mat):
     with not_raises(TypeError):

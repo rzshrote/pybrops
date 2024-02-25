@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.IntegerSelectionConfiguration import IntegerSele
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.soln.IntegerSelectionSolution import IntegerSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -119,23 +119,23 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(GenomicEstimatedBreedingValueIntegerSelection)
+    assert_class_documentation(GenomicEstimatedBreedingValueIntegerSelection)
 
 ############################# Test concrete methods ############################
 def test_init_is_concrete():
-    assert_concrete_method(GenomicEstimatedBreedingValueIntegerSelection, "__init__")
+    assert_method_isconcrete(GenomicEstimatedBreedingValueIntegerSelection, "__init__")
 
 def test_problem_is_concrete():
-    assert_concrete_method(GenomicEstimatedBreedingValueIntegerSelection, "problem")
+    assert_method_isconcrete(GenomicEstimatedBreedingValueIntegerSelection, "problem")
 
 def test_sosolve_is_concrete():
-    assert_concrete_method(GenomicEstimatedBreedingValueIntegerSelection, "sosolve")
+    assert_method_isconcrete(GenomicEstimatedBreedingValueIntegerSelection, "sosolve")
 
 def test_mosolve_is_concrete():
-    assert_concrete_method(GenomicEstimatedBreedingValueIntegerSelection, "mosolve")
+    assert_method_isconcrete(GenomicEstimatedBreedingValueIntegerSelection, "mosolve")
 
 def test_select_is_concrete():
-    assert_concrete_method(GenomicEstimatedBreedingValueIntegerSelection, "select")
+    assert_method_isconcrete(GenomicEstimatedBreedingValueIntegerSelection, "select")
 
 ###################### Test concrete method functionality ######################
 def test_problem(

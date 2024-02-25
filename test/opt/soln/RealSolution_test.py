@@ -1,9 +1,9 @@
 import numpy
 import pytest
 
-from pybrops.test.assert_python import assert_concrete_function, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_function_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_property_isconcrete
 
 from pybrops.opt.soln.RealSolution import RealSolution, check_is_RealSolution
 
@@ -110,7 +110,7 @@ def prob(
 ############################## Test class docstring ############################
 ################################################################################
 def test_RealSolution_docstring():
-    assert_docstring(RealSolution)
+    assert_class_documentation(RealSolution)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -120,7 +120,7 @@ def test_RealSolution_docstring():
 ### decn_space ###
 ##################
 def test_decn_space_is_concrete():
-    assert_concrete_property(RealSolution, "decn_space")
+    assert_property_isconcrete(RealSolution, "decn_space")
 
 def test_decn_space_fget(prob, ndecn):
     assert isinstance(prob.decn_space, numpy.ndarray) or (prob.decn_space is None)
@@ -156,7 +156,7 @@ def test_decn_space_fset_ValueError(prob, decn_space_lower, decn_space_upper):
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(RealSolution, "__init__")
+    assert_method_isconcrete(RealSolution, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -170,7 +170,7 @@ def test_init_is_concrete():
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_RealSolution_is_concrete():
-    assert_concrete_function(check_is_RealSolution)
+    assert_function_isconcrete(check_is_RealSolution)
 
 def test_check_is_RealSolution(prob):
     with not_raises(TypeError):

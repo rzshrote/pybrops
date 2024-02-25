@@ -5,9 +5,9 @@ import pytest
 import os.path
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import check_is_DenseAdditiveLinearGenomicModel
@@ -144,7 +144,7 @@ def mat_intercept(pgmat, algmod_beta):
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(DenseAdditiveLinearGenomicModel)
+    assert_class_documentation(DenseAdditiveLinearGenomicModel)
 
 ############################ Test Class Properties #############################
 
@@ -170,11 +170,11 @@ def test_algmod_params_fget(algmod, algmod_params):
 
 ### __init__
 def test___init___is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "__init__")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "__init__")
 
 ### __copy__
 def test___copy___is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "__copy__")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "__copy__")
 
 def test___copy__(algmod):
     tmp = algmod.__copy__()
@@ -196,7 +196,7 @@ def test___copy__(algmod):
 
 ### __deepcopy__
 def test___deepcopy___is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "__deepcopy__")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "__deepcopy__")
 
 def test___deepcopy__(algmod):
     tmp = algmod.__deepcopy__()
@@ -222,7 +222,7 @@ def test___deepcopy__(algmod):
 
 ### copy
 def test_copy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "copy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "copy")
 
 def test_copy(algmod):
     tmp = algmod.copy()
@@ -236,7 +236,7 @@ def test_copy(algmod):
 
 ### deepcopy
 def test_deepcopy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "deepcopy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "deepcopy")
 
 def test_deepcopy(algmod):
     tmp = algmod.deepcopy()
@@ -252,7 +252,7 @@ def test_deepcopy(algmod):
 
 ### fit_numpy
 def test_fit_numpy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "fit_numpy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "fit_numpy")
 
 def test_fit_numpy(algmod):
     with pytest.raises(AttributeError):
@@ -260,7 +260,7 @@ def test_fit_numpy(algmod):
 
 ### fit
 def test_fit_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "fit")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "fit")
 
 def test_fit(algmod):
     with pytest.raises(AttributeError):
@@ -268,7 +268,7 @@ def test_fit(algmod):
 
 ### predict_numpy
 def test_predict_numpy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "predict_numpy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "predict_numpy")
 
 def test_predict_numpy(algmod, mat_intercept, algmod_beta, pgmat_mat, algmod_u_a):
     geno = pgmat_mat.sum(0)
@@ -279,7 +279,7 @@ def test_predict_numpy(algmod, mat_intercept, algmod_beta, pgmat_mat, algmod_u_a
 
 ### predict
 def test_predict_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "predict")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "predict")
 
 # def test_predict(algmod, mat_intercept, algmod_beta, pgmat_mat, algmod_u_a, pgmat):
 #     geno = pgmat_mat.sum(0)
@@ -291,7 +291,7 @@ def test_predict_is_concrete():
 
 ### score_numpy
 def test_score_numpy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "score_numpy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "score_numpy")
 
 def test_score_numpy(algmod, mat_intercept, pgmat_mat):
     geno = pgmat_mat.sum(0)
@@ -303,7 +303,7 @@ def test_score_numpy(algmod, mat_intercept, pgmat_mat):
 
 ### score
 def test_score_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "score")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "score")
 
 def test_score(algmod, mat_intercept, pgmat):
     y_true = algmod.predict(mat_intercept, pgmat)
@@ -313,7 +313,7 @@ def test_score(algmod, mat_intercept, pgmat):
 
 ### gebv_numpy
 def test_gebv_numpy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "gebv_numpy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "gebv_numpy")
 
 def test_gebv_numpy(algmod, pgmat_mat):
     geno = pgmat_mat.sum(0)
@@ -332,7 +332,7 @@ def test_gebv_numpy_ValueError(algmod):
 
 ### gebv
 def test_gebv_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "gebv")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "gebv")
 
 def test_gebv(algmod, pgmat, pgmat_mat):
     out = algmod.gebv(pgmat_mat.sum(0))
@@ -352,7 +352,7 @@ def test_gebv_ValueError(algmod):
 
 ### gegv_numpy
 def test_gegv_numpy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "gegv_numpy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "gegv_numpy")
 
 def test_gegv_numpy(algmod, pgmat_mat):
     geno = pgmat_mat.sum(0)
@@ -371,7 +371,7 @@ def test_gegv_numpy_ValueError(algmod):
 
 ### gegv
 def test_gegv_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "gegv")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "gegv")
 
 def test_gegv(algmod, pgmat, pgmat_mat):
     out = algmod.gegv(pgmat_mat.sum(0))
@@ -393,7 +393,7 @@ def test_gegv_ValueError(algmod):
 
 ### var_G_numpy
 def test_var_G_numpy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_G_numpy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "var_G_numpy")
 
 def test_var_G_numpy(algmod, pgmat_mat):
     geno = pgmat_mat.sum(0)
@@ -412,11 +412,11 @@ def test_var_G_numpy_ValueError(algmod):
 
 ### var_G
 def test_var_G_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_G")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "var_G")
 
 ### var_A_numpy
 def test_var_A_numpy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_A_numpy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "var_A_numpy")
 
 def test_var_A_numpy(algmod, pgmat_mat):
     geno = pgmat_mat.sum(0)
@@ -435,33 +435,33 @@ def test_var_A_numpy_ValueError(algmod):
 
 ### var_A
 def test_var_A_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_A")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "var_A")
 
 ### var_a_numpy
 def test_var_a_numpy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_a_numpy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "var_a_numpy")
 
 ### var_a
 def test_var_a_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "var_a")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "var_a")
 
 ### bulmer_numpy
 def test_bulmer_numpy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "bulmer_numpy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "bulmer_numpy")
 
 ### bulmer
 def test_bulmer_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "bulmer")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "bulmer")
 
 ######## Selection limit tests #########
 
 ### usl_numpy
 def test_usl_numpy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "usl_numpy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "usl_numpy")
 
 ### usl
 def test_usl_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "usl")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "usl")
 
 def test_usl(algmod, pgmat, algmod_u_a, pgmat_mat):
     # (p,t)' -> (t,p)
@@ -481,11 +481,11 @@ def test_usl(algmod, pgmat, algmod_u_a, pgmat_mat):
 
 ### lsl_numpy
 def test_lsl_numpy_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "lsl_numpy")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "lsl_numpy")
 
 ### lsl
 def test_lsl_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "lsl")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "lsl")
 
 def test_lsl(algmod, pgmat, algmod_u_a, pgmat_mat):
     # (p,t)' -> (t,p)
@@ -508,7 +508,7 @@ def test_lsl(algmod, pgmat, algmod_u_a, pgmat_mat):
 
 ### to_pandas_dict
 def test_to_pandas_dict_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "to_pandas_dict")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "to_pandas_dict")
 
 def test_to_pandas_dict(algmod):
     out = algmod.to_pandas_dict()
@@ -522,7 +522,7 @@ def test_to_pandas_dict(algmod):
 
 ### to_csv_dict
 def test_to_csv_dict_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "to_csv_dict")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "to_csv_dict")
 
 def test_to_csv_dict(algmod):
     filenames = {
@@ -537,7 +537,7 @@ def test_to_csv_dict(algmod):
 
 ### to_hdf5
 def test_to_hdf5_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "to_hdf5")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "to_hdf5")
 
 def test_to_hdf5(algmod, shared_datadir):
     algmod.to_hdf5(shared_datadir / "algmod.hdf5")
@@ -569,7 +569,7 @@ def test_to_hdf5(algmod, shared_datadir):
 
 ### from_pandas_dict
 def test_from_pandas_dict_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "from_pandas_dict")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "from_pandas_dict")
 
 def test_from_pandas_dict(algmod):
     df_dict = algmod.to_pandas_dict()
@@ -581,7 +581,7 @@ def test_from_pandas_dict(algmod):
 
 ### from_csv_dict
 def test_from_csv_dict_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "from_csv_dict")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "from_csv_dict")
 
 def test_from_csv(algmod):
     filenames = {
@@ -597,7 +597,7 @@ def test_from_csv(algmod):
 
 ### from_hdf5
 def test_from_hdf5_is_concrete():
-    assert_concrete_method(DenseAdditiveLinearGenomicModel, "from_hdf5")
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "from_hdf5")
 
 def test_from_hdf5(algmod, shared_datadir):
     algmod.to_hdf5(shared_datadir / "algmod.hdf5")
@@ -631,7 +631,7 @@ def test_from_hdf5(algmod, shared_datadir):
 
 ### check_is_DenseAdditiveLinearGenomicModel
 def test_check_is_DenseAdditiveLinearGenomicModel_is_concrete():
-    assert_concrete_function(check_is_DenseAdditiveLinearGenomicModel)
+    assert_function_isconcrete(check_is_DenseAdditiveLinearGenomicModel)
 
 def test_check_is_DenseAdditiveLinearGenomicModel(algmod):
     with not_raises(TypeError):

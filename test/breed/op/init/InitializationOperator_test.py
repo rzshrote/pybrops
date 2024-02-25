@@ -1,10 +1,10 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.breed.op.init.InitializationOperator import InitializationOperator
 from pybrops.breed.op.init.InitializationOperator import check_is_InitializationOperator
@@ -21,13 +21,13 @@ def operator():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(InitializationOperator)
+    assert_class_documentation(InitializationOperator)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(InitializationOperator, "__init__")
+    assert_method_isconcrete(InitializationOperator, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -37,13 +37,13 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_initialize_is_abstract():
-    assert_abstract_method(InitializationOperator, "initialize")
+    assert_method_isabstract(InitializationOperator, "initialize")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_InitializationOperator_is_concrete():
-    assert_concrete_function(check_is_InitializationOperator)
+    assert_function_isconcrete(check_is_InitializationOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################

@@ -1,10 +1,10 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.AdditiveLinearGenomicModel import check_is_AdditiveLinearGenomicModel
@@ -21,22 +21,22 @@ def gmod():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(AdditiveLinearGenomicModel)
+    assert_class_documentation(AdditiveLinearGenomicModel)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(AdditiveLinearGenomicModel, "__init__")
+    assert_method_isconcrete(AdditiveLinearGenomicModel, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
 def test_u_misc_is_abstract():
-    assert_abstract_property(AdditiveLinearGenomicModel, "u_misc")
+    assert_property_isabstract(AdditiveLinearGenomicModel, "u_misc")
 
 def test_u_a_is_abstract():
-    assert_abstract_property(AdditiveLinearGenomicModel, "u_a")
+    assert_property_isabstract(AdditiveLinearGenomicModel, "u_a")
 
 ################################################################################
 ############################# Test abstract methods ############################
@@ -46,7 +46,7 @@ def test_u_a_is_abstract():
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_AdditiveLinearGenomicModel_is_concrete():
-    assert_concrete_function(check_is_AdditiveLinearGenomicModel)
+    assert_function_isconcrete(check_is_AdditiveLinearGenomicModel)
 
 ################################################################################
 ######################### Test class utility functions #########################

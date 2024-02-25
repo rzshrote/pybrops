@@ -3,7 +3,7 @@ from matplotlib import pyplot
 import pytest
 from pybrops.opt.algo.NSGA2RealGeneticAlgorithm import NSGA2RealGeneticAlgorithm
 from pybrops.opt.soln.RealSolution import RealSolution
-from pybrops.test.assert_python import assert_concrete_class, assert_concrete_method, assert_concrete_property, assert_docstring, not_raises
+from pybrops.test.assert_python import assert_class_isconcrete, assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, not_raises
 from .common_fixtures import *
 
 @pytest.fixture
@@ -21,17 +21,17 @@ def algo(
 
 ################### Test class abstract/concrete properties ####################
 def test_NSGA2RealGeneticAlgorithm_is_concrete():
-    assert_concrete_class(NSGA2RealGeneticAlgorithm)
+    assert_class_isconcrete(NSGA2RealGeneticAlgorithm)
 
 ############################## Test class docstring ############################
 def test_NSGA2RealGeneticAlgorithm_docstring():
-    assert_docstring(NSGA2RealGeneticAlgorithm)
+    assert_class_documentation(NSGA2RealGeneticAlgorithm)
 
 ############################# Test class properties ############################
 
 ### ngen ###
 def test_NSGA2RealGeneticAlgorithm_ngen_is_concrete():
-    assert_concrete_property(NSGA2RealGeneticAlgorithm, "ngen")
+    assert_property_isconcrete(NSGA2RealGeneticAlgorithm, "ngen")
 
 def test_ngen_fget(algo, common_ngen):
     assert algo.ngen == common_ngen
@@ -72,7 +72,7 @@ def test_ngen_fdel(algo):
 
 ### pop_size ###
 def test_NSGA2RealGeneticAlgorithm_pop_size_is_concrete():
-    assert_concrete_property(NSGA2RealGeneticAlgorithm, "pop_size")
+    assert_property_isconcrete(NSGA2RealGeneticAlgorithm, "pop_size")
 
 def test_pop_size_fget(algo, common_pop_size):
     assert algo.pop_size == common_pop_size
@@ -113,7 +113,7 @@ def test_pop_size_fdel(algo):
 
 ### rng ###
 def test_NSGA2RealGeneticAlgorithm_rng_is_concrete():
-    assert_concrete_property(NSGA2RealGeneticAlgorithm, "rng")
+    assert_property_isconcrete(NSGA2RealGeneticAlgorithm, "rng")
 
 def test_rng_fget(algo, common_rng):
     assert algo.rng == common_rng
@@ -140,7 +140,7 @@ def test_rng_fdel(algo):
 
 ### minimize ###
 def test_NSGA2RealGeneticAlgorithm_minimize_is_concrete():
-    assert_concrete_method(NSGA2RealGeneticAlgorithm, "minimize")
+    assert_method_isconcrete(NSGA2RealGeneticAlgorithm, "minimize")
 
 def test_minimize_single(algo, common_sum_prob_real_single):
     with pytest.raises(TypeError):

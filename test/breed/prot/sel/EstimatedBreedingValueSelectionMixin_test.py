@@ -1,7 +1,7 @@
 import numpy
 import pytest
 from pybrops.breed.prot.sel.EstimatedBreedingValueSelection import EstimatedBreedingValueSelectionMixin
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_mixin_class, not_raises
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, assert_class_ismixin, not_raises
 
 ################################ Test fixtures #################################
 
@@ -17,17 +17,17 @@ def selmix(ntrait):
 
 ################### Test class abstract/concrete properties ####################
 def test_EstimatedBreedingValueSelectionMixin_is_mixin():
-    assert_mixin_class(EstimatedBreedingValueSelectionMixin)
+    assert_class_ismixin(EstimatedBreedingValueSelectionMixin)
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(EstimatedBreedingValueSelectionMixin)
+    assert_class_documentation(EstimatedBreedingValueSelectionMixin)
 
 ############################ Test class properties #############################
 
 ### ntrait ###
 def test_EstimatedBreedingValueSelectionMixin_ntrait_is_concrete():
-    assert_concrete_property(EstimatedBreedingValueSelectionMixin, "ntrait")
+    assert_property_isconcrete(EstimatedBreedingValueSelectionMixin, "ntrait")
 
 def test_ntrait_fget(selmix, ntrait):
     assert selmix.ntrait == ntrait

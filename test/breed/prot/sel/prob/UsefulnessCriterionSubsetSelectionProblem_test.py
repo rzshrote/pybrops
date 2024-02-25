@@ -8,9 +8,9 @@ from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
-from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_property_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -228,7 +228,7 @@ def gpmod(nvrnt, ntrait, trait_mean, trait_cov):
 ############################## Test class docstring ############################
 ################################################################################
 def test_SubsetConventionalSelectionProblem_docstring():
-    assert_docstring(UsefulnessCriterionSubsetMateSelectionProblem)
+    assert_class_documentation(UsefulnessCriterionSubsetMateSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -238,7 +238,7 @@ def test_SubsetConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(UsefulnessCriterionSubsetMateSelectionProblem, "nlatent")
+    assert_property_isconcrete(UsefulnessCriterionSubsetMateSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == ntrait
@@ -247,7 +247,7 @@ def test_nlatent_fget(prob, ntrait):
 ### ucmat ###
 ############
 def test_ucmat_is_concrete():
-    assert_concrete_property(UsefulnessCriterionSubsetMateSelectionProblem, "ucmat")
+    assert_property_isconcrete(UsefulnessCriterionSubsetMateSelectionProblem, "ucmat")
 
 def test_ucmat_fget(prob, ntrait, ndecn):
     assert isinstance(prob.ucmat, numpy.ndarray)
@@ -287,13 +287,13 @@ def test_ucmat_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(UsefulnessCriterionSubsetMateSelectionProblem, "__init__")
+    assert_method_isconcrete(UsefulnessCriterionSubsetMateSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_concrete_method(prob, "latentfn")
+    assert_method_isconcrete(prob, "latentfn")
 
 def test_latentfn(prob, ndecn, ucmat):
     x = numpy.random.choice(ndecn, ndecn // 2)

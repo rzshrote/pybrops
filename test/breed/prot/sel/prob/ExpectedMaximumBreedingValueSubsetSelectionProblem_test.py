@@ -6,9 +6,9 @@ from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
-from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_property_isconcrete
 from pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem import ExpectedMaximumBreedingValueSubsetSelectionProblem
 
 ################################################################################
@@ -210,7 +210,7 @@ def gpmod(nvrnt, ntrait, trait_mean, trait_cov):
 ############################## Test class docstring ############################
 ################################################################################
 def test_SubsetConventionalSelectionProblem_docstring():
-    assert_docstring(ExpectedMaximumBreedingValueSubsetSelectionProblem)
+    assert_class_documentation(ExpectedMaximumBreedingValueSubsetSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -220,7 +220,7 @@ def test_SubsetConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(ExpectedMaximumBreedingValueSubsetSelectionProblem, "nlatent")
+    assert_property_isconcrete(ExpectedMaximumBreedingValueSubsetSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == ntrait
@@ -229,7 +229,7 @@ def test_nlatent_fget(prob, ntrait):
 ### embv ###
 ############
 def test_embv_is_concrete():
-    assert_concrete_property(ExpectedMaximumBreedingValueSubsetSelectionProblem, "embv")
+    assert_property_isconcrete(ExpectedMaximumBreedingValueSubsetSelectionProblem, "embv")
 
 def test_embv_fget(prob, ndecn, ntrait):
     assert isinstance(prob.embv, numpy.ndarray)
@@ -269,13 +269,13 @@ def test_embv_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(ExpectedMaximumBreedingValueSubsetSelectionProblem, "__init__")
+    assert_method_isconcrete(ExpectedMaximumBreedingValueSubsetSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_concrete_method(prob, "latentfn")
+    assert_method_isconcrete(prob, "latentfn")
 
 def test_latentfn(prob, ndecn, embv):
     x = numpy.random.choice(ndecn, ndecn // 2)

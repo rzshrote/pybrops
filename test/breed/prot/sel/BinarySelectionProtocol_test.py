@@ -1,7 +1,7 @@
 import pytest
 from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtocol
 from pybrops.breed.prot.sel.BinarySelectionProtocol import check_is_BinarySelectionProtocol
-from pybrops.test.assert_python import assert_abstract_method, assert_concrete_method, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_method_isabstract, assert_method_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 from .common_fixtures_large import *
 
 class DummyBinarySelectionProtocol(BinarySelectionProtocol):
@@ -61,24 +61,24 @@ def selsoln(
 
 ################### Test class abstract/concrete properties ####################
 def test_BinarySelectionProtocol_is_semiabstract():
-    assert_semiabstract_class(BinarySelectionProtocol)
+    assert_class_issemiabstract(BinarySelectionProtocol)
 
 ############################## Test class docstring ############################
 def test_BinarySelectionProtocol_docstring():
-    assert_docstring(BinarySelectionProtocol)
+    assert_class_documentation(BinarySelectionProtocol)
 
 ############################## Test class methods ##############################
 def test_BinarySelectionProtocol_problem_is_abstract():
-    assert_abstract_method(BinarySelectionProtocol, "problem")
+    assert_method_isabstract(BinarySelectionProtocol, "problem")
 
 def test_BinarySelectionProtocol_sosolve_is_concrete():
-    assert_concrete_method(BinarySelectionProtocol, "sosolve")
+    assert_method_isconcrete(BinarySelectionProtocol, "sosolve")
 
 def test_BinarySelectionProtocol_mosolve_is_concrete():
-    assert_concrete_method(BinarySelectionProtocol, "mosolve")
+    assert_method_isconcrete(BinarySelectionProtocol, "mosolve")
 
 def test_BinarySelectionProtocol_select_is_concrete():
-    assert_concrete_method(BinarySelectionProtocol, "select")
+    assert_method_isconcrete(BinarySelectionProtocol, "select")
 
 ############################# Test class utilities #############################
 def test_check_is_BinarySelectionProtocol(selsoln):

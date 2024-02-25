@@ -2,7 +2,7 @@ import os
 import pytest
 from pybrops.opt.algo.SteepestDescentSubsetHillClimber import SteepestDescentSubsetHillClimber
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
-from pybrops.test.assert_python import assert_concrete_class, assert_concrete_method, assert_concrete_property, assert_docstring, not_raises
+from pybrops.test.assert_python import assert_class_isconcrete, assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, not_raises
 from .common_fixtures import *
 
 @pytest.fixture
@@ -16,17 +16,17 @@ def algo(
 
 ################### Test class abstract/concrete properties ####################
 def test_SteepestDescentSubsetHillClimber_is_concrete():
-    assert_concrete_class(SteepestDescentSubsetHillClimber)
+    assert_class_isconcrete(SteepestDescentSubsetHillClimber)
 
 ############################## Test class docstring ############################
 def test_SteepestDescentSubsetHillClimber_docstring():
-    assert_docstring(SteepestDescentSubsetHillClimber)
+    assert_class_documentation(SteepestDescentSubsetHillClimber)
 
 ############################# Test class properties ############################
 
 ### rng ###
 def test_SteepestDescentSubsetHillClimber_rng_is_concrete():
-    assert_concrete_property(SteepestDescentSubsetHillClimber, "rng")
+    assert_property_isconcrete(SteepestDescentSubsetHillClimber, "rng")
 
 def test_rng_fget(algo, common_rng):
     assert algo.rng == common_rng
@@ -53,7 +53,7 @@ def test_rng_fdel(algo):
 
 ### minimize ###
 def test_SteepestDescentSubsetHillClimber_minimize_is_concrete():
-    assert_concrete_method(SteepestDescentSubsetHillClimber, "minimize")
+    assert_method_isconcrete(SteepestDescentSubsetHillClimber, "minimize")
 
 def test_minimize_single(algo, common_sum_prob_subset_single):
     soln = algo.minimize(common_sum_prob_subset_single)

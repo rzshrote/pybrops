@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.IntegerSelectionConfiguration import IntegerSele
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.soln.IntegerSelectionSolution import IntegerSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_concrete_class, assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_isconcrete, assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -127,17 +127,17 @@ def selprot_multi(
 
 ################### Test class abstract/concrete properties ####################
 def test_OptimalContributionIntegerSelection_is_concrete():
-    assert_concrete_class(OptimalContributionIntegerSelection)
+    assert_class_isconcrete(OptimalContributionIntegerSelection)
 
 ############################## Test class docstring ############################
 def test_OptimalContributionIntegerSelection_docstring():
-    assert_docstring(OptimalContributionIntegerSelection)
+    assert_class_documentation(OptimalContributionIntegerSelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(OptimalContributionIntegerSelection, "__init__")
+    assert_method_isconcrete(OptimalContributionIntegerSelection, "__init__")
 
 def test_init(selprot_single, selprot_multi):
     assert selprot_single is not None
@@ -145,7 +145,7 @@ def test_init(selprot_single, selprot_multi):
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(OptimalContributionIntegerSelection, "problem")
+    assert_method_isconcrete(OptimalContributionIntegerSelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -216,7 +216,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(OptimalContributionIntegerSelection, "sosolve")
+    assert_method_isconcrete(OptimalContributionIntegerSelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -257,7 +257,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(OptimalContributionIntegerSelection, "mosolve")
+    assert_method_isconcrete(OptimalContributionIntegerSelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -315,7 +315,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(OptimalContributionIntegerSelection, "select")
+    assert_method_isconcrete(OptimalContributionIntegerSelection, "select")
 
 def test_select(
         selprot_single,

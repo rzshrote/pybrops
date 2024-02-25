@@ -3,7 +3,7 @@ from matplotlib import pyplot
 import pytest
 from pybrops.opt.algo.NSGA2BinaryGeneticAlgorithm import NSGA2BinaryGeneticAlgorithm
 from pybrops.opt.soln.BinarySolution import BinarySolution
-from pybrops.test.assert_python import assert_concrete_class, assert_concrete_method, assert_concrete_property, assert_docstring, not_raises
+from pybrops.test.assert_python import assert_class_isconcrete, assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, not_raises
 from .common_fixtures import *
 
 @pytest.fixture
@@ -21,17 +21,17 @@ def algo(
 
 ################### Test class abstract/concrete properties ####################
 def test_NSGA2BinaryGeneticAlgorithm_is_concrete():
-    assert_concrete_class(NSGA2BinaryGeneticAlgorithm)
+    assert_class_isconcrete(NSGA2BinaryGeneticAlgorithm)
 
 ############################## Test class docstring ############################
 def test_NSGA2BinaryGeneticAlgorithm_docstring():
-    assert_docstring(NSGA2BinaryGeneticAlgorithm)
+    assert_class_documentation(NSGA2BinaryGeneticAlgorithm)
 
 ############################# Test class properties ############################
 
 ### ngen ###
 def test_NSGA2BinaryGeneticAlgorithm_ngen_is_concrete():
-    assert_concrete_property(NSGA2BinaryGeneticAlgorithm, "ngen")
+    assert_property_isconcrete(NSGA2BinaryGeneticAlgorithm, "ngen")
 
 def test_ngen_fget(algo, common_ngen):
     assert algo.ngen == common_ngen
@@ -72,7 +72,7 @@ def test_ngen_fdel(algo):
 
 ### pop_size ###
 def test_NSGA2BinaryGeneticAlgorithm_pop_size_is_concrete():
-    assert_concrete_property(NSGA2BinaryGeneticAlgorithm, "pop_size")
+    assert_property_isconcrete(NSGA2BinaryGeneticAlgorithm, "pop_size")
 
 def test_pop_size_fget(algo, common_pop_size):
     assert algo.pop_size == common_pop_size
@@ -113,7 +113,7 @@ def test_pop_size_fdel(algo):
 
 ### rng ###
 def test_NSGA2BinaryGeneticAlgorithm_rng_is_concrete():
-    assert_concrete_property(NSGA2BinaryGeneticAlgorithm, "rng")
+    assert_property_isconcrete(NSGA2BinaryGeneticAlgorithm, "rng")
 
 def test_rng_fget(algo, common_rng):
     assert algo.rng == common_rng
@@ -140,7 +140,7 @@ def test_rng_fdel(algo):
 
 ### minimize ###
 def test_NSGA2BinaryGeneticAlgorithm_minimize_is_concrete():
-    assert_concrete_method(NSGA2BinaryGeneticAlgorithm, "minimize")
+    assert_method_isconcrete(NSGA2BinaryGeneticAlgorithm, "minimize")
 
 def test_minimize_single(algo, common_sum_prob_binary_single):
     with pytest.raises(TypeError):

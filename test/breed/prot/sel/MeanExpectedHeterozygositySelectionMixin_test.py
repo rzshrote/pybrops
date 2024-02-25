@@ -1,7 +1,7 @@
 import numpy
 import pytest
 from pybrops.breed.prot.sel.MeanExpectedHeterozygositySelection import MeanExpectedHeterozygositySelectionMixin
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_mixin_class, not_raises
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, assert_class_ismixin, not_raises
 from .common_fixtures_large import *
 
 ################################ Test fixtures #################################
@@ -13,11 +13,11 @@ def selmix():
 
 ################### Test class abstract/concrete properties ####################
 def test_MeanExpectedHeterozygositySelectionMixin_is_mixin():
-    assert_mixin_class(MeanExpectedHeterozygositySelectionMixin)
+    assert_class_ismixin(MeanExpectedHeterozygositySelectionMixin)
 
 ############################## Test class docstring ############################
 def test_MeanExpectedHeterozygositySelectionMixin_docstring():
-    assert_docstring(MeanExpectedHeterozygositySelectionMixin)
+    assert_class_documentation(MeanExpectedHeterozygositySelectionMixin)
 
 ############################ Test class properties #############################
 

@@ -1,9 +1,9 @@
 import numpy
 import pytest
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 from .common_fixtures import *
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.breed.prot.mate.ThreeWayDHCross import ThreeWayDHCross
@@ -20,13 +20,13 @@ def mprot(common_rng):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(ThreeWayDHCross)
+    assert_class_documentation(ThreeWayDHCross)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(ThreeWayDHCross, "__init__")
+    assert_method_isconcrete(ThreeWayDHCross, "__init__")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -166,7 +166,7 @@ def test_mate_nmating_nprogeny_nself(mprot, common_dpgmat, common_xconfig_threew
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_ThreeWayDHCross_is_concrete():
-    assert_concrete_function(check_is_ThreeWayDHCross)
+    assert_function_isconcrete(check_is_ThreeWayDHCross)
 
 def test_check_is_ThreeWayDHCross(mprot):
     with not_raises(TypeError):

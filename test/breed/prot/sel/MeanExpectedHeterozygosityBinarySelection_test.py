@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration import BinarySelect
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.soln.BinarySelectionSolution import BinarySelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_concrete_class, assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_isconcrete, assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -115,17 +115,17 @@ def selprot_multi(
 
 ################### Test class abstract/concrete properties ####################
 def test_MeanExpectedHeterozygosityBinarySelection_is_concrete():
-    assert_concrete_class(MeanExpectedHeterozygosityBinarySelection)
+    assert_class_isconcrete(MeanExpectedHeterozygosityBinarySelection)
 
 ############################## Test class docstring ############################
 def test_MeanExpectedHeterozygosityBinarySelection_docstring():
-    assert_docstring(MeanExpectedHeterozygosityBinarySelection)
+    assert_class_documentation(MeanExpectedHeterozygosityBinarySelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(MeanExpectedHeterozygosityBinarySelection, "__init__")
+    assert_method_isconcrete(MeanExpectedHeterozygosityBinarySelection, "__init__")
 
 def test_init(selprot_single, selprot_multi):
     assert selprot_single is not None
@@ -133,7 +133,7 @@ def test_init(selprot_single, selprot_multi):
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(MeanExpectedHeterozygosityBinarySelection, "problem")
+    assert_method_isconcrete(MeanExpectedHeterozygosityBinarySelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -204,7 +204,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(MeanExpectedHeterozygosityBinarySelection, "sosolve")
+    assert_method_isconcrete(MeanExpectedHeterozygosityBinarySelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -245,7 +245,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(MeanExpectedHeterozygosityBinarySelection, "mosolve")
+    assert_method_isconcrete(MeanExpectedHeterozygosityBinarySelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -303,7 +303,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(MeanExpectedHeterozygosityBinarySelection, "select")
+    assert_method_isconcrete(MeanExpectedHeterozygosityBinarySelection, "select")
 
 def test_select(
         selprot_single,

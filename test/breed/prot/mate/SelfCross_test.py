@@ -1,9 +1,9 @@
 import numpy
 import pytest
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 from .common_fixtures import *
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.breed.prot.mate.SelfCross import SelfCross
@@ -20,13 +20,13 @@ def mprot(common_rng):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(SelfCross)
+    assert_class_documentation(SelfCross)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(SelfCross, "__init__")
+    assert_method_isconcrete(SelfCross, "__init__")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -167,7 +167,7 @@ def test_mate_nmating_nprogeny_nself(mprot, common_dpgmat, common_xconfig_self):
 ################################################################################
 
 def test_check_is_SelfCross_is_concrete():
-    assert_concrete_function(check_is_SelfCross)
+    assert_function_isconcrete(check_is_SelfCross)
 
 def test_check_is_SelfCross(mprot):
     with not_raises(TypeError):

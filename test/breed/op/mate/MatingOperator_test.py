@@ -1,10 +1,10 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.breed.op.mate.MatingOperator import MatingOperator
 from pybrops.breed.op.mate.MatingOperator import check_is_MatingOperator
@@ -21,13 +21,13 @@ def operator():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(MatingOperator)
+    assert_class_documentation(MatingOperator)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(MatingOperator, "__init__")
+    assert_method_isconcrete(MatingOperator, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -37,13 +37,13 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_mate_is_abstract():
-    assert_abstract_method(MatingOperator, "mate")
+    assert_method_isabstract(MatingOperator, "mate")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_MatingOperator_is_concrete():
-    assert_concrete_function(check_is_MatingOperator)
+    assert_function_isconcrete(check_is_MatingOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################

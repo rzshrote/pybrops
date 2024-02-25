@@ -3,9 +3,9 @@ import pytest
 from pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory import DenseMolecularCoancestryMatrixFactory
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 
-from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_property_isconcrete
 
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 from pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem import OptimalContributionBinarySelectionProblem
@@ -178,7 +178,7 @@ def gmat(ntaxa, nvrnt):
 ############################## Test class docstring ############################
 ################################################################################
 def test_BinaryConventionalSelectionProblem_docstring():
-    assert_docstring(OptimalContributionBinarySelectionProblem)
+    assert_class_documentation(OptimalContributionBinarySelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -188,7 +188,7 @@ def test_BinaryConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(OptimalContributionBinarySelectionProblem, "nlatent")
+    assert_property_isconcrete(OptimalContributionBinarySelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == ntrait + 1
@@ -197,7 +197,7 @@ def test_nlatent_fget(prob, ntrait):
 ### ebv ###
 ############
 def test_ebv_is_concrete():
-    assert_concrete_property(OptimalContributionBinarySelectionProblem, "ebv")
+    assert_property_isconcrete(OptimalContributionBinarySelectionProblem, "ebv")
 
 def test_ebv_fget(prob, ntaxa, ntrait):
     assert isinstance(prob.ebv, numpy.ndarray)
@@ -233,7 +233,7 @@ def test_ebv_fdel(prob):
 ### C ###
 #########
 def test_C_is_concrete():
-    assert_concrete_property(OptimalContributionBinarySelectionProblem, "C")
+    assert_property_isconcrete(OptimalContributionBinarySelectionProblem, "C")
 
 def test_C_fget(prob, ntaxa):
     assert isinstance(prob.C, numpy.ndarray)
@@ -277,13 +277,13 @@ def test_C_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(OptimalContributionBinarySelectionProblem, "__init__")
+    assert_method_isconcrete(OptimalContributionBinarySelectionProblem, "__init__")
 
 ################
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_concrete_method(prob, "latentfn")
+    assert_method_isconcrete(prob, "latentfn")
 
 def test_latentfn(prob, ndecn, ebv, C):
     x = numpy.random.binomial(1, 0.5, ndecn)

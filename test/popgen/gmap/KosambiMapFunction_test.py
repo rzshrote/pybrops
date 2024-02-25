@@ -2,9 +2,9 @@ import pytest
 import numpy
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.popgen.gmap.ExtendedGeneticMap import ExtendedGeneticMap
 from pybrops.popgen.gmap.KosambiMapFunction import KosambiMapFunction
@@ -25,31 +25,31 @@ def mapfn():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(KosambiMapFunction)
+    assert_class_documentation(KosambiMapFunction)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(KosambiMapFunction, "__init__")
+    assert_method_isconcrete(KosambiMapFunction, "__init__")
 
 def test_mapfn_is_concrete():
-    assert_concrete_method(KosambiMapFunction, "mapfn")
+    assert_method_isconcrete(KosambiMapFunction, "mapfn")
 
 def test_mapfn_is_concrete():
-    assert_concrete_method(KosambiMapFunction, "invmapfn")
+    assert_method_isconcrete(KosambiMapFunction, "invmapfn")
 
 def test_mapfn_is_concrete():
-    assert_concrete_method(KosambiMapFunction, "rprob1g")
+    assert_method_isconcrete(KosambiMapFunction, "rprob1g")
 
 def test_mapfn_is_concrete():
-    assert_concrete_method(KosambiMapFunction, "rprob2g")
+    assert_method_isconcrete(KosambiMapFunction, "rprob2g")
 
 def test_mapfn_is_concrete():
-    assert_concrete_method(KosambiMapFunction, "rprob1p")
+    assert_method_isconcrete(KosambiMapFunction, "rprob1p")
 
 def test_mapfn_is_concrete():
-    assert_concrete_method(KosambiMapFunction, "rprob2p")
+    assert_method_isconcrete(KosambiMapFunction, "rprob2p")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -117,7 +117,7 @@ def test_invmapfn_NaN(mapfn):
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_KosambiMapFunction_is_concrete():
-    assert_concrete_function(check_is_KosambiMapFunction)
+    assert_function_isconcrete(check_is_KosambiMapFunction)
 
 ################################################################################
 ######################### Test class utility functions #########################

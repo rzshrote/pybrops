@@ -2,7 +2,7 @@ import numpy
 import pytest
 from pybrops.breed.prot.sel.OptimalContributionSelection import OptimalContributionSelectionMixin
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_mixin_class, not_raises
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, assert_class_ismixin, not_raises
 from .common_fixtures_large import *
 
 ################################ Test fixtures #################################
@@ -21,17 +21,17 @@ def selmix(
 
 ################### Test class abstract/concrete properties ####################
 def test_OptimalContributionSelectionMixin_is_mixin():
-    assert_mixin_class(OptimalContributionSelectionMixin)
+    assert_class_ismixin(OptimalContributionSelectionMixin)
 
 ############################## Test class docstring ############################
 def test_OptimalContributionSelectionMixin_docstring():
-    assert_docstring(OptimalContributionSelectionMixin)
+    assert_class_documentation(OptimalContributionSelectionMixin)
 
 ############################ Test class properties #############################
 
 ### ntrait ###
 def test_OptimalContributionSelectionMixin_ntrait_is_concrete():
-    assert_concrete_property(OptimalContributionSelectionMixin, "ntrait")
+    assert_property_isconcrete(OptimalContributionSelectionMixin, "ntrait")
 
 def test_ntrait_fget(selmix, common_ntrait):
     assert selmix.ntrait == common_ntrait
@@ -70,7 +70,7 @@ def test_ntrait_fdel(selmix):
 
 ### cmatfcty ###
 def test_OptimalContributionSelectionMixin_cmatfcty_is_concrete():
-    assert_concrete_property(OptimalContributionSelectionMixin, "cmatfcty")
+    assert_property_isconcrete(OptimalContributionSelectionMixin, "cmatfcty")
 
 def test_cmatfcty_fget(selmix, common_cmatfcty):
     assert isinstance(selmix.cmatfcty, CoancestryMatrixFactory)
@@ -100,7 +100,7 @@ def test_cmatfcty_fdel(selmix):
 
 ### unscale ###
 def test_OptimalContributionSelectionMixin_unscale_is_concrete():
-    assert_concrete_property(OptimalContributionSelectionMixin, "unscale")
+    assert_property_isconcrete(OptimalContributionSelectionMixin, "unscale")
 
 def test_unscale_fget(selmix, common_unscale):
     assert isinstance(selmix.unscale, bool)

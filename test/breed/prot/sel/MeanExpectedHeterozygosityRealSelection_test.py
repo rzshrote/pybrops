@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.RealSelectionConfiguration import RealSelectionC
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.soln.RealSelectionSolution import RealSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_concrete_class, assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_isconcrete, assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -115,17 +115,17 @@ def selprot_multi(
 
 ################### Test class abstract/concrete properties ####################
 def test_MeanExpectedHeterozygosityRealSelection_is_concrete():
-    assert_concrete_class(MeanExpectedHeterozygosityRealSelection)
+    assert_class_isconcrete(MeanExpectedHeterozygosityRealSelection)
 
 ############################## Test class docstring ############################
 def test_MeanExpectedHeterozygosityRealSelection_docstring():
-    assert_docstring(MeanExpectedHeterozygosityRealSelection)
+    assert_class_documentation(MeanExpectedHeterozygosityRealSelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(MeanExpectedHeterozygosityRealSelection, "__init__")
+    assert_method_isconcrete(MeanExpectedHeterozygosityRealSelection, "__init__")
 
 def test_init(selprot_single, selprot_multi):
     assert selprot_single is not None
@@ -133,7 +133,7 @@ def test_init(selprot_single, selprot_multi):
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(MeanExpectedHeterozygosityRealSelection, "problem")
+    assert_method_isconcrete(MeanExpectedHeterozygosityRealSelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -204,7 +204,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(MeanExpectedHeterozygosityRealSelection, "sosolve")
+    assert_method_isconcrete(MeanExpectedHeterozygosityRealSelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -245,7 +245,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(MeanExpectedHeterozygosityRealSelection, "mosolve")
+    assert_method_isconcrete(MeanExpectedHeterozygosityRealSelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -303,7 +303,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(MeanExpectedHeterozygosityRealSelection, "select")
+    assert_method_isconcrete(MeanExpectedHeterozygosityRealSelection, "select")
 
 def test_select(
         selprot_single,

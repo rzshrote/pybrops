@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelect
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -131,23 +131,23 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(ExpectedMaximumBreedingValueSubsetSelection)
+    assert_class_documentation(ExpectedMaximumBreedingValueSubsetSelection)
 
 ############################# Test concrete methods ############################
 def test_init_is_concrete():
-    assert_concrete_method(ExpectedMaximumBreedingValueSubsetSelection, "__init__")
+    assert_method_isconcrete(ExpectedMaximumBreedingValueSubsetSelection, "__init__")
 
 def test_problem_is_concrete():
-    assert_concrete_method(ExpectedMaximumBreedingValueSubsetSelection, "problem")
+    assert_method_isconcrete(ExpectedMaximumBreedingValueSubsetSelection, "problem")
 
 def test_sosolve_is_concrete():
-    assert_concrete_method(ExpectedMaximumBreedingValueSubsetSelection, "sosolve")
+    assert_method_isconcrete(ExpectedMaximumBreedingValueSubsetSelection, "sosolve")
 
 def test_mosolve_is_concrete():
-    assert_concrete_method(ExpectedMaximumBreedingValueSubsetSelection, "mosolve")
+    assert_method_isconcrete(ExpectedMaximumBreedingValueSubsetSelection, "mosolve")
 
 def test_select_is_concrete():
-    assert_concrete_method(ExpectedMaximumBreedingValueSubsetSelection, "select")
+    assert_method_isconcrete(ExpectedMaximumBreedingValueSubsetSelection, "select")
 
 ###################### Test concrete method functionality ######################
 def test_problem(

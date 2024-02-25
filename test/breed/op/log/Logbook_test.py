@@ -1,11 +1,11 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.breed.op.log.Logbook import Logbook
 from pybrops.breed.op.log.Logbook import check_is_Logbook
@@ -22,52 +22,52 @@ def logbook():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(Logbook)
+    assert_class_documentation(Logbook)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(Logbook, "__init__")
+    assert_method_isconcrete(Logbook, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
 def test_data_is_abstract():
-    assert_abstract_property(Logbook, "data")
+    assert_property_isabstract(Logbook, "data")
 
 def test_rep_is_abstract():
-    assert_abstract_property(Logbook, "rep")
+    assert_property_isabstract(Logbook, "rep")
 
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
 def test_log_initialize_is_abstract():
-    assert_abstract_method(Logbook, "log_initialize")
+    assert_method_isabstract(Logbook, "log_initialize")
 
 def test_log_pselect_is_abstract():
-    assert_abstract_method(Logbook, "log_pselect")
+    assert_method_isabstract(Logbook, "log_pselect")
 
 def test_log_mate_is_abstract():
-    assert_abstract_method(Logbook, "log_mate")
+    assert_method_isabstract(Logbook, "log_mate")
 
 def test_log_evaluate_is_abstract():
-    assert_abstract_method(Logbook, "log_evaluate")
+    assert_method_isabstract(Logbook, "log_evaluate")
 
 def test_log_sselect_is_abstract():
-    assert_abstract_method(Logbook, "log_sselect")
+    assert_method_isabstract(Logbook, "log_sselect")
 
 def test_reset_is_abstract():
-    assert_abstract_method(Logbook, "reset")
+    assert_method_isabstract(Logbook, "reset")
 
 def test_write_is_abstract():
-    assert_abstract_method(Logbook, "write")
+    assert_method_isabstract(Logbook, "write")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_Logbook_is_concrete():
-    assert_concrete_function(check_is_Logbook)
+    assert_function_isconcrete(check_is_Logbook)
 
 ################################################################################
 ######################### Test class utility functions #########################

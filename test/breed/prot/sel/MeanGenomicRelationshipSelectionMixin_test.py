@@ -2,7 +2,7 @@ import numpy
 import pytest
 from pybrops.breed.prot.sel.MeanGenomicRelationshipSelection import MeanGenomicRelationshipSelectionMixin
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_mixin_class, not_raises
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, assert_class_ismixin, not_raises
 from .common_fixtures_large import *
 
 ################################ Test fixtures #################################
@@ -17,17 +17,17 @@ def selmix(
 
 ################### Test class abstract/concrete properties ####################
 def test_MeanGenomicRelationshipSelectionMixin_is_mixin():
-    assert_mixin_class(MeanGenomicRelationshipSelectionMixin)
+    assert_class_ismixin(MeanGenomicRelationshipSelectionMixin)
 
 ############################## Test class docstring ############################
 def test_MeanGenomicRelationshipSelectionMixin_docstring():
-    assert_docstring(MeanGenomicRelationshipSelectionMixin)
+    assert_class_documentation(MeanGenomicRelationshipSelectionMixin)
 
 ############################ Test class properties #############################
 
 ### cmatfcty ###
 def test_MeanGenomicRelationshipSelectionMixin_cmatfcty_is_concrete():
-    assert_concrete_property(MeanGenomicRelationshipSelectionMixin, "cmatfcty")
+    assert_property_isconcrete(MeanGenomicRelationshipSelectionMixin, "cmatfcty")
 
 def test_cmatfcty_fget(selmix, common_cmatfcty):
     assert isinstance(selmix.cmatfcty, CoancestryMatrixFactory)

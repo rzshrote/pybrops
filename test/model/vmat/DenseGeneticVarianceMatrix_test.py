@@ -2,9 +2,9 @@ import pytest
 import numpy
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import DenseGeneticVarianceMatrix
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import check_is_DenseGeneticVarianceMatrix
@@ -48,13 +48,13 @@ def mat(mat_float64, mat_taxa, mat_taxa_grp):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(DenseGeneticVarianceMatrix)
+    assert_class_documentation(DenseGeneticVarianceMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(DenseGeneticVarianceMatrix, "__init__")
+    assert_method_isconcrete(DenseGeneticVarianceMatrix, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -68,7 +68,7 @@ def test_init_is_concrete():
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_DenseGeneticVarianceMatrix_is_concrete():
-    assert_concrete_function(check_is_DenseGeneticVarianceMatrix)
+    assert_function_isconcrete(check_is_DenseGeneticVarianceMatrix)
 
 def test_check_is_DenseGeneticVarianceMatrix(mat):
     with not_raises(TypeError):

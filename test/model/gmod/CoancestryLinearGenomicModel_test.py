@@ -1,10 +1,10 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.model.gmod.CoancestryLinearGenomicModel import CoancestryLinearGenomicModel
 from pybrops.model.gmod.CoancestryLinearGenomicModel import check_is_CoancestryLinearGenomicModel
@@ -21,22 +21,22 @@ def gmod():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(CoancestryLinearGenomicModel)
+    assert_class_documentation(CoancestryLinearGenomicModel)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(CoancestryLinearGenomicModel, "__init__")
+    assert_method_isconcrete(CoancestryLinearGenomicModel, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
 def test_u_misc_is_abstract():
-    assert_abstract_property(CoancestryLinearGenomicModel, "u_misc")
+    assert_property_isabstract(CoancestryLinearGenomicModel, "u_misc")
 
 def test_u_c_is_abstract():
-    assert_abstract_property(CoancestryLinearGenomicModel, "u_c")
+    assert_property_isabstract(CoancestryLinearGenomicModel, "u_c")
 
 ################################################################################
 ############################# Test abstract methods ############################
@@ -46,7 +46,7 @@ def test_u_c_is_abstract():
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_CoancestryLinearGenomicModel_is_concrete():
-    assert_concrete_function(check_is_CoancestryLinearGenomicModel)
+    assert_function_isconcrete(check_is_CoancestryLinearGenomicModel)
 
 ################################################################################
 ######################### Test class utility functions #########################

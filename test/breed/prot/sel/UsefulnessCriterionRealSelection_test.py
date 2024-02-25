@@ -7,8 +7,8 @@ from pybrops.breed.prot.sel.prob.RealMateSelectionProblem import RealMateSelecti
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.soln.RealSelectionSolution import RealSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_concrete_class, assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_isconcrete, assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 
 ################################ Test fixtures #################################
@@ -141,21 +141,21 @@ def selprot_multi(
 
 ################### Test class abstract/concrete properties ####################
 def test_UsefulnessCriterionRealSelection_is_concrete():
-    assert_concrete_class(UsefulnessCriterionRealSelection)
+    assert_class_isconcrete(UsefulnessCriterionRealSelection)
 
 ############################## Test class docstring ############################
 def test_UsefulnessCriterionRealSelection_docstring():
-    assert_docstring(UsefulnessCriterionRealSelection)
+    assert_class_documentation(UsefulnessCriterionRealSelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(UsefulnessCriterionRealSelection, "__init__")
+    assert_method_isconcrete(UsefulnessCriterionRealSelection, "__init__")
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(UsefulnessCriterionRealSelection, "problem")
+    assert_method_isconcrete(UsefulnessCriterionRealSelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -226,7 +226,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(UsefulnessCriterionRealSelection, "sosolve")
+    assert_method_isconcrete(UsefulnessCriterionRealSelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -267,7 +267,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(UsefulnessCriterionRealSelection, "mosolve")
+    assert_method_isconcrete(UsefulnessCriterionRealSelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -325,7 +325,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(UsefulnessCriterionRealSelection, "select")
+    assert_method_isconcrete(UsefulnessCriterionRealSelection, "select")
 
 def test_select(
         selprot_single,

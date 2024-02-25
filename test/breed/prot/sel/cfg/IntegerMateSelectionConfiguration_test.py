@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from pybrops.test.assert_python import assert_concrete_method, assert_docstring, assert_concrete_class
+from pybrops.test.assert_python import assert_method_isconcrete, assert_class_documentation, assert_class_isconcrete
 from pybrops.breed.prot.sel.cfg.IntegerMateSelectionConfiguration import IntegerMateSelectionConfiguration
 
 from .common_fixtures import *
@@ -30,17 +30,17 @@ def selcfg(
 
 ################### Test class abstract/concrete properties ####################
 def test_IntegerMateSelectionConfiguration_is_concrete():
-    assert_concrete_class(IntegerMateSelectionConfiguration)
+    assert_class_isconcrete(IntegerMateSelectionConfiguration)
 
 ############################## Test class docstring ############################
 def test_IntegerMateSelectionConfiguration_docstring():
-    assert_docstring(IntegerMateSelectionConfiguration)
+    assert_class_documentation(IntegerMateSelectionConfiguration)
 
 ############################# Test class properties ############################
 
 ############################## Test class methods ##############################
 def test_IntegerMateSelectionConfiguration_sample_xconfig_is_concrete():
-    assert_concrete_method(IntegerMateSelectionConfiguration, "sample_xconfig")
+    assert_method_isconcrete(IntegerMateSelectionConfiguration, "sample_xconfig")
 
 def test_sample_xconfig(selcfg):
     original_xconfig = selcfg.xconfig

@@ -3,11 +3,11 @@ from typing import Callable, Iterable, Sequence
 import numpy
 import pytest
 
-from pybrops.test.assert_python import assert_concrete_function, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_function_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_property_isconcrete
 
 from pybrops.opt.prob.Problem import Problem, check_is_Problem
 from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
@@ -123,7 +123,7 @@ def prob(
 ############################## Test class docstring ############################
 ################################################################################
 def test_Problem_docstring():
-    assert_docstring(Problem)
+    assert_class_documentation(Problem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -137,7 +137,7 @@ def test_Problem_docstring():
 ### n_var ###
 #############
 def test_n_var_is_concrete():
-    assert_concrete_property(Problem, "n_var")
+    assert_property_isconcrete(Problem, "n_var")
 
 def test_n_var_fget(prob):
     assert isinstance(prob.n_var, Integral)
@@ -180,7 +180,7 @@ def test_n_var_fdel(prob):
 ### n_obj ###
 #############
 def test_n_obj_is_concrete():
-    assert_concrete_property(Problem, "n_obj")
+    assert_property_isconcrete(Problem, "n_obj")
 
 def test_n_obj_fget(prob):
     assert isinstance(prob.n_obj, Integral)
@@ -223,7 +223,7 @@ def test_n_obj_fdel(prob):
 ### n_ieq_constr ###
 ####################
 def test_n_ieq_constr_is_concrete():
-    assert_concrete_property(Problem, "n_ieq_constr")
+    assert_property_isconcrete(Problem, "n_ieq_constr")
 
 def test_n_ieq_constr_fget(prob):
     assert isinstance(prob.n_ieq_constr, Integral)
@@ -266,7 +266,7 @@ def test_n_ieq_constr_fdel(prob):
 ### n_eq_constr ###
 ###################
 def test_n_eq_constr_is_concrete():
-    assert_concrete_property(Problem, "n_eq_constr")
+    assert_property_isconcrete(Problem, "n_eq_constr")
 
 def test_n_eq_constr_fget(prob):
     assert isinstance(prob.n_eq_constr, Integral)
@@ -309,7 +309,7 @@ def test_n_eq_constr_fdel(prob):
 ### xl ###
 ##########
 def test_xl_is_concrete():
-    assert_concrete_property(Problem, "xl")
+    assert_property_isconcrete(Problem, "xl")
 
 def test_xl_fget(prob):
     assert isinstance(prob.xl, numpy.ndarray) or (prob.xl is None)
@@ -341,7 +341,7 @@ def test_xl_fdel(prob):
 ### xu ###
 ##########
 def test_xu_is_concrete():
-    assert_concrete_property(Problem, "xu")
+    assert_property_isconcrete(Problem, "xu")
 
 def test_xu_fget(prob):
     assert isinstance(prob.xu, numpy.ndarray) or (prob.xu is None)
@@ -373,7 +373,7 @@ def test_xu_fdel(prob):
 ### vtype ###
 #############
 def test_vtype_is_concrete():
-    assert_concrete_property(Problem, "vtype")
+    assert_property_isconcrete(Problem, "vtype")
 
 def test_vtype_fget(prob):
     assert isinstance(prob.vtype, type) or (prob.vtype is None)
@@ -382,7 +382,7 @@ def test_vtype_fget(prob):
 ### vars ###
 ############
 def test_vars_is_concrete():
-    assert_concrete_property(Problem, "vars")
+    assert_property_isconcrete(Problem, "vars")
 
 def test_vars_fget(prob):
     # FIXME
@@ -410,7 +410,7 @@ def test_vars_fdel(prob):
 ### elementwise ###
 ###################
 def test_elementwise_is_concrete():
-    assert_concrete_property(Problem, "elementwise")
+    assert_property_isconcrete(Problem, "elementwise")
 
 def test_elementwise_fget(prob):
     assert isinstance(prob.elementwise, bool)
@@ -433,7 +433,7 @@ def test_elementwise_fdel(prob):
 ### elementwise_func ###
 ########################
 def test_elementwise_func_is_concrete():
-    assert_concrete_property(Problem, "elementwise_func")
+    assert_property_isconcrete(Problem, "elementwise_func")
 
 def test_elementwise_func_fget(prob):
     assert isinstance(prob.elementwise_func, type)
@@ -456,7 +456,7 @@ def test_elementwise_func_fdel(prob):
 ### elementwise_runner ###
 ##########################
 def test_elementwise_runner_is_concrete():
-    assert_concrete_property(Problem, "elementwise_runner")
+    assert_property_isconcrete(Problem, "elementwise_runner")
 
 def test_elementwise_runner_fget(prob):
     assert isinstance(prob.elementwise_runner, Callable)
@@ -477,7 +477,7 @@ def test_elementwise_runner_fset_TypeError(prob):
 ### replace_nan_values_by ###
 #############################
 def test_replace_nan_values_by_is_concrete():
-    assert_concrete_property(Problem, "replace_nan_values_by")
+    assert_property_isconcrete(Problem, "replace_nan_values_by")
 
 def test_replace_nan_values_by_fget(prob):
     assert isinstance(prob.replace_nan_values_by, Number) or (prob.replace_nan_values_by is None)
@@ -502,7 +502,7 @@ def test_replace_nan_values_by_fdel(prob):
 ### exclude_from_serialization ###
 ##################################
 def test_exclude_from_serialization_is_concrete():
-    assert_concrete_property(Problem, "exclude_from_serialization")
+    assert_property_isconcrete(Problem, "exclude_from_serialization")
 
 def test_exclude_from_serialization_fget(prob):
     assert isinstance(prob.exclude_from_serialization, Iterable) or (prob.exclude_from_serialization is None)
@@ -527,7 +527,7 @@ def test_exclude_from_serialization_fdel(prob):
 ### callback ###
 ################
 def test_callback_is_concrete():
-    assert_concrete_property(Problem, "callback")
+    assert_property_isconcrete(Problem, "callback")
 
 def test_callback_fget(prob):
     assert isinstance(prob.callback, Callable) or (prob.callback is None)
@@ -554,7 +554,7 @@ def test_callback_fdel(prob):
 ### strict ###
 ##############
 def test_strict_is_concrete():
-    assert_concrete_property(Problem, "strict")
+    assert_property_isconcrete(Problem, "strict")
 
 def test_strict_fget(prob):
     assert isinstance(prob.strict, bool)
@@ -579,7 +579,7 @@ def test_strict_fdel(prob):
 ### data ###
 ############
 def test_data_is_concrete():
-    assert_concrete_property(Problem, "data")
+    assert_property_isconcrete(Problem, "data")
 
 def test_data_fget(prob):
     assert isinstance(prob.data, dict)
@@ -606,7 +606,7 @@ def test_data_fdel(prob):
 ### ndecn ###
 #############
 def test_ndecn_is_concrete():
-    assert_concrete_property(Problem, "ndecn")
+    assert_property_isconcrete(Problem, "ndecn")
 
 def test_ndecn_fget(prob):
     assert isinstance(prob.ndecn, Integral)
@@ -649,7 +649,7 @@ def test_ndecn_fdel(prob):
 ### decn_space ###
 ##################
 def test_decn_space_is_concrete():
-    assert_concrete_property(Problem, "decn_space")
+    assert_property_isconcrete(Problem, "decn_space")
 
 def test_decn_space_fget(prob, ndecn):
     assert isinstance(prob.decn_space, numpy.ndarray) or (prob.decn_space is None)
@@ -698,7 +698,7 @@ def test_decn_space_fdel(prob):
 ### decn_space_lower ###
 ########################
 def test_decn_space_lower_is_concrete():
-    assert_concrete_property(Problem, "decn_space_lower")
+    assert_property_isconcrete(Problem, "decn_space_lower")
 
 def test_decn_space_lower_fget(prob):
     assert isinstance(prob.decn_space_lower, numpy.ndarray) or (prob.decn_space_lower is None)
@@ -730,7 +730,7 @@ def test_decn_space_lower_fdel(prob):
 ### decn_space_upper ###
 ########################
 def test_decn_space_upper_is_concrete():
-    assert_concrete_property(Problem, "decn_space_upper")
+    assert_property_isconcrete(Problem, "decn_space_upper")
 
 def test_decn_space_upper_fget(prob):
     assert isinstance(prob.decn_space_upper, numpy.ndarray) or (prob.decn_space_upper is None)
@@ -762,7 +762,7 @@ def test_decn_space_upper_fdel(prob):
 ### nobj ###
 ############
 def test_nobj_is_concrete():
-    assert_concrete_property(Problem, "nobj")
+    assert_property_isconcrete(Problem, "nobj")
 
 def test_nobj_fget(prob):
     assert isinstance(prob.nobj, Integral)
@@ -805,7 +805,7 @@ def test_nobj_fdel(prob):
 ### obj_wt ###
 ##############
 def test_obj_wt_is_concrete():
-    assert_concrete_property(Problem, "obj_wt")
+    assert_property_isconcrete(Problem, "obj_wt")
 
 def test_obj_wt_fget(prob):
     assert isinstance(prob.obj_wt, numpy.ndarray)
@@ -836,7 +836,7 @@ def test_obj_wt_fdel(prob):
 ### nineqcv ###
 ###############
 def test_nineqcv_is_concrete():
-    assert_concrete_property(Problem, "nineqcv")
+    assert_property_isconcrete(Problem, "nineqcv")
 
 def test_nineqcv_fget(prob):
     assert isinstance(prob.nineqcv, Integral)
@@ -879,7 +879,7 @@ def test_nineqcv_fdel(prob):
 ### ineqcv_wt ###
 #################
 def test_ineqcv_wt_is_concrete():
-    assert_concrete_property(Problem, "ineqcv_wt")
+    assert_property_isconcrete(Problem, "ineqcv_wt")
 
 def test_ineqcv_wt_fget(prob):
     assert isinstance(prob.ineqcv_wt, numpy.ndarray)
@@ -910,7 +910,7 @@ def test_ineqcv_wt_fdel(prob):
 ### neqcv ###
 #############
 def test_neqcv_is_concrete():
-    assert_concrete_property(Problem, "neqcv")
+    assert_property_isconcrete(Problem, "neqcv")
 
 def test_neqcv_fget(prob):
     assert isinstance(prob.neqcv, Integral)
@@ -953,7 +953,7 @@ def test_neqcv_fdel(prob):
 ### eqcv_wt ###
 ###############
 def test_eqcv_wt_is_concrete():
-    assert_concrete_property(Problem, "eqcv_wt")
+    assert_property_isconcrete(Problem, "eqcv_wt")
 
 def test_eqcv_wt_fget(prob):
     assert isinstance(prob.eqcv_wt, numpy.ndarray)
@@ -984,7 +984,7 @@ def test_eqcv_wt_fdel(prob):
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(Problem, "__init__")
+    assert_method_isconcrete(Problem, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -994,16 +994,16 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_evalfn_is_abstract(prob):
-    assert_abstract_method(prob, "evalfn")
+    assert_method_isabstract(prob, "evalfn")
 
 def test__evaluate_is_abstract(prob):
-    assert_abstract_method(prob, "_evaluate")
+    assert_method_isabstract(prob, "_evaluate")
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_DenseProblem_is_concrete():
-    assert_concrete_function(check_is_Problem)
+    assert_function_isconcrete(check_is_Problem)
 
 def test_check_is_DenseProblem(prob):
     with not_raises(TypeError):

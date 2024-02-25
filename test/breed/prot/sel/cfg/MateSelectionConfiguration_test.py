@@ -1,5 +1,5 @@
 import pytest
-from pybrops.test.assert_python import assert_concrete_class, assert_concrete_property, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_class_isconcrete, assert_property_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 from pybrops.breed.prot.sel.cfg.MateSelectionConfiguration import MateSelectionConfiguration
 from pybrops.breed.prot.sel.cfg.MateSelectionConfiguration import check_is_MateSelectionConfiguration
 
@@ -38,17 +38,17 @@ def selcfg(
 
 ################### Test class abstract/concrete properties ####################
 def test_MateSelectionConfiguration_is_concrete():
-    assert_concrete_class(MateSelectionConfiguration)
+    assert_class_isconcrete(MateSelectionConfiguration)
 
 ############################## Test class docstring ############################
 def test_MateSelectionConfiguration_docstring():
-    assert_docstring(MateSelectionConfiguration)
+    assert_class_documentation(MateSelectionConfiguration)
 
 ############################# Test class properties ############################
 
 ### xconfig_xmap ###
 def test_MateSelectionConfiguration_xconfig_xmap_is_concrete():
-    assert_concrete_property(MateSelectionConfiguration, "xconfig_xmap")
+    assert_property_isconcrete(MateSelectionConfiguration, "xconfig_xmap")
 
 def test_xconfig_xmap_fget(selcfg, common_xconfig_xmap):
     assert numpy.all(selcfg.xconfig_xmap == common_xconfig_xmap)

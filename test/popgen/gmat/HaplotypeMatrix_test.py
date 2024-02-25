@@ -1,11 +1,11 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.popgen.gmat.HaplotypeMatrix import HaplotypeMatrix
 from pybrops.popgen.gmat.HaplotypeMatrix import check_is_HaplotypeMatrix
@@ -22,58 +22,58 @@ def mat():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(HaplotypeMatrix)
+    assert_class_documentation(HaplotypeMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(HaplotypeMatrix, "__init__")
+    assert_method_isconcrete(HaplotypeMatrix, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
 ################################################################################
 def test_ploidy_is_abstract():
-    assert_abstract_property(HaplotypeMatrix, "ploidy")
+    assert_property_isabstract(HaplotypeMatrix, "ploidy")
 
 def test_nphase_is_abstract():
-    assert_abstract_property(HaplotypeMatrix, "nphase")
+    assert_property_isabstract(HaplotypeMatrix, "nphase")
 
 def test_mat_format_is_abstract():
-    assert_abstract_property(HaplotypeMatrix, "mat_format")
+    assert_property_isabstract(HaplotypeMatrix, "mat_format")
 
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
 def test_thcount_is_abstract():
-    assert_abstract_method(HaplotypeMatrix, "thcount")
+    assert_method_isabstract(HaplotypeMatrix, "thcount")
 
 def test_thfreq_is_abstract():
-    assert_abstract_method(HaplotypeMatrix, "thfreq")
+    assert_method_isabstract(HaplotypeMatrix, "thfreq")
 
 def test_hcount_is_abstract():
-    assert_abstract_method(HaplotypeMatrix, "hcount")
+    assert_method_isabstract(HaplotypeMatrix, "hcount")
 
 def test_hfreq_is_abstract():
-    assert_abstract_method(HaplotypeMatrix, "hfreq")
+    assert_method_isabstract(HaplotypeMatrix, "hfreq")
 
 def test_mhf_is_abstract():
-    assert_abstract_method(HaplotypeMatrix, "mhf")
+    assert_method_isabstract(HaplotypeMatrix, "mhf")
 
 def test_meh_is_abstract():
-    assert_abstract_method(HaplotypeMatrix, "meh")
+    assert_method_isabstract(HaplotypeMatrix, "meh")
 
 def test_gtcount_is_abstract():
-    assert_abstract_method(HaplotypeMatrix, "gtcount")
+    assert_method_isabstract(HaplotypeMatrix, "gtcount")
 
 def test_gtfreq_is_abstract():
-    assert_abstract_method(HaplotypeMatrix, "gtfreq")
+    assert_method_isabstract(HaplotypeMatrix, "gtfreq")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_HaplotypeMatrix_is_concrete():
-    assert_concrete_function(check_is_HaplotypeMatrix)
+    assert_function_isconcrete(check_is_HaplotypeMatrix)
 
 ################################################################################
 ######################### Test class utility functions #########################

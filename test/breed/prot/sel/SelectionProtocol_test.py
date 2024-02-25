@@ -11,7 +11,7 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 from .common_fixtures_large import *
 
 class DummySelectionProtocol(SelectionProtocol):
@@ -60,17 +60,17 @@ def selprot(
 
 ################### Test class abstract/concrete properties ####################
 def test_SelectionProtocol_is_semiabstract():
-    assert_semiabstract_class(SelectionProtocol)
+    assert_class_issemiabstract(SelectionProtocol)
 
 ############################## Test class docstring ############################
 def test_SelectionProtocol_docstring():
-    assert_docstring(SelectionProtocol)
+    assert_class_documentation(SelectionProtocol)
 
 ############################ Test class properties #############################
 
 ### nselindiv ###
 def test_SelectionProtocol_nselindiv_is_concrete():
-    assert_concrete_property(SelectionProtocol, "nselindiv")
+    assert_property_isconcrete(SelectionProtocol, "nselindiv")
 
 def test_nselindiv_fget(selprot, common_ncross, common_nparent):
     assert isinstance(selprot.nselindiv, Integral)
@@ -86,7 +86,7 @@ def test_nselindiv_fdel_AttributeError(selprot):
 
 ### ncross ###
 def test_SelectionProtocol_ncross_is_concrete():
-    assert_concrete_property(SelectionProtocol, "ncross")
+    assert_property_isconcrete(SelectionProtocol, "ncross")
 
 def test_ncross_fget(selprot, common_ncross):
     assert isinstance(selprot.ncross, Integral)
@@ -124,7 +124,7 @@ def test_ncross_fdel_AttributeError(selprot):
 
 ### nparent ###
 def test_SelectionProtocol_nparent_is_concrete():
-    assert_concrete_property(SelectionProtocol, "nparent")
+    assert_property_isconcrete(SelectionProtocol, "nparent")
 
 def test_nparent_fget(selprot, common_nparent):
     assert isinstance(selprot.nparent, Integral)
@@ -162,7 +162,7 @@ def test_nparent_fdel_AttributeError(selprot):
 
 ### nmating ###
 def test_SelectionProtocol_nmating_is_concrete():
-    assert_concrete_property(SelectionProtocol, "nmating")
+    assert_property_isconcrete(SelectionProtocol, "nmating")
 
 def test_nmating_fget(selprot, common_nmating):
     assert isinstance(selprot.nmating, numpy.ndarray)
@@ -220,7 +220,7 @@ def test_nmating_fdel_AttributeError(selprot):
 
 ### nprogeny ###
 def test_SelectionProtocol_nprogeny_is_concrete():
-    assert_concrete_property(SelectionProtocol, "nprogeny")
+    assert_property_isconcrete(SelectionProtocol, "nprogeny")
 
 def test_nprogeny_fget(selprot, common_nprogeny):
     assert isinstance(selprot.nprogeny, numpy.ndarray)
@@ -278,7 +278,7 @@ def test_nprogeny_fdel_AttributeError(selprot):
 
 ### nobj ###
 def test_SelectionProtocol_nobj_is_concrete():
-    assert_concrete_property(SelectionProtocol, "nobj")
+    assert_property_isconcrete(SelectionProtocol, "nobj")
 
 def test_nobj_fget(selprot):
     assert isinstance(selprot.nobj, Integral)
@@ -313,7 +313,7 @@ def test_nobj_fset_ValueError(selprot):
 
 ### obj_wt ###
 def test_SelectionProtocol_obj_wt_is_concrete():
-    assert_concrete_property(SelectionProtocol, "obj_wt")
+    assert_property_isconcrete(SelectionProtocol, "obj_wt")
 
 def test_obj_wt_fget(selprot):
     assert isinstance(selprot.obj_wt, numpy.ndarray)
@@ -338,7 +338,7 @@ def test_obj_wt_fset_ValueError(selprot, common_obj_wt_single):
 
 ### obj_trans ###
 def test_SelectionProtocol_obj_trans_is_concrete():
-    assert_concrete_property(SelectionProtocol, "obj_trans")
+    assert_property_isconcrete(SelectionProtocol, "obj_trans")
 
 def test_obj_trans_fget(selprot):
     assert isinstance(selprot.obj_trans, Callable)
@@ -361,7 +361,7 @@ def test_obj_trans_fdel(selprot):
 
 ### obj_trans_kwargs ###
 def test_SelectionProtocol_obj_trans_kwargs_is_concrete():
-    assert_concrete_property(SelectionProtocol, "obj_trans_kwargs")
+    assert_property_isconcrete(SelectionProtocol, "obj_trans_kwargs")
 
 def test_obj_trans_kwargs_fget(selprot):
     assert isinstance(selprot.obj_trans_kwargs, dict)
@@ -386,7 +386,7 @@ def test_obj_trans_kwargs_fdel(selprot):
 
 ### nineqcv ###
 def test_SelectionProtocol_nineqcv_is_concrete():
-    assert_concrete_property(SelectionProtocol, "nineqcv")
+    assert_property_isconcrete(SelectionProtocol, "nineqcv")
 
 def test_nineqcv_fget(selprot):
     assert isinstance(selprot.nineqcv, Integral)
@@ -423,7 +423,7 @@ def test_nineqcv_fset_ValueError(selprot):
 
 ### ineqcv_wt ###
 def test_SelectionProtocol_ineqcv_wt_is_concrete():
-    assert_concrete_property(SelectionProtocol, "ineqcv_wt")
+    assert_property_isconcrete(SelectionProtocol, "ineqcv_wt")
 
 def test_ineqcv_wt_fget(selprot):
     assert isinstance(selprot.ineqcv_wt, numpy.ndarray)
@@ -446,7 +446,7 @@ def test_ineqcv_wt_fset_ValueError(selprot, common_ineqcv_wt_single):
 
 ### ineqcv_trans ###
 def test_SelectionProtocol_ineqcv_trans_is_concrete():
-    assert_concrete_property(SelectionProtocol, "ineqcv_trans")
+    assert_property_isconcrete(SelectionProtocol, "ineqcv_trans")
 
 def test_ineqcv_trans_fget(selprot):
     assert isinstance(selprot.ineqcv_trans, Callable)
@@ -469,7 +469,7 @@ def test_ineqcv_trans_fdel(selprot):
 
 ### ineqcv_trans_kwargs ###
 def test_SelectionProtocol_ineqcv_trans_kwargs_is_concrete():
-    assert_concrete_property(SelectionProtocol, "ineqcv_trans_kwargs")
+    assert_property_isconcrete(SelectionProtocol, "ineqcv_trans_kwargs")
 
 def test_ineqcv_trans_kwargs_fget(selprot):
     assert isinstance(selprot.ineqcv_trans_kwargs, dict)
@@ -494,7 +494,7 @@ def test_ineqcv_trans_kwargs_fdel(selprot):
 
 ### neqcv ###
 def test_SelectionProtocol_neqcv_is_concrete():
-    assert_concrete_property(SelectionProtocol, "neqcv")
+    assert_property_isconcrete(SelectionProtocol, "neqcv")
 
 def test_neqcv_fget(selprot):
     assert isinstance(selprot.neqcv, Integral)
@@ -529,7 +529,7 @@ def test_neqcv_fset_ValueError(selprot):
 
 ### eqcv_wt ###
 def test_SelectionProtocol_eqcv_wt_is_concrete():
-    assert_concrete_property(SelectionProtocol, "eqcv_wt")
+    assert_property_isconcrete(SelectionProtocol, "eqcv_wt")
 
 def test_eqcv_wt_fget(selprot):
     assert isinstance(selprot.eqcv_wt, numpy.ndarray)
@@ -554,7 +554,7 @@ def test_eqcv_wt_fset_ValueError(selprot, common_eqcv_wt_single):
 
 ### eqcv_trans ###
 def test_SelectionProtocol_eqcv_trans_is_concrete():
-    assert_concrete_property(SelectionProtocol, "eqcv_trans")
+    assert_property_isconcrete(SelectionProtocol, "eqcv_trans")
 
 def test_eqcv_trans_fget(selprot):
     assert isinstance(selprot.eqcv_trans, Callable)
@@ -577,7 +577,7 @@ def test_eqcv_trans_fdel(selprot):
 
 ### eqcv_trans_kwargs ###
 def test_SelectionProtocol_eqcv_trans_kwargs_is_concrete():
-    assert_concrete_property(SelectionProtocol, "eqcv_trans_kwargs")
+    assert_property_isconcrete(SelectionProtocol, "eqcv_trans_kwargs")
 
 def test_eqcv_trans_kwargs_fget(selprot):
     assert isinstance(selprot.eqcv_trans_kwargs, dict)
@@ -602,7 +602,7 @@ def test_eqcv_trans_kwargs_fdel(selprot):
 
 ### ndset_wt ###
 def test_SelectionProtocol_ndset_wt_is_concrete():
-    assert_concrete_property(SelectionProtocol, "ndset_wt")
+    assert_property_isconcrete(SelectionProtocol, "ndset_wt")
 
 def test_ndset_wt_fget(selprot):
     assert isinstance(selprot.ndset_wt, Real)
@@ -629,7 +629,7 @@ def test_ndset_wt_fset_ValueError(selprot):
 
 ### ndset_trans ###
 def test_SelectionProtocol_ndset_trans_is_concrete():
-    assert_concrete_property(SelectionProtocol, "ndset_trans")
+    assert_property_isconcrete(SelectionProtocol, "ndset_trans")
 
 def test_ndset_trans_fget(selprot):
     assert isinstance(selprot.ndset_trans, Callable)
@@ -654,7 +654,7 @@ def test_ndset_trans_fdel(selprot):
 
 ### ndset_trans_kwargs ###
 def test_SelectionProtocol_ndset_trans_kwargs_is_concrete():
-    assert_concrete_property(SelectionProtocol, "ndset_trans_kwargs")
+    assert_property_isconcrete(SelectionProtocol, "ndset_trans_kwargs")
 
 def test_ndset_trans_kwargs_fget(selprot):
     assert isinstance(selprot.ndset_trans_kwargs, dict)

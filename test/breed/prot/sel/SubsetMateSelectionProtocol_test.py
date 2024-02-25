@@ -1,7 +1,7 @@
 import pytest
 from pybrops.breed.prot.sel.SubsetMateSelectionProtocol import SubsetMateSelectionProtocol
 from pybrops.breed.prot.sel.SubsetMateSelectionProtocol import check_is_SubsetMateSelectionProtocol
-from pybrops.test.assert_python import assert_abstract_method, assert_concrete_method, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_method_isabstract, assert_method_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 
 class DummySubsetMateSelectionProtocol(SubsetMateSelectionProtocol):
     def __init__(self):
@@ -16,24 +16,24 @@ def selsoln():
 
 ################### Test class abstract/concrete properties ####################
 def test_SubsetMateSelectionProtocol_is_semiabstract():
-    assert_semiabstract_class(SubsetMateSelectionProtocol)
+    assert_class_issemiabstract(SubsetMateSelectionProtocol)
 
 ############################## Test class docstring ############################
 def test_SubsetMateSelectionProtocol_docstring():
-    assert_docstring(SubsetMateSelectionProtocol)
+    assert_class_documentation(SubsetMateSelectionProtocol)
 
 ############################## Test class methods ##############################
 def test_SubsetMateSelectionProtocol_problem_is_abstract():
-    assert_abstract_method(SubsetMateSelectionProtocol, "problem")
+    assert_method_isabstract(SubsetMateSelectionProtocol, "problem")
 
 def test_SubsetMateSelectionProtocol_sosolve_is_concrete():
-    assert_concrete_method(SubsetMateSelectionProtocol, "sosolve")
+    assert_method_isconcrete(SubsetMateSelectionProtocol, "sosolve")
 
 def test_SubsetMateSelectionProtocol_mosolve_is_concrete():
-    assert_concrete_method(SubsetMateSelectionProtocol, "mosolve")
+    assert_method_isconcrete(SubsetMateSelectionProtocol, "mosolve")
 
 def test_SubsetMateSelectionProtocol_select_is_concrete():
-    assert_concrete_method(SubsetMateSelectionProtocol, "select")
+    assert_method_isconcrete(SubsetMateSelectionProtocol, "select")
 
 ############################# Test class utilities #############################
 def test_check_is_SubsetMateSelectionProtocol(selsoln):

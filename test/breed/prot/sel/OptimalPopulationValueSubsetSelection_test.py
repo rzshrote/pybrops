@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelect
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -123,17 +123,17 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(OptimalPopulationValueSubsetSelection)
+    assert_class_documentation(OptimalPopulationValueSubsetSelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(OptimalPopulationValueSubsetSelection, "__init__")
+    assert_method_isconcrete(OptimalPopulationValueSubsetSelection, "__init__")
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(OptimalPopulationValueSubsetSelection, "problem")
+    assert_method_isconcrete(OptimalPopulationValueSubsetSelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -204,7 +204,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(OptimalPopulationValueSubsetSelection, "sosolve")
+    assert_method_isconcrete(OptimalPopulationValueSubsetSelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -245,7 +245,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(OptimalPopulationValueSubsetSelection, "mosolve")
+    assert_method_isconcrete(OptimalPopulationValueSubsetSelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -303,7 +303,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(OptimalPopulationValueSubsetSelection, "select")
+    assert_method_isconcrete(OptimalPopulationValueSubsetSelection, "select")
 
 def test_select(
         selprot_single,

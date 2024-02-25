@@ -5,8 +5,8 @@ import pandas
 import pytest
 import copy
 
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
 
 from pybrops.breed.prot.pt.G_E_Phenotyping import G_E_Phenotyping
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
@@ -228,22 +228,22 @@ def ptprot(gpmod, nenv, nrep, var_env, var_rep, var_err):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(G_E_Phenotyping)
+    assert_class_documentation(G_E_Phenotyping)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(G_E_Phenotyping, "__init__")
+    assert_method_isconcrete(G_E_Phenotyping, "__init__")
 
 def test_phenotype_is_concrete():
-    assert_concrete_method(G_E_Phenotyping, "phenotype")
+    assert_method_isconcrete(G_E_Phenotyping, "phenotype")
 
 def test_set_h2_is_concrete():
-    assert_concrete_method(G_E_Phenotyping, "set_h2")
+    assert_method_isconcrete(G_E_Phenotyping, "set_h2")
 
 def test_set_H2_is_concrete():
-    assert_concrete_method(G_E_Phenotyping, "set_H2")
+    assert_method_isconcrete(G_E_Phenotyping, "set_H2")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -255,7 +255,7 @@ def test_set_H2_is_concrete():
 
 ### gpmod ###
 def test_gpmod_is_conrete():
-    assert_concrete_property(G_E_Phenotyping, "gpmod")
+    assert_property_isconcrete(G_E_Phenotyping, "gpmod")
 
 def test_gpmod_fget(ptprot, gpmod):
     # TODO: assert equality of models
@@ -272,7 +272,7 @@ def test_gpmod_fdel(ptprot):
 
 ### nenv ###
 def test_nenv_is_concrete():
-    assert_concrete_property(G_E_Phenotyping, "nenv")
+    assert_property_isconcrete(G_E_Phenotyping, "nenv")
 
 def test_nenv_fget(ptprot, nenv):
     assert ptprot.nenv == nenv
@@ -314,7 +314,7 @@ def test_nenv_fdel(ptprot):
 
 ### nrep ###
 def test_nrep_is_concrete():
-    assert_concrete_property(G_E_Phenotyping, "nrep")
+    assert_property_isconcrete(G_E_Phenotyping, "nrep")
 
 def test_nrep_fget(ptprot, nrep):
     assert numpy.all(ptprot.nrep == nrep)
@@ -360,7 +360,7 @@ def test_nrep_fdel(ptprot):
 
 ### var_env ###
 def test_var_env_is_concrete():
-    assert_concrete_property(G_E_Phenotyping, "var_env")
+    assert_property_isconcrete(G_E_Phenotyping, "var_env")
 
 def test_var_env_fget(ptprot, var_env):
     assert numpy.all(ptprot.var_env == var_env)
@@ -406,7 +406,7 @@ def test_var_env_fdel(ptprot):
 
 ### var_rep ###
 def test_var_rep_is_concrete():
-    assert_concrete_property(G_E_Phenotyping, "var_rep")
+    assert_property_isconcrete(G_E_Phenotyping, "var_rep")
 
 def test_var_rep_fget(ptprot, var_rep):
     assert numpy.all(ptprot.var_rep == var_rep)
@@ -452,7 +452,7 @@ def test_var_rep_fdel(ptprot):
 
 ### var_err ###
 def test_var_err_is_concrete():
-    assert_concrete_property(G_E_Phenotyping, "var_err")
+    assert_property_isconcrete(G_E_Phenotyping, "var_err")
 
 def test_var_err_fget(ptprot, var_err):
     assert numpy.all(ptprot.var_err == var_err)
@@ -498,7 +498,7 @@ def test_var_err_fdel(ptprot):
 
 ### rng ###
 def test_rng_is_concrete():
-    assert_concrete_property(G_E_Phenotyping, "rng")
+    assert_property_isconcrete(G_E_Phenotyping, "rng")
 
 def test_rng_fget(ptprot):
     assert isinstance(ptprot.rng, (Generator,RandomState))

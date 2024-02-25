@@ -7,8 +7,8 @@ from pybrops.breed.prot.sel.prob.BinaryMateSelectionProblem import BinaryMateSel
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.soln.BinarySelectionSolution import BinarySelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_concrete_class, assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_isconcrete, assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 
 ################################ Test fixtures #################################
@@ -141,21 +141,21 @@ def selprot_multi(
 
 ################### Test class abstract/concrete properties ####################
 def test_UsefulnessCriterionBinarySelection_is_concrete():
-    assert_concrete_class(UsefulnessCriterionBinarySelection)
+    assert_class_isconcrete(UsefulnessCriterionBinarySelection)
 
 ############################## Test class docstring ############################
 def test_UsefulnessCriterionBinarySelection_docstring():
-    assert_docstring(UsefulnessCriterionBinarySelection)
+    assert_class_documentation(UsefulnessCriterionBinarySelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(UsefulnessCriterionBinarySelection, "__init__")
+    assert_method_isconcrete(UsefulnessCriterionBinarySelection, "__init__")
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(UsefulnessCriterionBinarySelection, "problem")
+    assert_method_isconcrete(UsefulnessCriterionBinarySelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -226,7 +226,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(UsefulnessCriterionBinarySelection, "sosolve")
+    assert_method_isconcrete(UsefulnessCriterionBinarySelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -267,7 +267,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(UsefulnessCriterionBinarySelection, "mosolve")
+    assert_method_isconcrete(UsefulnessCriterionBinarySelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -325,7 +325,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(UsefulnessCriterionBinarySelection, "select")
+    assert_method_isconcrete(UsefulnessCriterionBinarySelection, "select")
 
 def test_select(
         selprot_single,

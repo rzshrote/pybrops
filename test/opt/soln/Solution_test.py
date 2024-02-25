@@ -3,11 +3,11 @@ from typing import Callable, Iterable, Sequence
 import numpy
 import pytest
 
-from pybrops.test.assert_python import assert_concrete_function, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_function_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_property_isconcrete
 
 from pybrops.opt.soln.Solution import Solution, check_is_Solution
 
@@ -137,7 +137,7 @@ def soln(
 ############################## Test class docstring ############################
 ################################################################################
 def test_Solution_docstring():
-    assert_docstring(Solution)
+    assert_class_documentation(Solution)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -147,7 +147,7 @@ def test_Solution_docstring():
 ### ndecn ###
 #############
 def test_ndecn_is_concrete():
-    assert_concrete_property(Solution, "ndecn")
+    assert_property_isconcrete(Solution, "ndecn")
 
 def test_ndecn_fget(soln):
     assert isinstance(soln.ndecn, Integral)
@@ -182,7 +182,7 @@ def test_ndecn_fset_ValueError(soln):
 ### decn_space ###
 ##################
 def test_decn_space_is_concrete():
-    assert_concrete_property(Solution, "decn_space")
+    assert_property_isconcrete(Solution, "decn_space")
 
 def test_decn_space_fget(soln, ndecn):
     assert isinstance(soln.decn_space, numpy.ndarray) or (soln.decn_space is None)
@@ -225,7 +225,7 @@ def test_decn_space_fset_ValueError(soln, decn_space_lower, decn_space_upper):
 ### decn_space_lower ###
 ########################
 def test_decn_space_lower_is_concrete():
-    assert_concrete_property(Solution, "decn_space_lower")
+    assert_property_isconcrete(Solution, "decn_space_lower")
 
 def test_decn_space_lower_fget(soln):
     assert isinstance(soln.decn_space_lower, numpy.ndarray) or (soln.decn_space_lower is None)
@@ -251,7 +251,7 @@ def test_decn_space_lower_fset_ValueError(soln, decn_space_lower):
 ### decn_space_upper ###
 ########################
 def test_decn_space_upper_is_concrete():
-    assert_concrete_property(Solution, "decn_space_upper")
+    assert_property_isconcrete(Solution, "decn_space_upper")
 
 def test_decn_space_upper_fget(soln):
     assert isinstance(soln.decn_space_upper, numpy.ndarray) or (soln.decn_space_upper is None)
@@ -277,7 +277,7 @@ def test_decn_space_upper_fset_ValueError(soln, decn_space_upper):
 ### nobj ###
 ############
 def test_nobj_is_concrete():
-    assert_concrete_property(Solution, "nobj")
+    assert_property_isconcrete(Solution, "nobj")
 
 def test_nobj_fget(soln):
     assert isinstance(soln.nobj, Integral)
@@ -314,7 +314,7 @@ def test_nobj_fset_ValueError(soln):
 ### obj_wt ###
 ##############
 def test_obj_wt_is_concrete():
-    assert_concrete_property(Solution, "obj_wt")
+    assert_property_isconcrete(Solution, "obj_wt")
 
 def test_obj_wt_fget(soln):
     assert isinstance(soln.obj_wt, numpy.ndarray)
@@ -341,7 +341,7 @@ def test_obj_wt_fset_ValueError(soln, obj_wt):
 ### nineqcv ###
 ###############
 def test_nineqcv_is_concrete():
-    assert_concrete_property(Solution, "nineqcv")
+    assert_property_isconcrete(Solution, "nineqcv")
 
 def test_nineqcv_fget(soln):
     assert isinstance(soln.nineqcv, Integral)
@@ -380,7 +380,7 @@ def test_nineqcv_fset_ValueError(soln):
 ### ineqcv_wt ###
 #################
 def test_ineqcv_wt_is_concrete():
-    assert_concrete_property(Solution, "ineqcv_wt")
+    assert_property_isconcrete(Solution, "ineqcv_wt")
 
 def test_ineqcv_wt_fget(soln):
     assert isinstance(soln.ineqcv_wt, numpy.ndarray)
@@ -405,7 +405,7 @@ def test_ineqcv_wt_fset_ValueError(soln, ineqcv_wt):
 ### neqcv ###
 #############
 def test_neqcv_is_concrete():
-    assert_concrete_property(Solution, "neqcv")
+    assert_property_isconcrete(Solution, "neqcv")
 
 def test_neqcv_fget(soln):
     assert isinstance(soln.neqcv, Integral)
@@ -442,7 +442,7 @@ def test_neqcv_fset_ValueError(soln):
 ### eqcv_wt ###
 ###############
 def test_eqcv_wt_is_concrete():
-    assert_concrete_property(Solution, "eqcv_wt")
+    assert_property_isconcrete(Solution, "eqcv_wt")
 
 def test_eqcv_wt_fget(soln):
     assert isinstance(soln.eqcv_wt, numpy.ndarray)
@@ -469,7 +469,7 @@ def test_eqcv_wt_fset_ValueError(soln, eqcv_wt):
 ### nsoln #####
 ###############
 def test_nsoln_is_concrete():
-    assert_concrete_property(Solution, "nsoln")
+    assert_property_isconcrete(Solution, "nsoln")
 
 def test_nsoln_fget(soln):
     assert isinstance(soln.nsoln, Integral)
@@ -506,7 +506,7 @@ def test_nsoln_fset_ValueError(soln, nsoln):
 ### soln_decn ###
 #################
 def test_soln_decn_is_concrete():
-    assert_concrete_property(Solution, "soln_decn")
+    assert_property_isconcrete(Solution, "soln_decn")
 
 def test_soln_decn_fget(soln, nsoln, ndecn):
     assert isinstance(soln.soln_decn, numpy.ndarray)
@@ -548,7 +548,7 @@ def test_soln_decn_fset_ValueError(soln, decn_space_lower):
 ### soln_obj ###
 ################
 def test_soln_obj_is_concrete():
-    assert_concrete_property(Solution, "soln_obj")
+    assert_property_isconcrete(Solution, "soln_obj")
 
 def test_soln_obj_fget(soln, nsoln, nobj):
     assert isinstance(soln.soln_obj, numpy.ndarray)
@@ -578,7 +578,7 @@ def test_soln_obj_fset_ValueError(soln, nsoln, nobj):
 ### soln_ineqcv ###
 ###################
 def test_soln_ineqcv_is_concrete():
-    assert_concrete_property(Solution, "soln_ineqcv")
+    assert_property_isconcrete(Solution, "soln_ineqcv")
 
 def test_soln_ineqcv_fget(soln, nsoln, nineqcv):
     assert isinstance(soln.soln_ineqcv, numpy.ndarray)
@@ -610,7 +610,7 @@ def test_soln_ineqcv_fset_ValueError(soln, nsoln, nineqcv):
 ### soln_eqcv ###
 #################
 def test_soln_eqcv_is_concrete():
-    assert_concrete_property(Solution, "soln_eqcv")
+    assert_property_isconcrete(Solution, "soln_eqcv")
 
 def test_soln_eqcv_fget(soln, nsoln, neqcv):
     assert isinstance(soln.soln_eqcv, numpy.ndarray)
@@ -642,7 +642,7 @@ def test_soln_eqcv_fset_ValueError(soln, nsoln, neqcv):
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(Solution, "__init__")
+    assert_method_isconcrete(Solution, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -656,7 +656,7 @@ def test_init_is_concrete():
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_Solution_is_concrete():
-    assert_concrete_function(check_is_Solution)
+    assert_function_isconcrete(check_is_Solution)
 
 def test_check_is_Solution(soln):
     with not_raises(TypeError):

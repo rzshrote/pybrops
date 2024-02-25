@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration import BinarySelect
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.soln.BinarySelectionSolution import BinarySelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -123,23 +123,23 @@ def selprot_multi(
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection)
+    assert_class_documentation(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection)
 
 ############################# Test concrete methods ############################
 def test_init_is_concrete():
-    assert_concrete_method(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection, "__init__")
+    assert_method_isconcrete(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection, "__init__")
 
 def test_problem_is_concrete():
-    assert_concrete_method(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection, "problem")
+    assert_method_isconcrete(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection, "problem")
 
 def test_sosolve_is_concrete():
-    assert_concrete_method(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection, "sosolve")
+    assert_method_isconcrete(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection, "sosolve")
 
 def test_mosolve_is_concrete():
-    assert_concrete_method(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection, "mosolve")
+    assert_method_isconcrete(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection, "mosolve")
 
 def test_select_is_concrete():
-    assert_concrete_method(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection, "select")
+    assert_method_isconcrete(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection, "select")
 
 ###################### Test concrete method functionality ######################
 def test_problem(

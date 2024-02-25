@@ -7,8 +7,8 @@ from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSel
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_concrete_class, assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_isconcrete, assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 
 ################################ Test fixtures #################################
@@ -141,21 +141,21 @@ def selprot_multi(
 
 ################### Test class abstract/concrete properties ####################
 def test_UsefulnessCriterionSubsetSelection_is_concrete():
-    assert_concrete_class(UsefulnessCriterionSubsetSelection)
+    assert_class_isconcrete(UsefulnessCriterionSubsetSelection)
 
 ############################## Test class docstring ############################
 def test_UsefulnessCriterionSubsetSelection_docstring():
-    assert_docstring(UsefulnessCriterionSubsetSelection)
+    assert_class_documentation(UsefulnessCriterionSubsetSelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(UsefulnessCriterionSubsetSelection, "__init__")
+    assert_method_isconcrete(UsefulnessCriterionSubsetSelection, "__init__")
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(UsefulnessCriterionSubsetSelection, "problem")
+    assert_method_isconcrete(UsefulnessCriterionSubsetSelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -226,7 +226,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(UsefulnessCriterionSubsetSelection, "sosolve")
+    assert_method_isconcrete(UsefulnessCriterionSubsetSelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -267,7 +267,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(UsefulnessCriterionSubsetSelection, "mosolve")
+    assert_method_isconcrete(UsefulnessCriterionSubsetSelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -325,7 +325,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(UsefulnessCriterionSubsetSelection, "select")
+    assert_method_isconcrete(UsefulnessCriterionSubsetSelection, "select")
 
 def test_select(
         selprot_single,

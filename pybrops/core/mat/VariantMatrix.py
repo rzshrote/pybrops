@@ -471,7 +471,7 @@ class VariantMatrix(GroupableMatrix,metaclass=ABCMeta):
 
         Parameters
         ----------
-        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+        keys : A (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
         kwargs : dict
@@ -479,7 +479,7 @@ class VariantMatrix(GroupableMatrix,metaclass=ABCMeta):
 
         Returns
         -------
-        indices : (N,) ndarray of ints
+        indices : A (N,) ndarray of ints
             Array of indices that sort the keys along the specified axis.
         """
         raise NotImplementedError("method is abstract")
@@ -496,7 +496,7 @@ class VariantMatrix(GroupableMatrix,metaclass=ABCMeta):
 
         Parameters
         ----------
-        indices : (N,) ndarray of ints, Sequence of ints
+        indices : A (N,) ndarray of ints, Sequence of ints
             Array of indices that reorder the matrix along the specified axis.
         kwargs : dict
             Additional keyword arguments.
@@ -515,7 +515,7 @@ class VariantMatrix(GroupableMatrix,metaclass=ABCMeta):
 
         Parameters
         ----------
-        keys : (k, N) array or tuple containing k (N,)-shaped sequences
+        keys : A (k, N) array or tuple containing k (N,)-shaped sequences
             The k different columns to be sorted. The last column (or row if
             keys is a 2D array) is the primary sort key.
         kwargs : dict

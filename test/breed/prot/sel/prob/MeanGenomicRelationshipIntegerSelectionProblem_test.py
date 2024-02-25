@@ -3,9 +3,9 @@ import pytest
 from pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory import DenseMolecularCoancestryMatrixFactory
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 
-from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_property_isconcrete
 
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 from pybrops.breed.prot.sel.prob.MeanGenomicRelationshipSelectionProblem import MeanGenomicRelationshipIntegerSelectionProblem
@@ -161,7 +161,7 @@ def gmat(ntaxa, nvrnt):
 ############################## Test class docstring ############################
 ################################################################################
 def test_IntegerConventionalSelectionProblem_docstring():
-    assert_docstring(MeanGenomicRelationshipIntegerSelectionProblem)
+    assert_class_documentation(MeanGenomicRelationshipIntegerSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -171,7 +171,7 @@ def test_IntegerConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(MeanGenomicRelationshipIntegerSelectionProblem, "nlatent")
+    assert_property_isconcrete(MeanGenomicRelationshipIntegerSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == 1
@@ -180,7 +180,7 @@ def test_nlatent_fget(prob, ntrait):
 ### C ###
 #########
 def test_C_is_concrete():
-    assert_concrete_property(MeanGenomicRelationshipIntegerSelectionProblem, "C")
+    assert_property_isconcrete(MeanGenomicRelationshipIntegerSelectionProblem, "C")
 
 def test_C_fget(prob, ntaxa):
     assert isinstance(prob.C, numpy.ndarray)
@@ -224,13 +224,13 @@ def test_C_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(MeanGenomicRelationshipIntegerSelectionProblem, "__init__")
+    assert_method_isconcrete(MeanGenomicRelationshipIntegerSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_concrete_method(prob, "latentfn")
+    assert_method_isconcrete(prob, "latentfn")
 
 def test_latentfn(prob, ndecn, C):
     x = numpy.random.randint(0, ndecn, ndecn)

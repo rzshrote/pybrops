@@ -1,7 +1,7 @@
 import pytest
 from pybrops.breed.prot.sel.IntegerMateSelectionProtocol import IntegerMateSelectionProtocol
 from pybrops.breed.prot.sel.IntegerMateSelectionProtocol import check_is_IntegerMateSelectionProtocol
-from pybrops.test.assert_python import assert_abstract_method, assert_concrete_method, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_method_isabstract, assert_method_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 
 class DummyIntegerMateSelectionProtocol(IntegerMateSelectionProtocol):
     def __init__(self):
@@ -16,24 +16,24 @@ def selsoln():
 
 ################### Test class abstract/concrete properties ####################
 def test_IntegerMateSelectionProtocol_is_semiabstract():
-    assert_semiabstract_class(IntegerMateSelectionProtocol)
+    assert_class_issemiabstract(IntegerMateSelectionProtocol)
 
 ############################## Test class docstring ############################
 def test_IntegerMateSelectionProtocol_docstring():
-    assert_docstring(IntegerMateSelectionProtocol)
+    assert_class_documentation(IntegerMateSelectionProtocol)
 
 ############################## Test class methods ##############################
 def test_IntegerMateSelectionProtocol_problem_is_abstract():
-    assert_abstract_method(IntegerMateSelectionProtocol, "problem")
+    assert_method_isabstract(IntegerMateSelectionProtocol, "problem")
 
 def test_IntegerMateSelectionProtocol_sosolve_is_concrete():
-    assert_concrete_method(IntegerMateSelectionProtocol, "sosolve")
+    assert_method_isconcrete(IntegerMateSelectionProtocol, "sosolve")
 
 def test_IntegerMateSelectionProtocol_mosolve_is_concrete():
-    assert_concrete_method(IntegerMateSelectionProtocol, "mosolve")
+    assert_method_isconcrete(IntegerMateSelectionProtocol, "mosolve")
 
 def test_IntegerMateSelectionProtocol_select_is_concrete():
-    assert_concrete_method(IntegerMateSelectionProtocol, "select")
+    assert_method_isconcrete(IntegerMateSelectionProtocol, "select")
 
 ############################# Test class utilities #############################
 def test_check_is_IntegerMateSelectionProtocol(selsoln):

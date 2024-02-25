@@ -1,7 +1,7 @@
 import pytest
 from pybrops.breed.prot.sel.RealMateSelectionProtocol import RealMateSelectionProtocol
 from pybrops.breed.prot.sel.RealMateSelectionProtocol import check_is_RealMateSelectionProtocol
-from pybrops.test.assert_python import assert_abstract_method, assert_concrete_method, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_method_isabstract, assert_method_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 
 class DummyRealMateSelectionProtocol(RealMateSelectionProtocol):
     def __init__(self):
@@ -16,24 +16,24 @@ def selsoln():
 
 ################### Test class abstract/concrete properties ####################
 def test_RealMateSelectionProtocol_is_semiabstract():
-    assert_semiabstract_class(RealMateSelectionProtocol)
+    assert_class_issemiabstract(RealMateSelectionProtocol)
 
 ############################## Test class docstring ############################
 def test_RealMateSelectionProtocol_docstring():
-    assert_docstring(RealMateSelectionProtocol)
+    assert_class_documentation(RealMateSelectionProtocol)
 
 ############################## Test class methods ##############################
 def test_RealMateSelectionProtocol_problem_is_abstract():
-    assert_abstract_method(RealMateSelectionProtocol, "problem")
+    assert_method_isabstract(RealMateSelectionProtocol, "problem")
 
 def test_RealMateSelectionProtocol_sosolve_is_concrete():
-    assert_concrete_method(RealMateSelectionProtocol, "sosolve")
+    assert_method_isconcrete(RealMateSelectionProtocol, "sosolve")
 
 def test_RealMateSelectionProtocol_mosolve_is_concrete():
-    assert_concrete_method(RealMateSelectionProtocol, "mosolve")
+    assert_method_isconcrete(RealMateSelectionProtocol, "mosolve")
 
 def test_RealMateSelectionProtocol_select_is_concrete():
-    assert_concrete_method(RealMateSelectionProtocol, "select")
+    assert_method_isconcrete(RealMateSelectionProtocol, "select")
 
 ############################# Test class utilities #############################
 def test_check_is_RealMateSelectionProtocol(selsoln):

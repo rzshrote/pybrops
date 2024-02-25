@@ -1,10 +1,10 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
@@ -21,13 +21,13 @@ def gmapfn():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(GeneticMapFunction)
+    assert_class_documentation(GeneticMapFunction)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(GeneticMapFunction, "__init__")
+    assert_method_isconcrete(GeneticMapFunction, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -37,28 +37,28 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_mapfn_is_abstract():
-    assert_abstract_method(GeneticMapFunction, "mapfn")
+    assert_method_isabstract(GeneticMapFunction, "mapfn")
 
 def test_invmapfn_is_abstract():
-    assert_abstract_method(GeneticMapFunction, "invmapfn")
+    assert_method_isabstract(GeneticMapFunction, "invmapfn")
 
 def test_rprob1g_is_abstract():
-    assert_abstract_method(GeneticMapFunction, "rprob1g")
+    assert_method_isabstract(GeneticMapFunction, "rprob1g")
 
 def test_rprob2g_is_abstract():
-    assert_abstract_method(GeneticMapFunction, "rprob2g")
+    assert_method_isabstract(GeneticMapFunction, "rprob2g")
 
 def test_rprob1p_is_abstract():
-    assert_abstract_method(GeneticMapFunction, "rprob1p")
+    assert_method_isabstract(GeneticMapFunction, "rprob1p")
 
 def test_rprob2p_is_abstract():
-    assert_abstract_method(GeneticMapFunction, "rprob2p")
+    assert_method_isabstract(GeneticMapFunction, "rprob2p")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_GeneticMapFunction_is_concrete():
-    assert_concrete_function(check_is_GeneticMapFunction)
+    assert_function_isconcrete(check_is_GeneticMapFunction)
 
 ################################################################################
 ######################### Test class utility functions #########################

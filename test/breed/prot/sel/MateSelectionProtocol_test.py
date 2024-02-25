@@ -10,7 +10,7 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.test.assert_python import assert_abstract_method, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_method_isabstract, assert_class_documentation, assert_class_issemiabstract, not_raises
 from .common_fixtures_large import *
 
 class DummyMateSelectionProtocol(MateSelectionProtocol):
@@ -58,26 +58,26 @@ def selprot(
 
 ################### Test class abstract/concrete properties ####################
 def test_MateSelectionProtocol_is_semiabstract():
-    assert_semiabstract_class(MateSelectionProtocol)
+    assert_class_issemiabstract(MateSelectionProtocol)
 
 ############################## Test class docstring ############################
 def test_MateSelectionProtocol_docstring():
-    assert_docstring(MateSelectionProtocol)
+    assert_class_documentation(MateSelectionProtocol)
 
 ############################ Test class properties #############################
 
 ############################## Test class methods ##############################
 def test_MateSelectionProtocol_problem_is_abstract():
-    assert_abstract_method(MateSelectionProtocol, "problem")
+    assert_method_isabstract(MateSelectionProtocol, "problem")
 
 def test_MateSelectionProtocol_sosolve_is_abstract():
-    assert_abstract_method(MateSelectionProtocol, "sosolve")
+    assert_method_isabstract(MateSelectionProtocol, "sosolve")
 
 def test_MateSelectionProtocol_mosolve_is_abstract():
-    assert_abstract_method(MateSelectionProtocol, "mosolve")
+    assert_method_isabstract(MateSelectionProtocol, "mosolve")
 
 def test_MateSelectionProtocol_select_is_abstract():
-    assert_abstract_method(MateSelectionProtocol, "select")
+    assert_method_isabstract(MateSelectionProtocol, "select")
     
 ############################# Test class utilities #############################
 def test_check_is_MateSelectionProtocol(selprot):

@@ -5,9 +5,9 @@ import numpy
 import h5py
 from pybrops.model.vmat.DenseThreeWayDHAdditiveGenicVarianceMatrix import DenseThreeWayDHAdditiveGenicVarianceMatrix
 
-from pybrops.test.assert_python import assert_concrete_property, not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_property_isconcrete, not_raises
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 from .common_fixtures import *
 
@@ -65,13 +65,13 @@ def vmat(mat, taxa, taxa_grp, trait):
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(DenseThreeWayDHAdditiveGenicVarianceMatrix)
+    assert_class_documentation(DenseThreeWayDHAdditiveGenicVarianceMatrix)
 
 ########################### Test concrete properties ###########################
 
 ### mat
 def test_mat_is_concrete():
-    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "mat")
+    assert_property_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "mat")
 
 def test_mat_fget(vmat):
     assert isinstance(vmat.mat, numpy.ndarray)
@@ -92,49 +92,49 @@ def test_mat_fset_ValueError(vmat):
 
 ### square_axes
 def test_square_axes_is_concrete():
-    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "square_axes")
+    assert_property_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "square_axes")
 
 ### trait_axis
 def test_trait_axis_is_concrete():
-    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "trait_axis")
+    assert_property_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "trait_axis")
 
 ### epgc
 def test_epgc_is_concrete():
-    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "epgc")
+    assert_property_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "epgc")
 
 ### nrecurrent
 def test_nrecurrent_is_concrete():
-    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "nrecurrent")
+    assert_property_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "nrecurrent")
 
 ### recurrent_axis
 def test_recurrent_axis_is_concrete():
-    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "recurrent_axis")
+    assert_property_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "recurrent_axis")
 
 ### nfemale
 def test_nfemale_is_concrete():
-    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "nfemale")
+    assert_property_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "nfemale")
 
 ### female_axis
 def test_female_axis_is_concrete():
-    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "female_axis")
+    assert_property_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "female_axis")
 
 ### nmale
 def test_nmale_is_concrete():
-    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "nmale")
+    assert_property_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "nmale")
 
 ### male_axis
 def test_male_axis_is_concrete():
-    assert_concrete_property(DenseThreeWayDHAdditiveGenicVarianceMatrix, "male_axis")
+    assert_property_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "male_axis")
 
 ############################# Test concrete methods ############################
 
 ### __init__
 def test___init___is_concrete():
-    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "__init__")
+    assert_method_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "__init__")
 
 ### to_pandas
 def test_to_pandas_is_concrete():
-    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "to_pandas")
+    assert_method_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "to_pandas")
 
 def test_to_pandas(vmat):
     # define column names
@@ -205,7 +205,7 @@ def test_to_pandas(vmat):
 
 ### to_csv
 def test_to_csv_is_concrete():
-    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "to_csv")
+    assert_method_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "to_csv")
 
 def test_to_csv(vmat):
     filename = "test_3dh_vmat.csv"
@@ -235,7 +235,7 @@ def test_to_csv(vmat):
 
 ### to_hdf5
 def test_to_hdf5_is_concrete():
-    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "to_hdf5")
+    assert_method_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "to_hdf5")
 
 def test_to_hdf5(vmat):
     filename = "test_3dh_vmat.h5"
@@ -262,7 +262,7 @@ def test_to_hdf5(vmat):
 
 ### from_pandas
 def test_from_pandas_is_concrete():
-    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "from_pandas")
+    assert_method_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "from_pandas")
 
 def test_from_pandas(vmat, ntaxa, ntrait):
     # export
@@ -303,7 +303,7 @@ def test_from_pandas(vmat, ntaxa, ntrait):
 
 ### from_csv
 def test_from_csv_is_concrete():
-    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "from_csv")
+    assert_method_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "from_csv")
 
 def test_from_csv(vmat, ntaxa, ntrait):
     filename = "test_3dh_vmat.csv"
@@ -357,7 +357,7 @@ def test_from_csv(vmat, ntaxa, ntrait):
 
 ### from_hdf5
 def test_from_hdf5_is_concrete():
-    assert_concrete_method(DenseThreeWayDHAdditiveGenicVarianceMatrix, "from_hdf5")
+    assert_method_isconcrete(DenseThreeWayDHAdditiveGenicVarianceMatrix, "from_hdf5")
 
 def test_from_hdf5(vmat):
     filename = "test_3dh_vmat.h5"

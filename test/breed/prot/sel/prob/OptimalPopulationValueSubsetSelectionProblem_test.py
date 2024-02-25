@@ -4,9 +4,9 @@ from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLine
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 
-from pybrops.test.assert_python import assert_concrete_property_fget, assert_docstring, not_raises
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_property
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_property_isconcrete
 
 from pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem import OptimalPopulationValueSubsetSelectionProblem
 
@@ -191,7 +191,7 @@ def gpmod(nvrnt, ntrait, trait_mean, trait_cov):
 ############################## Test class docstring ############################
 ################################################################################
 def test_SubsetConventionalSelectionProblem_docstring():
-    assert_docstring(OptimalPopulationValueSubsetSelectionProblem)
+    assert_class_documentation(OptimalPopulationValueSubsetSelectionProblem)
 
 ################################################################################
 ########################### Test concrete properties ###########################
@@ -201,7 +201,7 @@ def test_SubsetConventionalSelectionProblem_docstring():
 ### nlatent ###
 ###############
 def test_nlatent_is_concrete():
-    assert_concrete_property_fget(OptimalPopulationValueSubsetSelectionProblem, "nlatent")
+    assert_property_isconcrete(OptimalPopulationValueSubsetSelectionProblem, "nlatent")
 
 def test_nlatent_fget(prob, ntrait):
     assert prob.nlatent == ntrait
@@ -210,7 +210,7 @@ def test_nlatent_fget(prob, ntrait):
 ### haplomat ###
 ############
 def test_haplomat_is_concrete():
-    assert_concrete_property(OptimalPopulationValueSubsetSelectionProblem, "haplomat")
+    assert_property_isconcrete(OptimalPopulationValueSubsetSelectionProblem, "haplomat")
 
 def test_haplomat_fget(prob, nhaploblk, ntaxa, ntrait):
     assert isinstance(prob.haplomat, numpy.ndarray)
@@ -250,13 +250,13 @@ def test_haplomat_fdel(prob):
 ### __init__ ###
 ################
 def test_init_is_concrete():
-    assert_concrete_method(OptimalPopulationValueSubsetSelectionProblem, "__init__")
+    assert_method_isconcrete(OptimalPopulationValueSubsetSelectionProblem, "__init__")
 
 ################
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_concrete_method(prob, "latentfn")
+    assert_method_isconcrete(prob, "latentfn")
 
 def test_latentfn(prob, ntaxa, haplomat):
     x = numpy.random.binomial(1, 0.5, ntaxa)

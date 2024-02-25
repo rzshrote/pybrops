@@ -5,9 +5,9 @@ import numpy
 import h5py
 from pybrops.model.vmat.DenseFourWayDHAdditiveGeneticVarianceMatrix import DenseFourWayDHAdditiveGeneticVarianceMatrix
 
-from pybrops.test.assert_python import assert_concrete_property, not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_property_isconcrete, not_raises
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 from .common_fixtures import *
 
@@ -65,13 +65,13 @@ def vmat(mat, taxa, taxa_grp, trait):
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(DenseFourWayDHAdditiveGeneticVarianceMatrix)
+    assert_class_documentation(DenseFourWayDHAdditiveGeneticVarianceMatrix)
 
 ########################### Test concrete properties ###########################
 
 ### mat
 def test_mat_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "mat")
+    assert_property_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "mat")
 
 def test_mat_fget(vmat):
     assert isinstance(vmat.mat, numpy.ndarray)
@@ -92,57 +92,57 @@ def test_mat_fset_ValueError(vmat):
 
 ### square_axes
 def test_square_axes_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "square_axes")
+    assert_property_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "square_axes")
 
 ### trait_axis
 def test_trait_axis_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "trait_axis")
+    assert_property_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "trait_axis")
 
 ### epgc
 def test_epgc_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "epgc")
+    assert_property_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "epgc")
 
 ### nfemale2
 def test_nfemale2_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "nfemale2")
+    assert_property_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "nfemale2")
 
 ### female2_axis
 def test_female2_axis_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "female2_axis")
+    assert_property_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "female2_axis")
 
 ### nmale2
 def test_nmale2_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "nmale2")
+    assert_property_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "nmale2")
 
 ### male2_axis
 def test_male2_axis_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "male2_axis")
+    assert_property_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "male2_axis")
 
 ### nfemale1
 def test_nfemale1_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "nfemale1")
+    assert_property_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "nfemale1")
 
 ### female1_axis
 def test_female1_axis_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "female1_axis")
+    assert_property_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "female1_axis")
 
 ### nmale1
 def test_nmale1_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "nmale1")
+    assert_property_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "nmale1")
 
 ### male1_axis
 def test_male1_axis_is_concrete():
-    assert_concrete_property(DenseFourWayDHAdditiveGeneticVarianceMatrix, "male1_axis")
+    assert_property_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "male1_axis")
 
 ############################# Test concrete methods ############################
 
 ### __init__
 def test___init___is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "__init__")
+    assert_method_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "__init__")
 
 ### to_pandas
 def test_to_pandas_is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "to_pandas")
+    assert_method_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "to_pandas")
 
 def test_to_pandas(vmat):
     # define column names
@@ -225,7 +225,7 @@ def test_to_pandas(vmat):
 
 ### to_csv
 def test_to_csv_is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "to_csv")
+    assert_method_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "to_csv")
 
 def test_to_csv(vmat):
     filename = "test_4dh_vmat.csv"
@@ -259,7 +259,7 @@ def test_to_csv(vmat):
 
 ### to_hdf5
 def test_to_hdf5_is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "to_hdf5")
+    assert_method_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "to_hdf5")
 
 def test_to_hdf5(vmat):
     filename = "test_4dh_vmat.h5"
@@ -286,7 +286,7 @@ def test_to_hdf5(vmat):
 
 ### from_pandas
 def test_from_pandas_is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_pandas")
+    assert_method_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_pandas")
 
 def test_from_pandas(vmat, ntaxa, ntrait):
     # export
@@ -328,7 +328,7 @@ def test_from_pandas(vmat, ntaxa, ntrait):
 
 ### from_csv
 def test_from_csv_is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_csv")
+    assert_method_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_csv")
 
 def test_from_csv(vmat, ntaxa, ntrait):
     filename = "test_4dh_vmat.csv"
@@ -376,7 +376,7 @@ def test_from_csv(vmat, ntaxa, ntrait):
 
 ### from_hdf5
 def test_from_hdf5_is_concrete():
-    assert_concrete_method(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_hdf5")
+    assert_method_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_hdf5")
 
 def test_from_hdf5(vmat):
     filename = "test_4dh_vmat.h5"

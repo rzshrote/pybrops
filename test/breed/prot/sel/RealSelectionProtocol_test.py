@@ -1,7 +1,7 @@
 import pytest
 from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
 from pybrops.breed.prot.sel.RealSelectionProtocol import check_is_RealSelectionProtocol
-from pybrops.test.assert_python import assert_abstract_method, assert_concrete_method, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_method_isabstract, assert_method_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 from .common_fixtures_large import *
 
 class DummyRealSelectionProtocol(RealSelectionProtocol):
@@ -61,24 +61,24 @@ def selsoln(
 
 ################### Test class abstract/concrete properties ####################
 def test_RealSelectionProtocol_is_semiabstract():
-    assert_semiabstract_class(RealSelectionProtocol)
+    assert_class_issemiabstract(RealSelectionProtocol)
 
 ############################## Test class docstring ############################
 def test_RealSelectionProtocol_docstring():
-    assert_docstring(RealSelectionProtocol)
+    assert_class_documentation(RealSelectionProtocol)
 
 ############################## Test class methods ##############################
 def test_RealSelectionProtocol_problem_is_abstract():
-    assert_abstract_method(RealSelectionProtocol, "problem")
+    assert_method_isabstract(RealSelectionProtocol, "problem")
 
 def test_RealSelectionProtocol_sosolve_is_concrete():
-    assert_concrete_method(RealSelectionProtocol, "sosolve")
+    assert_method_isconcrete(RealSelectionProtocol, "sosolve")
 
 def test_RealSelectionProtocol_mosolve_is_concrete():
-    assert_concrete_method(RealSelectionProtocol, "mosolve")
+    assert_method_isconcrete(RealSelectionProtocol, "mosolve")
 
 def test_RealSelectionProtocol_select_is_concrete():
-    assert_concrete_method(RealSelectionProtocol, "select")
+    assert_method_isconcrete(RealSelectionProtocol, "select")
 
 ############################# Test class utilities #############################
 def test_check_is_RealSelectionProtocol(selsoln):

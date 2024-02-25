@@ -6,8 +6,8 @@ from pybrops.breed.prot.sel.cfg.RealSelectionConfiguration import RealSelectionC
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.soln.RealSelectionSolution import RealSelectionSolution
 from .common_fixtures_large import *
-from pybrops.test.assert_python import assert_concrete_class, assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_isconcrete, assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 ################################ Test fixtures #################################
 
@@ -119,17 +119,17 @@ def selprot_multi(
 
 ################### Test class abstract/concrete properties ####################
 def test_MeanGenomicRelationshipRealSelection_is_concrete():
-    assert_concrete_class(MeanGenomicRelationshipRealSelection)
+    assert_class_isconcrete(MeanGenomicRelationshipRealSelection)
 
 ############################## Test class docstring ############################
 def test_MeanGenomicRelationshipRealSelection_docstring():
-    assert_docstring(MeanGenomicRelationshipRealSelection)
+    assert_class_documentation(MeanGenomicRelationshipRealSelection)
 
 ############################# Test concrete methods ############################
 
 ### __init__ ###
 def test_init_is_concrete():
-    assert_concrete_method(MeanGenomicRelationshipRealSelection, "__init__")
+    assert_method_isconcrete(MeanGenomicRelationshipRealSelection, "__init__")
 
 def test_init(selprot_single, selprot_multi):
     assert selprot_single is not None
@@ -137,7 +137,7 @@ def test_init(selprot_single, selprot_multi):
 
 ### problem ###
 def test_problem_is_concrete():
-    assert_concrete_method(MeanGenomicRelationshipRealSelection, "problem")
+    assert_method_isconcrete(MeanGenomicRelationshipRealSelection, "problem")
 
 def test_problem(
         selprot_single,
@@ -208,7 +208,7 @@ def test_problem_TypeError(
 
 ### sosolve ###
 def test_sosolve_is_concrete():
-    assert_concrete_method(MeanGenomicRelationshipRealSelection, "sosolve")
+    assert_method_isconcrete(MeanGenomicRelationshipRealSelection, "sosolve")
 
 def test_sosolve(
         selprot_single,
@@ -249,7 +249,7 @@ def test_sosolve(
 
 ### mosolve ###
 def test_mosolve_is_concrete():
-    assert_concrete_method(MeanGenomicRelationshipRealSelection, "mosolve")
+    assert_method_isconcrete(MeanGenomicRelationshipRealSelection, "mosolve")
 
 def test_mosolve(
         selprot_single,
@@ -307,7 +307,7 @@ def test_mosolve(
 
 ### select ###
 def test_select_is_concrete():
-    assert_concrete_method(MeanGenomicRelationshipRealSelection, "select")
+    assert_method_isconcrete(MeanGenomicRelationshipRealSelection, "select")
 
 def test_select(
         selprot_single,

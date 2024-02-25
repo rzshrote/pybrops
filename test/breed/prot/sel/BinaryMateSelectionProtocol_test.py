@@ -1,7 +1,7 @@
 import pytest
 from pybrops.breed.prot.sel.BinaryMateSelectionProtocol import BinaryMateSelectionProtocol
 from pybrops.breed.prot.sel.BinaryMateSelectionProtocol import check_is_BinaryMateSelectionProtocol
-from pybrops.test.assert_python import assert_abstract_method, assert_concrete_method, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_method_isabstract, assert_method_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 
 class DummyBinaryMateSelectionProtocol(BinaryMateSelectionProtocol):
     def __init__(self):
@@ -16,24 +16,24 @@ def selsoln():
 
 ################### Test class abstract/concrete properties ####################
 def test_BinaryMateSelectionProtocol_is_semiabstract():
-    assert_semiabstract_class(BinaryMateSelectionProtocol)
+    assert_class_issemiabstract(BinaryMateSelectionProtocol)
 
 ############################## Test class docstring ############################
 def test_BinaryMateSelectionProtocol_docstring():
-    assert_docstring(BinaryMateSelectionProtocol)
+    assert_class_documentation(BinaryMateSelectionProtocol)
 
 ############################## Test class methods ##############################
 def test_BinaryMateSelectionProtocol_problem_is_abstract():
-    assert_abstract_method(BinaryMateSelectionProtocol, "problem")
+    assert_method_isabstract(BinaryMateSelectionProtocol, "problem")
 
 def test_BinaryMateSelectionProtocol_sosolve_is_concrete():
-    assert_concrete_method(BinaryMateSelectionProtocol, "sosolve")
+    assert_method_isconcrete(BinaryMateSelectionProtocol, "sosolve")
 
 def test_BinaryMateSelectionProtocol_mosolve_is_concrete():
-    assert_concrete_method(BinaryMateSelectionProtocol, "mosolve")
+    assert_method_isconcrete(BinaryMateSelectionProtocol, "mosolve")
 
 def test_BinaryMateSelectionProtocol_select_is_concrete():
-    assert_concrete_method(BinaryMateSelectionProtocol, "select")
+    assert_method_isconcrete(BinaryMateSelectionProtocol, "select")
 
 ############################# Test class utilities #############################
 def test_check_is_BinaryMateSelectionProtocol(selsoln):

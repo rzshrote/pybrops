@@ -1,10 +1,10 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.model.vmat.fcty.GenicVarianceMatrixFactory import GenicVarianceMatrixFactory
 from pybrops.model.vmat.fcty.GenicVarianceMatrixFactory import check_is_GenicVarianceMatrixFactory
@@ -21,13 +21,13 @@ def fcty():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(GenicVarianceMatrixFactory)
+    assert_class_documentation(GenicVarianceMatrixFactory)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(GenicVarianceMatrixFactory, "__init__")
+    assert_method_isconcrete(GenicVarianceMatrixFactory, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -37,13 +37,13 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_from_algmod_is_abstract():
-    assert_abstract_method(GenicVarianceMatrixFactory, "from_gmod")
+    assert_method_isabstract(GenicVarianceMatrixFactory, "from_gmod")
 
 ################################################################################
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_GenicVarianceMatrixFactory_is_concrete():
-    assert_concrete_function(check_is_GenicVarianceMatrixFactory)
+    assert_function_isconcrete(check_is_GenicVarianceMatrixFactory)
 
 def test_check_is_GenicVarianceMatrixFactory(fcty):
     with not_raises(TypeError):

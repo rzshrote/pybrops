@@ -2,13 +2,13 @@ import pytest
 import numpy
 import copy
 
-from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_abstract_method
-from pybrops.test.assert_python import assert_abstract_function
-from pybrops.test.assert_python import assert_abstract_property
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_classmethod_isconcrete, not_raises
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isabstract
+from pybrops.test.assert_python import assert_function_isabstract
+from pybrops.test.assert_python import assert_property_isabstract
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseTaxaMatrix import check_is_DenseTaxaMatrix
@@ -66,58 +66,58 @@ def mat(mat_float64, taxa_object, taxa_grp_int64):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(DenseTaxaMatrix)
+    assert_class_documentation(DenseTaxaMatrix)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "__init__")
+    assert_method_isconcrete(DenseTaxaMatrix, "__init__")
 
 def test_copy_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "__copy__")
+    assert_method_isconcrete(DenseTaxaMatrix, "__copy__")
 
 def test_deepcopy_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "__deepcopy__")
+    assert_method_isconcrete(DenseTaxaMatrix, "__deepcopy__")
 
 def test_adjoin_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "adjoin_taxa")
+    assert_method_isconcrete(DenseTaxaMatrix, "adjoin_taxa")
 
 def test_delete_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "delete_taxa")
+    assert_method_isconcrete(DenseTaxaMatrix, "delete_taxa")
 
 def test_insert_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "insert_taxa")
+    assert_method_isconcrete(DenseTaxaMatrix, "insert_taxa")
 
 def test_select_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "select_taxa")
+    assert_method_isconcrete(DenseTaxaMatrix, "select_taxa")
 
 def test_concat_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "concat_taxa")
+    assert_classmethod_isconcrete(DenseTaxaMatrix, "concat_taxa")
 
 def test_append_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "append_taxa")
+    assert_method_isconcrete(DenseTaxaMatrix, "append_taxa")
 
 def test_remove_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "remove_taxa")
+    assert_method_isconcrete(DenseTaxaMatrix, "remove_taxa")
 
 def test_incorp_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "incorp_taxa")
+    assert_method_isconcrete(DenseTaxaMatrix, "incorp_taxa")
 
 def test_lexsort_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "lexsort_taxa")
+    assert_method_isconcrete(DenseTaxaMatrix, "lexsort_taxa")
 
 def test_sort_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "sort_taxa")
+    assert_method_isconcrete(DenseTaxaMatrix, "sort_taxa")
 
 def test_group_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "group_taxa")
+    assert_method_isconcrete(DenseTaxaMatrix, "group_taxa")
 
 def test_ungroup_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "ungroup_taxa")
+    assert_method_isconcrete(DenseTaxaMatrix, "ungroup_taxa")
 
 def test_is_grouped_taxa_is_concrete():
-    assert_concrete_method(DenseTaxaMatrix, "is_grouped_taxa")
+    assert_method_isconcrete(DenseTaxaMatrix, "is_grouped_taxa")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################
@@ -426,7 +426,7 @@ def test_is_grouped_taxa(mat):
 ######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_DenseTaxaMatrix_is_concrete():
-    assert_concrete_function(check_is_DenseTaxaMatrix)
+    assert_function_isconcrete(check_is_DenseTaxaMatrix)
 
 def test_check_is_DenseTaxaMatrix(mat):
     with not_raises(TypeError):

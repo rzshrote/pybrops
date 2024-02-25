@@ -1,5 +1,5 @@
 import pytest
-from pybrops.test.assert_python import assert_concrete_class, assert_concrete_property, assert_docstring, assert_semiabstract_class, not_raises
+from pybrops.test.assert_python import assert_class_isconcrete, assert_property_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfiguration
 from pybrops.breed.prot.sel.cfg.SelectionConfiguration import check_is_SelectionConfiguration
 
@@ -35,17 +35,17 @@ def selcfg(
 
 ################### Test class abstract/concrete properties ####################
 def test_SelectionConfiguration_is_concrete():
-    assert_concrete_class(SelectionConfiguration)
+    assert_class_isconcrete(SelectionConfiguration)
 
 ############################## Test class docstring ############################
 def test_SelectionConfiguration_docstring():
-    assert_docstring(SelectionConfiguration)
+    assert_class_documentation(SelectionConfiguration)
 
 ############################# Test class properties ############################
 
 ### ncross ###
 def test_SelectionConfiguration_ncross_is_concrete():
-    assert_concrete_property(SelectionConfiguration, "ncross")
+    assert_property_isconcrete(SelectionConfiguration, "ncross")
 
 def test_ncross_fget(selcfg, common_ncross):
     assert selcfg.ncross == common_ncross
@@ -86,7 +86,7 @@ def test_ncross_fdel(selcfg):
 
 ### nparent ###
 def test_SelectionConfiguration_nparent_is_concrete():
-    assert_concrete_property(SelectionConfiguration, "nparent")
+    assert_property_isconcrete(SelectionConfiguration, "nparent")
 
 def test_nparent_fget(selcfg, common_nparent):
     assert selcfg.nparent == common_nparent
@@ -127,7 +127,7 @@ def test_nparent_fdel(selcfg):
 
 ### nmating ###
 def test_SelectionConfiguration_nmating_is_concrete():
-    assert_concrete_property(SelectionConfiguration, "nmating")
+    assert_property_isconcrete(SelectionConfiguration, "nmating")
 
 def test_nmating_fget(selcfg, common_nmating):
     assert numpy.all(selcfg.nmating == common_nmating)
@@ -184,7 +184,7 @@ def test_nmating_fdel(selcfg):
 
 ### nprogeny ###
 def test_SelectionConfiguration_nprogeny_is_concrete():
-    assert_concrete_property(SelectionConfiguration, "nprogeny")
+    assert_property_isconcrete(SelectionConfiguration, "nprogeny")
 
 def test_nprogeny_fget(selcfg, common_nprogeny):
     assert numpy.all(selcfg.nprogeny == common_nprogeny)
@@ -241,7 +241,7 @@ def test_nprogeny_fdel(selcfg):
 
 ### pgmat ###
 def test_SelectionConfiguration_pgmat_is_concrete():
-    assert_concrete_property(SelectionConfiguration, "pgmat")
+    assert_property_isconcrete(SelectionConfiguration, "pgmat")
 
 def test_pgmat_fget(selcfg, common_pgmat):
     assert numpy.all(selcfg.pgmat == common_pgmat)
@@ -266,7 +266,7 @@ def test_pgmat_fdel(selcfg):
 
 ### xconfig ###
 def test_SelectionConfiguration_xconfig_is_concrete():
-    assert_concrete_property(SelectionConfiguration, "xconfig")
+    assert_property_isconcrete(SelectionConfiguration, "xconfig")
 
 def test_xconfig_fget(selcfg, common_xconfig):
     assert numpy.all(selcfg.xconfig == common_xconfig)

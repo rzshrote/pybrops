@@ -2,7 +2,7 @@ import pytest
 
 from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm, check_is_SubsetOptimizationAlgorithm
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
-from pybrops.test.assert_python import assert_abstract_class, assert_abstract_method, assert_docstring, not_raises
+from pybrops.test.assert_python import assert_class_isabstract, assert_method_isabstract, assert_class_documentation, not_raises
 
 class DummyOptimizationAlgorithm(OptimizationAlgorithm):
     def minimize(self, prob, miscout, **kwargs):
@@ -18,17 +18,17 @@ def algo():
 
 ################### Test class abstract/concrete properties ####################
 def test_SubsetOptimizationAlgorithm_is_semiabstract():
-    assert_abstract_class(SubsetOptimizationAlgorithm)
+    assert_class_isabstract(SubsetOptimizationAlgorithm)
 
 ############################## Test class docstring ############################
 def test_SubsetOptimizationAlgorithm_docstring():
-    assert_docstring(SubsetOptimizationAlgorithm)
+    assert_class_documentation(SubsetOptimizationAlgorithm)
 
 ############################# Test class properties ############################
 
 ############################## Test class methods ##############################
 def test_SubsetOptimizationAlgorithm_minimize_is_abstract():
-    assert_abstract_method(SubsetOptimizationAlgorithm, "minimize")
+    assert_method_isabstract(SubsetOptimizationAlgorithm, "minimize")
 
 ############################# Test class utilities #############################
 def test_check_is_SubsetOptimizationAlgorithm(algo):

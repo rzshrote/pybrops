@@ -3,8 +3,8 @@ import pandas
 import pytest
 import copy
 
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
 
 from pybrops.breed.prot.pt.TruePhenotyping import TruePhenotyping
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
@@ -197,22 +197,22 @@ def ptprot(gpmod):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(TruePhenotyping)
+    assert_class_documentation(TruePhenotyping)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(TruePhenotyping, "__init__")
+    assert_method_isconcrete(TruePhenotyping, "__init__")
 
 def test_phenotype_is_concrete():
-    assert_concrete_method(TruePhenotyping, "phenotype")
+    assert_method_isconcrete(TruePhenotyping, "phenotype")
 
 def test_set_h2_is_concrete():
-    assert_concrete_method(TruePhenotyping, "set_h2")
+    assert_method_isconcrete(TruePhenotyping, "set_h2")
 
 def test_set_H2_is_concrete():
-    assert_concrete_method(TruePhenotyping, "set_H2")
+    assert_method_isconcrete(TruePhenotyping, "set_H2")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################

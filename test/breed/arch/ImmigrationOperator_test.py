@@ -1,9 +1,9 @@
 import pytest
 
 from pybrops.test.assert_python import not_raises
-from pybrops.test.assert_python import assert_docstring
-from pybrops.test.assert_python import assert_concrete_method
-from pybrops.test.assert_python import assert_concrete_function
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 from pybrops.breed.arch.ImmigrationOperator import ImmigrationOperator
 from pybrops.breed.arch.ImmigrationOperator import check_is_ImmigrationOperator
@@ -20,13 +20,13 @@ def arch():
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_docstring(ImmigrationOperator)
+    assert_class_documentation(ImmigrationOperator)
 
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_concrete_method(ImmigrationOperator, "__init__")
+    assert_method_isconcrete(ImmigrationOperator, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -42,7 +42,7 @@ def test_init_is_concrete():
 ################### Test for conrete class utility functions ###################
 ################################################################################
 def test_check_is_ImmigrationOperator_is_concrete():
-    assert_concrete_function(check_is_ImmigrationOperator)
+    assert_function_isconcrete(check_is_ImmigrationOperator)
 
 ################################################################################
 ######################### Test class utility functions #########################

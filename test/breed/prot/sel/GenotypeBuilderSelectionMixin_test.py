@@ -1,7 +1,7 @@
 import numpy
 import pytest
 from pybrops.breed.prot.sel.GenotypeBuilderSelection import GenotypeBuilderSelectionMixin
-from pybrops.test.assert_python import assert_concrete_property, assert_docstring, assert_mixin_class, not_raises
+from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, assert_class_ismixin, not_raises
 from .common_fixtures_large import *
 
 ################################ Test fixtures #################################
@@ -20,17 +20,17 @@ def selmix(
 
 ################### Test class abstract/concrete properties ####################
 def test_GenotypeBuilderSelectionMixin_is_mixin():
-    assert_mixin_class(GenotypeBuilderSelectionMixin)
+    assert_class_ismixin(GenotypeBuilderSelectionMixin)
 
 ############################## Test class docstring ############################
 def test_class_docstring():
-    assert_docstring(GenotypeBuilderSelectionMixin)
+    assert_class_documentation(GenotypeBuilderSelectionMixin)
 
 ############################ Test class properties #############################
 
 ### ntrait ###
 def test_GenotypeBuilderSelectionMixin_ntrait_is_concrete():
-    assert_concrete_property(GenotypeBuilderSelectionMixin, "ntrait")
+    assert_property_isconcrete(GenotypeBuilderSelectionMixin, "ntrait")
 
 def test_ntrait_fget(selmix, common_ntrait):
     assert selmix.ntrait == common_ntrait
@@ -69,7 +69,7 @@ def test_ntrait_fdel(selmix):
 
 ### nhaploblk ###
 def test_GenotypeBuilderSelectionMixin_nhaploblk_is_concrete():
-    assert_concrete_property(GenotypeBuilderSelectionMixin, "nhaploblk")
+    assert_property_isconcrete(GenotypeBuilderSelectionMixin, "nhaploblk")
 
 def test_nhaploblk_fget(selmix, common_nhaploblk):
     assert selmix.nhaploblk == common_nhaploblk
@@ -108,7 +108,7 @@ def test_nhaploblk_fdel(selmix):
 
 ### nbestfndr ###
 def test_GenotypeBuilderSelectionMixin_nbestfndr_is_concrete():
-    assert_concrete_property(GenotypeBuilderSelectionMixin, "nbestfndr")
+    assert_property_isconcrete(GenotypeBuilderSelectionMixin, "nbestfndr")
 
 def test_nbestfndr_fget(selmix, common_nbestfndr):
     assert selmix.nbestfndr == common_nbestfndr
