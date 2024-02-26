@@ -48,8 +48,106 @@ class RealSolution(Solution):
         
         Parameters
         ----------
+        ndecn : Integral
+            Number of decision variables.
+
+        decn_space : numpy.ndarray
+            A 1d array containing the set of available elements
+        
+        decn_space_lower : numpy.ndarray
+            A 1d array representing the lower bound of the decision variables.
+        
+        decn_space_upper : numpy.ndarray
+            A 1d array representing the upper bound of the decision variables.
+        
+        nobj : Integral
+            Number of objectives for the problem.
+        
+        obj_wt : numpy.ndarray, Real, None
+            Objective function weights. Weights from this vector are applied 
+            to objective function values via the Hadamard product. If values 
+            are ``1.0`` or ``-1.0``, this can be used to specify minimizing 
+            and maximizing objectives, respectively.
+
+            If ``obj_wt`` is ``numpy.ndarray``, then the array must be of shape 
+            ``(nobj,)``.
+
+            If ``obj_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``.
+
+            If ``obj_wt`` is ``None``, then the value ``1.0`` is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nobj,)``. This assumes that all 
+            objectives are to be minimized.
+        
+        nineqcv : Integral, None
+            Number of inequality constraint violation functions. This is 
+            equivalent to the vector length returned by the ``ineqcv_trans`` 
+            function. Must be ``Integral`` greater than or equal to zero.
+
+            If ``nineqcv`` is ``None``, then set to zero.
+
+        ineqcv_wt : numpy.ndarray, None
+            Inequality constraint violation function weights. Weights from this 
+            vector are applied to inequality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``ineqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(nineqcv,)``.
+
+            If ``ineqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(nineqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        neqcv : Integral, None
+            Number of equality constraint violations. This is equivalent to the 
+            vector length returned by the ``eqcv_trans`` function. Must be 
+            ``Integral`` greater than or equal to zero.
+        
+            If ``neqcv`` is ``None``, then set to zero.
+
+        eqcv_wt : numpy.ndarray, None
+            Equality constraint violation function weights. Weights from this 
+            vector are applied to equality constraint violation function 
+            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, 
+            this can be used to specify minimizing and maximizing constraints, 
+            respectively.
+
+            If ``eqcv_wt`` is ``numpy.ndarray``, then the array must be of 
+            shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``Real``, then the value is broadcast to a 
+            ``numpy.ndarray`` of shape ``(neqcv,)``.
+
+            If ``eqcv_wt`` is ``None``, then the value ``1.0`` is broadcast 
+            to a ``numpy.ndarray`` of shape ``(neqcv,)``. This assumes that 
+            all constraints are to be minimized.
+
+        nsoln : Integral
+            Number of solutions.
+        
+        soln_decn : numpy.ndarray
+            Solution decision vectors for each solution.
+            This matrix is of shape ``(nsoln,ndecn)``.
+        
+        soln_obj : numpy.ndarray
+            Solution objective vectors for each solution.
+            This matrix is of shape ``(nsoln,nobj)``.
+        
+        soln_ineqcv : numpy.ndarray
+            Solution inequality constraint violiation vectors for each solution.
+            This matrix is of shape ``(nsoln,nineqcv)``
+
+        soln_eqcv : numpy.ndarray
+            Solution equality constraint violiation vectors for each solution.
+            This matrix is of shape ``(nsoln,neqcv)``
+
         kwargs : dict
-            Additional keyword arguments used for cooperative inheritance.
+            Additional keyword arguments.
         """
         # order dependent assignments
         self.ndecn = ndecn

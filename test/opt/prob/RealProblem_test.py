@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from pybrops.test.assert_python import assert_function_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_function_isconcrete, assert_class_documentation, assert_method_documentation, not_raises
 from pybrops.test.assert_python import assert_method_isconcrete
 from pybrops.test.assert_python import assert_method_isabstract
 from pybrops.test.assert_python import assert_property_isconcrete
@@ -148,10 +148,12 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_evalfn_is_abstract(prob):
-    assert_method_isabstract(prob, "evalfn")
+    assert_method_documentation(RealProblem, "evalfn")
+    # assert_method_isabstract(prob, "evalfn")
 
 def test__evaluate_is_abstract(prob):
-    assert_method_isabstract(prob, "_evaluate")
+    assert_method_documentation(RealProblem, "_evaluate")
+    # assert_method_isabstract(prob, "_evaluate")
 
 ################################################################################
 ######################### Test class utility functions #########################

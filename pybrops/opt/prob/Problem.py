@@ -18,7 +18,10 @@ from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_nda
 from pybrops.core.error.error_value_python import check_is_gteq
 import pymoo.core.problem
 
-class Problem(pymoo.core.problem.Problem,metaclass=ABCMeta):
+class Problem(
+        pymoo.core.problem.Problem,
+        metaclass = ABCMeta
+    ):
     """
     A semi-abstract base class for representing all optimization problems.
     This basal semi-abstract class extends the PyMOO Problem class.

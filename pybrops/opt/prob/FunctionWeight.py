@@ -38,20 +38,48 @@ class FunctionWeight:
         self.wt = wt
         self.optimization_type = optimization_type
 
-    def __float__(self):
-        """Convert a weight to a floating point value."""
+    def __float__(self) -> float:
+        """
+        Convert a weight to a floating point value.
+        
+        Returns
+        -------
+        out : float
+            A weight as a floating point value.
+        """
         return float(self.wt)
 
-    def __int__(self):
-        """Convert a weight to an integer value."""
+    def __int__(self) -> int:
+        """
+        Convert a weight to an integer value.
+        
+        Returns
+        -------
+        out : int
+            A weight as an integer value.
+        """
         return int(self.wt)
     
     def __str__(self) -> str:
-        """Convert a weight to a string."""
+        """
+        Convert a weight to a string.
+        
+        Returns
+        -------
+        out : str
+            A weight represented as a string.
+        """
         return str(self.wt)
     
     def __repr__(self) -> str:
-        """Convert a weight to a string representation."""
+        """
+        Convert a weight to a string representation.
+        
+        Returns
+        -------
+        out : str
+            A weight represented as a string.
+        """
         return str(self.wt)
 
     ############################ Object Properties #############################
@@ -119,22 +147,50 @@ class MinimizingFunctionWeight(FunctionWeight):
             optimization_type = optimization_type
         )
 
-    def __float__(self):
-        """Convert a weight to a floating point value."""
+    def __float__(self) -> float:
+        """
+        Convert a weight to a floating point value.
+        
+        Returns
+        -------
+        out : float
+            A weight as a floating point value.
+        """
         out = float(self.wt)
         return out if self.optimization_type == "min" else -out
 
-    def __int__(self):
-        """Convert a weight to an integer value."""
+    def __int__(self) -> int:
+        """
+        Convert a weight to an integer value.
+        
+        Returns
+        -------
+        out : int
+            A weight as an integer value.
+        """
         out = int(self.wt)
         return out if self.optimization_type == "min" else -out
 
     def __str__(self) -> str:
-        """Convert a weight to a string."""
+        """
+        Convert a weight to a string.
+        
+        Returns
+        -------
+        out : str
+            A weight represented as a string.
+        """
         return str(self.wt if self.optimization_type == "min" else -self.wt)
     
     def __repr__(self) -> str:
-        """Convert a weight to a string representation."""
+        """
+        Convert a weight to a string representation.
+        
+        Returns
+        -------
+        out : str
+            A weight represented as a string.
+        """
         return str(self.wt if self.optimization_type == "min" else -self.wt)
 
 
@@ -176,19 +232,47 @@ class MaximizingFunctionWeight(FunctionWeight):
         )
 
     def __float__(self) -> float:
-        """Convert a weight to a floating point value."""
+        """
+        Convert a weight to a floating point value.
+        
+        Returns
+        -------
+        out : float
+            A weight as a floating point value.
+        """
         out = float(self.wt)
         return -out if self.optimization_type == "min" else out
 
     def __int__(self) -> int:
-        """Convert a weight to an integer value."""
+        """
+        Convert a weight to an integer value.
+        
+        Returns
+        -------
+        out : int
+            A weight as an integer value.
+        """
         out = int(self.wt)
         return -out if self.optimization_type == "min" else out
 
     def __str__(self) -> str:
-        """Convert a weight to a string."""
+        """
+        Convert a weight to a string.
+        
+        Returns
+        -------
+        out : str
+            A weight represented as a string.
+        """
         return str(-self.wt if self.optimization_type == "min" else self.wt)
     
     def __repr__(self) -> str:
-        """Convert a weight to a string representation."""
+        """
+        Convert a weight to a string representation.
+        
+        Returns
+        -------
+        out : str
+            A weight represented as a string.
+        """
         return str(-self.wt if self.optimization_type == "min" else self.wt)
