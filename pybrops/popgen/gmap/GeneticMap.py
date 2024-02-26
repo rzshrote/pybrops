@@ -9,14 +9,19 @@ __all__ = [
 
 from abc import ABCMeta, abstractmethod
 from numbers import Integral
-from typing import Optional, Union
+from typing import Optional, Sequence, Union
 import numpy
+from numpy.typing import ArrayLike
 import pandas
 from pybrops.core.io.CSVInputOutput import CSVInputOutput
 
 from pybrops.core.io.PandasInputOutput import PandasInputOutput
 
-class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
+class GeneticMap(
+        PandasInputOutput,
+        CSVInputOutput,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for genetic map objects.
 
@@ -31,8 +36,17 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
 
     ########################## Special Object Methods ##########################
     @abstractmethod
-    def __len__(self):
-        """Get the number of markers in the genetic map."""
+    def __len__(
+            self
+        ) -> int:
+        """
+        Get the number of markers in the genetic map.
+        
+        Returns
+        -------
+        out : int
+            The number of markers in the genetic map.
+        """
         raise NotImplementedError("method is abstract")
 
     def __repr__(
@@ -250,7 +264,7 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
     @abstractmethod
     def lexsort(
             self, 
-            keys, 
+            keys: Union[tuple,numpy.ndarray,None], 
             **kwargs: dict
         ) -> numpy.ndarray:
         """
@@ -274,7 +288,7 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
     @abstractmethod
     def reorder(
             self, 
-            indices, 
+            indices: Union[numpy.ndarray,Sequence], 
             **kwargs: dict
         ) -> None:
         """
@@ -293,7 +307,7 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
     @abstractmethod
     def sort(
             self, 
-            keys, 
+            keys: Union[tuple,numpy.ndarray,None], 
             **kwargs: dict
         ) -> None:
         """
@@ -367,7 +381,7 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
     @abstractmethod
     def remove(
             self, 
-            indices, 
+            indices: Union[int,slice,Sequence], 
             **kwargs: dict
         ) -> None:
         """
@@ -392,7 +406,7 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
     @abstractmethod
     def select(
             self, 
-            indices, 
+            indices: ArrayLike, 
             **kwargs: dict
         ) -> None:
         """
@@ -520,7 +534,14 @@ class GeneticMap(PandasInputOutput,CSVInputOutput,metaclass=ABCMeta):
     def has_spline(
             self
         ) -> bool:
-        """Return whether or not the GeneticMap has a built spline."""
+        """
+        Return whether or not the GeneticMap has a built spline.
+        
+        Returns
+        -------
+        out : bool
+            Whether the GeneticMap has a spline built.
+        """
         raise NotImplementedError("method is abstract")
 
     @abstractmethod

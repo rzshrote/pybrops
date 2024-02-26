@@ -147,8 +147,15 @@ class StandardGeneticMap(GeneticMap):
         if auto_build_spline:
             self.build_spline(self.spline_kind, self.spline_fill_value)
 
-    def __len__(self):
-        """Get the number of markers in the genetic map."""
+    def __len__(self) -> int:
+        """
+        Get the number of markers in the genetic map.
+        
+        Returns
+        -------
+        out : int
+            The number of markers in the genetic map.
+        """
         return len(self._vrnt_genpos)
 
     ################## GeneticMap copying ##################
@@ -1351,6 +1358,18 @@ class StandardGeneticMap(GeneticMap):
             or ndarray, regardless of shape) is taken to be a single array-like
             argument meant to be used for both bounds as below,
             above = fill_value, fill_value.
+
+        vrnt_genpos_units : str, default = "M"
+            Units in which genetic positions in the ``vrnt_genpos`` array are 
+            stored. Options are listed below and are case-sensitive:
+            
+            - ``"M"`` - genetic position units are in Morgans
+            - ``"Morgans"`` - genetic position units are in Morgans
+            - ``"cM"`` - genetic position units are in centiMorgans
+            - ``"centiMorgans"`` - genetic position units are in centiMorgans
+            
+            Internally, all genetic positions are stored in Morgans. Providing 
+            the units of the input  
 
         auto_group : bool
             Whether to automatically sort and group variants into chromosome groups.

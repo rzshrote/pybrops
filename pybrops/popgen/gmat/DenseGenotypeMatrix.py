@@ -29,7 +29,11 @@ from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.popgen.gmap.DenseGeneticMappableMatrix import DenseGeneticMappableMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,GenotypeMatrix):
+class DenseGenotypeMatrix(
+        DenseTaxaVariantMatrix,
+        DenseGeneticMappableMatrix,
+        GenotypeMatrix,
+    ):
     """
     A concrete class for unphased genoypte matrix objects.
 
@@ -109,6 +113,8 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             ploidy of the reproductive habit. If the organism represented is an
             allopolyploid (e.g. hexaploid wheat), the ploidy is 2 since it
             reproduces in a diploid manner.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # set ploidy
         check_is_int(ploidy, "ploidy")
@@ -550,6 +556,10 @@ class DenseGenotypeMatrix(DenseTaxaVariantMatrix,DenseGeneticMappableMatrix,Geno
             Sequential variant crossover probabilities to insert into the Matrix.
         vrnt_hapgrp : numpy.ndarray
             Variant haplotype labels to insert into the Matrix.
+        vrnt_hapalt : numpy.ndarray
+            Variant alternative haplotype labels to insert into the Matrix.
+        vrnt_hapref : numpy.ndarray
+            Variant reference haplotype labels to insert into the Matrix.
         vrnt_mask : numpy.ndarray
             Variant mask to insert into the Matrix.
         kwargs : dict

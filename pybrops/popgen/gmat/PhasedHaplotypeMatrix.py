@@ -27,6 +27,15 @@ class PhasedHaplotypeMatrix(HaplotypeMatrix,PhasedTaxaVariantMatrix,metaclass=AB
 
 ################################## Utilities ###################################
 def check_is_PhasedHaplotypeMatrix(v: object, vname: str) -> None:
-    """Raise TypeError if object is not a PhasedHaplotypeMatrix"""
+    """
+    Check if object is of type ``PhasedHaplotypeMatrix``. Otherwise raise ``TypeError``.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in ``TypeError`` message.
+    """
     if not isinstance(v, PhasedHaplotypeMatrix):
         raise TypeError("'%s' must be a PhasedHaplotypeMatrix." % vname)

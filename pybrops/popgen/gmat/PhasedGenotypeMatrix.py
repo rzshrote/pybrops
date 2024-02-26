@@ -13,7 +13,11 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 #       PhasedTaxaVariantMatrix extends TaxaVariantMatrix
 # I think a situation is caused where TaxaVariantMatrix is needed to be imported
 # before itself due to its ranking in the MRO algorithm for multiple inheritance
-class PhasedGenotypeMatrix(GenotypeMatrix,PhasedTaxaVariantMatrix,metaclass=ABCMeta):
+class PhasedGenotypeMatrix(
+        GenotypeMatrix,
+        PhasedTaxaVariantMatrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for phased genoypte matrix objects.
 
@@ -28,6 +32,15 @@ class PhasedGenotypeMatrix(GenotypeMatrix,PhasedTaxaVariantMatrix,metaclass=ABCM
 
 ################################## Utilities ###################################
 def check_is_PhasedGenotypeMatrix(v: object, vname: str) -> None:
-    """Raise TypeError if object is not a PhasedGenotypeMatrix"""
+    """
+    Check if object is of type ``PhasedGenotypeMatrix``. Otherwise raise ``TypeError``.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in ``TypeError`` message.
+    """
     if not isinstance(v, PhasedGenotypeMatrix):
         raise TypeError("'%s' must be a PhasedGenotypeMatrix." % vname)

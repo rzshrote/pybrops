@@ -1,6 +1,6 @@
 import pytest
 
-from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_classmethod_isabstract, not_raises
 from pybrops.test.assert_python import assert_class_documentation
 from pybrops.test.assert_python import assert_method_isabstract
 from pybrops.test.assert_python import assert_method_isconcrete
@@ -26,8 +26,6 @@ def test_class_docstring():
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
-    assert_method_isconcrete(CoancestryMatrix, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -79,16 +77,16 @@ def test_to_hdf5_is_abstract():
     assert_method_isabstract(CoancestryMatrix, "to_hdf5")
 
 def test_from_pandas_is_abstract():
-    assert_method_isabstract(CoancestryMatrix, "from_pandas")
+    assert_classmethod_isabstract(CoancestryMatrix, "from_pandas")
 
 def test_from_csv_is_abstract():
-    assert_method_isabstract(CoancestryMatrix, "from_csv")
+    assert_classmethod_isabstract(CoancestryMatrix, "from_csv")
 
 def test_from_hdf5_is_abstract():
-    assert_method_isabstract(CoancestryMatrix, "from_hdf5")
+    assert_classmethod_isabstract(CoancestryMatrix, "from_hdf5")
 
 def test_from_gmat_is_abstract():
-    assert_method_isabstract(CoancestryMatrix, "from_gmat")
+    assert_classmethod_isabstract(CoancestryMatrix, "from_gmat")
 
 ################################################################################
 ################## Test for concrete class utility functions ###################

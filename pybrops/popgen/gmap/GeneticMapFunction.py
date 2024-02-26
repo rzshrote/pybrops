@@ -211,6 +211,15 @@ class GeneticMapFunction(metaclass=ABCMeta):
 
 ################################## Utilities ###################################
 def check_is_GeneticMapFunction(v: object, vname: str) -> None:
-    """Raise TypeError if object is not a GeneticMapFunction"""
+    """
+    Check if object is of type GeneticMapFunction. Otherwise raise TypeError.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in TypeError message.
+    """
     if not isinstance(v, GeneticMapFunction):
-        raise TypeError("variable '{0}' must be a GeneticMapFunction".format(vname))
+        raise TypeError("'{0}' must be of type GeneticMapFunction.".format(vname))

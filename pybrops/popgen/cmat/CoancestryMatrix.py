@@ -20,12 +20,12 @@ from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 class CoancestryMatrix(
-    SquareTaxaMatrix,
-    PandasInputOutput,
-    CSVInputOutput,
-    HDF5InputOutput,
-    metaclass=ABCMeta,
-):
+        SquareTaxaMatrix,
+        PandasInputOutput,
+        CSVInputOutput,
+        HDF5InputOutput,
+        metaclass=ABCMeta,
+    ):
     """
     An abstract class for coancestry matrices. Coancestry matrices are square.
     Coancestry matrices are related to kinship matrices in the following manner:
@@ -87,6 +87,11 @@ class CoancestryMatrix(
             A tuple of matrix indices to access the coancestry.
         kwargs : dict
             Additional keyword arguments.
+        
+        Returns
+        -------
+        out : Real
+            The coancestry between individuals.
         """
         raise NotImplementedError("method is abstract")
 
@@ -105,6 +110,11 @@ class CoancestryMatrix(
             A tuple of matrix indices to access the kinship.
         kwargs : dict
             Additional keyword arguments.
+        
+        Returns
+        -------
+        out : Real
+            The kinship between individuals.
         """
         raise NotImplementedError("method is abstract")
     

@@ -170,8 +170,15 @@ class ExtendedGeneticMap(GeneticMap):
         if auto_build_spline:
             self.build_spline(**kwargs)
 
-    def __len__(self):
-        """Get the number of markers in the genetic map."""
+    def __len__(self) -> int:
+        """
+        Get the number of markers in the genetic map.
+        
+        Returns
+        -------
+        out : int
+            The number of markers in the genetic map.
+        """
         return len(self._vrnt_genpos)
 
     ################## GeneticMap copying ##################
@@ -1306,7 +1313,7 @@ class ExtendedGeneticMap(GeneticMap):
             Must be sorted in ascending order jointly with ``vrnt_phypos``.
 
         vrnt_phypos : numpy.ndarray
-            A 1D array of variant genetic positions.
+            A 1D array of variant physical positions.
             Must be sorted in ascending order jointly with ``vrnt_chrgrp``.
 
         ast : Integral, None
@@ -1353,8 +1360,8 @@ class ExtendedGeneticMap(GeneticMap):
             csp: Optional[Integral] = None
         ) -> numpy.ndarray:
         """
-        Calculate pairwise genetic distances using genetic positions.
-        Requires ``vrnt_chrgrp`` and ``vrnt_genpos`` to have been sorted 
+        Calculate pairwise genetic distances using physical positions.
+        Requires ``vrnt_chrgrp`` and ``vrnt_phypos`` to have been sorted 
         jointly in ascending order.
 
         Parameters
@@ -1363,8 +1370,8 @@ class ExtendedGeneticMap(GeneticMap):
             A 1D array of variant chromosome groups.
             Must be sorted in ascending order jointly with ``vrnt_genpos``.
 
-        vrnt_genpos : numpy.ndarray
-            A 1D array of variant genetic positions.
+        vrnt_phypos : numpy.ndarray
+            A 1D array of variant physical positions.
             Must be sorted in ascending order jointly with ``vrnt_chrgrp``.
 
         rst : Integral, None
@@ -1661,6 +1668,18 @@ class ExtendedGeneticMap(GeneticMap):
             argument meant to be used for both bounds as below,
             above = fill_value, fill_value.
 
+        vrnt_genpos_units : str, default = "M"
+            Units in which genetic positions in the ``vrnt_genpos`` array are 
+            stored. Options are listed below and are case-sensitive:
+            
+            - ``"M"`` - genetic position units are in Morgans
+            - ``"Morgans"`` - genetic position units are in Morgans
+            - ``"cM"`` - genetic position units are in centiMorgans
+            - ``"centiMorgans"`` - genetic position units are in centiMorgans
+            
+            Internally, all genetic positions are stored in Morgans. Providing 
+            the units of the input  
+
         auto_group : bool
             Whether to automatically sort and group variants into chromosome groups.
         
@@ -1862,6 +1881,18 @@ class ExtendedGeneticMap(GeneticMap):
             or ndarray, regardless of shape) is taken to be a single array-like
             argument meant to be used for both bounds as below,
             above = fill_value, fill_value.
+
+        vrnt_genpos_units : str, default = "M"
+            Units in which genetic positions in the ``vrnt_genpos`` array are 
+            stored. Options are listed below and are case-sensitive:
+            
+            - ``"M"`` - genetic position units are in Morgans
+            - ``"Morgans"`` - genetic position units are in Morgans
+            - ``"cM"`` - genetic position units are in centiMorgans
+            - ``"centiMorgans"`` - genetic position units are in centiMorgans
+            
+            Internally, all genetic positions are stored in Morgans. Providing 
+            the units of the input  
 
         auto_group : bool
             Whether to automatically sort and group variants into chromosome groups.

@@ -73,7 +73,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,met
         Get mat in a specific format type.
 
         Parameters
-        ---------
+        ----------
         format : str
             Desired output format. Options are "{0,1,2}", "{-1,0,1}", "{-1,m,1}".
 

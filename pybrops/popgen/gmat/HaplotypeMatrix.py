@@ -259,6 +259,15 @@ class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput,metaclass=ABCMeta):
 
 ################################## Utilities ###################################
 def check_is_HaplotypeMatrix(v: object, vname: str) -> None:
-    """Raise TypeError if object is not a HaplotypeMatrix"""
+    """
+    Check if object is of type ``HaplotypeMatrix``. Otherwise raise ``TypeError``.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in ``TypeError`` message.
+    """
     if not isinstance(v, HaplotypeMatrix):
         raise TypeError("'%s' must be a HaplotypeMatrix." % vname)

@@ -3,7 +3,7 @@ import numpy
 import pytest
 from os.path import isfile
 from pybrops.popgen.gmap.StandardGeneticMap import StandardGeneticMap, check_is_StandardGeneticMap
-from pybrops.test.assert_python import assert_function_isconcrete, assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_classmethod_isconcrete, assert_function_isconcrete, assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, not_raises
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -751,7 +751,7 @@ def test_to_csv(gmap):
 
 ### from_pandas()
 def test_from_pandas_is_concrete():
-    assert_method_isconcrete(StandardGeneticMap, "from_pandas")
+    assert_classmethod_isconcrete(StandardGeneticMap, "from_pandas")
 
 def test_from_pandas(gmap):
     df = gmap.to_pandas()
@@ -760,7 +760,7 @@ def test_from_pandas(gmap):
 
 ### from_csv()
 def test_from_csv_is_concrete():
-    assert_method_isconcrete(StandardGeneticMap, "from_csv")
+    assert_classmethod_isconcrete(StandardGeneticMap, "from_csv")
 
 def test_from_csv(gmap):
     fin = "genetic_map.csv"

@@ -2,7 +2,7 @@ import pytest
 import numpy
 import os
 from os.path import isfile
-from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_classmethod_isabstract, assert_classmethod_isconcrete, not_raises
 from pybrops.test.assert_python import assert_class_documentation
 from pybrops.test.assert_python import assert_method_isabstract
 from pybrops.test.assert_python import assert_method_isconcrete
@@ -49,7 +49,7 @@ def test_class_docstring():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_from_gmat_is_abstract():
-    assert_method_isabstract(DenseCoancestryMatrix, "from_gmat")
+    assert_classmethod_isabstract(DenseCoancestryMatrix, "from_gmat")
 
 ################################################################################
 ############################ Test Class Properties #############################
@@ -385,7 +385,7 @@ def test_to_hdf5(cmat):
 
 ### from_pandas
 def test_from_pandas_is_concrete():
-    assert_method_isconcrete(DenseCoancestryMatrix, "from_pandas")
+    assert_classmethod_isconcrete(DenseCoancestryMatrix, "from_pandas")
 
 def test_from_pandas(cmat):
     # None values
@@ -528,7 +528,7 @@ def test_from_pandas_taxa(cmat):
 
 ### from_csv
 def test_from_csv_is_concrete():
-    assert_method_isconcrete(DenseCoancestryMatrix, "from_csv")
+    assert_classmethod_isconcrete(DenseCoancestryMatrix, "from_csv")
 
 def test_from_csv(cmat):
     filename = "saved_coancestry_matrix.csv"
@@ -538,7 +538,7 @@ def test_from_csv(cmat):
 
 ### from_hdf5
 def test_from_hdf5_is_concrete():
-    assert_method_isconcrete(DenseCoancestryMatrix, "from_hdf5")
+    assert_classmethod_isconcrete(DenseCoancestryMatrix, "from_hdf5")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################

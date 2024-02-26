@@ -2,7 +2,7 @@ import pytest
 import numpy
 import copy
 
-from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_classmethod_isconcrete, not_raises
 from pybrops.test.assert_python import assert_class_documentation
 from pybrops.test.assert_python import assert_method_isabstract
 from pybrops.test.assert_python import assert_function_isabstract
@@ -206,10 +206,10 @@ def test_select_vrnt_is_concrete():
     assert_method_isconcrete(DenseGenotypeMatrix, "select_vrnt")
 
 def test_concat_taxa_is_concrete():
-    assert_method_isconcrete(DenseGenotypeMatrix, "concat_taxa")
+    assert_classmethod_isconcrete(DenseGenotypeMatrix, "concat_taxa")
 
 def test_concat_vrnt_is_concrete():
-    assert_method_isconcrete(DenseGenotypeMatrix, "concat_vrnt")
+    assert_classmethod_isconcrete(DenseGenotypeMatrix, "concat_vrnt")
 
 def test_append_taxa_is_concrete():
     assert_method_isconcrete(DenseGenotypeMatrix, "append_taxa")

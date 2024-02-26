@@ -33,8 +33,17 @@ class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
         Parameters
         ----------
         mat : numpy.ndarray
+            Coancestry matrix of shape ``(n,n)``.
+
+            Where:
+
+            - ``n`` is the number of taxa.
         taxa : numpy.ndarray
+            Taxa names.
         taxa_grp : numpy.ndarray
+            Taxa groupings.
+        kwargs : dict
+            Additional keyword arguments.
         """
         super(DenseMolecularCoancestryMatrix, self).__init__(
             mat = mat,

@@ -40,7 +40,10 @@ from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
 from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 
-class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
+class DenseCoancestryMatrix(
+        DenseSquareTaxaMatrix,
+        CoancestryMatrix,
+    ):
     """
     A concrete class for dense coancestry matrices. Coancestry matrices are square.
 
@@ -68,8 +71,10 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             Where:
 
             - ``n`` is the number of taxa.
-        taxa : numpy.ndarray, None
-        taxa_grp : numpy.ndarray, None
+        taxa : numpy.ndarray
+            Taxa names.
+        taxa_grp : numpy.ndarray
+            Taxa groupings.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -178,7 +183,11 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             return 0.5 * self._mat
 
     ############## Coancestry/kinship Methods ##############
-    def coancestry(self, *args: tuple, **kwargs: dict):
+    def coancestry(
+            self, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> Real:
         """
         Retrieve the coancestry between individuals.
 
@@ -188,10 +197,19 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             A tuple of matrix indices to access the coancestry.
         kwargs : dict
             Additional keyword arguments.
+        
+        Returns
+        -------
+        out : Real
+            The coancestry between individuals.
         """
         return self._mat[args]
 
-    def kinship(self, *args: tuple, **kwargs: dict):
+    def kinship(
+            self, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> Real:
         """
         Retrieve the kinship between individuals.
 
@@ -201,19 +219,24 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
             A tuple of matrix indices to access the kinship.
         kwargs : dict
             Additional keyword arguments.
+        
+        Returns
+        -------
+        out : Real
+            The kinship between individuals.
         """
         return 0.5 * self._mat[args]
 
     def is_positive_semidefinite(
             self, 
-            eigvaltol = 2e-14
+            eigvaltol: Real = 2e-14
         ) -> bool:
         """
         Determine whether the coancestry matrix is positive semidefinite.
         
         Parameters
         ----------
-        eigvaltol : float
+        eigvaltol : Real
             Eigenvalue tolerance for determining positive semidefiniteness.
             If provided eigenvalue tolerance is less than zero, the tolerance
             is set to 0.0.
@@ -230,10 +253,10 @@ class DenseCoancestryMatrix(DenseSquareTaxaMatrix,CoancestryMatrix):
     
     def apply_jitter(
             self, 
-            eigvaltol = 2e-14, 
-            minjitter = 1e-10, 
-            maxjitter = 1e-6, 
-            nattempt = 100
+            eigvaltol: Real = 2e-14, 
+            minjitter: Real = 1e-10, 
+            maxjitter: Real = 1e-6, 
+            nattempt: Integral = 100
         ) -> bool:
         """
         Add a random jitter value to the diagonal of the coancestry matrix until 
