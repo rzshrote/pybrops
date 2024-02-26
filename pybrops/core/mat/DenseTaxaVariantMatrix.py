@@ -17,7 +17,11 @@ from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 
-class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatrix):
+class DenseTaxaVariantMatrix(
+        DenseTaxaMatrix,
+        DenseVariantMatrix,
+        TaxaVariantMatrix
+    ):
     """
     A concrete class for dense matrices with taxa and variant metadata.
 
@@ -296,6 +300,14 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         vrnt_hapgrp : numpy.ndarray
             Variant haplotype labels to adjoin to the Matrix.
             If values is a DenseHaplotypeMatrix that has a non-None
+            vrnt_hapgrp field, providing this argument overwrites the field.
+        vrnt_hapalt : numpy.ndarray
+            Variant alternative haplotype labels to adjoin to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_hapgrp field, providing this argument overwrites the field.
+        vrnt_hapref : numpy.ndarray
+            Variant reference haplotype labels to adjoin to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
             vrnt_hapgrp field, providing this argument overwrites the field.
         vrnt_mask : numpy.ndarray
             Variant mask to adjoin to the Matrix.
@@ -652,6 +664,14 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Variant haplotype labels to insert into the Matrix.
             If values is a DenseTaxaVariantMatrix that has a non-None
             vrnt_hapgrp field, providing this argument overwrites the field.
+        vrnt_hapalt : numpy.ndarray
+            Variant alternative haplotype labels to insert into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_hapgrp field, providing this argument overwrites the field.
+        vrnt_hapref : numpy.ndarray
+            Variant reference haplotype labels to insert into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_hapgrp field, providing this argument overwrites the field.
         vrnt_mask : numpy.ndarray
             Variant mask to insert into the Matrix.
             If values is a DenseTaxaVariantMatrix that has a non-None
@@ -791,6 +811,10 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Sequential variant crossover probabilities to insert into the Matrix.
         vrnt_hapgrp : numpy.ndarray
             Variant haplotype labels to insert into the Matrix.
+        vrnt_hapalt : numpy.ndarray
+            Variant alternative haplotype labels to insert into the Matrix.
+        vrnt_hapref : numpy.ndarray
+            Variant reference haplotype labels to insert into the Matrix.
         vrnt_mask : numpy.ndarray
             Variant mask to insert into the Matrix.
         kwargs : dict
@@ -1095,6 +1119,53 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Must be of shape (m, n, p)
         axis : int
             The axis along which values are appended.
+        taxa : numpy.ndarray
+            Taxa names to append to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to append to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        vrnt_chrgrp : numpy.ndarray
+            Variant chromosome groups to append to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_chrgrp field, providing this argument overwrites the field.
+        vrnt_phypos : numpy.ndarray
+            Variant chromosome physical positions to append to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_phypos field, providing this argument overwrites the field.
+        vrnt_name : numpy.ndarray
+            Variant names to append to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_name field, providing this argument overwrites the field.
+        vrnt_genpos : numpy.ndarray
+            Variant chromosome genetic positions to append to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_genpos field, providing this argument overwrites the field.
+        vrnt_xoprob : numpy.ndarray
+            Sequential variant crossover probabilities to append to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_xoprob field, providing this argument overwrites the field.
+        vrnt_hapgrp : numpy.ndarray
+            Variant haplotype labels to append to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_hapgrp field, providing this argument overwrites the field.
+        vrnt_hapalt : numpy.ndarray
+            Variant alternative haplotype labels to append to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_hapgrp field, providing this argument overwrites the field.
+        vrnt_hapref : numpy.ndarray
+            Variant reference haplotype labels to append to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_hapgrp field, providing this argument overwrites the field.
+        vrnt_mask : numpy.ndarray
+            Variant mask to append to the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_mask field, providing this argument overwrites the field.
+        kwargs : dict
+            Additional keyword arguments.
+
         """
         # get axis
         axis = get_axis(axis, self.mat_ndim)
@@ -1182,6 +1253,50 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
+        taxa : numpy.ndarray
+            Taxa names to incorporate into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to incorporate into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        vrnt_chrgrp : numpy.ndarray
+            Variant chromosome groups to incorporate into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_chrgrp field, providing this argument overwrites the field.
+        vrnt_phypos : numpy.ndarray
+            Variant chromosome physical positions to incorporate into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_phypos field, providing this argument overwrites the field.
+        vrnt_name : numpy.ndarray
+            Variant names to incorporate into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_name field, providing this argument overwrites the field.
+        vrnt_genpos : numpy.ndarray
+            Variant chromosome genetic positions to incorporate into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_genpos field, providing this argument overwrites the field.
+        vrnt_xoprob : numpy.ndarray
+            Sequential variant crossover probabilities to incorporate into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_xoprob field, providing this argument overwrites the field.
+        vrnt_hapgrp : numpy.ndarray
+            Variant haplotype labels to incorporate into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_hapgrp field, providing this argument overwrites the field.
+        vrnt_hapalt : numpy.ndarray
+            Variant alternative haplotype labels to incorporate into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_hapgrp field, providing this argument overwrites the field.
+        vrnt_hapref : numpy.ndarray
+            Variant reference haplotype labels to incorporate into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_hapgrp field, providing this argument overwrites the field.
+        vrnt_mask : numpy.ndarray
+            Variant mask to incorporate into the Matrix.
+            If values is a DenseTaxaVariantMatrix that has a non-None
+            vrnt_mask field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -1232,6 +1347,8 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_phypos as secondary key.
         axis : int
             The axis of the Matrix over which to sort values.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------
@@ -1294,6 +1411,8 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
             vrnt_phypos as secondary key.
         axis : int
             The axis over which to sort values.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -1368,6 +1487,13 @@ class DenseTaxaVariantMatrix(DenseTaxaMatrix,DenseVariantMatrix,TaxaVariantMatri
         ) -> bool:
         """
         Determine whether the Matrix has been sorted and grouped.
+
+        Parameters
+        ----------
+        axis : int
+            Axis along which to determine if is grouped.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------

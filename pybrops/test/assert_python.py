@@ -124,6 +124,15 @@ def assert_function_documentation(fn: Callable) -> None:
     # get method return
     fn_return = fn_signature.return_annotation
 
+    # test each parameter for type hint
+    for param, hint in fn_parameters.items():
+        if hint.annotation is hint.empty:
+            raise AssertionError("in function ``{0}``: parameter ``{1}`` does not have a type hint".format(fn.__name__,param))
+
+    # test the return type hint
+    if fn_return is fn_signature.empty:
+        raise AssertionError("in function ``{0}``: return type hint not present".format(fn.__name__))
+
     # make sure our docstring has a Parameters section
     if len(fn_parameters) > 0:
         if not re.search(r'Parameters\n\s*----------', fn.__doc__):
@@ -133,11 +142,6 @@ def assert_function_documentation(fn: Callable) -> None:
     if fn_return is not None:
         if not re.search(r'Returns\n\s*-------', fn.__doc__):
             raise AssertionError("in function ``{0}``: no ``Returns`` section in docstring".format(fn.__name__))
-
-    # test each parameter for type hint
-    for param, hint in fn_parameters.items():
-        if hint.annotation is hint.empty:
-            raise AssertionError("in function ``{0}``: parameter ``{1}`` does not have a type hint".format(fn.__name__,param))
 
     # make sure our parameters are in the docstring
     for param in fn_parameters.keys():
@@ -273,6 +277,15 @@ def assert_method_documentation(obj: type, name: str) -> None:
     # get method return
     met_return = met_signature.return_annotation
 
+    # test each parameter for type hint
+    for param, hint in met_parameters.items():
+        if hint.annotation is hint.empty:
+            raise AssertionError("in method ``{0}.{1}``: parameter ``{2}`` does not have a type hint".format(obj.__name__,met.__name__,param))
+
+    # test the return type hint
+    if met_return is met_signature.empty:
+        raise AssertionError("in method ``{0}.{1}``: return type hint not present".format(obj.__name__,met.__name__))
+
     # make sure our docstring has a Parameters section
     if len(met_parameters) > 0:
         if not re.search(r'Parameters\n\s*----------', met.__doc__):
@@ -282,11 +295,6 @@ def assert_method_documentation(obj: type, name: str) -> None:
     if met_return is not None:
         if not re.search(r'Returns\n\s*-------', met.__doc__):
             raise AssertionError("in method ``{0}.{1}``: no ``Returns`` section in docstring".format(obj.__name__,met.__name__))
-
-    # test each parameter for type hint
-    for param, hint in met_parameters.items():
-        if hint.annotation is hint.empty:
-            raise AssertionError("in method ``{0}.{1}``: parameter ``{2}`` does not have a type hint".format(obj.__name__,met.__name__,param))
 
     # make sure our parameters are in the docstring
     for param in met_parameters.keys():
@@ -441,6 +449,15 @@ def assert_classmethod_documentation(obj: type, name: str) -> None:
     # get classmethod return
     met_return = met_signature.return_annotation
 
+    # test each parameter for type hint
+    for param, hint in met_parameters.items():
+        if hint.annotation is hint.empty:
+            raise AssertionError("in classmethod ``{0}.{1}``: parameter ``{2}`` does not have a type hint".format(obj.__name__,met.__name__,param))
+
+    # test the return type hint
+    if met_return is met_signature.empty:
+        raise AssertionError("in classmethod ``{0}.{1}``: return type hint not present".format(obj.__name__,met.__name__))
+
     # make sure our docstring has a Parameters section
     if len(met_parameters) > 0:
         if not re.search(r'Parameters\n\s*----------', met.__doc__):
@@ -450,11 +467,6 @@ def assert_classmethod_documentation(obj: type, name: str) -> None:
     if met_return is not None:
         if not re.search(r'Returns\n\s*-------', met.__doc__):
             raise AssertionError("in classmethod ``{0}.{1}``: no ``Returns`` section in docstring".format(obj.__name__,met.__name__))
-
-    # test each parameter for type hint
-    for param, hint in met_parameters.items():
-        if hint.annotation is hint.empty:
-            raise AssertionError("in classmethod ``{0}.{1}``: parameter ``{2}`` does not have a type hint".format(obj.__name__,met.__name__,param))
 
     # make sure our parameters are in the docstring
     for param in met_parameters.keys():
@@ -645,7 +657,12 @@ def assert_property_documentation(obj: type, name: str) -> None:
             # test each parameter for type hint
             for param, hint in met_parameters.items():
                 if hint.annotation is hint.empty:
-                    raise AssertionError("in property ``{0}.{1}.{2}``: parameter ``{3}`` does not have a type hint".format(obj.__name__,name,met.__name__,param))
+                    raise AssertionError("in property ``{0}.{1}.{2}``: parameter ``{3}`` does not have a type hint".format(obj.__name__,name,propmet,param))
+
+            # test the return type hint
+            if met_return is met_signature.empty:
+                raise AssertionError("in property ``{0}.{1}.{2}``: return type hint not present".format(obj.__name__,name,propmet))
+
 
 def assert_property_raises_NotImplementedError(obj: type, name: str) -> None:
     """

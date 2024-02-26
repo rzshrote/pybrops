@@ -723,6 +723,12 @@ class DenseSquareTraitMatrix(
             Must be of shape (m, n, p)
         axis : int
             The axis along which values are appended.
+        trait : numpy.ndarray
+            Trait names to append to the Matrix.
+            If values is a DenseSquareTraitMatrix that has a non-None
+            trait field, providing this argument overwrites the field.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # get axis
         axis = get_axis(axis, self.mat_ndim)
@@ -752,6 +758,8 @@ class DenseSquareTraitMatrix(
             Values are appended to append to the matrix.
         trait : numpy.ndarray
             Trait names to append to the Matrix.
+            If values is a DenseSquareTraitMatrix that has a non-None
+            trait field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -879,6 +887,10 @@ class DenseSquareTraitMatrix(
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
+        trait : numpy.ndarray
+            Trait names to incorporate into the Matrix.
+            If values is a DenseSquareTraitMatrix that has a non-None
+            trait field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -959,6 +971,8 @@ class DenseSquareTraitMatrix(
             sort key.
         axis : int
             The axis of the Matrix over which to sort values.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------
@@ -1043,6 +1057,8 @@ class DenseSquareTraitMatrix(
             Indices of where to place elements.
         axis : int
             The axis over which to reorder values.
+        kwargs : dict
+            Additional keyword arguments.
         """
         axis = get_axis(axis, self.mat_ndim)                   # transform axis number to an index
 
@@ -1093,6 +1109,8 @@ class DenseSquareTraitMatrix(
             sort key.
         axis : int
             The axis over which to sort values.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)

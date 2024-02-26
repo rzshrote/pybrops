@@ -235,7 +235,7 @@ class DenseSquareTaxaSquareTraitMatrix(
         Returns
         -------
         out : DenseSquareTraitMatrix
-            A copy of DenseSquareTraitMatrix with values appended to axis. Note that adjoin does
+            A copy of DenseSquareTraitMatrix with values adjoined to axis. Note that adjoin does
             not occur in-place: a new DenseSquareTraitMatrix is allocated and filled.
         """
         axis = get_axis(axis, self.mat_ndim)    # get axis
@@ -256,7 +256,7 @@ class DenseSquareTaxaSquareTraitMatrix(
                 **kwargs
             )
         else:
-            raise ValueError("cannot append along axis {0}".format(axis))
+            raise ValueError("cannot adjoin along axis {0}".format(axis))
 
         return out
 
@@ -325,18 +325,26 @@ class DenseSquareTaxaSquareTraitMatrix(
             Values to insert into the matrix.
         axis : int
             The axis along which values are inserted.
+        taxa : numpy.ndarray
+            Taxa names to insert into the Matrix.
+            If values is a DenseSquareTaxaSquareTraitMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to insert into the Matrix.
+            If values is a DenseSquareTaxaSquareTraitMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
         trait : numpy.ndarray
             Trait names to insert into the Matrix.
-            If values is a DenseHaplotypeMatrix that has a non-None
+            If values is a DenseSquareTaxaSquareTraitMatrix that has a non-None
             trait field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
-        out : DenseSquareTraitMatrix
-            A DenseSquareTraitMatrix with values inserted. Note that insert does not occur
-            in-place: a new DenseSquareTraitMatrix is allocated and filled.
+        out : DenseSquareTaxaSquareTraitMatrix
+            A DenseSquareTaxaSquareTraitMatrix with values inserted. Note that insert does not occur
+            in-place: a new DenseSquareTaxaSquareTraitMatrix is allocated and filled.
         """
         axis = get_axis(axis, self.mat_ndim)    # get axis
         out = None                              # declare variable
@@ -468,6 +476,20 @@ class DenseSquareTaxaSquareTraitMatrix(
             Must be of shape (m, n, p)
         axis : int
             The axis along which values are appended.
+        taxa : numpy.ndarray
+            Taxa names to append to the Matrix.
+            If values is a DenseSquareTaxaSquareTraitMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to append to the Matrix.
+            If values is a DenseSquareTaxaSquareTraitMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        trait : numpy.ndarray
+            Trait names to append to the Matrix.
+            If values is a DenseSquareTaxaSquareTraitMatrix that has a non-None
+            trait field, providing this argument overwrites the field.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # get axis
         axis = get_axis(axis, self.mat_ndim)
@@ -546,6 +568,18 @@ class DenseSquareTaxaSquareTraitMatrix(
             Values to incorporate into the matrix.
         axis : int
             The axis along which values are incorporated.
+        taxa : numpy.ndarray
+            Taxa names to incorporate into the Matrix.
+            If values is a DenseSquareTaxaSquareTraitMatrix that has a non-None
+            taxa field, providing this argument overwrites the field.
+        taxa_grp : numpy.ndarray
+            Taxa groups to incorporate into the Matrix.
+            If values is a DenseSquareTaxaSquareTraitMatrix that has a non-None
+            taxa_grp field, providing this argument overwrites the field.
+        trait : numpy.ndarray
+            Trait names to incorporate into the Matrix.
+            If values is a DenseSquareTaxaSquareTraitMatrix that has a non-None
+            trait field, providing this argument overwrites the field.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -591,6 +625,8 @@ class DenseSquareTaxaSquareTraitMatrix(
             sort key.
         axis : int
             The axis of the Matrix over which to sort values.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------
@@ -628,6 +664,8 @@ class DenseSquareTaxaSquareTraitMatrix(
             Indices of where to place elements.
         axis : int
             The axis over which to reorder values.
+        kwargs : dict
+            Additional keyword arguments.
         """
         axis = get_axis(axis, self.mat_ndim)                   # transform axis number to an index
 
@@ -658,6 +696,8 @@ class DenseSquareTaxaSquareTraitMatrix(
             sort key.
         axis : int
             The axis over which to sort values.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -681,6 +721,13 @@ class DenseSquareTaxaSquareTraitMatrix(
         ) -> None:
         """
         Sort matrix along axis, then populate grouping indices for the axis.
+
+        Parameters
+        ----------
+        axis : int
+            Axis along which values should be grouped.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # transform axis number to an index
         axis = get_axis(axis, self.mat_ndim)
@@ -731,6 +778,13 @@ class DenseSquareTaxaSquareTraitMatrix(
         ) -> bool:
         """
         Determine whether the Matrix has been sorted and grouped.
+
+        Parameters
+        ----------
+        axis : int
+            Axis along which to test if values are grouped.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------

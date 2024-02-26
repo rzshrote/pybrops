@@ -20,7 +20,11 @@ from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseTraitMatrix import DenseTraitMatrix
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 
-class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
+class DenseTaxaTraitMatrix(
+        DenseTaxaMatrix,
+        DenseTraitMatrix,
+        TaxaTraitMatrix,
+    ):
     """
     A concrete class for dense matrices with taxa and trait metadata.
 
@@ -40,7 +44,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
             taxa_grp: Optional[numpy.ndarray] = None, 
             trait: Optional[numpy.ndarray] = None, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Constructor for the concrete class DenseTaxaTraitMatrix.
 
@@ -602,7 +606,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
     def select_taxa(
             self, 
-            indices, 
+            indices: ArrayLike, 
             **kwargs: dict
         ) -> 'DenseTaxaTraitMatrix':
         """
@@ -631,7 +635,7 @@ class DenseTaxaTraitMatrix(DenseTaxaMatrix,DenseTraitMatrix,TaxaTraitMatrix):
 
     def select_trait(
             self, 
-            indices, 
+            indices: ArrayLike, 
             **kwargs: dict
         ) -> 'DenseTaxaTraitMatrix':
         """

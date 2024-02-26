@@ -126,41 +126,89 @@ def test_copy_is_concrete():
 def test_deepcopy_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "__deepcopy__")
 
+def test_adjoin_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "adjoin")
+
 def test_adjoin_vrnt_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "adjoin_vrnt")
+
+def test_delete_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "delete")
 
 def test_delete_vrnt_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "delete_vrnt")
 
+def test_insert_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "insert")
+
 def test_insert_vrnt_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "insert_vrnt")
+
+def test_select_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "select")
 
 def test_select_vrnt_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "select_vrnt")
 
+def test_concat_is_concrete():
+    assert_classmethod_isconcrete(DenseVariantMatrix, "concat")
+
 def test_concat_vrnt_is_concrete():
     assert_classmethod_isconcrete(DenseVariantMatrix, "concat_vrnt")
+
+def test_append_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "append")
 
 def test_append_vrnt_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "append_vrnt")
 
+def test_remove_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "remove")
+
 def test_remove_vrnt_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "remove_vrnt")
+
+def test_incorp_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "incorp")
+
+def test_incorp_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "incorp")
 
 def test_incorp_vrnt_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "incorp_vrnt")
 
+def test_lexsort_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "lexsort")
+
 def test_lexsort_vrnt_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "lexsort_vrnt")
+
+def test_reorder_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "reorder")
+
+def test_reorder_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "reorder_vrnt")
+
+def test_sort_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "sort")
 
 def test_sort_vrnt_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "sort_vrnt")
 
+def test_group_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "group")
+
 def test_group_vrnt_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "group_vrnt")
 
+def test_ungroup_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "ungroup")
+
 def test_ungroup_vrnt_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "ungroup_vrnt")
+
+def test_is_grouped_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "is_grouped")
 
 def test_is_grouped_vrnt_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "is_grouped_vrnt")
