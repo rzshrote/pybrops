@@ -60,7 +60,7 @@ class InitializationOperator(metaclass=ABCMeta):
 
 
 ################################## Utilities ###################################
-def check_is_InitializationOperator(v: object, vname: str):
+def check_is_InitializationOperator(v: object, vname: str) -> None:
     """
     Check if object is of type InitializationOperator. Otherwise raise TypeError.
 

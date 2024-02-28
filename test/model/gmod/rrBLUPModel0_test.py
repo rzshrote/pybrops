@@ -17,7 +17,7 @@ from pybrops.model.gmod.rrBLUPModel0 import rrBLUP_ML0_calc_ZtZplI
 from pybrops.model.gmod.rrBLUPModel0 import rrBLUP_ML0_calc_Zty
 from pybrops.model.gmod.rrBLUPModel0 import gauss_seidel
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.test.assert_python import assert_function_isconcrete, assert_method_isconcrete, assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_classmethod_isconcrete, assert_function_isconcrete, assert_method_isconcrete, assert_class_documentation, not_raises
 
 ################################ Test fixtures #################################
 
@@ -404,7 +404,7 @@ def test_deepcopy(algmod):
 
 ### fit_numpy
 def test_fit_numpy_is_concrete():
-    assert_method_isconcrete(rrBLUPModel0, "fit_numpy")
+    assert_classmethod_isconcrete(rrBLUPModel0, "fit_numpy")
 
 def test_fit_numpy(wheat_Ymat, wheat_Zmat):
     model = rrBLUPModel0.fit_numpy(wheat_Ymat, None, wheat_Zmat)
@@ -412,7 +412,7 @@ def test_fit_numpy(wheat_Ymat, wheat_Zmat):
 
 ### fit
 def test_fit_is_concrete():
-    assert_method_isconcrete(rrBLUPModel0, "fit")
+    assert_classmethod_isconcrete(rrBLUPModel0, "fit")
 
 def test_fit(bvmat, pgmat):
     model = rrBLUPModel0.fit(bvmat, None, pgmat)

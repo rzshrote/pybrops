@@ -62,8 +62,6 @@ def test_class_docstring():
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
-    assert_method_isconcrete(RecurrentSelectionBreedingProgram, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -73,7 +71,7 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 # def test__is_abstract():
-#     generic_assert_abstract_method(RecurrentSelectionBreedingProgram, "")
+#     assert_method_isabstract(RecurrentSelectionBreedingProgram, "")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################

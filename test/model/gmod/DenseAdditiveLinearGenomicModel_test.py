@@ -4,7 +4,7 @@ import pandas
 import pytest
 import os.path
 
-from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_classmethod_isconcrete, not_raises
 from pybrops.test.assert_python import assert_class_documentation
 from pybrops.test.assert_python import assert_method_isconcrete
 from pybrops.test.assert_python import assert_function_isconcrete
@@ -252,7 +252,7 @@ def test_deepcopy(algmod):
 
 ### fit_numpy
 def test_fit_numpy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "fit_numpy")
+    assert_classmethod_isconcrete(DenseAdditiveLinearGenomicModel, "fit_numpy")
 
 def test_fit_numpy(algmod):
     with pytest.raises(AttributeError):
@@ -260,7 +260,7 @@ def test_fit_numpy(algmod):
 
 ### fit
 def test_fit_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "fit")
+    assert_classmethod_isconcrete(DenseAdditiveLinearGenomicModel, "fit")
 
 def test_fit(algmod):
     with pytest.raises(AttributeError):
@@ -569,7 +569,7 @@ def test_to_hdf5(algmod, shared_datadir):
 
 ### from_pandas_dict
 def test_from_pandas_dict_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "from_pandas_dict")
+    assert_classmethod_isconcrete(DenseAdditiveLinearGenomicModel, "from_pandas_dict")
 
 def test_from_pandas_dict(algmod):
     df_dict = algmod.to_pandas_dict()
@@ -581,7 +581,7 @@ def test_from_pandas_dict(algmod):
 
 ### from_csv_dict
 def test_from_csv_dict_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "from_csv_dict")
+    assert_classmethod_isconcrete(DenseAdditiveLinearGenomicModel, "from_csv_dict")
 
 def test_from_csv(algmod):
     filenames = {
@@ -597,7 +597,7 @@ def test_from_csv(algmod):
 
 ### from_hdf5
 def test_from_hdf5_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "from_hdf5")
+    assert_classmethod_isconcrete(DenseAdditiveLinearGenomicModel, "from_hdf5")
 
 def test_from_hdf5(algmod, shared_datadir):
     algmod.to_hdf5(shared_datadir / "algmod.hdf5")

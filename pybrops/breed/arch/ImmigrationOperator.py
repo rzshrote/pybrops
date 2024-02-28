@@ -38,6 +38,8 @@ class ImmigrationOperator(BreedingEdge,metaclass=ABCMeta):
         ----------
         bnode : BreedingNode
             A BreedingNode object from which to pull individuals.
+        kwargs : dict
+            Additional keyword arguments.
 
         Returns
         -------

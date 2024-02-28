@@ -815,8 +815,9 @@ class DenseAdditiveLinearGenomicModel(
 
         Parameters
         ----------
-        Z : numpy.ndarray
-            A matrix of genotypic markers.
+        gtobj : GenotypeMatrix
+            An object containing genotype data. Must be a matrix of genotype
+            values.
         kwargs : dict
             Additional keyword arguments.
         
@@ -1167,6 +1168,8 @@ class DenseAdditiveLinearGenomicModel(
             A vector of genotype allele frequencies of shape (p,).
         ploidy : int
             Ploidy of the species.
+        unscale : bool
+            If ``True``, then apply the mean of the fixed effects to the output.
         kwargs : dict
             Additional keyword arguments.
 
@@ -1245,6 +1248,10 @@ class DenseAdditiveLinearGenomicModel(
         gtobj : GenotypeMatrix, numpy.ndarray
             An object containing genotype data. Must be a matrix of genotype
             values.
+        ploidy : int
+            Ploidy of the species.
+        unscale : bool
+            If ``True``, then apply the mean of the fixed effects to the output.
         kwargs : dict
             Additional keyword arguments.
 
@@ -1290,6 +1297,8 @@ class DenseAdditiveLinearGenomicModel(
             A vector of genotype allele frequencies of shape (p,).
         ploidy : int
             Ploidy of the species.
+        unscale : bool
+            If ``True``, then apply the mean of the fixed effects to the output.
         kwargs : dict
             Additional keyword arguments.
 
@@ -1368,6 +1377,10 @@ class DenseAdditiveLinearGenomicModel(
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
+        ploidy : int
+            Ploidy of the species.
+        unscale : bool
+            If ``True``, then apply the mean of the fixed effects to the output.
         kwargs : dict
             Additional keyword arguments.
 
@@ -2020,7 +2033,7 @@ class DenseAdditiveLinearGenomicModel(
 
         Parameters
         ----------
-        filename : str
+        filenames : Dict[str,str]
             Dictionary of CSV file names from which to read.
             
             Must have the following fields::

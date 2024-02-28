@@ -1007,6 +1007,8 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
+        ploidy : int
+            Ploidy of the species.
         kwargs : dict
             Additional keyword arguments.
 
@@ -1097,6 +1099,8 @@ class DenseLinearGenomicModel(LinearGenomicModel):
         gtobj : GenotypeMatrix
             An object containing genotype data. Must be a matrix of genotype
             values.
+        ploidy : int
+            Ploidy of the species.
         kwargs : dict
             Additional keyword arguments.
 

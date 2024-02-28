@@ -1,6 +1,6 @@
 import pytest
 
-from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_method_isabstract, not_raises
 from pybrops.test.assert_python import assert_class_documentation
 from pybrops.test.assert_python import assert_method_isconcrete
 from pybrops.test.assert_python import assert_function_isconcrete
@@ -25,8 +25,6 @@ def test_class_docstring():
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
-    assert_method_isconcrete(ImmigrationOperator, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -35,8 +33,8 @@ def test_init_is_concrete():
 ################################################################################
 ############################# Test abstract methods ############################
 ################################################################################
-# def test__is_abstract():
-#     generic_assert_abstract_method(ImmigrationOperator, "")
+def test_immigrate_is_abstract():
+    assert_method_isabstract(ImmigrationOperator, "immigrate")
 
 ################################################################################
 ################### Test for conrete class utility functions ###################

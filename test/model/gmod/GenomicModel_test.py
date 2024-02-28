@@ -1,6 +1,6 @@
 import pytest
 
-from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_classmethod_isabstract, not_raises
 from pybrops.test.assert_python import assert_class_documentation
 from pybrops.test.assert_python import assert_method_isabstract
 from pybrops.test.assert_python import assert_property_isabstract
@@ -27,8 +27,6 @@ def test_class_docstring():
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
-    assert_method_isconcrete(GenomicModel, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -49,10 +47,10 @@ def test_ntrait_is_abstract():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_fit_numpy_is_abstract():
-    assert_method_isabstract(GenomicModel, "fit_numpy")
+    assert_classmethod_isabstract(GenomicModel, "fit_numpy")
 
 def test_fit_is_abstract():
-    assert_method_isabstract(GenomicModel, "fit")
+    assert_classmethod_isabstract(GenomicModel, "fit")
 
 def test_predict_numpy_is_abstract():
     assert_method_isabstract(GenomicModel, "predict_numpy")

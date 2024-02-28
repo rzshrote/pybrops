@@ -153,22 +153,22 @@ def test_lexsort_trait_is_concrete():
 
 # TODO: # FIXME: not_raises fails for an edge case
 # def test_sort_taxa_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaTraitMatrix, "sort_taxa")
+#     assert_method_isabstract(DenseTaxaTraitMatrix, "sort_taxa")
 #
 # def test_sort_trait_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaTraitMatrix, "sort_trait")
+#     assert_method_isabstract(DenseTaxaTraitMatrix, "sort_trait")
 #
 # def test_group_taxa_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaTraitMatrix, "group_taxa")
+#     assert_method_isabstract(DenseTaxaTraitMatrix, "group_taxa")
 #
 # def test_group_trait_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaTraitMatrix, "group_trait")
+#     assert_method_isabstract(DenseTaxaTraitMatrix, "group_trait")
 #
 # def test_is_grouped_taxa_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaTraitMatrix, "is_grouped_taxa")
+#     assert_method_isabstract(DenseTaxaTraitMatrix, "is_grouped_taxa")
 #
 # def test_is_grouped_trait_is_concrete():
-#     generic_assert_abstract_method(DenseTaxaTraitMatrix, "is_grouped_trait")
+#     assert_method_isabstract(DenseTaxaTraitMatrix, "is_grouped_trait")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################

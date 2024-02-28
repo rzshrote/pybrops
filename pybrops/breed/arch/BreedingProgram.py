@@ -163,6 +163,11 @@ class BreedingProgram(BreedingNode,metaclass=ABCMeta):
         """
         Initialize the breeding program with genotypes, phenotypes, and genomic
         models.
+
+        Parameters
+        ----------
+        kwargs : dict
+            Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
 
@@ -247,6 +252,8 @@ class BreedingProgram(BreedingNode,metaclass=ABCMeta):
             Note that this does not modify 't_max'.
         lbook : Logbook
             Logbook into which to write statistics.
+        kwargs : dict
+            Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
 

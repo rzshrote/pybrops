@@ -83,13 +83,13 @@ def test_lexsort_trait_is_concrete():
 
 # TODO: # FIXME: not_raises fails for an edge case
 # def test_sort_trait_is_concrete():
-#     generic_assert_abstract_method(DenseTraitMatrix, "sort_trait")
+#     assert_method_isabstract(DenseTraitMatrix, "sort_trait")
 #
 # def test_group_trait_is_concrete():
-#     generic_assert_abstract_method(DenseTraitMatrix, "group_trait")
+#     assert_method_isabstract(DenseTraitMatrix, "group_trait")
 #
 # def test_is_grouped_trait_is_concrete():
-#     generic_assert_abstract_method(DenseTraitMatrix, "is_grouped_trait")
+#     assert_method_isabstract(DenseTraitMatrix, "is_grouped_trait")
 
 ################################################################################
 ########################## Test Class Special Methods ##########################

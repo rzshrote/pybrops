@@ -776,6 +776,11 @@ class rrBLUPModel0(DenseAdditiveLinearGenomicModel):
             Model parameters.
         kwargs : dict
             Additional keyword arguments.
+
+        Returns
+        -------
+        out : rrBLUPModel0
+            An RR-BLUP model.
         """
         # type checks
         check_is_ndarray(Y, "Y")
@@ -849,8 +854,22 @@ class rrBLUPModel0(DenseAdditiveLinearGenomicModel):
             values.
         trait : numpy.ndarray, None
             A trait name array of shape (t,).
+        method : str
+            Fitting method to use. Options are ``{"ML"}``.
+            
+        model_name : str, None
+            Name of the model.
+        
+        hyperparams : dict, None
+            Model parameters.
+        
         kwargs : dict
             Additional keyword arguments.
+
+        Returns
+        -------
+        out : rrBLUPModel0
+            An RR-BLUP model.
         """
         # process ptobj
         if isinstance(ptobj, BreedingValueMatrix):

@@ -662,6 +662,8 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             A vector of genotype allele frequencies of shape (p,).
         ploidy : int
             Ploidy of the species.
+        unscale : bool
+            If ``True``, then apply the mean of the fixed effects to the output.
         kwargs : dict
             Additional keyword arguments.
 
@@ -690,6 +692,8 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             values.
         ploidy : int
             Ploidy of the species.
+        unscale : bool
+            If ``True``, then apply the mean of the fixed effects to the output.
         kwargs : dict
             Additional keyword arguments.
 
@@ -717,6 +721,8 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             A vector of genotype allele frequencies of shape (p,).
         ploidy : int
             Ploidy of the species.
+        unscale : bool
+            If ``True``, then apply the mean of the fixed effects to the output.
         kwargs : dict
             Additional keyword arguments.
 
@@ -745,6 +751,8 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             values.
         ploidy : int
             Ploidy of the species.
+        unscale : bool
+            If ``True``, then apply the mean of the fixed effects to the output.
         kwargs : dict
             Additional keyword arguments.
 

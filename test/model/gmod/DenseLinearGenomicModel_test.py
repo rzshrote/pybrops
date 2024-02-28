@@ -8,7 +8,7 @@ from pybrops.core.io.PandasDictInputOutput import PandasDictInputOutput
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_classmethod_isconcrete, not_raises
 from pybrops.test.assert_python import assert_class_documentation
 from pybrops.test.assert_python import assert_method_isabstract
 from pybrops.test.assert_python import assert_function_isabstract
@@ -27,6 +27,7 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 ################################################################################
 
 class DummyDenseLinearGenomicModel(DenseLinearGenomicModel):
+    __doc__ = DenseLinearGenomicModel.__doc__
     def copy(self) -> GenomicModel:
         return super().copy()
     def deepcopy(self, memo: dict | None) -> GenomicModel:
@@ -237,7 +238,7 @@ def test_lsl_is_concrete():
     assert_method_isconcrete(DummyDenseLinearGenomicModel, "lsl")
 
 def test_from_hdf5_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "from_hdf5")
+    assert_classmethod_isconcrete(DummyDenseLinearGenomicModel, "from_hdf5")
 
 def test_to_hdf5_is_concrete():
     assert_method_isconcrete(DummyDenseLinearGenomicModel, "to_hdf5")
