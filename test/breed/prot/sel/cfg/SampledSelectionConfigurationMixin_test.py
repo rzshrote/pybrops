@@ -1,7 +1,7 @@
 import numpy
 import pytest
 from numpy.random import Generator, RandomState, PCG64
-from pybrops.test.assert_python import assert_method_isabstract, assert_property_isconcrete, assert_class_documentation, assert_class_ismixin, not_raises
+from pybrops.test.assert_python import assert_method_isabstract, assert_module_documentation, assert_property_isconcrete, assert_class_documentation, assert_class_ismixin, not_raises
 from pybrops.breed.prot.sel.cfg.SampledSelectionConfigurationMixin import SampledSelectionConfigurationMixin
 
 from .common_fixtures import *
@@ -24,13 +24,14 @@ def selcfg(
     )
     yield out
 
-################### Test class abstract/concrete properties ####################
+############################ Test module attributes ############################
+def test_SampledSelectionConfigurationMixin_module_is_concrete():
+    import pybrops.breed.prot.sel.cfg.SampledSelectionConfigurationMixin
+    assert_module_documentation(pybrops.breed.prot.sel.cfg.SampledSelectionConfigurationMixin)
+
+############################ Test class attributes #############################
 def test_SampledSelectionConfigurationMixin_is_mixin():
     assert_class_ismixin(SampledSelectionConfigurationMixin)
-
-############################## Test class docstring ############################
-def test_SampledSelectionConfigurationMixin_docstring():
-    assert_class_documentation(SampledSelectionConfigurationMixin)
 
 ############################# Test class properties ############################
 

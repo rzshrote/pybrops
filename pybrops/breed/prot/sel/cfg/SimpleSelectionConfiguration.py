@@ -32,12 +32,6 @@ class SimpleSelectionConfiguration(SelectionConfiguration):
         
         Parameters
         ----------
-        pgmat : PhasedGenotypeMatrix
-            A genome matrix containing parental candidates
-        xconfig : numpy.ndarray
-            A mating configuration matrix of shape ``(ncross,nparent)``.
-            This matrix contains indices corresponding to parents in ``pgmat``
-            and specifies the manner in which individuals are to be mated.
         ncross : Integral
             Number of cross configurations to consider. Example: ``ncross = 10, nparent = 2``
             specifies 10 two-way crosses.
@@ -50,6 +44,14 @@ class SimpleSelectionConfiguration(SelectionConfiguration):
             initial F1 hybrids are unique and can affect the dihybrid composition.
         nprogeny : Integral, numpy.ndarray
             The number of progeny to derive from a mating event.
+        pgmat : PhasedGenotypeMatrix
+            A genome matrix containing parental candidates
+        xconfig : numpy.ndarray
+            A mating configuration matrix of shape ``(ncross,nparent)``.
+            This matrix contains indices corresponding to parents in ``pgmat``
+            and specifies the manner in which individuals are to be mated.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # order dependent assignments!
         # set shape parameters first

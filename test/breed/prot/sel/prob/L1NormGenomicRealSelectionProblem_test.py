@@ -241,7 +241,7 @@ def test_init_is_concrete():
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_method_isconcrete(prob, "latentfn")
+    assert_method_isconcrete(L1NormGenomicRealSelectionProblem, "latentfn")
 
 def test_latentfn(prob, ndecn, V):
     x = numpy.random.random(ndecn)

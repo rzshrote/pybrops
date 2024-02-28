@@ -52,6 +52,12 @@ class RealMateSelectionConfiguration(RealSelectionConfiguration,MateSelectionCon
             A genome matrix containing parental candidates
         xconfig_decn : numpy.ndarray
             A decision vector of shape ``(ndecn,)`` containing indices corresponding to individuals in ``pgmat``.
+        xconfig_xmap : numpy.ndarray
+            A cross map corresponding to the decision space.
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number source.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # order dependent assignments!
         # set shape parameters first

@@ -161,7 +161,7 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_latentfn_is_abstract(prob):
-    assert_method_isabstract(prob, "latentfn")
+    assert_method_isabstract(BinarySelectionProblem, "latentfn")
 
 ################################################################################
 ######################### Test class utility functions #########################

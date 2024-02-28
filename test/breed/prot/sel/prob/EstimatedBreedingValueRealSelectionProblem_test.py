@@ -142,6 +142,10 @@ def bvmat(ebv):
         scale = 1.0
     )
 
+@pytest.fixture
+def unscale():
+    yield True
+
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
@@ -211,7 +215,7 @@ def test_init_is_concrete():
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_method_isconcrete(prob, "latentfn")
+    assert_method_isconcrete(EstimatedBreedingValueRealSelectionProblem, "latentfn")
 
 def test_latentfn(prob, ndecn, ebv):
     x = numpy.random.random(ndecn)
@@ -225,7 +229,7 @@ def test_latentfn(prob, ndecn, ebv):
 ################################################################################
 def test_from_bvmat(
         ebv,
-        bvmat, 
+        bvmat, unscale,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
         nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
@@ -233,7 +237,7 @@ def test_from_bvmat(
     ):
     # construct problem
     ebvprob = EstimatedBreedingValueRealSelectionProblem.from_bvmat(
-        bvmat, 
+        bvmat, unscale,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
         nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 

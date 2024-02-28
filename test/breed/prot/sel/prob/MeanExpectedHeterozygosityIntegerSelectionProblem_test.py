@@ -230,7 +230,7 @@ def test_init_is_concrete():
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_method_isconcrete(prob, "latentfn")
+    assert_method_isconcrete(MeanExpectedHeterozygosityIntegerSelectionProblem, "latentfn")
 
 def test_latentfn(prob, ndecn, C):
     x = numpy.random.randint(0, ndecn, ndecn)

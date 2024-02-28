@@ -288,7 +288,7 @@ def test_init_is_concrete():
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_method_isconcrete(prob, "latentfn")
+    assert_method_isconcrete(UsefulnessCriterionRealMateSelectionProblem, "latentfn")
 
 def test_latentfn(prob, ndecn, ucmat):
     x = numpy.random.random(ndecn)

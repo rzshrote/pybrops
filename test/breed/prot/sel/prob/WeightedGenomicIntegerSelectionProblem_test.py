@@ -119,7 +119,7 @@ def prob(
     neqcv, eqcv_wt, eqcv_trans, eqcv_trans_kwargs
 ):
     yield WeightedGenomicIntegerSelectionProblem(
-        gwgebv = gwgebv,
+        wgebv = gwgebv,
         ndecn = ndecn,
         decn_space = decn_space,
         decn_space_lower = decn_space_lower,
@@ -237,7 +237,7 @@ def test_init_is_concrete():
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_method_isconcrete(prob, "latentfn")
+    assert_method_isconcrete(WeightedGenomicIntegerSelectionProblem, "latentfn")
 
 def test_latentfn(prob, ndecn, gwgebv):
     x = numpy.random.randint(0, ndecn, ndecn)

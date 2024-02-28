@@ -282,7 +282,8 @@ def test_eqcv_trans_kwargs_fdel(prob):
 ############################# Test concrete methods ############################
 ################################################################################
 def test_init_is_concrete():
-    assert_method_isconcrete(SelectionProblem, "__init__")
+    pass # inherts from pymoo problem, so skip
+    # assert_method_isconcrete(SelectionProblem, "__init__")
 
 def test_evalfn_is_concrete():
     assert_method_isconcrete(SelectionProblem, "evalfn")
@@ -298,7 +299,7 @@ def test__evaluate_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_latentfn_is_abstract(prob):
-    assert_method_isabstract(prob, "latentfn")
+    assert_method_isabstract(SelectionProblem, "latentfn")
 
 ################################################################################
 ######################### Test class utility functions #########################

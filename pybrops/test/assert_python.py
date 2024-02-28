@@ -927,7 +927,7 @@ def assert_module_documentation(obj: object) -> None:
         raise AssertionError("type ``{0}`` is not a module".format(obj.__name__))
 
     # make sure we have a docstring attribute
-    if not hasattr(obj, "__doc__"):
+    if not hasattr(obj, "__doc__") or obj.__doc__ is None:
         raise AssertionError("in module ``{0}``: docstring is not present".format(obj.__name__))
 
     # make sure our docstring is a string

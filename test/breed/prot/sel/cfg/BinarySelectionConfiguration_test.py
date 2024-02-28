@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from pybrops.test.assert_python import assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, assert_class_isconcrete, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete, assert_module_documentation, assert_property_isconcrete, assert_class_documentation, assert_class_isconcrete, not_raises
 from pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration import BinarySelectionConfiguration
 
 from .common_fixtures import *
@@ -26,13 +26,18 @@ def selcfg(
     )
     yield out
 
-################### Test class abstract/concrete properties ####################
+############################ Test module attributes ############################
+def test_BinarySelectionConfiguration_module_is_concrete():
+    import pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration
+    assert_module_documentation(pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration)
+
+############################ Test class attributes #############################
 def test_BinarySelectionConfiguration_is_concrete():
     assert_class_isconcrete(BinarySelectionConfiguration)
 
-############################## Test class docstring ############################
-def test_BinarySelectionConfiguration_docstring():
-    assert_class_documentation(BinarySelectionConfiguration)
+##################### Test class special concrete methods ######################
+def test_BinarySelectionConfiguration___init___is_concrete():
+    assert_method_isconcrete(BinarySelectionConfiguration, "__init__")
 
 ############################# Test class properties ############################
 

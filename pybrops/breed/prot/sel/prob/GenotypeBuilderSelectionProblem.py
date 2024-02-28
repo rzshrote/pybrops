@@ -227,6 +227,8 @@ class GenotypeBuilderSubsetSelectionProblem(GenotypeBuilderSelectionProblemMixin
             - ``n`` is the number of individuals.
             - ``h`` is the number of haplotype blocks.
             - ``t`` is the number of traits.
+        nbestfndr : Integral
+            Number of best founders to consider.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None

@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from pybrops.test.assert_python import assert_method_isconcrete, assert_class_documentation, assert_class_isconcrete
+from pybrops.test.assert_python import assert_method_isconcrete, assert_class_documentation, assert_class_isconcrete, assert_module_documentation
 from pybrops.breed.prot.sel.cfg.IntegerMateSelectionConfiguration import IntegerMateSelectionConfiguration
 
 from .common_fixtures import *
@@ -28,13 +28,18 @@ def selcfg(
     )
     yield out
 
-################### Test class abstract/concrete properties ####################
+############################ Test module attributes ############################
+def test_IntegerMateSelectionConfiguration_module_is_concrete():
+    import pybrops.breed.prot.sel.cfg.IntegerMateSelectionConfiguration
+    assert_module_documentation(pybrops.breed.prot.sel.cfg.IntegerMateSelectionConfiguration)
+
+############################ Test class attributes #############################
 def test_IntegerMateSelectionConfiguration_is_concrete():
     assert_class_isconcrete(IntegerMateSelectionConfiguration)
 
-############################## Test class docstring ############################
-def test_IntegerMateSelectionConfiguration_docstring():
-    assert_class_documentation(IntegerMateSelectionConfiguration)
+##################### Test class special concrete methods ######################
+def test_IntegerMateSelectionConfiguration___init___is_concrete():
+    assert_method_isconcrete(IntegerMateSelectionConfiguration, "__init__")
 
 ############################# Test class properties ############################
 

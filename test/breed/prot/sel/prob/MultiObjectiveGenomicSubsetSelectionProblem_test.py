@@ -368,7 +368,7 @@ def test_init_is_concrete():
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_method_isconcrete(prob, "latentfn")
+    assert_method_isconcrete(MultiObjectiveGenomicSubsetSelectionProblem, "latentfn")
 
 def test_latentfn(prob, ntaxa, geno):
     x = numpy.random.choice(ntaxa, ntaxa // 2)

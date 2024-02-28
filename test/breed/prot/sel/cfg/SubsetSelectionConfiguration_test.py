@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from pybrops.test.assert_python import assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, assert_class_isconcrete, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete, assert_module_documentation, assert_property_isconcrete, assert_class_documentation, assert_class_isconcrete, not_raises
 from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelectionConfiguration
 
 from .common_fixtures import *
@@ -26,13 +26,18 @@ def selcfg(
     )
     yield out
 
-################### Test class abstract/concrete properties ####################
+############################ Test module attributes ############################
+def test_SubsetSelectionConfiguration_module_is_concrete():
+    import pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration
+    assert_module_documentation(pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration)
+
+############################ Test class attributes #############################
 def test_SubsetSelectionConfiguration_is_concrete():
     assert_class_isconcrete(SubsetSelectionConfiguration)
 
-############################## Test class docstring ############################
-def test_SubsetSelectionConfiguration_docstring():
-    assert_class_documentation(SubsetSelectionConfiguration)
+##################### Test class special concrete methods ######################
+def test_SubsetSelectionConfiguration___init___is_concrete():
+    assert_method_isconcrete(SubsetSelectionConfiguration, "__init__")
 
 ############################# Test class properties ############################
 

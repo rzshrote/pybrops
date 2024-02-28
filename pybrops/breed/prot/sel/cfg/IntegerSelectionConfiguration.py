@@ -1,3 +1,7 @@
+"""
+Module defining selection configurations where the decision space is integer in nature.
+"""
+
 from numbers import Integral
 from typing import Optional, Union
 
@@ -49,6 +53,10 @@ class IntegerSelectionConfiguration(SampledSelectionConfigurationMixin,Selection
             A genome matrix containing parental candidates
         xconfig_decn : numpy.ndarray
             A decision vector of shape ``(ndecn,)`` containing indices corresponding to individuals in ``pgmat``.
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number source.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # order dependent assignments!
         # set shape parameters first
@@ -66,7 +74,7 @@ class IntegerSelectionConfiguration(SampledSelectionConfigurationMixin,Selection
 
     ############################ Object Properties #############################
     @SampledSelectionConfigurationMixin.xconfig_decn.setter
-    def xconfig_decn(self, value) -> numpy.ndarray:
+    def xconfig_decn(self, value: numpy.ndarray) -> None:
         """Set decision vector for calculating the cross configuration matrix."""
         check_is_ndarray(value, "xconfig_decn")
         check_ndarray_ndim(value, "xconfig_decn", 1)

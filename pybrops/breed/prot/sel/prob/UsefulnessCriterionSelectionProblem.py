@@ -248,29 +248,31 @@ class UsefulnessCriterionBinaryMateSelectionProblem(UsefulnessCriterionSelection
             - ``t`` is the number of traits.
         ndecn : Integral
             Number of decision variables.
-        decn_space: numpy.ndarray, None
+        decn_space : numpy.ndarray, None
             An array of shape ``(2,ndecn)`` defining the decision space.
             If None, do not set a decision space.
-        decn_space_lower: numpy.ndarray, Real, None
+        decn_space_lower : numpy.ndarray, Real, None
             An array of shape ``(ndecn,)`` containing lower limits for decision variables.
             If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
             If None, do not set a lower limit for the decision variables.
-        decn_space_upper: numpy.ndarray, Real, None
+        decn_space_upper : numpy.ndarray, Real, None
             An array of shape ``(ndecn,)`` containing upper limits for decision variables.
             If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
             If None, do not set a upper limit for the decision variables.
-        nobj: Integral
+        decn_space_xmap : numpy.ndarray
+            Cross map corresponding to the decision space.
+        nobj : Integral
             Number of objectives.
-        obj_wt: numpy.ndarray
+        obj_wt : numpy.ndarray
             Objective function weights.
-        obj_trans: Callable, None
+        obj_trans : Callable, None
             A transformation function transforming a latent space vector to an objective space vector.
             The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
             If None, use the identity transformation function: copy the latent space vector to the objective space vector.
-        obj_trans_kwargs: dict, None
+        obj_trans_kwargs : dict, None
             Keyword arguments for the latent space to objective space transformation function.
             If None, an empty dictionary is used.
-        nineqcv: Integral,
+        nineqcv : Integral,
             Number of inequality constraints.
         ineqcv_wt: numpy.ndarray,
             Inequality constraint violation weights.
@@ -596,6 +598,8 @@ class UsefulnessCriterionIntegerMateSelectionProblem(UsefulnessCriterionSelectio
             An array of shape ``(ndecn,)`` containing upper limits for decision variables.
             If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
             If None, do not set a upper limit for the decision variables.
+        decn_space_xmap : numpy.ndarray
+            Cross map corresponding to the decision space.
         nobj: Integral
             Number of objectives.
         obj_wt: numpy.ndarray
@@ -933,6 +937,8 @@ class UsefulnessCriterionRealMateSelectionProblem(UsefulnessCriterionSelectionPr
             An array of shape ``(ndecn,)`` containing upper limits for decision variables.
             If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
             If None, do not set a upper limit for the decision variables.
+        decn_space_xmap : numpy.ndarray
+            Cross map corresponding to the decision space.
         nobj: Integral
             Number of objectives.
         obj_wt: numpy.ndarray
@@ -1270,6 +1276,8 @@ class UsefulnessCriterionSubsetMateSelectionProblem(UsefulnessCriterionSelection
             An array of shape ``(ndecn,)`` containing upper limits for decision variables.
             If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
             If None, do not set a upper limit for the decision variables.
+        decn_space_xmap : numpy.ndarray
+            Cross map corresponding to the decision space.
         nobj: Integral
             Number of objectives.
         obj_wt: numpy.ndarray

@@ -25,7 +25,7 @@ class MateSelectionConfiguration(SelectionConfiguration,metaclass=ABCMeta):
         return self._xconfig_xmap
     @xconfig_xmap.setter
     def xconfig_xmap(self, value: numpy.ndarray) -> None:
-        """Set xconfig_xmap."""
+        """Set cross map corresponding to the decision space."""
         check_is_ndarray(value, "xconfig_xmap")
         check_ndarray_dtype_is_integer(value, "xconfig_xmap")
         check_ndarray_ndim(value, "xconfig_xmap", 2)

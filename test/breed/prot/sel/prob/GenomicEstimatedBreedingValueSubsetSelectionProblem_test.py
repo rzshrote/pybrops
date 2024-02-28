@@ -180,6 +180,10 @@ def gpmod(nvrnt, ntrait, trait_mean, trait_cov):
         trait = trait
     )
 
+@pytest.fixture
+def unscale():
+    yield False
+
 ################################################################################
 ############################## Test class docstring ############################
 ################################################################################
@@ -249,7 +253,7 @@ def test_init_is_concrete():
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_method_isconcrete(prob, "latentfn")
+    assert_method_isconcrete(GenomicEstimatedBreedingValueSubsetSelectionProblem, "latentfn")
 
 def test_latentfn(prob, ntaxa, gebv):
     x = numpy.random.choice(ntaxa, ntaxa // 2)
@@ -262,7 +266,7 @@ def test_latentfn(prob, ntaxa, gebv):
 ################################################################################
 def test_from_bvmat(
         ntaxa, gebv,
-        bvmat, 
+        bvmat, unscale,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
         nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
@@ -270,7 +274,7 @@ def test_from_bvmat(
     ):
     # construct problem
     gebvprob = GenomicEstimatedBreedingValueSubsetSelectionProblem.from_bvmat(
-        bvmat, 
+        bvmat, unscale,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
         nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
@@ -284,7 +288,7 @@ def test_from_bvmat(
 
 def test_from_gmat_gpmod(
         ntaxa,
-        gmat, gpmod, 
+        gmat, gpmod, unscale,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
         nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 
@@ -292,7 +296,7 @@ def test_from_gmat_gpmod(
     ):
     # construct problem
     gebvprob = GenomicEstimatedBreedingValueSubsetSelectionProblem.from_gmat_gpmod(
-        gmat, gpmod, 
+        gmat, gpmod, unscale,
         ndecn, decn_space, decn_space_lower, decn_space_upper, 
         nobj, obj_wt, obj_trans, obj_trans_kwargs, 
         nineqcv, ineqcv_wt, ineqcv_trans, ineqcv_trans_kwargs, 

@@ -78,8 +78,61 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(Gen
         
         Parameters
         ----------
+        gwgebv : numpy.ndarray
+            A generalized weighted genomic estimated breeding value matrix of shape ``(n,t)``.
+
+            Where:
+
+            - ``n`` is the number of taxa.
+            - ``t`` is the number of traits.
+        ndecn : Integral
+            Number of decision variables.
+        decn_space: numpy.ndarray, None
+            An array of shape ``(2,ndecn)`` defining the decision space.
+            If None, do not set a decision space.
+        decn_space_lower: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a lower limit for the decision variables.
+        decn_space_upper: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a upper limit for the decision variables.
+        nobj: Integral
+            Number of objectives.
+        obj_wt: numpy.ndarray
+            Objective function weights.
+        obj_trans: Callable, None
+            A transformation function transforming a latent space vector to an objective space vector.
+            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
+        obj_trans_kwargs: dict, None
+            Keyword arguments for the latent space to objective space transformation function.
+            If None, an empty dictionary is used.
+        nineqcv: Integral,
+            Number of inequality constraints.
+        ineqcv_wt: numpy.ndarray,
+            Inequality constraint violation weights.
+        ineqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an inequality constraint violation vector.
+            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        ineqcv_trans_kwargs: Optional[dict],
+            Keyword arguments for the latent space to inequality constraint violation space transformation function.
+            If None, an empty dictionary is used.
+        neqcv: Integral
+            Number of equality constraints.
+        eqcv_wt: numpy.ndarray
+            Equality constraint violation weights.
+        eqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an equality constraint violation vector.
+            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        eqcv_trans_kwargs: dict, None
+            Keyword arguments for the latent space to equality constraint violation space transformation function.
+            If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments used for cooperative inheritance.
+            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.
         """
         super(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem, self).__init__(
             ndecn = ndecn,
@@ -282,8 +335,61 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(Gener
         
         Parameters
         ----------
+        gwgebv : numpy.ndarray
+            A generalized weighted genomic estimated breeding value matrix of shape ``(n,t)``.
+
+            Where:
+
+            - ``n`` is the number of taxa.
+            - ``t`` is the number of traits.
+        ndecn : Integral
+            Number of decision variables.
+        decn_space: numpy.ndarray, None
+            An array of shape ``(2,ndecn)`` defining the decision space.
+            If None, do not set a decision space.
+        decn_space_lower: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a lower limit for the decision variables.
+        decn_space_upper: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a upper limit for the decision variables.
+        nobj: Integral
+            Number of objectives.
+        obj_wt: numpy.ndarray
+            Objective function weights.
+        obj_trans: Callable, None
+            A transformation function transforming a latent space vector to an objective space vector.
+            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
+        obj_trans_kwargs: dict, None
+            Keyword arguments for the latent space to objective space transformation function.
+            If None, an empty dictionary is used.
+        nineqcv: Integral,
+            Number of inequality constraints.
+        ineqcv_wt: numpy.ndarray,
+            Inequality constraint violation weights.
+        ineqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an inequality constraint violation vector.
+            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        ineqcv_trans_kwargs: Optional[dict],
+            Keyword arguments for the latent space to inequality constraint violation space transformation function.
+            If None, an empty dictionary is used.
+        neqcv: Integral
+            Number of equality constraints.
+        eqcv_wt: numpy.ndarray
+            Equality constraint violation weights.
+        eqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an equality constraint violation vector.
+            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        eqcv_trans_kwargs: dict, None
+            Keyword arguments for the latent space to equality constraint violation space transformation function.
+            If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments used for cooperative inheritance.
+            Additional keyword arguments passed to the parent class (RealSelectionProblem) constructor.
         """
         super(GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem, self).__init__(
             ndecn = ndecn,
@@ -496,8 +602,61 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(Ge
         
         Parameters
         ----------
+        gwgebv : numpy.ndarray
+            A generalized weighted genomic estimated breeding value matrix of shape ``(n,t)``.
+
+            Where:
+
+            - ``n`` is the number of taxa.
+            - ``t`` is the number of traits.
+        ndecn : Integral
+            Number of decision variables.
+        decn_space: numpy.ndarray, None
+            An array of shape ``(2,ndecn)`` defining the decision space.
+            If None, do not set a decision space.
+        decn_space_lower: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a lower limit for the decision variables.
+        decn_space_upper: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a upper limit for the decision variables.
+        nobj: Integral
+            Number of objectives.
+        obj_wt: numpy.ndarray
+            Objective function weights.
+        obj_trans: Callable, None
+            A transformation function transforming a latent space vector to an objective space vector.
+            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
+        obj_trans_kwargs: dict, None
+            Keyword arguments for the latent space to objective space transformation function.
+            If None, an empty dictionary is used.
+        nineqcv: Integral,
+            Number of inequality constraints.
+        ineqcv_wt: numpy.ndarray,
+            Inequality constraint violation weights.
+        ineqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an inequality constraint violation vector.
+            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        ineqcv_trans_kwargs: Optional[dict],
+            Keyword arguments for the latent space to inequality constraint violation space transformation function.
+            If None, an empty dictionary is used.
+        neqcv: Integral
+            Number of equality constraints.
+        eqcv_wt: numpy.ndarray
+            Equality constraint violation weights.
+        eqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an equality constraint violation vector.
+            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        eqcv_trans_kwargs: dict, None
+            Keyword arguments for the latent space to equality constraint violation space transformation function.
+            If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments used for cooperative inheritance.
+            Additional keyword arguments passed to the parent class (IntegerSelectionProblem) constructor.
         """
         super(GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem, self).__init__(
             ndecn = ndecn,
@@ -710,8 +869,61 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem(Gen
         
         Parameters
         ----------
+        gwgebv : numpy.ndarray
+            A generalized weighted genomic estimated breeding value matrix of shape ``(n,t)``.
+
+            Where:
+
+            - ``n`` is the number of taxa.
+            - ``t`` is the number of traits.
+        ndecn : Integral
+            Number of decision variables.
+        decn_space: numpy.ndarray, None
+            An array of shape ``(2,ndecn)`` defining the decision space.
+            If None, do not set a decision space.
+        decn_space_lower: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing lower limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a lower limit for the decision variables.
+        decn_space_upper: numpy.ndarray, Real, None
+            An array of shape ``(ndecn,)`` containing upper limits for decision variables.
+            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.
+            If None, do not set a upper limit for the decision variables.
+        nobj: Integral
+            Number of objectives.
+        obj_wt: numpy.ndarray
+            Objective function weights.
+        obj_trans: Callable, None
+            A transformation function transforming a latent space vector to an objective space vector.
+            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the identity transformation function: copy the latent space vector to the objective space vector.
+        obj_trans_kwargs: dict, None
+            Keyword arguments for the latent space to objective space transformation function.
+            If None, an empty dictionary is used.
+        nineqcv: Integral,
+            Number of inequality constraints.
+        ineqcv_wt: numpy.ndarray,
+            Inequality constraint violation weights.
+        ineqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an inequality constraint violation vector.
+            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        ineqcv_trans_kwargs: Optional[dict],
+            Keyword arguments for the latent space to inequality constraint violation space transformation function.
+            If None, an empty dictionary is used.
+        neqcv: Integral
+            Number of equality constraints.
+        eqcv_wt: numpy.ndarray
+            Equality constraint violation weights.
+        eqcv_trans: Callable, None
+            A transformation function transforming a latent space vector to an equality constraint violation vector.
+            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -> numpy.ndarray``
+            If None, use the empty set transformation function: return an empty vector of length zero.
+        eqcv_trans_kwargs: dict, None
+            Keyword arguments for the latent space to equality constraint violation space transformation function.
+            If None, an empty dictionary is used.
         kwargs : dict
-            Additional keyword arguments used for cooperative inheritance.
+            Additional keyword arguments passed to the parent class (BinarySelectionProblem) constructor.
         """
         super(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem, self).__init__(
             gwgebv = gwgebv,

@@ -257,7 +257,7 @@ def test_init_is_concrete():
 ### latentfn ###
 ################
 def test_latentfn_is_concrete(prob):
-    assert_method_isconcrete(prob, "latentfn")
+    assert_method_isconcrete(OptimalHaploidValueSubsetSelectionProblem, "latentfn")
 
 def test_latentfn(prob, ndecn, ohvmat):
     x = numpy.random.choice(ndecn, ndecn // 2)

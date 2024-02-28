@@ -120,6 +120,8 @@ class BinarySelectionProblem(BinaryProblem,SelectionProblem):
             Attributes which are excluded from being serialized. See PyMOO documentation.
         callback: Callable, None
             A callback function to be called after every evaluation. See PyMOO documentation.
+        strict : bool, default = True
+            See PyMOO documentation.
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance. See PyMOO documentation.
         """

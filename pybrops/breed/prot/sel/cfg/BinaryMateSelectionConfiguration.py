@@ -1,6 +1,6 @@
 """
-Module containing representations of subset selection configurations 
-where the subset originates from a cross map.
+Module containing representations of binary selection configurations 
+where the binary originates from a cross map.
 """
 
 from numbers import Integral
@@ -13,7 +13,10 @@ from pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration import BinarySelect
 from pybrops.core.random.sampling import tiled_choice
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class BinaryMateSelectionConfiguration(BinarySelectionConfiguration,MateSelectionConfiguration):
+class BinaryMateSelectionConfiguration(
+        BinarySelectionConfiguration,
+        MateSelectionConfiguration,
+    ):
     """
     Class representing a subset selection configuration where the subset 
     originates from a cross map.
@@ -52,6 +55,12 @@ class BinaryMateSelectionConfiguration(BinarySelectionConfiguration,MateSelectio
             A genome matrix containing parental candidates
         xconfig_decn : numpy.ndarray
             A decision vector of shape ``(ndecn,)`` containing indices corresponding to individuals in ``pgmat``.
+        xconfig_xmap : numpy.ndarray
+            A cross map corresponding to the decision space.
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number source.
+        kwargs : dict
+            Additional keyword arguments.
         """
         # order dependent assignments!
         # set shape parameters first

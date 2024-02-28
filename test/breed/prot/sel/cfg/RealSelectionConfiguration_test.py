@@ -1,6 +1,6 @@
 import numpy
 import pytest
-from pybrops.test.assert_python import assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, assert_class_isconcrete, not_raises
+from pybrops.test.assert_python import assert_method_isconcrete, assert_module_documentation, assert_property_isconcrete, assert_class_documentation, assert_class_isconcrete, not_raises
 from pybrops.breed.prot.sel.cfg.RealSelectionConfiguration import RealSelectionConfiguration
 
 from .common_fixtures import *
@@ -26,13 +26,18 @@ def selcfg(
     )
     yield out
 
-################### Test class abstract/concrete properties ####################
+############################ Test module attributes ############################
+def test_RealSelectionConfiguration_module_is_concrete():
+    import pybrops.breed.prot.sel.cfg.RealSelectionConfiguration
+    assert_module_documentation(pybrops.breed.prot.sel.cfg.RealSelectionConfiguration)
+
+############################ Test class attributes #############################
 def test_RealSelectionConfiguration_is_concrete():
     assert_class_isconcrete(RealSelectionConfiguration)
 
-############################## Test class docstring ############################
-def test_RealSelectionConfiguration_docstring():
-    assert_class_documentation(RealSelectionConfiguration)
+##################### Test class special concrete methods ######################
+def test_RealSelectionConfiguration___init___is_concrete():
+    assert_method_isconcrete(RealSelectionConfiguration, "__init__")
 
 ############################# Test class properties ############################
 

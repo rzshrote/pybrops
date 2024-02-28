@@ -136,6 +136,8 @@ class FamilyEstimatedBreedingValueSubsetSelectionProblem(FamilyEstimatedBreeding
         ----------
         ebv : numpy.ndarray
             An array of shape (n,t) containing estimated breeding values.
+        familyid : numpy.ndarray
+            An array of shape (n,) containing family ID assignments.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -368,6 +370,8 @@ class FamilyEstimatedBreedingValueRealSelectionProblem(FamilyEstimatedBreedingVa
         ----------
         ebv : numpy.ndarray
             An array of shape (n,t) containing estimated breeding values.
+        familyid : numpy.ndarray
+            An array of shape (n,) containing family ID assignments.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -578,6 +582,8 @@ class FamilyEstimatedBreedingValueIntegerSelectionProblem(FamilyEstimatedBreedin
         ----------
         ebv : numpy.ndarray
             An array of shape (n,t) containing estimated breeding values.
+        familyid : numpy.ndarray
+            An array of shape (n,) containing family ID assignments.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None
@@ -788,6 +794,8 @@ class FamilyEstimatedBreedingValueBinarySelectionProblem(FamilyEstimatedBreeding
         ----------
         ebv : numpy.ndarray
             An array of shape (n,t) containing estimated breeding values.
+        familyid : numpy.ndarray
+            An array of shape (n,) containing family ID assignments.
         ndecn : Integral
             Number of decision variables.
         decn_space: numpy.ndarray, None

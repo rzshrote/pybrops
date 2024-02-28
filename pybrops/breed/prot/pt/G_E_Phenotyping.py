@@ -38,7 +38,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
             var_err: Optional[Union[Real,numpy.ndarray]] = None, 
             rng: Optional[Union[Generator,RandomState]] = None, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Construct a phenotyping protocol that simulates environments as having
         a fixed effect, but no genotype by environment interaction. Variance
@@ -51,17 +51,20 @@ class G_E_Phenotyping(PhenotypingProtocol):
 
         nenv : int
             Number of environments.
+        
         nrep : int, numpy.ndarray
             Number of replications per environment.
 
             If ``int``, then broadcast ``nrep`` to an array of shape ``(nenv,)``
             If ``numpy.ndarray``, then must be of shape ``(nenv,)``
+        
         var_env : numeric, numpy.ndarray
             Environmental variance parameter for each trait.
             Determines distribution of fixed effect added to each environment.
 
             If numeric, then broadcast ``var_env`` to an array of shape ``(ntrait,)``
             If ``numpy.ndarray``, then must be of shape ``(ntrait,)``
+        
         var_rep : numeric, numpy.ndarray
             Replication variance parameter for each trait.
 
@@ -70,6 +73,7 @@ class G_E_Phenotyping(PhenotypingProtocol):
 
             If numeric, then broadcast ``var_rep`` to an array of shape ``(ntrait,)``
             If ``numpy.ndarray``, then must be of shape ``(ntrait,)``
+        
         var_err : numeric, numpy.ndarray
             Error variance parameter.
 
@@ -77,6 +81,12 @@ class G_E_Phenotyping(PhenotypingProtocol):
             ``(ntrait,)``.
 
             If ``numpy.ndarray``, then must be of shape ``(ntrait,)``.
+        
+        rng : numpy.random.Generator, numpy.random.RandomState, None
+            Random number source.
+
+        kwargs : dict
+            Additional keyword arguments.
         """
         # order dependent initialization!
         self.gpmod = gpmod      # order 0

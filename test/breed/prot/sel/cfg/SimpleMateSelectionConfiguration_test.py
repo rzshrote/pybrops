@@ -1,6 +1,6 @@
 import pytest
 from pybrops.breed.prot.sel.cfg.SimpleMateSelectionConfiguration import SimpleMateSelectionConfiguration
-from pybrops.test.assert_python import assert_class_isconcrete, assert_property_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
+from pybrops.test.assert_python import assert_class_isconcrete, assert_method_isconcrete, assert_property_isconcrete, assert_class_documentation, assert_class_issemiabstract, not_raises
 
 from .common_fixtures import *
 
@@ -37,7 +37,7 @@ def test_SimpleMateSelectionConfiguration_docstring():
 
 ### __init__ ###
 def test_SimpleMateSelectionConfiguration_init_is_concrete():
-    assert_property_isconcrete(SimpleMateSelectionConfiguration, "__init__")
+    assert_method_isconcrete(SimpleMateSelectionConfiguration, "__init__")
 
 def test_init(selcfg):
     assert selcfg is not None

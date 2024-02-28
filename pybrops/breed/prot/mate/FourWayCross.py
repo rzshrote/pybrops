@@ -39,13 +39,16 @@ class FourWayCross(MatingProtocol):
 
         Parameters
         ----------
+        progeny_counter : Integral
+            Progeny counter. This helps create progeny names.
+        family_counter : Integral
+            Family counter. This helps label groups of progenies as originating 
+            from the same family.
         rng : numpy.random.Generator, numpy.random.RandomState
             Random number source.
         kwargs : dict
             Additional keyword arguments.
         """
-        super(FourWayCross, self).__init__(**kwargs)
-
         # make assignments
         self.progeny_counter = progeny_counter
         self.family_counter = family_counter

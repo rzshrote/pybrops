@@ -56,7 +56,7 @@ def stochastic_universal_sampling(
         rng = global_prng                           # set to global rng
     if isinstance(size, Integral):                  # if size is integer
         size = (size,)                              # convert size to tuple
-    k = numpy.product(size)                         # calculate total number of elements we need
+    k = numpy.prod(size)                            # calculate total number of elements we need
     tot_fit = p.sum()                               # calculate the total fitness
     ptr_dist = tot_fit / k                          # calculate the distance between pointers
     indices = p.argsort()[::-1]                     # get indices for sorted individuals
@@ -120,7 +120,7 @@ def tiled_choice(
         rng = global_prng
     
     # get shape parameters
-    nsample = numpy.product(size)
+    nsample = numpy.prod(size)
 
     # allocate memory for output
     out = numpy.empty(nsample, dtype = a.dtype)
