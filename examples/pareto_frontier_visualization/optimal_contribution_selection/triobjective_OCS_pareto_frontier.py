@@ -127,8 +127,8 @@ basename = "triobjective_OCS_pareto_frontier"
 
 # get axis data
 x =  selsoln.soln_obj[:,0] # 2 * mean kinship (additive relationship/inbreeding)
-y = -selsoln.soln_obj[:,1] # negate to get EBV
-z = -selsoln.soln_obj[:,2] # negate to get EBV
+y = -selsoln.soln_obj[:,1] # negate to get Breeding Value
+z = -selsoln.soln_obj[:,2] # negate to get Breeding Value
 z2 = numpy.ones(shape = x.shape) * min(z)
 
 # create static figure
@@ -141,8 +141,8 @@ for i,j,k,h in zip(x,y,z,z2):
 
 ax.set_title("Multi-Objective Optimal Contribution Selection Pareto Frontier")
 ax.set_xlabel("Inbreeding")
-ax.set_ylabel("Synthetic Trait 1 Mean EBV")
-ax.set_zlabel("Synthetic Trait 2 Mean EBV")
+ax.set_ylabel("Synthetic Trait 1 Mean Breeding Value")
+ax.set_zlabel("Synthetic Trait 2 Mean Breeding Value")
 ax.view_init(elev = 30., azim = 32)
 pyplot.savefig(basename + ".png", dpi = 250)
 pyplot.close(fig)
@@ -166,8 +166,8 @@ for i in range(360):
     ax.scatter3D(x, y, z)
     ax.set_title("Multi-Objective Optimal Contribution Selection Pareto Frontier")
     ax.set_xlabel("Inbreeding")
-    ax.set_ylabel("Synthetic Trait 1 Mean EBV")
-    ax.set_zlabel("Synthetic Trait 2 Mean EBV")
+    ax.set_ylabel("Synthetic Trait 1 Mean Breeding Value")
+    ax.set_zlabel("Synthetic Trait 2 Mean Breeding Value")
     ax.view_init(elev = 30., azim = i)
     pyplot.savefig(outdir + "/" + basename + "_" + str(i).zfill(3) + ".png", dpi = 250)
     pyplot.close(fig)
