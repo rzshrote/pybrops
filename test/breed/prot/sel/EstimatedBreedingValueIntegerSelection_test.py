@@ -15,6 +15,7 @@ from pybrops.test.assert_python import assert_method_isconcrete
 @pytest.fixture
 def selprot_single(
         common_ntrait,
+        common_unscale,
         common_ncross,
         common_nparent,
         common_nmating,
@@ -40,6 +41,7 @@ def selprot_single(
     ):
     out = EstimatedBreedingValueIntegerSelection(
         ntrait = common_ntrait,
+        unscale = common_unscale,
         ncross = common_ncross,
         nparent = common_nparent,
         nmating = common_nmating,
@@ -68,6 +70,7 @@ def selprot_single(
 @pytest.fixture
 def selprot_multi(
         common_ntrait,
+        common_unscale,
         common_ncross,
         common_nparent,
         common_nmating,
@@ -93,6 +96,7 @@ def selprot_multi(
     ):
     out = EstimatedBreedingValueIntegerSelection(
         ntrait = common_ntrait,
+        unscale = common_unscale,
         ncross = common_ncross,
         nparent = common_nparent,
         nmating = common_nmating,

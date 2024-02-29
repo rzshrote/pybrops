@@ -4,7 +4,6 @@ import pytest
 from numpy.random import Generator, PCG64
 from pybrops.breed.prot.gt.DenseUnphasedGenotyping import DenseUnphasedGenotyping
 from pybrops.breed.prot.mate.TwoWayDHCross import TwoWayDHCross
-from pybrops.breed.prot.sel.transfn import trans_identity_unconstrained
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory import DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory
 from pybrops.popgen.cmat.fcty.DenseVanRadenCoancestryMatrixFactory import DenseVanRadenCoancestryMatrixFactory
