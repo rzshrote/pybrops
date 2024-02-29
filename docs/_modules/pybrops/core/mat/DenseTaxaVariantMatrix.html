@@ -432,7 +432,11 @@ document.write(`
 
 <div class="viewcode-block" id="DenseTaxaVariantMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseTaxaVariantMatrix.DenseTaxaVariantMatrix.html#pybrops.core.mat.DenseTaxaVariantMatrix.DenseTaxaVariantMatrix">[docs]</a>
-<span class="k">class</span> <span class="nc">DenseTaxaVariantMatrix</span><span class="p">(</span><span class="n">DenseTaxaMatrix</span><span class="p">,</span><span class="n">DenseVariantMatrix</span><span class="p">,</span><span class="n">TaxaVariantMatrix</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DenseTaxaVariantMatrix</span><span class="p">(</span>
+        <span class="n">DenseTaxaMatrix</span><span class="p">,</span>
+        <span class="n">DenseVariantMatrix</span><span class="p">,</span>
+        <span class="n">TaxaVariantMatrix</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A concrete class for dense matrices with taxa and variant metadata.</span>
 
@@ -713,6 +717,14 @@ document.write(`
 <span class="sd">        vrnt_hapgrp : numpy.ndarray</span>
 <span class="sd">            Variant haplotype labels to adjoin to the Matrix.</span>
 <span class="sd">            If values is a DenseHaplotypeMatrix that has a non-None</span>
+<span class="sd">            vrnt_hapgrp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_hapalt : numpy.ndarray</span>
+<span class="sd">            Variant alternative haplotype labels to adjoin to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_hapgrp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_hapref : numpy.ndarray</span>
+<span class="sd">            Variant reference haplotype labels to adjoin to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
 <span class="sd">            vrnt_hapgrp field, providing this argument overwrites the field.</span>
 <span class="sd">        vrnt_mask : numpy.ndarray</span>
 <span class="sd">            Variant mask to adjoin to the Matrix.</span>
@@ -1087,6 +1099,14 @@ document.write(`
 <span class="sd">            Variant haplotype labels to insert into the Matrix.</span>
 <span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
 <span class="sd">            vrnt_hapgrp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_hapalt : numpy.ndarray</span>
+<span class="sd">            Variant alternative haplotype labels to insert into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_hapgrp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_hapref : numpy.ndarray</span>
+<span class="sd">            Variant reference haplotype labels to insert into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_hapgrp field, providing this argument overwrites the field.</span>
 <span class="sd">        vrnt_mask : numpy.ndarray</span>
 <span class="sd">            Variant mask to insert into the Matrix.</span>
 <span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
@@ -1232,6 +1252,10 @@ document.write(`
 <span class="sd">            Sequential variant crossover probabilities to insert into the Matrix.</span>
 <span class="sd">        vrnt_hapgrp : numpy.ndarray</span>
 <span class="sd">            Variant haplotype labels to insert into the Matrix.</span>
+<span class="sd">        vrnt_hapalt : numpy.ndarray</span>
+<span class="sd">            Variant alternative haplotype labels to insert into the Matrix.</span>
+<span class="sd">        vrnt_hapref : numpy.ndarray</span>
+<span class="sd">            Variant reference haplotype labels to insert into the Matrix.</span>
 <span class="sd">        vrnt_mask : numpy.ndarray</span>
 <span class="sd">            Variant mask to insert into the Matrix.</span>
 <span class="sd">        kwargs : dict</span>
@@ -1557,6 +1581,53 @@ document.write(`
 <span class="sd">            Must be of shape (m, n, p)</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis along which values are appended.</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            Taxa names to append to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            taxa field, providing this argument overwrites the field.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            Taxa groups to append to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            taxa_grp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_chrgrp : numpy.ndarray</span>
+<span class="sd">            Variant chromosome groups to append to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_chrgrp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_phypos : numpy.ndarray</span>
+<span class="sd">            Variant chromosome physical positions to append to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_phypos field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_name : numpy.ndarray</span>
+<span class="sd">            Variant names to append to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_name field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_genpos : numpy.ndarray</span>
+<span class="sd">            Variant chromosome genetic positions to append to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_genpos field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_xoprob : numpy.ndarray</span>
+<span class="sd">            Sequential variant crossover probabilities to append to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_xoprob field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_hapgrp : numpy.ndarray</span>
+<span class="sd">            Variant haplotype labels to append to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_hapgrp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_hapalt : numpy.ndarray</span>
+<span class="sd">            Variant alternative haplotype labels to append to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_hapgrp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_hapref : numpy.ndarray</span>
+<span class="sd">            Variant reference haplotype labels to append to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_hapgrp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_mask : numpy.ndarray</span>
+<span class="sd">            Variant mask to append to the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_mask field, providing this argument overwrites the field.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># get axis</span>
         <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>
@@ -1650,6 +1721,50 @@ document.write(`
 <span class="sd">            Values to incorporate into the matrix.</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis along which values are incorporated.</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            Taxa names to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            taxa field, providing this argument overwrites the field.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            Taxa groups to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            taxa_grp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_chrgrp : numpy.ndarray</span>
+<span class="sd">            Variant chromosome groups to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_chrgrp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_phypos : numpy.ndarray</span>
+<span class="sd">            Variant chromosome physical positions to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_phypos field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_name : numpy.ndarray</span>
+<span class="sd">            Variant names to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_name field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_genpos : numpy.ndarray</span>
+<span class="sd">            Variant chromosome genetic positions to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_genpos field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_xoprob : numpy.ndarray</span>
+<span class="sd">            Sequential variant crossover probabilities to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_xoprob field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_hapgrp : numpy.ndarray</span>
+<span class="sd">            Variant haplotype labels to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_hapgrp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_hapalt : numpy.ndarray</span>
+<span class="sd">            Variant alternative haplotype labels to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_hapgrp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_hapref : numpy.ndarray</span>
+<span class="sd">            Variant reference haplotype labels to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_hapgrp field, providing this argument overwrites the field.</span>
+<span class="sd">        vrnt_mask : numpy.ndarray</span>
+<span class="sd">            Variant mask to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseTaxaVariantMatrix that has a non-None</span>
+<span class="sd">            vrnt_mask field, providing this argument overwrites the field.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1703,6 +1818,8 @@ document.write(`
 <span class="sd">            vrnt_phypos as secondary key.</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis of the Matrix over which to sort values.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1771,6 +1888,8 @@ document.write(`
 <span class="sd">            vrnt_phypos as secondary key.</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis over which to sort values.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># transform axis number to an index</span>
         <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>
@@ -1854,6 +1973,13 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine whether the Matrix has been sorted and grouped.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        axis : int</span>
+<span class="sd">            Axis along which to determine if is grouped.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>

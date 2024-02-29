@@ -453,7 +453,7 @@ document.write(`
             <span class="n">var_err</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Real</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
             <span class="n">rng</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Generator</span><span class="p">,</span><span class="n">RandomState</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
             <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
-        <span class="p">):</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Construct a phenotyping protocol that simulates environments as having</span>
 <span class="sd">        a fixed effect, but no genotype by environment interaction. Variance</span>
@@ -466,17 +466,20 @@ document.write(`
 
 <span class="sd">        nenv : int</span>
 <span class="sd">            Number of environments.</span>
+<span class="sd">        </span>
 <span class="sd">        nrep : int, numpy.ndarray</span>
 <span class="sd">            Number of replications per environment.</span>
 
 <span class="sd">            If ``int``, then broadcast ``nrep`` to an array of shape ``(nenv,)``</span>
 <span class="sd">            If ``numpy.ndarray``, then must be of shape ``(nenv,)``</span>
+<span class="sd">        </span>
 <span class="sd">        var_env : numeric, numpy.ndarray</span>
 <span class="sd">            Environmental variance parameter for each trait.</span>
 <span class="sd">            Determines distribution of fixed effect added to each environment.</span>
 
 <span class="sd">            If numeric, then broadcast ``var_env`` to an array of shape ``(ntrait,)``</span>
 <span class="sd">            If ``numpy.ndarray``, then must be of shape ``(ntrait,)``</span>
+<span class="sd">        </span>
 <span class="sd">        var_rep : numeric, numpy.ndarray</span>
 <span class="sd">            Replication variance parameter for each trait.</span>
 
@@ -485,6 +488,7 @@ document.write(`
 
 <span class="sd">            If numeric, then broadcast ``var_rep`` to an array of shape ``(ntrait,)``</span>
 <span class="sd">            If ``numpy.ndarray``, then must be of shape ``(ntrait,)``</span>
+<span class="sd">        </span>
 <span class="sd">        var_err : numeric, numpy.ndarray</span>
 <span class="sd">            Error variance parameter.</span>
 
@@ -492,6 +496,12 @@ document.write(`
 <span class="sd">            ``(ntrait,)``.</span>
 
 <span class="sd">            If ``numpy.ndarray``, then must be of shape ``(ntrait,)``.</span>
+<span class="sd">        </span>
+<span class="sd">        rng : numpy.random.Generator, numpy.random.RandomState, None</span>
+<span class="sd">            Random number source.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># order dependent initialization!</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gpmod</span> <span class="o">=</span> <span class="n">gpmod</span>      <span class="c1"># order 0</span>

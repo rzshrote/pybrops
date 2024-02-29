@@ -439,7 +439,7 @@ document.write(`
     <span class="c1">########################## Special Object Methods ##########################</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">gwgebv</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+            <span class="n">wgebv</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
             <span class="n">ndecn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
             <span class="n">decn_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
             <span class="n">decn_space_lower</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Number</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
@@ -463,12 +463,65 @@ document.write(`
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        wgebv : numpy.ndarray</span>
+<span class="sd">            A weighted genomic estimated breeding value matrix of shape ``(n,t)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of taxa.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        ndecn : Integral</span>
+<span class="sd">            Number of decision variables.</span>
+<span class="sd">        decn_space: numpy.ndarray, None</span>
+<span class="sd">            An array of shape ``(2,ndecn)`` defining the decision space.</span>
+<span class="sd">            If None, do not set a decision space.</span>
+<span class="sd">        decn_space_lower: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing lower limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a lower limit for the decision variables.</span>
+<span class="sd">        decn_space_upper: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing upper limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a upper limit for the decision variables.</span>
+<span class="sd">        nobj: Integral</span>
+<span class="sd">            Number of objectives.</span>
+<span class="sd">        obj_wt: numpy.ndarray</span>
+<span class="sd">            Objective function weights.</span>
+<span class="sd">        obj_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an objective space vector.</span>
+<span class="sd">            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the identity transformation function: copy the latent space vector to the objective space vector.</span>
+<span class="sd">        obj_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to objective space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        nineqcv: Integral,</span>
+<span class="sd">            Number of inequality constraints.</span>
+<span class="sd">        ineqcv_wt: numpy.ndarray,</span>
+<span class="sd">            Inequality constraint violation weights.</span>
+<span class="sd">        ineqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an inequality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        ineqcv_trans_kwargs: Optional[dict],</span>
+<span class="sd">            Keyword arguments for the latent space to inequality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        neqcv: Integral</span>
+<span class="sd">            Number of equality constraints.</span>
+<span class="sd">        eqcv_wt: numpy.ndarray</span>
+<span class="sd">            Equality constraint violation weights.</span>
+<span class="sd">        eqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an equality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        eqcv_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to equality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
 <span class="sd">        kwargs : dict</span>
-<span class="sd">            Additional keyword arguments used for cooperative inheritance.</span>
+<span class="sd">            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># call SubsetGeneralizedWeightedGenomicSelectionProblem constructor</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">WeightedGenomicSubsetSelectionProblem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">gwgebv</span><span class="p">,</span>
+            <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">wgebv</span><span class="p">,</span>
             <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
             <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
             <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
@@ -515,11 +568,11 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;WeightedGenomicSubsetSelectionProblem&quot;</span><span class="p">:</span>
         <span class="c1"># calculate wGEBVs</span>
         <span class="c1"># (n,p) @ (p,t) -&gt; (n,t)</span>
-        <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fafreq</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+        <span class="n">wgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fafreq</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
 
         <span class="c1"># construct problem</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">gwgebv</span><span class="p">,</span>
+            <span class="n">wgebv</span> <span class="o">=</span> <span class="n">wgebv</span><span class="p">,</span>
             <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
             <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
             <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
@@ -600,7 +653,7 @@ document.write(`
     <span class="c1">########################## Special Object Methods ##########################</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">gwgebv</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+            <span class="n">wgebv</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
             <span class="n">ndecn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
             <span class="n">decn_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
             <span class="n">decn_space_lower</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Number</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
@@ -624,12 +677,65 @@ document.write(`
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        wgebv : numpy.ndarray</span>
+<span class="sd">            A weighted genomic estimated breeding value matrix of shape ``(n,t)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of taxa.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        ndecn : Integral</span>
+<span class="sd">            Number of decision variables.</span>
+<span class="sd">        decn_space: numpy.ndarray, None</span>
+<span class="sd">            An array of shape ``(2,ndecn)`` defining the decision space.</span>
+<span class="sd">            If None, do not set a decision space.</span>
+<span class="sd">        decn_space_lower: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing lower limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a lower limit for the decision variables.</span>
+<span class="sd">        decn_space_upper: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing upper limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a upper limit for the decision variables.</span>
+<span class="sd">        nobj: Integral</span>
+<span class="sd">            Number of objectives.</span>
+<span class="sd">        obj_wt: numpy.ndarray</span>
+<span class="sd">            Objective function weights.</span>
+<span class="sd">        obj_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an objective space vector.</span>
+<span class="sd">            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the identity transformation function: copy the latent space vector to the objective space vector.</span>
+<span class="sd">        obj_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to objective space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        nineqcv: Integral,</span>
+<span class="sd">            Number of inequality constraints.</span>
+<span class="sd">        ineqcv_wt: numpy.ndarray,</span>
+<span class="sd">            Inequality constraint violation weights.</span>
+<span class="sd">        ineqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an inequality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        ineqcv_trans_kwargs: Optional[dict],</span>
+<span class="sd">            Keyword arguments for the latent space to inequality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        neqcv: Integral</span>
+<span class="sd">            Number of equality constraints.</span>
+<span class="sd">        eqcv_wt: numpy.ndarray</span>
+<span class="sd">            Equality constraint violation weights.</span>
+<span class="sd">        eqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an equality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        eqcv_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to equality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
 <span class="sd">        kwargs : dict</span>
-<span class="sd">            Additional keyword arguments used for cooperative inheritance.</span>
+<span class="sd">            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># call RealGeneralizedWeightedGenomicSelectionProblem constructor</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">WeightedGenomicRealSelectionProblem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">gwgebv</span><span class="p">,</span>
+            <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">wgebv</span><span class="p">,</span>
             <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
             <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
             <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
@@ -676,11 +782,11 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;WeightedGenomicRealSelectionProblem&quot;</span><span class="p">:</span>
         <span class="c1"># calculate wGEBVs</span>
         <span class="c1"># (n,p) @ (p,t) -&gt; (n,t)</span>
-        <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fafreq</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+        <span class="n">wgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fafreq</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
 
         <span class="c1"># construct problem</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">gwgebv</span><span class="p">,</span>
+            <span class="n">wgebv</span> <span class="o">=</span> <span class="n">wgebv</span><span class="p">,</span>
             <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
             <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
             <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
@@ -761,7 +867,7 @@ document.write(`
     <span class="c1">########################## Special Object Methods ##########################</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">gwgebv</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+            <span class="n">wgebv</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
             <span class="n">ndecn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
             <span class="n">decn_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
             <span class="n">decn_space_lower</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Number</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
@@ -785,12 +891,65 @@ document.write(`
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        wgebv : numpy.ndarray</span>
+<span class="sd">            A weighted genomic estimated breeding value matrix of shape ``(n,t)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of taxa.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        ndecn : Integral</span>
+<span class="sd">            Number of decision variables.</span>
+<span class="sd">        decn_space: numpy.ndarray, None</span>
+<span class="sd">            An array of shape ``(2,ndecn)`` defining the decision space.</span>
+<span class="sd">            If None, do not set a decision space.</span>
+<span class="sd">        decn_space_lower: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing lower limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a lower limit for the decision variables.</span>
+<span class="sd">        decn_space_upper: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing upper limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a upper limit for the decision variables.</span>
+<span class="sd">        nobj: Integral</span>
+<span class="sd">            Number of objectives.</span>
+<span class="sd">        obj_wt: numpy.ndarray</span>
+<span class="sd">            Objective function weights.</span>
+<span class="sd">        obj_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an objective space vector.</span>
+<span class="sd">            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the identity transformation function: copy the latent space vector to the objective space vector.</span>
+<span class="sd">        obj_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to objective space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        nineqcv: Integral,</span>
+<span class="sd">            Number of inequality constraints.</span>
+<span class="sd">        ineqcv_wt: numpy.ndarray,</span>
+<span class="sd">            Inequality constraint violation weights.</span>
+<span class="sd">        ineqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an inequality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        ineqcv_trans_kwargs: Optional[dict],</span>
+<span class="sd">            Keyword arguments for the latent space to inequality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        neqcv: Integral</span>
+<span class="sd">            Number of equality constraints.</span>
+<span class="sd">        eqcv_wt: numpy.ndarray</span>
+<span class="sd">            Equality constraint violation weights.</span>
+<span class="sd">        eqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an equality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        eqcv_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to equality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
 <span class="sd">        kwargs : dict</span>
-<span class="sd">            Additional keyword arguments used for cooperative inheritance.</span>
+<span class="sd">            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># call IntegerGeneralizedWeightedGenomicSelectionProblem constructor</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">WeightedGenomicIntegerSelectionProblem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">gwgebv</span><span class="p">,</span>
+            <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">wgebv</span><span class="p">,</span>
             <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
             <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
             <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
@@ -837,11 +996,11 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;WeightedGenomicIntegerSelectionProblem&quot;</span><span class="p">:</span>
         <span class="c1"># calculate wGEBVs</span>
         <span class="c1"># (n,p) @ (p,t) -&gt; (n,t)</span>
-        <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fafreq</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+        <span class="n">wgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fafreq</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
 
         <span class="c1"># construct problem</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">gwgebv</span><span class="p">,</span>
+            <span class="n">wgebv</span> <span class="o">=</span> <span class="n">wgebv</span><span class="p">,</span>
             <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
             <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
             <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
@@ -922,7 +1081,7 @@ document.write(`
     <span class="c1">########################## Special Object Methods ##########################</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">gwgebv</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+            <span class="n">wgebv</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
             <span class="n">ndecn</span><span class="p">:</span> <span class="n">Integral</span><span class="p">,</span>
             <span class="n">decn_space</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
             <span class="n">decn_space_lower</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Number</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span>
@@ -946,12 +1105,65 @@ document.write(`
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        wgebv : numpy.ndarray</span>
+<span class="sd">            A weighted genomic estimated breeding value matrix of shape ``(n,t)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of taxa.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        ndecn : Integral</span>
+<span class="sd">            Number of decision variables.</span>
+<span class="sd">        decn_space: numpy.ndarray, None</span>
+<span class="sd">            An array of shape ``(2,ndecn)`` defining the decision space.</span>
+<span class="sd">            If None, do not set a decision space.</span>
+<span class="sd">        decn_space_lower: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing lower limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a lower limit for the decision variables.</span>
+<span class="sd">        decn_space_upper: numpy.ndarray, Real, None</span>
+<span class="sd">            An array of shape ``(ndecn,)`` containing upper limits for decision variables.</span>
+<span class="sd">            If a Real is provided, construct an array of shape ``(ndecn,)`` containing the Real.</span>
+<span class="sd">            If None, do not set a upper limit for the decision variables.</span>
+<span class="sd">        nobj: Integral</span>
+<span class="sd">            Number of objectives.</span>
+<span class="sd">        obj_wt: numpy.ndarray</span>
+<span class="sd">            Objective function weights.</span>
+<span class="sd">        obj_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an objective space vector.</span>
+<span class="sd">            The transformation function must be of the form: ``obj_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the identity transformation function: copy the latent space vector to the objective space vector.</span>
+<span class="sd">        obj_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to objective space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        nineqcv: Integral,</span>
+<span class="sd">            Number of inequality constraints.</span>
+<span class="sd">        ineqcv_wt: numpy.ndarray,</span>
+<span class="sd">            Inequality constraint violation weights.</span>
+<span class="sd">        ineqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an inequality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``ineqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        ineqcv_trans_kwargs: Optional[dict],</span>
+<span class="sd">            Keyword arguments for the latent space to inequality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
+<span class="sd">        neqcv: Integral</span>
+<span class="sd">            Number of equality constraints.</span>
+<span class="sd">        eqcv_wt: numpy.ndarray</span>
+<span class="sd">            Equality constraint violation weights.</span>
+<span class="sd">        eqcv_trans: Callable, None</span>
+<span class="sd">            A transformation function transforming a latent space vector to an equality constraint violation vector.</span>
+<span class="sd">            The transformation function must be of the form: ``eqcv_trans(x: numpy.ndarray, **kwargs) -&gt; numpy.ndarray``</span>
+<span class="sd">            If None, use the empty set transformation function: return an empty vector of length zero.</span>
+<span class="sd">        eqcv_trans_kwargs: dict, None</span>
+<span class="sd">            Keyword arguments for the latent space to equality constraint violation space transformation function.</span>
+<span class="sd">            If None, an empty dictionary is used.</span>
 <span class="sd">        kwargs : dict</span>
-<span class="sd">            Additional keyword arguments used for cooperative inheritance.</span>
+<span class="sd">            Additional keyword arguments passed to the parent class (SubsetSelectionProblem) constructor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># call BinaryGeneralizedWeightedGenomicSelectionProblem constructor</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">WeightedGenomicBinarySelectionProblem</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">gwgebv</span><span class="p">,</span>
+            <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">wgebv</span><span class="p">,</span>
             <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
             <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
             <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
@@ -998,11 +1210,11 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;WeightedGenomicBinarySelectionProblem&quot;</span><span class="p">:</span>
         <span class="c1"># calculate wGEBVs</span>
         <span class="c1"># (n,p) @ (p,t) -&gt; (n,t)</span>
-        <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fafreq</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+        <span class="n">wgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fafreq</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
 
         <span class="c1"># construct problem</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">gwgebv</span><span class="p">,</span>
+            <span class="n">wgebv</span> <span class="o">=</span> <span class="n">wgebv</span><span class="p">,</span>
             <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
             <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
             <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>

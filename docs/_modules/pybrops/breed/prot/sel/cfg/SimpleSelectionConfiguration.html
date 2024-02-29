@@ -447,12 +447,6 @@ document.write(`
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        pgmat : PhasedGenotypeMatrix</span>
-<span class="sd">            A genome matrix containing parental candidates</span>
-<span class="sd">        xconfig : numpy.ndarray</span>
-<span class="sd">            A mating configuration matrix of shape ``(ncross,nparent)``.</span>
-<span class="sd">            This matrix contains indices corresponding to parents in ``pgmat``</span>
-<span class="sd">            and specifies the manner in which individuals are to be mated.</span>
 <span class="sd">        ncross : Integral</span>
 <span class="sd">            Number of cross configurations to consider. Example: ``ncross = 10, nparent = 2``</span>
 <span class="sd">            specifies 10 two-way crosses.</span>
@@ -465,6 +459,14 @@ document.write(`
 <span class="sd">            initial F1 hybrids are unique and can affect the dihybrid composition.</span>
 <span class="sd">        nprogeny : Integral, numpy.ndarray</span>
 <span class="sd">            The number of progeny to derive from a mating event.</span>
+<span class="sd">        pgmat : PhasedGenotypeMatrix</span>
+<span class="sd">            A genome matrix containing parental candidates</span>
+<span class="sd">        xconfig : numpy.ndarray</span>
+<span class="sd">            A mating configuration matrix of shape ``(ncross,nparent)``.</span>
+<span class="sd">            This matrix contains indices corresponding to parents in ``pgmat``</span>
+<span class="sd">            and specifies the manner in which individuals are to be mated.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># order dependent assignments!</span>
         <span class="c1"># set shape parameters first</span>

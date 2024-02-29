@@ -453,20 +453,48 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">wt</span> <span class="o">=</span> <span class="n">wt</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimization_type</span> <span class="o">=</span> <span class="n">optimization_type</span>
 
-    <span class="k">def</span> <span class="fm">__float__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a weight to a floating point value.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__float__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a weight to a floating point value.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : float</span>
+<span class="sd">            A weight as a floating point value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__int__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a weight to an integer value.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__int__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a weight to an integer value.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : int</span>
+<span class="sd">            A weight as an integer value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a weight to a string.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a weight to a string.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : str</span>
+<span class="sd">            A weight represented as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a weight to a string representation.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a weight to a string representation.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : str</span>
+<span class="sd">            A weight represented as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span>
 
     <span class="c1">############################ Object Properties #############################</span>
@@ -537,22 +565,50 @@ document.write(`
             <span class="n">optimization_type</span> <span class="o">=</span> <span class="n">optimization_type</span>
         <span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__float__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a weight to a floating point value.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__float__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a weight to a floating point value.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : float</span>
+<span class="sd">            A weight as a floating point value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">out</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_type</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span> <span class="k">else</span> <span class="o">-</span><span class="n">out</span>
 
-    <span class="k">def</span> <span class="fm">__int__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a weight to an integer value.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__int__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a weight to an integer value.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : int</span>
+<span class="sd">            A weight as an integer value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">out</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">out</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_type</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span> <span class="k">else</span> <span class="o">-</span><span class="n">out</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a weight to a string.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a weight to a string.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : str</span>
+<span class="sd">            A weight represented as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_type</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span> <span class="k">else</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a weight to a string representation.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a weight to a string representation.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : str</span>
+<span class="sd">            A weight represented as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_type</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span> <span class="k">else</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span></div>
 
 
@@ -597,21 +653,49 @@ document.write(`
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__float__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a weight to a floating point value.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a weight to a floating point value.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : float</span>
+<span class="sd">            A weight as a floating point value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">out</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">out</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_type</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span> <span class="k">else</span> <span class="n">out</span>
 
     <span class="k">def</span> <span class="fm">__int__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a weight to an integer value.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a weight to an integer value.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : int</span>
+<span class="sd">            A weight as an integer value.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">out</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span>
         <span class="k">return</span> <span class="o">-</span><span class="n">out</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_type</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span> <span class="k">else</span> <span class="n">out</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a weight to a string.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a weight to a string.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : str</span>
+<span class="sd">            A weight represented as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_type</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span>
     
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a weight to a string representation.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a weight to a string representation.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : str</span>
+<span class="sd">            A weight represented as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimization_type</span> <span class="o">==</span> <span class="s2">&quot;min&quot;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span></div>
 
 </pre></div>

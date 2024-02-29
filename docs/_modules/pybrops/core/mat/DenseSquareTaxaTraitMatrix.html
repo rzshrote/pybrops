@@ -614,11 +614,15 @@ document.write(`
 <span class="sd">            The axis along which values are adjoined.</span>
 <span class="sd">        taxa : numpy.ndarray</span>
 <span class="sd">            Taxa names to adjoin to the Matrix.</span>
-<span class="sd">            If values is a DenseHaplotypeMatrix that has a non-None</span>
+<span class="sd">            If values is a DenseSquareTaxaTraitMatrix that has a non-None</span>
 <span class="sd">            taxa field, providing this argument overwrites the field.</span>
 <span class="sd">        taxa_grp : numpy.ndarray</span>
 <span class="sd">            Taxa groups to adjoin to the Matrix.</span>
-<span class="sd">            If values is a DenseHaplotypeMatrix that has a non-None</span>
+<span class="sd">            If values is a DenseSquareTaxaTraitMatrix that has a non-None</span>
+<span class="sd">            taxa_grp field, providing this argument overwrites the field.</span>
+<span class="sd">        trait : numpy.ndarray, None</span>
+<span class="sd">            Trait names to adjoin to the Matrix.</span>
+<span class="sd">            If ``values`` is a DenseSquareTaxaTraitMatrix that has a non-None</span>
 <span class="sd">            taxa_grp field, providing this argument overwrites the field.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
@@ -718,11 +722,15 @@ document.write(`
 <span class="sd">            The axis along which values are inserted.</span>
 <span class="sd">        taxa : numpy.ndarray</span>
 <span class="sd">            Taxa names to insert into the Matrix.</span>
-<span class="sd">            If values is a DenseHaplotypeMatrix that has a non-None</span>
+<span class="sd">            If values is a DenseSquareTaxaTraitMatrix that has a non-None</span>
 <span class="sd">            taxa field, providing this argument overwrites the field.</span>
 <span class="sd">        taxa_grp : numpy.ndarray</span>
 <span class="sd">            Taxa groups to insert into the Matrix.</span>
-<span class="sd">            If values is a DenseHaplotypeMatrix that has a non-None</span>
+<span class="sd">            If values is a DenseSquareTaxaTraitMatrix that has a non-None</span>
+<span class="sd">            taxa_grp field, providing this argument overwrites the field.</span>
+<span class="sd">        trait : numpy.ndarray, None</span>
+<span class="sd">            Trait names to insert into the Matrix.</span>
+<span class="sd">            If ``values`` is a DenseSquareTaxaTraitMatrix that has a non-None</span>
 <span class="sd">            taxa_grp field, providing this argument overwrites the field.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
@@ -857,12 +865,26 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        values : DenseHaplotypeMatrix, numpy.ndarray</span>
+<span class="sd">        values : DenseSquareTaxaTraitMatrix, numpy.ndarray</span>
 <span class="sd">            Values are appended to append to the matrix.</span>
 <span class="sd">            Must be of type int8.</span>
 <span class="sd">            Must be of shape (m, n, p)</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis along which values are appended.</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            Taxa names to append to the Matrix.</span>
+<span class="sd">            If values is a DenseSquareTaxaTraitMatrix that has a non-None</span>
+<span class="sd">            taxa field, providing this argument overwrites the field.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            Taxa groups to append to the Matrix.</span>
+<span class="sd">            If values is a DenseSquareTaxaTraitMatrix that has a non-None</span>
+<span class="sd">            taxa_grp field, providing this argument overwrites the field.</span>
+<span class="sd">        trait : numpy.ndarray, None</span>
+<span class="sd">            Trait names to append to the Matrix.</span>
+<span class="sd">            If ``values`` is a DenseSquareTaxaTraitMatrix that has a non-None</span>
+<span class="sd">            taxa_grp field, providing this argument overwrites the field.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># get axis</span>
         <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>
@@ -940,6 +962,18 @@ document.write(`
 <span class="sd">            Values to incorporate into the matrix.</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis along which values are incorporated.</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            Taxa names to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseSquareTaxaTraitMatrix that has a non-None</span>
+<span class="sd">            taxa field, providing this argument overwrites the field.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            Taxa groups to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseSquareTaxaTraitMatrix that has a non-None</span>
+<span class="sd">            taxa_grp field, providing this argument overwrites the field.</span>
+<span class="sd">        trait : numpy.ndarray, None</span>
+<span class="sd">            Trait names to incorporate into the Matrix.</span>
+<span class="sd">            If ``values`` is a DenseSquareTaxaTraitMatrix that has a non-None</span>
+<span class="sd">            taxa_grp field, providing this argument overwrites the field.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -984,6 +1018,8 @@ document.write(`
 <span class="sd">            sort key.</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis of the Matrix over which to sort values.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1021,6 +1057,8 @@ document.write(`
 <span class="sd">            Indices of where to place elements.</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis over which to reorder values.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>                   <span class="c1"># transform axis number to an index</span>
 
@@ -1051,6 +1089,8 @@ document.write(`
 <span class="sd">            sort key.</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis over which to sort values.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># transform axis number to an index</span>
         <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>
@@ -1125,7 +1165,6 @@ document.write(`
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot ungroup along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span></div>
 
 
-
 <div class="viewcode-block" id="DenseSquareTaxaTraitMatrix.is_grouped">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.html#pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.is_grouped">[docs]</a>
     <span class="k">def</span> <span class="nf">is_grouped</span><span class="p">(</span>
@@ -1135,6 +1174,13 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine whether the Matrix has been sorted and grouped.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        axis : int</span>
+<span class="sd">            Axis to test for grouping.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>

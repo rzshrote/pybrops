@@ -1,0 +1,6 @@
+assert\_method\_isconcrete
+==========================
+
+.. currentmodule:: pybrops.test.assert_python
+
+.. autofunction:: assert_method_isconcrete

@@ -1,0 +1,88 @@
+DenseAdditiveDominanceLinearGenomicModel
+========================================
+
+.. currentmodule:: pybrops.model.gmod.DenseAdditiveDominanceLinearGenomicModel
+
+.. autoclass:: DenseAdditiveDominanceLinearGenomicModel
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseAdditiveDominanceLinearGenomicModel.bulmer
+      ~DenseAdditiveDominanceLinearGenomicModel.bulmer_numpy
+      ~DenseAdditiveDominanceLinearGenomicModel.copy
+      ~DenseAdditiveDominanceLinearGenomicModel.daavail
+      ~DenseAdditiveDominanceLinearGenomicModel.dacount
+      ~DenseAdditiveDominanceLinearGenomicModel.dafixed
+      ~DenseAdditiveDominanceLinearGenomicModel.dafreq
+      ~DenseAdditiveDominanceLinearGenomicModel.deepcopy
+      ~DenseAdditiveDominanceLinearGenomicModel.faavail
+      ~DenseAdditiveDominanceLinearGenomicModel.facount
+      ~DenseAdditiveDominanceLinearGenomicModel.fafixed
+      ~DenseAdditiveDominanceLinearGenomicModel.fafreq
+      ~DenseAdditiveDominanceLinearGenomicModel.fit
+      ~DenseAdditiveDominanceLinearGenomicModel.fit_numpy
+      ~DenseAdditiveDominanceLinearGenomicModel.from_csv_dict
+      ~DenseAdditiveDominanceLinearGenomicModel.from_hdf5
+      ~DenseAdditiveDominanceLinearGenomicModel.from_pandas_dict
+      ~DenseAdditiveDominanceLinearGenomicModel.gebv
+      ~DenseAdditiveDominanceLinearGenomicModel.gebv_numpy
+      ~DenseAdditiveDominanceLinearGenomicModel.gegv
+      ~DenseAdditiveDominanceLinearGenomicModel.gegv_numpy
+      ~DenseAdditiveDominanceLinearGenomicModel.lsl
+      ~DenseAdditiveDominanceLinearGenomicModel.lsl_numpy
+      ~DenseAdditiveDominanceLinearGenomicModel.predict
+      ~DenseAdditiveDominanceLinearGenomicModel.predict_numpy
+      ~DenseAdditiveDominanceLinearGenomicModel.score
+      ~DenseAdditiveDominanceLinearGenomicModel.score_numpy
+      ~DenseAdditiveDominanceLinearGenomicModel.to_csv_dict
+      ~DenseAdditiveDominanceLinearGenomicModel.to_hdf5
+      ~DenseAdditiveDominanceLinearGenomicModel.to_pandas_dict
+      ~DenseAdditiveDominanceLinearGenomicModel.usl
+      ~DenseAdditiveDominanceLinearGenomicModel.usl_numpy
+      ~DenseAdditiveDominanceLinearGenomicModel.var_A
+      ~DenseAdditiveDominanceLinearGenomicModel.var_A_numpy
+      ~DenseAdditiveDominanceLinearGenomicModel.var_G
+      ~DenseAdditiveDominanceLinearGenomicModel.var_G_numpy
+      ~DenseAdditiveDominanceLinearGenomicModel.var_a
+      ~DenseAdditiveDominanceLinearGenomicModel.var_a_numpy
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseAdditiveDominanceLinearGenomicModel.beta
+      ~DenseAdditiveDominanceLinearGenomicModel.hyperparams
+      ~DenseAdditiveDominanceLinearGenomicModel.model_name
+      ~DenseAdditiveDominanceLinearGenomicModel.nexplan
+      ~DenseAdditiveDominanceLinearGenomicModel.nexplan_beta
+      ~DenseAdditiveDominanceLinearGenomicModel.nexplan_u
+      ~DenseAdditiveDominanceLinearGenomicModel.nexplan_u_a
+      ~DenseAdditiveDominanceLinearGenomicModel.nexplan_u_d
+      ~DenseAdditiveDominanceLinearGenomicModel.nexplan_u_misc
+      ~DenseAdditiveDominanceLinearGenomicModel.nparam
+      ~DenseAdditiveDominanceLinearGenomicModel.nparam_beta
+      ~DenseAdditiveDominanceLinearGenomicModel.nparam_u
+      ~DenseAdditiveDominanceLinearGenomicModel.nparam_u_a
+      ~DenseAdditiveDominanceLinearGenomicModel.nparam_u_d
+      ~DenseAdditiveDominanceLinearGenomicModel.nparam_u_misc
+      ~DenseAdditiveDominanceLinearGenomicModel.ntrait
+      ~DenseAdditiveDominanceLinearGenomicModel.trait
+      ~DenseAdditiveDominanceLinearGenomicModel.u
+      ~DenseAdditiveDominanceLinearGenomicModel.u_a
+      ~DenseAdditiveDominanceLinearGenomicModel.u_d
+      ~DenseAdditiveDominanceLinearGenomicModel.u_misc
+   
+   

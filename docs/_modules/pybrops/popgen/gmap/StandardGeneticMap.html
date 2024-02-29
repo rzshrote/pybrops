@@ -562,8 +562,15 @@ document.write(`
         <span class="k">if</span> <span class="n">auto_build_spline</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">build_spline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spline_kind</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spline_fill_value</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the number of markers in the genetic map.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the number of markers in the genetic map.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : int</span>
+<span class="sd">            The number of markers in the genetic map.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vrnt_genpos</span><span class="p">)</span>
 
     <span class="c1">################## GeneticMap copying ##################</span>
@@ -853,7 +860,7 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        keys : (k, N) array or tuple containing k (N,)-shaped sequences</span>
+<span class="sd">        keys : A (k, N) array or tuple containing k (N,)-shaped sequences</span>
 <span class="sd">            The k different columns to be sorted. The last column (or row if</span>
 <span class="sd">            keys is a 2D array) is the primary sort key.</span>
 <span class="sd">        kwargs : dict</span>
@@ -861,7 +868,7 @@ document.write(`
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        indices : (N,) ndarray of ints</span>
+<span class="sd">        indices : A (N,) ndarray of ints</span>
 <span class="sd">            Array of indices that sort the keys along the specified axis.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># if no keys were provided, set a default</span>
@@ -912,7 +919,7 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        indices : (N,) ndarray of ints</span>
+<span class="sd">        indices : A (N,) ndarray of ints</span>
 <span class="sd">            Array of indices that reorder the matrix along the specified axis.</span>
 
 <span class="sd">        kwargs : dict</span>
@@ -942,7 +949,7 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        keys : (k, N) array or tuple containing k (N,)-shaped sequences</span>
+<span class="sd">        keys : A (k, N) array or tuple containing k (N,)-shaped sequences</span>
 <span class="sd">            The k different columns to be sorted. The last column (or row if</span>
 <span class="sd">            keys is a 2D array) is the primary sort key.</span>
 <span class="sd">        kwargs : dict</span>
@@ -1837,6 +1844,18 @@ document.write(`
 <span class="sd">            or ndarray, regardless of shape) is taken to be a single array-like</span>
 <span class="sd">            argument meant to be used for both bounds as below,</span>
 <span class="sd">            above = fill_value, fill_value.</span>
+
+<span class="sd">        vrnt_genpos_units : str, default = &quot;M&quot;</span>
+<span class="sd">            Units in which genetic positions in the ``vrnt_genpos`` array are </span>
+<span class="sd">            stored. Options are listed below and are case-sensitive:</span>
+<span class="sd">            </span>
+<span class="sd">            - ``&quot;M&quot;`` - genetic position units are in Morgans</span>
+<span class="sd">            - ``&quot;Morgans&quot;`` - genetic position units are in Morgans</span>
+<span class="sd">            - ``&quot;cM&quot;`` - genetic position units are in centiMorgans</span>
+<span class="sd">            - ``&quot;centiMorgans&quot;`` - genetic position units are in centiMorgans</span>
+<span class="sd">            </span>
+<span class="sd">            Internally, all genetic positions are stored in Morgans. Providing </span>
+<span class="sd">            the units of the input  </span>
 
 <span class="sd">        auto_group : bool</span>
 <span class="sd">            Whether to automatically sort and group variants into chromosome groups.</span>

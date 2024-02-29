@@ -471,7 +471,7 @@ document.write(`
         <span class="n">rng</span> <span class="o">=</span> <span class="n">global_prng</span>                           <span class="c1"># set to global rng</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>                  <span class="c1"># if size is integer</span>
         <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span><span class="p">,)</span>                              <span class="c1"># convert size to tuple</span>
-    <span class="n">k</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>                         <span class="c1"># calculate total number of elements we need</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>                            <span class="c1"># calculate total number of elements we need</span>
     <span class="n">tot_fit</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>                               <span class="c1"># calculate the total fitness</span>
     <span class="n">ptr_dist</span> <span class="o">=</span> <span class="n">tot_fit</span> <span class="o">/</span> <span class="n">k</span>                          <span class="c1"># calculate the distance between pointers</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>                     <span class="c1"># get indices for sorted individuals</span>
@@ -538,7 +538,7 @@ document.write(`
         <span class="n">rng</span> <span class="o">=</span> <span class="n">global_prng</span>
     
     <span class="c1"># get shape parameters</span>
-    <span class="n">nsample</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">nsample</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
 
     <span class="c1"># allocate memory for output</span>
     <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">nsample</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>

@@ -1,0 +1,6 @@
+assert\_classmethod\_raises\_NotImplementedError
+================================================
+
+.. currentmodule:: pybrops.test.assert_python
+
+.. autofunction:: assert_classmethod_raises_NotImplementedError

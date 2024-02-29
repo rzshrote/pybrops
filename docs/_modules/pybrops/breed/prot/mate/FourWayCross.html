@@ -454,13 +454,16 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        progeny_counter : Integral</span>
+<span class="sd">            Progeny counter. This helps create progeny names.</span>
+<span class="sd">        family_counter : Integral</span>
+<span class="sd">            Family counter. This helps label groups of progenies as originating </span>
+<span class="sd">            from the same family.</span>
 <span class="sd">        rng : numpy.random.Generator, numpy.random.RandomState</span>
 <span class="sd">            Random number source.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">FourWayCross</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
         <span class="c1"># make assignments</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">progeny_counter</span> <span class="o">=</span> <span class="n">progeny_counter</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">family_counter</span> <span class="o">=</span> <span class="n">family_counter</span>

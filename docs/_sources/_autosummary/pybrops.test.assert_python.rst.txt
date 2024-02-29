@@ -20,26 +20,34 @@ assert\_python
       :template: custom-function-template.rst
       :nosignatures:
    
-      assert_abstract_class
-      assert_abstract_function
-      assert_abstract_method
-      assert_abstract_property
       assert_class_documentation
-      assert_concrete_class
-      assert_concrete_function
-      assert_concrete_method
-      assert_concrete_property
-      assert_concrete_property_fget
+      assert_class_isabstract
+      assert_class_isconcrete
+      assert_class_ismixin
+      assert_class_issemiabstract
+      assert_classmethod_documentation
+      assert_classmethod_isabstract
+      assert_classmethod_isconcrete
+      assert_classmethod_not_raises_NotImplementedError
+      assert_classmethod_raises_NotImplementedError
       assert_docstring
       assert_function_documentation
+      assert_function_isabstract
+      assert_function_isconcrete
       assert_function_not_raises_NotImplementedError
       assert_function_raises_NotImplementedError
       assert_hasattr
       assert_method_documentation
-      assert_mixin_class
+      assert_method_isabstract
+      assert_method_isconcrete
+      assert_method_not_raises_NotImplementedError
+      assert_method_raises_NotImplementedError
       assert_module_documentation
       assert_property_documentation
-      assert_semiabstract_class
+      assert_property_isabstract
+      assert_property_isconcrete
+      assert_property_not_raises_NotImplementedError
+      assert_property_raises_NotImplementedError
       not_raises
       raises
    

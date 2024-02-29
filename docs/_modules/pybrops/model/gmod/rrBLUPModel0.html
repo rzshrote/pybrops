@@ -1232,6 +1232,11 @@ document.write(`
 <span class="sd">            Model parameters.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : rrBLUPModel0</span>
+<span class="sd">            An RR-BLUP model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># type checks</span>
         <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>
@@ -1308,8 +1313,22 @@ document.write(`
 <span class="sd">            values.</span>
 <span class="sd">        trait : numpy.ndarray, None</span>
 <span class="sd">            A trait name array of shape (t,).</span>
+<span class="sd">        method : str</span>
+<span class="sd">            Fitting method to use. Options are ``{&quot;ML&quot;}``.</span>
+<span class="sd">            </span>
+<span class="sd">        model_name : str, None</span>
+<span class="sd">            Name of the model.</span>
+<span class="sd">        </span>
+<span class="sd">        hyperparams : dict, None</span>
+<span class="sd">            Model parameters.</span>
+<span class="sd">        </span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : rrBLUPModel0</span>
+<span class="sd">            An RR-BLUP model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># process ptobj</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ptobj</span><span class="p">,</span> <span class="n">BreedingValueMatrix</span><span class="p">):</span>

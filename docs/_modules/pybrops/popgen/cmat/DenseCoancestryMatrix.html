@@ -455,7 +455,10 @@ document.write(`
 
 <div class="viewcode-block" id="DenseCoancestryMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix">[docs]</a>
-<span class="k">class</span> <span class="nc">DenseCoancestryMatrix</span><span class="p">(</span><span class="n">DenseSquareTaxaMatrix</span><span class="p">,</span><span class="n">CoancestryMatrix</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DenseCoancestryMatrix</span><span class="p">(</span>
+        <span class="n">DenseSquareTaxaMatrix</span><span class="p">,</span>
+        <span class="n">CoancestryMatrix</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A concrete class for dense coancestry matrices. Coancestry matrices are square.</span>
 
@@ -483,8 +486,10 @@ document.write(`
 <span class="sd">            Where:</span>
 
 <span class="sd">            - ``n`` is the number of taxa.</span>
-<span class="sd">        taxa : numpy.ndarray, None</span>
-<span class="sd">        taxa_grp : numpy.ndarray, None</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            Taxa names.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            Taxa groupings.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -598,7 +603,11 @@ document.write(`
     <span class="c1">############## Coancestry/kinship Methods ##############</span>
 <div class="viewcode-block" id="DenseCoancestryMatrix.coancestry">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.coancestry">[docs]</a>
-    <span class="k">def</span> <span class="nf">coancestry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">coancestry</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Real</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve the coancestry between individuals.</span>
 
@@ -608,13 +617,22 @@ document.write(`
 <span class="sd">            A tuple of matrix indices to access the coancestry.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Real</span>
+<span class="sd">            The coancestry between individuals.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">[</span><span class="n">args</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="DenseCoancestryMatrix.kinship">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.kinship">[docs]</a>
-    <span class="k">def</span> <span class="nf">kinship</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">kinship</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Real</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Retrieve the kinship between individuals.</span>
 
@@ -624,6 +642,11 @@ document.write(`
 <span class="sd">            A tuple of matrix indices to access the kinship.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Real</span>
+<span class="sd">            The kinship between individuals.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="p">[</span><span class="n">args</span><span class="p">]</span></div>
 
@@ -632,14 +655,14 @@ document.write(`
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.is_positive_semidefinite">[docs]</a>
     <span class="k">def</span> <span class="nf">is_positive_semidefinite</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
-            <span class="n">eigvaltol</span> <span class="o">=</span> <span class="mf">2e-14</span>
+            <span class="n">eigvaltol</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">2e-14</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine whether the coancestry matrix is positive semidefinite.</span>
 <span class="sd">        </span>
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        eigvaltol : float</span>
+<span class="sd">        eigvaltol : Real</span>
 <span class="sd">            Eigenvalue tolerance for determining positive semidefiniteness.</span>
 <span class="sd">            If provided eigenvalue tolerance is less than zero, the tolerance</span>
 <span class="sd">            is set to 0.0.</span>
@@ -659,10 +682,10 @@ document.write(`
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.html#pybrops.popgen.cmat.DenseCoancestryMatrix.DenseCoancestryMatrix.apply_jitter">[docs]</a>
     <span class="k">def</span> <span class="nf">apply_jitter</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
-            <span class="n">eigvaltol</span> <span class="o">=</span> <span class="mf">2e-14</span><span class="p">,</span> 
-            <span class="n">minjitter</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span> 
-            <span class="n">maxjitter</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span> 
-            <span class="n">nattempt</span> <span class="o">=</span> <span class="mi">100</span>
+            <span class="n">eigvaltol</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">2e-14</span><span class="p">,</span> 
+            <span class="n">minjitter</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1e-10</span><span class="p">,</span> 
+            <span class="n">maxjitter</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span> 
+            <span class="n">nattempt</span><span class="p">:</span> <span class="n">Integral</span> <span class="o">=</span> <span class="mi">100</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add a random jitter value to the diagonal of the coancestry matrix until </span>

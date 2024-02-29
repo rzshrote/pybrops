@@ -436,7 +436,11 @@ document.write(`
 
 <div class="viewcode-block" id="DensePhasedTaxaVariantMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DensePhasedTaxaVariantMatrix.DensePhasedTaxaVariantMatrix.html#pybrops.core.mat.DensePhasedTaxaVariantMatrix.DensePhasedTaxaVariantMatrix">[docs]</a>
-<span class="k">class</span> <span class="nc">DensePhasedTaxaVariantMatrix</span><span class="p">(</span><span class="n">DenseTaxaVariantMatrix</span><span class="p">,</span><span class="n">DensePhasedMatrix</span><span class="p">,</span><span class="n">PhasedTaxaVariantMatrix</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DensePhasedTaxaVariantMatrix</span><span class="p">(</span>
+        <span class="n">DenseTaxaVariantMatrix</span><span class="p">,</span>
+        <span class="n">DensePhasedMatrix</span><span class="p">,</span>
+        <span class="n">PhasedTaxaVariantMatrix</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A concrete class implementing dense matrices with phase, taxa, and variant</span>
 <span class="sd">    metadata.</span>
@@ -1326,6 +1330,13 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine whether the Matrix has been sorted and grouped.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        axis : int</span>
+<span class="sd">            Axis to test for sorting and grouping</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>

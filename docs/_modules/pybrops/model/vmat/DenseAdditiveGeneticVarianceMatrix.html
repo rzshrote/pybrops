@@ -424,7 +424,10 @@ document.write(`
 
 <div class="viewcode-block" id="DenseAdditiveGeneticVarianceMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix.DenseAdditiveGeneticVarianceMatrix.html#pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix.DenseAdditiveGeneticVarianceMatrix">[docs]</a>
-<span class="k">class</span> <span class="nc">DenseAdditiveGeneticVarianceMatrix</span><span class="p">(</span><span class="n">DenseGeneticVarianceMatrix</span><span class="p">,</span><span class="n">AdditiveGeneticVarianceMatrix</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DenseAdditiveGeneticVarianceMatrix</span><span class="p">(</span>
+        <span class="n">DenseGeneticVarianceMatrix</span><span class="p">,</span>
+        <span class="n">AdditiveGeneticVarianceMatrix</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A semi-concrete class for dense additive genetic variance matrices.</span>
 
@@ -443,7 +446,7 @@ document.write(`
             <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
             <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
             <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
-        <span class="p">):</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the concrete class DenseAdditiveGeneticVarianceMatrix.</span>
 

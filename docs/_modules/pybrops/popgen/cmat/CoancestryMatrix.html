@@ -435,12 +435,12 @@ document.write(`
 <div class="viewcode-block" id="CoancestryMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.cmat.CoancestryMatrix.CoancestryMatrix.html#pybrops.popgen.cmat.CoancestryMatrix.CoancestryMatrix">[docs]</a>
 <span class="k">class</span> <span class="nc">CoancestryMatrix</span><span class="p">(</span>
-    <span class="n">SquareTaxaMatrix</span><span class="p">,</span>
-    <span class="n">PandasInputOutput</span><span class="p">,</span>
-    <span class="n">CSVInputOutput</span><span class="p">,</span>
-    <span class="n">HDF5InputOutput</span><span class="p">,</span>
-    <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">,</span>
-<span class="p">):</span>
+        <span class="n">SquareTaxaMatrix</span><span class="p">,</span>
+        <span class="n">PandasInputOutput</span><span class="p">,</span>
+        <span class="n">CSVInputOutput</span><span class="p">,</span>
+        <span class="n">HDF5InputOutput</span><span class="p">,</span>
+        <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An abstract class for coancestry matrices. Coancestry matrices are square.</span>
 <span class="sd">    Coancestry matrices are related to kinship matrices in the following manner:</span>
@@ -507,6 +507,11 @@ document.write(`
 <span class="sd">            A tuple of matrix indices to access the coancestry.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Real</span>
+<span class="sd">            The coancestry between individuals.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;method is abstract&quot;</span><span class="p">)</span></div>
 
@@ -528,6 +533,11 @@ document.write(`
 <span class="sd">            A tuple of matrix indices to access the kinship.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : Real</span>
+<span class="sd">            The kinship between individuals.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;method is abstract&quot;</span><span class="p">)</span></div>
 

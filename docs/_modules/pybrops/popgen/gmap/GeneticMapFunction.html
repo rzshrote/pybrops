@@ -647,9 +647,18 @@ document.write(`
 <div class="viewcode-block" id="check_is_GeneticMapFunction">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmap.GeneticMapFunction.check_is_GeneticMapFunction.html#pybrops.popgen.gmap.GeneticMapFunction.check_is_GeneticMapFunction">[docs]</a>
 <span class="k">def</span> <span class="nf">check_is_GeneticMapFunction</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Raise TypeError if object is not a GeneticMapFunction&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if object is of type GeneticMapFunction. Otherwise raise TypeError.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    v : object</span>
+<span class="sd">        Any Python object to test.</span>
+<span class="sd">    vname : str</span>
+<span class="sd">        Name of variable to print in TypeError message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">GeneticMapFunction</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;variable &#39;</span><span class="si">{0}</span><span class="s2">&#39; must be a GeneticMapFunction&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span></div>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;</span><span class="si">{0}</span><span class="s2">&#39; must be of type GeneticMapFunction.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vname</span><span class="p">))</span></div>
 
 </pre></div>
 

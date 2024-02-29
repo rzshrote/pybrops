@@ -424,7 +424,10 @@ document.write(`
 
 <div class="viewcode-block" id="AdditiveGeneticVarianceMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.AdditiveGeneticVarianceMatrix.AdditiveGeneticVarianceMatrix.html#pybrops.model.vmat.AdditiveGeneticVarianceMatrix.AdditiveGeneticVarianceMatrix">[docs]</a>
-<span class="k">class</span> <span class="nc">AdditiveGeneticVarianceMatrix</span><span class="p">(</span><span class="n">GeneticVarianceMatrix</span><span class="p">,</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">AdditiveGeneticVarianceMatrix</span><span class="p">(</span>
+        <span class="n">GeneticVarianceMatrix</span><span class="p">,</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An abstract class for additive genetic variance matrices.</span>
 
@@ -483,7 +486,7 @@ document.write(`
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        out : GeneticVarianceMatrix</span>
+<span class="sd">        out : AdditiveGeneticVarianceMatrix</span>
 <span class="sd">            A matrix of additive genetic variance estimations.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;method is abstract&quot;</span><span class="p">)</span></div>

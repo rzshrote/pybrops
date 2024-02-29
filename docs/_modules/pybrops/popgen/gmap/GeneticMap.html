@@ -422,8 +422,9 @@ document.write(`
 
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
 <span class="kn">import</span> <span class="nn">pandas</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.io.CSVInputOutput</span> <span class="kn">import</span> <span class="n">CSVInputOutput</span>
 
@@ -431,7 +432,11 @@ document.write(`
 
 <div class="viewcode-block" id="GeneticMap">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmap.GeneticMap.GeneticMap.html#pybrops.popgen.gmap.GeneticMap.GeneticMap">[docs]</a>
-<span class="k">class</span> <span class="nc">GeneticMap</span><span class="p">(</span><span class="n">PandasInputOutput</span><span class="p">,</span><span class="n">CSVInputOutput</span><span class="p">,</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">GeneticMap</span><span class="p">(</span>
+        <span class="n">PandasInputOutput</span><span class="p">,</span>
+        <span class="n">CSVInputOutput</span><span class="p">,</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An abstract class for genetic map objects.</span>
 
@@ -446,8 +451,17 @@ document.write(`
 
     <span class="c1">########################## Special Object Methods ##########################</span>
     <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the number of markers in the genetic map.&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the number of markers in the genetic map.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : int</span>
+<span class="sd">            The number of markers in the genetic map.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;method is abstract&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span>
@@ -673,7 +687,7 @@ document.write(`
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">lexsort</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
-            <span class="n">keys</span><span class="p">,</span> 
+            <span class="n">keys</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span> 
             <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -681,7 +695,7 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        keys : (k, N) array or tuple containing k (N,)-shaped sequences</span>
+<span class="sd">        keys : A (k, N) array or tuple containing k (N,)-shaped sequences</span>
 <span class="sd">            The k different columns to be sorted. The last column (or row if</span>
 <span class="sd">            keys is a 2D array) is the primary sort key.</span>
 <span class="sd">        kwargs : dict</span>
@@ -689,7 +703,7 @@ document.write(`
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        indices : (N,) ndarray of ints</span>
+<span class="sd">        indices : A (N,) ndarray of ints</span>
 <span class="sd">            Array of indices that sort the keys along the specified axis.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;method is abstract&quot;</span><span class="p">)</span></div>
@@ -700,7 +714,7 @@ document.write(`
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">reorder</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
-            <span class="n">indices</span><span class="p">,</span> 
+            <span class="n">indices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
             <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -708,7 +722,7 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        indices : (N,) ndarray of ints</span>
+<span class="sd">        indices : A (N,) ndarray of ints</span>
 <span class="sd">            Array of indices that reorder the matrix along the specified axis.</span>
 
 <span class="sd">        kwargs : dict</span>
@@ -722,7 +736,7 @@ document.write(`
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
-            <span class="n">keys</span><span class="p">,</span> 
+            <span class="n">keys</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">tuple</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="kc">None</span><span class="p">],</span> 
             <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -731,7 +745,7 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        keys : (k, N) array or tuple containing k (N,)-shaped sequences</span>
+<span class="sd">        keys : A (k, N) array or tuple containing k (N,)-shaped sequences</span>
 <span class="sd">            The k different columns to be sorted. The last column (or row if</span>
 <span class="sd">            keys is a 2D array) is the primary sort key.</span>
 <span class="sd">        kwargs : dict</span>
@@ -808,7 +822,7 @@ document.write(`
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
-            <span class="n">indices</span><span class="p">,</span> 
+            <span class="n">indices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span><span class="nb">slice</span><span class="p">,</span><span class="n">Sequence</span><span class="p">],</span> 
             <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -836,7 +850,7 @@ document.write(`
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">select</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
-            <span class="n">indices</span><span class="p">,</span> 
+            <span class="n">indices</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> 
             <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -979,7 +993,14 @@ document.write(`
     <span class="k">def</span> <span class="nf">has_spline</span><span class="p">(</span>
             <span class="bp">self</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return whether or not the GeneticMap has a built spline.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return whether or not the GeneticMap has a built spline.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : bool</span>
+<span class="sd">            Whether the GeneticMap has a spline built.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;method is abstract&quot;</span><span class="p">)</span></div>
 
 

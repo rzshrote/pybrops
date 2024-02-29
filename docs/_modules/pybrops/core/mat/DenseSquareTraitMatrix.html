@@ -1176,6 +1176,12 @@ document.write(`
 <span class="sd">            Must be of shape (m, n, p)</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis along which values are appended.</span>
+<span class="sd">        trait : numpy.ndarray</span>
+<span class="sd">            Trait names to append to the Matrix.</span>
+<span class="sd">            If values is a DenseSquareTraitMatrix that has a non-None</span>
+<span class="sd">            trait field, providing this argument overwrites the field.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># get axis</span>
         <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>
@@ -1208,6 +1214,8 @@ document.write(`
 <span class="sd">            Values are appended to append to the matrix.</span>
 <span class="sd">        trait : numpy.ndarray</span>
 <span class="sd">            Trait names to append to the Matrix.</span>
+<span class="sd">            If values is a DenseSquareTraitMatrix that has a non-None</span>
+<span class="sd">            trait field, providing this argument overwrites the field.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1344,6 +1352,10 @@ document.write(`
 <span class="sd">            Values to incorporate into the matrix.</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis along which values are incorporated.</span>
+<span class="sd">        trait : numpy.ndarray</span>
+<span class="sd">            Trait names to incorporate into the Matrix.</span>
+<span class="sd">            If values is a DenseSquareTraitMatrix that has a non-None</span>
+<span class="sd">            trait field, providing this argument overwrites the field.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1430,6 +1442,8 @@ document.write(`
 <span class="sd">            sort key.</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis of the Matrix over which to sort values.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1461,7 +1475,7 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        keys : (k, N) array or tuple containing k (N,)-shaped sequences</span>
+<span class="sd">        keys : A (k, N) array or tuple containing k (N,)-shaped sequences</span>
 <span class="sd">            The k different columns to be sorted. The last column (or row if</span>
 <span class="sd">            keys is a 2D array) is the primary sort key.</span>
 <span class="sd">        kwargs : dict</span>
@@ -1469,7 +1483,7 @@ document.write(`
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        indices : (N,) ndarray of ints</span>
+<span class="sd">        indices : A (N,) ndarray of ints</span>
 <span class="sd">            Array of indices that sort the keys along the specified axis.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># default error message</span>
@@ -1520,6 +1534,8 @@ document.write(`
 <span class="sd">            Indices of where to place elements.</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis over which to reorder values.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>                   <span class="c1"># transform axis number to an index</span>
 
@@ -1542,7 +1558,7 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        indices : (N,) ndarray of ints</span>
+<span class="sd">        indices : A (N,) ndarray of ints</span>
 <span class="sd">            Array of indices that reorder the matrix along the specified axis.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
@@ -1576,6 +1592,8 @@ document.write(`
 <span class="sd">            sort key.</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis over which to sort values.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># transform axis number to an index</span>
         <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>

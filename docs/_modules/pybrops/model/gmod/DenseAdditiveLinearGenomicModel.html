@@ -793,10 +793,6 @@ document.write(`
     <span class="k">def</span> <span class="nf">ntrait</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of traits predicted by the model.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-    <span class="nd">@ntrait</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">ntrait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the number of traits predicted by the model&quot;&quot;&quot;</span>
-        <span class="n">error_readonly</span><span class="p">(</span><span class="s2">&quot;ntrait&quot;</span><span class="p">)</span>
 
     <span class="c1">############################## Object Methods ##############################</span>
 
@@ -1269,8 +1265,9 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        Z : numpy.ndarray</span>
-<span class="sd">            A matrix of genotypic markers.</span>
+<span class="sd">        gtobj : GenotypeMatrix</span>
+<span class="sd">            An object containing genotype data. Must be a matrix of genotype</span>
+<span class="sd">            values.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        </span>
@@ -1648,6 +1645,8 @@ document.write(`
 <span class="sd">            A vector of genotype allele frequencies of shape (p,).</span>
 <span class="sd">        ploidy : int</span>
 <span class="sd">            Ploidy of the species.</span>
+<span class="sd">        unscale : bool</span>
+<span class="sd">            If ``True``, then apply the mean of the fixed effects to the output.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 
@@ -1729,6 +1728,10 @@ document.write(`
 <span class="sd">        gtobj : GenotypeMatrix, numpy.ndarray</span>
 <span class="sd">            An object containing genotype data. Must be a matrix of genotype</span>
 <span class="sd">            values.</span>
+<span class="sd">        ploidy : int</span>
+<span class="sd">            Ploidy of the species.</span>
+<span class="sd">        unscale : bool</span>
+<span class="sd">            If ``True``, then apply the mean of the fixed effects to the output.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 
@@ -1777,6 +1780,8 @@ document.write(`
 <span class="sd">            A vector of genotype allele frequencies of shape (p,).</span>
 <span class="sd">        ploidy : int</span>
 <span class="sd">            Ploidy of the species.</span>
+<span class="sd">        unscale : bool</span>
+<span class="sd">            If ``True``, then apply the mean of the fixed effects to the output.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 
@@ -1858,6 +1863,10 @@ document.write(`
 <span class="sd">        gtobj : GenotypeMatrix</span>
 <span class="sd">            An object containing genotype data. Must be a matrix of genotype</span>
 <span class="sd">            values.</span>
+<span class="sd">        ploidy : int</span>
+<span class="sd">            Ploidy of the species.</span>
+<span class="sd">        unscale : bool</span>
+<span class="sd">            If ``True``, then apply the mean of the fixed effects to the output.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 
@@ -2549,7 +2558,7 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str</span>
+<span class="sd">        filenames : Dict[str,str]</span>
 <span class="sd">            Dictionary of CSV file names from which to read.</span>
 <span class="sd">            </span>
 <span class="sd">            Must have the following fields::</span>

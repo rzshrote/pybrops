@@ -469,7 +469,7 @@ document.write(`
             <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
             <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
             <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
-        <span class="p">):</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Constructor for the concrete class DenseTwoWayDHAdditiveGeneticVarianceMatrix.</span>
 
@@ -477,10 +477,12 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        mat : numpy.ndarray</span>
 <span class="sd">            Array used to construct the object.</span>
-<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">        taxa : numpy.ndarray, None</span>
 <span class="sd">            Taxa names.</span>
-<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">        taxa_grp : numpy.ndarray, None</span>
 <span class="sd">            Taxa groupings.</span>
+<span class="sd">        trait : numpy.ndarray, None</span>
+<span class="sd">            Trait names.</span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1011,6 +1013,12 @@ document.write(`
 <span class="sd">        variance_col : str, Integral, default = &quot;variance&quot;</span>
 <span class="sd">            Name or index of the column from which to read variance taxa names.</span>
 
+<span class="sd">        sep : str, default = &quot;,&quot;</span>
+<span class="sd">            Separator to use in the CSV file.</span>
+<span class="sd">        </span>
+<span class="sd">        header : int, default = 0</span>
+<span class="sd">            Row index of the header.</span>
+<span class="sd">        </span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments to use for dictating importing from a CSV.</span>
 

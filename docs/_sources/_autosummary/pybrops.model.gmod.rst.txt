@@ -32,6 +32,7 @@ gmod
    pybrops.model.gmod.AdditiveDominanceLinearGenomicModel
    pybrops.model.gmod.AdditiveLinearGenomicModel
    pybrops.model.gmod.CoancestryLinearGenomicModel
+   pybrops.model.gmod.DenseAdditiveDominanceLinearGenomicModel
    pybrops.model.gmod.DenseAdditiveLinearGenomicModel
    pybrops.model.gmod.DenseLinearGenomicModel
    pybrops.model.gmod.GenomicModel

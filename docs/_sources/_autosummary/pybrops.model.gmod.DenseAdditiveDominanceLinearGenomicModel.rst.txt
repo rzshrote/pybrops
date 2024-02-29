@@ -1,0 +1,41 @@
+DenseAdditiveDominanceLinearGenomicModel
+========================================
+
+.. automodule:: pybrops.model.gmod.DenseAdditiveDominanceLinearGenomicModel
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseAdditiveDominanceLinearGenomicModel
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseAdditiveDominanceLinearGenomicModel
+   
+   
+
+   
+   
+   
+
+
+

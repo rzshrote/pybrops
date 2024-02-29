@@ -470,8 +470,110 @@ document.write(`
 <span class="sd">        ----------</span>
 <span class="sd">        ndecn : Integral</span>
 <span class="sd">            Number of decision variables.</span>
+<span class="sd">        </span>
 <span class="sd">        decn_space : numpy.ndarray</span>
 <span class="sd">            A 1d array containing the set of available elements</span>
+
+<span class="sd">        decn_space_lower : numpy.ndarray</span>
+<span class="sd">            A 1d array representing the lower bound of the decision variables.</span>
+<span class="sd">        </span>
+<span class="sd">        decn_space_upper : numpy.ndarray</span>
+<span class="sd">            A 1d array representing the upper bound of the decision variables.</span>
+<span class="sd">        </span>
+<span class="sd">        nobj : Integral</span>
+<span class="sd">            Number of objectives for the problem.</span>
+<span class="sd">        </span>
+<span class="sd">        obj_wt : numpy.ndarray, Real, None</span>
+<span class="sd">            Objective function weights. Weights from this vector are applied </span>
+<span class="sd">            to objective function values via the Hadamard product. If values </span>
+<span class="sd">            are ``1.0`` or ``-1.0``, this can be used to specify minimizing </span>
+<span class="sd">            and maximizing objectives, respectively.</span>
+
+<span class="sd">            If ``obj_wt`` is ``numpy.ndarray``, then the array must be of shape </span>
+<span class="sd">            ``(nobj,)``.</span>
+
+<span class="sd">            If ``obj_wt`` is ``Real``, then the value is broadcast to a </span>
+<span class="sd">            ``numpy.ndarray`` of shape ``(nobj,)``.</span>
+
+<span class="sd">            If ``obj_wt`` is ``None``, then the value ``1.0`` is broadcast to a </span>
+<span class="sd">            ``numpy.ndarray`` of shape ``(nobj,)``. This assumes that all </span>
+<span class="sd">            objectives are to be minimized.</span>
+<span class="sd">        </span>
+<span class="sd">        nineqcv : Integral, None</span>
+<span class="sd">            Number of inequality constraint violation functions. This is </span>
+<span class="sd">            equivalent to the vector length returned by the ``ineqcv_trans`` </span>
+<span class="sd">            function. Must be ``Integral`` greater than or equal to zero.</span>
+
+<span class="sd">            If ``nineqcv`` is ``None``, then set to zero.</span>
+
+<span class="sd">        ineqcv_wt : numpy.ndarray, None</span>
+<span class="sd">            Inequality constraint violation function weights. Weights from this </span>
+<span class="sd">            vector are applied to inequality constraint violation function </span>
+<span class="sd">            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, </span>
+<span class="sd">            this can be used to specify minimizing and maximizing constraints, </span>
+<span class="sd">            respectively.</span>
+
+<span class="sd">            If ``ineqcv_wt`` is ``numpy.ndarray``, then the array must be of </span>
+<span class="sd">            shape ``(nineqcv,)``.</span>
+
+<span class="sd">            If ``ineqcv_wt`` is ``Real``, then the value is broadcast to a </span>
+<span class="sd">            ``numpy.ndarray`` of shape ``(nineqcv,)``.</span>
+
+<span class="sd">            If ``ineqcv_wt`` is ``None``, then the value ``1.0`` is broadcast </span>
+<span class="sd">            to a ``numpy.ndarray`` of shape ``(nineqcv,)``. This assumes that </span>
+<span class="sd">            all constraints are to be minimized.</span>
+
+<span class="sd">        neqcv : Integral, None</span>
+<span class="sd">            Number of equality constraint violations. This is equivalent to the </span>
+<span class="sd">            vector length returned by the ``eqcv_trans`` function. Must be </span>
+<span class="sd">            ``Integral`` greater than or equal to zero.</span>
+<span class="sd">        </span>
+<span class="sd">            If ``neqcv`` is ``None``, then set to zero.</span>
+
+<span class="sd">        eqcv_wt : numpy.ndarray, None</span>
+<span class="sd">            Equality constraint violation function weights. Weights from this </span>
+<span class="sd">            vector are applied to equality constraint violation function </span>
+<span class="sd">            values via the Hadamard product. If values are ``1.0`` or ``-1.0``, </span>
+<span class="sd">            this can be used to specify minimizing and maximizing constraints, </span>
+<span class="sd">            respectively.</span>
+
+<span class="sd">            If ``eqcv_wt`` is ``numpy.ndarray``, then the array must be of </span>
+<span class="sd">            shape ``(neqcv,)``.</span>
+
+<span class="sd">            If ``eqcv_wt`` is ``Real``, then the value is broadcast to a </span>
+<span class="sd">            ``numpy.ndarray`` of shape ``(neqcv,)``.</span>
+
+<span class="sd">            If ``eqcv_wt`` is ``None``, then the value ``1.0`` is broadcast </span>
+<span class="sd">            to a ``numpy.ndarray`` of shape ``(neqcv,)``. This assumes that </span>
+<span class="sd">            all constraints are to be minimized.</span>
+
+<span class="sd">        vtype : type, None</span>
+<span class="sd">            Used by PyMOO interface to construct a PyMOO Problem object.</span>
+
+<span class="sd">        vars : Sequence, None</span>
+<span class="sd">            Used by PyMOO interface to construct a PyMOO Problem object.</span>
+
+<span class="sd">        elementwise : bool</span>
+<span class="sd">            Used by PyMOO interface to construct a PyMOO Problem object.</span>
+<span class="sd">        </span>
+<span class="sd">        elementwise_func : type</span>
+<span class="sd">            Used by PyMOO interface to construct a PyMOO Problem object.</span>
+<span class="sd">        </span>
+<span class="sd">        elementwise_runner : Callable</span>
+<span class="sd">            Used by PyMOO interface to construct a PyMOO Problem object.</span>
+<span class="sd">        </span>
+<span class="sd">        replace_nan_values_by : Real, None</span>
+<span class="sd">            Used by PyMOO interface to construct a PyMOO Problem object.</span>
+<span class="sd">        </span>
+<span class="sd">        exclude_from_serialization : Iterable, None</span>
+<span class="sd">            Used by PyMOO interface to construct a PyMOO Problem object.</span>
+<span class="sd">        </span>
+<span class="sd">        callback : Callable, None</span>
+<span class="sd">            Used by PyMOO interface to construct a PyMOO Problem object.</span>
+<span class="sd">        </span>
+<span class="sd">        strict : bool</span>
+<span class="sd">            Used by PyMOO interface to construct a PyMOO Problem object.</span>
+
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments used for cooperative inheritance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

@@ -412,8 +412,8 @@ document.write(`
                   
   <h1>Source code for pybrops.breed.prot.sel.cfg.BinaryMateSelectionConfiguration</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Module containing representations of subset selection configurations </span>
-<span class="sd">where the subset originates from a cross map.</span>
+<span class="sd">Module containing representations of binary selection configurations </span>
+<span class="sd">where the binary originates from a cross map.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
@@ -428,7 +428,10 @@ document.write(`
 
 <div class="viewcode-block" id="BinaryMateSelectionConfiguration">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.cfg.BinaryMateSelectionConfiguration.BinaryMateSelectionConfiguration.html#pybrops.breed.prot.sel.cfg.BinaryMateSelectionConfiguration.BinaryMateSelectionConfiguration">[docs]</a>
-<span class="k">class</span> <span class="nc">BinaryMateSelectionConfiguration</span><span class="p">(</span><span class="n">BinarySelectionConfiguration</span><span class="p">,</span><span class="n">MateSelectionConfiguration</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">BinaryMateSelectionConfiguration</span><span class="p">(</span>
+        <span class="n">BinarySelectionConfiguration</span><span class="p">,</span>
+        <span class="n">MateSelectionConfiguration</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing a subset selection configuration where the subset </span>
 <span class="sd">    originates from a cross map.</span>
@@ -467,6 +470,12 @@ document.write(`
 <span class="sd">            A genome matrix containing parental candidates</span>
 <span class="sd">        xconfig_decn : numpy.ndarray</span>
 <span class="sd">            A decision vector of shape ``(ndecn,)`` containing indices corresponding to individuals in ``pgmat``.</span>
+<span class="sd">        xconfig_xmap : numpy.ndarray</span>
+<span class="sd">            A cross map corresponding to the decision space.</span>
+<span class="sd">        rng : numpy.random.Generator, numpy.random.RandomState, None</span>
+<span class="sd">            Random number source.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># order dependent assignments!</span>
         <span class="c1"># set shape parameters first</span>

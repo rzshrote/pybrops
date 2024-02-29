@@ -423,7 +423,10 @@ document.write(`
 
 <div class="viewcode-block" id="AdditiveGenicVarianceMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.AdditiveGenicVarianceMatrix.AdditiveGenicVarianceMatrix.html#pybrops.model.vmat.AdditiveGenicVarianceMatrix.AdditiveGenicVarianceMatrix">[docs]</a>
-<span class="k">class</span> <span class="nc">AdditiveGenicVarianceMatrix</span><span class="p">(</span><span class="n">GenicVarianceMatrix</span><span class="p">,</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">AdditiveGenicVarianceMatrix</span><span class="p">(</span>
+        <span class="n">GenicVarianceMatrix</span><span class="p">,</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An abstract class for additive genetic variance matrices.</span>
 
@@ -453,8 +456,8 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        gmod : GenomicModel</span>
-<span class="sd">            GenomicModel with which to estimate genetic variances.</span>
+<span class="sd">        algmod : AdditiveLinearGenomicModel</span>
+<span class="sd">            AdditiveLinearGenomicModel with which to estimate genetic variances.</span>
 <span class="sd">        pgmat : PhasedGenotypeMatrix</span>
 <span class="sd">            Input genomes to use to estimate genetic variances.</span>
 <span class="sd">        nprogeny : int</span>
@@ -465,7 +468,7 @@ document.write(`
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        out : GenicVarianceMatrix</span>
+<span class="sd">        out : AdditiveGenicVarianceMatrix</span>
 <span class="sd">            A matrix of additive genic variance estimations.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;method is abstract&quot;</span><span class="p">)</span></div>

@@ -444,7 +444,11 @@ document.write(`
 
 <div class="viewcode-block" id="DenseGenotypeMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.popgen.gmat.DenseGenotypeMatrix.DenseGenotypeMatrix.html#pybrops.popgen.gmat.DenseGenotypeMatrix.DenseGenotypeMatrix">[docs]</a>
-<span class="k">class</span> <span class="nc">DenseGenotypeMatrix</span><span class="p">(</span><span class="n">DenseTaxaVariantMatrix</span><span class="p">,</span><span class="n">DenseGeneticMappableMatrix</span><span class="p">,</span><span class="n">GenotypeMatrix</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DenseGenotypeMatrix</span><span class="p">(</span>
+        <span class="n">DenseTaxaVariantMatrix</span><span class="p">,</span>
+        <span class="n">DenseGeneticMappableMatrix</span><span class="p">,</span>
+        <span class="n">GenotypeMatrix</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A concrete class for unphased genoypte matrix objects.</span>
 
@@ -524,6 +528,8 @@ document.write(`
 <span class="sd">            ploidy of the reproductive habit. If the organism represented is an</span>
 <span class="sd">            allopolyploid (e.g. hexaploid wheat), the ploidy is 2 since it</span>
 <span class="sd">            reproduces in a diploid manner.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># set ploidy</span>
         <span class="n">check_is_int</span><span class="p">(</span><span class="n">ploidy</span><span class="p">,</span> <span class="s2">&quot;ploidy&quot;</span><span class="p">)</span>
@@ -988,6 +994,10 @@ document.write(`
 <span class="sd">            Sequential variant crossover probabilities to insert into the Matrix.</span>
 <span class="sd">        vrnt_hapgrp : numpy.ndarray</span>
 <span class="sd">            Variant haplotype labels to insert into the Matrix.</span>
+<span class="sd">        vrnt_hapalt : numpy.ndarray</span>
+<span class="sd">            Variant alternative haplotype labels to insert into the Matrix.</span>
+<span class="sd">        vrnt_hapref : numpy.ndarray</span>
+<span class="sd">            Variant reference haplotype labels to insert into the Matrix.</span>
 <span class="sd">        vrnt_mask : numpy.ndarray</span>
 <span class="sd">            Variant mask to insert into the Matrix.</span>
 <span class="sd">        kwargs : dict</span>
