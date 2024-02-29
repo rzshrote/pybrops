@@ -37,10 +37,12 @@ class DenseGenicVarianceMatrix(DenseSquareTaxaTraitMatrix,GenicVarianceMatrix):
         ----------
         mat : numpy.ndarray
             Array used to construct the object.
-        taxa : numpy.ndarray
+        taxa : numpy.ndarray, None
             Taxa names.
-        taxa_grp : numpy.ndarray
+        taxa_grp : numpy.ndarray, None
             Taxa groupings.
+        trait : numpy.ndarray, None
+            Trait names.
         kwargs : dict
             Additional keyword arguments.
         """

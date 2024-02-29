@@ -8,7 +8,10 @@ from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicM
 from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class AdditiveGenicVarianceMatrix(GenicVarianceMatrix,metaclass=ABCMeta):
+class AdditiveGenicVarianceMatrix(
+        GenicVarianceMatrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for additive genetic variance matrices.
 
@@ -36,8 +39,8 @@ class AdditiveGenicVarianceMatrix(GenicVarianceMatrix,metaclass=ABCMeta):
 
         Parameters
         ----------
-        gmod : GenomicModel
-            GenomicModel with which to estimate genetic variances.
+        algmod : AdditiveLinearGenomicModel
+            AdditiveLinearGenomicModel with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
         nprogeny : int
@@ -48,7 +51,7 @@ class AdditiveGenicVarianceMatrix(GenicVarianceMatrix,metaclass=ABCMeta):
 
         Returns
         -------
-        out : GenicVarianceMatrix
+        out : AdditiveGenicVarianceMatrix
             A matrix of additive genic variance estimations.
         """
         raise NotImplementedError("method is abstract")

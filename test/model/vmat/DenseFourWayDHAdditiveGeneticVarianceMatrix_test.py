@@ -5,7 +5,7 @@ import numpy
 import h5py
 from pybrops.model.vmat.DenseFourWayDHAdditiveGeneticVarianceMatrix import DenseFourWayDHAdditiveGeneticVarianceMatrix
 
-from pybrops.test.assert_python import assert_property_isconcrete, not_raises
+from pybrops.test.assert_python import assert_classmethod_isconcrete, assert_property_isconcrete, not_raises
 from pybrops.test.assert_python import assert_class_documentation
 from pybrops.test.assert_python import assert_method_isconcrete
 
@@ -286,7 +286,7 @@ def test_to_hdf5(vmat):
 
 ### from_pandas
 def test_from_pandas_is_concrete():
-    assert_method_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_pandas")
+    assert_classmethod_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_pandas")
 
 def test_from_pandas(vmat, ntaxa, ntrait):
     # export
@@ -328,7 +328,7 @@ def test_from_pandas(vmat, ntaxa, ntrait):
 
 ### from_csv
 def test_from_csv_is_concrete():
-    assert_method_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_csv")
+    assert_classmethod_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_csv")
 
 def test_from_csv(vmat, ntaxa, ntrait):
     filename = "test_4dh_vmat.csv"
@@ -376,7 +376,7 @@ def test_from_csv(vmat, ntaxa, ntrait):
 
 ### from_hdf5
 def test_from_hdf5_is_concrete():
-    assert_method_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_hdf5")
+    assert_classmethod_isconcrete(DenseFourWayDHAdditiveGeneticVarianceMatrix, "from_hdf5")
 
 def test_from_hdf5(vmat):
     filename = "test_4dh_vmat.h5"

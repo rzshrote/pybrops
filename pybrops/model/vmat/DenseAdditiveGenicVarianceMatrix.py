@@ -1,5 +1,4 @@
 """
-UNDER CONSTRUCTION!
 Module implementing classes and associated error checking routines for matrices
 storing dense additive genic variance estimates.
 """
@@ -9,11 +8,11 @@ import numpy
 from pybrops.model.vmat.DenseGenicVarianceMatrix import DenseGenicVarianceMatrix
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix
 
-# TODO: implement me
-class DenseAdditiveGenicVarianceMatrix(DenseGenicVarianceMatrix,AdditiveGenicVarianceMatrix):
+class DenseAdditiveGenicVarianceMatrix(
+        DenseGenicVarianceMatrix,
+        AdditiveGenicVarianceMatrix,
+    ):
     """
-    UNDER CONSTRUCTION!
-
     A semi-concrete class for dense additive genetic variance matrices.
 
     The purpose of this semi-concrete class is to provide functionality for:
@@ -31,7 +30,7 @@ class DenseAdditiveGenicVarianceMatrix(DenseGenicVarianceMatrix,AdditiveGenicVar
             taxa_grp: Optional[numpy.ndarray] = None, 
             trait: Optional[numpy.ndarray] = None, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Constructor for the concrete class DenseAdditiveGenicVarianceMatrix.
 

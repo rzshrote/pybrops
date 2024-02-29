@@ -9,7 +9,10 @@ from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix,metaclass=ABCMeta):
+class AdditiveGeneticVarianceMatrix(
+        GeneticVarianceMatrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for additive genetic variance matrices.
 
@@ -66,7 +69,7 @@ class AdditiveGeneticVarianceMatrix(GeneticVarianceMatrix,metaclass=ABCMeta):
 
         Returns
         -------
-        out : GeneticVarianceMatrix
+        out : AdditiveGeneticVarianceMatrix
             A matrix of additive genetic variance estimations.
         """
         raise NotImplementedError("method is abstract")

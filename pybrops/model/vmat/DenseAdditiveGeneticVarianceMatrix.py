@@ -9,7 +9,10 @@ import numpy
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import DenseGeneticVarianceMatrix
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 
-class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGeneticVarianceMatrix):
+class DenseAdditiveGeneticVarianceMatrix(
+        DenseGeneticVarianceMatrix,
+        AdditiveGeneticVarianceMatrix,
+    ):
     """
     A semi-concrete class for dense additive genetic variance matrices.
 
@@ -28,7 +31,7 @@ class DenseAdditiveGeneticVarianceMatrix(DenseGeneticVarianceMatrix,AdditiveGene
             taxa_grp: Optional[numpy.ndarray] = None, 
             trait: Optional[numpy.ndarray] = None, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Constructor for the concrete class DenseAdditiveGeneticVarianceMatrix.
 

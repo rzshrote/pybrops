@@ -1,6 +1,6 @@
 import pytest
 
-from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_classmethod_isabstract, not_raises
 from pybrops.test.assert_python import assert_class_documentation
 from pybrops.test.assert_python import assert_method_isabstract
 from pybrops.test.assert_python import assert_function_isabstract
@@ -12,38 +12,30 @@ from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
 from pybrops.model.vmat.GeneticVarianceMatrix import check_is_GeneticVarianceMatrix
 from .common_fixtures import *
 
-################################################################################
 ################################ Test fixtures #################################
-################################################################################
 @pytest.fixture
 def mat():
     yield DummyGeneticVarianceMatrix()
 
-################################################################################
 ############################## Test class docstring ############################
-################################################################################
 def test_class_docstring():
     assert_class_documentation(GeneticVarianceMatrix)
 
-################################################################################
 ############################# Test concrete methods ############################
-################################################################################
-def test_init_is_concrete():
-    assert_method_isconcrete(GeneticVarianceMatrix, "__init__")
 
-################################################################################
 ########################### Test abstract properties ###########################
-################################################################################
 
-################################################################################
+### epgc
+def test_epgc_is_abstract():
+    assert_property_isabstract(GeneticVarianceMatrix, "epgc")
+
 ############################# Test abstract methods ############################
-################################################################################
-def test_append_is_abstract():
-    assert_method_isabstract(GeneticVarianceMatrix, "from_gmod")
 
-################################################################################
+### from_gmod
+def test_from_gmod_is_abstract():
+    assert_classmethod_isabstract(GeneticVarianceMatrix, "from_gmod")
+
 ######################### Test class utility functions #########################
-################################################################################
 def test_check_is_GeneticVarianceMatrix_is_concrete():
     assert_function_isconcrete(check_is_GeneticVarianceMatrix)
 

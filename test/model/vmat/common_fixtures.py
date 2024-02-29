@@ -6,6 +6,7 @@ import pytest
 from pybrops.core.io.CSVInputOutput import CSVInputOutput
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.io.PandasInputOutput import PandasInputOutput
+from pybrops.core.mat.DenseSquareTaxaTraitMatrix import DenseSquareTaxaTraitMatrix
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
@@ -14,7 +15,9 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix
 from pybrops.model.vmat.DenseAdditiveGeneticVarianceMatrix import DenseAdditiveGeneticVarianceMatrix
+from pybrops.model.vmat.DenseAdditiveGenicVarianceMatrix import DenseAdditiveGenicVarianceMatrix
 from pybrops.model.vmat.DenseGeneticVarianceMatrix import DenseGeneticVarianceMatrix
+from pybrops.model.vmat.DenseGenicVarianceMatrix import DenseGenicVarianceMatrix
 
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
 from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
@@ -352,7 +355,6 @@ class DummyGeneticVarianceMatrix(GeneticVarianceMatrix):
     def square_taxa_axes_len(self) -> object:
         return super().square_taxa_axes_len
     
-
 class DummyAdditiveGeneticVarianceMatrix(DummyGeneticVarianceMatrix,AdditiveGeneticVarianceMatrix):
     @classmethod
     def from_algmod(cls, algmod: AdditiveLinearGenomicModel, pgmat: PhasedGenotypeMatrix, ncross: int, nprogeny: int, nself: int, gmapfn: GeneticMapFunction, mem: int, **kwargs: dict) -> AdditiveGeneticVarianceMatrix:
@@ -709,6 +711,26 @@ class DummyDenseGeneticVarianceMatrix(DenseGeneticVarianceMatrix):
     def from_csv(cls, filename: str, **kwargs: dict) -> CSVInputOutput:
         return super().from_csv(filename, **kwargs)
 
+class DummyDenseGenicVarianceMatrix(DenseGenicVarianceMatrix):
+    def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
+        return super().to_pandas(**kwargs)
+    def to_csv(self, filename: str, **kwargs: dict) -> None:
+        return super().to_csv(filename, **kwargs)
+    def to_hdf5(self, filename: str, groupname: str | None = None) -> None:
+        return super().to_hdf5(filename, groupname)
+    @classmethod
+    def from_gmod(cls, gmod: GenomicModel, pgmat: PhasedGenotypeMatrix, nprogeny: int, **kwargs: dict):
+        return super().from_gmod(gmod, pgmat, nprogeny, **kwargs)
+    @classmethod
+    def from_pandas(cls, df: pandas.DataFrame, **kwargs: dict) -> PandasInputOutput:
+        return super().from_pandas(df, **kwargs)
+    @classmethod
+    def from_csv(cls, filename: str, **kwargs: dict) -> CSVInputOutput:
+        return super().from_csv(filename, **kwargs)
+    @classmethod
+    def from_hdf5(cls, filename: str, groupname: str | None = None) -> DenseSquareTaxaTraitMatrix:
+        return super().from_hdf5(filename, groupname)
+
 class DummyDenseAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix):
     @classmethod
     def from_algmod(cls, algmod: AdditiveLinearGenomicModel, pgmat: PhasedGenotypeMatrix, ncross: int, nprogeny: int, nself: int, gmapfn: GeneticMapFunction, mem: int, **kwargs: dict) -> AdditiveGeneticVarianceMatrix:
@@ -726,3 +748,26 @@ class DummyDenseAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix
     @classmethod
     def from_csv(cls, filename: str, **kwargs: dict) -> CSVInputOutput:
         return super().from_csv(filename, **kwargs)
+
+class DummyDenseAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix):
+    def to_pandas(self, **kwargs: dict) -> pandas.DataFrame:
+        return super().to_pandas(**kwargs)
+    def to_csv(self, filename: str, **kwargs: dict) -> None:
+        return super().to_csv(filename, **kwargs)
+    def to_hdf5(self, filename: str, groupname: str | None = None) -> None:
+        return super().to_hdf5(filename, groupname)
+    @classmethod
+    def from_algmod(cls, algmod: AdditiveLinearGenomicModel, pgmat: PhasedGenotypeMatrix, nprogeny: int, mem: int) -> AdditiveGenicVarianceMatrix:
+        return super().from_algmod(algmod, pgmat, nprogeny, mem)
+    @classmethod
+    def from_gmod(cls, gmod: GenomicModel, pgmat: PhasedGenotypeMatrix, nprogeny: int, **kwargs: dict):
+        return super().from_gmod(gmod, pgmat, nprogeny, **kwargs)
+    @classmethod
+    def from_pandas(cls, df: pandas.DataFrame, **kwargs: dict) -> PandasInputOutput:
+        return super().from_pandas(df, **kwargs)
+    @classmethod
+    def from_csv(cls, filename: str, **kwargs: dict) -> CSVInputOutput:
+        return super().from_csv(filename, **kwargs)
+    @classmethod
+    def from_hdf5(cls, filename: str, groupname: str | None = None) -> DenseSquareTaxaTraitMatrix:
+        return super().from_hdf5(filename, groupname)

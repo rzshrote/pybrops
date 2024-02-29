@@ -1,6 +1,6 @@
 import pytest
 
-from pybrops.test.assert_python import not_raises
+from pybrops.test.assert_python import assert_classmethod_isabstract, not_raises
 from pybrops.test.assert_python import assert_class_documentation
 from pybrops.test.assert_python import assert_method_isabstract
 from pybrops.test.assert_python import assert_method_isconcrete
@@ -26,8 +26,6 @@ def test_class_docstring():
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
-    assert_method_isconcrete(AdditiveGenicVarianceMatrix, "__init__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -37,7 +35,7 @@ def test_init_is_concrete():
 ############################# Test abstract methods ############################
 ################################################################################
 def test_from_algmod_is_abstract():
-    assert_method_isabstract(AdditiveGenicVarianceMatrix, "from_algmod")
+    assert_classmethod_isabstract(AdditiveGenicVarianceMatrix, "from_algmod")
 
 ################################################################################
 ######################### Test class utility functions #########################

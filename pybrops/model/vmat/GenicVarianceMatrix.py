@@ -57,7 +57,7 @@ class GenicVarianceMatrix(
             pgmat: PhasedGenotypeMatrix, 
             nprogeny: int,
             **kwargs: dict
-        ):
+        ) -> 'GenicVarianceMatrix':
         """
         Estimate genetic variances from a GenomicModel.
 

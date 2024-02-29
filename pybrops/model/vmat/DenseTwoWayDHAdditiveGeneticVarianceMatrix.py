@@ -54,7 +54,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             taxa_grp: Optional[numpy.ndarray] = None, 
             trait: Optional[numpy.ndarray] = None, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Constructor for the concrete class DenseTwoWayDHAdditiveGeneticVarianceMatrix.
 
@@ -62,10 +62,12 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         ----------
         mat : numpy.ndarray
             Array used to construct the object.
-        taxa : numpy.ndarray
+        taxa : numpy.ndarray, None
             Taxa names.
-        taxa_grp : numpy.ndarray
+        taxa_grp : numpy.ndarray, None
             Taxa groupings.
+        trait : numpy.ndarray, None
+            Trait names.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -582,6 +584,12 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         variance_col : str, Integral, default = "variance"
             Name or index of the column from which to read variance taxa names.
 
+        sep : str, default = ","
+            Separator to use in the CSV file.
+        
+        header : int, default = 0
+            Row index of the header.
+        
         kwargs : dict
             Additional keyword arguments to use for dictating importing from a CSV.
 

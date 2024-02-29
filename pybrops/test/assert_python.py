@@ -25,7 +25,7 @@ def raises(*ExpectedExceptions: tuple[Exception]) -> Generator:
 
     # catch any unexpected exceptions and raise assertion error
     except Exception as e:
-        raise AssertionError("unexpected exception {0} raised".format(type(e).__name__))
+        raise AssertionError("unexpected {0} exception raised".format(type(e).__name__))
 
     # if no exceptions raised, raise an assertion error
     else:
@@ -49,7 +49,7 @@ def not_raises(*ForbiddenExceptions) -> Generator:
     # catch any forbidden exceptions and raise assertion error as they should 
     # not exist
     except ForbiddenExceptions as e:
-        raise AssertionError("forbidden exception {0} raised".format(type(e).__name__))
+        raise AssertionError("forbidden {0} exception raised".format(type(e).__name__))
 
     # catch any remaining exceptions and ignore them since we only care about 
     # whether a forbidden exception was raised

@@ -54,10 +54,12 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         ----------
         mat : numpy.ndarray
             Array used to construct the object.
-        taxa : numpy.ndarray
+        taxa : numpy.ndarray, None
             Taxa names.
-        taxa_grp : numpy.ndarray
+        taxa_grp : numpy.ndarray, None
             Taxa groupings.
+        trait : numpy.ndarray, None
+            Trait names.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -574,12 +576,18 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         variance_col : str, Integral, default = "variance"
             Name or index of the column from which to read variance taxa names.
 
+        sep : str, default = ","
+            Separator to use in the CSV file.
+        
+        header : int, default = 0
+            Row index of the header.
+        
         kwargs : dict
             Additional keyword arguments to use for dictating importing from a CSV.
 
         Returns
         -------
-        out : CSVInputOutput
+        out : DenseDihybridDHAdditiveGeneticVarianceMatrix
             An object read from a CSV file.
         """
         df = pandas.read_csv(

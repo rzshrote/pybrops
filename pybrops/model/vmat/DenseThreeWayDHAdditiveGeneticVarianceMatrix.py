@@ -46,7 +46,7 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
             taxa_grp: Optional[numpy.ndarray] = None, 
             trait: Optional[numpy.ndarray] = None, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Constructor for the concrete class DenseThreeWayDHAdditiveGeneticVarianceMatrix.
 
@@ -58,6 +58,8 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
             Taxa names.
         taxa_grp : numpy.ndarray
             Taxa groupings.
+        trait : numpy.ndarray
+            Trait names.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -273,6 +275,12 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         filename : str
             CSV file name to which to write.
         
+        recurrent_col : str, default = "recurrent"
+            Name of the column to which to write recurrent taxa names.
+
+        recurrent_grp_col : str, None, default = "recurrent_grp"
+            Name of the column to which to write recurrent taxa groups.
+
         female_col : str, default = "female"
             Name of the column to which to write female taxa names.
 
@@ -663,6 +671,12 @@ class DenseThreeWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceM
         variance_col : str, Integral, default = "variance"
             Name or index of the column from which to read variance taxa names.
 
+        sep : str, default = ","
+            Separator to use in the CSV file.
+        
+        header : int, default = 0
+            Row index of the header.
+        
         kwargs : dict
             Additional keyword arguments to use for dictating importing from a CSV.
 
