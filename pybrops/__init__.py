@@ -12,6 +12,9 @@ __all__ = [
     "test",
 ]
 
+# define version
+__version__ = '1.0.2'
+
 # order dependent import of submodules
 
 # core before all other submodules
