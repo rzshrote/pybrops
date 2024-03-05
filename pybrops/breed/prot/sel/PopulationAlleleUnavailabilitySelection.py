@@ -4,7 +4,7 @@ Module implementing selection protocols for Multi-Objective Genomic Selection.
 
 __all__ = [
     "MultiObjectiveGenomicBaseSelection",
-    "MultiObjectiveGenomicSubsetSelection",
+    "PopulationAlleleUnavailabilitySubsetSelection",
 ]
 
 from abc import ABCMeta
@@ -16,7 +16,7 @@ from numpy.random import Generator, RandomState
 import pandas
 
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
-from pybrops.breed.prot.sel.prob.MultiObjectiveGenomicSelectionProblem import MultiObjectiveGenomicSubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.PopulationAlleleUnavailabilitySelectionProblem import PopulationAlleleUnavailabilitySubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
@@ -27,7 +27,9 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class MultiObjectiveGenomicSelectionMixin(metaclass=ABCMeta):
+class PopulationAlleleUnavailabilitySelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for Multi-Objective Genomic Selection with constraints.
     """
@@ -75,7 +77,10 @@ class MultiObjectiveGenomicSelectionMixin(metaclass=ABCMeta):
             raise TypeError("variable 'target' must be a callable function or numpy.ndarray")
         self._target = value
 
-class MultiObjectiveGenomicSubsetSelection(MultiObjectiveGenomicSelectionMixin,SubsetSelectionProtocol):
+class PopulationAlleleUnavailabilitySubsetSelection(
+        PopulationAlleleUnavailabilitySelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for subset search spaces.
     """
@@ -111,7 +116,7 @@ class MultiObjectiveGenomicSubsetSelection(MultiObjectiveGenomicSelectionMixin,S
             **kwargs: dict
         ) -> None:
         """
-        Constructor for the concrete class MultiObjectiveGenomicSubsetSelection.
+        Constructor for the concrete class PopulationAlleleUnavailabilitySubsetSelection.
 
         Parameters
         ----------
@@ -380,7 +385,7 @@ class MultiObjectiveGenomicSubsetSelection(MultiObjectiveGenomicSelectionMixin,S
         self.weight = weight
         self.target = target
         # make assignments from SubsetSelectionProtocol second
-        super(MultiObjectiveGenomicSubsetSelection, self).__init__(
+        super(PopulationAlleleUnavailabilitySubsetSelection, self).__init__(
             ncross = ncross,
             nparent = nparent,
             nmating = nmating,
@@ -457,7 +462,7 @@ class MultiObjectiveGenomicSubsetSelection(MultiObjectiveGenomicSelectionMixin,S
         decn_space_upper = numpy.repeat(ntaxa-1, ndecn)
 
         # construct problem
-        prob = MultiObjectiveGenomicSubsetSelectionProblem.from_gmat_gpmod(
+        prob = PopulationAlleleUnavailabilitySubsetSelectionProblem.from_gmat_gpmod(
             gmat = gmat,
             weight = self.weight,
             target = self.target,

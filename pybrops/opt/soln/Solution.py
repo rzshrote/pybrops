@@ -34,6 +34,27 @@ class Solution(metaclass=ABCMeta):
     ########################## Special Object Methods ##########################
     # do not implement __init__() since this is an interface/mixin class
 
+    def __repr__(
+            self
+        ) -> str:
+        """
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
+        """
+        return "<{0} with [ndecn = {1}, nsoln = {2}, nobj = {3}, nineqcv = {4}, neqcv = {5}] at {6}>".format(
+            type(self).__name__,
+            self.ndecn,
+            self.nsoln,
+            self.nobj,
+            self.nineqcv,
+            self.neqcv,
+            hex(id(self)),
+        )
+
     ############################ Object Properties #############################
 
     ############## Decision space properties ###############
