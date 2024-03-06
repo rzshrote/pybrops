@@ -1047,34 +1047,64 @@ class DenseGenotypeMatrix(
             HDF5 group name under which GenotypeMatrix data is stored.
             If None, GenotypeMatrix is written to the base HDF5 group.
         """
-        h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
-        ######################################################### process groupname argument
-        if isinstance(groupname, str):                          # if we have a string
-            if groupname[-1] != '/':                            # if last character in string is not '/'
-                groupname += '/'                                # add '/' to end of string
-        elif groupname is None:                                 # else if groupname is None
-            groupname = ""                                      # empty string
-        else:                                                   # else raise error
+        # open HDF5 in write mode
+        h5file = h5py.File(filename, "a")
+
+        ########################################################
+        ### process groupname argument
+
+        # if we have a string
+        if isinstance(groupname, str):
+            # if last character in string is not '/', add '/' to end of string
+            if groupname[-1] != '/':
+                groupname += '/'
+        
+        # else if groupname is None
+        elif groupname is None:
+            # empty string
+            groupname = ""
+        
+        # else raise error
+        else:
             raise TypeError("'groupname' must be of type str or None")
-        ######################################################### populate HDF5 file
-        data_dict = {                                           # data dictionary
-            "mat": self.mat,
-            "taxa" : self.taxa,
-            "taxa_grp" : self.taxa_grp,
-            "vrnt_chrgrp" : self.vrnt_chrgrp,
-            "vrnt_phypos" : self.vrnt_phypos,
-            "vrnt_name" : self.vrnt_name,
-            "vrnt_genpos" : self.vrnt_genpos,
-            "vrnt_xoprob" : self.vrnt_xoprob,
-            "vrnt_hapgrp" : self.vrnt_hapgrp,
-            "vrnt_hapalt" : self.vrnt_hapalt,
-            "vrnt_hapref" : self.vrnt_hapref,
-            "vrnt_mask" : self.vrnt_mask,
-            "ploidy" : self.ploidy
+        
+        ########################################################
+        ### populate HDF5 file
+
+        # data dictionary
+        data_dict = {
+            "mat"               : self.mat,
+            "taxa"              : self.taxa,
+            "taxa_grp"          : self.taxa_grp,
+            "vrnt_chrgrp"       : self.vrnt_chrgrp,
+            "vrnt_phypos"       : self.vrnt_phypos,
+            "vrnt_name"         : self.vrnt_name,
+            "vrnt_genpos"       : self.vrnt_genpos,
+            "vrnt_xoprob"       : self.vrnt_xoprob,
+            "vrnt_hapgrp"       : self.vrnt_hapgrp,
+            "vrnt_hapalt"       : self.vrnt_hapalt,
+            "vrnt_hapref"       : self.vrnt_hapref,
+            "vrnt_mask"         : self.vrnt_mask,
+            "ploidy"            : self.ploidy,
+            # metadata
+            "taxa_grp_name"     : self.taxa_grp_name,
+            "taxa_grp_stix"     : self.taxa_grp_stix,
+            "taxa_grp_spix"     : self.taxa_grp_spix,
+            "taxa_grp_len"      : self.taxa_grp_len,
+            "vrnt_chrgrp_name"  : self.vrnt_chrgrp_name,
+            "vrnt_chrgrp_stix"  : self.vrnt_chrgrp_stix,
+            "vrnt_chrgrp_spix"  : self.vrnt_chrgrp_spix,
+            "vrnt_chrgrp_len"   : self.vrnt_chrgrp_len,
         }
-        save_dict_to_hdf5(h5file, groupname, data_dict)         # save data
-        ######################################################### write conclusion
-        h5file.close()                                          # close the file
+
+        # save data
+        save_dict_to_hdf5(h5file, groupname, data_dict)
+
+        ########################################################
+        ### write conclusion
+
+        # close the file
+        h5file.close()
 
     ############################## Class Methods ###############################
 
@@ -1101,71 +1131,155 @@ class DenseGenotypeMatrix(
         gmat : GenotypeMatrix
             A genotype matrix read from file.
         """
-        check_file_exists(filename)                             # check file exists
-        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
-        ######################################################### process groupname argument
-        if isinstance(groupname, str):                          # if we have a string
-            check_h5py_File_has_group(h5file, filename, groupname)    # check that group exists
-            if groupname[-1] != '/':                            # if last character in string is not '/'
-                groupname += '/'                                # add '/' to end of string
-        elif groupname is None:                                 # else if groupname is None
-            groupname = ""                                      # empty string
-        else:                                                   # else raise error
+        # check file exists
+        check_file_exists(filename)
+
+        # open HDF5 in read only
+        h5file = h5py.File(filename, "r")
+
+        ########################################################
+        ### process groupname argument
+
+        # if we have a string
+        if isinstance(groupname, str):
+            # check that group exists
+            check_h5py_File_has_group(h5file, filename, groupname)
+
+            # if last character in string is not '/', add '/' to end of string
+            if groupname[-1] != '/':
+                groupname += '/'
+        
+        # else if groupname is None
+        elif groupname is None:
+            # empty string
+            groupname = ""
+        
+        # else raise error
+        else:
             raise TypeError("'groupname' must be of type str or None")
-        ######################################################### check that we have all required fields
-        required_fields = ["mat"]                               # all required arguments
-        for field in required_fields:                           # for each required field
-            fieldname = groupname + field                       # concatenate base groupname and field
-            check_h5py_File_has_group(h5file, filename, fieldname)    # check that group exists
-        ######################################################### read data
-        data_dict = {                                           # output dictionary
-            "mat": None,
-            "taxa" : None,
-            "taxa_grp" : None,
-            "vrnt_chrgrp" : None,
-            "vrnt_phypos" : None,
-            "vrnt_name" : None,
-            "vrnt_genpos" : None,
-            "vrnt_xoprob" : None,
-            "vrnt_hapgrp" : None,
-            "vrnt_hapalt" : None,
-            "vrnt_hapref" : None,
-            "vrnt_mask" : None,
-            "ploidy" : None
+        
+        ########################################################
+        ### check that we have all required fields
+
+        # all required arguments
+        required_fields = ["mat"]
+
+        # for each required field
+        for field in required_fields:
+            # concatenate base groupname and field
+            fieldname = groupname + field
+
+            # check that group exists
+            check_h5py_File_has_group(h5file, filename, fieldname)
+        
+        ########################################################
+        ### read data
+        
+        # output dictionary
+        data_dict = {
+            "mat"               : None,
+            "taxa"              : None,
+            "taxa_grp"          : None,
+            "vrnt_chrgrp"       : None,
+            "vrnt_phypos"       : None,
+            "vrnt_name"         : None,
+            "vrnt_genpos"       : None,
+            "vrnt_xoprob"       : None,
+            "vrnt_hapgrp"       : None,
+            "vrnt_hapalt"       : None,
+            "vrnt_hapref"       : None,
+            "vrnt_mask"         : None,
+            "ploidy"            : None,
+            # metadata
+            "taxa_grp_name"     : None,
+            "taxa_grp_stix"     : None,
+            "taxa_grp_spix"     : None,
+            "taxa_grp_len"      : None,
+            "vrnt_chrgrp_name"  : None,
+            "vrnt_chrgrp_stix"  : None,
+            "vrnt_chrgrp_spix"  : None,
+            "vrnt_chrgrp_len"   : None,
         }
-        for field in data_dict.keys():                          # for each field
+
+        # for each field
+        for field in data_dict.keys():
             fieldname = groupname + field                       # concatenate base groupname and field
             if fieldname in h5file:                             # if the field exists in the HDF5 file
                 data_dict[field] = h5file[fieldname][()]        # read array
-        # fieldname = groupname + "ploidy"                        # special case for reading ploidy ()
+        
+        # # special case for reading ploidy ()
+        # fieldname = groupname + "ploidy"
         # if fieldname in h5file:
         #     data_dict["ploidy"] = h5file[fieldname][]
-        ######################################################### read conclusion
-        h5file.close()                                          # close file
+        
+        ########################################################
+        ### read conclusion
+        
+        # close file
+        h5file.close()
+
+        # convert taxa strings from byte to utf-8
         if data_dict["taxa"] is not None:
-            data_dict["taxa"] = numpy.array(                    # convert taxa strings from byte to utf-8
+            data_dict["taxa"] = numpy.array(
                 [s.decode("utf-8") for s in data_dict["taxa"]],
                 dtype = object
             )
+
+        # convert vrnt_name string from byte to utf-8
         if data_dict["vrnt_name"] is not None:
-            data_dict["vrnt_name"] = numpy.array(               # convert vrnt_name string from byte to utf-8
+            data_dict["vrnt_name"] = numpy.array(
                 [s.decode("utf-8") for s in data_dict["vrnt_name"]],
                 dtype = object
             )
+
+        # convert vrnt_hapgrp string from byte to utf-8
         if data_dict["vrnt_hapgrp"] is not None:
-            data_dict["vrnt_hapgrp"] = numpy.array(             # convert vrnt_hapgrp string from byte to utf-8
+            data_dict["vrnt_hapgrp"] = numpy.array(
                 [s.decode("utf-8") for s in data_dict["vrnt_hapgrp"]],
                 dtype = object
             )
+
+        # convert vrnt_hapalt string from byte to utf-8
         if data_dict["vrnt_hapalt"] is not None:
-            data_dict["vrnt_hapalt"] = numpy.array(             # convert vrnt_hapalt string from byte to utf-8
+            data_dict["vrnt_hapalt"] = numpy.array(
                 [s.decode("utf-8") for s in data_dict["vrnt_hapalt"]],
                 dtype = object
             )
+
+        # convert ploidy from numpy.int64 to int 
         if data_dict["ploidy"] is not None:
-            data_dict["ploidy"] = int(data_dict["ploidy"])      # convert to int, from numpy.int64
-        ######################################################### create object
-        gmat = cls(**data_dict)                                 # create object from read data
+            data_dict["ploidy"] = int(data_dict["ploidy"])
+
+        # # convert taxa_grp_name from byte to utf-8
+        # if data_dict["taxa_grp_name"] is not None:
+        #     data_dict["taxa_grp_name"] = numpy.array(
+        #         [s.decode("utf-8") for s in data_dict["taxa_grp_name"]],
+        #         dtype = object
+        #     )
+
+        # # convert vrnt_chrgrp_name from byte to utf-8
+        # if data_dict["vrnt_chrgrp_name"] is not None:
+        #     data_dict["vrnt_chrgrp_name"] = numpy.array(
+        #         [s.decode("utf-8") for s in data_dict["vrnt_chrgrp_name"]],
+        #         dtype = object
+        #     )
+
+        ########################################################
+        ### create object
+        
+        # create object from read data
+        gmat = cls(**data_dict)
+
+        # copy metadata
+        gmat.taxa_grp_name    = data_dict["taxa_grp_name"]
+        gmat.taxa_grp_stix    = data_dict["taxa_grp_stix"]
+        gmat.taxa_grp_spix    = data_dict["taxa_grp_spix"]
+        gmat.taxa_grp_len     = data_dict["taxa_grp_len"]
+        gmat.vrnt_chrgrp_name = data_dict["vrnt_chrgrp_name"]
+        gmat.vrnt_chrgrp_stix = data_dict["vrnt_chrgrp_stix"]
+        gmat.vrnt_chrgrp_spix = data_dict["vrnt_chrgrp_spix"]
+        gmat.vrnt_chrgrp_len  = data_dict["vrnt_chrgrp_len"]
+
         return gmat
 
     @classmethod

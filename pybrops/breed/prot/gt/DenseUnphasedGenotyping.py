@@ -79,4 +79,14 @@ class DenseUnphasedGenotyping(GenotypingProtocol):
             **kwargs
         )
 
+        # copy metadata
+        out.taxa_grp_name    = pgmat.taxa_grp_name
+        out.taxa_grp_stix    = pgmat.taxa_grp_stix
+        out.taxa_grp_spix    = pgmat.taxa_grp_spix
+        out.taxa_grp_len     = pgmat.taxa_grp_len
+        out.vrnt_chrgrp_name = pgmat.vrnt_chrgrp_name
+        out.vrnt_chrgrp_stix = pgmat.vrnt_chrgrp_stix
+        out.vrnt_chrgrp_spix = pgmat.vrnt_chrgrp_spix
+        out.vrnt_chrgrp_len  = pgmat.vrnt_chrgrp_len
+
         return out
