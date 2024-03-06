@@ -51,7 +51,7 @@ class GeneticVarianceMatrix(
             cls, 
             gmod: GenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: int, 
+            nmating: int, 
             nprogeny: int, 
             nself: int, 
             gmapfn: GeneticMapFunction, 
@@ -66,7 +66,7 @@ class GeneticVarianceMatrix(
             GenomicModel with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
-        ncross : int
+        nmating : int
             Number of cross patterns to simulate for genetic variance
             estimation.
         nprogeny : int
