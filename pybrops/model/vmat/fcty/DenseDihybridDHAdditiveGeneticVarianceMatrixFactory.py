@@ -68,7 +68,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrixFactory(AdditiveGeneticVarianc
         return DenseDihybridDHAdditiveGeneticVarianceMatrix.from_gmod(
             gmod = gmod, 
             pgmat = pgmat, 
-            ncross = ncross, 
+            nmating = ncross, 
             nprogeny = nprogeny, 
             nself = nself, 
             gmapfn = gmapfn, 
@@ -120,7 +120,7 @@ class DenseDihybridDHAdditiveGeneticVarianceMatrixFactory(AdditiveGeneticVarianc
         return DenseDihybridDHAdditiveGeneticVarianceMatrix.from_algmod(
             algmod = algmod, 
             pgmat = pgmat, 
-            ncross = ncross, 
+            nmating = ncross, 
             nprogeny = nprogeny, 
             nself = nself, 
             gmapfn = gmapfn, 

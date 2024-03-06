@@ -743,7 +743,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             cls, 
             gmod: GenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: Integral, 
+            nmating: Integral, 
             nprogeny: Integral, 
             nself: Union[Integral,Real],
             gmapfn: GeneticMapFunction,
@@ -759,7 +759,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             Genomic Model with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
-        ncross : Integral
+        nmating : Integral
             Number of cross patterns to simulate for genetic variance
             estimation.
         nprogeny : Integral
@@ -796,7 +796,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         # type checks
         check_is_GenomicModel(gmod, "gmod")
         check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nmating, "nmating")
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral_or_inf(nself, "nself")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
@@ -806,7 +806,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             return cls.from_algmod(
                 algmod = gmod, 
                 pgmat = pgmat, 
-                ncross = ncross, 
+                nmating = nmating, 
                 nprogeny = nprogeny, 
                 nself = nself, 
                 gmapfn = gmapfn, 
@@ -821,7 +821,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             cls, 
             algmod: AdditiveLinearGenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: Integral, 
+            nmating: Integral, 
             nprogeny: Integral, 
             nself: Union[Integral,Real], 
             gmapfn: GeneticMapFunction, 
@@ -838,7 +838,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
             AdditiveLinearGenomicModel with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
-        ncross : Integral
+        nmating : Integral
             Number of cross patterns to simulate for genetic variance
             estimation.
         nprogeny : Integral
@@ -881,7 +881,7 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
         # type checks
         check_is_AdditiveLinearGenomicModel(algmod, "algmod")
         check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nmating, "nmating")
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral_or_inf(nself, "nself")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")

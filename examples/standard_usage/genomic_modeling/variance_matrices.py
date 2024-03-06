@@ -166,7 +166,7 @@ pgmat.group_vrnt()
 vmat = DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_gmod(
     gmod = algmod,
     pgmat = pgmat,
-    ncross = 1,
+    nmating = 1,
     nprogeny = 10,
     nself = 0,
     gmapfn = HaldaneMapFunction()
@@ -176,7 +176,7 @@ vmat = DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_gmod(
 vmat = DenseTwoWayDHAdditiveGeneticVarianceMatrix.from_algmod(
     algmod = algmod,
     pgmat = pgmat,
-    ncross = 1,
+    nmating = 1,
     nprogeny = 10,
     nself = 0,
     gmapfn = HaldaneMapFunction()
