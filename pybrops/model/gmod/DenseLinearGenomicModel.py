@@ -5,6 +5,7 @@ models that incorporate linear genomic effects.
 
 import copy
 from numbers import Integral
+from pathlib import Path
 from typing import Optional, Union
 import numpy
 import h5py
@@ -15,10 +16,10 @@ from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_float64
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.util.h5py import save_dict_to_hdf5
+from pybrops.core.util.h5py import h5py_File_read_dict, h5py_File_read_ndarray, h5py_File_read_ndarray_utf8, h5py_File_read_utf8, h5py_File_write_dict
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
@@ -1466,40 +1467,88 @@ class DenseLinearGenomicModel(LinearGenomicModel):
     ################### File I/O methods ###################
     def to_hdf5(
             self, 
-            filename: str, 
-            groupname: Optional[str] = None
+            filename: Union[str,Path,h5py.File], 
+            groupname: Optional[str] = None,
+            overwrite: bool = True,
         ) -> None:
         """
-        Write GenotypeMatrix to an HDF5 file.
+        Write ``DenseLinearGenomicModel`` to an HDF5 file.
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name to which to write.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If ``None``, GenotypeMatrix is written to the base HDF5 group.
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name to which to write. File is closed after writing.
+            If ``h5py.File``, an opened HDF5 file to which to write. File is not closed after writing.
+
+        groupname : str, None
+            If ``str``, an HDF5 group name under which ``DenseLinearGenomicModel`` data is stored.
+            If ``None``, ``DenseLinearGenomicModel`` is written to the base HDF5 group.
+
+        overwrite : bool
+            Whether to overwrite data fields if they are present in the HDF5 file.
         """
-        h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
-        ######################################################### process groupname argument
-        if isinstance(groupname, str):                          # if we have a string
-            if groupname[-1] != '/':                            # if last character in string is not '/'
-                groupname += '/'                                # add '/' to end of string
-        elif groupname is None:                                 # else if groupname is None
-            groupname = ""                                      # empty string
-        else:                                                   # else raise error
-            raise TypeError("'groupname' must be of type str or None")
-        ######################################################### populate HDF5 file
-        data_dict = {                                           # data dictionary
-            "beta": self.beta,
-            "u": self.u,
-            "trait": self.trait,
-            "model_name": self.model_name,
-            "hyperparams": self.hyperparams
+        ########################################################
+        ############ process ``filename`` argument #############
+
+        # HDF5 file object
+        h5file = None
+
+        # if we have a string or Path, open HDF5 file in append (``r+``) mode
+        if isinstance(filename, (str,Path)):
+            h5file = h5py.File(filename, "a")
+
+        # elif we have an h5py.File, make sure mode is writable, and copy pointer
+        elif isinstance(filename, h5py.File):
+            check_h5py_File_is_writable(filename)
+            h5file = filename
+        
+        # else raise TypeError
+        else:
+            raise TypeError(
+                "``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``{0}``".format(
+                    type(filename).__name__
+                )
+            )
+
+        ########################################################
+        ############ process ``groupname`` argument ############
+
+        # if we have a string
+        if isinstance(groupname, str):
+            # if last character in string is not '/', add '/' to end of string
+            if groupname[-1] != '/':
+                groupname += '/'
+        
+        # else if ``groupname`` is None, set ``groupname`` to empty string
+        elif groupname is None:
+            groupname = ""
+        
+        # else raise error
+        else:
+            raise TypeError(
+                "``groupname`` must be of type ``str`` or ``None`` but received type ``{0}``".format(
+                    type(groupname).__name__
+                )
+            )
+
+        ########################################################
+        #### write data to HDF5 file and (optionally) close ####
+
+        # data dictionary
+        data = {
+            "beta"          : self.beta,
+            "u"             : self.u,
+            "trait"         : self.trait,
+            "model_name"    : self.model_name,
+            "hyperparams"   : self.hyperparams,
         }
-        save_dict_to_hdf5(h5file, groupname, data_dict)         # write data
-        ######################################################### write conclusion
-        h5file.close()                                          # close the file
+
+        # save data
+        h5py_File_write_dict(h5file, groupname, data, overwrite)
+
+        # close the file, only if the provided filename was a string and not a h5py.File.
+        if isinstance(filename, str):
+            h5file.close()
 
     ############################## Class Methods ###############################
 
@@ -1507,73 +1556,137 @@ class DenseLinearGenomicModel(LinearGenomicModel):
     @classmethod
     def from_hdf5(
             cls, 
-            filename: str, 
-            groupname: Optional[str] = None
+            filename: Union[str,Path,h5py.File], 
+            groupname: Optional[str] = None,
         ) -> 'DenseLinearGenomicModel':
         """
-        Read GenotypeMatrix from an HDF5 file.
+        Read ``DenseLinearGenomicModel`` from an HDF5 file.
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If ``None``, GenotypeMatrix is read from base HDF5 group.
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name from which to read. File is closed after reading.
+            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.
+        groupname : str, None
+            If ``str``, an HDF5 group name under which ``DenseLinearGenomicModel`` data is stored.
+            If ``None``, ``DenseLinearGenomicModel`` is read from base HDF5 group.
 
         Returns
         -------
-        gmat : GenotypeMatrix
+        gmat : DenseLinearGenomicModel
             A genotype matrix read from file.
         """
-        check_file_exists(filename)                             # check file exists
-        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
-        ######################################################### process groupname argument
-        if isinstance(groupname, str):                          # if we have a string
-            check_h5py_File_has_group(h5file, filename, groupname)    # check that group exists
-            if groupname[-1] != '/':                            # if last character in string is not '/'
-                groupname += '/'                                # add '/' to end of string
-        elif groupname is None:                                 # else if groupname is None
-            groupname = ""                                      # empty string
-        else:                                                   # else raise error
-            raise TypeError("'groupname' must be of type str or None")
-        ######################################################### check that we have all required fields
-        required_fields = ["beta", "u"]                         # all required arguments
-        for field in required_fields:                           # for each required field
-            fieldname = groupname + field                       # concatenate base groupname and field
-            check_h5py_File_has_group(h5file, filename, fieldname)    # check that group exists
-        ######################################################### read data
-        data_dict = {                                           # output dictionary
-            "beta": None,
-            "u" : None,
-            "trait": None,
-            "model_name": None,
-            "hyperparams": None
-        }
-        data_dict["beta"] = h5file[groupname + "beta"][()]      # read beta array
-        data_dict["u"] = h5file[groupname + "u"][()]            # read u array
-        fieldname = groupname + "trait"                         # construct "groupname/trait"
-        if fieldname in h5file:                                 # if "groupname/trait" in hdf5
-            data_dict["trait"] = h5file[fieldname][()]          # read trait array
-            data_dict["trait"] = numpy.array(                   # convert trait string from byte to utf-8
-                [s.decode("utf-8") for s in data_dict["trait"]],
-                dtype = object
+        ########################################################
+        ############ process ``groupname`` argument ############
+
+        # if we have a string
+        if isinstance(groupname, str):
+            # if last character in string is not '/', add '/' to end of string
+            if groupname[-1] != '/':
+                groupname += '/'
+        
+        # else if ``groupname`` is None, set ``groupname`` to empty string
+        elif groupname is None:
+            groupname = ""
+        
+        # else raise error
+        else:
+            raise TypeError(
+                "``groupname`` must be of type ``str`` or ``None`` but received type ``{0}``".format(
+                    type(groupname).__name__
+                )
             )
-        fieldname = groupname + "model_name"                    # construct "groupname/model_name"
-        if fieldname in h5file:                                 # if "groupname/model_name" in hdf5
-            data_dict["model_name"] = h5file[fieldname][()]     # read string (as bytes); convert to utf-8
-            data_dict["model_name"] = data_dict["model_name"].decode("utf-8")
-        fieldname = groupname + "hyperparams"                        # construct "groupname/hyperparams"
-        if fieldname in h5file:                                 # if "groupname/hyperparams" in hdf5
-            data_dict["hyperparams"] = {}                            # create empty dictionary
-            view = h5file[fieldname]                            # get view of dataset
-            for key in view.keys():                             # for each field
-                data_dict["hyperparams"][key] = view[key][()]        # extract data
-        ######################################################### read conclusion
-        h5file.close()                                          # close file
-        ######################################################### create object
-        glgmod = cls(**data_dict)         # create object from read data
-        return glgmod
+
+        ########################################################
+        ############ process ``filename`` argument #############
+
+        # HDF5 file object
+        h5file = None
+
+        # if we have a string or Path, open HDF5 file in append (``r``) mode
+        if isinstance(filename, (str,Path)):
+            check_file_exists(filename)
+            h5file = h5py.File(filename, "r")
+
+        # elif we have an h5py.File, make sure mode is in at least ``r`` mode, and copy pointer
+        elif isinstance(filename, h5py.File):
+            check_h5py_File_is_readable(filename)
+            h5file = filename
+        
+        # else raise TypeError
+        else:
+            raise TypeError(
+                "``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``{0}``".format(
+                    type(filename).__name__
+                )
+            )
+
+        ########################################################
+        ######## check that we have all required fields ########
+
+        # all required arguments
+        required_fields = ["beta", "u"]
+
+        # for each required field, check if the field exists in the HDF5 file.
+        for field in required_fields:
+            check_h5py_File_has_group(h5file, groupname + field)
+
+        ########################################################
+        ### read data from HDF5 file and (optionally) close ####
+        
+        # output dictionary
+        data = {
+            "beta"          : None,
+            "u"             : None,
+            "trait"         : None,
+            "model_name"    : None,
+            "hyperparams"   : None,
+        }
+
+        ##################################
+        ### read mandatory data fields ###
+
+        # read beta array (ndarray dtype = any)
+        data["beta"] = h5py_File_read_ndarray(h5file, groupname + "beta")
+
+        # read u array (ndarray dtype = any)
+        data["u"] = h5py_File_read_ndarray(h5file, groupname + "u")
+
+        #################################
+        ### read optional data fields ###
+
+        # read trat array (ndarray dtype = unicode / object)
+        if groupname + "trait" in h5file:
+            data["trait"] = h5py_File_read_ndarray_utf8(h5file, groupname + "trait")
+
+        # read model_name data (dtype = str)
+        if groupname + "model_name" in h5file:
+            data["model_name"] = h5py_File_read_utf8(h5file, groupname + "model_name")
+
+        # read hyperparams data (dtype = dict)
+        if groupname + "hyperparams" in h5file:
+            data["hyperparams"] = h5py_File_read_dict(h5file, groupname + "hyperparams")
+
+        ######################
+        ### close the file ###
+
+        # close the file, only if the provided fieldname was a string an not an h5py.File.
+        if isinstance(filename, str):
+            h5file.close()
+        
+        ########################################################
+        ################### Object creation ####################
+
+        # create object from read data
+        out = cls(
+            beta        = data["beta"],
+            u           = data["u"],
+            trait       = data["trait"],
+            model_name  = data["model_name"],
+            hyperparams = data["hyperparams"],
+        )
+        
+        return out
 
 
 

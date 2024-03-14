@@ -6,8 +6,8 @@ import pytest
 import os
 import h5py
 
-from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
-from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import check_is_DenseAdditiveLinearGenomicModel
+from pybrops.model.gmod.DenseAdditiveDominanceLinearGenomicModel import DenseAdditiveDominanceLinearGenomicModel
+from pybrops.model.gmod.DenseAdditiveDominanceLinearGenomicModel import check_is_DenseAdditiveDominanceLinearGenomicModel
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.test.assert_python import assert_classmethod_isconcrete, not_raises
@@ -64,6 +64,11 @@ def algmod_u_a(nmarker, ntrait):
     yield out
 
 @pytest.fixture
+def algmod_u_d(nmarker, ntrait):
+    out = numpy.random.normal(size = (nmarker, ntrait))
+    yield out
+
+@pytest.fixture
 def algmod_trait(ntrait):
     out = numpy.array(["Trait"+str(i+1) for i in range(ntrait)], dtype=object)
     yield out
@@ -81,17 +86,19 @@ def algmod(
         algmod_beta, 
         algmod_u_misc, 
         algmod_u_a, 
+        algmod_u_d, 
         algmod_trait, 
         algmod_model_name, 
         algmod_params
     ):
-    yield DenseAdditiveLinearGenomicModel(
-        beta       = algmod_beta,
-        u_misc     = algmod_u_misc,
-        u_a        = algmod_u_a,
-        trait      = algmod_trait,
-        model_name = algmod_model_name,
-        hyperparams     = algmod_params
+    yield DenseAdditiveDominanceLinearGenomicModel(
+        beta        = algmod_beta,
+        u_misc      = algmod_u_misc,
+        u_a         = algmod_u_a,
+        u_d         = algmod_u_d,
+        trait       = algmod_trait,
+        model_name  = algmod_model_name,
+        hyperparams = algmod_params
     )
 
 ############################################################
@@ -156,7 +163,7 @@ def mat_intercept(pgmat, algmod_beta):
 ############################## Test class docstring ############################
 ################################################################################
 def test_class_docstring():
-    assert_class_documentation(DenseAdditiveLinearGenomicModel)
+    assert_class_documentation(DenseAdditiveDominanceLinearGenomicModel)
 
 ################################################################################
 ############################ Test Class Properties #############################
@@ -186,11 +193,11 @@ def test_algmod_params_fget(algmod, algmod_params):
 
 ### __init__
 def test___init___is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "__init__")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "__init__")
 
 ### __copy__
 def test___copy___is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "__copy__")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "__copy__")
 
 def test___copy__(algmod):
     tmp = algmod.__copy__()
@@ -212,7 +219,7 @@ def test___copy__(algmod):
 
 ### __deepcopy__
 def test___deepcopy___is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "__deepcopy__")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "__deepcopy__")
 
 def test___deepcopy__(algmod):
     tmp = algmod.__deepcopy__()
@@ -242,7 +249,7 @@ def test___deepcopy__(algmod):
 
 ### copy
 def test_copy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "copy")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "copy")
 
 def test_copy(algmod):
     tmp = algmod.copy()
@@ -256,7 +263,7 @@ def test_copy(algmod):
 
 ### deepcopy
 def test_deepcopy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "deepcopy")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "deepcopy")
 
 def test_deepcopy(algmod):
     tmp = algmod.deepcopy()
@@ -274,7 +281,7 @@ def test_deepcopy(algmod):
 
 ### fit_numpy
 def test_fit_numpy_is_concrete():
-    assert_classmethod_isconcrete(DenseAdditiveLinearGenomicModel, "fit_numpy")
+    assert_classmethod_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "fit_numpy")
 
 def test_fit_numpy(algmod):
     with pytest.raises(AttributeError):
@@ -282,7 +289,7 @@ def test_fit_numpy(algmod):
 
 ### fit
 def test_fit_is_concrete():
-    assert_classmethod_isconcrete(DenseAdditiveLinearGenomicModel, "fit")
+    assert_classmethod_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "fit")
 
 def test_fit(algmod):
     with pytest.raises(AttributeError):
@@ -290,18 +297,20 @@ def test_fit(algmod):
 
 ### predict_numpy
 def test_predict_numpy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "predict_numpy")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "predict_numpy")
 
-def test_predict_numpy(algmod, mat_intercept, algmod_beta, pgmat_mat, algmod_u_a):
+def test_predict_numpy(algmod, mat_intercept, algmod_beta, pgmat_mat, algmod_u_a, algmod_u_d):
     geno = pgmat_mat.sum(0)
-    a = algmod.predict_numpy(mat_intercept, geno)
-    b = (mat_intercept @ algmod_beta) + (geno @ algmod_u_a)
+    het = (geno == 1).astype(float)
+    geno_het = numpy.concatenate([geno, het], axis = 1)
+    a = algmod.predict_numpy(mat_intercept, geno_het)
+    b = (mat_intercept @ algmod_beta) + (geno @ algmod_u_a) + (het @ algmod_u_d)
     assert numpy.all(a == b)
     assert isinstance(a, numpy.ndarray)
 
 ### predict
 def test_predict_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "predict")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "predict")
 
 # def test_predict(algmod, mat_intercept, algmod_beta, pgmat_mat, algmod_u_a, pgmat):
 #     geno = pgmat_mat.sum(0)
@@ -313,7 +322,7 @@ def test_predict_is_concrete():
 
 ### score_numpy
 def test_score_numpy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "score_numpy")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "score_numpy")
 
 def test_score_numpy(algmod, mat_intercept, pgmat_mat):
     geno = pgmat_mat.sum(0)
@@ -325,7 +334,7 @@ def test_score_numpy(algmod, mat_intercept, pgmat_mat):
 
 ### score
 def test_score_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "score")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "score")
 
 def test_score(algmod, mat_intercept, pgmat):
     y_true = algmod.predict(mat_intercept, pgmat)
@@ -335,7 +344,7 @@ def test_score(algmod, mat_intercept, pgmat):
 
 ### gebv_numpy
 def test_gebv_numpy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "gebv_numpy")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "gebv_numpy")
 
 def test_gebv_numpy(algmod, pgmat_mat):
     geno = pgmat_mat.sum(0)
@@ -354,7 +363,7 @@ def test_gebv_numpy_ValueError(algmod):
 
 ### gebv
 def test_gebv_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "gebv")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "gebv")
 
 def test_gebv(algmod, pgmat, pgmat_mat):
     out = algmod.gebv(pgmat_mat.sum(0))
@@ -374,7 +383,7 @@ def test_gebv_ValueError(algmod):
 
 ### gegv_numpy
 def test_gegv_numpy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "gegv_numpy")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "gegv_numpy")
 
 def test_gegv_numpy(algmod, pgmat_mat):
     geno = pgmat_mat.sum(0)
@@ -393,7 +402,7 @@ def test_gegv_numpy_ValueError(algmod):
 
 ### gegv
 def test_gegv_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "gegv")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "gegv")
 
 def test_gegv(algmod, pgmat, pgmat_mat):
     out = algmod.gegv(pgmat_mat.sum(0))
@@ -417,7 +426,7 @@ def test_gegv_ValueError(algmod):
 
 ### var_G_numpy
 def test_var_G_numpy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "var_G_numpy")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "var_G_numpy")
 
 def test_var_G_numpy(algmod, pgmat_mat):
     geno = pgmat_mat.sum(0)
@@ -436,11 +445,11 @@ def test_var_G_numpy_ValueError(algmod):
 
 ### var_G
 def test_var_G_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "var_G")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "var_G")
 
 ### var_A_numpy
 def test_var_A_numpy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "var_A_numpy")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "var_A_numpy")
 
 def test_var_A_numpy(algmod, pgmat_mat):
     geno = pgmat_mat.sum(0)
@@ -459,23 +468,23 @@ def test_var_A_numpy_ValueError(algmod):
 
 ### var_A
 def test_var_A_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "var_A")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "var_A")
 
 ### var_a_numpy
 def test_var_a_numpy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "var_a_numpy")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "var_a_numpy")
 
 ### var_a
 def test_var_a_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "var_a")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "var_a")
 
 ### bulmer_numpy
 def test_bulmer_numpy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "bulmer_numpy")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "bulmer_numpy")
 
 ### bulmer
 def test_bulmer_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "bulmer")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "bulmer")
 
 ############################################################
 ################## Selection limit tests ###################
@@ -483,11 +492,11 @@ def test_bulmer_is_concrete():
 
 ### usl_numpy
 def test_usl_numpy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "usl_numpy")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "usl_numpy")
 
 ### usl
 def test_usl_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "usl")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "usl")
 
 def test_usl(algmod, pgmat, algmod_u_a, pgmat_mat):
     # (p,t)' -> (t,p)
@@ -507,11 +516,11 @@ def test_usl(algmod, pgmat, algmod_u_a, pgmat_mat):
 
 ### lsl_numpy
 def test_lsl_numpy_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "lsl_numpy")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "lsl_numpy")
 
 ### lsl
 def test_lsl_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "lsl")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "lsl")
 
 def test_lsl(algmod, pgmat, algmod_u_a, pgmat_mat):
     # (p,t)' -> (t,p)
@@ -536,7 +545,7 @@ def test_lsl(algmod, pgmat, algmod_u_a, pgmat_mat):
 
 ### to_pandas_dict
 def test_to_pandas_dict_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "to_pandas_dict")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "to_pandas_dict")
 
 def test_to_pandas_dict(algmod):
     out = algmod.to_pandas_dict()
@@ -550,120 +559,30 @@ def test_to_pandas_dict(algmod):
 
 ### to_csv_dict
 def test_to_csv_dict_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "to_csv_dict")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "to_csv_dict")
 
 def test_to_csv_dict(algmod):
     filenames = {
-        "beta": "saved_beta.csv",
-        "u_misc": "saved_u_misc.csv",
-        "u_a": "saved_u_a.csv",
+        "beta"   : "saved_beta.csv",
+        "u_misc" : "saved_u_misc.csv",
+        "u_a"    : "saved_u_a.csv",
+        "u_d"    : "saved_u_d.csv",
     }
     algmod.to_csv_dict(filenames)
     assert os.path.isfile(filenames["beta"])
     assert os.path.isfile(filenames["u_misc"])
     assert os.path.isfile(filenames["u_a"])
-
-### to_hdf5
-def test_to_hdf5_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "to_hdf5")
-
-def test_to_hdf5(algmod, shared_datadir):
-    algmod.to_hdf5(shared_datadir / "algmod.hdf5")
-    algmod.to_hdf5(shared_datadir / "algmod.hdf5", "prefix")
-
-    # test whether file was created
-    assert os.path.isfile(shared_datadir / "algmod.hdf5")
-
-    algmod1 = DenseAdditiveLinearGenomicModel.from_hdf5(shared_datadir / "algmod.hdf5")
-    algmod2 = DenseAdditiveLinearGenomicModel.from_hdf5(
-        shared_datadir / "algmod.hdf5",
-        "prefix"
-    )
-
-    # test whether data was loaded properly
-    assert numpy.all(algmod.beta == algmod1.beta)
-    assert numpy.all(algmod.u_misc == algmod1.u_misc)
-    assert numpy.all(algmod.u_a == algmod1.u_a)
-    assert numpy.all(algmod.trait == algmod1.trait)
-    assert algmod.model_name == algmod1.model_name
-    assert algmod.hyperparams == algmod1.hyperparams
-
-    assert numpy.all(algmod.beta == algmod2.beta)
-    assert numpy.all(algmod.u_misc == algmod2.u_misc)
-    assert numpy.all(algmod.u_a == algmod2.u_a)
-    assert numpy.all(algmod.trait == algmod2.trait)
-    assert algmod.model_name == algmod2.model_name
-    assert algmod.hyperparams == algmod2.hyperparams
-
-### from_pandas_dict
-def test_from_pandas_dict_is_concrete():
-    assert_classmethod_isconcrete(DenseAdditiveLinearGenomicModel, "from_pandas_dict")
-
-def test_from_pandas_dict(algmod):
-    df_dict = algmod.to_pandas_dict()
-    out = DenseAdditiveLinearGenomicModel.from_pandas_dict(df_dict)
-    assert numpy.all(out.beta == algmod.beta)
-    assert numpy.all(out.u_misc == algmod.u_misc)
-    assert numpy.all(out.u_a == algmod.u_a)
-    assert numpy.all(out.trait == algmod.trait)
-
-### from_csv_dict
-def test_from_csv_dict_is_concrete():
-    assert_classmethod_isconcrete(DenseAdditiveLinearGenomicModel, "from_csv_dict")
-
-def test_from_csv(algmod):
-    filenames = {
-        "beta": "saved_beta.csv",
-        "u_misc": "saved_u_misc.csv",
-        "u_a": "saved_u_a.csv",
-    }
-    algmod.to_csv_dict(filenames)
-    out = DenseAdditiveLinearGenomicModel.from_csv_dict(
-        filenames = filenames,
-    )
-    assert isinstance(out, DenseAdditiveLinearGenomicModel)
-
-### from_hdf5
-def test_from_hdf5_is_concrete():
-    assert_classmethod_isconcrete(DenseAdditiveLinearGenomicModel, "from_hdf5")
-
-def test_from_hdf5(algmod, shared_datadir):
-    algmod.to_hdf5(shared_datadir / "algmod.hdf5")
-    algmod.to_hdf5(shared_datadir / "algmod.hdf5", "prefix")
-
-    # test whether file was created
-    assert os.path.isfile(shared_datadir / "algmod.hdf5")
-
-    algmod1 = DenseAdditiveLinearGenomicModel.from_hdf5(shared_datadir / "algmod.hdf5")
-    algmod2 = DenseAdditiveLinearGenomicModel.from_hdf5(
-        shared_datadir / "algmod.hdf5",
-        "prefix"
-    )
-
-    # test whether data was loaded properly
-    assert numpy.all(algmod.beta == algmod1.beta)
-    assert numpy.all(algmod.u_misc == algmod1.u_misc)
-    assert numpy.all(algmod.u_a == algmod1.u_a)
-    assert numpy.all(algmod.trait == algmod1.trait)
-    assert algmod.model_name == algmod1.model_name
-    assert algmod.hyperparams == algmod1.hyperparams
-
-    assert numpy.all(algmod.beta == algmod2.beta)
-    assert numpy.all(algmod.u_misc == algmod2.u_misc)
-    assert numpy.all(algmod.u_a == algmod2.u_a)
-    assert numpy.all(algmod.trait == algmod2.trait)
-    assert algmod.model_name == algmod2.model_name
-    assert algmod.hyperparams == algmod2.hyperparams
+    assert os.path.isfile(filenames["u_d"])
 
 ### to_hdf5
 
 def test_to_hdf5_is_concrete():
-    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "to_hdf5")
+    assert_method_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "to_hdf5")
 
 def test_from_hdf5_str(algmod):
     fp = "tmp.h5"
     algmod.to_hdf5(fp)
-    out = DenseAdditiveLinearGenomicModel.from_hdf5(fp)
+    out = DenseAdditiveDominanceLinearGenomicModel.from_hdf5(fp)
     # general
     assert algmod.nexplan == out.nexplan
     assert algmod.nparam == out.nparam
@@ -685,6 +604,10 @@ def test_from_hdf5_str(algmod):
     assert algmod.nexplan_u_a == out.nexplan_u_a
     assert algmod.nparam_u_a == out.nparam_u_a
     assert numpy.all(algmod.u_a == out.u_a)
+    # u_d
+    assert algmod.nexplan_u_d == out.nexplan_u_d
+    assert algmod.nparam_u_d == out.nparam_u_d
+    assert numpy.all(algmod.u_d == out.u_d)
     # trait
     assert algmod.ntrait == out.ntrait
     assert numpy.all(algmod.trait == out.trait)
@@ -693,7 +616,7 @@ def test_from_hdf5_str(algmod):
 def test_from_hdf5_Path(algmod):
     fp = Path("tmp.h5")
     algmod.to_hdf5(fp)
-    out = DenseAdditiveLinearGenomicModel.from_hdf5(fp)
+    out = DenseAdditiveDominanceLinearGenomicModel.from_hdf5(fp)
     # general
     assert algmod.nexplan == out.nexplan
     assert algmod.nparam == out.nparam
@@ -715,6 +638,10 @@ def test_from_hdf5_Path(algmod):
     assert algmod.nexplan_u_a == out.nexplan_u_a
     assert algmod.nparam_u_a == out.nparam_u_a
     assert numpy.all(algmod.u_a == out.u_a)
+    # u_d
+    assert algmod.nexplan_u_d == out.nexplan_u_d
+    assert algmod.nparam_u_d == out.nparam_u_d
+    assert numpy.all(algmod.u_d == out.u_d)
     # trait
     assert algmod.ntrait == out.ntrait
     assert numpy.all(algmod.trait == out.trait)
@@ -724,7 +651,7 @@ def test_from_hdf5_h5py_File(algmod):
     fp = Path("tmp.h5")
     algmod.to_hdf5(fp)
     h5file = h5py.File(fp)
-    out = DenseAdditiveLinearGenomicModel.from_hdf5(h5file)
+    out = DenseAdditiveDominanceLinearGenomicModel.from_hdf5(h5file)
     # general
     assert algmod.nexplan == out.nexplan
     assert algmod.nparam == out.nparam
@@ -746,6 +673,10 @@ def test_from_hdf5_h5py_File(algmod):
     assert algmod.nexplan_u_a == out.nexplan_u_a
     assert algmod.nparam_u_a == out.nparam_u_a
     assert numpy.all(algmod.u_a == out.u_a)
+    # u_d
+    assert algmod.nexplan_u_d == out.nexplan_u_d
+    assert algmod.nparam_u_d == out.nparam_u_d
+    assert numpy.all(algmod.u_d == out.u_d)
     # trait
     assert algmod.ntrait == out.ntrait
     assert numpy.all(algmod.trait == out.trait)
@@ -756,15 +687,44 @@ def test_from_hdf5_h5py_File(algmod):
 ########################## Test concrete classmethods ##########################
 ################################################################################
 
+### from_pandas_dict
+def test_from_pandas_dict_is_concrete():
+    assert_classmethod_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "from_pandas_dict")
+
+def test_from_pandas_dict(algmod):
+    df_dict = algmod.to_pandas_dict()
+    out = DenseAdditiveDominanceLinearGenomicModel.from_pandas_dict(df_dict)
+    assert numpy.all(out.beta == algmod.beta)
+    assert numpy.all(out.u_misc == algmod.u_misc)
+    assert numpy.all(out.u_a == algmod.u_a)
+    assert numpy.all(out.trait == algmod.trait)
+
+### from_csv_dict
+def test_from_csv_dict_is_concrete():
+    assert_classmethod_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "from_csv_dict")
+
+def test_from_csv(algmod):
+    filenames = {
+        "beta"   : "saved_beta.csv",
+        "u_misc" : "saved_u_misc.csv",
+        "u_a"    : "saved_u_a.csv",
+        "u_d"    : "saved_u_d.csv",
+    }
+    algmod.to_csv_dict(filenames)
+    out = DenseAdditiveDominanceLinearGenomicModel.from_csv_dict(
+        filenames = filenames,
+    )
+    assert isinstance(out, DenseAdditiveDominanceLinearGenomicModel)
+
 ### from_hdf5
 
 def test_from_hdf5_is_concrete():
-    assert_classmethod_isconcrete(DenseAdditiveLinearGenomicModel, "from_hdf5")
+    assert_classmethod_isconcrete(DenseAdditiveDominanceLinearGenomicModel, "from_hdf5")
 
 def test_from_hdf5_str(algmod):
     fp = "tmp.h5"
     algmod.to_hdf5(fp)
-    out = DenseAdditiveLinearGenomicModel.from_hdf5(fp)
+    out = DenseAdditiveDominanceLinearGenomicModel.from_hdf5(fp)
     # general
     assert algmod.nexplan == out.nexplan
     assert algmod.nparam == out.nparam
@@ -786,6 +746,10 @@ def test_from_hdf5_str(algmod):
     assert algmod.nexplan_u_a == out.nexplan_u_a
     assert algmod.nparam_u_a == out.nparam_u_a
     assert numpy.all(algmod.u_a == out.u_a)
+    # u_d
+    assert algmod.nexplan_u_d == out.nexplan_u_d
+    assert algmod.nparam_u_d == out.nparam_u_d
+    assert numpy.all(algmod.u_d == out.u_d)
     # trait
     assert algmod.ntrait == out.ntrait
     assert numpy.all(algmod.trait == out.trait)
@@ -794,7 +758,7 @@ def test_from_hdf5_str(algmod):
 def test_from_hdf5_Path(algmod):
     fp = Path("tmp.h5")
     algmod.to_hdf5(fp)
-    out = DenseAdditiveLinearGenomicModel.from_hdf5(fp)
+    out = DenseAdditiveDominanceLinearGenomicModel.from_hdf5(fp)
     # general
     assert algmod.nexplan == out.nexplan
     assert algmod.nparam == out.nparam
@@ -816,6 +780,10 @@ def test_from_hdf5_Path(algmod):
     assert algmod.nexplan_u_a == out.nexplan_u_a
     assert algmod.nparam_u_a == out.nparam_u_a
     assert numpy.all(algmod.u_a == out.u_a)
+    # u_d
+    assert algmod.nexplan_u_d == out.nexplan_u_d
+    assert algmod.nparam_u_d == out.nparam_u_d
+    assert numpy.all(algmod.u_d == out.u_d)
     # trait
     assert algmod.ntrait == out.ntrait
     assert numpy.all(algmod.trait == out.trait)
@@ -825,7 +793,7 @@ def test_from_hdf5_h5py_File(algmod):
     fp = Path("tmp.h5")
     algmod.to_hdf5(fp)
     h5file = h5py.File(fp)
-    out = DenseAdditiveLinearGenomicModel.from_hdf5(h5file)
+    out = DenseAdditiveDominanceLinearGenomicModel.from_hdf5(h5file)
     # general
     assert algmod.nexplan == out.nexplan
     assert algmod.nparam == out.nparam
@@ -847,6 +815,10 @@ def test_from_hdf5_h5py_File(algmod):
     assert algmod.nexplan_u_a == out.nexplan_u_a
     assert algmod.nparam_u_a == out.nparam_u_a
     assert numpy.all(algmod.u_a == out.u_a)
+    # u_d
+    assert algmod.nexplan_u_d == out.nexplan_u_d
+    assert algmod.nparam_u_d == out.nparam_u_d
+    assert numpy.all(algmod.u_d == out.u_d)
     # trait
     assert algmod.ntrait == out.ntrait
     assert numpy.all(algmod.trait == out.trait)
@@ -857,12 +829,12 @@ def test_from_hdf5_h5py_File(algmod):
 ######################### Test class utility functions #########################
 ################################################################################
 
-### check_is_DenseAdditiveLinearGenomicModel
-def test_check_is_DenseAdditiveLinearGenomicModel_is_concrete():
-    assert_function_isconcrete(check_is_DenseAdditiveLinearGenomicModel)
+### check_is_DenseAdditiveDominanceLinearGenomicModel
+def test_check_is_DenseAdditiveDominanceLinearGenomicModel_is_concrete():
+    assert_function_isconcrete(check_is_DenseAdditiveDominanceLinearGenomicModel)
 
-def test_check_is_DenseAdditiveLinearGenomicModel(algmod):
+def test_check_is_DenseAdditiveDominanceLinearGenomicModel(algmod):
     with not_raises(TypeError):
-        check_is_DenseAdditiveLinearGenomicModel(algmod, "algmod")
+        check_is_DenseAdditiveDominanceLinearGenomicModel(algmod, "algmod")
     with pytest.raises(TypeError):
-        check_is_DenseAdditiveLinearGenomicModel(None, "algmod")
+        check_is_DenseAdditiveDominanceLinearGenomicModel(None, "algmod")
