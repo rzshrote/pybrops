@@ -4,9 +4,6 @@ import copy
 
 from pybrops.test.assert_python import assert_classmethod_isconcrete, not_raises
 from pybrops.test.assert_python import assert_class_documentation
-from pybrops.test.assert_python import assert_method_isabstract
-from pybrops.test.assert_python import assert_function_isabstract
-from pybrops.test.assert_python import assert_property_isabstract
 from pybrops.test.assert_python import assert_method_isconcrete
 from pybrops.test.assert_python import assert_function_isconcrete
 
@@ -115,107 +112,233 @@ def test_class_docstring():
     assert_class_documentation(DenseVariantMatrix)
 
 ################################################################################
-############################# Test concrete methods ############################
+########################## Test Class Special Methods ##########################
 ################################################################################
+
+### __init__
+
 def test_init_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "__init__")
+
+### __copy__
 
 def test_copy_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "__copy__")
 
+### __deepcopy__
+
 def test_deepcopy_is_concrete():
     assert_method_isconcrete(DenseVariantMatrix, "__deepcopy__")
 
-def test_adjoin_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "adjoin")
+################################################################################
+############################ Test Class Properties #############################
+################################################################################
 
-def test_adjoin_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "adjoin_vrnt")
+################### Taxa Data Properites ###################
 
-def test_delete_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "delete")
+### vrnt_chrgrp
 
-def test_delete_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "delete_vrnt")
+def test_vrnt_chrgrp_fget(mat, vrnt_chrgrp_int64):
+    assert numpy.all(mat.vrnt_chrgrp == vrnt_chrgrp_int64)
 
-def test_insert_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "insert")
+def test_vrnt_chrgrp_fset(mat, vrnt_chrgrp_int64):
+    mat.vrnt_chrgrp = vrnt_chrgrp_int64
+    assert numpy.all(mat.vrnt_chrgrp == vrnt_chrgrp_int64)
 
-def test_insert_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "insert_vrnt")
+def test_vrnt_chrgrp_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_chrgrp
 
-def test_select_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "select")
+### vrnt_phypos
 
-def test_select_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "select_vrnt")
+def test_vrnt_phypos_fget(mat, vrnt_phypos_int64):
+    assert numpy.all(mat.vrnt_phypos == vrnt_phypos_int64)
 
-def test_concat_is_concrete():
-    assert_classmethod_isconcrete(DenseVariantMatrix, "concat")
+def test_vrnt_phypos_fset(mat, vrnt_phypos_int64):
+    mat.vrnt_phypos = vrnt_phypos_int64
+    assert numpy.all(mat.vrnt_phypos == vrnt_phypos_int64)
 
-def test_concat_vrnt_is_concrete():
-    assert_classmethod_isconcrete(DenseVariantMatrix, "concat_vrnt")
+def test_vrnt_phypos_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_phypos
 
-def test_append_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "append")
+### vrnt_name
 
-def test_append_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "append_vrnt")
+def test_vrnt_name_fget(mat, vrnt_name_object):
+    assert numpy.all(mat.vrnt_name == vrnt_name_object)
 
-def test_remove_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "remove")
+def test_vrnt_name_fset(mat, vrnt_name_object):
+    mat.vrnt_name = vrnt_name_object
+    assert numpy.all(mat.vrnt_name == vrnt_name_object)
 
-def test_remove_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "remove_vrnt")
+def test_vrnt_name_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_name
 
-def test_incorp_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "incorp")
+### vrnt_genpos
 
-def test_incorp_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "incorp")
+def test_vrnt_genpos_fget(mat, vrnt_genpos_float64):
+    assert numpy.all(mat.vrnt_genpos == vrnt_genpos_float64)
 
-def test_incorp_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "incorp_vrnt")
+def test_vrnt_genpos_fset(mat, vrnt_genpos_float64):
+    mat.vrnt_genpos = vrnt_genpos_float64
+    assert numpy.all(mat.vrnt_genpos == vrnt_genpos_float64)
 
-def test_lexsort_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "lexsort")
+def test_vrnt_genpos_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_genpos
 
-def test_lexsort_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "lexsort_vrnt")
+### vrnt_xoprob
 
-def test_reorder_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "reorder")
+def test_vrnt_xoprob_fget(mat, vrnt_xoprob_float64):
+    assert numpy.all(mat.vrnt_xoprob == vrnt_xoprob_float64)
 
-def test_reorder_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "reorder_vrnt")
+def test_vrnt_xoprob_fset(mat, vrnt_xoprob_float64):
+    mat.vrnt_xoprob = vrnt_xoprob_float64
+    assert numpy.all(mat.vrnt_xoprob == vrnt_xoprob_float64)
 
-def test_sort_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "sort")
+def test_vrnt_xoprob_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_xoprob
 
-def test_sort_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "sort_vrnt")
+### vrnt_hapgrp
 
-def test_group_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "group")
+def test_vrnt_hapgrp_fget(mat, vrnt_hapgrp_int64):
+    assert numpy.all(mat.vrnt_hapgrp == vrnt_hapgrp_int64)
 
-def test_group_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "group_vrnt")
+def test_vrnt_hapgrp_fset(mat, vrnt_hapgrp_int64):
+    mat.vrnt_hapgrp = vrnt_hapgrp_int64
+    assert numpy.all(mat.vrnt_hapgrp == vrnt_hapgrp_int64)
 
-def test_ungroup_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "ungroup")
+def test_vrnt_hapgrp_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_hapgrp
 
-def test_ungroup_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "ungroup_vrnt")
+### vrnt_hapalt
 
-def test_is_grouped_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "is_grouped")
+def test_vrnt_hapalt_fget(mat, vrnt_hapalt_object):
+    assert numpy.all(mat.vrnt_hapalt == vrnt_hapalt_object)
 
-def test_is_grouped_vrnt_is_concrete():
-    assert_method_isconcrete(DenseVariantMatrix, "is_grouped_vrnt")
+def test_vrnt_hapalt_fset(mat, vrnt_hapalt_object):
+    mat.vrnt_hapalt = vrnt_hapalt_object
+    assert numpy.all(mat.vrnt_hapalt == vrnt_hapalt_object)
+
+def test_vrnt_hapalt_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_hapalt
+
+### vrnt_hapref
+
+def test_vrnt_hapref_fget(mat, vrnt_hapref_object):
+    assert numpy.all(mat.vrnt_hapref == vrnt_hapref_object)
+
+def test_vrnt_hapref_fset(mat, vrnt_hapref_object):
+    mat.vrnt_hapref = vrnt_hapref_object
+    assert numpy.all(mat.vrnt_hapref == vrnt_hapref_object)
+
+def test_vrnt_hapref_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_hapref
+
+### vrnt_mask
+
+def test_vrnt_mask_fget(mat, vrnt_mask_bool):
+    assert numpy.all(mat.vrnt_mask == vrnt_mask_bool)
+
+def test_vrnt_mask_fset(mat, vrnt_mask_bool):
+    mat.vrnt_mask = vrnt_mask_bool
+    assert numpy.all(mat.vrnt_mask == vrnt_mask_bool)
+
+def test_vrnt_mask_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_mask
+
+################# Taxa Metadata Properites #################
+
+### nvrnt
+
+def test_nvrnt_fget(mat, mat_int8):
+    assert mat.nvrnt == len(mat_int8)
+
+def test_nvrnt_fset(mat, mat_int8):
+    with pytest.raises(AttributeError):
+        mat.nvrnt = len(mat_int8)
+
+def test_nvrnt_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.nvrnt
+
+### vrnt_axis
+
+def test_vrnt_axis_fget(mat):
+    assert mat.vrnt_axis == 0
+
+def test_vrnt_axis_fset(mat):
+    with pytest.raises(AttributeError):
+        mat.vrnt_axis = 1
+
+def test_vrnt_axis_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_axis
+
+### vrnt_chrgrp_name
+
+def test_vrnt_chrgrp_name_fget(mat, vrnt_chrgrp_name_int64):
+    assert numpy.all(mat.vrnt_chrgrp_name == vrnt_chrgrp_name_int64)
+
+def test_vrnt_chrgrp_name_fset(mat, vrnt_chrgrp_name_int64):
+    mat.vrnt_chrgrp_name = vrnt_chrgrp_name_int64
+    assert numpy.all(mat.vrnt_chrgrp_name == vrnt_chrgrp_name_int64)
+
+def test_vrnt_chrgrp_name_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_chrgrp_name
+
+### vrnt_chrgrp_stix
+
+def test_vrnt_chrgrp_stix_fget(mat, vrnt_chrgrp_stix_int64):
+    assert numpy.all(mat.vrnt_chrgrp_stix == vrnt_chrgrp_stix_int64)
+
+def test_vrnt_chrgrp_stix_fset(mat, vrnt_chrgrp_stix_int64):
+    mat.vrnt_chrgrp_stix = vrnt_chrgrp_stix_int64
+    assert numpy.all(mat.vrnt_chrgrp_stix == vrnt_chrgrp_stix_int64)
+
+def test_vrnt_chrgrp_stix_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_chrgrp_stix
+
+### vrnt_chrgrp_spix
+
+def test_vrnt_chrgrp_spix_fget(mat, vrnt_chrgrp_spix_int64):
+    assert numpy.all(mat.vrnt_chrgrp_spix == vrnt_chrgrp_spix_int64)
+
+def test_vrnt_chrgrp_spix_fset(mat, vrnt_chrgrp_spix_int64):
+    mat.vrnt_chrgrp_spix = vrnt_chrgrp_spix_int64
+    assert numpy.all(mat.vrnt_chrgrp_spix == vrnt_chrgrp_spix_int64)
+
+def test_vrnt_chrgrp_spix_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_chrgrp_spix
+
+### vrnt_chrgrp_len
+
+def test_vrnt_chrgrp_len_fget(mat, vrnt_chrgrp_len_int64):
+    assert numpy.all(mat.vrnt_chrgrp_len == vrnt_chrgrp_len_int64)
+
+def test_vrnt_chrgrp_len_fset(mat, vrnt_chrgrp_len_int64):
+    mat.vrnt_chrgrp_len = vrnt_chrgrp_len_int64
+    assert numpy.all(mat.vrnt_chrgrp_len == vrnt_chrgrp_len_int64)
+
+def test_vrnt_chrgrp_len_fdel(mat):
+    with pytest.raises(AttributeError):
+        del mat.vrnt_chrgrp_len
 
 ################################################################################
-########################## Test Class Special Methods ##########################
+############################# Test concrete methods ############################
 ################################################################################
+
+### copy
+
 def test_copy(mat):
     m = copy.copy(mat)
     # check that elements were copied correctly
@@ -233,6 +356,8 @@ def test_copy(mat):
     assert numpy.all(m.vrnt_chrgrp_stix == mat.vrnt_chrgrp_stix)
     assert numpy.all(m.vrnt_chrgrp_spix == mat.vrnt_chrgrp_spix)
     assert numpy.all(m.vrnt_chrgrp_len == mat.vrnt_chrgrp_len)
+
+### deepcopy
 
 def test_deepcopy(mat):
     m = copy.deepcopy(mat)
@@ -267,182 +392,18 @@ def test_deepcopy(mat):
     assert numpy.all(m.vrnt_chrgrp_spix == mat.vrnt_chrgrp_spix)
     assert numpy.all(m.vrnt_chrgrp_len == mat.vrnt_chrgrp_len)
 
-################################################################################
-############################ Test Class Properties #############################
-################################################################################
-
-################### Taxa Data Properites ###################
-def test_vrnt_chrgrp_fget(mat, vrnt_chrgrp_int64):
-    assert numpy.all(mat.vrnt_chrgrp == vrnt_chrgrp_int64)
-
-def test_vrnt_chrgrp_fset(mat, vrnt_chrgrp_int64):
-    mat.vrnt_chrgrp = vrnt_chrgrp_int64
-    assert numpy.all(mat.vrnt_chrgrp == vrnt_chrgrp_int64)
-
-def test_vrnt_chrgrp_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_chrgrp
-
-def test_vrnt_phypos_fget(mat, vrnt_phypos_int64):
-    assert numpy.all(mat.vrnt_phypos == vrnt_phypos_int64)
-
-def test_vrnt_phypos_fset(mat, vrnt_phypos_int64):
-    mat.vrnt_phypos = vrnt_phypos_int64
-    assert numpy.all(mat.vrnt_phypos == vrnt_phypos_int64)
-
-def test_vrnt_phypos_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_phypos
-
-def test_vrnt_name_fget(mat, vrnt_name_object):
-    assert numpy.all(mat.vrnt_name == vrnt_name_object)
-
-def test_vrnt_name_fset(mat, vrnt_name_object):
-    mat.vrnt_name = vrnt_name_object
-    assert numpy.all(mat.vrnt_name == vrnt_name_object)
-
-def test_vrnt_name_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_name
-
-def test_vrnt_genpos_fget(mat, vrnt_genpos_float64):
-    assert numpy.all(mat.vrnt_genpos == vrnt_genpos_float64)
-
-def test_vrnt_genpos_fset(mat, vrnt_genpos_float64):
-    mat.vrnt_genpos = vrnt_genpos_float64
-    assert numpy.all(mat.vrnt_genpos == vrnt_genpos_float64)
-
-def test_vrnt_genpos_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_genpos
-
-def test_vrnt_xoprob_fget(mat, vrnt_xoprob_float64):
-    assert numpy.all(mat.vrnt_xoprob == vrnt_xoprob_float64)
-
-def test_vrnt_xoprob_fset(mat, vrnt_xoprob_float64):
-    mat.vrnt_xoprob = vrnt_xoprob_float64
-    assert numpy.all(mat.vrnt_xoprob == vrnt_xoprob_float64)
-
-def test_vrnt_xoprob_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_xoprob
-
-def test_vrnt_hapgrp_fget(mat, vrnt_hapgrp_int64):
-    assert numpy.all(mat.vrnt_hapgrp == vrnt_hapgrp_int64)
-
-def test_vrnt_hapgrp_fset(mat, vrnt_hapgrp_int64):
-    mat.vrnt_hapgrp = vrnt_hapgrp_int64
-    assert numpy.all(mat.vrnt_hapgrp == vrnt_hapgrp_int64)
-
-def test_vrnt_hapgrp_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_hapgrp
-
-def test_vrnt_hapalt_fget(mat, vrnt_hapalt_object):
-    assert numpy.all(mat.vrnt_hapalt == vrnt_hapalt_object)
-
-def test_vrnt_hapalt_fset(mat, vrnt_hapalt_object):
-    mat.vrnt_hapalt = vrnt_hapalt_object
-    assert numpy.all(mat.vrnt_hapalt == vrnt_hapalt_object)
-
-def test_vrnt_hapalt_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_hapalt
-
-def test_vrnt_hapref_fget(mat, vrnt_hapref_object):
-    assert numpy.all(mat.vrnt_hapref == vrnt_hapref_object)
-
-def test_vrnt_hapref_fset(mat, vrnt_hapref_object):
-    mat.vrnt_hapref = vrnt_hapref_object
-    assert numpy.all(mat.vrnt_hapref == vrnt_hapref_object)
-
-def test_vrnt_hapref_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_hapref
-
-def test_vrnt_mask_fget(mat, vrnt_mask_bool):
-    assert numpy.all(mat.vrnt_mask == vrnt_mask_bool)
-
-def test_vrnt_mask_fset(mat, vrnt_mask_bool):
-    mat.vrnt_mask = vrnt_mask_bool
-    assert numpy.all(mat.vrnt_mask == vrnt_mask_bool)
-
-def test_vrnt_mask_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_mask
-
-################# Taxa Metadata Properites #################
-def test_nvrnt_fget(mat, mat_int8):
-    assert mat.nvrnt == len(mat_int8)
-
-def test_nvrnt_fset(mat, mat_int8):
-    with pytest.raises(AttributeError):
-        mat.nvrnt = len(mat_int8)
-
-def test_nvrnt_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.nvrnt
-
-def test_vrnt_axis_fget(mat):
-    assert mat.vrnt_axis == 0
-
-def test_vrnt_axis_fset(mat):
-    with pytest.raises(AttributeError):
-        mat.vrnt_axis = 1
-
-def test_vrnt_axis_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_axis
-
-def test_vrnt_chrgrp_name_fget(mat, vrnt_chrgrp_name_int64):
-    assert numpy.all(mat.vrnt_chrgrp_name == vrnt_chrgrp_name_int64)
-
-def test_vrnt_chrgrp_name_fset(mat, vrnt_chrgrp_name_int64):
-    mat.vrnt_chrgrp_name = vrnt_chrgrp_name_int64
-    assert numpy.all(mat.vrnt_chrgrp_name == vrnt_chrgrp_name_int64)
-
-def test_vrnt_chrgrp_name_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_chrgrp_name
-
-def test_vrnt_chrgrp_stix_fget(mat, vrnt_chrgrp_stix_int64):
-    assert numpy.all(mat.vrnt_chrgrp_stix == vrnt_chrgrp_stix_int64)
-
-def test_vrnt_chrgrp_stix_fset(mat, vrnt_chrgrp_stix_int64):
-    mat.vrnt_chrgrp_stix = vrnt_chrgrp_stix_int64
-    assert numpy.all(mat.vrnt_chrgrp_stix == vrnt_chrgrp_stix_int64)
-
-def test_vrnt_chrgrp_stix_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_chrgrp_stix
-
-def test_vrnt_chrgrp_spix_fget(mat, vrnt_chrgrp_spix_int64):
-    assert numpy.all(mat.vrnt_chrgrp_spix == vrnt_chrgrp_spix_int64)
-
-def test_vrnt_chrgrp_spix_fset(mat, vrnt_chrgrp_spix_int64):
-    mat.vrnt_chrgrp_spix = vrnt_chrgrp_spix_int64
-    assert numpy.all(mat.vrnt_chrgrp_spix == vrnt_chrgrp_spix_int64)
-
-def test_vrnt_chrgrp_spix_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_chrgrp_spix
-
-def test_vrnt_chrgrp_len_fget(mat, vrnt_chrgrp_len_int64):
-    assert numpy.all(mat.vrnt_chrgrp_len == vrnt_chrgrp_len_int64)
-
-def test_vrnt_chrgrp_len_fset(mat, vrnt_chrgrp_len_int64):
-    mat.vrnt_chrgrp_len = vrnt_chrgrp_len_int64
-    assert numpy.all(mat.vrnt_chrgrp_len == vrnt_chrgrp_len_int64)
-
-def test_vrnt_chrgrp_len_fdel(mat):
-    with pytest.raises(AttributeError):
-        del mat.vrnt_chrgrp_len
-
-################################################################################
-###################### Test concrete method functionality ######################
-################################################################################
-
 ########### Matrix element copy-on-manipulation ############
+
+### adjoin
+
+def test_adjoin_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "adjoin")
+
+### adjoin_vrnt
+
+def test_adjoin_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "adjoin_vrnt")
+
 def test_adjoin_vrnt_cls(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     m = mat.adjoin_vrnt(mat)
     assert numpy.all(m.mat == numpy.append(mat_int8, mat_int8, axis = mat.vrnt_axis))
@@ -479,6 +440,16 @@ def test_adjoin_vrnt_ndarray(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64
     assert numpy.all(m.vrnt_hapalt == numpy.append(vrnt_hapalt_object, vrnt_hapalt_object, axis = 0))
     assert numpy.all(m.vrnt_hapref == numpy.append(vrnt_hapref_object, vrnt_hapref_object, axis = 0))
     assert numpy.all(m.vrnt_mask == numpy.append(vrnt_mask_bool, vrnt_mask_bool, axis = 0))
+
+### delete
+
+def test_delete_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "delete")
+
+### delete_vrnt
+
+def test_delete_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "delete_vrnt")
 
 def test_delete_vrnt_cls_slice(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     obj = slice(0,2,None)
@@ -522,6 +493,16 @@ def test_delete_vrnt_cls_array_like(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypo
     assert numpy.all(m.vrnt_hapref == numpy.delete(vrnt_hapref_object, obj, axis = 0))
     assert numpy.all(m.vrnt_mask == numpy.delete(vrnt_mask_bool, obj, axis = 0))
 
+### insert
+
+def test_insert_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "insert")
+
+### insert_vrnt
+
+def test_insert_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "insert_vrnt")
+
 def test_insert_vrnt_cls_slice(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     obj = slice(0,len(mat_int8),None)
     m = mat.insert_vrnt(obj, mat)
@@ -564,6 +545,16 @@ def test_insert_vrnt_cls_array_like(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypo
     assert numpy.all(m.vrnt_hapref == numpy.insert(vrnt_hapref_object, obj, vrnt_hapref_object, axis = 0))
     assert numpy.all(m.vrnt_mask == numpy.insert(vrnt_mask_bool, obj, vrnt_mask_bool, axis = 0))
 
+### select
+
+def test_select_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "select")
+
+### select_vrnt
+
+def test_select_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "select_vrnt")
+
 def test_select_vrnt_cls_array_like(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     obj = [0,0,1]
     m = mat.select_vrnt(obj)
@@ -577,6 +568,16 @@ def test_select_vrnt_cls_array_like(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypo
     assert numpy.all(m.vrnt_hapalt == numpy.take(vrnt_hapalt_object, obj, axis = 0))
     assert numpy.all(m.vrnt_hapref == numpy.take(vrnt_hapref_object, obj, axis = 0))
     assert numpy.all(m.vrnt_mask == numpy.take(vrnt_mask_bool, obj, axis = 0))
+
+### concat
+
+def test_concat_is_concrete():
+    assert_classmethod_isconcrete(DenseVariantMatrix, "concat")
+
+### concat_vrnt
+
+def test_concat_vrnt_is_concrete():
+    assert_classmethod_isconcrete(DenseVariantMatrix, "concat_vrnt")
 
 def test_concat_vrnt_cls(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     obj = [mat, mat]
@@ -593,6 +594,17 @@ def test_concat_vrnt_cls(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vr
     assert numpy.all(m.vrnt_mask == numpy.concatenate([vrnt_mask_bool, vrnt_mask_bool], axis = 0))
 
 ########### Matrix element in-place-manipulation ###########
+
+### append
+
+def test_append_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "append")
+
+### append_vrnt
+
+def test_append_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "append_vrnt")
+
 def test_append_vrnt_cls(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     mat.append_vrnt(mat)
     assert numpy.all(mat.mat == numpy.append(mat_int8, mat_int8, axis = mat.vrnt_axis))
@@ -629,6 +641,16 @@ def test_append_vrnt_ndarray(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64
     assert numpy.all(mat.vrnt_hapalt == numpy.append(vrnt_hapalt_object, vrnt_hapalt_object, axis = 0))
     assert numpy.all(mat.vrnt_hapref == numpy.append(vrnt_hapref_object, vrnt_hapref_object, axis = 0))
     assert numpy.all(mat.vrnt_mask == numpy.append(vrnt_mask_bool, vrnt_mask_bool, axis = 0))
+
+### remove
+
+def test_remove_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "remove")
+
+### remove_vrnt
+
+def test_remove_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "remove_vrnt")
 
 def test_remove_vrnt_cls_slice(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     obj = slice(0,2,None)
@@ -671,6 +693,16 @@ def test_remove_vrnt_cls_array_like(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypo
     assert numpy.all(mat.vrnt_hapalt == numpy.delete(vrnt_hapalt_object, obj, axis = 0))
     assert numpy.all(mat.vrnt_hapref == numpy.delete(vrnt_hapref_object, obj, axis = 0))
     assert numpy.all(mat.vrnt_mask == numpy.delete(vrnt_mask_bool, obj, axis = 0))
+
+### incorp
+
+def test_incorp_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "incorp")
+
+### incorp_vrnt
+
+def test_incorp_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "incorp_vrnt")
 
 def test_incorp_vrnt_cls_slice(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     obj = slice(0,len(mat_int8),None)
@@ -715,6 +747,17 @@ def test_incorp_vrnt_cls_array_like(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypo
     assert numpy.all(mat.vrnt_mask == numpy.insert(vrnt_mask_bool, obj, vrnt_mask_bool, axis = 0))
 
 ##################### Sorting Methods ######################
+
+### lexsort
+
+def test_lexsort_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "lexsort")
+
+### lexsort_vrnt
+
+def test_lexsort_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "lexsort_vrnt")
+
 def test_lexsort_vrnt_None(mat, vrnt_lexsort_indices):
     ix = mat.lexsort_vrnt(keys = None)
     assert numpy.all(ix == vrnt_lexsort_indices)
@@ -722,6 +765,16 @@ def test_lexsort_vrnt_None(mat, vrnt_lexsort_indices):
 def test_lexsort_vrnt_tuple(mat, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_lexsort_indices):
     ix = mat.lexsort_vrnt(keys = (vrnt_phypos_int64, vrnt_chrgrp_int64))
     assert numpy.all(ix == vrnt_lexsort_indices)
+
+### reorder
+
+def test_reorder_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "reorder")
+
+### reorder_vrnt
+
+def test_reorder_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "reorder_vrnt")
 
 def test_reorder_vrnt_array_like(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool, vrnt_lexsort_indices):
     mat.reorder_vrnt(vrnt_lexsort_indices)
@@ -735,6 +788,16 @@ def test_reorder_vrnt_array_like(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_i
     assert numpy.all(mat.vrnt_hapalt == vrnt_hapalt_object[vrnt_lexsort_indices])
     assert numpy.all(mat.vrnt_hapref == vrnt_hapref_object[vrnt_lexsort_indices])
     assert numpy.all(mat.vrnt_mask == vrnt_mask_bool[vrnt_lexsort_indices])
+
+### sort
+
+def test_sort_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "sort")
+
+### sort_vrnt
+
+def test_sort_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "sort_vrnt")
 
 def test_sort_vrnt_None(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool, vrnt_lexsort_indices):
     mat.sort_vrnt(keys = None)
@@ -762,12 +825,42 @@ def test_sort_vrnt_tuple(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vr
     assert numpy.all(mat.vrnt_hapref == vrnt_hapref_object[vrnt_lexsort_indices])
     assert numpy.all(mat.vrnt_mask == vrnt_mask_bool[vrnt_lexsort_indices])
 
+### group
+
+def test_group_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "group")
+
+### group_vrnt
+
+def test_group_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "group_vrnt")
+
 def test_group_vrnt(mat, vrnt_chrgrp_name_int64, vrnt_chrgrp_stix_int64, vrnt_chrgrp_spix_int64, vrnt_chrgrp_len_int64):
     mat.group_vrnt()
     assert numpy.all(mat.vrnt_chrgrp_name == vrnt_chrgrp_name_int64)
     assert numpy.all(mat.vrnt_chrgrp_stix == vrnt_chrgrp_stix_int64)
     assert numpy.all(mat.vrnt_chrgrp_spix == vrnt_chrgrp_spix_int64)
     assert numpy.all(mat.vrnt_chrgrp_len == vrnt_chrgrp_len_int64)
+
+### ungroup
+
+def test_ungroup_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "ungroup")
+
+### ungroup_vrnt
+
+def test_ungroup_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "ungroup_vrnt")
+
+### is_grouped
+
+def test_is_grouped_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "is_grouped")
+
+### is_grouped_vrnt
+
+def test_is_grouped_vrnt_is_concrete():
+    assert_method_isconcrete(DenseVariantMatrix, "is_grouped_vrnt")
 
 def test_is_grouped_vrnt(mat):
     mat.group_vrnt()
