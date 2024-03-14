@@ -1,26 +1,23 @@
+from pathlib import Path
 from typing import Dict, Optional
 import numpy
 from pandas.core.api import DataFrame as DataFrame
 import pytest
-import os.path
+import os
+import h5py
+
 from pybrops.core.io.CSVDictInputOutput import CSVDictInputOutput
 from pybrops.core.io.PandasDictInputOutput import PandasDictInputOutput
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-
-from pybrops.test.assert_python import assert_classmethod_isconcrete, not_raises
-from pybrops.test.assert_python import assert_class_documentation
-from pybrops.test.assert_python import assert_method_isabstract
-from pybrops.test.assert_python import assert_function_isabstract
-from pybrops.test.assert_python import assert_property_isabstract
-from pybrops.test.assert_python import assert_method_isconcrete
-from pybrops.test.assert_python import assert_function_isconcrete
-
 from pybrops.model.gmod.DenseLinearGenomicModel import DenseLinearGenomicModel
 from pybrops.model.gmod.DenseLinearGenomicModel import check_is_DenseLinearGenomicModel
-
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.test.assert_python import assert_classmethod_isconcrete, not_raises
+from pybrops.test.assert_python import assert_class_documentation
+from pybrops.test.assert_python import assert_method_isconcrete
+from pybrops.test.assert_python import assert_function_isconcrete
 
 ################################################################################
 ################################ Test fixtures #################################
@@ -166,119 +163,83 @@ def test_class_docstring():
     assert_class_documentation(DummyDenseLinearGenomicModel)
 
 ################################################################################
-############################# Test concrete methods ############################
-################################################################################
-def test_init_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "__init__")
-
-def test_copy_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "__copy__")
-
-def test_deepcopy_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "__deepcopy__")
-
-def test_fit_numpy_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "fit_numpy")
-
-def test_fit_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "fit")
-
-def test_predict_numpy_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "predict_numpy")
-
-def test_predict_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "predict")
-
-def test_score_numpy_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "score_numpy")
-
-def test_score_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "score")
-
-def test_gebv_numpy_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "gebv_numpy")
-
-def test_gebv_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "gebv")
-
-def test_var_G_numpy_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "var_G_numpy")
-
-def test_var_G_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "var_G")
-
-def test_var_A_numpy_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "var_A_numpy")
-
-def test_var_A_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "var_A")
-
-def test_var_a_numpy_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "var_a_numpy")
-
-def test_var_a_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "var_a")
-
-def test_bulmer_numpy_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "bulmer_numpy")
-
-def test_bulmer_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "bulmer")
-
-def test_usl_numpy_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "usl_numpy")
-
-def test_usl_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "usl")
-
-def test_lsl_numpy_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "lsl_numpy")
-
-def test_lsl_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "lsl")
-
-def test_from_hdf5_is_concrete():
-    assert_classmethod_isconcrete(DummyDenseLinearGenomicModel, "from_hdf5")
-
-def test_to_hdf5_is_concrete():
-    assert_method_isconcrete(DummyDenseLinearGenomicModel, "to_hdf5")
-
-################################################################################
 ########################## Test Class Special Methods ##########################
 ################################################################################
+
+### __init__
+
+def test___init___is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "__init__")
+
+### __init__
+
+def test___copy___is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "__copy__")
+
+### __init__
+
+def test___deepcopy___is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "__deepcopy__")
+
 
 ################################################################################
 ############################ Test Class Properties #############################
 ################################################################################
+
+### u
+
 def test_u_fget(glgmod, mat_u):
     assert numpy.all(glgmod.u == mat_u)
+
+### beta
 
 def test_beta_fget(glgmod, mat_beta):
     assert numpy.all(glgmod.beta == mat_beta)
 
+### trait
+
 def test_trait_fget(glgmod, mat_trait):
     assert numpy.all(glgmod.trait == mat_trait)
+
+### model_name
 
 def test_model_name_fget(glgmod, model_name):
     assert glgmod.model_name == model_name
 
-def test_params_fget(glgmod, hyperparams):
+### hyperparams
+
+def test_hyperparams_fget(glgmod, hyperparams):
     assert glgmod.hyperparams == hyperparams
 
 ################################################################################
-###################### Test concrete method functionality ######################
+############################# Test concrete methods ############################
 ################################################################################
 
-########################################
-########### Prediction tests ###########
-########################################
+############################################################
+##################### Prediction tests #####################
+
+### fit_numpy
+
+def test_fit_numpy_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "fit_numpy")
+
 def test_fit_numpy(glgmod):
     with pytest.raises(AttributeError):
         glgmod.fit_numpy(None, None, None)
 
+### fit
+
+def test_fit_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "fit")
+
 def test_fit(glgmod):
     with pytest.raises(AttributeError):
         glgmod.fit(None, None, None)
+
+### predict_numpy
+
+def test_predict_numpy_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "predict_numpy")
 
 def test_predict_numpy(glgmod, mat_intercept, mat_beta, mat_int8, mat_u):
     geno = mat_int8.sum(0)
@@ -286,6 +247,11 @@ def test_predict_numpy(glgmod, mat_intercept, mat_beta, mat_int8, mat_u):
     b = (mat_intercept @ mat_beta) + (geno @ mat_u)
     assert numpy.all(a == b)
     assert isinstance(a, numpy.ndarray)
+
+### predict
+
+def test_predict_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "predict")
 
 def test_predict(glgmod, mat_intercept, mat_beta, mat_int8, mat_u, dpgmat):
     geno = mat_int8.sum(0)
@@ -295,6 +261,11 @@ def test_predict(glgmod, mat_intercept, mat_beta, mat_int8, mat_u, dpgmat):
     assert numpy.all(a == b)
     assert isinstance(a, BreedingValueMatrix)
 
+### score_numpy
+
+def test_score_numpy_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "score_numpy")
+
 def test_score_numpy(glgmod, mat_intercept, mat_int8):
     geno = mat_int8.sum(0)
     y_true = glgmod.predict_numpy(mat_intercept, geno)
@@ -303,20 +274,83 @@ def test_score_numpy(glgmod, mat_intercept, mat_int8):
     assert numpy.all(out == 1.0)
     assert len(out) == glgmod.ntrait
 
+### score
+
+def test_score_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "score")
+
 def test_score(glgmod, mat_intercept, dpgmat):
     y_true = glgmod.predict(mat_intercept, dpgmat)
     out = glgmod.score(y_true, mat_intercept, dpgmat)
     assert isinstance(out, numpy.ndarray)
     assert numpy.all(out == 1.0)
 
-########################################
-###### Variance calculation tests ######
-########################################
+### gebv_numpy
 
+def test_gebv_numpy_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "gebv_numpy")
 
-########################################
-######## Selection limit tests #########
-########################################
+### gebv
+
+def test_gebv_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "gebv")
+
+############################################################
+################ Variance calculation tests ################
+
+### var_G_numpy
+
+def test_var_G_numpy_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "var_G_numpy")
+
+### var_G
+
+def test_var_G_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "var_G")
+
+### var_A_numpy
+
+def test_var_A_numpy_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "var_A_numpy")
+
+### var_A
+
+def test_var_A_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "var_A")
+
+### var_a_numpy
+
+def test_var_a_numpy_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "var_a_numpy")
+
+### var_a
+
+def test_var_a_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "var_a")
+
+### bulmer_numpy
+
+def test_bulmer_numpy_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "bulmer_numpy")
+
+### bulmer
+
+def test_bulmer_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "bulmer")
+
+############################################################
+################## Selection limit tests ###################
+
+### usl_numpy
+
+def test_usl_numpy_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "usl_numpy")
+
+### usl
+
+def test_usl_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "usl")
+
 def test_usl(glgmod, dpgmat, mat_u, mat_int8):
     # (p,t)' -> (t,p)
     # (t,p)[:,None,None,:] -> (t,1,1,p)
@@ -333,7 +367,17 @@ def test_usl(glgmod, dpgmat, mat_u, mat_int8):
 
     assert numpy.all(a_usl == b_usl)
 
-def test_usl(glgmod, dpgmat, mat_u, mat_int8):
+### lsl_numpy
+
+def test_lsl_numpy_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "lsl_numpy")
+
+### lsl
+
+def test_lsl_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "lsl")
+
+def test_lsl(glgmod, dpgmat, mat_u, mat_int8):
     # (p,t)' -> (t,p)
     # (t,p)[:,None,None,:] -> (t,1,1,p)
     # (t,1,1,p) * (m,n,p) -> (t,m,n,p)
@@ -349,6 +393,108 @@ def test_usl(glgmod, dpgmat, mat_u, mat_int8):
     b_lsl = glgmod.lsl(dpgmat)
 
     assert numpy.all(a_lsl == b_lsl)
+
+### to_hdf5
+
+def test_to_hdf5_is_concrete():
+    assert_method_isconcrete(DummyDenseLinearGenomicModel, "to_hdf5")
+
+def test_from_hdf5_str(glgmod):
+    fp = "tmp.h5"
+    glgmod.to_hdf5(fp)
+    out = DummyDenseLinearGenomicModel.from_hdf5(fp)
+    assert glgmod.nparam_beta == out.nparam_beta
+    assert numpy.all(glgmod.beta == out.beta)
+    assert glgmod.nparam_u == out.nparam_u
+    assert numpy.all(glgmod.u == out.u)
+    assert glgmod.model_name == out.model_name
+    assert glgmod.hyperparams == out.hyperparams
+    assert numpy.all(glgmod.trait == out.trait)
+    assert glgmod.ntrait == out.ntrait
+    os.remove(fp)
+
+def test_from_hdf5_Path(glgmod):
+    fp = Path("tmp.h5")
+    glgmod.to_hdf5(fp)
+    out = DummyDenseLinearGenomicModel.from_hdf5(fp)
+    assert glgmod.nparam_beta == out.nparam_beta
+    assert numpy.all(glgmod.beta == out.beta)
+    assert glgmod.nparam_u == out.nparam_u
+    assert numpy.all(glgmod.u == out.u)
+    assert glgmod.model_name == out.model_name
+    assert glgmod.hyperparams == out.hyperparams
+    assert numpy.all(glgmod.trait == out.trait)
+    assert glgmod.ntrait == out.ntrait
+    os.remove(fp)
+
+def test_from_hdf5_h5py_File(glgmod):
+    fp = Path("tmp.h5")
+    glgmod.to_hdf5(fp)
+    h5file = h5py.File(fp)
+    out = DummyDenseLinearGenomicModel.from_hdf5(h5file)
+    assert glgmod.nparam_beta == out.nparam_beta
+    assert numpy.all(glgmod.beta == out.beta)
+    assert glgmod.nparam_u == out.nparam_u
+    assert numpy.all(glgmod.u == out.u)
+    assert glgmod.model_name == out.model_name
+    assert glgmod.hyperparams == out.hyperparams
+    assert numpy.all(glgmod.trait == out.trait)
+    assert glgmod.ntrait == out.ntrait
+    h5file.close()
+    os.remove(fp)
+
+################################################################################
+########################## Test concrete classmethods ##########################
+################################################################################
+
+### from_hdf5
+
+def test_from_hdf5_is_concrete():
+    assert_classmethod_isconcrete(DummyDenseLinearGenomicModel, "from_hdf5")
+
+def test_from_hdf5_str(glgmod):
+    fp = "tmp.h5"
+    glgmod.to_hdf5(fp)
+    out = DummyDenseLinearGenomicModel.from_hdf5(fp)
+    assert glgmod.nparam_beta == out.nparam_beta
+    assert numpy.all(glgmod.beta == out.beta)
+    assert glgmod.nparam_u == out.nparam_u
+    assert numpy.all(glgmod.u == out.u)
+    assert glgmod.model_name == out.model_name
+    assert glgmod.hyperparams == out.hyperparams
+    assert numpy.all(glgmod.trait == out.trait)
+    assert glgmod.ntrait == out.ntrait
+    os.remove(fp)
+
+def test_from_hdf5_Path(glgmod):
+    fp = Path("tmp.h5")
+    glgmod.to_hdf5(fp)
+    out = DummyDenseLinearGenomicModel.from_hdf5(fp)
+    assert glgmod.nparam_beta == out.nparam_beta
+    assert numpy.all(glgmod.beta == out.beta)
+    assert glgmod.nparam_u == out.nparam_u
+    assert numpy.all(glgmod.u == out.u)
+    assert glgmod.model_name == out.model_name
+    assert glgmod.hyperparams == out.hyperparams
+    assert numpy.all(glgmod.trait == out.trait)
+    assert glgmod.ntrait == out.ntrait
+    os.remove(fp)
+
+def test_from_hdf5_h5py_File(glgmod):
+    fp = Path("tmp.h5")
+    glgmod.to_hdf5(fp)
+    h5file = h5py.File(fp)
+    out = DummyDenseLinearGenomicModel.from_hdf5(h5file)
+    assert glgmod.nparam_beta == out.nparam_beta
+    assert numpy.all(glgmod.beta == out.beta)
+    assert glgmod.nparam_u == out.nparam_u
+    assert numpy.all(glgmod.u == out.u)
+    assert glgmod.model_name == out.model_name
+    assert glgmod.hyperparams == out.hyperparams
+    assert numpy.all(glgmod.trait == out.trait)
+    assert glgmod.ntrait == out.ntrait
+    h5file.close()
+    os.remove(fp)
 
 ### File I/O tests ###
 def test_to_from_hdf5(glgmod, shared_datadir):
@@ -378,14 +524,11 @@ def test_to_from_hdf5(glgmod, shared_datadir):
     assert glgmod.hyperparams == glgmod2.hyperparams
 
 ################################################################################
-################### Test for conrete class utility functions ###################
+######################### Test class utility functions #########################
 ################################################################################
 def test_check_is_DenseLinearGenomicModel_is_concrete():
     assert_function_isconcrete(check_is_DenseLinearGenomicModel)
 
-################################################################################
-######################### Test class utility functions #########################
-################################################################################
 def test_check_is_DenseLinearGenomicModel(glgmod):
     with not_raises(TypeError):
         check_is_DenseLinearGenomicModel(glgmod, "glgmod")
