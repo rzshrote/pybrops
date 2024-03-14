@@ -4,18 +4,23 @@ associated error checking routines.
 """
 
 import copy
+from pathlib import Path
 import numpy
 from typing import Sequence, Union
 from typing import Optional
 from numpy.typing import ArrayLike
+import h5py
 
+from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim_gteq
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
+from pybrops.core.util.h5py import h5py_File_read_ndarray, h5py_File_read_ndarray_utf8, h5py_File_write_dict
 
 class DenseTaxaVariantMatrix(
         DenseTaxaMatrix,
@@ -1383,6 +1388,8 @@ class DenseTaxaVariantMatrix(
             Indices of where to place elements.
         axis : int
             The axis over which to reorder values.
+        kwargs : dict
+            Additional keyword arguments.
         """
         axis = get_axis(axis, self.mat_ndim)                   # transform axis number to an index
 
@@ -1512,6 +1519,347 @@ class DenseTaxaVariantMatrix(
             raise ValueError("cannot test for grouping along axis {0}".format(axis))
 
         return grouped
+
+    ################### Matrix File I/O ####################
+    def to_hdf5(
+            self, 
+            filename: Union[str,Path,h5py.File], 
+            groupname: Optional[str] = None,
+            overwrite: bool = True,
+        ) -> None:
+        """
+        Write ``DenseTaxaVariantMatrix`` to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name to which to write. File is closed after writing.
+            If ``h5py.File``, an opened HDF5 file to which to write. File is not closed after writing.
+
+        groupname : str, None
+            If ``str``, an HDF5 group name under which ``DenseTaxaVariantMatrix`` data is stored.
+            If None, ``DenseTaxaVariantMatrix`` is written to the base HDF5 group.
+
+        overwrite : bool
+            Whether to overwrite values in an HDF5 file if a field already exists.
+        """
+        ########################################################
+        ############ process ``filename`` argument #############
+
+        # HDF5 file object
+        h5file = None
+
+        # if we have a string or Path, open HDF5 file in append (``r+``) mode
+        if isinstance(filename, (str,Path)):
+            h5file = h5py.File(filename, "a")
+
+        # elif we have an h5py.File, make sure mode is writable, and copy pointer
+        elif isinstance(filename, h5py.File):
+            check_h5py_File_is_writable(filename)
+            h5file = filename
+        
+        # else raise TypeError
+        else:
+            raise TypeError(
+                "``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``{0}``".format(
+                    type(filename).__name__
+                )
+            )
+
+        ########################################################
+        ############ process ``groupname`` argument ############
+
+        # if we have a string
+        if isinstance(groupname, str):
+            # if last character in string is not '/', add '/' to end of string
+            if groupname[-1] != '/':
+                groupname += '/'
+        
+        # else if ``groupname`` is None, set ``groupname`` to empty string
+        elif groupname is None:
+            groupname = ""
+        
+        # else raise error
+        else:
+            raise TypeError(
+                "``groupname`` must be of type ``str`` or ``None`` but received type ``{0}``".format(
+                    type(groupname).__name__
+                )
+            )
+
+        ########################################################
+        #### write data to HDF5 file and (optionally) close ####
+
+        # data dictionary
+        data = {
+            "mat"               : self.mat,
+            "taxa"              : self.taxa,
+            "taxa_grp"          : self.taxa_grp,
+            "vrnt_chrgrp"       : self.vrnt_chrgrp,
+            "vrnt_phypos"       : self.vrnt_phypos,
+            "vrnt_name"         : self.vrnt_name,
+            "vrnt_genpos"       : self.vrnt_genpos,
+            "vrnt_xoprob"       : self.vrnt_xoprob,
+            "vrnt_hapgrp"       : self.vrnt_hapgrp,
+            "vrnt_hapalt"       : self.vrnt_hapalt,
+            "vrnt_hapref"       : self.vrnt_hapref,
+            "vrnt_mask"         : self.vrnt_mask,
+            # metadata
+            "taxa_grp_name"     : self.taxa_grp_name,
+            "taxa_grp_stix"     : self.taxa_grp_stix,
+            "taxa_grp_spix"     : self.taxa_grp_spix,
+            "taxa_grp_len"      : self.taxa_grp_len,
+            "vrnt_chrgrp_name"  : self.vrnt_chrgrp_name,
+            "vrnt_chrgrp_stix"  : self.vrnt_chrgrp_stix,
+            "vrnt_chrgrp_spix"  : self.vrnt_chrgrp_spix,
+            "vrnt_chrgrp_len"   : self.vrnt_chrgrp_len,
+        }
+
+        # save data
+        h5py_File_write_dict(h5file, groupname, data, overwrite)
+
+        # close the file, only if the provided filename was a string and not a h5py.File.
+        if isinstance(filename, str):
+            h5file.close()
+
+    ############################## Class Methods ###############################
+
+    ################### Matrix File I/O ####################
+    @classmethod
+    def from_hdf5(
+            cls, 
+            filename: Union[str,Path,h5py.File], 
+            groupname: Optional[str] = None
+        ) -> 'DenseTaxaVariantMatrix':
+        """
+        Read ``DenseTaxaVariantMatrix`` from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name from which to read. File is closed after reading.
+            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.
+        groupname : str, None
+            If ``str``, an HDF5 group name under which ``DenseTaxaVariantMatrix`` data is stored.
+            If None, ``DenseTaxaVariantMatrix`` is read from base HDF5 group.
+
+        Returns
+        -------
+        gmat : DenseTaxaVariantMatrix
+            A genotype matrix read from file.
+        """
+        ########################################################
+        ############ process ``filename`` argument #############
+
+        # HDF5 file object
+        h5file = None
+
+        # if we have a string or Path, open HDF5 file in read (``r``) mode
+        if isinstance(filename, (str,Path)):
+            check_file_exists(filename)
+            h5file = h5py.File(filename, "r")
+
+        # elif we have an ``h5py.File``, make sure mode is in at least ``r`` mode, and copy pointer
+        elif isinstance(filename, h5py.File):
+            check_h5py_File_is_readable(filename)
+            h5file = filename
+        
+        # else raise TypeError
+        else:
+            raise TypeError(
+                "``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``{0}``".format(
+                    type(filename).__name__
+                )
+            )
+
+        ########################################################
+        ############ process ``groupname`` argument ############
+
+        # if we have a string
+        if isinstance(groupname, str):
+            # FIXME: errors if groupname == "" or "/"
+            # if the group does not exist in the file, close and raise error
+            check_h5py_File_has_group(h5file, groupname)
+
+            # if last character in string is not '/', add '/' to end of string
+            if groupname[-1] != '/':
+                groupname += '/'
+        
+        # else if ``groupname`` is None, set ``groupname`` to empty string
+        elif groupname is None:
+            groupname = ""
+        
+        # else raise error
+        else:
+            raise TypeError(
+                "``groupname`` must be of type ``str`` or ``None`` but received type ``{0}``".format(
+                    type(groupname).__name__
+                )
+            )
+
+        ########################################################
+        ######## check that we have all required fields ########
+
+        # all required arguments
+        required_fields = ["mat"]
+
+        # for each required field, check if the field exists in the HDF5 file.
+        for field in required_fields:
+            check_h5py_File_has_group(h5file, groupname + field)
+        
+        ########################################################
+        ### read data from HDF5 file and (optionally) close ####
+        
+        # output dictionary
+        data = {
+            "mat"               : None,
+            "taxa"              : None,
+            "taxa_grp"          : None,
+            "vrnt_chrgrp"       : None,
+            "vrnt_phypos"       : None,
+            "vrnt_name"         : None,
+            "vrnt_genpos"       : None,
+            "vrnt_xoprob"       : None,
+            "vrnt_hapgrp"       : None,
+            "vrnt_hapalt"       : None,
+            "vrnt_hapref"       : None,
+            "vrnt_mask"         : None,
+            # metadata
+            "taxa_grp_name"     : None,
+            "taxa_grp_stix"     : None,
+            "taxa_grp_spix"     : None,
+            "taxa_grp_len"      : None,
+            "vrnt_chrgrp_name"  : None,
+            "vrnt_chrgrp_stix"  : None,
+            "vrnt_chrgrp_spix"  : None,
+            "vrnt_chrgrp_len"   : None,
+        }
+
+        ##################################
+        ### read mandatory data fields ###
+
+        # read mat array (ndarray dtype = any)
+        data["mat"] = h5py_File_read_ndarray(h5file, groupname + "mat")
+        
+        #################################
+        ### read optional data fields ###
+
+        # read taxa array (ndarray dtype = unicode / object)
+        if groupname + "taxa" in h5file:
+            data["taxa"] = h5py_File_read_ndarray_utf8(h5file, groupname + "taxa")
+
+        # read taxa_grp array (ndarray dtype = any)
+        if groupname + "taxa_grp" in h5file:
+            data["taxa_grp"] = h5py_File_read_ndarray(h5file, groupname + "taxa_grp")
+        
+        # read vrnt_chrgrp array (ndarray dtype = any)
+        if groupname + "vrnt_chrgrp" in h5file:
+            data["vrnt_chrgrp"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_chrgrp")
+
+        # read vrnt_phypos array (ndarray dtype = any)
+        if groupname + "vrnt_phypos" in h5file:
+            data["vrnt_phypos"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_phypos")
+
+        # read vrnt_name array (ndarray dtype = unicode / object)
+        if groupname + "vrnt_name" in h5file:
+            data["vrnt_name"] = h5py_File_read_ndarray_utf8(h5file, groupname + "vrnt_name")
+
+        # read vrnt_genpos array (ndarray dtype = any)
+        if groupname + "vrnt_genpos" in h5file:
+            data["vrnt_genpos"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_genpos")
+
+        # read vrnt_xoprob array (ndarray dtype = any)
+        if groupname + "vrnt_xoprob" in h5file:
+            data["vrnt_xoprob"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_xoprob")
+
+        # read vrnt_hapgrp array (ndarray dtype = any)
+        if groupname + "vrnt_hapgrp" in h5file:
+            data["vrnt_hapgrp"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_hapgrp")
+
+        # read vrnt_hapalt array (ndarray dtype = unicode / object)
+        if groupname + "vrnt_hapalt" in h5file:
+            data["vrnt_hapalt"] = h5py_File_read_ndarray_utf8(h5file, groupname + "vrnt_hapalt")
+
+        # read vrnt_hapref array (ndarray dtype = unicode / object)
+        if groupname + "vrnt_hapref" in h5file:
+            data["vrnt_hapref"] = h5py_File_read_ndarray_utf8(h5file, groupname + "vrnt_hapref")
+
+        # read vrnt_mask array (ndarray dtype = any)
+        if groupname + "vrnt_mask" in h5file:
+            data["vrnt_mask"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_mask")
+
+        #####################################
+        ### read optional metadata fields ###
+
+        # read taxa_grp_name array (ndarray dtype = any)
+        if groupname + "taxa_grp_name" in h5file:
+            data["taxa_grp_name"] = h5py_File_read_ndarray(h5file, groupname + "taxa_grp_name")
+
+        # read taxa_grp_stix array (ndarray dtype = any)
+        if groupname + "taxa_grp_stix" in h5file:
+            data["taxa_grp_stix"] = h5py_File_read_ndarray(h5file, groupname + "taxa_grp_stix")
+
+        # read taxa_grp_spix array (ndarray dtype = any)
+        if groupname + "taxa_grp_spix" in h5file:
+            data["taxa_grp_spix"] = h5py_File_read_ndarray(h5file, groupname + "taxa_grp_spix")
+
+        # read taxa_grp_len array (ndarray dtype = any)
+        if groupname + "taxa_grp_len" in h5file:
+            data["taxa_grp_len"] = h5py_File_read_ndarray(h5file, groupname + "taxa_grp_len")
+
+        # read vrnt_chrgrp_name array (ndarray dtype = any)
+        if groupname + "vrnt_chrgrp_name" in h5file:
+            data["vrnt_chrgrp_name"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_chrgrp_name")
+
+        # read vrnt_chrgrp_stix array (ndarray dtype = any)
+        if groupname + "vrnt_chrgrp_stix" in h5file:
+            data["vrnt_chrgrp_stix"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_chrgrp_stix")
+
+        # read vrnt_chrgrp_spix array (ndarray dtype = any)
+        if groupname + "vrnt_chrgrp_spix" in h5file:
+            data["vrnt_chrgrp_spix"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_chrgrp_spix")
+
+        # read vrnt_chrgrp_len array (ndarray dtype = any)
+        if groupname + "vrnt_chrgrp_len" in h5file:
+            data["vrnt_chrgrp_len"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_chrgrp_len")
+
+        ######################
+        ### close the file ###
+
+        # close the file, only if the provided fieldname was a string an not an h5py.File.
+        if isinstance(filename, str):
+            h5file.close()
+
+        ########################################################
+        ################### Object creation ####################
+        
+        # create object from read data
+        out = cls(
+            mat         = data["mat"],
+            taxa        = data["taxa"],
+            taxa_grp    = data["taxa_grp"],
+            vrnt_chrgrp = data["vrnt_chrgrp"],
+            vrnt_phypos = data["vrnt_phypos"],
+            vrnt_name   = data["vrnt_name"],
+            vrnt_genpos = data["vrnt_genpos"],
+            vrnt_xoprob = data["vrnt_xoprob"],
+            vrnt_hapgrp = data["vrnt_hapgrp"],
+            vrnt_hapalt = data["vrnt_hapalt"],
+            vrnt_hapref = data["vrnt_hapref"],
+            vrnt_mask   = data["vrnt_mask"], 
+        )
+
+        # copy metadata
+        out.taxa_grp_name    = data["taxa_grp_name"]
+        out.taxa_grp_stix    = data["taxa_grp_stix"]
+        out.taxa_grp_spix    = data["taxa_grp_spix"]
+        out.taxa_grp_len     = data["taxa_grp_len"]
+        out.vrnt_chrgrp_name = data["vrnt_chrgrp_name"]
+        out.vrnt_chrgrp_stix = data["vrnt_chrgrp_stix"]
+        out.vrnt_chrgrp_spix = data["vrnt_chrgrp_spix"]
+        out.vrnt_chrgrp_len  = data["vrnt_chrgrp_len"]
+
+        return out
 
 
 

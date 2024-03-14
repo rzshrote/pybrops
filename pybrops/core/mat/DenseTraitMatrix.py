@@ -8,14 +8,18 @@ __all__ = [
     "check_is_DenseTraitMatrix",
 ]
 
+from pathlib import Path
 import numpy
 import copy
 from typing import Sequence, Union
 from typing import Optional
 from numpy.typing import ArrayLike
+import h5py
 
 from pybrops.core.error.error_attr_python import check_is_iterable
+from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
@@ -25,8 +29,12 @@ from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
+from pybrops.core.util.h5py import h5py_File_read_ndarray, h5py_File_read_ndarray_utf8, h5py_File_write_dict
 
-class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
+class DenseTraitMatrix(
+        DenseMutableMatrix,
+        TraitMatrix,
+    ):
     """
     A concrete class for dense matrices with trait metadata.
 
@@ -994,6 +1002,214 @@ class DenseTraitMatrix(DenseMutableMatrix,TraitMatrix):
 
         # reorder internals
         self.reorder_trait(indices, **kwargs)
+
+    ################### Matrix File I/O ####################
+    def to_hdf5(
+            self, 
+            filename: Union[str,Path,h5py.File], 
+            groupname: Optional[str] = None,
+            overwrite: bool = True,
+        ) -> None:
+        """
+        Write ``DenseTraitMatrix`` to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name to which to write. File is closed after writing.
+            If ``h5py.File``, an opened HDF5 file to which to write. File is not closed after writing.
+
+        groupname : str, None
+            If ``str``, an HDF5 group name under which the ``DenseMatrix`` data is stored.
+            If ``None``, the ``DenseMatrix`` is written to the base HDF5 group.
+
+        overwrite : bool
+            Whether to overwrite values in an HDF5 file if a field already exists.
+        """
+        ########################################################
+        ############ process ``filename`` argument #############
+
+        # HDF5 file object
+        h5file = None
+
+        # if we have a string or Path, open HDF5 file in append (``r+``) mode
+        if isinstance(filename, (str,Path)):
+            h5file = h5py.File(filename, "a")
+
+        # elif we have an h5py.File, make sure mode is writable, and copy pointer
+        elif isinstance(filename, h5py.File):
+            check_h5py_File_is_writable(filename)
+            h5file = filename
+        
+        # else raise TypeError
+        else:
+            raise TypeError(
+                "``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``{0}``".format(
+                    type(filename).__name__
+                )
+            )
+
+        ########################################################
+        ############ process ``groupname`` argument ############
+
+        # if we have a string
+        if isinstance(groupname, str):
+            # if last character in string is not '/', add '/' to end of string
+            if groupname[-1] != '/':
+                groupname += '/'
+        
+        # else if ``groupname`` is None, set ``groupname`` to empty string
+        elif groupname is None:
+            groupname = ""
+        
+        # else raise error
+        else:
+            raise TypeError(
+                "``groupname`` must be of type ``str`` or ``None`` but received type ``{0}``".format(
+                    type(groupname).__name__
+                )
+            )
+
+        ########################################################
+        #### write data to HDF5 file and (optionally) close ####
+
+        # data dictionary
+        data = {
+            "mat"   : self.mat,
+            "trait" : self.trait,
+        }
+
+        # save data
+        h5py_File_write_dict(h5file, groupname, data, overwrite)
+
+        # close the file, only if the provided filename was a string and not a h5py.File.
+        if isinstance(filename, str):
+            h5file.close()
+
+    ############################## Class Methods ###############################
+
+    ################### Matrix File I/O ####################
+    @classmethod
+    def from_hdf5(
+            cls, 
+            filename: Union[str,Path,h5py.File], 
+            groupname: Optional[str] = None
+        ) -> 'DenseTraitMatrix':
+        """
+        Read a ``DenseTraitMatrix`` from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name from which to read. File is closed after reading.
+            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.
+        groupname : str, None
+            If ``str``, an HDF5 group name under which ``DenseTraitMatrix`` data is stored.
+            If ``None``, ``DenseTraitMatrix`` is read from base HDF5 group.
+
+        Returns
+        -------
+        out : DenseTraitMatrix
+            A dense trait matrix read from file.
+        """
+        ########################################################
+        ############ process ``filename`` argument #############
+
+        # HDF5 file object
+        h5file = None
+
+        # if we have a string or Path, open HDF5 file in read (``r``) mode
+        if isinstance(filename, (str,Path)):
+            check_file_exists(filename)
+            h5file = h5py.File(filename, "r")
+
+        # elif we have an ``h5py.File``, make sure mode is in at least ``r`` mode, and copy pointer
+        elif isinstance(filename, h5py.File):
+            check_h5py_File_is_readable(filename)
+            h5file = filename
+        
+        # else raise TypeError
+        else:
+            raise TypeError(
+                "``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``{0}``".format(
+                    type(filename).__name__
+                )
+            )
+
+        ########################################################
+        ############ process ``groupname`` argument ############
+
+        # if we have a string
+        if isinstance(groupname, str):
+            # FIXME: errors if groupname == "" or "/"
+            # if the group does not exist in the file, close and raise error
+            check_h5py_File_has_group(h5file, groupname)
+
+            # if last character in string is not '/', add '/' to end of string
+            if groupname[-1] != '/':
+                groupname += '/'
+        
+        # else if ``groupname`` is None, set ``groupname`` to empty string
+        elif groupname is None:
+            groupname = ""
+        
+        # else raise error
+        else:
+            raise TypeError(
+                "``groupname`` must be of type ``str`` or ``None`` but received type ``{0}``".format(
+                    type(groupname).__name__
+                )
+            )
+
+        ########################################################
+        ######## check that we have all required fields ########
+
+        # all required arguments
+        required_fields = ["mat"]
+
+        # for each required field, check if the field exists in the HDF5 file.
+        for field in required_fields:
+            check_h5py_File_has_group(h5file, groupname + field)
+        
+        ########################################################
+        ### read data from HDF5 file and (optionally) close ####
+        
+        # output dictionary
+        data = {
+            "mat"   : None,
+            "trait" : None,
+        }
+
+        ##################################
+        ### read mandatory data fields ###
+
+        # read mat array (ndarray dtype = int8)
+        data["mat"] = h5py_File_read_ndarray(h5file, groupname + "mat")
+        
+        #################################
+        ### read optional data fields ###
+
+        # read trait array (ndarray dtype = unicode / object)
+        if groupname + "trait" in h5file:
+            data["trait"] = h5py_File_read_ndarray_utf8(h5file, groupname + "trait")
+
+        ######################
+        ### close the file ###
+
+        # close the file, only if the provided fieldname was a string an not an h5py.File.
+        if isinstance(filename, str):
+            h5file.close()
+
+        ########################################################
+        ################### Object creation ####################
+        
+        # create object from read data
+        out = cls(
+            mat     = data["mat"],
+            trait   = data["trait"],
+        )
+
+        return out
 
 
 

@@ -2,6 +2,7 @@
 Module containing miscellaneous utility subroutines.
 """
 
+from typing import Generator
 import numpy
 import math
 
@@ -13,7 +14,7 @@ __all__ = [
     "human2bytes",
 ]
 
-def srange(start: int, stop: int, step: int) -> int:
+def srange(start: int, stop: int, step: int) -> Generator:
     """
     Stop range generator. Similar to a normal ``range`` generator object, but
     also yields the stop index as its final output.
@@ -29,8 +30,8 @@ def srange(start: int, stop: int, step: int) -> int:
 
     Yields
     ------
-    out : int
-        The next index.
+    out : Generator
+        A Generator for indices.
     """
     yield from range(start, stop, step)
     yield stop

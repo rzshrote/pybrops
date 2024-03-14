@@ -8,10 +8,13 @@ __all__ = [
 ]
 
 from abc import ABCMeta, abstractmethod
-from typing import Optional
+from typing import Optional, Union
+import h5py
+from pathlib import Path
 
-
-class HDF5InputOutput(metaclass=ABCMeta):
+class HDF5InputOutput(
+        metaclass = ABCMeta
+    ):
     """
     Abstract class for defining HDF5 input/output functionality.
 
@@ -29,19 +32,26 @@ class HDF5InputOutput(metaclass=ABCMeta):
     @abstractmethod
     def to_hdf5(
             self, 
-            filename: str, 
-            groupname: Optional[str]
+            filename: Union[str,Path,h5py.File], 
+            groupname: Optional[str],
+            overwrite: bool,
         ) -> None:
         """
         Write an object to an HDF5 file.
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name to which to write.
-        groupname : str or None
-            HDF5 group name under which object data is stored.
-            If None, object is written to the base HDF5 group.
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name to which to write.
+            If ``Path``, an HDF5 file path to which to write.
+            If ``h5py.File``, an opened HDF5 file to which to write.
+        
+        groupname : str, None
+            If ``str``, an HDF5 group name under which object data is stored.
+            If ``None``, object is written to the base HDF5 group.
+        
+        overwrite : bool
+            Whether to overwrite values in an HDF5 file if a field already exists.
         """
         raise NotImplementedError("method is abstract")
 
@@ -52,7 +62,7 @@ class HDF5InputOutput(metaclass=ABCMeta):
     @abstractmethod
     def from_hdf5(
             cls, 
-            filename: str, 
+            filename: Union[str,Path,h5py.File], 
             groupname: Optional[str]
         ) -> 'HDF5InputOutput':
         """
@@ -60,11 +70,14 @@ class HDF5InputOutput(metaclass=ABCMeta):
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which object data is stored.
-            If None, object is read from base HDF5 group.
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name from which to read.
+            If ``Path``, an HDF5 file name from which to read.
+            If ``h5py.File``, an opened HDF5 file from which to read. 
+        
+        groupname : str, None
+            If ``str``, an HDF5 group name under which object data is stored.
+            If ``None``, object is read from base HDF5 group.
 
         Returns
         -------

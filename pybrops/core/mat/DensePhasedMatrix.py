@@ -21,7 +21,10 @@ from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.PhasedMatrix import PhasedMatrix
 
-class DensePhasedMatrix(DenseMutableMatrix,PhasedMatrix):
+class DensePhasedMatrix(
+        DenseMutableMatrix,
+        PhasedMatrix,
+    ):
     """
     A concrete class implementing dense phased matrices.
     A phased matrix is defined as a matrix with a third dimension.

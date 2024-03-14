@@ -1,11 +1,11 @@
+import os
+from pathlib import Path
 import pytest
 import numpy
+import h5py
 
-from pybrops.test.assert_python import assert_class_documentation, not_raises
+from pybrops.test.assert_python import assert_class_documentation, assert_classmethod_isconcrete, not_raises
 from pybrops.test.assert_python import assert_class_documentation
-from pybrops.test.assert_python import assert_method_isabstract
-from pybrops.test.assert_python import assert_function_isabstract
-from pybrops.test.assert_python import assert_property_isabstract
 from pybrops.test.assert_python import assert_method_isconcrete
 from pybrops.test.assert_python import assert_function_isconcrete
 
@@ -35,55 +35,119 @@ def test_class_docstring():
     assert_class_documentation(DenseMatrix)
 
 ################################################################################
-############################# Test concrete methods ############################
+######################### Test special class functions #########################
 ################################################################################
+
+### __init__
+
 def test_init_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__init__")
 
-### Forward math operators
-def test_add_is_concrete():
+####################################
+###### Forward math operators ######
+
+### __add__
+
+def test___add___is_concrete():
     assert_method_isconcrete(DenseMatrix, "__add__")
+
+def test_add(mat, mat_float64):
+    assert numpy.all((mat + 2.0) == (mat_float64 + 2.0))
+    assert numpy.all((mat + mat_float64) == (mat_float64 + mat_float64))
+    assert numpy.all((mat + mat) == (mat_float64 + mat_float64))
+
+### __sub__
 
 def test_sub_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__sub__")
 
+def test_sub(mat, mat_float64):
+    assert numpy.all((mat - 2.0) == (mat_float64 - 2.0))
+    assert numpy.all((mat - mat_float64) == (mat_float64 - mat_float64))
+    assert numpy.all((mat - mat) == (mat_float64 - mat_float64))
+
+### __mul__
+
 def test_mul_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__mul__")
+
+def test_mul(mat, mat_float64):
+    assert numpy.all((mat * 2.0) == (mat_float64 * 2.0))
+    assert numpy.all((mat * mat_float64) == (mat_float64 * mat_float64))
+    assert numpy.all((mat * mat) == (mat_float64 * mat_float64))
+
+### __matmul__
 
 def test_matmul_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__matmul__")
 
+def test_matmul(mat, mat_float64):
+    assert numpy.all((mat @ mat_float64) == (mat_float64 @ mat_float64))
+    assert numpy.all((mat @ mat) == (mat_float64 @ mat_float64))
+
+### __truediv__
+
 def test_truediv_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__truediv__")
+
+def test_truediv(mat, mat_float64):
+    assert numpy.all((mat / 2.0) == (mat_float64 / 2.0))
+    assert numpy.all((mat / mat_float64) == (mat_float64 / mat_float64))
+    assert numpy.all((mat / mat) == (mat_float64 / mat_float64))
+
+### __floordiv__
 
 def test_floordiv_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__floordiv__")
 
+def test_floordiv(mat, mat_float64):
+    assert numpy.all((mat // 2.0) == (mat_float64 // 2.0))
+    assert numpy.all((mat // mat_float64) == (mat_float64 // mat_float64))
+    assert numpy.all((mat // mat) == (mat_float64 // mat_float64))
+
+### __mod__
+
 def test_mod_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__mod__")
+
+### __divmod__
 
 def test_divmod_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__divmod__")
 
+### __pow__
+
 def test_pow_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__pow__")
+
+### __lshift__
 
 def test_lshift_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__lshift__")
 
+### __rshift__
+
 def test_rshift_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__rshift__")
+
+### __and__
 
 def test_and_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__and__")
 
+### __xor__
+
 def test_xor_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__xor__")
+
+### __or__
 
 def test_or_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__or__")
 
-### Reverse math operators
+####################################
+###### Reverse math operators ######
+
 def test_radd_is_concrete():
     assert_method_isconcrete(DenseMatrix, "__radd__")
 
@@ -201,40 +265,79 @@ def test___iter___is_concrete():
 ################################################################################
 ############################ Test Class Properties #############################
 ################################################################################
+    
+### mat
+
 def test_mat_fget(mat, mat_float64):
     assert numpy.all(mat.mat == mat_float64)
 
 ################################################################################
-######################### Test special class functions #########################
+############################# Test concrete methods ############################
 ################################################################################
-def test_add(mat, mat_float64):
-    assert numpy.all((mat + 2.0) == (mat_float64 + 2.0))
-    assert numpy.all((mat + mat_float64) == (mat_float64 + mat_float64))
-    assert numpy.all((mat + mat) == (mat_float64 + mat_float64))
 
-def test_sub(mat, mat_float64):
-    assert numpy.all((mat - 2.0) == (mat_float64 - 2.0))
-    assert numpy.all((mat - mat_float64) == (mat_float64 - mat_float64))
-    assert numpy.all((mat - mat) == (mat_float64 - mat_float64))
+### to_hdf5
 
-def test_mul(mat, mat_float64):
-    assert numpy.all((mat * 2.0) == (mat_float64 * 2.0))
-    assert numpy.all((mat * mat_float64) == (mat_float64 * mat_float64))
-    assert numpy.all((mat * mat) == (mat_float64 * mat_float64))
+def test_to_hdf5_is_concrete():
+    assert_method_isconcrete(DenseMatrix, "to_hdf5")
 
-def test_matmul(mat, mat_float64):
-    assert numpy.all((mat @ mat_float64) == (mat_float64 @ mat_float64))
-    assert numpy.all((mat @ mat) == (mat_float64 @ mat_float64))
+def test_to_hdf5_str(mat):
+    fp = "tmp.h5"
+    mat.to_hdf5(fp)
+    assert os.path.exists(fp)
+    os.remove(fp)
 
-def test_truediv(mat, mat_float64):
-    assert numpy.all((mat / 2.0) == (mat_float64 / 2.0))
-    assert numpy.all((mat / mat_float64) == (mat_float64 / mat_float64))
-    assert numpy.all((mat / mat) == (mat_float64 / mat_float64))
+def test_to_hdf5_Path(mat):
+    fp = Path("tmp.h5")
+    mat.to_hdf5(fp)
+    assert os.path.exists(fp)
+    os.remove(fp)
 
-def test_floordiv(mat, mat_float64):
-    assert numpy.all((mat // 2.0) == (mat_float64 // 2.0))
-    assert numpy.all((mat // mat_float64) == (mat_float64 // mat_float64))
-    assert numpy.all((mat // mat) == (mat_float64 // mat_float64))
+def test_to_hdf5_h5py_File(mat):
+    fp = "tmp.h5"
+    h5file = h5py.File(fp, "a")
+    with not_raises(Exception):
+        mat.to_hdf5(h5file)
+    h5file.close()
+    assert os.path.exists(fp)
+    os.remove(fp)
+
+################################################################################
+########################## Test concrete classmethods ##########################
+################################################################################
+
+### from_hdf5
+
+def test_from_hdf5_is_concrete():
+    assert_classmethod_isconcrete(DenseMatrix, "from_hdf5")
+
+def test_from_hdf5_str(mat):
+    fp = "tmp.h5"
+    mat.to_hdf5(fp)
+    out = DenseMatrix.from_hdf5(fp)
+    assert numpy.all(mat.mat == out.mat)
+    assert mat.mat_ndim == out.mat_ndim
+    assert mat.mat_shape == out.mat_shape
+    os.remove(fp)
+
+def test_from_hdf5_Path(mat):
+    fp = Path("tmp.h5")
+    mat.to_hdf5(fp)
+    out = DenseMatrix.from_hdf5(fp)
+    assert numpy.all(mat.mat == out.mat)
+    assert mat.mat_ndim == out.mat_ndim
+    assert mat.mat_shape == out.mat_shape
+    os.remove(fp)
+
+def test_from_hdf5_h5py_File(mat):
+    fp = Path("tmp.h5")
+    mat.to_hdf5(fp)
+    h5file = h5py.File(fp)
+    out = DenseMatrix.from_hdf5(h5file)
+    assert numpy.all(mat.mat == out.mat)
+    assert mat.mat_ndim == out.mat_ndim
+    assert mat.mat_shape == out.mat_shape
+    h5file.close()
+    os.remove(fp)
 
 ################################################################################
 ######################### Test class utility functions #########################

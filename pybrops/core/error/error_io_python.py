@@ -9,8 +9,10 @@ __all__ = [
 ]
 
 from os.path import exists, isfile
+from pathlib import Path
+from typing import Union
 
-def check_path_exists(path: str) -> None:
+def check_path_exists(path: Union[str,Path]) -> None:
     """
     Subroutine to check whether a given path exists.
     If the path does not exist, raise an FileNotFoundError with a custom error
@@ -24,7 +26,7 @@ def check_path_exists(path: str) -> None:
     if not exists(path):
         raise FileNotFoundError("{0} does not exist".format(path))
 
-def check_file_exists(path: str) -> None:
+def check_file_exists(path: Union[str,Path]) -> None:
     """
     Subroutine to check whether a given file exists.
     If the file does not exist, raise an FileNotFoundError with a custom error
@@ -38,7 +40,7 @@ def check_file_exists(path: str) -> None:
     if not isfile(path):
         raise FileNotFoundError("{0} does not exist".format(path))
 
-def check_directory_exists(path: str) -> None:
+def check_directory_exists(path: Union[str,Path]) -> None:
     """
     Subroutine to check whether a given directory exists.
     If the directory does not exist, raise an NotADirectoryError with a custom
