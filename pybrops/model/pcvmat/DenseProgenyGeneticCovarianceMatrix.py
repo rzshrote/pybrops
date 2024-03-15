@@ -4,8 +4,10 @@ storing dense genetic covariance estimates.
 """
 
 import copy
-from typing import Optional
+from pathlib import Path
+from typing import Optional, Union
 import numpy
+import h5py
 from pybrops.core.mat.DenseSquareTaxaSquareTraitMatrix import DenseSquareTaxaSquareTraitMatrix
 from pybrops.model.pcvmat.ProgenyGeneticCovarianceMatrix import ProgenyGeneticCovarianceMatrix
 
@@ -122,7 +124,7 @@ class DenseProgenyGeneticCovarianceMatrix(
     @classmethod
     def from_hdf5(
             cls, 
-            filename: str, 
+            filename: Union[str,Path,h5py.File], 
             groupname: Optional[str] = None
         ) -> 'DenseProgenyGeneticCovarianceMatrix':
         """
@@ -130,9 +132,9 @@ class DenseProgenyGeneticCovarianceMatrix(
 
         Parameters
         ----------
-        filename : str
+        filename : str, Path, or h5py.File
             HDF5 file name which to read.
-        groupname : str or None
+        groupname : str, None
             HDF5 group name under which DenseProgenyGeneticCovarianceMatrix data is stored.
             If None, DenseProgenyGeneticCovarianceMatrix is read from base HDF5 group.
 
