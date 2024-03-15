@@ -9,9 +9,11 @@ __all__ = [
 ]
 
 from abc import ABCMeta, abstractmethod
-from typing import Optional
+from pathlib import Path
+from typing import Optional, Union
 import numpy
 import pandas
+import h5py
 from pybrops.core.io.CSVInputOutput import CSVInputOutput
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.io.PandasInputOutput import PandasInputOutput
@@ -317,7 +319,7 @@ class BreedingValueMatrix(TaxaTraitMatrix,PandasInputOutput,CSVInputOutput,HDF5I
     @abstractmethod
     def from_hdf5(
             cls, 
-            filename: str, 
+            filename: Union[str,Path,h5py.File], 
             groupname: Optional[str]
         ) -> 'BreedingValueMatrix':
         """
@@ -327,9 +329,9 @@ class BreedingValueMatrix(TaxaTraitMatrix,PandasInputOutput,CSVInputOutput,HDF5I
         ----------
         filename : str
             HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which object data is stored.
-            If None, object is read from base HDF5 group.
+        groupname : str, None
+            If ``str``, HDF5 group name under which object data is stored.
+            If ``None``, object is read from base HDF5 group.
 
         Returns
         -------
