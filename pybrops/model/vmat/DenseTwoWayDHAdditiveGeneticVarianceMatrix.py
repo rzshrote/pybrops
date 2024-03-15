@@ -6,11 +6,12 @@ formulae.
 
 import math
 from numbers import Integral, Real
+from pathlib import Path
 from typing import Optional, Union
 import h5py
 import numpy
 import pandas
-from pybrops.core.error.error_io_python import check_file_exists
+
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
 from pybrops.core.error.error_type_python import check_is_Integral
@@ -18,12 +19,10 @@ from pybrops.core.error.error_type_python import check_is_Integral_or_None
 from pybrops.core.error.error_type_python import check_is_Integral_or_inf
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_python import check_is_str_or_Integral
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column
 from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column_index
 from pybrops.core.util.arrayix import flattenix
-from pybrops.core.util.h5py import save_dict_to_hdf5
 from pybrops.core.util.subroutines import srange
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.AdditiveLinearGenomicModel import check_is_AdditiveLinearGenomicModel
@@ -300,67 +299,31 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
 
     def to_hdf5(
             self, 
-            filename: str, 
+            filename: Union[str,Path,h5py.File], 
             groupname: Optional[str] = None,
             overwrite: bool = True,
         ) -> None:
         """
-        Write DenseTwoWayDHAdditiveGeneticVarianceMatrix to an HDF5 file.
+        Write ``DenseTwoWayDHAdditiveGeneticVarianceMatrix`` to an HDF5 file.
 
         Parameters
         ----------
-        filename : str, h5py.File
+        filename : str, Path, h5py.File
             HDF5 file name or HDF5 file stream to which to write.
 
-        groupname : str or None
-            HDF5 group name under which the ``DenseTwoWayDHAdditiveGeneticVarianceMatrix`` data is stored.
+        groupname : str, None
+            If ``str``, an HDF5 group name under which the ``DenseTwoWayDHAdditiveGeneticVarianceMatrix`` data is stored.
             If ``None``, the ``DenseTwoWayDHAdditiveGeneticVarianceMatrix`` is written to the base HDF5 group.
         
         overwrite : bool
             Whether to overwrite data fields if they are present in the HDF5 file.
         """
-        ### type checks
-        check_is_str(filename, "filename")
-
-        # open HDF5 in write mode
-        h5file = h5py.File(filename, "a")
-
-        ############ process groupname argument ############
-
-        # if groupname is None, set groupname to empty string
-        if groupname is None:
-            groupname = ""
-        
-        # if groupname is a string, add '/' to end of string if not last character
-        elif isinstance(groupname, str):
-            if groupname[-1] != '/':
-                groupname += '/'
-
-        # else raise error
-        else:
-            check_is_str(groupname, "groupname")
-        
-        ################ populate HDF5 file ################
-
-        # data dictionary
-        data_dict = {
-            "mat"           : self.mat,
-            "taxa"          : self.taxa,
-            "taxa_grp"      : self.taxa_grp,
-            "trait"         : self.trait,
-            "taxa_grp_name" : self.taxa_grp_name,
-            "taxa_grp_stix" : self.taxa_grp_stix,
-            "taxa_grp_spix" : self.taxa_grp_spix,
-            "taxa_grp_len"  : self.taxa_grp_len,
-        }
-
-        # save data
-        save_dict_to_hdf5(h5file, groupname, data_dict)
-
-        ################# write conclusion #################
-
-        # close the file
-        h5file.close()
+        # call super function
+        super(DenseTwoWayDHAdditiveGeneticVarianceMatrix, self).to_hdf5(
+            filename  = filename,
+            groupname = groupname,
+            overwrite = overwrite,
+        )
     
     ############################## Class Methods ###############################
 
@@ -620,121 +583,31 @@ class DenseTwoWayDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMat
     @classmethod
     def from_hdf5(
             cls, 
-            filename: str, 
+            filename: Union[str,Path,h5py.File], 
             groupname: Optional[str] = None
         ) -> 'DenseTwoWayDHAdditiveGeneticVarianceMatrix':
         """
-        Read DenseTwoWayDHAdditiveGeneticVarianceMatrix from an HDF5 file.
+        Read ``DenseTwoWayDHAdditiveGeneticVarianceMatrix`` from an HDF5 file.
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which DenseTwoWayDHAdditiveGeneticVarianceMatrix data is stored.
-            If None, DenseTwoWayDHAdditiveGeneticVarianceMatrix is read from base HDF5 group.
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name from which to read. File is closed after reading.
+            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.
+        groupname : str, None
+            If ``str``, an HDF5 group name under which ``DenseTwoWayDHAdditiveGeneticVarianceMatrix`` data is stored.
+            If ``None``, ``DenseTwoWayDHAdditiveGeneticVarianceMatrix`` is read from base HDF5 group.
 
         Returns
         -------
         out : DenseTwoWayDHAdditiveGeneticVarianceMatrix
-            A DenseTwoWayDHAdditiveGeneticVarianceMatrix read from file.
+            A ``DenseTwoWayDHAdditiveGeneticVarianceMatrix`` read from file.
         """
-        # type checks
-        check_is_str(filename, "filename")
-
-        #################### Open file #####################
-        
-        # check file exists
-        check_file_exists(filename)
-        
-        # open HDF5 in read only
-        h5file = h5py.File(filename, "r")
-        
-        ############ Process groupname argument ############
-
-        # if groupname is None, set groupname to empty string
-        if groupname is None:
-            groupname = ""
-        
-        # if we have a string, check that group exists, add '/' to end if needed
-        elif isinstance(groupname, str):
-            check_h5py_File_has_group(h5file, filename, groupname)
-            if groupname[-1] != '/':
-                groupname += '/'
-        
-        # else raise error
-        else:
-            check_is_str(groupname, "groupname")
-        
-        ############ Check for required fields #############
-
-        # list of all required arguments
-        required_fields = ["mat"]
-
-        # for each required field, concatenate base groupname and field and
-        # check that group exists
-        for field in required_fields:
-            fieldname = groupname + field
-            check_h5py_File_has_group(h5file, filename, fieldname)
-        
-        #################### Read data #####################
-
-        # output dictionary
-        data = {
-            "mat"           : None,
-            "taxa"          : None,
-            "taxa_grp"      : None,
-            "trait"         : None,
-            "taxa_grp_name" : None,
-            "taxa_grp_stix" : None,
-            "taxa_grp_spix" : None,
-            "taxa_grp_len"  : None,
-        }
-
-        # for each field, concatenate base groupname and field and
-        # if the field exists in the HDF5 file, then read the array
-        for field in data.keys():
-            fieldname = groupname + field
-            if fieldname in h5file:
-                data[field] = h5file[fieldname][()]
-
-        #################### Close file ####################
-        
-        # close file
-        h5file.close()
-        
-        ############### Datatype conversion ################
-
-        # if taxa names read, convert taxa strings from byte to utf-8
-        if data["taxa"] is not None:
-            data["taxa"] = numpy.array(
-                [s.decode("utf-8") for s in data["taxa"]],
-                dtype = object
-            )
-
-        # if trait names read, convert trait strings from byte to utf-8
-        if data["trait"] is not None:
-            data["trait"] = numpy.array(
-                [s.decode("utf-8") for s in data["trait"]],
-                dtype = object
-            )
-        
-        ################# Object creation ##################
-        # create object from read data
-        out = cls(
-            mat      = data["mat"],
-            taxa     = data["taxa"],
-            taxa_grp = data["taxa_grp"],
-            trait    = data["trait"],
+        # call super function
+        return super(DenseTwoWayDHAdditiveGeneticVarianceMatrix, cls).from_hdf5(
+            filename  = filename,
+            groupname = groupname,
         )
-        
-        # copy metadata if there is any
-        out.taxa_grp_name = data["taxa_grp_name"]
-        out.taxa_grp_stix = data["taxa_grp_stix"]
-        out.taxa_grp_spix = data["taxa_grp_spix"]
-        out.taxa_grp_len  = data["taxa_grp_len"]
-
-        return out
 
     ############# Matrix Factory Class Methods #############
     # TODO: provide support for non-linear models

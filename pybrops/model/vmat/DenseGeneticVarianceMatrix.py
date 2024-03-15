@@ -4,8 +4,10 @@ storing dense genetic variance estimates.
 """
 
 import copy
-from typing import Optional
+from pathlib import Path
+from typing import Optional, Union
 import numpy
+import h5py
 from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.mat.DenseSquareTaxaTraitMatrix import DenseSquareTaxaTraitMatrix
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix
@@ -87,7 +89,7 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaTraitMatrix,GeneticVarianceMatri
         Returns
         -------
         out : DenseGeneticVarianceMatrix
-            A shallow copy of the original DenseGeneticVarianceMatrix.
+            A shallow copy of the original ``DenseGeneticVarianceMatrix``.
         """
         return copy.copy(self)
 
@@ -106,7 +108,7 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaTraitMatrix,GeneticVarianceMatri
         Returns
         -------
         out : DenseGeneticVarianceMatrix
-            A deep copy of the original DenseGeneticVarianceMatrix.
+            A deep copy of the original ``DenseGeneticVarianceMatrix``.
         """
         return copy.deepcopy(self, memo)
 
@@ -118,19 +120,19 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaTraitMatrix,GeneticVarianceMatri
     @classmethod
     def from_hdf5(
             cls, 
-            filename: str, 
+            filename: Union[str,Path,h5py.File], 
             groupname: Optional[str] = None
         ) -> 'DenseGeneticVarianceMatrix':
         """
-        Read DenseGeneticVarianceMatrix from an HDF5 file.
+        Read ``DenseGeneticVarianceMatrix`` from an HDF5 file.
 
         Parameters
         ----------
         filename : str
             HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which DenseGeneticVarianceMatrix data is stored.
-            If None, DenseGeneticVarianceMatrix is read from base HDF5 group.
+        groupname : str, None
+            If ``str``, HDF5 group name under which ``DenseGeneticVarianceMatrix`` data is stored.
+            If ``None``, ``DenseGeneticVarianceMatrix`` is read from base HDF5 group.
 
         Returns
         -------
@@ -138,8 +140,8 @@ class DenseGeneticVarianceMatrix(DenseSquareTaxaTraitMatrix,GeneticVarianceMatri
             A dense matrix read from file.
         """
         return super(DenseGeneticVarianceMatrix, cls).from_hdf5(
-            filename, 
-            groupname
+            filename  = filename, 
+            groupname = groupname,
         )
 
     # from_gmod
