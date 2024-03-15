@@ -1,9 +1,11 @@
+import os
+from pathlib import Path
 import numpy
 import pandas
 import pytest
 import copy
-
-from pybrops.test.assert_python import assert_class_documentation
+import h5py
+from pybrops.test.assert_python import assert_class_documentation, assert_classmethod_isconcrete, not_raises
 from pybrops.test.assert_python import assert_method_isconcrete
 
 from pybrops.breed.prot.pt.TruePhenotyping import TruePhenotyping
@@ -14,93 +16,68 @@ from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMat
 ################################ Test fixtures #################################
 ################################################################################
 
+@pytest.fixture
+def nphase():
+    yield 2
+
+@pytest.fixture
+def ntaxa():
+    yield 20 # must be divisible by 4
+
+@pytest.fixture
+def ntaxa_grp():
+    yield 4
+
+@pytest.fixture
+def nvrnt():
+    yield 100 # must be divisible by 2
+
+@pytest.fixture
+def nchrom():
+    yield 2
+
+@pytest.fixture
+def ntrait():
+    yield 2
+
 ############################################################
 ######################## Genotypes #########################
 ############################################################
 @pytest.fixture
-def mat_int8():
-    yield numpy.int8([
-       [[0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0]],
-
-       [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-        [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-        [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-        [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
-        [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0]]
-    ])
+def mat_int8(nphase, ntaxa, nvrnt):
+    out = numpy.random.randint(0, 2, (nphase,ntaxa,nvrnt))
+    out = out.astype("int8")
+    yield out
 
 @pytest.fixture
-def mat_chrgrp():
-    yield numpy.int64([
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        2, 2, 2, 2, 2, 2, 2, 2, 2, 2
-    ])
+def mat_chrgrp(nvrnt, nchrom):
+    out = numpy.repeat([1,2], nvrnt // nchrom)
+    yield out
 
 @pytest.fixture
-def mat_phypos():
-    yield numpy.int64([
-         1,  2,  3,  4,  5,  6,  7,  8,  9, 10,
-        11, 12, 13, 14, 15, 16, 17, 18, 19, 20
-    ])
+def mat_phypos(nvrnt):
+    out = numpy.arange(1, nvrnt+1)
+    yield out
 
 @pytest.fixture
-def mat_genpos():
-    yield numpy.float64([
-        0.13, 0.32, 0.53, 0.54, 0.55, 0.61, 0.63, 0.7 , 0.75, 0.96,
-        0.14, 0.16, 0.26, 0.31, 0.31, 0.68, 0.7 , 0.74, 0.75, 0.91
-    ])
+def mat_genpos(nvrnt, nchrom):
+    out = numpy.empty(nvrnt, dtype = float)
+    nsnp = nvrnt // nchrom
+    for i in range(nchrom):
+        tmp = numpy.random.random(nsnp)
+        tmp.sort()
+        out[(nsnp*i):(nsnp*(i+1))] = tmp
+    yield out
 
 @pytest.fixture
-def mat_taxa():
-    yield numpy.object_([
-        'Line01', 'Line02', 'Line03', 'Line04', 'Line05',
-        'Line06', 'Line07', 'Line08', 'Line09', 'Line10',
-        'Line11', 'Line12', 'Line13', 'Line14', 'Line15',
-        'Line16', 'Line17', 'Line18', 'Line19', 'Line20'
-    ])
+def mat_taxa(ntaxa):
+    out = numpy.array(["Line"+str(i).zfill(2) for i in range(ntaxa)], dtype = object)
+    yield out
 
 @pytest.fixture
-def mat_taxa_grp():
-    yield numpy.int64([
-        1, 1, 1, 1, 1,
-        2, 2, 2, 2, 2,
-        3, 3, 3, 3, 3,
-        4, 4, 4, 4, 4
-    ])
+def mat_taxa_grp(ntaxa, ntaxa_grp):
+    out = numpy.repeat(list(range(ntaxa_grp)), ntaxa // ntaxa_grp)
+    yield out
 
 @pytest.fixture
 def dpgmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_taxa, mat_taxa_grp):
@@ -112,6 +89,7 @@ def dpgmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_taxa, mat_taxa_grp)
         taxa = mat_taxa,
         taxa_grp = mat_taxa_grp
     )
+    out.group_taxa()
     out.group_vrnt()
     yield out
 
@@ -119,44 +97,23 @@ def dpgmat(mat_int8, mat_chrgrp, mat_phypos, mat_genpos, mat_taxa, mat_taxa_grp)
 ###################### Genomic model #######################
 ############################################################
 @pytest.fixture
-def mat_beta():
-    yield numpy.float64([
-        [25.6, 13.4]
-    ])
-    # yield numpy.float64([[1.4, 2.5, 7.2]])
+def mat_beta(ntrait):
+    out = numpy.random.random((1,ntrait))
+    yield out
 
 @pytest.fixture
 def mat_u_misc():
     yield None
 
 @pytest.fixture
-def mat_u_a():
-    yield numpy.float64([
-        [ 1.25, -0.68],
-        [-0.02, -1.09],
-        [ 0.21, -0.5 ],
-        [-2.84,  0.64],
-        [-1.37, -0.81],
-        [-2.06,  2.22],
-        [ 1.52, -0.21],
-        [-0.23, -1.78],
-        [ 1.04, -0.55],
-        [-0.77, -1.4 ],
-        [-0.44,  0.89],
-        [ 0.12, -0.87],
-        [-0.44, -0.55],
-        [ 1.36,  0.73],
-        [ 1.04,  1.22],
-        [-0.05,  0.82],
-        [ 0.93,  0.73],
-        [-0.89,  1.21],
-        [ 0.05, -1.19],
-        [-1.27, -2.  ]
-    ])
+def mat_u_a(nvrnt, ntrait):
+    out = numpy.random.random((nvrnt,ntrait))
+    yield out
 
 @pytest.fixture
-def trait():
-    yield numpy.object_(["protein", "yield"])
+def trait(ntrait):
+    out = numpy.array(["Trait"+str(i).zfill(2) for i in range(ntrait)], dtype = object)
+    yield out
 
 @pytest.fixture
 def model_name():
@@ -200,27 +157,30 @@ def test_class_docstring():
     assert_class_documentation(TruePhenotyping)
 
 ################################################################################
-############################# Test concrete methods ############################
+########################## Test Class Special Methods ##########################
 ################################################################################
+
+### __init__
+
 def test___init___is_concrete():
     assert_method_isconcrete(TruePhenotyping, "__init__")
 
-def test_phenotype_is_concrete():
-    assert_method_isconcrete(TruePhenotyping, "phenotype")
+### __copy__
 
-def test_set_h2_is_concrete():
-    assert_method_isconcrete(TruePhenotyping, "set_h2")
+def test___copy___is_concrete():
+    assert_method_isconcrete(TruePhenotyping, "__copy__")
 
-def test_set_H2_is_concrete():
-    assert_method_isconcrete(TruePhenotyping, "set_H2")
+### __deepcopy__
 
-################################################################################
-########################## Test Class Special Methods ##########################
-################################################################################
+def test___deepcopy___is_concrete():
+    assert_method_isconcrete(TruePhenotyping, "__deepcopy__")
 
 ################################################################################
 ############################ Test Class Properties #############################
 ################################################################################
+
+### gpmod
+
 def test_gpmod_fget(ptprot, gpmod):
     # TODO: assert equality of models
     assert id(ptprot.gpmod) == id(gpmod)
@@ -234,6 +194,8 @@ def test_gpmod_fdel(ptprot):
     with pytest.raises(AttributeError):
         del ptprot.gpmod
 
+### var_err
+
 def test_var_err_fget(ptprot):
     assert numpy.all(ptprot.var_err == 0.0)
 
@@ -246,8 +208,14 @@ def test_var_err_fdel(ptprot):
         del ptprot.var_err
 
 ################################################################################
-###################### Test concrete method functionality ######################
+############################# Test concrete methods ############################
 ################################################################################
+
+### phenotype
+
+def test_phenotype_is_concrete():
+    assert_method_isconcrete(TruePhenotyping, "phenotype")
+
 def test_phenotype(ptprot, dpgmat, gpmod):
     # conduct true phenotyping
     df = ptprot.phenotype(dpgmat)
@@ -262,10 +230,81 @@ def test_phenotype(ptprot, dpgmat, gpmod):
     # two other columns are taxa and taxa_grp
     assert len(df.columns) == (2 + gpmod.ntrait)
 
+### set_h2
+
+def test_set_h2_is_concrete():
+    assert_method_isconcrete(TruePhenotyping, "set_h2")
+
 def test_set_h2(ptprot, dpgmat):
     with pytest.raises(AttributeError):
         ptprot.set_h2(0.5, dpgmat)
 
+### set_H2
+
+def test_set_H2_is_concrete():
+    assert_method_isconcrete(TruePhenotyping, "set_H2")
+
 def test_set_H2(ptprot, dpgmat):
     with pytest.raises(AttributeError):
         ptprot.set_H2(0.5, dpgmat)
+
+### to_hdf5
+
+def test_to_hdf5_is_concrete():
+    assert_method_isconcrete(TruePhenotyping, "to_hdf5")
+
+def test_to_hdf5_str(ptprot):
+    fp = "tmp.h5"
+    with not_raises(Exception):
+        ptprot.to_hdf5(fp)
+    assert os.path.exists(fp)
+    os.remove(fp)
+
+def test_to_hdf5_Path(ptprot):
+    fp = Path("tmp.h5")
+    with not_raises(Exception):
+        ptprot.to_hdf5(fp)
+    assert os.path.exists(fp)
+    os.remove(fp)
+
+def test_to_hdf5_h5py_File(ptprot):
+    fp = "tmp.h5"
+    h5file = h5py.File(fp, "a")
+    with not_raises(Exception):
+        ptprot.to_hdf5(h5file)
+    h5file.close()
+    assert os.path.exists(fp)
+    os.remove(fp)
+
+################################################################################
+########################## Test concrete classmethods ##########################
+################################################################################
+
+### from_hdf5
+
+def test_from_hdf5_is_concrete():
+    assert_classmethod_isconcrete(TruePhenotyping, "from_hdf5")
+
+def test_from_hdf5_str(ptprot, gpmod):
+    fp = "tmp.h5"
+    ptprot.to_hdf5(fp)
+    out = TruePhenotyping.from_hdf5(fp, gpmod = gpmod)
+    assert numpy.all(ptprot.var_err == out.var_err)
+    os.remove(fp)
+
+def test_from_hdf5_Path(ptprot, gpmod):
+    fp = Path("tmp.h5")
+    ptprot.to_hdf5(fp)
+    out = TruePhenotyping.from_hdf5(fp, gpmod = gpmod)
+    assert numpy.all(ptprot.var_err == out.var_err)
+    os.remove(fp)
+
+def test_from_hdf5_h5py_File(ptprot, gpmod):
+    fp = Path("tmp.h5")
+    ptprot.to_hdf5(fp)
+    h5file = h5py.File(fp)
+    out = TruePhenotyping.from_hdf5(h5file, gpmod = gpmod)
+    assert numpy.all(ptprot.var_err == out.var_err)
+    h5file.close()
+    os.remove(fp)
+
