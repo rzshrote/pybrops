@@ -155,7 +155,7 @@ def test_decn_space_fset_ValueError(prob, decn_space_lower, decn_space_upper):
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(IntegerSolution, "__init__")
 
 ################################################################################

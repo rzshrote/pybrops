@@ -250,7 +250,7 @@ def test_ohvmat_fdel(prob):
 ################
 ### __init__ ###
 ################
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(OptimalHaploidValueIntegerSelectionProblem, "__init__")
 
 ################

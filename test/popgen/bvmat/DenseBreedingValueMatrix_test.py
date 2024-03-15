@@ -1,12 +1,14 @@
+import os
+from pathlib import Path
 import pandas
 import pytest
 import numpy
 from os.path import isfile
-from pybrops.test.assert_python import not_raises
+import h5py
+from pybrops.test.assert_python import assert_classmethod_isconcrete, not_raises
 from pybrops.test.assert_python import assert_class_documentation
 from pybrops.test.assert_python import assert_method_isconcrete
 from pybrops.test.assert_python import assert_function_isconcrete
-
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import check_is_DenseBreedingValueMatrix
 
@@ -101,38 +103,23 @@ def test_class_docstring():
     assert_class_documentation(DenseBreedingValueMatrix)
 
 ################################################################################
-############################# Test concrete methods ############################
-################################################################################
-def test_init_is_concrete():
-    assert_method_isconcrete(DenseBreedingValueMatrix, "__init__")
-
-def test_targmax_is_concrete():
-    assert_method_isconcrete(DenseBreedingValueMatrix, "targmax")
-
-def test_targmin_is_concrete():
-    assert_method_isconcrete(DenseBreedingValueMatrix, "targmin")
-
-def test_tmax_is_concrete():
-    assert_method_isconcrete(DenseBreedingValueMatrix, "tmax")
-
-def test_tmean_is_concrete():
-    assert_method_isconcrete(DenseBreedingValueMatrix, "tmean")
-
-def test_tmin_is_concrete():
-    assert_method_isconcrete(DenseBreedingValueMatrix, "tmin")
-
-def test_trange_is_concrete():
-    assert_method_isconcrete(DenseBreedingValueMatrix, "trange")
-
-def test_tstd_is_concrete():
-    assert_method_isconcrete(DenseBreedingValueMatrix, "tstd")
-
-def test_tvar_is_concrete():
-    assert_method_isconcrete(DenseBreedingValueMatrix, "tvar")
-
-################################################################################
 ########################## Test Class Special Methods ##########################
 ################################################################################
+
+### __init__
+
+def test___init___is_concrete():
+    assert_method_isconcrete(DenseBreedingValueMatrix, "__init__")
+
+### __copy__
+    
+def test___copy___is_concrete():
+    assert_method_isconcrete(DenseBreedingValueMatrix, "__copy__")
+
+### __deepcopy__
+
+def test___deepcopy___is_concrete():
+    assert_method_isconcrete(DenseBreedingValueMatrix, "__deepcopy__")
 
 ################################################################################
 ############################ Test Class Properties #############################
@@ -140,7 +127,7 @@ def test_tvar_is_concrete():
 
 ################ General matrix properties #################
 
-################# mat ##################
+### mat
 def test_mat_fget(bvmat, mat):
     assert numpy.all(bvmat.mat == mat)
 
@@ -164,7 +151,7 @@ def test_mat_fdel(bvmat, mat):
     with pytest.raises(AttributeError):
         del bvmat.mat
 
-############### location ###############
+### location
 def test_location_fget(bvmat, location):
     assert numpy.all(bvmat.location == location)
 
@@ -192,7 +179,7 @@ def test_location_fdel(bvmat):
     with pytest.raises(AttributeError):
         del bvmat.location
 
-################ scale #################
+### scale
 def test_scale_fget(bvmat, scale):
     assert numpy.all(bvmat.scale == scale)
 
@@ -223,47 +210,91 @@ def test_scale_fdel(bvmat, scale):
         del bvmat.scale
 
 ################################################################################
-###################### Test concrete method functionality ######################
+############################# Test concrete methods ############################
 ################################################################################
+
+### targmax
+
+def test_targmax_is_concrete():
+    assert_method_isconcrete(DenseBreedingValueMatrix, "targmax")
+
 def test_targmax(bvmat):
     a = bvmat.targmax()
     b = numpy.argmax(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
+
+### targmin
+
+def test_targmin_is_concrete():
+    assert_method_isconcrete(DenseBreedingValueMatrix, "targmin")
 
 def test_targmin(bvmat):
     a = bvmat.targmin()
     b = numpy.argmin(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
+### tmax
+
+def test_tmax_is_concrete():
+    assert_method_isconcrete(DenseBreedingValueMatrix, "tmax")
+
 def test_tmax(bvmat):
     a = bvmat.tmax()
     b = numpy.max(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
+
+### tmean
+
+def test_tmean_is_concrete():
+    assert_method_isconcrete(DenseBreedingValueMatrix, "tmean")
 
 def test_tmean(bvmat):
     a = bvmat.tmean()
     b = numpy.mean(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
+### tmin
+
+def test_tmin_is_concrete():
+    assert_method_isconcrete(DenseBreedingValueMatrix, "tmin")
+
 def test_tmin(bvmat):
     a = bvmat.tmin()
     b = numpy.min(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
+
+### trange
+
+def test_trange_is_concrete():
+    assert_method_isconcrete(DenseBreedingValueMatrix, "trange")
 
 def test_trange(bvmat):
     a = bvmat.trange()
     b = numpy.ptp(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
+### tstd
+
+def test_tstd_is_concrete():
+    assert_method_isconcrete(DenseBreedingValueMatrix, "tstd")
+
 def test_tstd(bvmat):
     a = bvmat.tstd()
     b = numpy.std(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
 
+### tvar
+
+def test_tvar_is_concrete():
+    assert_method_isconcrete(DenseBreedingValueMatrix, "tvar")
+
 def test_tvar(bvmat):
     a = bvmat.tvar()
     b = numpy.var(bvmat.mat, axis = bvmat.taxa_axis)
     assert numpy.all(a == b)
+
+############################################################
+##################### Matrix File I/O ######################
 
 ### to_pandas
 def test_to_pandas(bvmat, trait_object):
@@ -329,7 +360,43 @@ def test_to_csv(bvmat):
     bvmat.to_csv(filename)
     assert isfile(filename)
 
+### to_hdf5
+
+def test_to_hdf5_is_concrete():
+    assert_method_isconcrete(DenseBreedingValueMatrix, "to_hdf5")
+
+def test_to_hdf5_str(bvmat):
+    fp = "tmp.h5"
+    bvmat.to_hdf5(fp)
+    assert os.path.exists(fp)
+    os.remove(fp)
+
+def test_to_hdf5_Path(bvmat):
+    fp = Path("tmp.h5")
+    bvmat.to_hdf5(fp)
+    assert os.path.exists(fp)
+    os.remove(fp)
+
+def test_to_hdf5_h5py_File(bvmat):
+    fp = "tmp.h5"
+    h5file = h5py.File(fp, "a")
+    with not_raises(Exception):
+        bvmat.to_hdf5(h5file)
+    h5file.close()
+    assert os.path.exists(fp)
+    os.remove(fp)
+
+################################################################################
+########################## Test concrete classmethods ##########################
+################################################################################
+
+############################################################
+##################### Matrix File I/O ######################
+
 ### from_pandas
+def test_from_pandas_is_concrete():
+    assert_classmethod_isconcrete(DenseBreedingValueMatrix, "from_pandas")
+
 def test_from_pandas():
     ntaxa = 100
     taxa = numpy.array(["Taxon"+str(i) for i in range(ntaxa)])
@@ -387,6 +454,89 @@ def test_from_csv():
     filename = "sample_breeding_values.csv"
     out = DenseBreedingValueMatrix.from_csv(filename)
     assert isinstance(out, DenseBreedingValueMatrix)
+
+### from_hdf5
+
+def test_from_hdf5_is_concrete():
+    assert_classmethod_isconcrete(DenseBreedingValueMatrix, "from_hdf5")
+
+def test_from_hdf5_str(bvmat):
+    fp = "tmp.h5"
+    bvmat.to_hdf5(fp)
+    out = DenseBreedingValueMatrix.from_hdf5(fp)
+    # general
+    assert numpy.all(bvmat.mat == out.mat)
+    assert bvmat.mat_ndim == out.mat_ndim
+    assert bvmat.mat_shape == out.mat_shape
+    assert numpy.all(bvmat.location == out.location)
+    assert numpy.all(bvmat.scale == out.scale)
+    # taxa
+    assert numpy.all(bvmat.taxa == out.taxa)
+    assert numpy.all(bvmat.taxa_grp == out.taxa_grp)
+    assert bvmat.ntaxa == out.ntaxa
+    assert bvmat.taxa_axis == out.taxa_axis
+    assert numpy.all(bvmat.taxa_grp_name == out.taxa_grp_name)
+    assert numpy.all(bvmat.taxa_grp_stix == out.taxa_grp_stix)
+    assert numpy.all(bvmat.taxa_grp_spix == out.taxa_grp_spix)
+    assert numpy.all(bvmat.taxa_grp_len == out.taxa_grp_len)
+    # trait
+    assert numpy.all(bvmat.trait == out.trait)
+    assert bvmat.ntrait == out.ntrait
+    assert bvmat.trait_axis == out.trait_axis
+    os.remove(fp)
+
+def test_from_hdf5_Path(bvmat):
+    fp = Path("tmp.h5")
+    bvmat.to_hdf5(fp)
+    out = DenseBreedingValueMatrix.from_hdf5(fp)
+    # general
+    assert numpy.all(bvmat.mat == out.mat)
+    assert bvmat.mat_ndim == out.mat_ndim
+    assert bvmat.mat_shape == out.mat_shape
+    assert numpy.all(bvmat.location == out.location)
+    assert numpy.all(bvmat.scale == out.scale)
+    # taxa
+    assert numpy.all(bvmat.taxa == out.taxa)
+    assert numpy.all(bvmat.taxa_grp == out.taxa_grp)
+    assert bvmat.ntaxa == out.ntaxa
+    assert bvmat.taxa_axis == out.taxa_axis
+    assert numpy.all(bvmat.taxa_grp_name == out.taxa_grp_name)
+    assert numpy.all(bvmat.taxa_grp_stix == out.taxa_grp_stix)
+    assert numpy.all(bvmat.taxa_grp_spix == out.taxa_grp_spix)
+    assert numpy.all(bvmat.taxa_grp_len == out.taxa_grp_len)
+    # trait
+    assert numpy.all(bvmat.trait == out.trait)
+    assert bvmat.ntrait == out.ntrait
+    assert bvmat.trait_axis == out.trait_axis
+    os.remove(fp)
+
+def test_from_hdf5_h5py_File(bvmat):
+    fp = Path("tmp.h5")
+    bvmat.to_hdf5(fp)
+    h5file = h5py.File(fp)
+    out = DenseBreedingValueMatrix.from_hdf5(h5file)
+    # general
+    assert numpy.all(bvmat.mat == out.mat)
+    assert bvmat.mat_ndim == out.mat_ndim
+    assert bvmat.mat_shape == out.mat_shape
+    assert numpy.all(bvmat.location == out.location)
+    assert numpy.all(bvmat.scale == out.scale)
+    # taxa
+    assert numpy.all(bvmat.taxa == out.taxa)
+    assert numpy.all(bvmat.taxa_grp == out.taxa_grp)
+    assert bvmat.ntaxa == out.ntaxa
+    assert bvmat.taxa_axis == out.taxa_axis
+    assert numpy.all(bvmat.taxa_grp_name == out.taxa_grp_name)
+    assert numpy.all(bvmat.taxa_grp_stix == out.taxa_grp_stix)
+    assert numpy.all(bvmat.taxa_grp_spix == out.taxa_grp_spix)
+    assert numpy.all(bvmat.taxa_grp_len == out.taxa_grp_len)
+    # trait
+    assert numpy.all(bvmat.trait == out.trait)
+    assert bvmat.ntrait == out.ntrait
+    assert bvmat.trait_axis == out.trait_axis
+    h5file.close()
+    os.remove(fp)
+
 
 ################################################################################
 ######################### Test class utility functions #########################

@@ -83,6 +83,18 @@ def test_vrnt_phypos_fget(dpgmat, mat_phypos):
 def test_vrnt_taxa_fget(dpgmat, mat_taxa):
     assert numpy.all(dpgmat.taxa == mat_taxa)
 
+def test_ploidy_fget(dpgmat):
+    assert dpgmat.ploidy == dpgmat.mat.shape[0]
+
+def test_nphase_fget(dpgmat):
+    assert dpgmat.nphase == dpgmat.mat.shape[0]
+
+def test_ntaxa_fget(dpgmat):
+    assert dpgmat.ntaxa == dpgmat.mat.shape[1]
+
+def test_nvrnt_fget(dpgmat):
+    assert dpgmat.nvrnt == dpgmat.mat.shape[2]
+
 ########################################################
 ######### Matrix element copy-on-manipulation ##########
 ########################################################
@@ -710,27 +722,15 @@ def test_xoprob(song_gmap, song_dpgmat):
 
 def test_from_to_hdf5(shared_datadir, song_dpgmat):
     # write files
-    song_dpgmat.to_hdf5(
-        shared_datadir / "Song_2016_phased_chr_1000.hdf5",
-        None
-    )
-    song_dpgmat.to_hdf5(
-        shared_datadir / "Song_2016_phased_chr_1000.hdf5",
-        "directoryname"
-    )
+    song_dpgmat.to_hdf5(shared_datadir / "Song_2016_phased_chr_1000.hdf5", None)
+    song_dpgmat.to_hdf5(shared_datadir / "Song_2016_phased_chr_1000.hdf5", "directoryname")
 
     # assert file was written
     assert os.path.isfile(shared_datadir / "Song_2016_phased_chr_1000.hdf5")
 
     # read written files
-    song1 = DensePhasedGenotypeMatrix.from_hdf5(
-        shared_datadir / "Song_2016_phased_chr_1000.hdf5",
-        None
-    )
-    song2 = DensePhasedGenotypeMatrix.from_hdf5(
-        shared_datadir / "Song_2016_phased_chr_1000.hdf5",
-        "directoryname"
-    )
+    song1 = DensePhasedGenotypeMatrix.from_hdf5(shared_datadir / "Song_2016_phased_chr_1000.hdf5", None)
+    song2 = DensePhasedGenotypeMatrix.from_hdf5(shared_datadir / "Song_2016_phased_chr_1000.hdf5", "directoryname")
 
     # assert file was read correctly
     assert numpy.all(song_dpgmat.mat == song1.mat)

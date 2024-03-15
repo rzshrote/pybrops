@@ -983,7 +983,7 @@ def test_eqcv_wt_fdel(prob):
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
+def test___init___is_concrete():
     pass # pass because this fails due to lack of PyMOO documentation
     # assert_method_isconcrete(Problem, "__init__")
 

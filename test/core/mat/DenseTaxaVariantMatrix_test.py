@@ -158,13 +158,13 @@ def test_class_docstring():
 ################################################################################
 ########################## Test Class Special Methods ##########################
 ################################################################################
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(DenseTaxaVariantMatrix, "__init__")
 
-def test_copy_is_concrete():
+def test___copy___is_concrete():
     assert_method_isconcrete(DenseTaxaVariantMatrix, "__copy__")
 
-def test_deepcopy_is_concrete():
+def test___deepcopy___is_concrete():
     assert_method_isconcrete(DenseTaxaVariantMatrix, "__deepcopy__")
 
 ################################################################################

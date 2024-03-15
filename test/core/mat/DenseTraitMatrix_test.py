@@ -48,17 +48,17 @@ def test_class_docstring():
 
 ### __init__
 
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(DenseTraitMatrix, "__init__")
 
 ### __copy__
 
-def test_copy_is_concrete():
+def test___copy___is_concrete():
     assert_method_isconcrete(DenseTraitMatrix, "__copy__")
 
 ### __deepcopy__
 
-def test_deepcopy_is_concrete():
+def test___deepcopy___is_concrete():
     assert_method_isconcrete(DenseTraitMatrix, "__deepcopy__")
 
 ################################################################################

@@ -128,7 +128,7 @@ def test_L2NormGenomicSubsetSelection_docstring():
 ############################# Test concrete methods ############################
 
 ### __init__ ###
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(L2NormGenomicSubsetSelection, "__init__")
 
 def test_init(selprot_single, selprot_multi):

@@ -1,6 +1,7 @@
 import pytest
 import numpy
 import copy
+import os
 
 from pybrops.test.assert_python import assert_classmethod_isconcrete, not_raises
 from pybrops.test.assert_python import assert_class_documentation
@@ -172,13 +173,13 @@ def test_class_docstring():
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(DenseGenotypeMatrix, "__init__")
 
-def test_copy_is_concrete():
+def test___copy___is_concrete():
     assert_method_isconcrete(DenseGenotypeMatrix, "__copy__")
 
-def test_deepcopy_is_concrete():
+def test___deepcopy___is_concrete():
     assert_method_isconcrete(DenseGenotypeMatrix, "__deepcopy__")
 
 def test_adjoin_taxa_is_concrete():
@@ -397,6 +398,9 @@ def test_vrnt_axis_fdel(mat):
 ################################################################################
 
 ########### Matrix element copy-on-manipulation ############
+        
+### adjoin_taxa
+        
 def test_adjoin_taxa_cls(mat, mat_int8, taxa_object, taxa_grp_int64):
     m = mat.adjoin_taxa(mat)
     assert numpy.all(m.mat == numpy.append(mat_int8, mat_int8, axis = mat.taxa_axis))
@@ -418,6 +422,8 @@ def test_adjoin_taxa_ndarray(mat, mat_int8, taxa_object, taxa_grp_int64):
     assert numpy.all(m.vrnt_chrgrp_spix == mat.vrnt_chrgrp_spix)
     assert numpy.all(m.vrnt_chrgrp_len == mat.vrnt_chrgrp_len)
     assert m.ploidy == mat.ploidy
+
+### adjoin_vrnt
 
 def test_adjoin_vrnt_cls(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     m = mat.adjoin_vrnt(mat)
@@ -466,6 +472,8 @@ def test_adjoin_vrnt_ndarray(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64
     assert numpy.all(m.taxa_grp_len == mat.taxa_grp_len)
     assert m.ploidy == mat.ploidy
 
+### delete_taxa
+
 def test_delete_taxa_cls_slice(mat, mat_int8, taxa_object, taxa_grp_int64):
     obj = slice(0,2,None)
     m = mat.delete_taxa(obj)
@@ -501,6 +509,8 @@ def test_delete_taxa_cls_array_like(mat, mat_int8, taxa_object, taxa_grp_int64):
     assert numpy.all(m.vrnt_chrgrp_spix == mat.vrnt_chrgrp_spix)
     assert numpy.all(m.vrnt_chrgrp_len == mat.vrnt_chrgrp_len)
     assert m.ploidy == mat.ploidy
+
+### delete_vrnt
 
 def test_delete_vrnt_cls_slice(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     obj = slice(0,2,None)
@@ -559,6 +569,8 @@ def test_delete_vrnt_cls_array_like(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypo
     assert numpy.all(m.taxa_grp_len == mat.taxa_grp_len)
     assert m.ploidy == mat.ploidy
 
+### insert_taxa
+
 def test_insert_taxa_cls_slice(mat, mat_int8, taxa_object, taxa_grp_int64):
     obj = slice(0,len(mat_int8),None)
     m = mat.insert_taxa(obj, mat)
@@ -594,6 +606,8 @@ def test_insert_taxa_cls_array_like(mat, mat_int8, taxa_object, taxa_grp_int64):
     assert numpy.all(m.vrnt_chrgrp_spix == mat.vrnt_chrgrp_spix)
     assert numpy.all(m.vrnt_chrgrp_len == mat.vrnt_chrgrp_len)
     assert m.ploidy == mat.ploidy
+
+### insert_vrnt
 
 def test_insert_vrnt_cls_slice(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     obj = slice(0,len(mat_int8),None)
@@ -652,6 +666,8 @@ def test_insert_vrnt_cls_array_like(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypo
     assert numpy.all(m.taxa_grp_len == mat.taxa_grp_len)
     assert m.ploidy == mat.ploidy
 
+### select_taxa
+
 def test_select_taxa_cls_array_like(mat, mat_int8, taxa_object, taxa_grp_int64):
     obj = [0,0,1]
     m = mat.select_taxa(obj)
@@ -663,6 +679,8 @@ def test_select_taxa_cls_array_like(mat, mat_int8, taxa_object, taxa_grp_int64):
     assert numpy.all(m.vrnt_chrgrp_spix == mat.vrnt_chrgrp_spix)
     assert numpy.all(m.vrnt_chrgrp_len == mat.vrnt_chrgrp_len)
     assert m.ploidy == mat.ploidy
+
+### select_vrnt
 
 def test_select_vrnt_cls_array_like(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     obj = [0,0,1]
@@ -683,6 +701,8 @@ def test_select_vrnt_cls_array_like(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypo
     assert numpy.all(m.taxa_grp_len == mat.taxa_grp_len)
     assert m.ploidy == mat.ploidy
 
+### concat_taxa
+
 def test_concat_taxa_cls(mat, mat_int8, taxa_object, taxa_grp_int64):
     obj = [mat, mat]
     m = mat.concat_taxa(obj)
@@ -694,6 +714,8 @@ def test_concat_taxa_cls(mat, mat_int8, taxa_object, taxa_grp_int64):
     assert numpy.all(m.vrnt_chrgrp_spix == mat.vrnt_chrgrp_spix)
     assert numpy.all(m.vrnt_chrgrp_len == mat.vrnt_chrgrp_len)
     assert m.ploidy == mat.ploidy
+
+### concat_vrnt
 
 def test_concat_vrnt_cls(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vrnt_name_object, vrnt_genpos_float64, vrnt_xoprob_float64, vrnt_hapgrp_int64, vrnt_hapalt_object, vrnt_hapref_object, vrnt_mask_bool):
     obj = [mat, mat]
@@ -715,6 +737,9 @@ def test_concat_vrnt_cls(mat, mat_int8, vrnt_chrgrp_int64, vrnt_phypos_int64, vr
     assert m.ploidy == mat.ploidy
 
 ################ Matrix summary statistics #################
+
+### tacount
+
 def test_tacount_None(mat, mat_int8):
     a = mat.tacount(dtype = None)
     b = mat_int8
@@ -726,6 +751,8 @@ def test_tacount_float32(mat, mat_int8):
     b = numpy.float32(mat_int8)
     assert numpy.all(a == b)
     assert a.dtype == b.dtype
+
+### tafreq
 
 def test_tafreq_None(mat, mat_int8, mat_ploidy):
     a = mat.tafreq(dtype = None)
@@ -739,6 +766,8 @@ def test_tafreq_float32(mat, mat_int8, mat_ploidy):
     assert numpy.all(a == b)
     assert a.dtype == b.dtype
 
+### acount
+
 def test_acount_None(mat, mat_int8):
     a = mat.acount(dtype = None)
     b = mat_int8.sum(0)
@@ -750,6 +779,8 @@ def test_acount_float32(mat, mat_int8):
     b = numpy.float32(mat_int8.sum(0))
     assert numpy.all(a == b)
     assert a.dtype == b.dtype
+
+### afreq
 
 def test_afreq_None(mat, mat_int8, mat_ploidy):
     a = mat.afreq(dtype = None)
@@ -763,6 +794,8 @@ def test_afreq_float32(mat, mat_int8, mat_ploidy):
     assert numpy.all(a == b)
     assert a.dtype == b.dtype
 
+### apoly
+
 def test_apoly_None(mat, mat_int8, mat_ploidy):
     a = mat.apoly(dtype = None)
     mask1 = numpy.all(mat_int8 == 0, axis=0)
@@ -771,6 +804,8 @@ def test_apoly_None(mat, mat_int8, mat_ploidy):
     assert numpy.all(a == b)
     assert a.dtype == bool
 
+### afreq
+
 def test_afreq_float32(mat, mat_int8, mat_ploidy):
     a = mat.apoly(dtype = "float32")
     mask1 = numpy.all(mat_int8 == 0, axis=0)
@@ -778,6 +813,8 @@ def test_afreq_float32(mat, mat_int8, mat_ploidy):
     b = numpy.float32(numpy.logical_not(mask1 | mask2))
     assert numpy.all(a == b)
     assert a.dtype == b.dtype
+
+### maf
 
 def test_maf_None(mat, mat_int8, mat_ploidy):
     a = mat.maf(dtype = None)
@@ -792,6 +829,8 @@ def test_maf_float32(mat, mat_int8, mat_ploidy):
     b[b > 0.5] = 1.0 - b[b > 0.5]
     assert numpy.all(a == b)
     assert a.dtype == b.dtype
+
+### meh
 
 def test_meh_None(mat, mat_int8, mat_ploidy):
     a = mat.meh(dtype = None)
@@ -810,8 +849,54 @@ def test_meh_float32(mat, mat_int8, mat_ploidy):
 # TODO: test gtcount
 # TODO: test gtfreq
 
-# TODO: test to_hdf5
-# TODO: test from_hdf5
+### to_hdf5
+
+def test_to_hdf5(mat):
+    # create file name
+    fp = "tmp.h5"
+
+    # save to HDF5 format
+    mat.to_hdf5(fp)
+
+    assert os.path.exists(fp)
+
+### from_hdf5
+
+def test_from_hdf5(mat):
+    # create file name
+    fp = "tmp.h5"
+
+    # save HDF5 file
+    mat.to_hdf5(fp)
+
+    # read HDF5 file
+    out = DenseGenotypeMatrix.from_hdf5(fp)
+
+    # assert values
+    assert numpy.all(mat.mat == out.mat)
+    assert numpy.all(mat.taxa == out.taxa)
+    assert numpy.all(mat.taxa_grp == out.taxa_grp)
+    assert numpy.all(mat.vrnt_chrgrp == out.vrnt_chrgrp)
+    assert numpy.all(mat.vrnt_phypos == out.vrnt_phypos)
+    assert numpy.all(mat.vrnt_name == out.vrnt_name)
+    assert numpy.all(mat.vrnt_genpos == out.vrnt_genpos)
+    assert numpy.all(mat.vrnt_xoprob == out.vrnt_xoprob)
+    assert numpy.all(mat.vrnt_hapgrp == out.vrnt_hapgrp)
+    assert numpy.all(mat.vrnt_hapalt == out.vrnt_hapalt)
+    assert numpy.all(mat.vrnt_hapref == out.vrnt_hapref)
+    assert numpy.all(mat.vrnt_mask == out.vrnt_mask)
+    assert numpy.all(mat.ploidy == out.ploidy)
+
+    # assert metadata
+    assert numpy.all(mat.taxa_grp_name == out.taxa_grp_name)
+    assert numpy.all(mat.taxa_grp_stix == out.taxa_grp_stix)
+    assert numpy.all(mat.taxa_grp_spix == out.taxa_grp_spix)
+    assert numpy.all(mat.taxa_grp_len == out.taxa_grp_len)
+    assert numpy.all(mat.vrnt_chrgrp_name == out.vrnt_chrgrp_name)
+    assert numpy.all(mat.vrnt_chrgrp_stix == out.vrnt_chrgrp_stix)
+    assert numpy.all(mat.vrnt_chrgrp_spix == out.vrnt_chrgrp_spix)
+    assert numpy.all(mat.vrnt_chrgrp_len == out.vrnt_chrgrp_len)
+
 # TODO: test from_vcf
 
 ################################################################################

@@ -128,7 +128,7 @@ def test_MeanGenomicRelationshipSubsetSelection_docstring():
 ############################# Test concrete methods ############################
 
 ### __init__ ###
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(MeanGenomicRelationshipSubsetSelection, "__init__")
 
 def test_init(selprot_single, selprot_multi):

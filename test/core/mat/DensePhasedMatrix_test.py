@@ -33,7 +33,7 @@ def test_class_docstring():
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(DensePhasedMatrix, "__init__")
 
 def test_adjoin_phase_is_concrete():

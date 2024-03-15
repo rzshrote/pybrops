@@ -246,7 +246,7 @@ def test_gebv_fdel(prob):
 ################
 ### __init__ ###
 ################
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(GenomicEstimatedBreedingValueSubsetSelectionProblem, "__init__")
 
 ################
