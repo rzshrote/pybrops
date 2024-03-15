@@ -1010,9 +1010,9 @@ class DensePhasedGenotypeMatrix(
         ----------
         filename : str
             HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is read from base HDF5 group.
+        groupname : str, None
+            If ``str``, HDF5 group name under which GenotypeMatrix data is stored.
+            If ``None``, GenotypeMatrix is read from base HDF5 group.
 
         Returns
         -------
