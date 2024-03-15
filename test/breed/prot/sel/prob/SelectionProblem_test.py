@@ -281,7 +281,7 @@ def test_eqcv_trans_kwargs_fdel(prob):
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
+def test___init___is_concrete():
     pass # inherts from pymoo problem, so skip
     # assert_method_isconcrete(SelectionProblem, "__init__")
 

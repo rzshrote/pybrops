@@ -202,7 +202,7 @@ def test_class_docstring():
 ################################################################################
 ############################# Test concrete methods ############################
 ################################################################################
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(TruePhenotyping, "__init__")
 
 def test_phenotype_is_concrete():

@@ -150,7 +150,7 @@ def test_UsefulnessCriterionSubsetSelection_docstring():
 ############################# Test concrete methods ############################
 
 ### __init__ ###
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(UsefulnessCriterionSubsetSelection, "__init__")
 
 ### problem ###

@@ -127,7 +127,7 @@ def test_class_docstring():
     assert_class_documentation(EstimatedBreedingValueSubsetSelection)
 
 ############################# Test concrete methods ############################
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(EstimatedBreedingValueSubsetSelection, "__init__")
 
 def test_problem_is_concrete():

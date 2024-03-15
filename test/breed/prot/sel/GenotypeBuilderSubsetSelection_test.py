@@ -132,7 +132,7 @@ def test_class_docstring():
 ############################# Test concrete methods ############################
 
 ### __init__ ###
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(GenotypeBuilderSubsetSelection, "__init__")
 
 ### problem ###

@@ -80,7 +80,7 @@ def test_mat_fdel(cmat, A_mat_float64):
 ################################################################################
 
 ### __init__
-def test_init_is_concrete():
+def test___init___is_concrete():
     assert_method_isconcrete(DenseCoancestryMatrix, "__init__")
 
 ### mat_asformat
