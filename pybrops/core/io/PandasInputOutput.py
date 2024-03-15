@@ -9,11 +9,11 @@ __all__ = [
 ]
 
 from abc import ABCMeta, abstractmethod
-
 import pandas
 
-
-class PandasInputOutput(metaclass=ABCMeta):
+class PandasInputOutput(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class for defining pandas.DataFrame input/output functionality.
 

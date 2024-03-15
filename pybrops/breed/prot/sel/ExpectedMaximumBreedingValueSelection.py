@@ -43,7 +43,9 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class ExpectedMaximumBreedingValueSelectionMixin(metaclass=ABCMeta):
+class ExpectedMaximumBreedingValueSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for Expected Maximum Breeding Value (EMBV) selection with constraints.
     """

@@ -27,7 +27,9 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class OptimalHaploidValueSelectionProblemMixin(metaclass=ABCMeta):
+class OptimalHaploidValueSelectionProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Helper class to implement properties common to OHV."""
 
     ########################## Special Object Methods ##########################

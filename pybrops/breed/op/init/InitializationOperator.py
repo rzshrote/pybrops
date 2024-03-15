@@ -12,7 +12,9 @@ from abc import ABCMeta, abstractmethod
 from typing import Optional
 
 
-class InitializationOperator(metaclass=ABCMeta):
+class InitializationOperator(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class defining interfaces for the evaluation of an entire breeding
     program.

@@ -10,7 +10,6 @@ __all__ = [
 from abc import ABCMeta, abstractmethod
 from typing import Optional
 
-
 class Copyable(
         metaclass = ABCMeta,
     ):

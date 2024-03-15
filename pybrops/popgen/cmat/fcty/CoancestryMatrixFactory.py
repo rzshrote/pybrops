@@ -11,7 +11,9 @@ from abc import ABCMeta, abstractmethod
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class CoancestryMatrixFactory(metaclass=ABCMeta):
+class CoancestryMatrixFactory(
+        metaclass = ABCMeta,
+    ):
     """
     Factory class for producing CoancestryMatrix objects.
     """

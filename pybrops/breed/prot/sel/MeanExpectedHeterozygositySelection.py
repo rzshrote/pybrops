@@ -42,7 +42,9 @@ from pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory import Dense
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class MeanExpectedHeterozygositySelectionMixin(metaclass=ABCMeta):
+class MeanExpectedHeterozygositySelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for Mean Expected Heterozygosity Selection with constraints.
     """

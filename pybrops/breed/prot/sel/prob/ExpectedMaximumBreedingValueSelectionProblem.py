@@ -26,7 +26,9 @@ from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 
-class ExpectedMaximumBreedingValueSelectionProblemMixin(metaclass=ABCMeta):
+class ExpectedMaximumBreedingValueSelectionProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Helper class to implement properties common to EMBV selection problems."""
 
     ########################## Special Object Methods ##########################

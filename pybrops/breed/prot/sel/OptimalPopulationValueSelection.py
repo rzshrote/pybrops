@@ -26,7 +26,9 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
-class OptimalPopulationValueSelectionMixin(metaclass=ABCMeta):
+class OptimalPopulationValueSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for Optimal Population Value (OPV) Selection with constraints.
     """

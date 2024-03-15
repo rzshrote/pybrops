@@ -4,10 +4,11 @@ checking routines.
 """
 
 from abc import ABCMeta, abstractmethod
-from typing import Optional, Sequence, Union
+from typing import Optional
 
-
-class NPZInputOutput(metaclass=ABCMeta):
+class NPZInputOutput(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class for defining NPZ input/output functionality.
 

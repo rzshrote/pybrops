@@ -43,7 +43,9 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix, check_
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class EstimatedBreedingValueSelectionMixin(metaclass=ABCMeta):
+class EstimatedBreedingValueSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Mixin class to provide properties common to all Estimated Breeding Value Selection protocols.
     """

@@ -22,7 +22,9 @@ from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 
-class UsefulnessCriterionSelectionProblemMixin(metaclass=ABCMeta):
+class UsefulnessCriterionSelectionProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Mixin class containing properties common to UC selection problems."""
 
     ########################## Special Object Methods ##########################

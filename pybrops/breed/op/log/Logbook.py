@@ -12,7 +12,9 @@ __all__ = [
 from abc import ABCMeta, abstractmethod
 
 
-class Logbook(metaclass=ABCMeta):
+class Logbook(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class defining interfaces for logging statistics about an entire
     breeding program.

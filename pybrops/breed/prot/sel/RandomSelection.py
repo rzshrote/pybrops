@@ -41,7 +41,9 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class RandomSelectionMixin(metaclass=ABCMeta):
+class RandomSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for Random Selection (RS) with constraints.
     """

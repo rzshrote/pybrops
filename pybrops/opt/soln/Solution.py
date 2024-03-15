@@ -18,7 +18,9 @@ from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_nda
 from pybrops.core.error.error_value_python import check_is_gteq
 
 
-class Solution(metaclass=ABCMeta):
+class Solution(
+        metaclass = ABCMeta,
+    ):
     """
     A semi-abstract class defining a Solution interface and implementing several
     essential properties for all Solution classes.

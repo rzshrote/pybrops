@@ -12,7 +12,9 @@ from abc import ABCMeta, abstractmethod
 from typing import Optional
 
 
-class SurvivorSelectionOperator(metaclass=ABCMeta):
+class SurvivorSelectionOperator(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class defining interfaces for survivor selection within an entire
     breeding program.

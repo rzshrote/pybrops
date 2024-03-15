@@ -8,7 +8,9 @@ structure. They are points were germplasm and information are located.
 from abc import ABCMeta, abstractmethod
 
 
-class BreedingNode(metaclass=ABCMeta):
+class BreedingNode(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class defining a breeding node. Breeding nodes compose complex
     breeding programs in a graph-like structure. They are points were germplasm

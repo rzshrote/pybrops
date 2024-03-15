@@ -21,7 +21,9 @@ from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class GenotypeBuilderSelectionProblemMixin(metaclass=ABCMeta):
+class GenotypeBuilderSelectionProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Helper class to implement properties common to GB."""
 
     ########################## Special Object Methods ##########################

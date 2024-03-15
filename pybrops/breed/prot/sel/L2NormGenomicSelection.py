@@ -39,7 +39,9 @@ from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFac
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class L2NormGenomicSelectionMixin(metaclass=ABCMeta):
+class L2NormGenomicSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for L2-Norm Genomic Selection (L2GS) with constraints.
     """

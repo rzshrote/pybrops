@@ -24,7 +24,9 @@ from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
 
 
-class RandomSelectionProblemMixin(metaclass=ABCMeta):
+class RandomSelectionProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Helper class containing common properties for random selection problems."""
 
     ########################## Special Object Methods ##########################

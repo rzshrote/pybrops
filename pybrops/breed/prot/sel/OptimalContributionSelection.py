@@ -42,7 +42,9 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_Genotype
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory, check_is_CoancestryMatrixFactory
 
-class OptimalContributionSelectionMixin(metaclass=ABCMeta):
+class OptimalContributionSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for Optimal Contribution Selection (OCS) with constraints.
     """

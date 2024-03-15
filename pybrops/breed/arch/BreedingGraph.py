@@ -13,7 +13,9 @@ __all__ = [
 from abc import ABCMeta, abstractmethod
 
 
-class BreedingGraph(metaclass=ABCMeta):
+class BreedingGraph(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class defining interfaces for breeding graphs. Breeding graphs
     represent breeding programs with multiple subpopulations. Germplasm and

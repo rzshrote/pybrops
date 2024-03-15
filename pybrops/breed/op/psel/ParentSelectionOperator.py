@@ -11,7 +11,9 @@ __all__ = [
 from abc import ABCMeta, abstractmethod
 
 
-class ParentSelectionOperator(metaclass=ABCMeta):
+class ParentSelectionOperator(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class defining interfaces for parental selection within an entire
     breeding program.

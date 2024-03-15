@@ -45,7 +45,9 @@ from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
-class UsefulnessCriterionSelectionMixin(metaclass=ABCMeta):
+class UsefulnessCriterionSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for Usefulness Criterion (UC) Selection with constraints.
     """

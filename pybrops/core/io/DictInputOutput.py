@@ -10,7 +10,9 @@ __all__ = [
 
 from abc import ABCMeta, abstractmethod
 
-class DictInputOutput(metaclass=ABCMeta):
+class DictInputOutput(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class for defining ``dict`` input/output functionality.
 
