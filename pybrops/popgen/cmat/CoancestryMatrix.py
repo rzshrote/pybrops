@@ -9,10 +9,12 @@ __all__ = [
 
 from abc import ABCMeta, abstractmethod
 from numbers import Real
+from pathlib import Path
 from typing import Optional, Union
 import numpy
 from numpy.typing import DTypeLike
 import pandas
+import h5py
 from pybrops.core.io.CSVInputOutput import CSVInputOutput
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.io.PandasInputOutput import PandasInputOutput
@@ -372,7 +374,7 @@ class CoancestryMatrix(
     @abstractmethod
     def to_hdf5(
             self, 
-            filename: str, 
+            filename: Union[str,Path,h5py.File], 
             groupname: Optional[str]
         ) -> None:
         """
@@ -380,10 +382,11 @@ class CoancestryMatrix(
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name to which to write.
-        groupname : str or None
-            HDF5 group name under which object data is stored.
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name to which to write. File is closed after writing.
+            If ``h5py.File``, an opened HDF5 file to which to write. File is not closed after writing.
+        groupname : str, None
+            If ``str``, an HDF5 group name under which object data is stored.
             If None, object is written to the base HDF5 group.
         """
         raise NotImplementedError("method is abstract")
@@ -444,7 +447,7 @@ class CoancestryMatrix(
     @abstractmethod
     def from_hdf5(
             cls, 
-            filename: str, 
+            filename: Union[str,Path,h5py.File], 
             groupname: Optional[str]
         ) -> 'CoancestryMatrix':
         """
@@ -452,11 +455,12 @@ class CoancestryMatrix(
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which object data is stored.
-            If None, object is read from base HDF5 group.
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name from which to read. File is closed after reading.
+            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.
+        groupname : str, None
+            If ``str``, an HDF5 group name under which object data is stored.
+            If ``None``, object is read from base HDF5 group.
 
         Returns
         -------

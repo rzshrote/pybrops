@@ -7,18 +7,19 @@ __all__ = [
     "check_is_DenseCoancestryMatrix",
 ]
 
-import math
 from numbers import Integral, Real
+from pathlib import Path
 from typing import Optional, Sequence, Union
 import numpy
 import warnings
 import h5py
 from numpy.typing import DTypeLike
 import pandas
+
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_pandas import check_Series_all_type, check_is_pandas_DataFrame
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
 from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column
 from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column_index
 from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column_indices
@@ -37,7 +38,7 @@ from pybrops.core.error.error_type_python import check_is_str_or_Integral
 from pybrops.core.error.error_type_python import check_is_str_or_Sequence
 from pybrops.core.error.error_value_python import check_str_value
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
-from pybrops.core.util.h5py import save_dict_to_hdf5
+from pybrops.core.util.h5py import h5py_File_write_dict
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 
 class DenseCoancestryMatrix(
@@ -734,38 +735,32 @@ class DenseCoancestryMatrix(
 
     def to_hdf5(
             self, 
-            filename: str, 
-            groupname: Optional[str] = None
+            filename: Union[str,Path,h5py.File], 
+            groupname: Optional[str] = None,
+            overwrite: bool = True,
         ) -> None:
         """
-        Write GenotypeMatrix to an HDF5 file.
+        Write ``DenseCoancestryMatrix`` to an HDF5 file.
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name to which to write.
-        groupname : str or None
-            HDF5 group name under which the ``DenseMatrix`` data is stored.
-            If ``None``, the ``DenseMatrix`` is written to the base HDF5 group.
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name to which to write. File is closed after writing.
+            If ``h5py.File``, an opened HDF5 file to which to write. File is not closed after writing.
+
+        groupname : str, None
+            If ``str``, an HDF5 group name under which the ``DenseCoancestryMatrix`` data is stored.
+            If ``None``, the ``DenseCoancestryMatrix`` is written to the base HDF5 group.
+
+        overwrite : bool
+            Whether to overwrite values in an HDF5 file if a field already exists.
         """
-        h5file = h5py.File(filename, "a")                       # open HDF5 in write mode
-        ######################################################### process groupname argument
-        if isinstance(groupname, str):                          # if we have a string
-            if groupname[-1] != '/':                            # if last character in string is not '/'
-                groupname += '/'                                # add '/' to end of string
-        elif groupname is None:                                 # else if groupname is None
-            groupname = ""                                      # empty string
-        else:                                                   # else raise error
-            raise TypeError("'groupname' must be of type str or None")
-        ######################################################### populate HDF5 file
-        data_dict = {                                           # data dictionary
-            "mat": self.mat,
-            "taxa" : self.taxa,
-            "taxa_grp" : self.taxa_grp
-        }
-        save_dict_to_hdf5(h5file, groupname, data_dict)         # save data
-        ######################################################### write conclusion
-        h5file.close()                                          # close the file
+        # call super function
+        super(DenseCoancestryMatrix, self).to_hdf5(
+            filename  = filename,
+            groupname = groupname,
+            overwrite = overwrite,
+        )
 
     ############################## Class Methods ###############################
 
@@ -1011,7 +1006,7 @@ class DenseCoancestryMatrix(
     @classmethod
     def from_hdf5(
             cls, 
-            filename: str, 
+            filename: Union[str,Path,h5py.File], 
             groupname: Optional[str] = None
         ) -> 'DenseCoancestryMatrix':
         """
@@ -1019,48 +1014,23 @@ class DenseCoancestryMatrix(
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which the ``DenseCoancestryMatrix`` data is stored.
-            If None, the ``DenseCoancestryMatrix`` is read from base HDF5 group.
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name from which to read. File is closed after reading.
+            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.
+        groupname : str, None
+            If ``str``, an HDF5 group name under which the ``DenseCoancestryMatrix`` data is stored.
+            If ``None``, the ``DenseCoancestryMatrix`` is read from base HDF5 group.
 
         Returns
         -------
         out : DenseCoancestryMatrix
-            A dense matrix read from file.
+            A ``DenseCoancestryMatrix`` read from file.
         """
-        check_file_exists(filename)                             # check file exists
-        h5file = h5py.File(filename, "r")                       # open HDF5 in read only
-        ######################################################### process groupname argument
-        if isinstance(groupname, str):                          # if we have a string
-            check_h5py_File_has_group(h5file, filename, groupname)    # check that group exists
-            if groupname[-1] != '/':                            # if last character in string is not '/'
-                groupname += '/'                                # add '/' to end of string
-        elif groupname is None:                                 # else if groupname is None
-            groupname = ""                                      # empty string
-        else:                                                   # else raise error
-            raise TypeError("'groupname' must be of type str or None")
-        ######################################################### check that we have all required fields
-        required_fields = ["mat"]                               # all required arguments
-        for field in required_fields:                           # for each required field
-            fieldname = groupname + field                       # concatenate base groupname and field
-            check_h5py_File_has_group(h5file, filename, fieldname)    # check that group exists
-        ######################################################### read data
-        data_dict = {                                           # output dictionary
-            "mat": None,
-            "taxa" : None,
-            "taxa_grp" : None
-        }
-        for field in data_dict.keys():                          # for each field
-            fieldname = groupname + field                       # concatenate base groupname and field
-            if fieldname in h5file:                             # if the field exists in the HDF5 file
-                data_dict[field] = h5file[fieldname][()]        # read array
-        ######################################################### read conclusion
-        h5file.close()                                          # close file
-        ######################################################### create object
-        mat = cls(**data_dict)                                  # create object from read data
-        return mat
+        # call super function
+        return super(DenseCoancestryMatrix, cls).from_hdf5(
+            filename  = filename,
+            groupname = groupname,
+        )
 
 
 

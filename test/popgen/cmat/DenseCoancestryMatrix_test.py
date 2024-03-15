@@ -1,6 +1,8 @@
+from pathlib import Path
 import pytest
 import numpy
 import os
+import h5py
 from os.path import isfile
 from pybrops.test.assert_python import assert_classmethod_isabstract, assert_classmethod_isconcrete, not_raises
 from pybrops.test.assert_python import assert_class_documentation
@@ -15,29 +17,49 @@ from .common_fixtures import *
 ################################################################################
 ################################ Test fixtures #################################
 ################################################################################
-@pytest.fixture
-def X_mat_int8():
-    X = numpy.array(
-       [[-1,  1,  0,  0, -1, -1,  0, -1,  0, -1, -1,  1, -1,  0,  1, -1],
-        [-1,  1, -1, -1,  0,  1,  0,  0,  0, -1,  0,  1,  0,  0,  0,  1],
-        [ 1,  1,  1,  0,  0,  1,  1, -1, -1,  0,  0,  1, -1, -1, -1, -1],
-        [-1,  1,  1, -1,  1,  1,  1,  0,  1,  1,  0,  1,  1, -1, -1,  1],
-        [ 1,  1,  1, -1,  0,  0,  0, -1, -1,  1, -1,  0,  1,  0, -1, -1],
-        [-1, -1,  1,  0, -1,  0,  1, -1, -1,  0, -1,  1,  0, -1, -1,  1],
-        [ 0,  0,  0,  1, -1,  0,  1, -1,  1,  0, -1,  1, -1,  0, -1,  0],
-        [-1,  1,  0, -1,  0,  1,  1,  0,  0, -1, -1,  1, -1, -1,  0, -1]], 
-        dtype = "int8"
-    )
-    return X
+
+############################################################
+################# General shape parameters #################
 
 @pytest.fixture
-def A_mat_float64(X_mat_int8):
-    A = ((1.0/X_mat_int8.shape[1]) * (X_mat_int8.dot(X_mat_int8.T))) + 1.0
+def ntaxa():
+    yield 10 # must be divisible by 2
+
+@pytest.fixture
+def nvrnt():
+    yield 100
+
+######################## Genotypes #########################
+@pytest.fixture
+def Xmat(ntaxa, nvrnt):
+    out = numpy.random.randint(-1, 2, (ntaxa, nvrnt))
+    out = out.astype("int8")
+    yield out
+
+@pytest.fixture
+def Amat(Xmat):
+    A = ((1.0/Xmat.shape[1]) * (Xmat.dot(Xmat.T))) + 1.0
     yield A
 
 @pytest.fixture
-def cmat(A_mat_float64):
-    yield DummyDenseCoancestryMatrix(A_mat_float64)
+def taxa(ntaxa):
+    out = numpy.array(["Taxa"+str(i).zfill(3) for i in range(ntaxa)], dtype = object)
+    yield out
+
+@pytest.fixture
+def taxa_grp(ntaxa):
+    out = numpy.repeat(numpy.arange(ntaxa // 2), 2)
+    yield out
+
+@pytest.fixture
+def cmat(Amat, taxa, taxa_grp):
+    out = DummyDenseCoancestryMatrix(
+        mat = Amat,
+        taxa = taxa,
+        taxa_grp = taxa_grp,
+    )
+    out.group_taxa()
+    yield out
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -52,26 +74,34 @@ def test_from_gmat_is_abstract():
     assert_classmethod_isabstract(DenseCoancestryMatrix, "from_gmat")
 
 ################################################################################
+########################## Test Class Special Methods ##########################
+################################################################################
+
+### __init__
+def test___init___is_concrete():
+    assert_method_isconcrete(DenseCoancestryMatrix, "__init__")
+
+################################################################################
 ############################ Test Class Properties #############################
 ################################################################################
 
 ################ General matrix properties #################
-def test_mat_fget(cmat, A_mat_float64):
-    assert numpy.all(cmat == A_mat_float64)
+def test_mat_fget(cmat, Amat):
+    assert numpy.all(cmat == Amat)
 
-def test_mat_fset_TypeError(cmat, A_mat_float64):
+def test_mat_fset_TypeError(cmat, Amat):
     with pytest.raises(TypeError):
-        cmat.mat = list(A_mat_float64.flatten())
+        cmat.mat = list(Amat.flatten())
 
-def test_mat_fset_ValueError(cmat, A_mat_float64):
+def test_mat_fset_ValueError(cmat, Amat):
     with pytest.raises(ValueError):
-        cmat.mat = A_mat_float64.flatten()
+        cmat.mat = Amat.flatten()
 
-def test_mat_fset(cmat, A_mat_float64):
-    cmat.mat = A_mat_float64
-    assert numpy.all(cmat.mat == A_mat_float64)
+def test_mat_fset(cmat, Amat):
+    cmat.mat = Amat
+    assert numpy.all(cmat.mat == Amat)
 
-def test_mat_fdel(cmat, A_mat_float64):
+def test_mat_fdel(cmat, Amat):
     with pytest.raises(AttributeError):
         del cmat.mat
 
@@ -79,21 +109,20 @@ def test_mat_fdel(cmat, A_mat_float64):
 ############################# Test concrete methods ############################
 ################################################################################
 
-### __init__
-def test___init___is_concrete():
-    assert_method_isconcrete(DenseCoancestryMatrix, "__init__")
+############################################################
+#################### Matrix conversion #####################
 
 ### mat_asformat
 def test_mat_asformat_is_concrete():
     assert_method_isconcrete(DenseCoancestryMatrix, "mat_asformat")
 
-def test_mat_asformat_coancestry(cmat, A_mat_float64):
+def test_mat_asformat_coancestry(cmat, Amat):
     A = cmat.mat_asformat("coancestry")
-    assert numpy.all(A == A_mat_float64)
+    assert numpy.all(A == Amat)
 
-def test_mat_asformat_kinship(cmat, A_mat_float64):
+def test_mat_asformat_kinship(cmat, Amat):
     K = cmat.mat_asformat("kinship")
-    assert numpy.all(K == (0.5 * A_mat_float64))
+    assert numpy.all(K == (0.5 * Amat))
 
 def test_mat_asformat_TypeError(cmat):
     with pytest.raises(TypeError):
@@ -103,65 +132,68 @@ def test_mat_asformat_ValueError(cmat):
     with pytest.raises(ValueError):
         K = cmat.mat_asformat("unknown")
 
+############################################################
+################ Coancestry/kinship Methods ################
+
 ### coancestry
 def test_coancestry_is_concrete():
     assert_method_isconcrete(DenseCoancestryMatrix, "coancestry")
 
-def test_coancestry_2tuple(cmat, A_mat_float64):
-    n = A_mat_float64.shape[0]
+def test_coancestry_2tuple(cmat, Amat):
+    n = Amat.shape[0]
     for i in range(n):
         for j in range(n):
-            assert cmat.coancestry(i,j) == A_mat_float64[i,j]
+            assert cmat.coancestry(i,j) == Amat[i,j]
 
-def test_coancestry_1tuple(cmat, A_mat_float64):
-    n = A_mat_float64.shape[0]
+def test_coancestry_1tuple(cmat, Amat):
+    n = Amat.shape[0]
     for i in range(n):
-        assert numpy.all(cmat.coancestry(i) == A_mat_float64[i])
+        assert numpy.all(cmat.coancestry(i) == Amat[i])
 
-def test_coancestry_row_slice(cmat, A_mat_float64):
-    n = A_mat_float64.shape[0]
+def test_coancestry_row_slice(cmat, Amat):
+    n = Amat.shape[0]
     for i in range(n):
-        assert numpy.all(cmat.coancestry(i,slice(None)) == A_mat_float64[i,:])
+        assert numpy.all(cmat.coancestry(i,slice(None)) == Amat[i,:])
 
-def test_coancestry_col_slice(cmat, A_mat_float64):
-    n = A_mat_float64.shape[0]
+def test_coancestry_col_slice(cmat, Amat):
+    n = Amat.shape[0]
     for i in range(n):
-        assert numpy.all(cmat.coancestry(slice(None),i) == A_mat_float64[:,i])
+        assert numpy.all(cmat.coancestry(slice(None),i) == Amat[:,i])
 
-def test_coancestry_list_tuple(cmat, A_mat_float64):
+def test_coancestry_list_tuple(cmat, Amat):
     a = [2,3,5]
     b = [1,4,6]
-    assert numpy.all(cmat.coancestry(a,b) == A_mat_float64[a,b])
+    assert numpy.all(cmat.coancestry(a,b) == Amat[a,b])
 
 ### kinship
 def test_kinship_is_concrete():
     assert_method_isconcrete(DenseCoancestryMatrix, "kinship")
 
-def test_kinship_2tuple(cmat, A_mat_float64):
-    n = A_mat_float64.shape[0]
+def test_kinship_2tuple(cmat, Amat):
+    n = Amat.shape[0]
     for i in range(n):
         for j in range(n):
-            assert cmat.kinship(i,j) == (0.5 * A_mat_float64[i,j])
+            assert cmat.kinship(i,j) == (0.5 * Amat[i,j])
 
-def test_kinship_1tuple(cmat, A_mat_float64):
-    n = A_mat_float64.shape[0]
+def test_kinship_1tuple(cmat, Amat):
+    n = Amat.shape[0]
     for i in range(n):
-        assert numpy.all(cmat.kinship(i) == (0.5 * A_mat_float64[i]))
+        assert numpy.all(cmat.kinship(i) == (0.5 * Amat[i]))
 
-def test_kinship_row_slice(cmat, A_mat_float64):
-    n = A_mat_float64.shape[0]
+def test_kinship_row_slice(cmat, Amat):
+    n = Amat.shape[0]
     for i in range(n):
-        assert numpy.all(cmat.kinship(i,slice(None)) == (0.5 * A_mat_float64[i,:]))
+        assert numpy.all(cmat.kinship(i,slice(None)) == (0.5 * Amat[i,:]))
 
-def test_kinship_col_slice(cmat, A_mat_float64):
-    n = A_mat_float64.shape[0]
+def test_kinship_col_slice(cmat, Amat):
+    n = Amat.shape[0]
     for i in range(n):
-        assert numpy.all(cmat.kinship(slice(None),i) == (0.5 * A_mat_float64[:,i]))
+        assert numpy.all(cmat.kinship(slice(None),i) == (0.5 * Amat[:,i]))
 
-def test_kinship_list_tuple(cmat, A_mat_float64):
+def test_kinship_list_tuple(cmat, Amat):
     a = [2,3,5]
     b = [1,4,6]
-    assert numpy.all(cmat.kinship(a,b) == (0.5 * A_mat_float64[a,b]))
+    assert numpy.all(cmat.kinship(a,b) == (0.5 * Amat[a,b]))
 
 ### is_positive_semidefinite
 def test_is_positive_semidefinite_is_concrete():
@@ -240,6 +272,9 @@ def test_inverse_ValueError(cmat):
     with pytest.raises(ValueError):
         cmat.inverse(format = "unknown")
 
+############################################################
+################ Matrix summary statistics #################
+
 ### max
 def test_max_is_concrete():
     assert_method_isconcrete(DenseCoancestryMatrix, "max")
@@ -287,6 +322,9 @@ def test_min_kinship(cmat):
     with not_raises(Exception):
         tmp = cmat.min(format = "kinship")
     assert tmp == cmat.mat_asformat("kinship").min()
+
+############################################################
+##################### Matrix File I/O ######################
 
 ### to_pandas
 def test_to_pandas_is_concrete():
@@ -354,12 +392,8 @@ def test_to_pandas_taxa_TypeError(cmat):
         df = cmat.to_pandas(taxa = None)
     with pytest.raises(TypeError):
         df = cmat.to_pandas(taxa = object())
-    # since taxa values are None
-    with pytest.raises(TypeError):
-        df = cmat.to_pandas(taxa = ["a","b","c","d"])
 
 def test_to_pandas_taxa_ValueError(cmat):
-    cmat.taxa = numpy.array(["Taxon"+str(i) for i in range(cmat.ntaxa)], dtype = object)
     with pytest.raises(ValueError):
         df = cmat.to_pandas(taxa = ["a","b","c","d"])
 
@@ -382,6 +416,34 @@ def test_to_hdf5(cmat):
         os.remove(filename)
     cmat.to_hdf5(filename)
     assert isfile(filename)
+
+def test_to_hdf5_str(cmat):
+    fp = "tmp.h5"
+    cmat.to_hdf5(fp)
+    assert os.path.exists(fp)
+    os.remove(fp)
+
+def test_to_hdf5_Path(cmat):
+    fp = Path("tmp.h5")
+    cmat.to_hdf5(fp)
+    assert os.path.exists(fp)
+    os.remove(fp)
+
+def test_to_hdf5_h5py_File(cmat):
+    fp = "tmp.h5"
+    h5file = h5py.File(fp, "a")
+    with not_raises(Exception):
+        cmat.to_hdf5(h5file)
+    h5file.close()
+    assert os.path.exists(fp)
+    os.remove(fp)
+
+################################################################################
+########################## Test concrete classmethods ##########################
+################################################################################
+
+############################################################
+##################### Matrix File I/O ######################
 
 ### from_pandas
 def test_from_pandas_is_concrete():
@@ -539,6 +601,65 @@ def test_from_csv(cmat):
 ### from_hdf5
 def test_from_hdf5_is_concrete():
     assert_classmethod_isconcrete(DenseCoancestryMatrix, "from_hdf5")
+
+def test_from_hdf5_str(cmat):
+    fp = "tmp.h5"
+    cmat.to_hdf5(fp)
+    out = DummyDenseCoancestryMatrix.from_hdf5(fp)
+    # general
+    assert numpy.all(cmat.mat == out.mat)
+    assert cmat.mat_ndim == out.mat_ndim
+    assert cmat.mat_shape == out.mat_shape
+    # taxa
+    assert numpy.all(cmat.taxa == out.taxa)
+    assert numpy.all(cmat.taxa_grp == out.taxa_grp)
+    assert cmat.ntaxa == out.ntaxa
+    assert cmat.taxa_axis == out.taxa_axis
+    assert numpy.all(cmat.taxa_grp_name == out.taxa_grp_name)
+    assert numpy.all(cmat.taxa_grp_stix == out.taxa_grp_stix)
+    assert numpy.all(cmat.taxa_grp_spix == out.taxa_grp_spix)
+    assert numpy.all(cmat.taxa_grp_len == out.taxa_grp_len)
+    os.remove(fp)
+
+def test_from_hdf5_Path(cmat):
+    fp = Path("tmp.h5")
+    cmat.to_hdf5(fp)
+    out = DummyDenseCoancestryMatrix.from_hdf5(fp)
+    # general
+    assert numpy.all(cmat.mat == out.mat)
+    assert cmat.mat_ndim == out.mat_ndim
+    assert cmat.mat_shape == out.mat_shape
+    # taxa
+    assert numpy.all(cmat.taxa == out.taxa)
+    assert numpy.all(cmat.taxa_grp == out.taxa_grp)
+    assert cmat.ntaxa == out.ntaxa
+    assert cmat.taxa_axis == out.taxa_axis
+    assert numpy.all(cmat.taxa_grp_name == out.taxa_grp_name)
+    assert numpy.all(cmat.taxa_grp_stix == out.taxa_grp_stix)
+    assert numpy.all(cmat.taxa_grp_spix == out.taxa_grp_spix)
+    assert numpy.all(cmat.taxa_grp_len == out.taxa_grp_len)
+    os.remove(fp)
+
+def test_from_hdf5_h5py_File(cmat):
+    fp = Path("tmp.h5")
+    cmat.to_hdf5(fp)
+    h5file = h5py.File(fp)
+    out = DummyDenseCoancestryMatrix.from_hdf5(h5file)
+    # general
+    assert numpy.all(cmat.mat == out.mat)
+    assert cmat.mat_ndim == out.mat_ndim
+    assert cmat.mat_shape == out.mat_shape
+    # taxa
+    assert numpy.all(cmat.taxa == out.taxa)
+    assert numpy.all(cmat.taxa_grp == out.taxa_grp)
+    assert cmat.ntaxa == out.ntaxa
+    assert cmat.taxa_axis == out.taxa_axis
+    assert numpy.all(cmat.taxa_grp_name == out.taxa_grp_name)
+    assert numpy.all(cmat.taxa_grp_stix == out.taxa_grp_stix)
+    assert numpy.all(cmat.taxa_grp_spix == out.taxa_grp_spix)
+    assert numpy.all(cmat.taxa_grp_len == out.taxa_grp_len)
+    h5file.close()
+    os.remove(fp)
 
 ################################################################################
 ################### Test for conrete class utility functions ###################
