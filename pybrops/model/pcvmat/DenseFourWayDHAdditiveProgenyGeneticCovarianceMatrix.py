@@ -776,7 +776,7 @@ class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyG
         Parameters
         ----------
         filename : str, Path, h5py.File
-            If ``str``, an HDF5 file name from which to read. File is closed after reading.
+            If ``str`` or ``Path``, an HDF5 file name from which to read. File is closed after reading.
             If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.
         groupname : str, None
             If ``str``, an HDF5 group name under which ``DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix`` data is stored.

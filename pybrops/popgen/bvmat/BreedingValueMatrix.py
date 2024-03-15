@@ -327,8 +327,9 @@ class BreedingValueMatrix(TaxaTraitMatrix,PandasInputOutput,CSVInputOutput,HDF5I
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name which to read.
+        filename : str, Path, h5py.File
+            If ``str`` or ``Path``, an HDF5 file name from which to read. File is closed after reading.
+            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.
         groupname : str, None
             If ``str``, HDF5 group name under which object data is stored.
             If ``None``, object is read from base HDF5 group.

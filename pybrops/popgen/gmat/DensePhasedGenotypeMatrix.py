@@ -5,8 +5,9 @@ associated error checking routines.
 
 import copy
 from numbers import Real
+from pathlib import Path
 from typing import Optional, Sequence, Union
-
+import h5py
 import cyvcf2
 import numpy
 from numpy.typing import DTypeLike, ArrayLike
@@ -1000,7 +1001,7 @@ class DensePhasedGenotypeMatrix(
     @classmethod
     def from_hdf5(
             cls, 
-            filename: str, 
+            filename: Union[str,Path,h5py.File], 
             groupname: Optional[str] = None
         ) -> 'DensePhasedGenotypeMatrix':
         """
@@ -1008,8 +1009,9 @@ class DensePhasedGenotypeMatrix(
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name which to read.
+        filename : str, Path, h5py.File
+            If ``str`` or ``Path``, an HDF5 file name from which to read. File is closed after reading.
+            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.
         groupname : str, None
             If ``str``, HDF5 group name under which GenotypeMatrix data is stored.
             If ``None``, GenotypeMatrix is read from base HDF5 group.
