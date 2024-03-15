@@ -10,6 +10,7 @@ __all__ = [
 
 import copy
 from numbers import Real
+from pathlib import Path
 from typing import Optional, Sequence, Union
 import cyvcf2
 import h5py
@@ -21,11 +22,11 @@ from pybrops.core.error.error_type_python import check_is_int
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_int8
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix
-from pybrops.core.util.h5py import save_dict_to_hdf5
+from pybrops.core.util.h5py import h5py_File_read_int, h5py_File_read_ndarray, h5py_File_read_ndarray_int8, h5py_File_read_ndarray_utf8, h5py_File_write_dict
 from pybrops.popgen.gmap.DenseGeneticMappableMatrix import DenseGeneticMappableMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
@@ -1033,25 +1034,51 @@ class DenseGenotypeMatrix(
     ################### Matrix File I/O ####################
     def to_hdf5(
             self, 
-            filename: str, 
-            groupname: Optional[str] = None
+            filename: Union[str,Path,h5py.File], 
+            groupname: Optional[str] = None,
+            overwrite: bool = True,
         ) -> None:
         """
         Write GenotypeMatrix to an HDF5 file.
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name to which to write.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name to which to write. File is closed after writing.
+            If ``h5py.File``, an opened HDF5 file to which to write. File is not closed after writing.
+
+        groupname : str, None
+            If ``str``, an HDF5 group name under which GenotypeMatrix data is stored.
             If None, GenotypeMatrix is written to the base HDF5 group.
+
+        overwrite : bool
+            Whether to overwrite values in an HDF5 file if a field already exists.
         """
-        # open HDF5 in write mode
-        h5file = h5py.File(filename, "a")
+        ########################################################
+        ############ process ``filename`` argument #############
+
+        # HDF5 file object
+        h5file = None
+
+        # if we have a string or Path, open HDF5 file in append (``r+``) mode
+        if isinstance(filename, (str,Path)):
+            h5file = h5py.File(filename, "a")
+
+        # elif we have an h5py.File, make sure mode is writable, and copy pointer
+        elif isinstance(filename, h5py.File):
+            check_h5py_File_is_writable(filename)
+            h5file = filename
+        
+        # else raise TypeError
+        else:
+            raise TypeError(
+                "``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``{0}``".format(
+                    type(filename).__name__
+                )
+            )
 
         ########################################################
-        ### process groupname argument
+        ############ process ``groupname`` argument ############
 
         # if we have a string
         if isinstance(groupname, str):
@@ -1059,20 +1086,23 @@ class DenseGenotypeMatrix(
             if groupname[-1] != '/':
                 groupname += '/'
         
-        # else if groupname is None
+        # else if ``groupname`` is None, set ``groupname`` to empty string
         elif groupname is None:
-            # empty string
             groupname = ""
         
         # else raise error
         else:
-            raise TypeError("'groupname' must be of type str or None")
-        
+            raise TypeError(
+                "``groupname`` must be of type ``str`` or ``None`` but received type ``{0}``".format(
+                    type(groupname).__name__
+                )
+            )
+
         ########################################################
-        ### populate HDF5 file
+        #### write data to HDF5 file and (optionally) close ####
 
         # data dictionary
-        data_dict = {
+        data = {
             "mat"               : self.mat,
             "taxa"              : self.taxa,
             "taxa_grp"          : self.taxa_grp,
@@ -1098,13 +1128,11 @@ class DenseGenotypeMatrix(
         }
 
         # save data
-        save_dict_to_hdf5(h5file, groupname, data_dict)
+        h5py_File_write_dict(h5file, groupname, data, overwrite)
 
-        ########################################################
-        ### write conclusion
-
-        # close the file
-        h5file.close()
+        # close the file, only if the provided filename was a string and not a h5py.File.
+        if isinstance(filename, str):
+            h5file.close()
 
     ############################## Class Methods ###############################
 
@@ -1112,7 +1140,7 @@ class DenseGenotypeMatrix(
     @classmethod
     def from_hdf5(
             cls, 
-            filename: str, 
+            filename: Union[str,Path,h5py.File], 
             groupname: Optional[str] = None
         ) -> 'DenseGenotypeMatrix':
         """
@@ -1120,63 +1148,82 @@ class DenseGenotypeMatrix(
 
         Parameters
         ----------
-        filename : str
-            HDF5 file name which to read.
-        groupname : str or None
-            HDF5 group name under which GenotypeMatrix data is stored.
-            If None, GenotypeMatrix is read from base HDF5 group.
+        filename : str, Path, h5py.File
+            If ``str``, an HDF5 file name from which to read. File is closed after reading.
+            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.
+        groupname : str, None
+            If ``str``, an HDF5 group name under which GenotypeMatrix data is stored.
+            If ``None``, GenotypeMatrix is read from base HDF5 group.
 
         Returns
         -------
         gmat : GenotypeMatrix
             A genotype matrix read from file.
         """
-        # check file exists
-        check_file_exists(filename)
+        ########################################################
+        ############ process ``filename`` argument #############
 
-        # open HDF5 in read only
-        h5file = h5py.File(filename, "r")
+        # HDF5 file object
+        h5file = None
+
+        # if we have a string or Path, open HDF5 file in read (``r``) mode
+        if isinstance(filename, (str,Path)):
+            check_file_exists(filename)
+            h5file = h5py.File(filename, "r")
+
+        # elif we have an ``h5py.File``, make sure mode is in at least ``r`` mode, and copy pointer
+        elif isinstance(filename, h5py.File):
+            check_h5py_File_is_readable(filename)
+            h5file = filename
+        
+        # else raise TypeError
+        else:
+            raise TypeError(
+                "``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``{0}``".format(
+                    type(filename).__name__
+                )
+            )
 
         ########################################################
-        ### process groupname argument
+        ############ process ``groupname`` argument ############
 
         # if we have a string
         if isinstance(groupname, str):
-            # check that group exists
-            check_h5py_File_has_group(h5file, filename, groupname)
+            # FIXME: errors if groupname == "" or "/"
+            # if the group does not exist in the file, close and raise error
+            check_h5py_File_has_group(h5file, groupname)
 
             # if last character in string is not '/', add '/' to end of string
             if groupname[-1] != '/':
                 groupname += '/'
         
-        # else if groupname is None
+        # else if ``groupname`` is None, set ``groupname`` to empty string
         elif groupname is None:
-            # empty string
             groupname = ""
         
         # else raise error
         else:
-            raise TypeError("'groupname' must be of type str or None")
-        
+            raise TypeError(
+                "``groupname`` must be of type ``str`` or ``None`` but received type ``{0}``".format(
+                    type(groupname).__name__
+                )
+            )
+
         ########################################################
-        ### check that we have all required fields
+        ######## check that we have all required fields ########
 
         # all required arguments
         required_fields = ["mat"]
 
-        # for each required field
+        # for each required field, check if the field exists in the HDF5 file.
         for field in required_fields:
-            # concatenate base groupname and field
-            fieldname = groupname + field
-
-            # check that group exists
-            check_h5py_File_has_group(h5file, filename, fieldname)
+            check_h5py_File_has_group(h5file, groupname + field)
         
         ########################################################
-        ### read data
+        ### read data from HDF5 file and (optionally) close ####
         
         # output dictionary
-        data_dict = {
+        data = {
             "mat"               : None,
             "taxa"              : None,
             "taxa_grp"          : None,
@@ -1201,86 +1248,136 @@ class DenseGenotypeMatrix(
             "vrnt_chrgrp_len"   : None,
         }
 
-        # for each field
-        for field in data_dict.keys():
-            fieldname = groupname + field                       # concatenate base groupname and field
-            if fieldname in h5file:                             # if the field exists in the HDF5 file
-                data_dict[field] = h5file[fieldname][()]        # read array
+        ##################################
+        ### read mandatory data fields ###
+
+        # read mat array (ndarray dtype = int8)
+        data["mat"] = h5py_File_read_ndarray_int8(h5file, groupname + "mat")
         
-        # # special case for reading ploidy ()
-        # fieldname = groupname + "ploidy"
-        # if fieldname in h5file:
-        #     data_dict["ploidy"] = h5file[fieldname][]
+        #################################
+        ### read optional data fields ###
+
+        # read taxa array (ndarray dtype = unicode / object)
+        if groupname + "taxa" in h5file:
+            data["taxa"] = h5py_File_read_ndarray_utf8(h5file, groupname + "taxa")
+
+        # read taxa_grp array (ndarray dtype = any)
+        if groupname + "taxa_grp" in h5file:
+            data["taxa_grp"] = h5py_File_read_ndarray(h5file, groupname + "taxa_grp")
         
+        # read vrnt_chrgrp array (ndarray dtype = any)
+        if groupname + "vrnt_chrgrp" in h5file:
+            data["vrnt_chrgrp"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_chrgrp")
+
+        # read vrnt_phypos array (ndarray dtype = any)
+        if groupname + "vrnt_phypos" in h5file:
+            data["vrnt_phypos"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_phypos")
+
+        # read vrnt_name array (ndarray dtype = unicode / object)
+        if groupname + "vrnt_name" in h5file:
+            data["vrnt_name"] = h5py_File_read_ndarray_utf8(h5file, groupname + "vrnt_name")
+
+        # read vrnt_genpos array (ndarray dtype = any)
+        if groupname + "vrnt_genpos" in h5file:
+            data["vrnt_genpos"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_genpos")
+
+        # read vrnt_xoprob array (ndarray dtype = any)
+        if groupname + "vrnt_xoprob" in h5file:
+            data["vrnt_xoprob"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_xoprob")
+
+        # read vrnt_hapgrp array (ndarray dtype = any)
+        if groupname + "vrnt_hapgrp" in h5file:
+            data["vrnt_hapgrp"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_hapgrp")
+
+        # read vrnt_hapalt array (ndarray dtype = unicode / object)
+        if groupname + "vrnt_hapalt" in h5file:
+            data["vrnt_hapalt"] = h5py_File_read_ndarray_utf8(h5file, groupname + "vrnt_hapalt")
+
+        # read vrnt_hapref array (ndarray dtype = unicode / object)
+        if groupname + "vrnt_hapref" in h5file:
+            data["vrnt_hapref"] = h5py_File_read_ndarray_utf8(h5file, groupname + "vrnt_hapref")
+
+        # read vrnt_mask array (ndarray dtype = any)
+        if groupname + "vrnt_mask" in h5file:
+            data["vrnt_mask"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_mask")
+
+        # read ploidy (dtype = int)
+        if groupname + "ploidy" in h5file:
+            data["ploidy"] = h5py_File_read_int(h5file, groupname + "ploidy")
+
+        #####################################
+        ### read optional metadata fields ###
+
+        # read taxa_grp_name array (ndarray dtype = any)
+        if groupname + "taxa_grp_name" in h5file:
+            data["taxa_grp_name"] = h5py_File_read_ndarray(h5file, groupname + "taxa_grp_name")
+
+        # read taxa_grp_stix array (ndarray dtype = any)
+        if groupname + "taxa_grp_stix" in h5file:
+            data["taxa_grp_stix"] = h5py_File_read_ndarray(h5file, groupname + "taxa_grp_stix")
+
+        # read taxa_grp_spix array (ndarray dtype = any)
+        if groupname + "taxa_grp_spix" in h5file:
+            data["taxa_grp_spix"] = h5py_File_read_ndarray(h5file, groupname + "taxa_grp_spix")
+
+        # read taxa_grp_len array (ndarray dtype = any)
+        if groupname + "taxa_grp_len" in h5file:
+            data["taxa_grp_len"] = h5py_File_read_ndarray(h5file, groupname + "taxa_grp_len")
+
+        # read vrnt_chrgrp_name array (ndarray dtype = any)
+        if groupname + "vrnt_chrgrp_name" in h5file:
+            data["vrnt_chrgrp_name"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_chrgrp_name")
+
+        # read vrnt_chrgrp_stix array (ndarray dtype = any)
+        if groupname + "vrnt_chrgrp_stix" in h5file:
+            data["vrnt_chrgrp_stix"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_chrgrp_stix")
+
+        # read vrnt_chrgrp_spix array (ndarray dtype = any)
+        if groupname + "vrnt_chrgrp_spix" in h5file:
+            data["vrnt_chrgrp_spix"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_chrgrp_spix")
+
+        # read vrnt_chrgrp_len array (ndarray dtype = any)
+        if groupname + "vrnt_chrgrp_len" in h5file:
+            data["vrnt_chrgrp_len"] = h5py_File_read_ndarray(h5file, groupname + "vrnt_chrgrp_len")
+
+        ######################
+        ### close the file ###
+
+        # close the file, only if the provided fieldname was a string an not an h5py.File.
+        if isinstance(filename, str):
+            h5file.close()
+
         ########################################################
-        ### read conclusion
-        
-        # close file
-        h5file.close()
-
-        # convert taxa strings from byte to utf-8
-        if data_dict["taxa"] is not None:
-            data_dict["taxa"] = numpy.array(
-                [s.decode("utf-8") for s in data_dict["taxa"]],
-                dtype = object
-            )
-
-        # convert vrnt_name string from byte to utf-8
-        if data_dict["vrnt_name"] is not None:
-            data_dict["vrnt_name"] = numpy.array(
-                [s.decode("utf-8") for s in data_dict["vrnt_name"]],
-                dtype = object
-            )
-
-        # convert vrnt_hapgrp string from byte to utf-8
-        if data_dict["vrnt_hapgrp"] is not None:
-            data_dict["vrnt_hapgrp"] = numpy.array(
-                [s.decode("utf-8") for s in data_dict["vrnt_hapgrp"]],
-                dtype = object
-            )
-
-        # convert vrnt_hapalt string from byte to utf-8
-        if data_dict["vrnt_hapalt"] is not None:
-            data_dict["vrnt_hapalt"] = numpy.array(
-                [s.decode("utf-8") for s in data_dict["vrnt_hapalt"]],
-                dtype = object
-            )
-
-        # convert ploidy from numpy.int64 to int 
-        if data_dict["ploidy"] is not None:
-            data_dict["ploidy"] = int(data_dict["ploidy"])
-
-        # # convert taxa_grp_name from byte to utf-8
-        # if data_dict["taxa_grp_name"] is not None:
-        #     data_dict["taxa_grp_name"] = numpy.array(
-        #         [s.decode("utf-8") for s in data_dict["taxa_grp_name"]],
-        #         dtype = object
-        #     )
-
-        # # convert vrnt_chrgrp_name from byte to utf-8
-        # if data_dict["vrnt_chrgrp_name"] is not None:
-        #     data_dict["vrnt_chrgrp_name"] = numpy.array(
-        #         [s.decode("utf-8") for s in data_dict["vrnt_chrgrp_name"]],
-        #         dtype = object
-        #     )
-
-        ########################################################
-        ### create object
+        ################### Object creation ####################
         
         # create object from read data
-        gmat = cls(**data_dict)
+        out = cls(
+            mat         = data["mat"],
+            taxa        = data["taxa"],
+            taxa_grp    = data["taxa_grp"],
+            vrnt_chrgrp = data["vrnt_chrgrp"],
+            vrnt_phypos = data["vrnt_phypos"],
+            vrnt_name   = data["vrnt_name"],
+            vrnt_genpos = data["vrnt_genpos"],
+            vrnt_xoprob = data["vrnt_xoprob"],
+            vrnt_hapgrp = data["vrnt_hapgrp"],
+            vrnt_hapalt = data["vrnt_hapalt"],
+            vrnt_hapref = data["vrnt_hapref"],
+            vrnt_mask   = data["vrnt_mask"], 
+            ploidy      = data["ploidy"],
+        )
 
         # copy metadata
-        gmat.taxa_grp_name    = data_dict["taxa_grp_name"]
-        gmat.taxa_grp_stix    = data_dict["taxa_grp_stix"]
-        gmat.taxa_grp_spix    = data_dict["taxa_grp_spix"]
-        gmat.taxa_grp_len     = data_dict["taxa_grp_len"]
-        gmat.vrnt_chrgrp_name = data_dict["vrnt_chrgrp_name"]
-        gmat.vrnt_chrgrp_stix = data_dict["vrnt_chrgrp_stix"]
-        gmat.vrnt_chrgrp_spix = data_dict["vrnt_chrgrp_spix"]
-        gmat.vrnt_chrgrp_len  = data_dict["vrnt_chrgrp_len"]
+        out.taxa_grp_name    = data["taxa_grp_name"]
+        out.taxa_grp_stix    = data["taxa_grp_stix"]
+        out.taxa_grp_spix    = data["taxa_grp_spix"]
+        out.taxa_grp_len     = data["taxa_grp_len"]
+        out.vrnt_chrgrp_name = data["vrnt_chrgrp_name"]
+        out.vrnt_chrgrp_stix = data["vrnt_chrgrp_stix"]
+        out.vrnt_chrgrp_spix = data["vrnt_chrgrp_spix"]
+        out.vrnt_chrgrp_len  = data["vrnt_chrgrp_len"]
 
-        return gmat
+        return out
 
     @classmethod
     def from_vcf(
