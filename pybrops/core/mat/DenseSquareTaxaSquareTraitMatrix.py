@@ -893,8 +893,8 @@ class DenseSquareTaxaSquareTraitMatrix(
         # save data
         h5py_File_write_dict(h5file, groupname, data, overwrite)
 
-        # close the file, only if the provided filename was a string and not a h5py.File.
-        if isinstance(filename, str):
+        # close the file, only if the provided filename was a string or Path and not a h5py.File.
+        if isinstance(filename, (str,Path)):
             h5file.close()
 
     ############################## Class Methods ###############################
@@ -1041,8 +1041,8 @@ class DenseSquareTaxaSquareTraitMatrix(
         ######################
         ### close the file ###
 
-        # close the file, only if the provided fieldname was a string an not an h5py.File.
-        if isinstance(filename, str):
+        # close the file, only if the provided fieldname was a string or Path an not an h5py.File.
+        if isinstance(filename, (str,Path)):
             h5file.close()
 
         ########################################################

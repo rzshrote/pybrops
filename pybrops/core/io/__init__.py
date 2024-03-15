@@ -3,6 +3,7 @@ Module providing input/output interfaces for reading/writing files.
 """
 
 __all__ = [
+    "Copyable",
     "CSVInputOutput",
     "HDF5InputOutput",
     "PandasInputOutput",
@@ -10,6 +11,7 @@ __all__ = [
 ]
 
 # order dependent imports
+from pybrops.core.io import Copyable
 from pybrops.core.io import CSVInputOutput
 from pybrops.core.io import HDF5InputOutput
 from pybrops.core.io import PandasInputOutput
