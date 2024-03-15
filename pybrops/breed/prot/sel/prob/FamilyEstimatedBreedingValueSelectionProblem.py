@@ -23,7 +23,9 @@ from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, chec
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 
 
-class FamilyEstimatedBreedingValueSelectionProblemMixin(metaclass=ABCMeta):
+class FamilyEstimatedBreedingValueSelectionProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Helper class containing common properties for EBV selection problems."""
 
     ########################## Special Object Methods ##########################

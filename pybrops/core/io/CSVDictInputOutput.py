@@ -11,8 +11,9 @@ __all__ = [
 from abc import ABCMeta, abstractmethod
 from typing import Dict
 
-
-class CSVDictInputOutput(metaclass=ABCMeta):
+class CSVDictInputOutput(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class for defining CSV input/output functionality.
 

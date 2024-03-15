@@ -6,8 +6,9 @@ checking routines.
 from abc import ABCMeta, abstractmethod
 from typing import Optional, Sequence, Union
 
-
-class NPYInputOutput(metaclass=ABCMeta):
+class NPYInputOutput(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class for defining ``.npy`` file input/output functionality.
 

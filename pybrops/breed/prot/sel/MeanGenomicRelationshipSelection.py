@@ -42,7 +42,9 @@ from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFac
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class MeanGenomicRelationshipSelectionMixin(metaclass=ABCMeta):
+class MeanGenomicRelationshipSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for Mean Genomic Relationship Selection with constraints.
     """

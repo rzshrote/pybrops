@@ -13,7 +13,9 @@ from typing import Optional
 from pybrops.opt.prob.Problem import Problem
 from pybrops.opt.soln.Solution import Solution
 
-class OptimizationAlgorithm(metaclass=ABCMeta):
+class OptimizationAlgorithm(
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for optimization algorithms.
 

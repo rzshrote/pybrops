@@ -15,7 +15,9 @@ from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 
-class SelectionConfiguration(metaclass=ABCMeta):
+class SelectionConfiguration(
+        metaclass = ABCMeta,
+    ):
     """
     docstring for SelectionConfiguration.
     """

@@ -20,7 +20,9 @@ from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicM
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 
-class OptimalPopulationValueSelectionProblemMixin(metaclass=ABCMeta):
+class OptimalPopulationValueSelectionProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Helper class to implement properties common to OPV."""
 
     ########################## Special Object Methods ##########################

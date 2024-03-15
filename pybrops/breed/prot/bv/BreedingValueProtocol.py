@@ -11,7 +11,9 @@ import pandas
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class BreedingValueProtocol(metaclass=ABCMeta):
+class BreedingValueProtocol(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class defining interfaces for breeding value calculation protocols.
 

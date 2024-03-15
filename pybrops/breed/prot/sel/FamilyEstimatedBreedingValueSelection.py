@@ -43,7 +43,9 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class FamilyEstimatedBreedingValueSelectionMixin(metaclass=ABCMeta):
+class FamilyEstimatedBreedingValueSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semiabstract class for Within-family Estimated Breeding Value Selection with constraints.
     """

@@ -9,7 +9,9 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class GenotypingProtocol(metaclass=ABCMeta):
+class GenotypingProtocol(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class defining genotyping protocols.
 

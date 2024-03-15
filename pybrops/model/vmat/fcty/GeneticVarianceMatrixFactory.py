@@ -11,7 +11,9 @@ from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class GeneticVarianceMatrixFactory(metaclass=ABCMeta):
+class GeneticVarianceMatrixFactory(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class for GeneticVarianceMatrix factory classes.
 

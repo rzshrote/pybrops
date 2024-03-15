@@ -23,7 +23,9 @@ from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFac
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 
 
-class L2NormGenomicSelectionProblemMixin(metaclass=ABCMeta):
+class L2NormGenomicSelectionProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Helper class containing common properties for L2GS problems."""
 
     ########################## Special Object Methods ##########################

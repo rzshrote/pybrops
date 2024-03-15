@@ -10,7 +10,9 @@ import numpy
 
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class MatingProtocol(metaclass=ABCMeta):
+class MatingProtocol(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class for mating protocols.
 

@@ -9,10 +9,11 @@ __all__ = [
 ]
 
 from abc import ABCMeta, abstractmethod
-
 import numpy
 
-class NumPyInputOutput(metaclass=ABCMeta):
+class NumPyInputOutput(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class for defining ``numpy.ndarray`` input/output functionality.
 

@@ -44,7 +44,9 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin(metaclass=ABCMeta):
+class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semiabstract class for Generalized Weighted Genomic Estimated Breeding Value (gwGEBV) 
     selection with constraints.

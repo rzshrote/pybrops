@@ -20,7 +20,9 @@ from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicM
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
-class MultiObjectiveGenomicMatingProblemMixin(metaclass=ABCMeta):
+class MultiObjectiveGenomicMatingProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Helper class to implement properties common to MOGS."""
 
     ########################## Special Object Methods ##########################

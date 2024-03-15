@@ -4,7 +4,9 @@ from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class GenicVarianceMatrixFactory(metaclass=ABCMeta):
+class GenicVarianceMatrixFactory(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class for GenicVarianceMatrix factory classes.
 

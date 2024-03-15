@@ -27,7 +27,9 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class MultiObjectiveGenomicSelectionMixin(metaclass=ABCMeta):
+class MultiObjectiveGenomicSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for Multi-Objective Genomic Selection with constraints.
     """

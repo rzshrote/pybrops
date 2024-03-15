@@ -12,7 +12,9 @@ from abc import ABCMeta, abstractmethod
 import numpy
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 
-class GeneticMapFunction(metaclass=ABCMeta):
+class GeneticMapFunction(
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for genetic map function objects.
 

@@ -41,7 +41,9 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
-class OptimalHaploidValueSelectionMixin(metaclass=ABCMeta):
+class OptimalHaploidValueSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for Optimal Haploid Value (OHV) Selection with constraints.
     """

@@ -11,7 +11,9 @@ from pybrops.core.random.prng import global_prng
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_is_ndarray
 
 
-class SampledSelectionConfigurationMixin(metaclass=ABCMeta):
+class SampledSelectionConfigurationMixin(
+        metaclass = ABCMeta,
+    ):
     """
     A mixin class to provide functionality for selection configurations which 
     require random samples to be drawn.

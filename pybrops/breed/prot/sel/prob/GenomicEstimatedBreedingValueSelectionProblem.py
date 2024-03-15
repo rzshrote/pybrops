@@ -25,7 +25,9 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
-class GenomicEstimatedBreedingValueSelectionProblemMixin(metaclass=ABCMeta):
+class GenomicEstimatedBreedingValueSelectionProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Helper class containing common properties for CGS Problems."""
 
     ########################## Special Object Methods ##########################

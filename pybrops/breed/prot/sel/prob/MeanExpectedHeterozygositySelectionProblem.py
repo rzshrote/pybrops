@@ -25,7 +25,9 @@ from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFac
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
-class MeanExpectedHeterozygositySelectionProblemMixin(metaclass=ABCMeta):
+class MeanExpectedHeterozygositySelectionProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Helper class containing common properties for Mean Expected Heterozygosity Selection Problems."""
 
     ########################## Special Object Methods ##########################

@@ -12,7 +12,9 @@ from abc import ABCMeta, abstractmethod
 from typing import Optional
 
 
-class MatingOperator(metaclass=ABCMeta):
+class MatingOperator(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class defining interfaces for the mating of an entire breeding
     program.

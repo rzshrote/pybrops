@@ -22,7 +22,9 @@ from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 
 
-class L1NormGenomicSelectionProblemMixin(metaclass=ABCMeta):
+class L1NormGenomicSelectionProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Helper class containing common properties for L1GS problems."""
 
     ########################## Special Object Methods ##########################

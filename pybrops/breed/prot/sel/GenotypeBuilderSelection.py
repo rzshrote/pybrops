@@ -28,7 +28,9 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
 
-class GenotypeBuilderSelectionMixin(metaclass=ABCMeta):
+class GenotypeBuilderSelectionMixin(
+        metaclass = ABCMeta,
+    ):
     """
     docstring for GenotypeBuilderBaseSelection.
     """

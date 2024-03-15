@@ -22,7 +22,9 @@ from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin(metaclass=ABCMeta):
+class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin(
+        metaclass = ABCMeta,
+    ):
     """Helper class containing common properties for gwGEBV selection problems."""
 
     ########################## Special Object Methods ##########################

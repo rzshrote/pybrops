@@ -13,7 +13,9 @@ from typing import Dict
 
 import pandas
 
-class PandasDictInputOutput(metaclass=ABCMeta):
+class PandasDictInputOutput(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class for defining pandas dictionary input/output functionality.
 

@@ -10,8 +10,9 @@ __all__ = [
 
 from abc import ABCMeta, abstractmethod
 
-
-class CSVInputOutput(metaclass=ABCMeta):
+class CSVInputOutput(
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class for defining CSV input/output functionality.
 
