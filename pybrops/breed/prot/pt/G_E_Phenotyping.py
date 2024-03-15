@@ -3,25 +3,32 @@ Module implementing phenotyping protocols for simulating phenotyping with no GxE
 interaction.
 """
 
+import copy
 import math
 from numbers import Integral, Real
+from pathlib import Path
 from typing import Optional, Union
-
+import h5py
 import numpy
 from numpy.random import Generator, RandomState
 import pandas
 
+from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
 from pybrops.core.error.error_value_numpy import check_ndarray_all_gt, check_ndarray_all_gteq, check_ndarray_ndim
 from pybrops.core.random.prng import global_prng
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
 from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_ndarray_dtype_is_integer, check_ndarray_dtype_is_real
 from pybrops.core.error.error_value_numpy import check_ndarray_size
+from pybrops.core.util.h5py import h5py_File_read_int, h5py_File_read_ndarray, h5py_File_read_ndarray_int, h5py_File_write_dict
 from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
-class G_E_Phenotyping(PhenotypingProtocol):
+class G_E_Phenotyping(
+        PhenotypingProtocol
+    ):
     """
     Class implementing phenotyping protocols for simulating phenotyping with no
     GxE interaction.
@@ -96,6 +103,66 @@ class G_E_Phenotyping(PhenotypingProtocol):
         self.var_rep = var_rep  # order 4
         self.var_err = var_err  # order 5
         self.rng = rng
+
+    def __copy__(
+            self
+        ) -> 'G_E_Phenotyping':
+        """
+        Make a shallow copy of the ``G_E_Phenotyping`` object.
+
+        Returns
+        -------
+        out : G_E_Phenotyping
+            A shallow copy of the ``G_E_Phenotyping`` object.
+        """
+        # get the class
+        cls = type(self)
+
+        # create a new class object
+        out = cls(
+            gpmod   = copy.copy(self.gpmod),
+            nenv    = copy.copy(self.nenv),
+            nrep    = copy.copy(self.nrep),
+            var_env = copy.copy(self.var_env),
+            var_rep = copy.copy(self.var_rep),
+            var_err = copy.copy(self.var_err),
+            rng     = self.rng, # should not be copied
+        )
+
+        return out
+
+    def __deepcopy__(
+            self,
+            memo: Optional[dict] = None,
+        ) -> 'G_E_Phenotyping':
+        """
+        Make a deep copy of the ``G_E_Phenotyping`` object.
+
+        Parameters
+        ----------
+        memo : dict, None
+            An optional dictionary of memo metadata.
+
+        Returns
+        -------
+        out : G_E_Phenotyping
+            A deep copy of the ``G_E_Phenotyping`` object.
+        """
+        # get the class
+        cls = type(self)
+
+        # create a new class object
+        out = cls(
+            gpmod   = copy.deepcopy(self.gpmod, memo),
+            nenv    = copy.deepcopy(self.nenv, memo),
+            nrep    = copy.deepcopy(self.nrep, memo),
+            var_env = copy.deepcopy(self.var_env, memo),
+            var_rep = copy.deepcopy(self.var_rep, memo),
+            var_err = copy.deepcopy(self.var_err, memo),
+            rng     = self.rng, # should not be copied
+        )
+
+        return out
 
     ############################ Object Properties #############################
 
@@ -225,6 +292,38 @@ class G_E_Phenotyping(PhenotypingProtocol):
         self._rng = value
 
     ############################## Object Methods ##############################
+    def copy(
+            self
+        ) -> 'G_E_Phenotyping':
+        """
+        Make a shallow copy of the ``G_E_Phenotyping`` object.
+
+        Returns
+        -------
+        out : G_E_Phenotyping
+            A shallow copy of the ``G_E_Phenotyping`` object.
+        """
+        return copy.copy(self)
+
+    def deepcopy(
+            self,
+            memo: Optional[dict] = None,
+        ) -> 'G_E_Phenotyping':
+        """
+        Make a deep copy of the ``G_E_Phenotyping`` object.
+
+        Parameters
+        ----------
+        memo : dict, None
+            An optional dictionary of memo metadata.
+
+        Returns
+        -------
+        out : G_E_Phenotyping
+            A deep copy of the ``G_E_Phenotyping`` object.
+        """
+        return copy.deepcopy(self, memo)
+    
     def phenotype(
             self, 
             pgmat: PhasedGenotypeMatrix, 
@@ -419,3 +518,246 @@ class G_E_Phenotyping(PhenotypingProtocol):
         # (t,) / (t,) -> (t,)
         # (t,) * (t,) -> (t,)
         self.var_err = (1.0 - H2) / H2 * var_G
+
+    ################### Matrix File I/O ####################
+    def to_hdf5(
+            self, 
+            filename: Union[str,Path,h5py.File], 
+            groupname: Optional[str] = None,
+            overwrite: bool = True,
+        ) -> None:
+        """
+        Write a ``G_E_Phenotyping`` object to an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str, Path, h5py.File
+            If ``str`` or ``Path``, an HDF5 file name to which to write. File is closed after writing.
+            If ``h5py.File``, an already opened HDF5 file to which to write. File remains open after writing.
+
+        groupname : str, None
+            If ``str``, an HDF5 group name under which object data is stored.
+            If ``None``, object is written to the base HDF5 group.
+
+        overwrite : bool
+            Whether to overwrite values in an HDF5 file if a field already exists.
+        """
+        ########################################################
+        ############ process ``groupname`` argument ############
+
+        # if we have a string
+        if isinstance(groupname, str):
+            # if last character in string is not '/', add '/' to end of string
+            if groupname[-1] != '/':
+                groupname += '/'
+        
+        # else if ``groupname`` is None, set ``groupname`` to empty string
+        elif groupname is None:
+            # empty string
+            groupname = ""
+        
+        # else raise error
+        else:
+            raise TypeError(
+                "``groupname`` must be of type ``str`` or ``None`` but received type ``{0}``".format(
+                    type(groupname).__name__
+                )
+            )
+
+        ########################################################
+        ############ process ``filename`` argument #############
+
+        # h5 file object
+        h5file = None
+        
+        # if we have a string or Path, open HDF5 file in append (``r+``) mode
+        if isinstance(filename, (str,Path)):
+            h5file = h5py.File(filename, "a")
+
+        # elif we have an h5py.File, make sure mode is writable, and copy pointer
+        elif isinstance(filename, h5py.File):
+            check_h5py_File_is_writable(filename)
+            h5file = filename
+
+        # else raise TypeError
+        else:
+            raise TypeError(
+                "filename must be of type ``str`` or ``h5py.File`` but received type {0}".format(
+                    type(filename).__name__
+                )
+            )
+
+        ########################################################
+        ### populate HDF5 file
+
+        # data dictionary
+        data = {
+            "nenv"      : self.nenv,
+            "nrep"      : self.nrep,
+            "var_env"   : self.var_env,
+            "var_rep"   : self.var_rep,
+            "var_err"   : self.var_err,
+        }
+
+        # save data
+        h5py_File_write_dict(h5file, groupname, data, overwrite)
+
+        # close the file, only if the provided filename was a string or Path and not a h5py.File.
+        if isinstance(filename, (str,Path)):
+            h5file.close()
+
+    ############################## Class Methods ###############################
+
+    ################### Matrix File I/O ####################
+    @classmethod
+    def from_hdf5(
+            cls, 
+            filename: Union[str,Path,h5py.File], 
+            groupname: Optional[str] = None,
+            gpmod : GenomicModel = None,
+        ) -> 'G_E_Phenotyping':
+        """
+        Read a ``G_E_Phenotyping`` from an HDF5 file.
+
+        Parameters
+        ----------
+        filename : str, Path, h5py.File
+            If ``str`` or ``Path``, an HDF5 file name from which to read. File is closed after reading.
+            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.
+        groupname : str, None
+            If ``str``, an HDF5 group name under which ``G_E_Phenotyping`` data is stored.
+            If ``None``, ``G_E_Phenotyping`` is read from base HDF5 group.
+        gpmod : GenomicModel
+            A genomic model to bind to the ``G_E_Phenotyping`` protocol.
+            This will be eliminated when a better storage mechanism is available.
+
+        Returns
+        -------
+        out : G_E_Phenotyping
+            An ``G_E_Phenotyping`` read from an HDF5 file.
+        """
+        ########################################################
+        ############ process ``filename`` argument #############
+
+        # HDF5 file object
+        h5file = None
+
+        # if we have a string or Path, open HDF5 file in append (``r``) mode
+        if isinstance(filename, (str,Path)):
+            check_file_exists(filename)
+            h5file = h5py.File(filename, "r")
+
+        # elif we have an h5py.File, make sure mode is in at least ``r`` mode, and copy pointer
+        elif isinstance(filename, h5py.File):
+            check_h5py_File_is_readable(filename)
+            h5file = filename
+        
+        # else raise TypeError
+        else:
+            raise TypeError(
+                "``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``{0}``".format(
+                    type(filename).__name__
+                )
+            )
+
+        ########################################################
+        ############ process ``groupname`` argument ############
+
+        # if we have a string
+        if isinstance(groupname, str):
+            # FIXME: errors if groupname == "" or "/"
+            # if the group does not exist in the file, close and raise error
+            check_h5py_File_has_group(h5file, groupname)
+
+            # if last character in string is not '/', add '/' to end of string
+            if groupname[-1] != '/':
+                groupname += '/'
+        
+        # else if ``groupname`` is None, set ``groupname`` to empty string
+        elif groupname is None:
+            groupname = ""
+        
+        # else raise error
+        else:
+            raise TypeError(
+                "``groupname`` must be of type ``str`` or ``None`` but received type ``{0}``".format(
+                    type(groupname).__name__
+                )
+            )
+
+        ########################################################
+        ################## process ``gpmod`` ###################
+
+        check_is_GenomicModel(gpmod, "gpmod")
+
+        ########################################################
+        ######## check that we have all required fields ########
+
+        # all required arguments
+        required_fields = []
+
+        # for each required field, check if the field exists in the HDF5 file.
+        for field in required_fields:
+            check_h5py_File_has_group(h5file, groupname + field)
+        
+        ########################################################
+        ### read data from HDF5 file and (optionally) close ####
+        
+        # output dictionary
+        data = {
+            "nenv"      : None,
+            "nrep"      : None,
+            "var_env"   : None,
+            "var_rep"   : None,
+            "var_err"   : None,
+        }
+
+        ##################################
+        ### read mandatory data fields ###
+
+        # read nenv data (dtype = int)
+        data["nenv"] = h5py_File_read_int(h5file, groupname + "nenv")
+
+        # read nrep array (ndarray dtype = int)
+        data["nrep"] = h5py_File_read_ndarray_int(h5file, groupname + "nrep")
+
+        #################################
+        ### read optional data fields ###
+
+        # read var_env array (ndarray dtype = any)
+        if groupname + "var_env" in h5file:
+            data["var_env"] = h5py_File_read_ndarray(h5file, groupname + "var_env")
+
+        # read var_rep array (ndarray dtype = any)
+        if groupname + "var_rep" in h5file:
+            data["var_rep"] = h5py_File_read_ndarray(h5file, groupname + "var_rep")
+
+        # read var_err array (ndarray dtype = any)
+        if groupname + "var_err" in h5file:
+            data["var_err"] = h5py_File_read_ndarray(h5file, groupname + "var_err")
+
+        #####################################
+        ### read optional metadata fields ###
+
+        ######################
+        ### close the file ###
+
+        # close the file, only if the provided fieldname was a string or Path an not an h5py.File.
+        if isinstance(filename, (str,Path)):
+            h5file.close()
+
+        ########################################################
+        ### create object
+        
+        # create object from read data
+        out = cls(
+            gpmod   = gpmod,
+            nenv    = data["nenv"],
+            nrep    = data["nrep"],
+            var_env = data["var_env"],
+            var_rep = data["var_rep"],
+            var_err = data["var_err"],
+            rng     = None,
+        )
+
+        return out

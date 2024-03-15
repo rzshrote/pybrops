@@ -2,15 +2,26 @@
 Module defining interfaces and associated protocols for phenotyping protocols.
 """
 
+__all__ = [
+    "PhenotypingProtocol",
+    "check_is_PhenotypingProtocol",
+]
+
 from abc import ABCMeta, abstractmethod
 from numbers import Real
 from typing import Union
 import numpy
 import pandas
+from pybrops.core.io.Copyable import Copyable
+from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class PhenotypingProtocol(metaclass=ABCMeta):
+class PhenotypingProtocol(
+        Copyable,
+        HDF5InputOutput,
+        metaclass=ABCMeta
+    ):
     """
     Abstract class defining interfaces for phenotyping protocols.
 
