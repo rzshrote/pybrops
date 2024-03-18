@@ -865,7 +865,8 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing whether a favorable allele is fixed.
+            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable 
+            allele is fixed.
         """
         raise NotImplementedError("method is abstract")
 

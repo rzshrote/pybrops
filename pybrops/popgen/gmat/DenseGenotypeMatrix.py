@@ -226,6 +226,27 @@ class DenseGenotypeMatrix(
 
         return out
 
+    ########### Miscellaneous special functions ############
+    def __repr__(
+            self
+        ) -> str:
+        """
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
+        """
+        return "<{0} of shape (nphase = {1}, ntaxa = {2}, nvrnt = {3}) with ploidy = {4} at {5}>".format(
+            type(self).__name__,
+            self.nphase,
+            self.ntaxa,
+            self.nvrnt,
+            self.ploidy,
+            hex(id(self)),
+        )
+
     ############################ Object Properties #############################
 
     ############## Genotype Data Properites ##############
