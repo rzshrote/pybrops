@@ -6,6 +6,7 @@ from typing import Optional
 
 import numpy
 from pybrops.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
+from pybrops.core.error.error_type_python import check_is_bool
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_PhasedGenotypeMatrix_has_vrnt_mask, check_is_PhasedGenotypeMatrix
@@ -22,6 +23,7 @@ class DenseMaskedUnphasedGenotyping(
     ########################## Special Object Methods ##########################
     def __init__(
             self, 
+            invert: bool = False,
             **kwargs: dict
         ) -> None:
         """
@@ -31,10 +33,25 @@ class DenseMaskedUnphasedGenotyping(
 
         Parameters
         ----------
+        invert : bool
+            Whether to invert the variant mask when genotyping.
+            If ``False``, then variants with mask values == ``True`` are genotyped.
+            If ``True``, then variants with mask values == ``False`` are genotyped.
         kwargs : dict
             Additional keyword arguments.
         """
-        super(DenseMaskedUnphasedGenotyping, self).__init__(**kwargs)
+        self.invert = invert
+
+    ############################ Object Properties #############################
+    @property
+    def invert(self) -> bool:
+        """Whether to invert the variant mask when genotyping."""
+        return self._invert
+    @invert.setter
+    def invert(self, value: bool) -> None:
+        """Set whether to invert the variant mask when genotyping."""
+        check_is_bool(value, "invert")
+        self._invert = value
 
     ############################## Object Methods ##############################
     def genotype(
@@ -86,6 +103,10 @@ class DenseMaskedUnphasedGenotyping(
 
         # apply the mask to relevant data 
         if mask is not None:
+            # invert the mask if needeed
+            if self.invert:
+                mask = ~mask
+            # apply mask to fields
             if mat is not None:
                 mat = mat[:,mask]
             if vrnt_chrgrp is not None:

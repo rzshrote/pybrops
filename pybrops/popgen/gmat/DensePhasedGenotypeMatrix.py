@@ -12,6 +12,7 @@ import cyvcf2
 import numpy
 from numpy.typing import DTypeLike, ArrayLike
 
+from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_int8
 from pybrops.core.error.error_type_numpy import check_is_ndarray
@@ -1033,8 +1034,25 @@ class DensePhasedGenotypeMatrix(
             auto_group_vrnt: bool = True
         ) -> 'DensePhasedGenotypeMatrix':
         """
-        Does not ensure that data is phased, just reads it as phased.
+        Read a ``DensePhasedGenotypeMatrix`` from a VCF file. This classmethod 
+        treats the VCF file as if it has been phased. It does not check if 
+        this assumption is correct.
+
+        Parameters
+        ----------
+        filename : str
+            Path to a VCF file.
+        auto_group_vrnt : bool
+            Whether to automatically group variants into chromosome groupings.
+        
+        Returns
+        -------
+        out : DensePhasedGenotypeMatrix
+            A ``DensePhasedGenotypeMatrix`` read from the VCF file.
         """
+        # check that the file exists
+        check_file_exists(filename)
+
         # make VCF iterator
         vcf = cyvcf2.VCF(filename)
 
