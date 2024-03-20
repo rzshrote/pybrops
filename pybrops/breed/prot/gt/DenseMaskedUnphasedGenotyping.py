@@ -160,10 +160,10 @@ class DenseMaskedUnphasedGenotyping(
         # calculate new variant metadata
         if pgmat.is_grouped_vrnt():
             # copy arrays
-            vrnt_chrgrp_name = numpy.copy(pgmat.taxa_grp_name)
-            vrnt_chrgrp_stix = numpy.copy(pgmat.taxa_grp_stix)
-            vrnt_chrgrp_spix = numpy.copy(pgmat.taxa_grp_spix)
-            vrnt_chrgrp_len  = numpy.copy(pgmat.taxa_grp_len)
+            vrnt_chrgrp_name = numpy.copy(pgmat.vrnt_chrgrp_name)
+            vrnt_chrgrp_stix = numpy.copy(pgmat.vrnt_chrgrp_stix)
+            vrnt_chrgrp_spix = numpy.copy(pgmat.vrnt_chrgrp_spix)
+            vrnt_chrgrp_len  = numpy.copy(pgmat.vrnt_chrgrp_len)
 
             # convert mask to index list
             masknz = numpy.flatnonzero(mask)

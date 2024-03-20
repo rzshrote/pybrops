@@ -189,6 +189,25 @@ class DenseBreedingValueMatrix(
 
         return out
 
+    ########### Miscellaneous special functions ############
+    def __repr__(
+            self
+        ) -> str:
+        """
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
+        """
+        return "<{0} of shape (ntaxa = {1}, ntrait = {2}) at {3}>".format(
+            type(self).__name__,
+            self.ntaxa,
+            self.ntrait,
+            hex(id(self)),
+        )
+
     ############################ Object Properties #############################
 
     ################# Breeding Value Data ##################
