@@ -228,7 +228,9 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(Gen
         ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem":
         # calculate wGEBVs
         # (n,p) @ (p,t) -> (n,t)
-        gwgebv = Z_a.dot(u_a * numpy.power(fafreq, -alpha))
+        tmp = fafreq.copy()
+        tmp[tmp == 0.0] = 1.0
+        gwgebv = Z_a.dot(u_a * numpy.power(tmp, -alpha))
 
         # construct problem
         out = cls(
@@ -495,7 +497,9 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(Gener
         ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem":
         # calculate wGEBVs
         # (n,p) @ (p,t) -> (n,t)
-        gwgebv = Z_a.dot(u_a * numpy.power(fafreq, -alpha))
+        tmp = fafreq.copy()
+        tmp[tmp == 0.0] = 1.0
+        gwgebv = Z_a.dot(u_a * numpy.power(tmp, -alpha))
 
         # construct problem
         out = cls(
@@ -762,7 +766,9 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(Ge
         ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem":
         # calculate wGEBVs
         # (n,p) @ (p,t) -> (n,t)
-        gwgebv = Z_a.dot(u_a * numpy.power(fafreq, -alpha))
+        tmp = fafreq.copy()
+        tmp[tmp == 0.0] = 1.0
+        gwgebv = Z_a.dot(u_a * numpy.power(tmp, -alpha))
 
         # construct problem
         out = cls(
@@ -1030,7 +1036,9 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem(Gen
         ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem":
         # calculate wGEBVs
         # (n,p) @ (p,t) -> (n,t)
-        gwgebv = Z_a.dot(u_a * numpy.power(fafreq, -alpha))
+        tmp = fafreq.copy()
+        tmp[tmp == 0.0] = 1.0
+        gwgebv = Z_a.dot(u_a * numpy.power(tmp, -alpha))
 
         # construct problem
         out = cls(
