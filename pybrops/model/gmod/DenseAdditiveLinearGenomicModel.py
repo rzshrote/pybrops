@@ -14,7 +14,9 @@ from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_float64
 from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_type_python import check_is_dict
@@ -26,9 +28,14 @@ from pybrops.core.error.error_value_python import check_len
 from pybrops.core.error.error_value_python import check_str_value
 from pybrops.core.io.CSVDictInputOutput import CSVDictInputOutput
 from pybrops.core.io.PandasDictInputOutput import PandasDictInputOutput
-from pybrops.core.util.h5py import h5py_File_read_dict, h5py_File_read_ndarray, h5py_File_read_ndarray_utf8, h5py_File_read_utf8, h5py_File_write_dict
+from pybrops.core.util.h5py import h5py_File_read_dict
+from pybrops.core.util.h5py import h5py_File_read_ndarray
+from pybrops.core.util.h5py import h5py_File_read_ndarray_utf8
+from pybrops.core.util.h5py import h5py_File_read_utf8
+from pybrops.core.util.h5py import h5py_File_write_dict
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
 
@@ -1418,7 +1425,11 @@ class DenseAdditiveLinearGenomicModel(
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Favorable allele count across all taxa.
+        Calculate the favorable allele count across all taxa.
+
+        An allele is considered favorable if its effect is greater than zero.
+        Alleles with zero effect are not considered favorable; they are 
+        considered neutral.
 
         Parameters
         ----------
@@ -1434,7 +1445,15 @@ class DenseAdditiveLinearGenomicModel(
         out : numpy.ndarray
             A numpy.ndarray of shape ``(p,t)`` containing allele counts of the 
             favorable allele.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
+        # check types
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # process dtype
         if dtype is None:
             dtype = int
@@ -1453,8 +1472,14 @@ class DenseAdditiveLinearGenomicModel(
         maxfav = dtype.type(gmat.ploidy * gmat.ntaxa)
 
         # calculate favorable allele counts
+        # if u_a > 0.0, then acount
+        # if u_a <= 0.0, then maxfav - acount
         # (p,t)
         out = numpy.where(mask, acount, maxfav - acount)
+
+        # for alleles with zero effect, set favorable allele count to 0
+        # (p,t)
+        out[self.u_a == 0.0] = 0
 
         return out
 
@@ -1465,15 +1490,18 @@ class DenseAdditiveLinearGenomicModel(
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Favorable allele frequency across all taxa.
+        Calculate the favorable allele frequency across all taxa.
+        
+        An allele is considered favorable if its effect is greater than zero.
+        Alleles with zero effect are not considered favorable; they are 
+        considered neutral.
         
         Parameters
         ----------
         gmat : GenotypeMatrix
             Genotype matrix for which to determine favorable allele frequencies.
         dtype : numpy.dtype, None
-            Datatype of the returned array. If ``None``, use the native float 
-            type.
+            Datatype of the returned array. If ``None``, use the native type.
         kwargs : dict
             Additional keyword arguments.
         
@@ -1482,7 +1510,15 @@ class DenseAdditiveLinearGenomicModel(
         out : numpy.ndarray
             A numpy.ndarray of shape ``(p,t)`` containing allele frequencies of 
             the favorable allele.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
+        # check types
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # process dtype
         if dtype is None:
             dtype = float
@@ -1504,22 +1540,36 @@ class DenseAdditiveLinearGenomicModel(
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Determine which favorable alleles are available in an input set of taxa.
-        
+        Determine whether a favorable allele is polymorphic or fixed across all 
+        taxa.
+
+        An allele is considered favorable if its effect is greater than zero.
+        Alleles with zero effect are not considered favorable; they are 
+        considered neutral.
+
         Parameters
         ----------
         gmat : GenotypeMatrix
             Genotype matrix for which to determine favorable allele frequencies.
         dtype : numpy.dtype, None
-            Datatype of the returned array. If ``None``, use the native bool type.
+            Datatype of the returned array. If ``None``, use the native type.
         kwargs : dict
             Additional keyword arguments.
         
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable allele is available.
+            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable 
+            allele is available.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
+        # check types
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # process dtype
         if dtype is None:
             dtype = bool
@@ -1545,7 +1595,11 @@ class DenseAdditiveLinearGenomicModel(
         ) -> numpy.ndarray:
         """
         Determine whether a favorable allele is fixed across all taxa.
-        
+
+        An allele is considered favorable if its effect is greater than zero.
+        Alleles with zero effect are not considered favorable; they are 
+        considered neutral.
+
         Parameters
         ----------
         gmat : GenotypeMatrix
@@ -1558,8 +1612,17 @@ class DenseAdditiveLinearGenomicModel(
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable allele is fixed.
+            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable 
+            allele is fixed.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
+        # check types
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # process dtype
         if dtype is None:
             dtype = bool
@@ -1580,6 +1643,176 @@ class DenseAdditiveLinearGenomicModel(
         
         return out
 
+    def fapoly(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.dtype] = None, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Determine whether a favorable allele is polymorphic across all taxa.
+
+        An allele is considered favorable if its effect is greater than zero.
+        Alleles with zero effect are not considered favorable; they are 
+        considered neutral.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable 
+            allele is polymorphic.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
+        """
+        # check types
+        check_is_GenotypeMatrix(gmat, "gmat")
+
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get favorable allele counts
+        # (p,t)
+        facount = self.facount(gmat)
+
+        # get maximum number of favorable alleles
+        maxfav = gmat.ploidy * gmat.ntaxa
+
+        # get boolean mask of favorable alleles that are fixed
+        out = (facount > 0) & (facount < maxfav)
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
+    def nafixed(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Determine whether a neutral allele is fixed across all taxa.
+
+        An allele is considered neutral if its effect is equal to zero.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine neutral allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a neutral 
+            allele is fixed.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
+        """
+        # check types
+        check_is_GenotypeMatrix(gmat, "gmat")
+
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get allele counts
+        # (p,1)
+        acount = gmat.acount()[:,None]
+
+        # get maximum number of alleles
+        # scalar
+        maxfav = gmat.ploidy * gmat.ntaxa
+
+        # get boolean mask of alleles that are fixed and neutral
+        # (p,1) & (p,t) -> (p,t)
+        out = ((acount == 0) | (acount == maxfav)) & (self.u_a == 0.0)
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
+    def napoly(
+            self,
+            gmat: GenotypeMatrix,
+            dtype: Optional[numpy.dtype],
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Determine whether a neutral allele is polymorphic across all taxa.
+
+        An allele is considered neutral if its effect is equal to zero.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine neutral allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a neutral 
+            allele is polymorphic.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
+        """
+        # check types
+        check_is_GenotypeMatrix(gmat, "gmat")
+
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get allele counts
+        # (p,1)
+        acount = gmat.acount()[:,None]
+
+        # get maximum number of alleles
+        maxfav = gmat.ploidy * gmat.ntaxa
+
+        # get boolean mask of alleles that are polymorphic and neutral
+        # (p,1) & (p,t) -> (p,t)
+        out = ((acount > 0) & (acount < maxfav)) & (self.u_a == 0.0)
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
     def dacount(
             self, 
             gmat: GenotypeMatrix, 
@@ -1587,7 +1820,11 @@ class DenseAdditiveLinearGenomicModel(
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Deleterious allele count across all taxa.
+        Calculate the deleterious allele count across all taxa.
+
+        An allele is considered deleterious if its effect is less than zero.
+        Alleles with zero effect are not considered deleterious; they are 
+        considered neutral.
 
         Parameters
         ----------
@@ -1601,8 +1838,17 @@ class DenseAdditiveLinearGenomicModel(
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing allele counts of the deleterious allele.
+            A numpy.ndarray of shape ``(p,t)`` containing allele counts of the 
+            deleterious allele.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
+        # check types
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # convert data type
         if dtype is None:
             dtype = int
@@ -1616,13 +1862,19 @@ class DenseAdditiveLinearGenomicModel(
         # (p,) -> (p,1)
         acount = gmat.acount(dtype = dtype)[:,None]
 
-        # get maximum number of favorable alleles
+        # get maximum number of deleterious alleles
         # scalar
         maxfav = dtype.type(gmat.ploidy * gmat.ntaxa)
 
-        # calculate favorable allele counts
+        # calculate deleterious allele counts
+        # if u_a < 0.0, then acount
+        # if u_a >= 0.0, then maxfav - acount
         # (p,t)
         out = numpy.where(mask, acount, maxfav - acount)
+
+        # for alleles with zero effect, set deleterious allele count to 0
+        # (p,t)
+        out[self.u_a == 0.0] = 0
 
         return out
 
@@ -1633,8 +1885,12 @@ class DenseAdditiveLinearGenomicModel(
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Deleterious allele frequency across all taxa.
-        
+        Calculate the deleterious allele frequency across all taxa.
+
+        An allele is considered deleterious if its effect is less than zero.
+        Alleles with zero effect are not considered deleterious; they are 
+        considered neutral.
+
         Parameters
         ----------
         gmat : GenotypeMatrix
@@ -1647,8 +1903,17 @@ class DenseAdditiveLinearGenomicModel(
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing allele frequencies of the deleterious allele.
+            A ``numpy.ndarray`` of shape ``(p,t)`` containing allele frequencies 
+            of the deleterious allele.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
+        # check types
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # process dtype
         if dtype is None:
             dtype = float
@@ -1671,21 +1936,36 @@ class DenseAdditiveLinearGenomicModel(
         ) -> numpy.ndarray:
         """
         Determine whether a deleterious allele is available in the present taxa.
-        
+
+        An allele is considered deleterious if its effect is less than zero.
+        Alleles with zero effect are not considered deleterious; they are 
+        considered neutral.
+
         Parameters
         ----------
         gmat : GenotypeMatrix
-            Genotype matrix for which to determine deleterious allele frequencies.
+            Genotype matrix for which to determine deleterious allele 
+            frequencies.
         dtype : numpy.dtype, None
-            Datatype of the returned array. If ``None``, use the native boolean type.
+            Datatype of the returned array. If ``None``, use the native boolean 
+            type.
         kwargs : dict
             Additional keyword arguments.
         
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,t)`` containing whether a deleterious allele is available.
+            A ``numpy.ndarray`` of shape ``(p,t)`` containing whether a deleterious 
+            allele is available.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
+        # check types
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # process dtype
         if dtype is None:
             dtype = bool
@@ -1711,7 +1991,11 @@ class DenseAdditiveLinearGenomicModel(
         ) -> numpy.ndarray:
         """
         Determine whether a deleterious allele is fixed across all taxa.
-        
+
+        An allele is considered deleterious if its effect is less than zero.
+        Alleles with zero effect are not considered deleterious; they are 
+        considered neutral.
+
         Parameters
         ----------
         gmat : GenotypeMatrix
@@ -1724,8 +2008,17 @@ class DenseAdditiveLinearGenomicModel(
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing whether a deleterious allele is fixed.
+            A ``numpy.ndarray`` of shape ``(p,t)`` containing whether a deleterious 
+            allele is fixed.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
+        # check types
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # process dtype
         if dtype is None:
             dtype = bool
@@ -1739,6 +2032,62 @@ class DenseAdditiveLinearGenomicModel(
 
         # get boolean mask of deleterious alleles that are fixed
         out = (dacount == maxdel)
+
+        # convert datatype if needed
+        if out.dtype != dtype:
+            out = out.astype(dtype)
+        
+        return out
+
+    def dapoly(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.dtype] = None, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Determine whether a deleterious allele is polymorphic across all taxa.
+
+        An allele is considered deleterious if its effect is less than zero.
+        Alleles with zero effect are not considered deleterious; they are 
+        considered neutral.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A ``numpy.ndarray`` of shape ``(p,t)`` containing whether a deleterious 
+            allele is polymorphic.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
+        """
+        # check types
+        check_is_GenotypeMatrix(gmat, "gmat")
+
+        # process dtype
+        if dtype is None:
+            dtype = bool
+        dtype = numpy.dtype(dtype)
+
+        # get deleterious allele counts
+        dacount = self.dacount(gmat)
+
+        # get maximum number of deleterious alleles
+        maxdel = gmat.ploidy * gmat.ntaxa
+
+        # get boolean mask of deleterious alleles that are polymorphic
+        out = (dacount > 0) & (dacount < maxdel)
 
         # convert datatype if needed
         if out.dtype != dtype:

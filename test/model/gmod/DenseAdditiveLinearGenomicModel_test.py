@@ -531,6 +531,178 @@ def test_lsl(algmod, pgmat, algmod_u_a, pgmat_mat):
     assert numpy.all(a_lsl == b_lsl)
 
 ############################################################
+################# Allele attribute tests ###################
+############################################################
+
+### facount
+def test_facount_is_concrete():
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "facount")
+
+def test_facount_TypeError(algmod, pgmat):
+    with pytest.raises(TypeError):
+        algmod.facount(object())
+    with pytest.raises(TypeError):
+        algmod.facount(pgmat, object())
+
+def test_facount_dtype(algmod, pgmat):
+    out = algmod.facount(pgmat, float)
+    assert out.dtype == float
+
+### fafreq
+def test_fafreq_is_concrete():
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "fafreq")
+
+def test_fafreq_TypeError(algmod, pgmat):
+    with pytest.raises(TypeError):
+        algmod.fafreq(object())
+    with pytest.raises(TypeError):
+        algmod.fafreq(pgmat, object())
+
+def test_fafreq_dtype(algmod, pgmat):
+    out = algmod.fafreq(pgmat, float)
+    assert out.dtype == float
+
+### faavail
+def test_faavail_is_concrete():
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "faavail")
+
+def test_faavail_TypeError(algmod, pgmat):
+    with pytest.raises(TypeError):
+        algmod.faavail(object())
+    with pytest.raises(TypeError):
+        algmod.faavail(pgmat, object())
+
+def test_faavail_dtype(algmod, pgmat):
+    out = algmod.faavail(pgmat, float)
+    assert out.dtype == float
+
+### fafixed
+def test_fafixed_is_concrete():
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "fafixed")
+
+def test_fafixed_TypeError(algmod, pgmat):
+    with pytest.raises(TypeError):
+        algmod.fafixed(object())
+    with pytest.raises(TypeError):
+        algmod.fafixed(pgmat, object())
+
+def test_fafixed_dtype(algmod, pgmat):
+    out = algmod.fafixed(pgmat, float)
+    assert out.dtype == float
+
+### fapoly
+def test_fapoly_is_concrete():
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "fapoly")
+
+def test_fapoly_TypeError(algmod, pgmat):
+    with pytest.raises(TypeError):
+        algmod.fapoly(object())
+    with pytest.raises(TypeError):
+        algmod.fapoly(pgmat, object())
+
+def test_fapoly_dtype(algmod, pgmat):
+    out = algmod.fapoly(pgmat, float)
+    assert out.dtype == float
+
+### nafixed
+def test_nafixed_is_concrete():
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "nafixed")
+
+def test_nafixed_TypeError(algmod, pgmat):
+    with pytest.raises(TypeError):
+        algmod.nafixed(object())
+    with pytest.raises(TypeError):
+        algmod.nafixed(pgmat, object())
+
+def test_nafixed_dtype(algmod, pgmat):
+    out = algmod.nafixed(pgmat, float)
+    assert out.dtype == float
+
+### napoly
+def test_napoly_is_concrete():
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "napoly")
+
+def test_napoly_TypeError(algmod, pgmat):
+    with pytest.raises(TypeError):
+        algmod.napoly(object())
+    with pytest.raises(TypeError):
+        algmod.napoly(pgmat, object())
+
+def test_napoly_dtype(algmod, pgmat):
+    out = algmod.napoly(pgmat, float)
+    assert out.dtype == float
+
+### dacount
+def test_dacount_is_concrete():
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "dacount")
+
+def test_dacount_TypeError(algmod, pgmat):
+    with pytest.raises(TypeError):
+        algmod.dacount(object())
+    with pytest.raises(TypeError):
+        algmod.dacount(pgmat, object())
+
+def test_dacount_dtype(algmod, pgmat):
+    out = algmod.dacount(pgmat, float)
+    assert out.dtype == float
+
+### dafreq
+def test_dafreq_is_concrete():
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "dafreq")
+
+def test_dafreq_TypeError(algmod, pgmat):
+    with pytest.raises(TypeError):
+        algmod.dafreq(object())
+    with pytest.raises(TypeError):
+        algmod.dafreq(pgmat, object())
+
+def test_dafreq_dtype(algmod, pgmat):
+    out = algmod.dafreq(pgmat, float)
+    assert out.dtype == float
+
+### daavail
+def test_daavail_is_concrete():
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "daavail")
+
+def test_daavail_TypeError(algmod, pgmat):
+    with pytest.raises(TypeError):
+        algmod.daavail(object())
+    with pytest.raises(TypeError):
+        algmod.daavail(pgmat, object())
+
+def test_daavail_dtype(algmod, pgmat):
+    out = algmod.daavail(pgmat, float)
+    assert out.dtype == float
+
+### dafixed
+def test_dafixed_is_concrete():
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "dafixed")
+
+def test_dafixed_TypeError(algmod, pgmat):
+    with pytest.raises(TypeError):
+        algmod.dafixed(object())
+    with pytest.raises(TypeError):
+        algmod.dafixed(pgmat, object())
+
+def test_dafixed_dtype(algmod, pgmat):
+    out = algmod.dafixed(pgmat, float)
+    assert out.dtype == float
+
+### dapoly
+def test_dapoly_is_concrete():
+    assert_method_isconcrete(DenseAdditiveLinearGenomicModel, "dapoly")
+
+def test_dapoly_TypeError(algmod, pgmat):
+    with pytest.raises(TypeError):
+        algmod.dapoly(object())
+    with pytest.raises(TypeError):
+        algmod.dapoly(pgmat, object())
+
+def test_dapoly_dtype(algmod, pgmat):
+    out = algmod.dapoly(pgmat, float)
+    assert out.dtype == float
+
+############################################################
 ##################### Model I/O tests ######################
 ############################################################
 

@@ -121,7 +121,15 @@ class DummyGenomicModel(GenomicModel):
     @property
     def nparam(self) -> object:
         return super().nparam
-    
+    def fapoly(self, gmat: GenotypeMatrix, dtype: dtype | None, **kwargs: Dict) -> ndarray:
+        return super().fapoly(gmat, dtype, **kwargs)
+    def dapoly(self, gmat: GenotypeMatrix, dtype: dtype | None, **kwargs: Dict) -> ndarray:
+        return super().dapoly(gmat, dtype, **kwargs)
+    def nafixed(self, gmat: GenotypeMatrix, dtype: ndarray | None, **kwargs: Dict) -> ndarray:
+        return super().nafixed(gmat, dtype, **kwargs)
+    def napoly(self, gmat: GenotypeMatrix, dtype: dtype | None, **kwargs: Dict) -> ndarray:
+        return super().napoly(gmat, dtype, **kwargs)
+
 class DummyLinearGenomicModel(DummyGenomicModel,LinearGenomicModel):
     @property
     def beta(self) -> object:

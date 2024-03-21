@@ -55,6 +55,15 @@ class DummyDenseLinearGenomicModel(DenseLinearGenomicModel):
         return super().to_csv_dict(filenames, **kwargs)
     def to_pandas_dict(self, **kwargs: dict) -> Dict[str, DataFrame]:
         return super().to_pandas_dict(**kwargs)
+    def fapoly(self, gmat: GenotypeMatrix, dtype: numpy.dtype | None, **kwargs: Dict) -> numpy.ndarray:
+        return super().fapoly(gmat, dtype, **kwargs)
+    def dapoly(self, gmat: GenotypeMatrix, dtype: numpy.dtype | None, **kwargs: Dict) -> numpy.ndarray:
+        return super().dapoly(gmat, dtype, **kwargs)
+    def nafixed(self, gmat: GenotypeMatrix, dtype: numpy.ndarray | None, **kwargs: Dict) -> numpy.ndarray:
+        return super().nafixed(gmat, dtype, **kwargs)
+    def napoly(self, gmat: GenotypeMatrix, dtype: numpy.dtype | None, **kwargs: Dict) -> numpy.ndarray:
+        return super().napoly(gmat, dtype, **kwargs)
+
 
 ############################################################
 ###################### Genomic model #######################
@@ -258,7 +267,7 @@ def test_predict(glgmod, mat_intercept, mat_beta, mat_int8, mat_u, dpgmat):
     a = glgmod.predict(mat_intercept, dpgmat)
     b = (mat_intercept @ mat_beta) + (geno @ mat_u)
     b = (b - b.mean(0)) / b.std(0)
-    assert numpy.all(a == b)
+    assert numpy.all(numpy.isclose(a, b))
     assert isinstance(a, BreedingValueMatrix)
 
 ### score_numpy

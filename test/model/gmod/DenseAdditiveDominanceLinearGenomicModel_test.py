@@ -31,6 +31,10 @@ def ntaxa():
     yield 100
 
 @pytest.fixture
+def nfixed():
+    yield 1
+
+@pytest.fixture
 def nmarker():
     yield 100
 
@@ -50,8 +54,8 @@ def ngroup():
 ###################### Genomic model #######################
 ############################################################
 @pytest.fixture
-def algmod_beta(ntrait):
-    out = numpy.random.uniform(0, 10, (1,ntrait))
+def algmod_beta(nfixed, ntrait):
+    out = numpy.random.uniform(0, 10, (nfixed,ntrait))
     yield out
 
 @pytest.fixture
@@ -153,11 +157,9 @@ def pgmat(
 ##################### Breeding values ######################
 ############################################################
 @pytest.fixture
-def mat_intercept(pgmat, algmod_beta):
-    n = pgmat.ntaxa
-    q = algmod_beta.shape[0]
-    a = numpy.ones((n,1), dtype = "float64")
-    yield a
+def mat_intercept(ntaxa, nfixed):
+    out = numpy.ones((ntaxa,nfixed), dtype = "float64")
+    yield out
 
 ################################################################################
 ############################## Test class docstring ############################
@@ -305,7 +307,7 @@ def test_predict_numpy(algmod, mat_intercept, algmod_beta, pgmat_mat, algmod_u_a
     geno_het = numpy.concatenate([geno, het], axis = 1)
     a = algmod.predict_numpy(mat_intercept, geno_het)
     b = (mat_intercept @ algmod_beta) + (geno @ algmod_u_a) + (het @ algmod_u_d)
-    assert numpy.all(a == b)
+    assert numpy.all(numpy.isclose(a, b))
     assert isinstance(a, numpy.ndarray)
 
 ### predict
@@ -326,8 +328,10 @@ def test_score_numpy_is_concrete():
 
 def test_score_numpy(algmod, mat_intercept, pgmat_mat):
     geno = pgmat_mat.sum(0)
-    y_true = algmod.predict_numpy(mat_intercept, geno)
-    out = algmod.score_numpy(y_true, mat_intercept, geno)
+    het = (geno == 1).astype(float)
+    geno_het = numpy.concatenate([geno, het], axis = 1)
+    y_true = algmod.predict_numpy(mat_intercept, geno_het)
+    out = algmod.score_numpy(y_true, mat_intercept, geno_het)
     assert isinstance(out, numpy.ndarray)
     assert numpy.all(out == 1.0)
     assert len(out) == algmod.ntrait
@@ -387,7 +391,9 @@ def test_gegv_numpy_is_concrete():
 
 def test_gegv_numpy(algmod, pgmat_mat):
     geno = pgmat_mat.sum(0)
-    out = algmod.gegv_numpy(geno)
+    het = (geno == 1).astype(float)
+    geno_het = numpy.concatenate([geno, het], axis = 1)
+    out = algmod.gegv_numpy(geno_het)
     assert isinstance(out, numpy.ndarray)
 
 def test_gegv_numpy_TypeError(algmod):
@@ -430,7 +436,9 @@ def test_var_G_numpy_is_concrete():
 
 def test_var_G_numpy(algmod, pgmat_mat):
     geno = pgmat_mat.sum(0)
-    out = algmod.var_G_numpy(geno)
+    het = (geno == 1).astype(float)
+    geno_het = numpy.concatenate([geno, het], axis = 1)
+    out = algmod.var_G_numpy(geno_het)
     assert isinstance(out, numpy.ndarray)
 
 def test_var_G_numpy_TypeError(algmod):
