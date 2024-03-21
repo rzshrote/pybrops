@@ -544,6 +544,21 @@ def test_facount_TypeError(algmod, pgmat):
     with pytest.raises(TypeError):
         algmod.facount(pgmat, object())
 
+def test_facount(algmod, pgmat, nmarker, ntrait):
+    out = algmod.facount(pgmat)
+    assert isinstance(out, numpy.ndarray)
+    assert out.shape == (nmarker, ntrait)
+    dom = pgmat.mat.sum((0,1))[:,None]
+    dom = numpy.broadcast_to(dom, (nmarker,ntrait))
+    rec = (1 - pgmat.mat).sum((0,1))[:,None]
+    rec = numpy.broadcast_to(rec, (nmarker,ntrait))
+    tmp = numpy.zeros((nmarker,ntrait), int)
+    mask = algmod.u_a > 0.0
+    tmp[mask] = dom[mask]
+    mask = algmod.u_a < 0.0
+    tmp[mask] = rec[mask]
+    assert numpy.all(out == tmp)
+
 def test_facount_dtype(algmod, pgmat):
     out = algmod.facount(pgmat, float)
     assert out.dtype == float
@@ -557,6 +572,11 @@ def test_fafreq_TypeError(algmod, pgmat):
         algmod.fafreq(object())
     with pytest.raises(TypeError):
         algmod.fafreq(pgmat, object())
+
+def test_fafreq(algmod, pgmat, nmarker, ntrait):
+    out = algmod.fafreq(pgmat)
+    assert isinstance(out, numpy.ndarray)
+    assert out.shape == (nmarker, ntrait)
 
 def test_fafreq_dtype(algmod, pgmat):
     out = algmod.fafreq(pgmat, float)
@@ -572,6 +592,11 @@ def test_faavail_TypeError(algmod, pgmat):
     with pytest.raises(TypeError):
         algmod.faavail(pgmat, object())
 
+def test_faavail(algmod, pgmat, nmarker, ntrait):
+    out = algmod.faavail(pgmat)
+    assert isinstance(out, numpy.ndarray)
+    assert out.shape == (nmarker, ntrait)
+
 def test_faavail_dtype(algmod, pgmat):
     out = algmod.faavail(pgmat, float)
     assert out.dtype == float
@@ -585,6 +610,11 @@ def test_fafixed_TypeError(algmod, pgmat):
         algmod.fafixed(object())
     with pytest.raises(TypeError):
         algmod.fafixed(pgmat, object())
+
+def test_fafixed(algmod, pgmat, nmarker, ntrait):
+    out = algmod.fafixed(pgmat)
+    assert isinstance(out, numpy.ndarray)
+    assert out.shape == (nmarker, ntrait)
 
 def test_fafixed_dtype(algmod, pgmat):
     out = algmod.fafixed(pgmat, float)
@@ -600,6 +630,11 @@ def test_fapoly_TypeError(algmod, pgmat):
     with pytest.raises(TypeError):
         algmod.fapoly(pgmat, object())
 
+def test_fapoly(algmod, pgmat, nmarker, ntrait):
+    out = algmod.fapoly(pgmat)
+    assert isinstance(out, numpy.ndarray)
+    assert out.shape == (nmarker, ntrait)
+
 def test_fapoly_dtype(algmod, pgmat):
     out = algmod.fapoly(pgmat, float)
     assert out.dtype == float
@@ -613,6 +648,11 @@ def test_nafixed_TypeError(algmod, pgmat):
         algmod.nafixed(object())
     with pytest.raises(TypeError):
         algmod.nafixed(pgmat, object())
+
+def test_nafixed(algmod, pgmat, nmarker, ntrait):
+    out = algmod.nafixed(pgmat)
+    assert isinstance(out, numpy.ndarray)
+    assert out.shape == (nmarker, ntrait)
 
 def test_nafixed_dtype(algmod, pgmat):
     out = algmod.nafixed(pgmat, float)
@@ -628,6 +668,11 @@ def test_napoly_TypeError(algmod, pgmat):
     with pytest.raises(TypeError):
         algmod.napoly(pgmat, object())
 
+def test_napoly(algmod, pgmat, nmarker, ntrait):
+    out = algmod.napoly(pgmat)
+    assert isinstance(out, numpy.ndarray)
+    assert out.shape == (nmarker, ntrait)
+
 def test_napoly_dtype(algmod, pgmat):
     out = algmod.napoly(pgmat, float)
     assert out.dtype == float
@@ -641,6 +686,11 @@ def test_dacount_TypeError(algmod, pgmat):
         algmod.dacount(object())
     with pytest.raises(TypeError):
         algmod.dacount(pgmat, object())
+
+def test_dacount(algmod, pgmat, nmarker, ntrait):
+    out = algmod.dacount(pgmat)
+    assert isinstance(out, numpy.ndarray)
+    assert out.shape == (nmarker, ntrait)
 
 def test_dacount_dtype(algmod, pgmat):
     out = algmod.dacount(pgmat, float)
@@ -656,6 +706,11 @@ def test_dafreq_TypeError(algmod, pgmat):
     with pytest.raises(TypeError):
         algmod.dafreq(pgmat, object())
 
+def test_dafreq(algmod, pgmat, nmarker, ntrait):
+    out = algmod.dafreq(pgmat)
+    assert isinstance(out, numpy.ndarray)
+    assert out.shape == (nmarker, ntrait)
+
 def test_dafreq_dtype(algmod, pgmat):
     out = algmod.dafreq(pgmat, float)
     assert out.dtype == float
@@ -669,6 +724,11 @@ def test_daavail_TypeError(algmod, pgmat):
         algmod.daavail(object())
     with pytest.raises(TypeError):
         algmod.daavail(pgmat, object())
+
+def test_daavail(algmod, pgmat, nmarker, ntrait):
+    out = algmod.daavail(pgmat)
+    assert isinstance(out, numpy.ndarray)
+    assert out.shape == (nmarker, ntrait)
 
 def test_daavail_dtype(algmod, pgmat):
     out = algmod.daavail(pgmat, float)
@@ -684,6 +744,11 @@ def test_dafixed_TypeError(algmod, pgmat):
     with pytest.raises(TypeError):
         algmod.dafixed(pgmat, object())
 
+def test_dafixed(algmod, pgmat, nmarker, ntrait):
+    out = algmod.dafixed(pgmat)
+    assert isinstance(out, numpy.ndarray)
+    assert out.shape == (nmarker, ntrait)
+
 def test_dafixed_dtype(algmod, pgmat):
     out = algmod.dafixed(pgmat, float)
     assert out.dtype == float
@@ -697,6 +762,11 @@ def test_dapoly_TypeError(algmod, pgmat):
         algmod.dapoly(object())
     with pytest.raises(TypeError):
         algmod.dapoly(pgmat, object())
+
+def test_dapoly(algmod, pgmat, nmarker, ntrait):
+    out = algmod.dapoly(pgmat)
+    assert isinstance(out, numpy.ndarray)
+    assert out.shape == (nmarker, ntrait)
 
 def test_dapoly_dtype(algmod, pgmat):
     out = algmod.dapoly(pgmat, float)
