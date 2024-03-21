@@ -67,6 +67,28 @@ class DenseThreeWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgeny
             **kwargs
         )
 
+    ########### Miscellaneous special functions ############
+    def __repr__(
+            self
+        ) -> str:
+        """
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
+        """
+        return "<{0} of shape (nrecurrent = {1}, nfemale = {2}, nmale = {3}, ntrait = {4}, ntrait = {5}) at {6}>".format(
+            type(self).__name__,
+            self.nrecurrent,
+            self.nfemale,
+            self.nmale,
+            self.ntrait,
+            self.ntrait,
+            hex(id(self)),
+        )
+
     ############################ Object Properties #############################
 
     ##################### Matrix Data ######################
