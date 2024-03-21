@@ -16,10 +16,9 @@ import h5py
 from numpy.typing import DTypeLike
 import pandas
 
-from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_type_pandas import check_Series_all_type, check_is_pandas_DataFrame
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
+from pybrops.core.error.error_type_pandas import check_Series_all_type
+from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
 from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column
 from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column_index
 from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column_indices
@@ -30,7 +29,8 @@ from pybrops.core.error.error_value_python import check_all_equal
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
-from pybrops.core.error.error_value_numpy import check_ndarray_has_values, check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_has_values
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
 from pybrops.core.error.error_type_python import check_Sequence_all_type
 from pybrops.core.error.error_type_python import check_is_str
@@ -38,7 +38,6 @@ from pybrops.core.error.error_type_python import check_is_str_or_Integral
 from pybrops.core.error.error_type_python import check_is_str_or_Sequence
 from pybrops.core.error.error_value_python import check_str_value
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
-from pybrops.core.util.h5py import h5py_File_write_dict
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 
 class DenseCoancestryMatrix(
@@ -85,6 +84,25 @@ class DenseCoancestryMatrix(
             taxa = taxa,
             taxa_grp = taxa_grp,
             **kwargs
+        )
+
+    ########### Miscellaneous special functions ############
+    def __repr__(
+            self
+        ) -> str:
+        """
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
+        """
+        return "<{0} of shape (ntaxa = {1}, ntaxa = {2}) at {3}>".format(
+            type(self).__name__,
+            self.ntaxa,
+            self.ntaxa,
+            hex(id(self)),
         )
 
     ############################ Object Properties #############################
