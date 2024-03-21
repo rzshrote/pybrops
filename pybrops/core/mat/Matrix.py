@@ -1053,9 +1053,6 @@ class Matrix(
     ############################################################################
     ############################## Static Methods ##############################
     ############################################################################
-    # TODO: there are discrepancies between this as a static method and other
-    #       related methods such as concat_taxa being class methods. Consider
-    #       converting this method to a class method as well.
     @classmethod
     @abstractmethod
     def concat(

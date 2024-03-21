@@ -752,9 +752,7 @@ class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
         taxa = None if taxa_ls is None else numpy.concatenate(taxa_ls, axis = 0)
         taxa_grp = None if taxa_grp_ls is None else numpy.concatenate(taxa_grp_ls, axis = 0)
 
-        # TODO: decide if first element in list is good source of information
         # concatenate everything and put into new DenseTaxaMatrix
-        # use first element as source of variant data
         out = cls(
             mat = mat,
             taxa = taxa,
