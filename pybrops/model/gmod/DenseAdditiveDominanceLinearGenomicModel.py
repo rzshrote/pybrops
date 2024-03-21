@@ -10,21 +10,32 @@ from numbers import Integral
 from typing import Dict, Optional, Sequence, Union
 import numpy
 import pandas
-from pybrops.core.error.error_io_python import check_file_exists
-from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_float64, check_ndarray_dtype_is_object
-from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
-from pybrops.core.error.error_type_python import check_is_dict, check_is_str, check_is_str_or_Sequence
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
-from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_ndim
-from pybrops.core.error.error_value_python import check_dict_has_keys, check_len, check_str_value
-from pybrops.core.util.h5py import h5py_File_read_dict, h5py_File_read_ndarray, h5py_File_read_ndarray_utf8, h5py_File_read_utf8, h5py_File_write_dict
 
+from pybrops.core.error.error_io_python import check_file_exists
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_float64
+from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_type_python import check_is_str_or_Sequence
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_python import check_dict_has_keys
+from pybrops.core.error.error_value_python import check_len
+from pybrops.core.error.error_value_python import check_str_value
+from pybrops.core.util.h5py import h5py_File_read_dict
+from pybrops.core.util.h5py import h5py_File_read_ndarray
+from pybrops.core.util.h5py import h5py_File_read_ndarray_utf8
+from pybrops.core.util.h5py import h5py_File_read_utf8
+from pybrops.core.util.h5py import h5py_File_write_dict
 from pybrops.model.gmod.AdditiveDominanceLinearGenomicModel import AdditiveDominanceLinearGenomicModel
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-
 
 class DenseAdditiveDominanceLinearGenomicModel(
         DenseAdditiveLinearGenomicModel,

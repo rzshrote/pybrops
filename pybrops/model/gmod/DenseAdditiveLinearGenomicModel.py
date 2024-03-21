@@ -486,25 +486,54 @@ class DenseAdditiveLinearGenomicModel(
         """
         Predict breeding values.
 
-        Remark: The difference between 'predict_numpy' and 'gebv_numpy' is that
-        'predict_numpy' can incorporate other factors (e.g., fixed effects) to
+        Remark: The difference between ``predict_numpy`` and ``gebv_numpy`` is that
+        ``predict_numpy`` can incorporate other factors (e.g., fixed effects) to
         provide prediction estimates.
 
         Parameters
         ----------
         X : numpy.ndarray
-            A matrix of covariates.
+            A matrix of covariates of shape ``(n,q)``.
+
+            Where:
+
+            - ``n`` is the number of taxa (observations).
+            - ``q`` is the number of fixed effects.
+        
         Z : numpy.ndarray
-            A matrix of genotype values.
+            A matrix of random predictors and/or genotype values of shape ``(n,p)``.
+
+            Where:
+
+            - ``n`` is the number of taxa (observations).
+            - ``p`` is the number of random predictors.
+
         kwargs : dict
             Additional keyword arguments.
 
         Returns
         -------
         Y_hat : numpy.ndarray
-            A matrix of estimated breeding values.
+            A matrix of estimated breeding values of shape ``(n,t)``.
+
+            Where:
+
+            - ``n`` is the number of taxa (observations).
+            - ``t`` is the number of traits.
         """
+        # type checks
+        check_is_ndarray(X, "X")
+        check_ndarray_ndim(X, "X", 2)
+        check_ndarray_axis_len_eq(X, "X", 1, self.nexplan_beta)
+        check_is_ndarray(Z, "Z")
+        check_ndarray_ndim(Z, "Z", 2)
+        check_ndarray_axis_len_eq(Z, "Z", 0, X.shape[0])
+        check_ndarray_axis_len_eq(Z, "Z", 1, self.nexplan_u)
+
         # Y = Xβ + Zu
+        # (n,q) @ (q,t) -> (n,t)
+        # (n,p) @ (p,t) -> (n,t)
+        # (n,t) + (n,t) -> (n,t)
         Y_hat = (X @ self.beta) + (Z @ self.u)
 
         return Y_hat
@@ -581,11 +610,29 @@ class DenseAdditiveLinearGenomicModel(
         Parameters
         ----------
         Y : numpy.ndarray
-            A matrix of phenotypes.
+            A matrix of phenotypes of shape ``(n,t)``.
+
+            Where:
+
+            - ``n`` is the number of taxa (observations).
+            - ``t`` is the number of traits.
+    
         X : numpy.ndarray
-            A matrix of covariates.
+            A matrix of covariates of shape ``(n,q)``.
+
+            Where:
+
+            - ``n`` is the number of taxa (observations).
+            - ``q`` is the number of fixed effects.
+        
         Z : numpy.ndarray
-            A matrix of genotypes.
+            A matrix of random predictors and/or genotype values of shape ``(n,p)``.
+
+            Where:
+
+            - ``n`` is the number of taxa (observations).
+            - ``p`` is the number of random predictors.
+
         kwargs : dict
             Additional keyword arguments.
 
@@ -598,7 +645,18 @@ class DenseAdditiveLinearGenomicModel(
 
             - ``t`` is the number of traits.
         """
-        # TODO: array shape checks
+        # type checks
+        check_is_ndarray(Y, "Y")
+        check_ndarray_ndim(Y, "Y", 2)
+        check_ndarray_axis_len_eq(Y, "Y", 1, self.ntrait)
+        check_is_ndarray(X, "X")
+        check_ndarray_ndim(X, "X", 2)
+        check_ndarray_axis_len_eq(X, "X", 0, Y.shape[0])
+        check_ndarray_axis_len_eq(X, "X", 1, self.nexplan_beta)
+        check_is_ndarray(Z, "Z")
+        check_ndarray_ndim(Z, "Z", 2)
+        check_ndarray_axis_len_eq(Z, "Z", 0, Y.shape[0])
+        check_ndarray_axis_len_eq(Z, "Z", 1, self.nexplan_u)
 
         # calculate predictions
         # (n,q) @ (q,t) -> (n,t)
@@ -1703,7 +1761,7 @@ class DenseAdditiveLinearGenomicModel(
     def nafixed(
             self, 
             gmat: GenotypeMatrix, 
-            dtype: Optional[numpy.ndarray], 
+            dtype: Optional[numpy.ndarray] = None, 
             **kwargs: dict
         ) -> numpy.ndarray:
         """
@@ -1760,7 +1818,7 @@ class DenseAdditiveLinearGenomicModel(
     def napoly(
             self,
             gmat: GenotypeMatrix,
-            dtype: Optional[numpy.dtype],
+            dtype: Optional[numpy.dtype] = None,
             **kwargs: dict
         ) -> numpy.ndarray:
         """
