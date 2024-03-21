@@ -548,7 +548,7 @@ class DenseTraitMatrix(
     @classmethod
     def concat_trait(
             cls, 
-            mats: Sequence, 
+            mats: Sequence['DenseTraitMatrix'], 
             **kwargs: dict
         ) -> 'DenseTraitMatrix':
         """
@@ -556,8 +556,8 @@ class DenseTraitMatrix(
 
         Parameters
         ----------
-        mats : Sequence of Matrix
-            List of Matrix to concatenate. The matrices must have the same
+        mats : Sequence of DenseTraitMatrix
+            List of ``DenseTraitMatrix`` to concatenate. The matrices must have the same
             shape, except in the dimension corresponding to axis.
         kwargs : dict
             Additional keyword arguments
@@ -605,9 +605,7 @@ class DenseTraitMatrix(
         mat = numpy.concatenate(mat_ls, axis = mats[0].trait_axis)
         trait = None if trait_ls is None else numpy.concatenate(trait_ls, axis = 0)
 
-        # TODO: decide if first element in list is good source of information
         # concatenate everything and put into new DenseTraitMatrix
-        # use first element as source of variant data
         out = cls(
             mat = mat,
             trait = trait,
