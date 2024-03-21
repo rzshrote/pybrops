@@ -3,7 +3,6 @@ Module defining basal interfaces and error checking routines for genomic models.
 """
 
 from abc import ABCMeta, abstractmethod
-import copy
 from numbers import Integral
 from typing import Optional, Union
 import numpy
@@ -12,7 +11,10 @@ from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
+class GenomicModel(
+        HDF5InputOutput,
+        metaclass=ABCMeta,
+    ):
     """
     An abstract class for genomic models.
 
@@ -772,7 +774,11 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Favorable allele count across all taxa.
+        Calculate the favorable allele count across all taxa.
+
+        An allele is considered favorable if its effect is greater than zero.
+        Alleles with zero effect are not considered favorable; they are 
+        considered neutral.
 
         Parameters
         ----------
@@ -786,7 +792,13 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing allele counts of the favorable allele.
+            A numpy.ndarray of shape ``(p,t)`` containing allele counts of the 
+            favorable allele.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -798,7 +810,11 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Favorable allele frequency across all taxa.
+        Calculate the favorable allele frequency across all taxa.
+        
+        An allele is considered favorable if its effect is greater than zero.
+        Alleles with zero effect are not considered favorable; they are 
+        considered neutral.
         
         Parameters
         ----------
@@ -812,7 +828,13 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,t)`` containing allele frequencies of the favorable allele.
+            A numpy.ndarray of shape ``(p,t)`` containing allele frequencies of 
+            the favorable allele.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
     
@@ -824,8 +846,13 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Determine whether a favorable allele is available in the present taxa.
-        
+        Determine whether a favorable allele is polymorphic or fixed across all 
+        taxa.
+
+        An allele is considered favorable if its effect is greater than zero.
+        Alleles with zero effect are not considered favorable; they are 
+        considered neutral.
+
         Parameters
         ----------
         gmat : GenotypeMatrix
@@ -840,6 +867,11 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         out : numpy.ndarray
             A numpy.ndarray of shape ``(p,t)`` containing whether a favorable 
             allele is available.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -852,7 +884,11 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         ) -> numpy.ndarray:
         """
         Determine whether a favorable allele is fixed across all taxa.
-        
+
+        An allele is considered favorable if its effect is greater than zero.
+        Alleles with zero effect are not considered favorable; they are 
+        considered neutral.
+
         Parameters
         ----------
         gmat : GenotypeMatrix
@@ -867,6 +903,115 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         out : numpy.ndarray
             A numpy.ndarray of shape ``(p,t)`` containing whether a favorable 
             allele is fixed.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def fapoly(
+            self,
+            gmat: GenotypeMatrix,
+            dtype: Optional[numpy.dtype],
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Determine whether a favorable allele is polymorphic across all taxa.
+
+        An allele is considered favorable if its effect is greater than zero.
+        Alleles with zero effect are not considered favorable; they are 
+        considered neutral.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine favorable allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a favorable 
+            allele is polymorphic.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def nafixed(
+            self, 
+            gmat: GenotypeMatrix, 
+            dtype: Optional[numpy.ndarray], 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Determine whether a neutral allele is fixed across all taxa.
+
+        An allele is considered neutral if its effect is equal to zero.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine neutral allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a neutral 
+            allele is fixed.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def napoly(
+            self,
+            gmat: GenotypeMatrix,
+            dtype: Optional[numpy.dtype],
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Determine whether a neutral allele is polymorphic across all taxa.
+
+        An allele is considered neutral if its effect is equal to zero.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine neutral allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A numpy.ndarray of shape ``(p,t)`` containing whether a neutral 
+            allele is polymorphic.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -878,7 +1023,11 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Deleterious allele count across all taxa.
+        Calculate the deleterious allele count across all taxa.
+
+        An allele is considered deleterious if its effect is less than zero.
+        Alleles with zero effect are not considered deleterious; they are 
+        considered neutral.
 
         Parameters
         ----------
@@ -892,7 +1041,13 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing allele counts of the deleterious allele.
+            A numpy.ndarray of shape ``(p,t)`` containing allele counts of the 
+            deleterious allele.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -904,8 +1059,12 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
             **kwargs: dict
         ) -> numpy.ndarray:
         """
-        Deleterious allele frequency across all taxa.
-        
+        Calculate the deleterious allele frequency across all taxa.
+
+        An allele is considered deleterious if its effect is less than zero.
+        Alleles with zero effect are not considered deleterious; they are 
+        considered neutral.
+
         Parameters
         ----------
         gmat : GenotypeMatrix
@@ -918,7 +1077,13 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing allele frequencies of the deleterious allele.
+            A ``numpy.ndarray`` of shape ``(p,t)`` containing allele frequencies 
+            of the deleterious allele.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
     
@@ -931,7 +1096,11 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         ) -> numpy.ndarray:
         """
         Determine whether a deleterious allele is available in the present taxa.
-        
+
+        An allele is considered deleterious if its effect is less than zero.
+        Alleles with zero effect are not considered deleterious; they are 
+        considered neutral.
+
         Parameters
         ----------
         gmat : GenotypeMatrix
@@ -946,8 +1115,13 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,t)`` containing whether a deleterious 
+            A ``numpy.ndarray`` of shape ``(p,t)`` containing whether a deleterious 
             allele is available.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
@@ -960,7 +1134,11 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         ) -> numpy.ndarray:
         """
         Determine whether a deleterious allele is fixed across all taxa.
-        
+
+        An allele is considered deleterious if its effect is less than zero.
+        Alleles with zero effect are not considered deleterious; they are 
+        considered neutral.
+
         Parameters
         ----------
         gmat : GenotypeMatrix
@@ -973,7 +1151,49 @@ class GenomicModel(HDF5InputOutput,metaclass=ABCMeta):
         Returns
         -------
         out : numpy.ndarray
-            A numpy.ndarray of shape ``(p,)`` containing whether a deleterious allele is fixed.
+            A ``numpy.ndarray`` of shape ``(p,t)`` containing whether a deleterious 
+            allele is fixed.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def dapoly(
+            self,
+            gmat: GenotypeMatrix,
+            dtype: Optional[numpy.dtype],
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """
+        Determine whether a deleterious allele is polymorphic across all taxa.
+
+        An allele is considered deleterious if its effect is less than zero.
+        Alleles with zero effect are not considered deleterious; they are 
+        considered neutral.
+
+        Parameters
+        ----------
+        gmat : GenotypeMatrix
+            Genotype matrix for which to determine deleterious allele frequencies.
+        dtype : numpy.dtype, None
+            Datatype of the returned array. If ``None``, use the native type.
+        kwargs : dict
+            Additional keyword arguments.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A ``numpy.ndarray`` of shape ``(p,t)`` containing whether a deleterious 
+            allele is polymorphic.
+
+            Where:
+
+            - ``p`` is the number of alleles.
+            - ``t`` is the number of traits.
         """
         raise NotImplementedError("method is abstract")
 
