@@ -3,7 +3,8 @@ Module defining binary NumPy format I/O interfaces and assocated error
 checking routines.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from typing import Optional, Sequence, Union
 
 class NPYInputOutput(

@@ -3,7 +3,8 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic coancestry effects.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 
 class CoancestryLinearGenomicModel(LinearGenomicModel,metaclass=ABCMeta):

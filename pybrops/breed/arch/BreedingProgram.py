@@ -8,7 +8,8 @@ __all__ = [
     "check_is_BreedingProgram",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from pybrops.breed.arch.BreedingNode import BreedingNode
 from pybrops.breed.op.log.Logbook import Logbook
 

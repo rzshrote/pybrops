@@ -3,7 +3,8 @@ Module defining interfaces and error checking routines for genomic prediction
 models that incorporate genomic additive, dominance, and epistatic effects.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from numbers import Integral
 from pybrops.model.gmod.AdditiveDominanceLinearGenomicModel import AdditiveDominanceLinearGenomicModel
 

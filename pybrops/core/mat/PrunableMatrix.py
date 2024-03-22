@@ -8,7 +8,8 @@ __all__ = [
     "check_is_PrunableMatrix",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 import numpy
 from pybrops.core.mat.Matrix import Matrix
 

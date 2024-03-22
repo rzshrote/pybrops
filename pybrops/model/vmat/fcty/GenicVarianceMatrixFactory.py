@@ -1,4 +1,5 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix

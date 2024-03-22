@@ -8,7 +8,8 @@ __all__ = [
     "check_is_OptimizationAlgorithm",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from typing import Optional
 from pybrops.opt.prob.Problem import Problem
 from pybrops.opt.soln.Solution import Solution

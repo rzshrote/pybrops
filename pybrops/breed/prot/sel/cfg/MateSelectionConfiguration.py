@@ -2,7 +2,8 @@
 Mixin class to provide functionality for selection configurations that require cross maps.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 
 import numpy
 from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfiguration

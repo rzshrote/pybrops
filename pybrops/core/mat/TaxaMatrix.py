@@ -8,7 +8,8 @@ __all__ = [
     "check_is_TaxaMatrix",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from typing import Sequence, Union
 
 import numpy

@@ -2,7 +2,8 @@
 Mixin class to provide functionality for selection configurations that require sampling.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from typing import Union
 
 import numpy

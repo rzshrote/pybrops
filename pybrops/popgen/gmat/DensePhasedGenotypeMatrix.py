@@ -728,7 +728,7 @@ class DensePhasedGenotypeMatrix(
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the accumulator and returned array.
+            The data type of the accumulator and returned array.
             If ``None``, use the native accumulator type (int or float).
 
         Returns
@@ -762,7 +762,8 @@ class DensePhasedGenotypeMatrix(
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
@@ -789,7 +790,8 @@ class DensePhasedGenotypeMatrix(
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
@@ -814,7 +816,8 @@ class DensePhasedGenotypeMatrix(
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
@@ -840,7 +843,8 @@ class DensePhasedGenotypeMatrix(
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
@@ -875,7 +879,8 @@ class DensePhasedGenotypeMatrix(
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
@@ -898,7 +903,8 @@ class DensePhasedGenotypeMatrix(
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
@@ -927,7 +933,8 @@ class DensePhasedGenotypeMatrix(
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------

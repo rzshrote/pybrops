@@ -2,7 +2,8 @@
 Module defining basal interfaces and error checking routines for genomic models.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from numbers import Integral
 from typing import Optional, Union
 import numpy

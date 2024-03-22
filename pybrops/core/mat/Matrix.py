@@ -7,7 +7,8 @@ __all__ = [
     "check_is_Matrix",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 import numpy
 from typing import Iterator, Union
 

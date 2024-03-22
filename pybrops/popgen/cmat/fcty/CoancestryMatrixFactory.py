@@ -7,7 +7,8 @@ __all__ = [
     "check_is_CoancestryMatrixFactory",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from pybrops.popgen.cmat.CoancestryMatrix import CoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 

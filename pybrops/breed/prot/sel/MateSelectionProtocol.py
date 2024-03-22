@@ -9,7 +9,8 @@ __all__ = [
 ]
 
 # imports
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from numbers import Integral
 from typing import Optional
 

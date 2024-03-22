@@ -7,7 +7,8 @@ __all__ = [
     "check_is_CoancestryMatrix",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from numbers import Real
 from pathlib import Path
 from typing import Optional, Union

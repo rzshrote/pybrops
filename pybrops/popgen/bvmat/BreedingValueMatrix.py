@@ -8,7 +8,8 @@ __all__ = [
     "check_is_BreedingValueMatrix",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from pathlib import Path
 from typing import Optional, Union
 import numpy

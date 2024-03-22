@@ -7,7 +7,8 @@ __all__ = [
     "check_is_PhenotypingProtocol",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from numbers import Real
 from typing import Union
 import numpy
