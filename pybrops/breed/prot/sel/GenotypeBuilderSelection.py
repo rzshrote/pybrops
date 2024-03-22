@@ -8,24 +8,30 @@ __all__ = [
 ]
 
 from abc import ABCMeta
-from numbers import Integral, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 import pandas
 
 from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
 from pybrops.breed.prot.sel.prob.GenotypeBuilderSelectionProblem import GenotypeBuilderSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.core.error.error_value_python import check_is_gt, check_is_in_interval_inclusive
+from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.error.error_value_python import check_is_in_interval_inclusive
 from pybrops.model.gmod.AdditiveLinearGenomicModel import check_is_AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 
 class GenotypeBuilderSelectionMixin(

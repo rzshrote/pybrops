@@ -17,7 +17,8 @@ from typing import Union
 import cyvcf2
 import h5py
 import numpy
-from numpy.typing import DTypeLike, ArrayLike
+from numpy.typing import DTypeLike
+from numpy.typing import ArrayLike
 
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_python import check_is_int

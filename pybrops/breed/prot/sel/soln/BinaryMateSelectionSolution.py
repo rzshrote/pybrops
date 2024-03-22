@@ -2,7 +2,8 @@
 Module containing
 """
 
-from numbers import Integral, Real
+from numbers import Integral
+from numbers import Real
 from typing import Union
 import numpy
 from pybrops.breed.prot.sel.soln.MateSelectionSolution import MateSelectionSolution

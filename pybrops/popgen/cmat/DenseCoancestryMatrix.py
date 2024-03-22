@@ -7,9 +7,12 @@ __all__ = [
     "check_is_DenseCoancestryMatrix",
 ]
 
-from numbers import Integral, Real
+from numbers import Integral
+from numbers import Real
 from pathlib import Path
-from typing import Optional, Sequence, Union
+from typing import Optional
+from typing import Sequence
+from typing import Union
 import numpy
 import warnings
 import h5py

@@ -11,7 +11,8 @@ __all__ = [
 from pathlib import Path
 import numpy
 import copy
-from typing import Sequence, Union
+from typing import Sequence
+from typing import Union
 from typing import Optional
 from numpy.typing import ArrayLike
 import h5py
@@ -19,7 +20,9 @@ import h5py
 from pybrops.core.error.error_attr_python import check_is_iterable
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
@@ -29,7 +32,9 @@ from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
-from pybrops.core.util.h5py import h5py_File_read_ndarray, h5py_File_read_ndarray_utf8, h5py_File_write_dict
+from pybrops.core.util.h5py import h5py_File_read_ndarray
+from pybrops.core.util.h5py import h5py_File_read_ndarray_utf8
+from pybrops.core.util.h5py import h5py_File_write_dict
 
 class DenseTraitMatrix(
         DenseMutableMatrix,

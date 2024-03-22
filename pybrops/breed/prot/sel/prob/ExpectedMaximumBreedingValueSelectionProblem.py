@@ -10,20 +10,30 @@ __all__ = [
 ]
 
 from abc import ABCMeta
-from numbers import Integral, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 import numpy
-from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol, check_is_MatingProtocol
+from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
+from pybrops.breed.prot.mate.MatingProtocol import check_is_MatingProtocol
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_bool
-from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
-from pybrops.core.util.arrayix import triudix, triuix
-from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_bool
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_gteq
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.util.arrayix import triudix
+from pybrops.core.util.arrayix import triuix
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 
 class ExpectedMaximumBreedingValueSelectionProblemMixin(

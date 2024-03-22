@@ -3,17 +3,25 @@ Module implementing mating protocols for three-way DH crosses.
 """
 
 from numbers import Integral
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 from pybrops.breed.prot.mate.util import mat_dh
 from pybrops.breed.prot.mate.util import mat_mate
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
-from pybrops.core.error.error_value_numpy import check_ndarray_axis_len, check_ndarray_ndim, check_ndarray_shape_eq
-from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix, check_DensePhasedGenotypeMatrix_has_vrnt_xoprob, check_is_DensePhasedGenotypeMatrix
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_shape_eq
+from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
+from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_DensePhasedGenotypeMatrix_has_vrnt_xoprob
+from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
 
 class ThreeWayDHCross(MatingProtocol):

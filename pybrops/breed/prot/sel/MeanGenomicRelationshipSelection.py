@@ -13,11 +13,15 @@ __all__ = [
 
 # imports
 from abc import ABCMeta
-from numbers import Integral, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 import pandas
 
 from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtocol
@@ -38,8 +42,10 @@ from pybrops.opt.algo.IntegerOptimizationAlgorithm import IntegerOptimizationAlg
 from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm
 from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
-from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory, check_is_CoancestryMatrixFactory
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
+from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory
+from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import check_is_CoancestryMatrixFactory
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class MeanGenomicRelationshipSelectionMixin(

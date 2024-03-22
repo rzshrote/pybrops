@@ -3,15 +3,19 @@ Mixin class to provide functionality for selection configurations that require c
 """
 
 from abc import ABCMeta
-from abc import abstractmethod
 
 import numpy
 from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfiguration
-from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_integer
-from pybrops.core.error.error_value_numpy import check_ndarray_axis_len, check_ndarray_ndim
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 
 
-class MateSelectionConfiguration(SelectionConfiguration,metaclass=ABCMeta):
+class MateSelectionConfiguration(
+        SelectionConfiguration,
+        metaclass=ABCMeta,
+    ):
     """
     A mixin class to provide functionality for selection configurations which 
     require random samples to be drawn.

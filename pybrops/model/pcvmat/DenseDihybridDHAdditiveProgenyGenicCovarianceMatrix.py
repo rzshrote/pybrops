@@ -7,20 +7,27 @@ formulae.
 import math
 from numbers import Integral
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
 import pandas
 import h5py
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_str, check_is_str_or_Integral
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_str
+from pybrops.core.error.error_type_python import check_is_str_or_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column, check_pandas_DataFrame_has_column_index
+from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column
+from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column_index
 from pybrops.core.util.arrayix import flattenix
-from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel, check_is_AdditiveLinearGenomicModel
-from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
+from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
+from pybrops.model.gmod.AdditiveLinearGenomicModel import check_is_AdditiveLinearGenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
 from pybrops.model.pcvmat.DenseAdditiveProgenyGenicCovarianceMatrix import DenseAdditiveProgenyGenicCovarianceMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 class DenseDihybridDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGenicCovarianceMatrix):
     """

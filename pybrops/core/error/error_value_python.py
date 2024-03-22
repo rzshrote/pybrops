@@ -22,7 +22,8 @@ __all__ = [
 ]
 
 from numbers import Integral
-from typing import Sequence, Tuple
+from typing import Sequence
+from typing import Tuple
 
 ################################################################################
 ############################### check functions ################################

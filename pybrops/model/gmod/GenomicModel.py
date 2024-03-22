@@ -5,7 +5,8 @@ Module defining basal interfaces and error checking routines for genomic models.
 from abc import ABCMeta
 from abc import abstractmethod
 from numbers import Integral
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
 import pandas
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput

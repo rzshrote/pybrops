@@ -7,9 +7,11 @@ from abc import abstractmethod
 from typing import Union
 
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 from pybrops.core.random.prng import global_prng
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_numpy import check_is_ndarray
 
 
 class SampledSelectionConfigurationMixin(

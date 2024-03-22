@@ -9,12 +9,20 @@ __all__ = [
 ]
 
 # imports
-from numbers import Integral, Real
-from typing import Callable, Iterable, Optional, Sequence, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Iterable
+from typing import Optional
+from typing import Sequence
+from typing import Union
 import numpy
-from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
+from pymoo.core.problem import ElementwiseEvaluationFunction
+from pymoo.core.problem import LoopedElementwiseEvaluation
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_bool_or_integer
-from pybrops.core.error.error_value_numpy import check_ndarray_is_binary, check_ndarray_len_eq, check_ndarray_shape_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_is_binary
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_shape_eq
 from pybrops.opt.prob.Problem import Problem
 
 # inheritance ordering is important for method resolution order

@@ -11,12 +11,15 @@ __all__ = [
 ]
 
 from abc import ABCMeta
-from numbers import Integral, Real
-from typing import Optional, Union
+from numbers import Integral
+from numbers import Real
+from typing import Optional
+from typing import Union
 from typing import Callable
 
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 import pandas
 import scipy.stats
 
@@ -32,18 +35,26 @@ from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import Usef
 from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import UsefulnessCriterionIntegerMateSelectionProblem
 from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import UsefulnessCriterionRealMateSelectionProblem
 from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import UsefulnessCriterionSubsetMateSelectionProblem
-from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory, check_is_GeneticVarianceMatrixFactory
+from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory
+from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import check_is_GeneticVarianceMatrixFactory
 from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm
 from pybrops.opt.algo.IntegerOptimizationAlgorithm import IntegerOptimizationAlgorithm
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real, check_is_bool
-from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq, check_is_in_interval_exclusive
-from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_Real
+from pybrops.core.error.error_type_python import check_is_bool
+from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.error.error_value_python import check_is_gteq
+from pybrops.core.error.error_value_python import check_is_in_interval_exclusive
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
 from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm
 from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
-from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_GeneticMapFunction
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
+from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 class UsefulnessCriterionSelectionMixin(
         metaclass = ABCMeta,

@@ -4,7 +4,8 @@ Module containing functions for transforming objective function outputs.
 
 from numbers import Real
 import numpy
-from typing import Tuple, Union
+from typing import Tuple
+from typing import Union
 
 __all__ = [
     "trans_ndpt_to_vec_dist", 

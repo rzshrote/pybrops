@@ -8,7 +8,8 @@ __all__ = [
     "check_directory_exists",
 ]
 
-from os.path import exists, isfile
+from os.path import exists
+from os.path import isfile
 from pathlib import Path
 from typing import Union
 

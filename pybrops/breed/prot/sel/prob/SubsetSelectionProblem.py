@@ -10,9 +10,15 @@ __all__ = [
 
 # imports
 import numpy
-from numbers import Integral, Real
-from typing import Callable, Iterable, Optional, Sequence, Union
-from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Iterable
+from typing import Optional
+from typing import Sequence
+from typing import Union
+from pymoo.core.problem import ElementwiseEvaluationFunction
+from pymoo.core.problem import LoopedElementwiseEvaluation
 
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.opt.prob.SubsetProblem import SubsetProblem

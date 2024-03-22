@@ -4,8 +4,11 @@ Module implementing Usefulness Criterion (UC) Selection problems.
 
 from abc import ABCMeta
 from abc import abstractmethod
-from numbers import Integral, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 import numpy
 import scipy.stats
 from pybrops.breed.prot.sel.prob.BinaryMateSelectionProblem import BinaryMateSelectionProblem
@@ -13,14 +16,23 @@ from pybrops.breed.prot.sel.prob.IntegerMateSelectionProblem import IntegerMateS
 from pybrops.breed.prot.sel.prob.RealMateSelectionProblem import RealMateSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real, check_is_bool
-from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_Real
+from pybrops.core.error.error_type_python import check_is_bool
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_gteq
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_in_interval_inclusive
-from pybrops.core.util.arrayix import triudix, triuix
-from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
-from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory, check_is_GeneticVarianceMatrixFactory
-from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_GeneticMapFunction
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
+from pybrops.core.util.arrayix import triudix
+from pybrops.core.util.arrayix import triuix
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
+from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory
+from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import check_is_GeneticVarianceMatrixFactory
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
+from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 
 class UsefulnessCriterionSelectionProblemMixin(

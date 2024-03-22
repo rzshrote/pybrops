@@ -9,11 +9,15 @@ __all__ = [
 
 from abc import ABCMeta
 from abc import abstractmethod
-from numbers import Integral, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 import pandas
 
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
@@ -23,7 +27,8 @@ from pybrops.breed.prot.sel.soln.RealSelectionSolution import RealSelectionSolut
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.NSGA2RealGeneticAlgorithm import NSGA2RealGeneticAlgorithm
 from pybrops.opt.algo.RealGeneticAlgorithm import RealGeneticAlgorithm
-from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm, check_is_RealOptimizationAlgorithm
+from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm
+from pybrops.opt.algo.RealOptimizationAlgorithm import check_is_RealOptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix

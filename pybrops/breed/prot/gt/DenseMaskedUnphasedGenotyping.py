@@ -9,7 +9,8 @@ from pybrops.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
 from pybrops.core.error.error_type_python import check_is_bool
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_PhasedGenotypeMatrix_has_vrnt_mask, check_is_PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 class DenseMaskedUnphasedGenotyping(
         GenotypingProtocol

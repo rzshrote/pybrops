@@ -9,11 +9,14 @@ __all__ = [
 
 from abc import ABCMeta
 from abc import abstractmethod
-from numbers import Integral, Real
-from typing import Callable, Optional, Union
-
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 import pandas
 
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
@@ -23,7 +26,8 @@ from pybrops.breed.prot.sel.soln.BinarySelectionSolution import BinarySelectionS
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.NSGA2BinaryGeneticAlgorithm import NSGA2BinaryGeneticAlgorithm
 from pybrops.opt.algo.BinaryGeneticAlgorithm import BinaryGeneticAlgorithm
-from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm, check_is_BinaryOptimizationAlgorithm
+from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm
+from pybrops.opt.algo.BinaryOptimizationAlgorithm import check_is_BinaryOptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix

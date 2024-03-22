@@ -6,7 +6,8 @@ import copy
 import math
 from numbers import Real
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
 import pandas
 import h5py
@@ -15,10 +16,14 @@ from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
 from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_python import check_is_dict
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
 from pybrops.core.util.h5py import h5py_File_write_dict
-from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 class TruePhenotyping(
         PhenotypingProtocol

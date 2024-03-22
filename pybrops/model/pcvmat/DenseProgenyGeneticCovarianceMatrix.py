@@ -5,7 +5,8 @@ storing dense genetic covariance estimates.
 
 import copy
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
 import h5py
 from pybrops.core.mat.DenseSquareTaxaSquareTraitMatrix import DenseSquareTaxaSquareTraitMatrix

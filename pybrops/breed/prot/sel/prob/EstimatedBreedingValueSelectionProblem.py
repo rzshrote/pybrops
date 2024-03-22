@@ -11,8 +11,12 @@ __all__ = [
 
 from abc import ABCMeta
 from abc import abstractmethod
-from numbers import Integral, Number, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from numbers import Number
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 
 import numpy
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
@@ -20,7 +24,9 @@ from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelection
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_axis_len_gteq, check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_gteq
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 
 

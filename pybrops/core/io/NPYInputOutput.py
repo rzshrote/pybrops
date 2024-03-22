@@ -5,7 +5,9 @@ checking routines.
 
 from abc import ABCMeta
 from abc import abstractmethod
-from typing import Optional, Sequence, Union
+from typing import Optional
+from typing import Sequence
+from typing import Union
 
 class NPYInputOutput(
         metaclass = ABCMeta,

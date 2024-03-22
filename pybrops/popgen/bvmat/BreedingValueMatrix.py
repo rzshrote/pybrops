@@ -11,7 +11,8 @@ __all__ = [
 from abc import ABCMeta
 from abc import abstractmethod
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
 import pandas
 import h5py

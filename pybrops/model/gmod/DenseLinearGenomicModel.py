@@ -6,7 +6,8 @@ models that incorporate linear genomic effects.
 import copy
 from numbers import Integral
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
 import h5py
 import pandas
@@ -16,10 +17,16 @@ from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_float64
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_attr_python import error_readonly
-from pybrops.core.util.h5py import h5py_File_read_dict, h5py_File_read_ndarray, h5py_File_read_ndarray_utf8, h5py_File_read_utf8, h5py_File_write_dict
+from pybrops.core.util.h5py import h5py_File_read_dict
+from pybrops.core.util.h5py import h5py_File_read_ndarray
+from pybrops.core.util.h5py import h5py_File_read_ndarray_utf8
+from pybrops.core.util.h5py import h5py_File_read_utf8
+from pybrops.core.util.h5py import h5py_File_write_dict
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix

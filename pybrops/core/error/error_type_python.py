@@ -31,8 +31,13 @@ __all__ = [
 ]
 
 import math
-from numbers import Complex, Integral, Number, Real
-from typing import Callable, Container, Sequence
+from numbers import Complex
+from numbers import Integral
+from numbers import Number
+from numbers import Real
+from typing import Callable
+from typing import Container
+from typing import Sequence
 from typing import Union
 import inspect
 

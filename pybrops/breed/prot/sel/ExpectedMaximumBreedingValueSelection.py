@@ -11,14 +11,19 @@ __all__ = [
 ]
 
 from abc import ABCMeta
-from numbers import Integral, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 import pandas
 
-from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol, check_is_MatingProtocol
+from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
+from pybrops.breed.prot.mate.MatingProtocol import check_is_MatingProtocol
 from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtocol
 from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProtocol
 from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
@@ -31,7 +36,8 @@ from pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem im
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_bool
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_bool
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm

@@ -7,7 +7,8 @@ import h5py
 
 from pybrops.core.error.error_type_h5py import check_is_h5py_File
 from pybrops.core.error.error_type_python import check_is_str
-from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable, check_h5py_File_is_writable
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
 
 __all__ = [
     "h5py_File_write_dict",

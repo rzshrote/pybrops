@@ -6,7 +6,8 @@ mating protocols.
 from abc import ABCMeta
 from abc import abstractmethod
 from numbers import Integral
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
 
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix

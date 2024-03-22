@@ -32,9 +32,12 @@ __all__ = [
     "check_ndarray_dtype_is_object_or_string",
 ]
 
-from numbers import Integral, Number, Real
+from numbers import Integral
+from numbers import Number
+from numbers import Real
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 from typing import Union
 
 ################################################################################

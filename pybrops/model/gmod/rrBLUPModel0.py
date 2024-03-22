@@ -4,16 +4,22 @@ intercept + marker effects model.
 """
 
 import copy
-from typing import Optional, Tuple, Union
-from numbers import Integral, Real
+from typing import Optional
+from typing import Tuple
+from typing import Union
+from numbers import Integral
+from numbers import Real
 import numpy
 import pandas
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_Real
-from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq, check_ndarray_ndim
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_Real
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_gteq
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
-from scipy.optimize import minimize, Bounds
+from scipy.optimize import minimize
+from scipy.optimize import Bounds
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 

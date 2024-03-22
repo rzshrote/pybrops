@@ -10,8 +10,8 @@ __all__ = [
 from abc import ABCMeta
 from abc import abstractmethod
 import numpy
-from typing import Iterator, Union
-
+from typing import Iterator
+from typing import Union
 from typing import Sequence
 from numpy.typing import ArrayLike
 

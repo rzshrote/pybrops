@@ -3,15 +3,20 @@ Module defining selection configurations where the decision space is integer in 
 """
 
 from numbers import Integral
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfiguration
 from pybrops.breed.prot.sel.cfg.SampledSelectionConfigurationMixin import SampledSelectionConfigurationMixin
-from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_integer
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.random.sampling import axis_shuffle, outcross_shuffle, tiled_choice
+from pybrops.core.random.sampling import axis_shuffle
+from pybrops.core.random.sampling import outcross_shuffle
+from pybrops.core.random.sampling import tiled_choice
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
@@ -45,7 +50,7 @@ class IntegerSelectionConfiguration(SampledSelectionConfigurationMixin,Selection
             specifies 10 two-way crosses.
         nmating : Integral, numpy.ndarray
             The number of times an individual cross configuration is executed.
-            This becomes important in four-way crosses with heterozygous parents, where
+            This becomes important in four-way crosses with heterozygous parents where
             initial F1 hybrids are unique and can affect the dihybrid composition.
         nprogeny : Integral, numpy.ndarray
             The number of progeny to derive from a mating event.

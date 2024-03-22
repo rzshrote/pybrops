@@ -10,8 +10,12 @@ __all__ = [
 ]
 
 from abc import ABCMeta
-from numbers import Integral, Number, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from numbers import Number
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 import numpy
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem

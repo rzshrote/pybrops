@@ -5,9 +5,11 @@ formulae.
 """
 
 import math
-from numbers import Integral, Real
+from numbers import Integral
+from numbers import Real
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import h5py
 import numpy
 import pandas

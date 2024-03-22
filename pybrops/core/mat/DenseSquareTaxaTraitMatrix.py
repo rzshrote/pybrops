@@ -11,12 +11,16 @@ __all__ = [
 
 import copy
 from pathlib import Path
-from typing import Optional, Sequence, Union
+from typing import Optional
+from typing import Sequence
+from typing import Union
 import numpy
 import h5py
 from numpy.typing import ArrayLike
 from pybrops.core.error.error_io_python import check_file_exists
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
 from pybrops.core.mat.DenseTraitMatrix import DenseTraitMatrix
 from pybrops.core.mat.Matrix import Matrix

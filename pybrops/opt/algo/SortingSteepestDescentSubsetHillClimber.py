@@ -10,7 +10,9 @@ from typing import Optional
 import numpy
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
-from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_SubsetProblem_is_single_objective, check_is_SubsetProblem
+from pybrops.opt.prob.SubsetProblem import SubsetProblem
+from pybrops.opt.prob.SubsetProblem import check_SubsetProblem_is_single_objective
+from pybrops.opt.prob.SubsetProblem import check_is_SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
 class SortingSteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):

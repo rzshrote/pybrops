@@ -6,7 +6,8 @@ from abc import ABCMeta
 
 import numpy
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.core.error.error_type_numpy import check_is_ndarray, check_ndarray_dtype_is_integer
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 
 

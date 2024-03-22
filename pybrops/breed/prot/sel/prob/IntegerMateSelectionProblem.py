@@ -1,9 +1,15 @@
-from numbers import Integral, Real
-from typing import Callable, Iterable, Optional, Sequence, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Iterable
+from typing import Optional
+from typing import Sequence
+from typing import Union
 import numpy
 from pybrops.breed.prot.sel.prob.MateSelectionProblem import MateSelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
-from pymoo.core.problem import ElementwiseEvaluationFunction, LoopedElementwiseEvaluation
+from pymoo.core.problem import ElementwiseEvaluationFunction
+from pymoo.core.problem import LoopedElementwiseEvaluation
 
 
 class IntegerMateSelectionProblem(IntegerSelectionProblem,MateSelectionProblem):

@@ -11,17 +11,22 @@ import copy
 from pathlib import Path
 import numpy
 import h5py
-from typing import Iterator, Optional, Sequence, Union
+from typing import Iterator
+from typing import Optional
+from typing import Sequence
+from typing import Union
 from numpy.typing import ArrayLike
 
 from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_type_python import check_is_str
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.util import get_axis
-from pybrops.core.util.h5py import h5py_File_read_ndarray, h5py_File_write_dict
+from pybrops.core.util.h5py import h5py_File_read_ndarray
+from pybrops.core.util.h5py import h5py_File_write_dict
 
 class DenseMatrix(Matrix):
     """
