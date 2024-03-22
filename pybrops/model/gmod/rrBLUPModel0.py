@@ -81,7 +81,8 @@ def rrBLUP_ML0_calc_d_V(G: numpy.ndarray) -> Tuple[numpy.ndarray,numpy.ndarray]:
     out : tuple
         A tuple containing ``(d,V)``.
         
-        Where::
+        Where:
+
         - ``d`` is a vector of shape ``(nobs,)`` representing the diagonal of the spectral decomposition.
         - ``V`` is a matrix of shape ``(nobs,nobs)`` representing the orthonormal basis of the spectral decomposition.
 
@@ -118,7 +119,8 @@ def rrBLUP_ML0_nonzero_d_V(d: numpy.ndarray, V: numpy.ndarray, tol: Real = 1e-5)
     out : tuple
         A tuple containing ``(d,V)``.
         
-        Where::
+        Where:
+
         - ``d`` is a vector of shape ``(ncomp,)`` representing the diagonal of the spectral decomposition.
         - ``V`` is a matrix of shape ``(nobs,ncomp)`` representing the orthonormal basis of the spectral decomposition.
     """
@@ -316,6 +318,7 @@ def rrBLUP_ML0(y: numpy.ndarray, Z: numpy.ndarray, varlb: Real = 1e-5, varub: Re
     y = Zu + e
 
     Where::
+    
         - ``y`` are observations.
         - ``Z`` is a design matrix for genetic markers.
         - ``u`` are marker effects which follow the distribution ``MVN(0, varU * I)``.
@@ -535,6 +538,7 @@ class rrBLUPModel0(DenseAdditiveLinearGenomicModel):
     y = Xb + Zu + e
 
     Where::
+
         - ``y`` are observations.
         - ``X`` is a matrix of ones for the incidence of the slope.
         - ``b`` is the intercept.
@@ -547,6 +551,7 @@ class rrBLUPModel0(DenseAdditiveLinearGenomicModel):
     y = Zu + e
 
     Where::
+    
         - ``y`` are observations.
         - ``Z`` is a design matrix for genetic markers.
         - ``u`` are marker effects which follow the distribution ``MVN(0, varU * I)``.
@@ -761,19 +766,45 @@ class rrBLUPModel0(DenseAdditiveLinearGenomicModel):
         Parameters
         ----------
         Y : numpy.ndarray
-            A phenotype matrix of shape (n,t).
+            A phenotype matrix of shape ``(n,t)``.
+            
+            Where:
+
+            - ``n`` is the number of observations.
+            - ``t`` is the number of traits.
+        
         X : numpy.ndarray
             Not used by this model. Assumed to be ``(n,q)`` matrix of ones.
+
+            Where:
+
+            - ``n`` is the number of observations.
+            - ``q`` is the number of fixed effects.
+        
         Z : numpy.ndarray
-            A genotypes matrix of shape (n,p).
-        trait : numpy.ndarray
-            A trait name array of shape (t,).
+            A genotypes matrix of shape ``(n,p)``.
+
+            Where:
+
+            - ``n`` is the number of observations.
+            - ``p`` is the number of markers to be considered as random effects.
+        
+        trait : numpy.ndarray, None
+            A trait name array of shape ``(t,)``.
+
+            Where:
+
+            - ``t`` is the number of traits.
+        
         method : str
             Fitting method to use. Options are ``{"ML"}``.
+        
         model_name : str, None
             Name of the model.
+        
         hyperparams : dict, None
             Model parameters.
+        
         kwargs : dict
             Additional keyword arguments.
 
@@ -782,15 +813,21 @@ class rrBLUPModel0(DenseAdditiveLinearGenomicModel):
         out : rrBLUPModel0
             An RR-BLUP model.
         """
-        # type checks
+        # type and shape checks
         check_is_ndarray(Y, "Y")
-        # check_is_ndarray(X, "X") # ignored by this model
-        check_is_ndarray(Z, "Z")
-
-        # shape checks
         check_ndarray_ndim(Y, "Y", 2)
+        # check_is_ndarray(X, "X") # ignored by this model
         # check_ndarray_ndim(X, "X", 2) # ignored by this model
+        # check_ndarray_axis_len_eq(X, "X", 0, Y.shape[0])
+        check_is_ndarray(Z, "Z")
         check_ndarray_ndim(Z, "Z", 2)
+        check_ndarray_axis_len_eq(Z, "Z", 0, Y.shape[0])
+
+        # get number of taxa (n), traits (t), markers (p)
+        # scalar
+        # ntaxa = Y.shape[0]
+        ntrait = Y.shape[1]
+        nmarker = Z.shape[1]
 
         # convert data types to floating if needed
         if not numpy.issubdtype(Y.dtype, numpy.floating):
@@ -798,20 +835,31 @@ class rrBLUPModel0(DenseAdditiveLinearGenomicModel):
         if not numpy.issubdtype(Z.dtype, numpy.floating):
             Z = Z.astype(float)
 
-        # get number of traits
-        # scalar = t
-        ntrait = Y.shape[1]
+        # determine columns (loci) that are polymorphic
+        # True if polymorphic, False if monomorphic
+        # (p,)
+        ispolymorphic = ~numpy.all(Z == Z[0,:], axis = 0)
 
-        # for each trait, fit a model
-        models = [rrBLUP_ML0(Y[:,i], Z) for i in range(ntrait)]
+        # get columns that are polymorphic
+        # (n,p)[:,mask] -> (n,p_poly)
+        Zpoly = Z[:,ispolymorphic]
+
+        # for each trait, fit a model with polymorphic markers
+        models = [rrBLUP_ML0(Y[:,i], Zpoly) for i in range(ntrait)]
 
         # aggregate intercepts and stack estimates
         # (1,t)
         beta = numpy.stack([models[i]["betahat"] for i in range(ntrait)], axis = 1)
 
         # aggregate marker effects and stack estimates
+        # (p_poly,t)
+        uhat = numpy.stack([models[i]["uhat"] for i in range(ntrait)], axis = 1)
+
+        # create marker effect coefficent matrix, for monomorphic loci, assign effect as zero
         # (p,t)
-        u_a = numpy.stack([models[i]["uhat"] for i in range(ntrait)], axis = 1)
+        u_a = numpy.empty((nmarker,ntrait), dtype = float)
+        u_a[ispolymorphic,:] = uhat
+        u_a[~ispolymorphic,:] = 0.0
 
         # create output
         out = cls(
