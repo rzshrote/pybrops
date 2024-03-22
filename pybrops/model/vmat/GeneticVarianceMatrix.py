@@ -3,7 +3,8 @@ Module defining interfaces and associated error checking routines for matrices
 storing genetic variance estimates.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from pybrops.core.io.CSVInputOutput import CSVInputOutput
 from pybrops.core.io.PandasInputOutput import PandasInputOutput
 from pybrops.core.mat.SquareTaxaMatrix import SquareTaxaMatrix

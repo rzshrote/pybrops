@@ -3,7 +3,8 @@ Module defining a genetic variance matrix factory interface and associated error
 checking routines.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from numbers import Integral
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.vmat.GeneticVarianceMatrix import GeneticVarianceMatrix

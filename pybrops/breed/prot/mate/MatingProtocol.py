@@ -3,7 +3,8 @@ Module defining interfaces and associated error checking routines for mating
 mating protocols.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from numbers import Integral
 from typing import Optional, Union
 import numpy

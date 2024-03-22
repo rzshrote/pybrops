@@ -3,7 +3,8 @@ Module defining interfaces and associated error checking routines for matrices
 storing additive genic covariance estimates.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.pcvmat.ProgenyGenicCovarianceMatrix import ProgenyGenicCovarianceMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix

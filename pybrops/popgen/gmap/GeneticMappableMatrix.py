@@ -8,7 +8,8 @@ __all__ = [
     "check_is_GeneticMappableMatrix",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from pybrops.core.mat.VariantMatrix import VariantMatrix
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction

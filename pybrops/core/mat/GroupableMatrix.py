@@ -8,7 +8,8 @@ __all__ = [
     "check_is_GroupableMatrix",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 
 class GroupableMatrix(SortableMatrix,metaclass=ABCMeta):

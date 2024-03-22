@@ -2,7 +2,8 @@
 Module implementing Usefulness Criterion (UC) Selection problems.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from numbers import Integral, Real
 from typing import Callable, Optional, Union
 import numpy

@@ -3,7 +3,8 @@ Module defining basal matrix interfaces and associated error checking routines
 for genotype matrices.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from numbers import Real
 import numpy
 from numpy.typing import DTypeLike
@@ -12,7 +13,12 @@ from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 from pybrops.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
 
-class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,metaclass=ABCMeta):
+class GenotypeMatrix(
+        TaxaVariantMatrix,
+        GeneticMappableMatrix,
+        HDF5InputOutput,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for genoypte matrix objects.
 
@@ -70,12 +76,12 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,met
             format: str
         ) -> numpy.ndarray:
         """
-        Get mat in a specific format type.
+        Get the genotype matrix in a specific format type.
 
         Parameters
         ----------
         format : str
-            Desired output format. Options are "{0,1,2}", "{-1,0,1}", "{-1,m,1}".
+            Desired output format. Options are ``"{0,1,2}"``, ``"{-1,0,1}"``, ``"{-1,m,1}"``.
 
         Returns
         -------
@@ -96,7 +102,7 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,met
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the accumulator and returned array.
+            The data type of the accumulator and returned array.
             If ``None``, use the native accumulator type (int or float).
 
         Returns
@@ -104,6 +110,11 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,met
         out : numpy.ndarray
             A numpy.ndarray of shape ``(n,p)`` containing allele counts of the
             allele coded as ``1`` for all ``n`` individuals, for all ``p`` loci.
+
+            Where:
+
+            - ``n`` is the number of taxa (individuals).
+            - ``p`` is the number of variants (loci).
         """
         raise NotImplementedError("method is abstract")
 
@@ -118,7 +129,8 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,met
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
@@ -140,7 +152,8 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,met
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
@@ -161,13 +174,36 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,met
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
         out : numpy.ndarray
             A numpy.ndarray of shape ``(p,)`` containing allele frequencies of
             the allele coded as ``1`` for all ``p`` loci.
+        """
+        raise NotImplementedError("method is abstract")
+
+    @abstractmethod
+    def afixed(
+            self,
+            dtype: Optional[DTypeLike],
+        ) -> numpy.ndarray:
+        """
+        Determine allele fixation for loci across all taxa.
+
+        Parameters
+        ----------
+        dtype : dtype, None
+            The data type of the returned array. 
+            If ``None``, use the native type.
+        
+        Returns
+        -------
+        out : numpy.ndarray
+            A ``numpy.ndarray`` of shape ``(p,)`` containing indicator variables 
+            for whether a locus is fixed at a particular locus.
         """
         raise NotImplementedError("method is abstract")
 
@@ -182,7 +218,8 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,met
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
@@ -203,7 +240,8 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,met
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
@@ -224,7 +262,8 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,met
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
@@ -247,7 +286,8 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,met
         Parameters
         ----------
         dtype : dtype, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------
@@ -277,7 +317,8 @@ class GenotypeMatrix(TaxaVariantMatrix,GeneticMappableMatrix,HDF5InputOutput,met
         Parameters
         ----------
         dtype : DTypeLike, None
-            The dtype of the returned array. If ``None``, use the native type.
+            The data type of the returned array. 
+            If ``None``, use the native type.
 
         Returns
         -------

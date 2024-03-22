@@ -8,7 +8,8 @@ __all__ = [
     "check_is_SquareMatrix",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from pybrops.core.mat.Matrix import Matrix
 
 class SquareMatrix(Matrix,metaclass=ABCMeta):

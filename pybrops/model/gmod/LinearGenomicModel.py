@@ -3,7 +3,8 @@ Module defining interfaces and error checking routines for genomic models that
 are linear in nature.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from numbers import Integral
 from pybrops.core.io.CSVDictInputOutput import CSVDictInputOutput
 from pybrops.core.io.PandasDictInputOutput import PandasDictInputOutput

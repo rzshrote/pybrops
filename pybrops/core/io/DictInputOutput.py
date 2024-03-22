@@ -8,7 +8,8 @@ __all__ = [
     "check_is_DictInputOutput",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 
 class DictInputOutput(
         metaclass = ABCMeta,

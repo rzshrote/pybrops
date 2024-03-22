@@ -2,7 +2,8 @@
 Module containing the abstract class GenotypingProtocol and its service functions.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from typing import Optional
 
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix

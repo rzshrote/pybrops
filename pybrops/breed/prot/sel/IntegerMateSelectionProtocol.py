@@ -7,7 +7,8 @@ __all__ = [
     "check_is_IntegerMateSelectionProtocol",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from numbers import Integral
 from typing import Optional
 

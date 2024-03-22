@@ -3,7 +3,8 @@ Module defining interfaces and associated error checking methods for breeding
 value calculation protocols.
 """
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from typing import Optional
 
 import pandas

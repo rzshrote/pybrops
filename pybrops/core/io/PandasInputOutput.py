@@ -8,7 +8,8 @@ __all__ = [
     "check_is_PandasInputOutput",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 import pandas
 
 class PandasInputOutput(

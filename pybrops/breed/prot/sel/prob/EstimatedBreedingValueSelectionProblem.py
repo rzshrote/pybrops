@@ -9,7 +9,8 @@ __all__ = [
     "EstimatedBreedingValueSubsetSelectionProblem",
 ]
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from abc import abstractmethod
 from numbers import Integral, Number, Real
 from typing import Callable, Optional, Union
 
