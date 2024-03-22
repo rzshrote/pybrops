@@ -10,7 +10,10 @@ from abc import ABCMeta
 from pybrops.opt.soln.Solution import Solution
 
 
-class SelectionSolution(Solution,metaclass=ABCMeta):
+class SelectionSolution(
+        Solution,
+        metaclass = ABCMeta,
+    ):
     """
     Class representing selection solutions.
     """

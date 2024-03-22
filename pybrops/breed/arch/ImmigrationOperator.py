@@ -13,7 +13,10 @@ from abc import abstractmethod
 from pybrops.breed.arch.BreedingEdge import BreedingEdge
 from pybrops.breed.arch.BreedingNode import BreedingNode
 
-class ImmigrationOperator(BreedingEdge,metaclass=ABCMeta):
+class ImmigrationOperator(
+        BreedingEdge,
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class defining immigration operators.
 

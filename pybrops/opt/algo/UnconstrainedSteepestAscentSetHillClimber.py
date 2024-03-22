@@ -10,7 +10,9 @@ from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOpt
 from pybrops.core.random.prng import global_prng
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 
-class UnconstrainedSteepestAscentSetHillClimber(UnconstrainedOptimizationAlgorithm):
+class UnconstrainedSteepestAscentSetHillClimber(
+        UnconstrainedOptimizationAlgorithm,
+    ):
     """
     Class implementing a steepest ascent hill climber algorithm adapted for
     subset selection optimization. The search space is discrete and nominal in

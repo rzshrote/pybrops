@@ -25,7 +25,9 @@ from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.opt.prob.Problem import Problem
 
 # inheritance ordering is important for method resolution order
-class SubsetProblem(Problem):
+class SubsetProblem(
+        Problem,
+    ):
     """
     Partially implemented class for optimization problems with nominal decision 
     variables where the goal is to select an optimal subset.

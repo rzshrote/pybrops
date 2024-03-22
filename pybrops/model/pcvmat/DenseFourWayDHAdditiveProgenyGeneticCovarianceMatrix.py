@@ -37,7 +37,9 @@ from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
-class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyGeneticCovarianceMatrix):
+class DenseFourWayDHAdditiveProgenyGeneticCovarianceMatrix(
+        DenseAdditiveProgenyGeneticCovarianceMatrix,
+    ):
     """
     A concrete class for dense additive genetic covariance matrices calculated
     for four-way DH progenies.

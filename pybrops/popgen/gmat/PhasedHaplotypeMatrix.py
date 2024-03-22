@@ -12,7 +12,11 @@ from abc import ABCMeta
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybrops.popgen.gmat.HaplotypeMatrix import HaplotypeMatrix
 
-class PhasedHaplotypeMatrix(HaplotypeMatrix,PhasedTaxaVariantMatrix,metaclass=ABCMeta):
+class PhasedHaplotypeMatrix(
+        HaplotypeMatrix,
+        PhasedTaxaVariantMatrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for phased genoypte matrix objects.
 

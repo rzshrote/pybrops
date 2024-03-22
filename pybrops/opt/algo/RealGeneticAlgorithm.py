@@ -33,7 +33,9 @@ from pymoo.operators.sampling.rnd import FloatRandomSampling
 from pymoo.optimize import minimize
 from pymoo.termination.max_gen import MaximumGenerationTermination
 
-class RealGeneticAlgorithm(RealOptimizationAlgorithm):
+class RealGeneticAlgorithm(
+        RealOptimizationAlgorithm,
+    ):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.

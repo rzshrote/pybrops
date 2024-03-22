@@ -12,7 +12,11 @@ from abc import ABCMeta
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 from pybrops.core.mat.PhasedMatrix import PhasedMatrix
 
-class PhasedTaxaVariantMatrix(TaxaVariantMatrix,PhasedMatrix,metaclass=ABCMeta):
+class PhasedTaxaVariantMatrix(
+        TaxaVariantMatrix,
+        PhasedMatrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for matrix wrapper objects with phase, variant, and taxa
     metadata.

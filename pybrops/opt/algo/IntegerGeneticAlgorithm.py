@@ -34,7 +34,9 @@ from pybrops.opt.prob.IntegerProblem import check_is_IntegerProblem
 from pybrops.opt.soln.IntegerSolution import IntegerSolution
 from pybrops.opt.soln.IntegerSolution import IntegerSolution
 
-class IntegerGeneticAlgorithm(IntegerOptimizationAlgorithm):
+class IntegerGeneticAlgorithm(
+        IntegerOptimizationAlgorithm,
+    ):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.

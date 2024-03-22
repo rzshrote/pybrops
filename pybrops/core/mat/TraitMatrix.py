@@ -18,7 +18,10 @@ from numpy.typing import ArrayLike
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 
-class TraitMatrix(SortableMatrix,metaclass=ABCMeta):
+class TraitMatrix(
+        SortableMatrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for matrix wrapper objects with trait metadata.
 

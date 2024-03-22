@@ -34,7 +34,10 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class IntegerSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
+class IntegerSelectionProtocol(
+        SelectionProtocol,
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for creating integer selection protocols.
     """

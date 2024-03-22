@@ -485,7 +485,9 @@ def rrBLUP_ML0(y: numpy.ndarray, Z: numpy.ndarray, varlb: Real = 1e-5, varub: Re
 
     return out
 
-class rrBLUPModel0(DenseAdditiveLinearGenomicModel):
+class rrBLUPModel0(
+        DenseAdditiveLinearGenomicModel,
+    ):
     """
     The rrBLUPModel0 class represents a simple RR-BLUP model with an intercept 
     (fixed) and marker effects (random).

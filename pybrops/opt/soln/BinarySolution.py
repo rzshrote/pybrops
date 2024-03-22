@@ -19,7 +19,9 @@ from pybrops.core.error.error_value_numpy import check_ndarray_len_eq
 from pybrops.core.error.error_value_numpy import check_ndarray_shape_eq
 from pybrops.opt.soln.Solution import Solution
 
-class BinarySolution(Solution):
+class BinarySolution(
+        Solution,
+    ):
     """
     Class for optimization problem solutions with binary decision variables.
     """

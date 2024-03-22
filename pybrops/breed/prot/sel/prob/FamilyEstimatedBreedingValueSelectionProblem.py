@@ -110,7 +110,10 @@ class FamilyEstimatedBreedingValueSelectionProblemMixin(
         ) -> "FamilyEstimatedBreedingValueSelectionProblemMixin":
         raise NotImplementedError("class method is abstract")
 
-class FamilyEstimatedBreedingValueSubsetSelectionProblem(FamilyEstimatedBreedingValueSelectionProblemMixin,SubsetSelectionProblem):
+class FamilyEstimatedBreedingValueSubsetSelectionProblem(
+        FamilyEstimatedBreedingValueSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in subset search spaces.
     """
@@ -344,7 +347,10 @@ class FamilyEstimatedBreedingValueSubsetSelectionProblem(FamilyEstimatedBreeding
 
         return out
 
-class FamilyEstimatedBreedingValueRealSelectionProblem(FamilyEstimatedBreedingValueSelectionProblemMixin,RealSelectionProblem):
+class FamilyEstimatedBreedingValueRealSelectionProblem(
+        FamilyEstimatedBreedingValueSelectionProblemMixin,
+        RealSelectionProblem,
+    ):
     """
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in real search spaces.
     """
@@ -556,7 +562,10 @@ class FamilyEstimatedBreedingValueRealSelectionProblem(FamilyEstimatedBreedingVa
 
         return out
 
-class FamilyEstimatedBreedingValueIntegerSelectionProblem(FamilyEstimatedBreedingValueSelectionProblemMixin,IntegerSelectionProblem):
+class FamilyEstimatedBreedingValueIntegerSelectionProblem(
+        FamilyEstimatedBreedingValueSelectionProblemMixin,
+        IntegerSelectionProblem,
+    ):
     """
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in integer search spaces.
     """
@@ -768,7 +777,10 @@ class FamilyEstimatedBreedingValueIntegerSelectionProblem(FamilyEstimatedBreedin
 
         return out
 
-class FamilyEstimatedBreedingValueBinarySelectionProblem(FamilyEstimatedBreedingValueSelectionProblemMixin,BinarySelectionProblem):
+class FamilyEstimatedBreedingValueBinarySelectionProblem(
+        FamilyEstimatedBreedingValueSelectionProblemMixin,
+        BinarySelectionProblem,
+    ):
     """
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in binary search spaces.
     """

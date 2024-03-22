@@ -9,7 +9,9 @@ import numpy
 from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class DenseMolecularCoancestryMatrix(DenseCoancestryMatrix):
+class DenseMolecularCoancestryMatrix(
+        DenseCoancestryMatrix,
+    ):
     """
     A concrete class for a dense coancestry matrix calculated using molecular
     coancestry (identity by state). Coancestry matrices are square.

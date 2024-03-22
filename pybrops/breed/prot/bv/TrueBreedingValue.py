@@ -11,7 +11,9 @@ from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class TrueBreedingValue(BreedingValueProtocol):
+class TrueBreedingValue(
+        BreedingValueProtocol,
+    ):
     """
     Class implementing the extraction of true breeding value.
     """

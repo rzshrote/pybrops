@@ -12,7 +12,10 @@ from pymoo.core.problem import ElementwiseEvaluationFunction
 from pymoo.core.problem import LoopedElementwiseEvaluation
 
 
-class BinaryMateSelectionProblem(BinarySelectionProblem,MateSelectionProblem):
+class BinaryMateSelectionProblem(
+        BinarySelectionProblem,
+        MateSelectionProblem,
+    ):
     """
     docstring for BinaryMateSelectionProblem.
     """

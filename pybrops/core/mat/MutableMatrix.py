@@ -15,7 +15,10 @@ from typing import Union
 import numpy
 from pybrops.core.mat.Matrix import Matrix
 
-class MutableMatrix(Matrix,metaclass=ABCMeta):
+class MutableMatrix(
+        Matrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for mutable matrix wrapper objects.
 

@@ -221,7 +221,10 @@ class UsefulnessCriterionSelectionProblemMixin(
         ) -> "UsefulnessCriterionSelectionProblemMixin":
         raise NotImplementedError("class method is abstract")
 
-class UsefulnessCriterionBinaryMateSelectionProblem(UsefulnessCriterionSelectionProblemMixin,BinaryMateSelectionProblem):
+class UsefulnessCriterionBinaryMateSelectionProblem(
+        UsefulnessCriterionSelectionProblemMixin,
+        BinaryMateSelectionProblem,
+    ):
     """
     Class representing Usefulness Criterion (UC) selection problems in subset search spaces.
     """
@@ -560,7 +563,10 @@ class UsefulnessCriterionBinaryMateSelectionProblem(UsefulnessCriterionSelection
 
         return out
 
-class UsefulnessCriterionIntegerMateSelectionProblem(UsefulnessCriterionSelectionProblemMixin,IntegerMateSelectionProblem):
+class UsefulnessCriterionIntegerMateSelectionProblem(
+        UsefulnessCriterionSelectionProblemMixin,
+        IntegerMateSelectionProblem,
+    ):
     """
     Class representing Usefulness Criterion (UC) selection problems in integer search spaces.
     """
@@ -899,7 +905,10 @@ class UsefulnessCriterionIntegerMateSelectionProblem(UsefulnessCriterionSelectio
 
         return out
 
-class UsefulnessCriterionRealMateSelectionProblem(UsefulnessCriterionSelectionProblemMixin,RealMateSelectionProblem):
+class UsefulnessCriterionRealMateSelectionProblem(
+        UsefulnessCriterionSelectionProblemMixin,
+        RealMateSelectionProblem,
+    ):
     """
     Class representing Usefulness Criterion (UC) selection problems in real search spaces.
     """
@@ -1238,7 +1247,10 @@ class UsefulnessCriterionRealMateSelectionProblem(UsefulnessCriterionSelectionPr
 
         return out
 
-class UsefulnessCriterionSubsetMateSelectionProblem(UsefulnessCriterionSelectionProblemMixin,SubsetMateSelectionProblem):
+class UsefulnessCriterionSubsetMateSelectionProblem(
+        UsefulnessCriterionSelectionProblemMixin,
+        SubsetMateSelectionProblem,
+    ):
     """
     Class representing Usefulness Criterion (UC) selection problems in subset search spaces.
     """

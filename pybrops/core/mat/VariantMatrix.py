@@ -18,7 +18,10 @@ from numpy.typing import ArrayLike
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
 from pybrops.core.mat.Matrix import Matrix
 
-class VariantMatrix(GroupableMatrix,metaclass=ABCMeta):
+class VariantMatrix(
+        GroupableMatrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for matrix wrapper objects with variant metadata.
 

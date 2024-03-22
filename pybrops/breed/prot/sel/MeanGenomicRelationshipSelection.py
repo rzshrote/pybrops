@@ -69,7 +69,10 @@ class MeanGenomicRelationshipSelectionMixin(
         check_is_CoancestryMatrixFactory(value, "cmatfcty")
         self._cmatfcty = value
 
-class MeanGenomicRelationshipBinarySelection(MeanGenomicRelationshipSelectionMixin,BinarySelectionProtocol):
+class MeanGenomicRelationshipBinarySelection(
+        MeanGenomicRelationshipSelectionMixin,
+        BinarySelectionProtocol,
+    ):
     """
     Mean Genomic Relationship Selection in a subset search space.
     """
@@ -474,7 +477,10 @@ class MeanGenomicRelationshipBinarySelection(MeanGenomicRelationshipSelectionMix
     ################# Selection Functions ##################
     # inherit select() from BinarySelectionProtocol
 
-class MeanGenomicRelationshipIntegerSelection(MeanGenomicRelationshipSelectionMixin,IntegerSelectionProtocol):
+class MeanGenomicRelationshipIntegerSelection(
+        MeanGenomicRelationshipSelectionMixin,
+        IntegerSelectionProtocol,
+    ):
     """
     Mean Genomic Relationship Selection in an integer search space.
     """
@@ -879,7 +885,10 @@ class MeanGenomicRelationshipIntegerSelection(MeanGenomicRelationshipSelectionMi
     ################# Selection Functions ##################
     # inherit select() from IntegerSelectionProtocol
 
-class MeanGenomicRelationshipRealSelection(MeanGenomicRelationshipSelectionMixin,RealSelectionProtocol):
+class MeanGenomicRelationshipRealSelection(
+        MeanGenomicRelationshipSelectionMixin,
+        RealSelectionProtocol,
+    ):
     """
     Mean Genomic Relationship Selection in a real search space.
     """
@@ -1284,7 +1293,10 @@ class MeanGenomicRelationshipRealSelection(MeanGenomicRelationshipSelectionMixin
     ################# Selection Functions ##################
     # inherit select() from RealSelectionProtocol
 
-class MeanGenomicRelationshipSubsetSelection(MeanGenomicRelationshipSelectionMixin,SubsetSelectionProtocol):
+class MeanGenomicRelationshipSubsetSelection(
+        MeanGenomicRelationshipSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Mean Genomic Relationship Selection in a subset search space.
     """

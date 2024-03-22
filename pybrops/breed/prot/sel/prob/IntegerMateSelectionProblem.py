@@ -12,7 +12,10 @@ from pymoo.core.problem import ElementwiseEvaluationFunction
 from pymoo.core.problem import LoopedElementwiseEvaluation
 
 
-class IntegerMateSelectionProblem(IntegerSelectionProblem,MateSelectionProblem):
+class IntegerMateSelectionProblem(
+        IntegerSelectionProblem,
+        MateSelectionProblem,
+    ):
     """
     docstring for IntegerMateSelectionProblem.
     """

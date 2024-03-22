@@ -28,7 +28,9 @@ from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_DensePhasedGenot
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
 
-class FourWayCross(MatingProtocol):
+class FourWayCross(
+        MatingProtocol,
+    ):
     """
     Class implementing mating protocols for four-way crosses.
     """

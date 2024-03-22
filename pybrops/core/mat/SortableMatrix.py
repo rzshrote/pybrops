@@ -16,7 +16,10 @@ from typing import Union
 import numpy
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
-class SortableMatrix(MutableMatrix,metaclass=ABCMeta):
+class SortableMatrix(
+        MutableMatrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for sortable matrix wrapper objects.
 

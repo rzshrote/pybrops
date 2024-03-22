@@ -8,7 +8,10 @@ from abc import abstractmethod
 from numbers import Integral
 from pybrops.model.gmod.AdditiveDominanceLinearGenomicModel import AdditiveDominanceLinearGenomicModel
 
-class AdditiveDominanceEpistaticLinearGenomicModel(AdditiveDominanceLinearGenomicModel,metaclass=ABCMeta):
+class AdditiveDominanceEpistaticLinearGenomicModel(
+        AdditiveDominanceLinearGenomicModel,
+        metaclass = ABCMeta,
+    ):
     """
     The AdditiveDominanceEpistaticLinearGenomicModel class represents an interface for a
     Multivariate Multiple Linear Regression model.

@@ -37,7 +37,9 @@ from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
-class DenseDihybridDHAdditiveProgenyGeneticCovarianceMatrix(DenseAdditiveProgenyGeneticCovarianceMatrix):
+class DenseDihybridDHAdditiveProgenyGeneticCovarianceMatrix(
+        DenseAdditiveProgenyGeneticCovarianceMatrix,
+    ):
     """
     A concrete class for dense additive genetic covariance matrices calculated
     for dihybrid DH progenies.

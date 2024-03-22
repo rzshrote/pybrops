@@ -85,7 +85,10 @@ class MeanGenomicRelationshipSelectionProblemMixin(
         ) -> "MeanGenomicRelationshipSelectionProblemMixin":
         raise NotImplementedError("class method is abstract")
 
-class MeanGenomicRelationshipSubsetSelectionProblem(MeanGenomicRelationshipSelectionProblemMixin,SubsetSelectionProblem):
+class MeanGenomicRelationshipSubsetSelectionProblem(
+        MeanGenomicRelationshipSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     Class representing Mean Expected Heterozygosity (MEH) selection problems in subset search spaces.
     """
@@ -295,7 +298,10 @@ class MeanGenomicRelationshipSubsetSelectionProblem(MeanGenomicRelationshipSelec
 
         return out
 
-class MeanGenomicRelationshipRealSelectionProblem(MeanGenomicRelationshipSelectionProblemMixin,RealSelectionProblem):
+class MeanGenomicRelationshipRealSelectionProblem(
+        MeanGenomicRelationshipSelectionProblemMixin,
+        RealSelectionProblem,
+    ):
     """
     Class representing Mean Expected Heterozygosity (MEH) selection problems in real search spaces.
     """
@@ -514,7 +520,10 @@ class MeanGenomicRelationshipRealSelectionProblem(MeanGenomicRelationshipSelecti
 
         return out
 
-class MeanGenomicRelationshipIntegerSelectionProblem(MeanGenomicRelationshipSelectionProblemMixin,IntegerSelectionProblem):
+class MeanGenomicRelationshipIntegerSelectionProblem(
+        MeanGenomicRelationshipSelectionProblemMixin,
+        IntegerSelectionProblem,
+    ):
     """
     Class representing Mean Expected Heterozygosity (MEH) selection problems in integer search spaces.
     """
@@ -731,7 +740,10 @@ class MeanGenomicRelationshipIntegerSelectionProblem(MeanGenomicRelationshipSele
 
         return out
 
-class MeanGenomicRelationshipBinarySelectionProblem(MeanGenomicRelationshipSelectionProblemMixin,BinarySelectionProblem):
+class MeanGenomicRelationshipBinarySelectionProblem(
+        MeanGenomicRelationshipSelectionProblemMixin,
+        BinarySelectionProblem,
+    ):
     """
     Class representing Mean Expected Heterozygosity (MEH) selection problems in integer search spaces.
     """

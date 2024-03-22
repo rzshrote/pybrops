@@ -12,7 +12,10 @@ from abc import ABCMeta
 from abc import abstractmethod
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 
-class GroupableMatrix(SortableMatrix,metaclass=ABCMeta):
+class GroupableMatrix(
+        SortableMatrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for groupable matrix wrapper objects.
 

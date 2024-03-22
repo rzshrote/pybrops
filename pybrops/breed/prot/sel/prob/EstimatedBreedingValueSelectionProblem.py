@@ -88,7 +88,10 @@ class EstimatedBreedingValueSelectionProblemMixin(
         ) -> "EstimatedBreedingValueSelectionProblemMixin":
         raise NotImplementedError("class method is abstract")
 
-class EstimatedBreedingValueSubsetSelectionProblem(EstimatedBreedingValueSelectionProblemMixin,SubsetSelectionProblem):
+class EstimatedBreedingValueSubsetSelectionProblem(
+        EstimatedBreedingValueSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     Class representing selection on Estimated Breeding Values (EBVs) in subset search spaces.
     """
@@ -295,7 +298,10 @@ class EstimatedBreedingValueSubsetSelectionProblem(EstimatedBreedingValueSelecti
 
         return out
 
-class EstimatedBreedingValueRealSelectionProblem(EstimatedBreedingValueSelectionProblemMixin,RealSelectionProblem):
+class EstimatedBreedingValueRealSelectionProblem(
+        EstimatedBreedingValueSelectionProblemMixin,
+        RealSelectionProblem,
+    ):
     """
     Class representing selection on Estimated Breeding Values (EBVs) in real search spaces.
     """
@@ -501,7 +507,10 @@ class EstimatedBreedingValueRealSelectionProblem(EstimatedBreedingValueSelection
 
         return out
 
-class EstimatedBreedingValueIntegerSelectionProblem(EstimatedBreedingValueSelectionProblemMixin,IntegerSelectionProblem):
+class EstimatedBreedingValueIntegerSelectionProblem(
+        EstimatedBreedingValueSelectionProblemMixin,
+        IntegerSelectionProblem,
+    ):
     """
     Class representing selection on Estimated Breeding Values (EBVs) in integer search spaces.
     """
@@ -707,7 +716,10 @@ class EstimatedBreedingValueIntegerSelectionProblem(EstimatedBreedingValueSelect
 
         return out
 
-class EstimatedBreedingValueBinarySelectionProblem(EstimatedBreedingValueSelectionProblemMixin,BinarySelectionProblem):
+class EstimatedBreedingValueBinarySelectionProblem(
+        EstimatedBreedingValueSelectionProblemMixin,
+        BinarySelectionProblem,
+    ):
     """
     Class representing selection on Estimated Breeding Values (EBVs) in binary search spaces.
     """

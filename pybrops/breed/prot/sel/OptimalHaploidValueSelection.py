@@ -91,7 +91,10 @@ class OptimalHaploidValueSelectionMixin(
         check_is_bool(value, "unique_parents")
         self._unique_parents = value
 
-class OptimalHaploidValueBinarySelection(OptimalHaploidValueSelectionMixin,BinarySelectionProtocol):
+class OptimalHaploidValueBinarySelection(
+        OptimalHaploidValueSelectionMixin,
+        BinarySelectionProtocol,
+    ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for a binary search spaces.
     """
@@ -514,7 +517,10 @@ class OptimalHaploidValueBinarySelection(OptimalHaploidValueSelectionMixin,Binar
     ################# Selection Functions ##################
     # inherit select() implementation
 
-class OptimalHaploidValueIntegerSelection(OptimalHaploidValueSelectionMixin,IntegerSelectionProtocol):
+class OptimalHaploidValueIntegerSelection(
+        OptimalHaploidValueSelectionMixin,
+        IntegerSelectionProtocol,
+    ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for a integer search spaces.
     """
@@ -937,7 +943,10 @@ class OptimalHaploidValueIntegerSelection(OptimalHaploidValueSelectionMixin,Inte
     ################# Selection Functions ##################
     # inherit select() implementation
 
-class OptimalHaploidValueRealSelection(OptimalHaploidValueSelectionMixin,RealSelectionProtocol):
+class OptimalHaploidValueRealSelection(
+        OptimalHaploidValueSelectionMixin,
+        RealSelectionProtocol,
+    ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for real search spaces.
     """
@@ -1360,7 +1369,10 @@ class OptimalHaploidValueRealSelection(OptimalHaploidValueSelectionMixin,RealSel
     ################# Selection Functions ##################
     # inherit select() implementation
 
-class OptimalHaploidValueSubsetSelection(OptimalHaploidValueSelectionMixin,SubsetSelectionProtocol):
+class OptimalHaploidValueSubsetSelection(
+        OptimalHaploidValueSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for subset search spaces.
     """

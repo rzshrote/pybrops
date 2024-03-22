@@ -13,7 +13,10 @@ from abc import abstractmethod
 from pybrops.breed.arch.BreedingNode import BreedingNode
 from pybrops.breed.op.log.Logbook import Logbook
 
-class BreedingProgram(BreedingNode,metaclass=ABCMeta):
+class BreedingProgram(
+        BreedingNode,
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class defining a breeding program.
 

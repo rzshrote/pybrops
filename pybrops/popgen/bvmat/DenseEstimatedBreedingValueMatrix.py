@@ -14,7 +14,9 @@ import numpy
 from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 
 # TODO: add standard errors for this class; this could be used for two-stage estimation
-class DenseEstimatedBreedingValueMatrix(DenseBreedingValueMatrix):
+class DenseEstimatedBreedingValueMatrix(
+        DenseBreedingValueMatrix,
+    ):
     """
     The DenseEstimatedBreedingValueMatrix class uses a dense matrix to represent
     a Multivariate Breeding Value.

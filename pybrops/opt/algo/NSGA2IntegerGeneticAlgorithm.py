@@ -33,7 +33,9 @@ from pymoo.optimize import minimize
 from pymoo.termination.max_gen import MaximumGenerationTermination
 from pymoo.operators.sampling.rnd import IntegerRandomSampling
 
-class NSGA2IntegerGeneticAlgorithm(IntegerOptimizationAlgorithm):
+class NSGA2IntegerGeneticAlgorithm(
+        IntegerOptimizationAlgorithm,
+    ):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.

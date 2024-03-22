@@ -18,7 +18,10 @@ from pybrops.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
 
-class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
+class DenseGeneticMappableMatrix(
+        DenseVariantMatrix,
+        GeneticMappableMatrix,
+    ):
     """
     Concrete class for dense variant matrices that can be interpolated using a
     GeneticMap.

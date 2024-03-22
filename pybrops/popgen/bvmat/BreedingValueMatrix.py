@@ -21,7 +21,13 @@ from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.io.PandasInputOutput import PandasInputOutput
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix
 
-class BreedingValueMatrix(TaxaTraitMatrix,PandasInputOutput,CSVInputOutput,HDF5InputOutput,metaclass=ABCMeta):
+class BreedingValueMatrix(
+        TaxaTraitMatrix,
+        PandasInputOutput,
+        CSVInputOutput,
+        HDF5InputOutput,
+        metaclass = ABCMeta,
+    ):
     """
     The BreedingValueMatrix class represents a Multivariate Breeding Value.
 

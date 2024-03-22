@@ -7,7 +7,10 @@ from abc import ABCMeta
 from abc import abstractmethod
 from pybrops.model.gmod.LinearGenomicModel import LinearGenomicModel
 
-class CoancestryLinearGenomicModel(LinearGenomicModel,metaclass=ABCMeta):
+class CoancestryLinearGenomicModel(
+        LinearGenomicModel,
+        metaclass = ABCMeta,
+    ):
     """
     The CoancestryLinearGenomicModel class represents an interface for a
     Multivariate Multiple Linear Regression model.

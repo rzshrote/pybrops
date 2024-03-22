@@ -21,7 +21,9 @@ from pybrops.core.error.error_type_python import check_is_int
 from pybrops.core.error.error_type_python import check_is_float
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
 
-class UnconstrainedSetGeneticAlgorithm(UnconstrainedOptimizationAlgorithm):
+class UnconstrainedSetGeneticAlgorithm(
+        UnconstrainedOptimizationAlgorithm,
+    ):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.

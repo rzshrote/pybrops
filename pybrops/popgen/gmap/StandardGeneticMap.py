@@ -32,7 +32,9 @@ from pybrops.core.error.error_value_python import check_tuple_len_eq
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 
 
-class StandardGeneticMap(GeneticMap):
+class StandardGeneticMap(
+        GeneticMap,
+    ):
     """
     A concrete class for representing a standard genetic map format.
 

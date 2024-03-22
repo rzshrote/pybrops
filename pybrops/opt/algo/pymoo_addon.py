@@ -70,7 +70,9 @@ def tiled_choice(a: int, size: int):
     out[a*ndiv:] = np.random.choice(a, nrem, replace = False)
     return out
 
-class SubsetRandomSampling(Sampling):
+class SubsetRandomSampling(
+        Sampling,
+    ):
     """
     Class implementing subset sampling for chromosome construction.
     """
@@ -162,7 +164,9 @@ class SubsetRandomSampling(Sampling):
         # return output array
         return out
 
-class ReducedExchangeCrossover(Crossover):
+class ReducedExchangeCrossover(
+        Crossover,
+    ):
     """
     Perform a subset crossover according to Correa et al. (2001).
 
@@ -244,7 +248,9 @@ class ReducedExchangeCrossover(Crossover):
 
         return Xp
 
-class ReducedExchangeMutation(Mutation):
+class ReducedExchangeMutation(
+        Mutation,
+    ):
     """
     Perform a subset exchange mutation according to Correa et al. (2001).
 
@@ -335,7 +341,9 @@ class ReducedExchangeMutation(Mutation):
         
         return Xm
 
-class IntegerSimulatedBinaryCrossover(SimulatedBinaryCrossover):
+class IntegerSimulatedBinaryCrossover(
+        SimulatedBinaryCrossover,
+    ):
     def _do(
             self, 
             problem: Problem, 
@@ -372,7 +380,9 @@ class IntegerSimulatedBinaryCrossover(SimulatedBinaryCrossover):
 
         return out
 
-class IntegerPolynomialMutation(PolynomialMutation):
+class IntegerPolynomialMutation(
+        PolynomialMutation,
+    ):
     def _do(
             self, 
             problem: Problem, 
@@ -409,7 +419,9 @@ class IntegerPolynomialMutation(PolynomialMutation):
 
         return out
 
-class MultiObjectiveStochasticHillClimberMutation(Mutation):
+class MultiObjectiveStochasticHillClimberMutation(
+        Mutation,
+    ):
     """
     Perform a memetic subset exchange mutation.
     """
@@ -613,7 +625,9 @@ class MultiObjectiveStochasticHillClimberMutation(Mutation):
 
         return Xm
 
-class MultiObjectiveSteepestDescentHillClimberMutation(Mutation):
+class MultiObjectiveSteepestDescentHillClimberMutation(
+        Mutation,
+    ):
     """
     Perform a memetic subset exchange mutation.
     """
@@ -820,7 +834,9 @@ class MultiObjectiveSteepestDescentHillClimberMutation(Mutation):
 
         return Xm
 
-class MultiObjectiveStochasticDescentHillClimberMutation(Mutation):
+class MultiObjectiveStochasticDescentHillClimberMutation(
+        Mutation,
+    ):
     """
     Perform a memetic subset exchange mutation.
     """
@@ -1067,7 +1083,9 @@ class MultiObjectiveStochasticDescentHillClimberMutation(Mutation):
 
         return Xm
 
-class StochasticHillClimberMutation(Mutation):
+class StochasticHillClimberMutation(
+        Mutation,
+    ):
     """
     Perform a memetic subset exchange mutation.
     """
@@ -1285,7 +1303,9 @@ class StochasticHillClimberMutation(Mutation):
         
         return Xm
 
-class MutatorA(Mutation):
+class MutatorA(
+        Mutation,
+    ):
     """
     Randomly test nearby solutions and randomly choose one solution that 
     non-dominates from the tested mutations.
@@ -1466,7 +1486,9 @@ class MutatorA(Mutation):
         
         return Xm
 
-class MutatorB(Mutation):
+class MutatorB(
+        Mutation,
+    ):
     """
     Randomly test nearby solutions and randomly choose one solution that 
     exhibits extreme values for one of the objectives.
@@ -1650,7 +1672,9 @@ class MutatorB(Mutation):
         
         return Xm
 
-class MutatorF(Mutation):
+class MutatorF(
+        Mutation,
+    ):
     """
     Perform a memetic subset exchange mutation (Mutation F).
     """

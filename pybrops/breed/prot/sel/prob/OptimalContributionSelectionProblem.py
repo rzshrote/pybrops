@@ -154,7 +154,10 @@ class OptimalContributionSelectionProblemMixin(
         ) -> "OptimalContributionSelectionProblemMixin":
         raise NotImplementedError("class method is abstract")
 
-class OptimalContributionSubsetSelectionProblem(OptimalContributionSelectionProblemMixin,SubsetSelectionProblem):
+class OptimalContributionSubsetSelectionProblem(
+        OptimalContributionSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     Class representing an Optimal Contribution Selection Problem for subset
     search spaces.
@@ -396,7 +399,10 @@ class OptimalContributionSubsetSelectionProblem(OptimalContributionSelectionProb
 
         return out
 
-class OptimalContributionRealSelectionProblem(OptimalContributionSelectionProblemMixin,RealSelectionProblem):
+class OptimalContributionRealSelectionProblem(
+        OptimalContributionSelectionProblemMixin,
+        RealSelectionProblem,
+    ):
     """
     Class representing an Optimal Contribution Selection Problem for real
     search spaces.
@@ -642,7 +648,10 @@ class OptimalContributionRealSelectionProblem(OptimalContributionSelectionProble
 
         return out
 
-class OptimalContributionIntegerSelectionProblem(OptimalContributionSelectionProblemMixin,IntegerSelectionProblem):
+class OptimalContributionIntegerSelectionProblem(
+        OptimalContributionSelectionProblemMixin,
+        IntegerSelectionProblem,
+    ):
     """
     Class representing an Optimal Contribution Selection Problem for integer
     search spaces.
@@ -888,7 +897,10 @@ class OptimalContributionIntegerSelectionProblem(OptimalContributionSelectionPro
 
         return out
 
-class OptimalContributionBinarySelectionProblem(OptimalContributionSelectionProblemMixin,BinarySelectionProblem):
+class OptimalContributionBinarySelectionProblem(
+        OptimalContributionSelectionProblemMixin,
+        BinarySelectionProblem,
+    ):
     """
     Class representing an Optimal Contribution Selection Problem for integer
     search spaces.

@@ -20,7 +20,9 @@ from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
 
-class DenseGeneralizedWeightedCoancestryMatrix(DenseCoancestryMatrix):
+class DenseGeneralizedWeightedCoancestryMatrix(
+        DenseCoancestryMatrix,
+    ):
     """
     docstring for DenseGeneralizedWeightedCoancestryMatrix.
     """

@@ -10,7 +10,10 @@ from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.mat.DenseSquareTaxaTraitMatrix import DenseSquareTaxaTraitMatrix
 from pybrops.model.vmat.GenicVarianceMatrix import GenicVarianceMatrix
 
-class DenseGenicVarianceMatrix(DenseSquareTaxaTraitMatrix,GenicVarianceMatrix):
+class DenseGenicVarianceMatrix(
+        DenseSquareTaxaTraitMatrix,
+        GenicVarianceMatrix,
+    ):
     """
     A semi-concrete class for dense genic variance matrices.
 

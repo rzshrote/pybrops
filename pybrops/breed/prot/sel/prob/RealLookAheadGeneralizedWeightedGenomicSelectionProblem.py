@@ -15,7 +15,9 @@ from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 
-class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(RealSelectionProblem):
+class RealLookAheadGeneralizedWeightedGenomicSelectionProblem(
+        RealSelectionProblem,
+    ):
     """
     docstring for RealLookAheadGeneralizedWeightedGenomicSelectionProblem.
     """

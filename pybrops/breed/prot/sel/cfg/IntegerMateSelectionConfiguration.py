@@ -15,7 +15,10 @@ from pybrops.breed.prot.sel.cfg.IntegerSelectionConfiguration import IntegerSele
 from pybrops.core.random.sampling import tiled_choice
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class IntegerMateSelectionConfiguration(IntegerSelectionConfiguration,MateSelectionConfiguration):
+class IntegerMateSelectionConfiguration(
+        IntegerSelectionConfiguration,
+        MateSelectionConfiguration,
+    ):
     """
     Class representing a subset selection configuration where the subset 
     originates from a cross map.

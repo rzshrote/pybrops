@@ -11,7 +11,9 @@ import numpy
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
-class HaldaneMapFunction(GeneticMapFunction):
+class HaldaneMapFunction(
+        GeneticMapFunction,
+    ):
     """
     A concrete class for the Haldane genetic map function.
 

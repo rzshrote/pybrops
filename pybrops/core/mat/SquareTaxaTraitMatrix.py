@@ -16,7 +16,7 @@ from pybrops.core.mat.TraitMatrix import TraitMatrix
 class SquareTaxaTraitMatrix(
         SquareTaxaMatrix,
         TraitMatrix,
-        metaclass=ABCMeta,
+        metaclass = ABCMeta,
     ):
     """
     An abstract class for matrix wrapper object with taxa axes which are square

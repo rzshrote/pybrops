@@ -68,7 +68,10 @@ class FamilyEstimatedBreedingValueSelectionMixin(
         check_is_gt(value, "ntrait", 0)
         self._ntrait = value
 
-class FamilyEstimatedBreedingValueBinarySelection(FamilyEstimatedBreedingValueSelectionMixin,BinarySelectionProtocol):
+class FamilyEstimatedBreedingValueBinarySelection(
+        FamilyEstimatedBreedingValueSelectionMixin,
+        BinarySelectionProtocol,
+    ):
     """
     Within-family Estimated Breeding Value Selection in a subset search space.
     """
@@ -469,7 +472,10 @@ class FamilyEstimatedBreedingValueBinarySelection(FamilyEstimatedBreedingValueSe
     ################# Selection Functions ##################
     # inherit select() from BinarySelectionProtocol
 
-class FamilyEstimatedBreedingValueIntegerSelection(FamilyEstimatedBreedingValueSelectionMixin,IntegerSelectionProtocol):
+class FamilyEstimatedBreedingValueIntegerSelection(
+        FamilyEstimatedBreedingValueSelectionMixin,
+        IntegerSelectionProtocol,
+    ):
     """
     Within-family Estimated Breeding Value Selection in an integer search space.
     """
@@ -870,7 +876,10 @@ class FamilyEstimatedBreedingValueIntegerSelection(FamilyEstimatedBreedingValueS
     ################# Selection Functions ##################
     # inherit select() from IntegerSelectionProtocol
 
-class FamilyEstimatedBreedingValueRealSelection(FamilyEstimatedBreedingValueSelectionMixin,RealSelectionProtocol):
+class FamilyEstimatedBreedingValueRealSelection(
+        FamilyEstimatedBreedingValueSelectionMixin,
+        RealSelectionProtocol,
+    ):
     """
     Within-family Estimated Breeding Value Selection in a real search space.
     """
@@ -1271,7 +1280,10 @@ class FamilyEstimatedBreedingValueRealSelection(FamilyEstimatedBreedingValueSele
     ################# Selection Functions ##################
     # inherit select() from RealSelectionProtocol
 
-class FamilyEstimatedBreedingValueSubsetSelection(FamilyEstimatedBreedingValueSelectionMixin,SubsetSelectionProtocol):
+class FamilyEstimatedBreedingValueSubsetSelection(
+        FamilyEstimatedBreedingValueSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Within-family Estimated Breeding Value Selection in a subset search space.
     """

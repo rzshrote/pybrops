@@ -15,7 +15,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 class GenomicModel(
         HDF5InputOutput,
-        metaclass=ABCMeta,
+        metaclass = ABCMeta,
     ):
     """
     An abstract class for genomic models.

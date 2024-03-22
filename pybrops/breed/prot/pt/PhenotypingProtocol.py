@@ -21,7 +21,7 @@ from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 class PhenotypingProtocol(
         Copyable,
         HDF5InputOutput,
-        metaclass=ABCMeta
+        metaclass = ABCMeta,
     ):
     """
     Abstract class defining interfaces for phenotyping protocols.

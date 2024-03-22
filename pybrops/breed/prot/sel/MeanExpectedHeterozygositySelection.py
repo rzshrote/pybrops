@@ -60,7 +60,10 @@ class MeanExpectedHeterozygositySelectionMixin(
     ############################ Object Properties #############################
     # no properties to define; 
 
-class MeanExpectedHeterozygosityBinarySelection(MeanExpectedHeterozygositySelectionMixin,BinarySelectionProtocol):
+class MeanExpectedHeterozygosityBinarySelection(
+        MeanExpectedHeterozygositySelectionMixin,
+        BinarySelectionProtocol,
+    ):
     """
     Mean Expected Heterozygosity Selection in a subset search space.
     """
@@ -461,7 +464,10 @@ class MeanExpectedHeterozygosityBinarySelection(MeanExpectedHeterozygositySelect
     ################# Selection Functions ##################
     # inherit select() from BinarySelectionProtocol
 
-class MeanExpectedHeterozygosityIntegerSelection(MeanExpectedHeterozygositySelectionMixin,IntegerSelectionProtocol):
+class MeanExpectedHeterozygosityIntegerSelection(
+        MeanExpectedHeterozygositySelectionMixin,
+        IntegerSelectionProtocol,
+    ):
     """
     Mean Expected Heterozygosity Selection in an integer search space.
     """
@@ -862,7 +868,10 @@ class MeanExpectedHeterozygosityIntegerSelection(MeanExpectedHeterozygositySelec
     ################# Selection Functions ##################
     # inherit select() from IntegerSelectionProtocol
 
-class MeanExpectedHeterozygosityRealSelection(MeanExpectedHeterozygositySelectionMixin,RealSelectionProtocol):
+class MeanExpectedHeterozygosityRealSelection(
+        MeanExpectedHeterozygositySelectionMixin,
+        RealSelectionProtocol,
+    ):
     """
     Mean Expected Heterozygosity Selection in a real search space.
     """
@@ -1263,7 +1272,10 @@ class MeanExpectedHeterozygosityRealSelection(MeanExpectedHeterozygositySelectio
     ################# Selection Functions ##################
     # inherit select() from RealSelectionProtocol
 
-class MeanExpectedHeterozygositySubsetSelection(MeanExpectedHeterozygositySelectionMixin,SubsetSelectionProtocol):
+class MeanExpectedHeterozygositySubsetSelection(
+        MeanExpectedHeterozygositySelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Mean Expected Heterozygosity Selection in a subset search space.
     """

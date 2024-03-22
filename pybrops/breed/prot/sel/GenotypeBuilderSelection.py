@@ -78,7 +78,10 @@ class GenotypeBuilderSelectionMixin(
         check_is_gt(value, "nbestfndr", 0)
         self._nbestfndr = value
 
-class GenotypeBuilderSubsetSelection(GenotypeBuilderSelectionMixin,SubsetSelectionProtocol):
+class GenotypeBuilderSubsetSelection(
+        GenotypeBuilderSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Class defining Genotype Builder (GB) Selection for subset search spaces.
     """

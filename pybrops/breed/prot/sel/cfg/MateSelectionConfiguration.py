@@ -14,7 +14,7 @@ from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 
 class MateSelectionConfiguration(
         SelectionConfiguration,
-        metaclass=ABCMeta,
+        metaclass = ABCMeta,
     ):
     """
     A mixin class to provide functionality for selection configurations which 

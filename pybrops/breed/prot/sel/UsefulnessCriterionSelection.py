@@ -135,7 +135,10 @@ class UsefulnessCriterionSelectionMixin(
         check_is_bool(value, "unique_parents")
         self._unique_parents = value
 
-class UsefulnessCriterionBinarySelection(UsefulnessCriterionSelectionMixin,BinaryMateSelectionProtocol):
+class UsefulnessCriterionBinarySelection(
+        UsefulnessCriterionSelectionMixin,
+        BinaryMateSelectionProtocol,
+    ):
     """
     Class defining Usefulness Criterion (UC) Selection for a binary search spaces.
     """
@@ -587,7 +590,10 @@ class UsefulnessCriterionBinarySelection(UsefulnessCriterionSelectionMixin,Binar
     ################# Selection Functions ##################
     # inherit select() from BinaryMateSelectionProtocol
 
-class UsefulnessCriterionIntegerSelection(UsefulnessCriterionSelectionMixin,IntegerMateSelectionProtocol):
+class UsefulnessCriterionIntegerSelection(
+        UsefulnessCriterionSelectionMixin,
+        IntegerMateSelectionProtocol,
+    ):
     """
     Class defining Usefulness Criterion (UC) Selection for a integer search spaces.
     """
@@ -1039,7 +1045,10 @@ class UsefulnessCriterionIntegerSelection(UsefulnessCriterionSelectionMixin,Inte
     ################# Selection Functions ##################
     # inherit select() from IntegerMateSelectionProtocol
 
-class UsefulnessCriterionRealSelection(UsefulnessCriterionSelectionMixin,RealMateSelectionProtocol):
+class UsefulnessCriterionRealSelection(
+        UsefulnessCriterionSelectionMixin,
+        RealMateSelectionProtocol,
+    ):
     """
     Class defining Usefulness Criterion (UC) Selection for real search spaces.
     """
@@ -1491,7 +1500,10 @@ class UsefulnessCriterionRealSelection(UsefulnessCriterionSelectionMixin,RealMat
     ################# Selection Functions ##################
     # inherit select() from RealMateSelectionProtocol
 
-class UsefulnessCriterionSubsetSelection(UsefulnessCriterionSelectionMixin,SubsetMateSelectionProtocol):
+class UsefulnessCriterionSubsetSelection(
+        UsefulnessCriterionSelectionMixin,
+        SubsetMateSelectionProtocol,
+    ):
     """
     Class defining Usefulness Criterion (UC) Selection for subset search spaces.
     """

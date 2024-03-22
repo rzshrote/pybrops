@@ -81,7 +81,10 @@ class EstimatedBreedingValueSelectionMixin(
         check_is_bool(value, "unscale")
         self._unscale = value
 
-class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin,BinarySelectionProtocol):
+class EstimatedBreedingValueBinarySelection(
+        EstimatedBreedingValueSelectionMixin,
+        BinarySelectionProtocol,
+    ):
     """
     Estimated Breeding Value Selection in a subset search space.
     """
@@ -493,7 +496,10 @@ class EstimatedBreedingValueBinarySelection(EstimatedBreedingValueSelectionMixin
     ################# Selection Functions ##################
     # inherit select() from BinarySelectionProtocol
 
-class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixin,IntegerSelectionProtocol):
+class EstimatedBreedingValueIntegerSelection(
+        EstimatedBreedingValueSelectionMixin,
+        IntegerSelectionProtocol,
+    ):
     """
     Estimated Breeding Value Selection in an integer search space.
     """
@@ -902,7 +908,10 @@ class EstimatedBreedingValueIntegerSelection(EstimatedBreedingValueSelectionMixi
     ################# Selection Functions ##################
     # inherit select() from IntegerSelectionProtocol
 
-class EstimatedBreedingValueRealSelection(EstimatedBreedingValueSelectionMixin,RealSelectionProtocol):
+class EstimatedBreedingValueRealSelection(
+        EstimatedBreedingValueSelectionMixin,
+        RealSelectionProtocol,
+    ):
     """
     Estimated Breeding Value Selection in a real search space.
     """
@@ -1311,7 +1320,10 @@ class EstimatedBreedingValueRealSelection(EstimatedBreedingValueSelectionMixin,R
     ################# Selection Functions ##################
     # inherit select() from RealSelectionProtocol
 
-class EstimatedBreedingValueSubsetSelection(EstimatedBreedingValueSelectionMixin,SubsetSelectionProtocol):
+class EstimatedBreedingValueSubsetSelection(
+        EstimatedBreedingValueSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Estimated Breeding Value Selection in a subset search space.
     """

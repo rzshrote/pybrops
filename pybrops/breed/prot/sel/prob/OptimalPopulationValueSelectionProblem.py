@@ -158,7 +158,10 @@ class OptimalPopulationValueSelectionProblemMixin(
         ) -> "OptimalPopulationValueSelectionProblemMixin":
         raise NotImplementedError("class method is abstract")
 
-class OptimalPopulationValueSubsetSelectionProblem(OptimalPopulationValueSelectionProblemMixin,SubsetSelectionProblem):
+class OptimalPopulationValueSubsetSelectionProblem(
+        OptimalPopulationValueSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     docstring for SubsetOptimalPopulationValueSelectionProblem.
     """

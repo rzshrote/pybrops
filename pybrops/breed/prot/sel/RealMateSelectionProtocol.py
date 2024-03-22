@@ -25,7 +25,11 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class RealMateSelectionProtocol(RealSelectionProtocol,MateSelectionProtocol,metaclass=ABCMeta):
+class RealMateSelectionProtocol(
+        RealSelectionProtocol,
+        MateSelectionProtocol,
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for creating real selection protocols.
     """

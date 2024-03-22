@@ -27,7 +27,9 @@ from pybrops.opt.algo.IntegerOptimizationAlgorithm import IntegerOptimizationAlg
 from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm
 from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
 
-class WeightedGenomicBinarySelection(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection):
+class WeightedGenomicBinarySelection(
+        GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection,
+    ):
     """
     Weighted Genomic Selection in a subset search space.
     """
@@ -347,7 +349,9 @@ class WeightedGenomicBinarySelection(GeneralizedWeightedGenomicEstimatedBreeding
             **kwargs
         )
 
-class WeightedGenomicIntegerSelection(GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection):
+class WeightedGenomicIntegerSelection(
+        GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection,
+    ):
     """
     Weighted Genomic Selection in an integer search space.
     """
@@ -667,7 +671,9 @@ class WeightedGenomicIntegerSelection(GeneralizedWeightedGenomicEstimatedBreedin
             **kwargs
         )
 
-class WeightedGenomicRealSelection(GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection):
+class WeightedGenomicRealSelection(
+        GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection,
+    ):
     """
     Weighted Genomic Selection in a real search space.
     """
@@ -987,7 +993,9 @@ class WeightedGenomicRealSelection(GeneralizedWeightedGenomicEstimatedBreedingVa
             **kwargs
         )
 
-class WeightedGenomicSubsetSelection(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection):
+class WeightedGenomicSubsetSelection(
+        GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection,
+    ):
     """
     Weighted Genomic Selection in a subset search space.
     """

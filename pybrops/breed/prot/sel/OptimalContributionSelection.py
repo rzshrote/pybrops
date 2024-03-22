@@ -145,7 +145,10 @@ class OptimalContributionSelectionMixin(
 
         return out
 
-class OptimalContributionBinarySelection(OptimalContributionSelectionMixin,BinarySelectionProtocol):
+class OptimalContributionBinarySelection(
+        OptimalContributionSelectionMixin,
+        BinarySelectionProtocol,
+    ):
     """
     Class defining Optimal Contribution Selection (OCS) for binary search spaces.
     """
@@ -566,7 +569,10 @@ class OptimalContributionBinarySelection(OptimalContributionSelectionMixin,Binar
     ################# Selection Functions ##################
     # inherit select() from BinarySelectionProtocol
 
-class OptimalContributionIntegerSelection(OptimalContributionSelectionMixin,IntegerSelectionProtocol):
+class OptimalContributionIntegerSelection(
+        OptimalContributionSelectionMixin,
+        IntegerSelectionProtocol,
+    ):
     """
     Class defining Optimal Contribution Selection (OCS) for integer search spaces.
     """
@@ -987,7 +993,10 @@ class OptimalContributionIntegerSelection(OptimalContributionSelectionMixin,Inte
     ################# Selection Functions ##################
     # inherit select() from IntegerSelectionProtocol
 
-class OptimalContributionRealSelection(OptimalContributionSelectionMixin,RealSelectionProtocol):
+class OptimalContributionRealSelection(
+        OptimalContributionSelectionMixin,
+        RealSelectionProtocol,
+    ):
     """
     Class defining Optimal Contribution Selection (OCS) for real search spaces.
     """
@@ -1408,7 +1417,10 @@ class OptimalContributionRealSelection(OptimalContributionSelectionMixin,RealSel
     ################# Selection Functions ##################
     # inherit select() from RealSelectionProtocol
 
-class OptimalContributionSubsetSelection(OptimalContributionSelectionMixin,SubsetSelectionProtocol):
+class OptimalContributionSubsetSelection(
+        OptimalContributionSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Class defining Optimal Contribution Selection (OCS) for subset search spaces.
     """

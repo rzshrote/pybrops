@@ -167,7 +167,10 @@ class MultiObjectiveGenomicSelectionProblemMixin(
         ) -> "MultiObjectiveGenomicSelectionProblemMixin":
         raise NotImplementedError("class method is abstract")
 
-class MultiObjectiveGenomicSubsetSelectionProblem(MultiObjectiveGenomicSelectionProblemMixin,SubsetSelectionProblem):
+class MultiObjectiveGenomicSubsetSelectionProblem(
+        MultiObjectiveGenomicSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     docstring for SubsetMultiObjectiveSelectionProblem.
     """

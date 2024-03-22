@@ -7,7 +7,10 @@ from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class AdditiveGeneticVarianceMatrixFactory(GeneticVarianceMatrixFactory,metaclass=ABCMeta):
+class AdditiveGeneticVarianceMatrixFactory(
+        GeneticVarianceMatrixFactory,
+        metaclass = ABCMeta,
+    ):
     """
     Abstract factory class for producing AdditiveGeneticVarianceMatrix objects.
     """

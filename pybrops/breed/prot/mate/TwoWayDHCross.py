@@ -24,7 +24,9 @@ from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_DensePhasedGenot
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
 
-class TwoWayDHCross(MatingProtocol):
+class TwoWayDHCross(
+        MatingProtocol,
+    ):
     """
     Class implementing mating protocols for two-way DH crosses.
     """

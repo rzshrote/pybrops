@@ -102,7 +102,10 @@ class ExpectedMaximumBreedingValueSelectionMixin(
         check_is_bool(value, "unique_parents")
         self._unique_parents = value
 
-class ExpectedMaximumBreedingValueBinarySelection(ExpectedMaximumBreedingValueSelectionMixin,BinarySelectionProtocol):
+class ExpectedMaximumBreedingValueBinarySelection(
+        ExpectedMaximumBreedingValueSelectionMixin,
+        BinarySelectionProtocol,
+    ):
     """
     Expected Maximum Breeding Value (EMBV) Selection in a subset search space.
     """
@@ -536,7 +539,10 @@ class ExpectedMaximumBreedingValueBinarySelection(ExpectedMaximumBreedingValueSe
     ################# Selection Functions ##################
     # inherit select() from BinarySelectionProtocol
 
-class ExpectedMaximumBreedingValueIntegerSelection(ExpectedMaximumBreedingValueSelectionMixin,IntegerSelectionProtocol):
+class ExpectedMaximumBreedingValueIntegerSelection(
+        ExpectedMaximumBreedingValueSelectionMixin,
+        IntegerSelectionProtocol,
+    ):
     """
     Expected Maximum Breeding Value (EMBV) Selection in a subset search space.
     """
@@ -970,7 +976,10 @@ class ExpectedMaximumBreedingValueIntegerSelection(ExpectedMaximumBreedingValueS
     ################# Selection Functions ##################
     # inherit select() from IntegerSelectionProtocol
 
-class ExpectedMaximumBreedingValueRealSelection(ExpectedMaximumBreedingValueSelectionMixin,RealSelectionProtocol):
+class ExpectedMaximumBreedingValueRealSelection(
+        ExpectedMaximumBreedingValueSelectionMixin,
+        RealSelectionProtocol,
+    ):
     """
     Expected Maximum Breeding Value (EMBV) Selection in a subset search space.
     """
@@ -1404,7 +1413,10 @@ class ExpectedMaximumBreedingValueRealSelection(ExpectedMaximumBreedingValueSele
     ################# Selection Functions ##################
     # inherit select() from RealSelectionProtocol
 
-class ExpectedMaximumBreedingValueSubsetSelection(ExpectedMaximumBreedingValueSelectionMixin,SubsetSelectionProtocol):
+class ExpectedMaximumBreedingValueSubsetSelection(
+        ExpectedMaximumBreedingValueSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Expected Maximum Breeding Value (EMBV) Selection in a subset search space.
     """

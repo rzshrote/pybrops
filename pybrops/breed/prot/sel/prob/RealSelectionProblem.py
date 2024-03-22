@@ -24,7 +24,10 @@ from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.opt.prob.RealProblem import RealProblem
 
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
-class RealSelectionProblem(RealProblem,SelectionProblem):
+class RealSelectionProblem(
+        RealProblem,
+        SelectionProblem,
+    ):
     """
     Semi-abstract class representing selection problems in real search spaces.
     """

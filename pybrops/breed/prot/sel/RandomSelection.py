@@ -69,7 +69,10 @@ class RandomSelectionMixin(
 
     ######################### Private Object Methods ###########################
 
-class RandomBinarySelection(RandomSelectionMixin,BinarySelectionProtocol):
+class RandomBinarySelection(
+        RandomSelectionMixin,
+        BinarySelectionProtocol,
+    ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for a binary search spaces.
     """
@@ -469,7 +472,10 @@ class RandomBinarySelection(RandomSelectionMixin,BinarySelectionProtocol):
     ################# Selection Functions ##################
     # inherit select() implementation
 
-class RandomIntegerSelection(RandomSelectionMixin,IntegerSelectionProtocol):
+class RandomIntegerSelection(
+        RandomSelectionMixin,
+        IntegerSelectionProtocol,
+    ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for a integer search spaces.
     """
@@ -869,7 +875,10 @@ class RandomIntegerSelection(RandomSelectionMixin,IntegerSelectionProtocol):
     ################# Selection Functions ##################
     # inherit select() implementation
 
-class RandomRealSelection(RandomSelectionMixin,RealSelectionProtocol):
+class RandomRealSelection(
+        RandomSelectionMixin,
+        RealSelectionProtocol,
+    ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for real search spaces.
     """
@@ -1269,7 +1278,10 @@ class RandomRealSelection(RandomSelectionMixin,RealSelectionProtocol):
     ################# Selection Functions ##################
     # inherit select() implementation
 
-class RandomSubsetSelection(RandomSelectionMixin,SubsetSelectionProtocol):
+class RandomSubsetSelection(
+        RandomSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for subset search spaces.
     """

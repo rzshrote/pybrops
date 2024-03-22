@@ -12,7 +12,11 @@ from abc import ABCMeta
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.VariantMatrix import VariantMatrix
 
-class TaxaVariantMatrix(TaxaMatrix,VariantMatrix,metaclass=ABCMeta):
+class TaxaVariantMatrix(
+        TaxaMatrix,
+        VariantMatrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for matrix wrapper objects with taxa and variant metadata.
 

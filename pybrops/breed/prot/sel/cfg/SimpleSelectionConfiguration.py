@@ -10,7 +10,9 @@ from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfigura
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class SimpleSelectionConfiguration(SelectionConfiguration):
+class SimpleSelectionConfiguration(
+        SelectionConfiguration,
+    ):
     """
     A simple selection configuration class containing the basic necessities for
     a SelectionConfiguration object.

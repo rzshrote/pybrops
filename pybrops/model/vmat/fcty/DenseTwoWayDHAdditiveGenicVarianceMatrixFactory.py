@@ -5,7 +5,9 @@ from pybrops.model.vmat.fcty.AdditiveGenicVarianceMatrixFactory import AdditiveG
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(AdditiveGenicVarianceMatrixFactory):
+class DenseTwoWayDHAdditiveGenicVarianceMatrixFactory(
+        AdditiveGenicVarianceMatrixFactory,
+    ):
     """
     docstring for DenseTwoWayDHAdditiveGenicVarianceMatrixFactory.
     """

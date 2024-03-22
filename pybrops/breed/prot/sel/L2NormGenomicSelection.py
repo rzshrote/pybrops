@@ -68,7 +68,10 @@ class L2NormGenomicSelectionMixin(
         check_is_CoancestryMatrixFactory(value, "cmatfcty")
         self._cmatfcty = value
 
-class L2NormGenomicBinarySelection(L2NormGenomicSelectionMixin,BinarySelectionProtocol):
+class L2NormGenomicBinarySelection(
+        L2NormGenomicSelectionMixin,
+        BinarySelectionProtocol,
+    ):
     """
     L2-Norm Genomic Selection (L2GS) in a subset search space.
     """
@@ -470,7 +473,10 @@ class L2NormGenomicBinarySelection(L2NormGenomicSelectionMixin,BinarySelectionPr
     ################# Selection Functions ##################
     # inherit select() from BinarySelectionProtocol
 
-class L2NormGenomicIntegerSelection(L2NormGenomicSelectionMixin,IntegerSelectionProtocol):
+class L2NormGenomicIntegerSelection(
+        L2NormGenomicSelectionMixin,
+        IntegerSelectionProtocol,
+    ):
     """
     L2-Norm Genomic Selection (L2GS) in an integer search space.
     """
@@ -872,7 +878,10 @@ class L2NormGenomicIntegerSelection(L2NormGenomicSelectionMixin,IntegerSelection
     ################# Selection Functions ##################
     # inherit select() from IntegerSelectionProtocol
 
-class L2NormGenomicRealSelection(L2NormGenomicSelectionMixin,RealSelectionProtocol):
+class L2NormGenomicRealSelection(
+        L2NormGenomicSelectionMixin,
+        RealSelectionProtocol,
+    ):
     """
     L2-Norm Genomic Selection (L2GS) in a real search space.
     """
@@ -1274,7 +1283,10 @@ class L2NormGenomicRealSelection(L2NormGenomicSelectionMixin,RealSelectionProtoc
     ################# Selection Functions ##################
     # inherit select() from RealSelectionProtocol
 
-class L2NormGenomicSubsetSelection(L2NormGenomicSelectionMixin,SubsetSelectionProtocol):
+class L2NormGenomicSubsetSelection(
+        L2NormGenomicSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     L2-Norm Genomic Selection (L2GS) in a subset search space.
     """

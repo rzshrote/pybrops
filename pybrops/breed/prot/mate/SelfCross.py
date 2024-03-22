@@ -23,7 +23,9 @@ from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_DensePhasedGenot
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import check_is_DensePhasedGenotypeMatrix
 from pybrops.core.random.prng import global_prng
 
-class SelfCross(MatingProtocol):
+class SelfCross(
+        MatingProtocol,
+    ):
     """
     Class implementing mating protocols for self-fertilization.
     """

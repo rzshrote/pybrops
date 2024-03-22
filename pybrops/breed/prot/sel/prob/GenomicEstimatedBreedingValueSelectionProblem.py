@@ -62,7 +62,10 @@ class GenomicEstimatedBreedingValueSelectionProblemMixin(
         check_ndarray_axis_len_eq(value, "gebv", 0, self.ndecn)
         self._gebv = value
 
-class GenomicEstimatedBreedingValueSubsetSelectionProblem(GenomicEstimatedBreedingValueSelectionProblemMixin,SubsetSelectionProblem):
+class GenomicEstimatedBreedingValueSubsetSelectionProblem(
+        GenomicEstimatedBreedingValueSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in subset search spaces.
     """
@@ -321,7 +324,10 @@ class GenomicEstimatedBreedingValueSubsetSelectionProblem(GenomicEstimatedBreedi
 
         return out
 
-class GenomicEstimatedBreedingValueRealSelectionProblem(GenomicEstimatedBreedingValueSelectionProblemMixin,RealSelectionProblem):
+class GenomicEstimatedBreedingValueRealSelectionProblem(
+        GenomicEstimatedBreedingValueSelectionProblemMixin,
+        RealSelectionProblem,
+    ):
     """
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in real search spaces.
     """
@@ -579,7 +585,10 @@ class GenomicEstimatedBreedingValueRealSelectionProblem(GenomicEstimatedBreeding
 
         return out
 
-class GenomicEstimatedBreedingValueIntegerSelectionProblem(GenomicEstimatedBreedingValueSelectionProblemMixin,IntegerSelectionProblem):
+class GenomicEstimatedBreedingValueIntegerSelectionProblem(
+        GenomicEstimatedBreedingValueSelectionProblemMixin,
+        IntegerSelectionProblem,
+    ):
     """
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in integer search spaces.
     """
@@ -837,7 +846,10 @@ class GenomicEstimatedBreedingValueIntegerSelectionProblem(GenomicEstimatedBreed
 
         return out
 
-class GenomicEstimatedBreedingValueBinarySelectionProblem(GenomicEstimatedBreedingValueSelectionProblemMixin,BinarySelectionProblem):
+class GenomicEstimatedBreedingValueBinarySelectionProblem(
+        GenomicEstimatedBreedingValueSelectionProblemMixin,
+        BinarySelectionProblem,
+    ):
     """
     Class representing selection on Genomic Estimated Breeding Values (GEBVs) in binary search spaces.
     """

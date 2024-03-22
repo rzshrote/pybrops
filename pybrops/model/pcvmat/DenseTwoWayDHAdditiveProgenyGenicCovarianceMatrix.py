@@ -30,7 +30,9 @@ from pybrops.model.pcvmat.DenseAdditiveProgenyGenicCovarianceMatrix import Dense
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
-class DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix(DenseAdditiveProgenyGenicCovarianceMatrix):
+class DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix(
+        DenseAdditiveProgenyGenicCovarianceMatrix,
+    ):
     """
     A concrete class for dense additive genic covariance matrices calculated
     for two-way DH progenies.
