@@ -32,7 +32,9 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseGenomicEstimatedBreedingValueMatrix import DenseGenomicEstimatedBreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class DenseLinearGenomicModel(LinearGenomicModel):
+class DenseLinearGenomicModel(
+        LinearGenomicModel,
+    ):
     """
     The DenseLinearGenomicModel class represents a Multivariate Multiple
     Linear Regression model.

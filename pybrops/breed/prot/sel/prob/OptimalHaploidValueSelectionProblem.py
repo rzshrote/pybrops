@@ -258,7 +258,10 @@ class OptimalHaploidValueSelectionProblemMixin(
         ) -> "OptimalHaploidValueSelectionProblemMixin":
         raise NotImplementedError("class method is abstract")
 
-class OptimalHaploidValueSubsetSelectionProblem(OptimalHaploidValueSelectionProblemMixin,SubsetSelectionProblem):
+class OptimalHaploidValueSubsetSelectionProblem(
+        OptimalHaploidValueSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     Class for representing Optimal Haploid Value (OHV) Selection problems in subset search spaces.
     """
@@ -471,7 +474,10 @@ class OptimalHaploidValueSubsetSelectionProblem(OptimalHaploidValueSelectionProb
 
         return out
 
-class OptimalHaploidValueRealSelectionProblem(OptimalHaploidValueSelectionProblemMixin,RealSelectionProblem):
+class OptimalHaploidValueRealSelectionProblem(
+        OptimalHaploidValueSelectionProblemMixin,
+        RealSelectionProblem,
+    ):
     """
     Class for representing Optimal Haploid Value (OHV) Selection problems in real search spaces.
     """
@@ -689,7 +695,10 @@ class OptimalHaploidValueRealSelectionProblem(OptimalHaploidValueSelectionProble
 
         return out
 
-class OptimalHaploidValueIntegerSelectionProblem(OptimalHaploidValueSelectionProblemMixin,IntegerSelectionProblem):
+class OptimalHaploidValueIntegerSelectionProblem(
+        OptimalHaploidValueSelectionProblemMixin,
+        IntegerSelectionProblem,
+    ):
     """
     Class for representing Optimal Haploid Value (OHV) Selection problems in integer search spaces.
     """
@@ -907,7 +916,10 @@ class OptimalHaploidValueIntegerSelectionProblem(OptimalHaploidValueSelectionPro
 
         return out
 
-class OptimalHaploidValueBinarySelectionProblem(OptimalHaploidValueSelectionProblemMixin,BinarySelectionProblem):
+class OptimalHaploidValueBinarySelectionProblem(
+        OptimalHaploidValueSelectionProblemMixin,
+        BinarySelectionProblem,
+    ):
     """
     Class for representing Optimal Haploid Value (OHV) Selection problems in binary search spaces.
     """

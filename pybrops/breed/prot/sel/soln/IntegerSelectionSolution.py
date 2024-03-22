@@ -5,7 +5,10 @@ __all__ = [
 from pybrops.breed.prot.sel.soln.SelectionSolution import SelectionSolution
 from pybrops.opt.soln.IntegerSolution import IntegerSolution
 
-class IntegerSelectionSolution(IntegerSolution,SelectionSolution):
+class IntegerSelectionSolution(
+        IntegerSolution,
+        SelectionSolution,
+    ):
     """
     Class representing subset selection solutions.
     """

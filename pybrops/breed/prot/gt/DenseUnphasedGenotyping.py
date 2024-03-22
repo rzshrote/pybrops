@@ -9,7 +9,9 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
-class DenseUnphasedGenotyping(GenotypingProtocol):
+class DenseUnphasedGenotyping(
+        GenotypingProtocol,
+    ):
     """
     Class implementing unphased genotyping for dense genotype matrices. This
     converts a DensePhasedGenotypeMatrix to a DenseGenotypeMatrix containing

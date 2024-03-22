@@ -12,7 +12,10 @@ from pymoo.core.problem import ElementwiseEvaluationFunction
 from pymoo.core.problem import LoopedElementwiseEvaluation
 
 
-class RealMateSelectionProblem(RealSelectionProblem,MateSelectionProblem):
+class RealMateSelectionProblem(
+        RealSelectionProblem,
+        MateSelectionProblem,
+    ):
     """
     docstring for RealMateSelectionProblem.
     """

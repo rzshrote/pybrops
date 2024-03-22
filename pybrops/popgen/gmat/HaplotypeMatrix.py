@@ -17,7 +17,11 @@ from numpy.typing import DTypeLike
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix
 
-class HaplotypeMatrix(TaxaVariantMatrix,HDF5InputOutput,metaclass=ABCMeta):
+class HaplotypeMatrix(
+        TaxaVariantMatrix,
+        HDF5InputOutput,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for haplotype matrix objects.
 

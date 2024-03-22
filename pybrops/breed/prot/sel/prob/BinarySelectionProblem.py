@@ -24,7 +24,10 @@ from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.opt.prob.BinaryProblem import BinaryProblem
 
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
-class BinarySelectionProblem(BinaryProblem,SelectionProblem):
+class BinarySelectionProblem(
+        BinaryProblem,
+        SelectionProblem,
+    ):
     """
     Semi-abstract class representing selection problems in binary search spaces.
     """

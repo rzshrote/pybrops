@@ -23,7 +23,10 @@ from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.opt.prob.Problem import Problem
 
 # inheritance order is important for method resolution order
-class SelectionProblem(Problem,metaclass=ABCMeta):
+class SelectionProblem(
+        Problem,
+        metaclass = ABCMeta,
+    ):
     """
     A semi-abstract, mixin-esque class for defining the basal interface for 
     selection problems.

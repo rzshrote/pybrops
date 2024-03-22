@@ -25,7 +25,11 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class SubsetMateSelectionProtocol(SubsetSelectionProtocol,MateSelectionProtocol,metaclass=ABCMeta):
+class SubsetMateSelectionProtocol(
+        SubsetSelectionProtocol,
+        MateSelectionProtocol,
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for creating subset selection protocols.
     """

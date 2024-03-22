@@ -14,7 +14,9 @@ from pybrops.popgen.cmat.DenseVanRadenCoancestryMatrix import DenseVanRadenCoanc
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class DenseVanRadenCoancestryMatrixFactory(CoancestryMatrixFactory):
+class DenseVanRadenCoancestryMatrixFactory(
+        CoancestryMatrixFactory,
+    ):
     """
     Factory class for producing CoancestryMatrix objects.
     """

@@ -89,7 +89,10 @@ class RandomSelectionProblemMixin(
         ) -> "RandomSelectionProblemMixin":
         raise NotImplementedError("class method is abstract")
 
-class RandomSubsetSelectionProblem(RandomSelectionProblemMixin,SubsetSelectionProblem):
+class RandomSubsetSelectionProblem(
+        RandomSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     Class representing selection on Random Breeding Values (RBVs) in subset search spaces.
     """
@@ -298,7 +301,10 @@ class RandomSubsetSelectionProblem(RandomSelectionProblemMixin,SubsetSelectionPr
 
         return out
 
-class RandomRealSelectionProblem(RandomSelectionProblemMixin,RealSelectionProblem):
+class RandomRealSelectionProblem(
+        RandomSelectionProblemMixin,
+        RealSelectionProblem,
+    ):
     """
     Class representing selection on Random Breeding Values (RBVs) in real search spaces.
     """
@@ -506,7 +512,10 @@ class RandomRealSelectionProblem(RandomSelectionProblemMixin,RealSelectionProble
 
         return out
 
-class RandomIntegerSelectionProblem(RandomSelectionProblemMixin,IntegerSelectionProblem):
+class RandomIntegerSelectionProblem(
+        RandomSelectionProblemMixin,
+        IntegerSelectionProblem,
+    ):
     """
     Class representing selection on Random Breeding Values (RBVs) in integer search spaces.
     """
@@ -714,7 +723,10 @@ class RandomIntegerSelectionProblem(RandomSelectionProblemMixin,IntegerSelection
 
         return out
 
-class RandomBinarySelectionProblem(RandomSelectionProblemMixin,BinarySelectionProblem):
+class RandomBinarySelectionProblem(
+        RandomSelectionProblemMixin,
+        BinarySelectionProblem,
+    ):
     """
     Class representing selection on Random Breeding Values (RBVs) in binary search spaces.
     """

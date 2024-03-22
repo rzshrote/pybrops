@@ -14,7 +14,10 @@ from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.opt.prob.RealProblem import RealProblem
 from pybrops.opt.soln.RealSolution import RealSolution
 
-class RealOptimizationAlgorithm(OptimizationAlgorithm,metaclass=ABCMeta):
+class RealOptimizationAlgorithm(
+        OptimizationAlgorithm,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for optimization algorithms optimizing in real search spaces.
 

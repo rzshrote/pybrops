@@ -14,7 +14,10 @@ from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.opt.prob.BinaryProblem import BinaryProblem
 from pybrops.opt.soln.BinarySolution import BinarySolution
 
-class BinaryOptimizationAlgorithm(OptimizationAlgorithm,metaclass=ABCMeta):
+class BinaryOptimizationAlgorithm(
+        OptimizationAlgorithm,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for optimization algorithms optimizing in binary search spaces.
 

@@ -40,7 +40,9 @@ from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import check_is_Geneti
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class MultiObjectiveGenomicMating(UnconstrainedSelectionProtocol):
+class MultiObjectiveGenomicMating(
+        UnconstrainedSelectionProtocol,
+    ):
     """
     Class implementing selection protocols for multi-objective genomic mating.
 

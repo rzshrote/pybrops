@@ -38,7 +38,9 @@ from pymoo.algorithms.moo.nsga2 import NSGA2
 from pymoo.optimize import minimize
 from pymoo.termination.max_gen import MaximumGenerationTermination
 
-class NSGA2SteepestDescentSubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
+class NSGA2SteepestDescentSubsetGeneticAlgorithm(
+        SubsetOptimizationAlgorithm,
+    ):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.
@@ -209,7 +211,9 @@ class NSGA2SteepestDescentSubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
 
         return soln
 
-class NSGA2StochasticDescentSubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
+class NSGA2StochasticDescentSubsetGeneticAlgorithm(
+        SubsetOptimizationAlgorithm,
+    ):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.
@@ -383,7 +387,9 @@ class NSGA2StochasticDescentSubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
 
         return soln
 
-class NSGA2MutatorASubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
+class NSGA2MutatorASubsetGeneticAlgorithm(
+        SubsetOptimizationAlgorithm,
+    ):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.
@@ -557,7 +563,9 @@ class NSGA2MutatorASubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
 
         return soln
 
-class NSGA2MutatorBSubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
+class NSGA2MutatorBSubsetGeneticAlgorithm(
+        SubsetOptimizationAlgorithm,
+    ):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.

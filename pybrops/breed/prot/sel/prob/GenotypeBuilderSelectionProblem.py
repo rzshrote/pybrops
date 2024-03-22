@@ -192,7 +192,10 @@ class GenotypeBuilderSelectionProblemMixin(
 
         return out
 
-class GenotypeBuilderSubsetSelectionProblem(GenotypeBuilderSelectionProblemMixin,SubsetSelectionProblem):
+class GenotypeBuilderSubsetSelectionProblem(
+        GenotypeBuilderSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     Class representing Genotype Builder (GB) Selection problems in subset search spaces.
     """

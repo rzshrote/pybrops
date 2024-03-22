@@ -80,7 +80,10 @@ class GenomicEstimatedBreedingValueSelectionMixin(
         check_is_bool(value, "unscale")
         self._unscale = value
 
-class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValueSelectionMixin,BinarySelectionProtocol):
+class GenomicEstimatedBreedingValueBinarySelection(
+        GenomicEstimatedBreedingValueSelectionMixin,
+        BinarySelectionProtocol,
+    ):
     """
     Genomic Estimated Breeding Value Selection in a subset search space.
     """
@@ -488,7 +491,10 @@ class GenomicEstimatedBreedingValueBinarySelection(GenomicEstimatedBreedingValue
     ################# Selection Functions ##################
     # inherit select() from RealSelectionProtocol
 
-class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValueSelectionMixin,IntegerSelectionProtocol):
+class GenomicEstimatedBreedingValueIntegerSelection(
+        GenomicEstimatedBreedingValueSelectionMixin,
+        IntegerSelectionProtocol,
+    ):
     """
     Genomic Estimated Breeding Value Selection in an integer search space.
     """
@@ -896,7 +902,10 @@ class GenomicEstimatedBreedingValueIntegerSelection(GenomicEstimatedBreedingValu
     ################# Selection Functions ##################
     # inherit select() from RealSelectionProtocol
 
-class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueSelectionMixin,RealSelectionProtocol):
+class GenomicEstimatedBreedingValueRealSelection(
+        GenomicEstimatedBreedingValueSelectionMixin,
+        RealSelectionProtocol,
+    ):
     """
     Genomic Estimated Breeding Value Selection in a real search space.
     """
@@ -1304,7 +1313,10 @@ class GenomicEstimatedBreedingValueRealSelection(GenomicEstimatedBreedingValueSe
     ################# Selection Functions ##################
     # inherit select() from RealSelectionProtocol
 
-class GenomicEstimatedBreedingValueSubsetSelection(GenomicEstimatedBreedingValueSelectionMixin,SubsetSelectionProtocol):
+class GenomicEstimatedBreedingValueSubsetSelection(
+        GenomicEstimatedBreedingValueSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Genomic Estimated Breeding Value Selection in a subset search space.
     """

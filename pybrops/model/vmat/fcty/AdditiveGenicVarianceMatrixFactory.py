@@ -6,7 +6,10 @@ from pybrops.model.vmat.fcty.GenicVarianceMatrixFactory import GenicVarianceMatr
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class AdditiveGenicVarianceMatrixFactory(GenicVarianceMatrixFactory,metaclass=ABCMeta):
+class AdditiveGenicVarianceMatrixFactory(
+        GenicVarianceMatrixFactory,
+        metaclass = ABCMeta,
+    ):
     """
     Abstract factory class for producing AdditiveGenicVarianceMatrix objects.
     """

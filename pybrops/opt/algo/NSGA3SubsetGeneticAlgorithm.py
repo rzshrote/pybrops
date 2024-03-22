@@ -34,7 +34,9 @@ from pybrops.opt.prob.SubsetProblem import check_SubsetProblem_is_multi_objectiv
 from pybrops.opt.prob.SubsetProblem import check_is_SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
-class NSGA3SubsetGeneticAlgorithm(SubsetOptimizationAlgorithm):
+class NSGA3SubsetGeneticAlgorithm(
+        SubsetOptimizationAlgorithm,
+    ):
     """
     Class implementing an NSGA-III genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.

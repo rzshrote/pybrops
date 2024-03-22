@@ -28,7 +28,7 @@ class CoancestryMatrix(
         PandasInputOutput,
         CSVInputOutput,
         HDF5InputOutput,
-        metaclass=ABCMeta,
+        metaclass = ABCMeta,
     ):
     """
     An abstract class for coancestry matrices. Coancestry matrices are square.

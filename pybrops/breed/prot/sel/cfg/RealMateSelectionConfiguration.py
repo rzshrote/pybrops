@@ -15,7 +15,10 @@ from pybrops.breed.prot.sel.cfg.RealSelectionConfiguration import RealSelectionC
 from pybrops.core.random.sampling import stochastic_universal_sampling
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class RealMateSelectionConfiguration(RealSelectionConfiguration,MateSelectionConfiguration):
+class RealMateSelectionConfiguration(
+        RealSelectionConfiguration,
+        MateSelectionConfiguration,
+    ):
     """
     Class representing a subset selection configuration where the subset 
     originates from a cross map.

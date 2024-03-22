@@ -16,7 +16,10 @@ from numpy.typing import ArrayLike
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
-class PhasedMatrix(MutableMatrix,metaclass=ABCMeta):
+class PhasedMatrix(
+        MutableMatrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for phased matrix wrapper objects.
 

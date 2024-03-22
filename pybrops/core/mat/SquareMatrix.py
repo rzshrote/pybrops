@@ -12,7 +12,10 @@ from abc import ABCMeta
 from abc import abstractmethod
 from pybrops.core.mat.Matrix import Matrix
 
-class SquareMatrix(Matrix,metaclass=ABCMeta):
+class SquareMatrix(
+        Matrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for square matrices. A "square matrix" is defined as a
     matrix that has the same axis metadata associated with two or more axes.

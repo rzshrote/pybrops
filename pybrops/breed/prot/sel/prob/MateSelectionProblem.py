@@ -11,7 +11,10 @@ from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 
 
-class MateSelectionProblem(SelectionProblem,metaclass=ABCMeta):
+class MateSelectionProblem(
+        SelectionProblem,
+        metaclass = ABCMeta,
+    ):
     """
     docstring for MateSelectionProblem.
     """

@@ -10,7 +10,10 @@ from pybrops.breed.prot.sel.soln.MateSelectionSolution import MateSelectionSolut
 from pybrops.breed.prot.sel.soln.SubsetSelectionSolution import SubsetSelectionSolution
 
 
-class SubsetMateSelectionSolution(SubsetSelectionSolution,MateSelectionSolution):
+class SubsetMateSelectionSolution(
+        SubsetSelectionSolution,
+        MateSelectionSolution,
+    ):
     """
     Class representing mate selection solutions in subset search spaces.
     """

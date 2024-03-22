@@ -14,7 +14,10 @@ from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.opt.prob.IntegerProblem import IntegerProblem
 from pybrops.opt.soln.IntegerSolution import IntegerSolution
 
-class IntegerOptimizationAlgorithm(OptimizationAlgorithm,metaclass=ABCMeta):
+class IntegerOptimizationAlgorithm(
+        OptimizationAlgorithm,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for optimization algorithms optimizing in integer search spaces.
 

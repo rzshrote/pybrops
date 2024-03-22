@@ -24,7 +24,9 @@ from pybrops.breed.op.ssel.SurvivorSelectionOperator import check_is_SurvivorSel
 from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.error.error_type_python import check_is_int
 
-class RecurrentSelectionBreedingProgram(BreedingProgram):
+class RecurrentSelectionBreedingProgram(
+        BreedingProgram,
+    ):
     """
     Class implementing recurrent selection. This class is very generic and
     highly modular to facilitate rapid prototyping.

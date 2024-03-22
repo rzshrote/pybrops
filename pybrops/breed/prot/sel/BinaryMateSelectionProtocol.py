@@ -25,7 +25,11 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class BinaryMateSelectionProtocol(BinarySelectionProtocol,MateSelectionProtocol,metaclass=ABCMeta):
+class BinaryMateSelectionProtocol(
+        BinarySelectionProtocol,
+        MateSelectionProtocol,
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for creating binary selection protocols.
     """

@@ -20,7 +20,10 @@ from pybrops.core.random.sampling import stochastic_universal_sampling
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class RealSelectionConfiguration(SampledSelectionConfigurationMixin,SelectionConfiguration):
+class RealSelectionConfiguration(
+        SampledSelectionConfigurationMixin,
+        SelectionConfiguration,
+    ):
     """
     docstring for RealSelectionConfiguration.
     """

@@ -15,7 +15,10 @@ from pybrops.breed.prot.sel.cfg.SubsetSelectionConfiguration import SubsetSelect
 from pybrops.core.random.sampling import tiled_choice
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class SubsetMateSelectionConfiguration(SubsetSelectionConfiguration,MateSelectionConfiguration):
+class SubsetMateSelectionConfiguration(
+        SubsetSelectionConfiguration,
+        MateSelectionConfiguration,
+    ):
     """
     Class representing a subset selection configuration where the subset 
     originates from a cross map.

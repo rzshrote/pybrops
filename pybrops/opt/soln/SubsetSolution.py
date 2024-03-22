@@ -19,7 +19,9 @@ from pybrops.core.error.error_value_numpy import check_ndarray_len_gteq
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.opt.soln.Solution import Solution
 
-class SubsetSolution(Solution):
+class SubsetSolution(
+        Solution,
+    ):
     """
     Class for optimization problem solutions with nominal decision variables.
     """

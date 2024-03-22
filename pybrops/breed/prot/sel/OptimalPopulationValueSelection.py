@@ -64,7 +64,10 @@ class OptimalPopulationValueSelectionMixin(
         check_is_gt(value, "nhaploblk", 0)
         self._nhaploblk = value
 
-class OptimalPopulationValueSubsetSelection(OptimalPopulationValueSelectionMixin,SubsetSelectionProtocol):
+class OptimalPopulationValueSubsetSelection(
+        OptimalPopulationValueSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for subset search spaces.
     """

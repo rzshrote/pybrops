@@ -14,7 +14,10 @@ from pybrops.core.mat.VariantMatrix import VariantMatrix
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
-class GeneticMappableMatrix(VariantMatrix,metaclass=ABCMeta):
+class GeneticMappableMatrix(
+        VariantMatrix,
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class for variant matrices that can be interpolated using a
     GeneticMap.

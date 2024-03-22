@@ -86,7 +86,10 @@ class MeanExpectedHeterozygositySelectionProblemMixin(
         ) -> "MeanExpectedHeterozygositySelectionProblemMixin":
         raise NotImplementedError("class method is abstract")
 
-class MeanExpectedHeterozygositySubsetSelectionProblem(MeanExpectedHeterozygositySelectionProblemMixin,SubsetSelectionProblem):
+class MeanExpectedHeterozygositySubsetSelectionProblem(
+        MeanExpectedHeterozygositySelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     Class representing Mean Expected Heterozygosity (MEH) selection problems in subset search spaces.
     """
@@ -300,7 +303,10 @@ class MeanExpectedHeterozygositySubsetSelectionProblem(MeanExpectedHeterozygosit
 
         return out
 
-class MeanExpectedHeterozygosityRealSelectionProblem(MeanExpectedHeterozygositySelectionProblemMixin,RealSelectionProblem):
+class MeanExpectedHeterozygosityRealSelectionProblem(
+        MeanExpectedHeterozygositySelectionProblemMixin,
+        RealSelectionProblem,
+    ):
     """
     Class representing Mean Expected Heterozygosity (MEH) selection problems in real search spaces.
     """
@@ -520,7 +526,10 @@ class MeanExpectedHeterozygosityRealSelectionProblem(MeanExpectedHeterozygosityS
 
         return out
 
-class MeanExpectedHeterozygosityIntegerSelectionProblem(MeanExpectedHeterozygositySelectionProblemMixin,IntegerSelectionProblem):
+class MeanExpectedHeterozygosityIntegerSelectionProblem(
+        MeanExpectedHeterozygositySelectionProblemMixin,
+        IntegerSelectionProblem,
+    ):
     """
     Class representing Mean Expected Heterozygosity (MEH) selection problems in integer search spaces.
     """
@@ -738,7 +747,10 @@ class MeanExpectedHeterozygosityIntegerSelectionProblem(MeanExpectedHeterozygosi
 
         return out
 
-class MeanExpectedHeterozygosityBinarySelectionProblem(MeanExpectedHeterozygositySelectionProblemMixin,BinarySelectionProblem):
+class MeanExpectedHeterozygosityBinarySelectionProblem(
+        MeanExpectedHeterozygositySelectionProblemMixin,
+        BinarySelectionProblem,
+    ):
     """
     Class representing Mean Expected Heterozygosity (MEH) selection problems in integer search spaces.
     """

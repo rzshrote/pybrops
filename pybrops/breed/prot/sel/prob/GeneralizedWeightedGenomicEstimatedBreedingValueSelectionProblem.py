@@ -52,7 +52,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin(
         check_ndarray_ndim(value, "wgebv", 2)
         self._gwgebv = value
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin,SubsetSelectionProblem):
+class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(
+        GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in subset search spaces.
     """
@@ -311,7 +314,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(Gen
 
         return out
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin,RealSelectionProblem):
+class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(
+        GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin,
+        RealSelectionProblem,
+    ):
     """
     Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in real search spaces.
     """
@@ -580,7 +586,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(Gener
 
         return out
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin,IntegerSelectionProblem):
+class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(
+        GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin,
+        IntegerSelectionProblem,
+    ):
     """
     Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in integer search spaces.
     """
@@ -849,7 +858,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(Ge
 
         return out
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin,BinarySelectionProblem):
+class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem(
+        GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin,
+        BinarySelectionProblem,
+    ):
     """
     Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in binary search spaces.
     """

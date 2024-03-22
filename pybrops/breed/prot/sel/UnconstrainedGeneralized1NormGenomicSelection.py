@@ -25,7 +25,9 @@ from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class Generalized1NormGenomicSelection(UnconstrainedSelectionProtocol):
+class Generalized1NormGenomicSelection(
+        UnconstrainedSelectionProtocol,
+    ):
     """
     docstring for Generalized1NormGenomicSelection.
     """

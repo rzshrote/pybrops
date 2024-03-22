@@ -81,7 +81,10 @@ class MultiObjectiveGenomicSelectionMixin(
             raise TypeError("variable 'target' must be a callable function or numpy.ndarray")
         self._target = value
 
-class MultiObjectiveGenomicSubsetSelection(MultiObjectiveGenomicSelectionMixin,SubsetSelectionProtocol):
+class MultiObjectiveGenomicSubsetSelection(
+        MultiObjectiveGenomicSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for subset search spaces.
     """

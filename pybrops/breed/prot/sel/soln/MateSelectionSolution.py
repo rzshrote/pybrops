@@ -12,7 +12,10 @@ from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 
 
-class MateSelectionSolution(SelectionSolution,metaclass=ABCMeta):
+class MateSelectionSolution(
+        SelectionSolution,
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract interface 
     """

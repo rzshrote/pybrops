@@ -24,7 +24,9 @@ from pybrops.popgen.cmat.DenseCoancestryMatrix import DenseCoancestryMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
 
-class DenseYangCoancestryMatrix(DenseCoancestryMatrix):
+class DenseYangCoancestryMatrix(
+        DenseCoancestryMatrix,
+    ):
     """
     A concrete class for a dense coancestry matrix calculated using the VanRaden
     method. Coancestry matrices are square.

@@ -11,7 +11,7 @@ from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 class AdditiveProgenyGenicCovarianceMatrix(
         ProgenyGenicCovarianceMatrix,
-        metaclass=ABCMeta,
+        metaclass = ABCMeta,
     ):
     """
     An abstract class for additive genetic covariance matrices.

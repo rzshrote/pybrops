@@ -6,7 +6,9 @@ from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(AdditiveGeneticVarianceMatrixFactory):
+class DenseFourWayDHAdditiveGeneticVarianceMatrixFactory(
+        AdditiveGeneticVarianceMatrixFactory,
+    ):
     """
     docstring for DenseFourWayDHAdditiveGeneticVarianceMatrixFactory.
     """

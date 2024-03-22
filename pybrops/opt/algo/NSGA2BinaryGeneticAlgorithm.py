@@ -33,7 +33,9 @@ from pymoo.operators.crossover.pntx import SinglePointCrossover
 from pymoo.operators.mutation.bitflip import BitflipMutation
 from pymoo.operators.sampling.rnd import BinaryRandomSampling
 
-class NSGA2BinaryGeneticAlgorithm(BinaryOptimizationAlgorithm):
+class NSGA2BinaryGeneticAlgorithm(
+        BinaryOptimizationAlgorithm,
+    ):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.

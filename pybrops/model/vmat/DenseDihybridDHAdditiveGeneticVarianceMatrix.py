@@ -38,7 +38,9 @@ from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
-class DenseDihybridDHAdditiveGeneticVarianceMatrix(DenseAdditiveGeneticVarianceMatrix):
+class DenseDihybridDHAdditiveGeneticVarianceMatrix(
+        DenseAdditiveGeneticVarianceMatrix,
+    ):
     """
     A concrete class for dense additive genetic variance matrices calculated
     for dihybrid DH progenies.

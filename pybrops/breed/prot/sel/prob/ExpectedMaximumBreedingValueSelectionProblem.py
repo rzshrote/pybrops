@@ -152,7 +152,10 @@ class ExpectedMaximumBreedingValueSelectionProblemMixin(
 
         return embv
 
-class ExpectedMaximumBreedingValueSubsetSelectionProblem(ExpectedMaximumBreedingValueSelectionProblemMixin,SubsetSelectionProblem):
+class ExpectedMaximumBreedingValueSubsetSelectionProblem(
+        ExpectedMaximumBreedingValueSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     Class representing Expected Maximum Breeding Value (EMBV) selection problems in subset search spaces.
     """
@@ -382,7 +385,10 @@ class ExpectedMaximumBreedingValueSubsetSelectionProblem(ExpectedMaximumBreeding
 
         return out
 
-class ExpectedMaximumBreedingValueRealSelectionProblem(ExpectedMaximumBreedingValueSelectionProblemMixin,RealSelectionProblem):
+class ExpectedMaximumBreedingValueRealSelectionProblem(
+        ExpectedMaximumBreedingValueSelectionProblemMixin,
+        RealSelectionProblem,
+    ):
     """
     Class representing Expected Maximum Breeding Value (EMBV) selection problems in real search spaces.
     """
@@ -611,7 +617,10 @@ class ExpectedMaximumBreedingValueRealSelectionProblem(ExpectedMaximumBreedingVa
 
         return out
 
-class ExpectedMaximumBreedingValueIntegerSelectionProblem(ExpectedMaximumBreedingValueSelectionProblemMixin,IntegerSelectionProblem):
+class ExpectedMaximumBreedingValueIntegerSelectionProblem(
+        ExpectedMaximumBreedingValueSelectionProblemMixin,
+        IntegerSelectionProblem,
+    ):
     """
     Class representing Expected Maximum Breeding Value (EMBV) selection problems in integer search spaces.
     """
@@ -840,7 +849,10 @@ class ExpectedMaximumBreedingValueIntegerSelectionProblem(ExpectedMaximumBreedin
 
         return out
 
-class ExpectedMaximumBreedingValueBinarySelectionProblem(ExpectedMaximumBreedingValueSelectionProblemMixin,BinarySelectionProblem):
+class ExpectedMaximumBreedingValueBinarySelectionProblem(
+        ExpectedMaximumBreedingValueSelectionProblemMixin,
+        BinarySelectionProblem,
+    ):
     """
     Class representing Expected Maximum Breeding Value (EMBV) selection problems in binary search spaces.
     """

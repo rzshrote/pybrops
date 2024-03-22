@@ -40,7 +40,10 @@ from pybrops.core.util.h5py import h5py_File_read_ndarray
 from pybrops.core.util.h5py import h5py_File_read_ndarray_utf8
 from pybrops.core.util.h5py import h5py_File_write_dict
 
-class DenseTaxaMatrix(DenseMutableMatrix,TaxaMatrix):
+class DenseTaxaMatrix(
+        DenseMutableMatrix,
+        TaxaMatrix,
+    ):
     """
     A concrete class for dense matrices with taxa metadata.
 

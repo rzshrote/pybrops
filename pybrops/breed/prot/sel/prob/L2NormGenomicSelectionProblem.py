@@ -101,7 +101,10 @@ class L2NormGenomicSelectionProblemMixin(
         """
         raise NotImplementedError("class method is abstract")
 
-class L2NormGenomicSubsetSelectionProblem(L2NormGenomicSelectionProblemMixin,SubsetSelectionProblem):
+class L2NormGenomicSubsetSelectionProblem(
+        L2NormGenomicSelectionProblemMixin,
+        SubsetSelectionProblem,
+    ):
     """
     Class representing L2-norm Genomic Selection (L2GS) in subset search spaces.
     """
@@ -348,7 +351,10 @@ class L2NormGenomicSubsetSelectionProblem(L2NormGenomicSelectionProblemMixin,Sub
 
         return out
 
-class L2NormGenomicRealSelectionProblem(L2NormGenomicSelectionProblemMixin,RealSelectionProblem):
+class L2NormGenomicRealSelectionProblem(
+        L2NormGenomicSelectionProblemMixin,
+        RealSelectionProblem,
+    ):
     """
     Class representing L2-norm Genomic Selection (L2GS) in real search spaces.
     """
@@ -596,7 +602,10 @@ class L2NormGenomicRealSelectionProblem(L2NormGenomicSelectionProblemMixin,RealS
 
         return out
 
-class L2NormGenomicIntegerSelectionProblem(L2NormGenomicSelectionProblemMixin,IntegerSelectionProblem):
+class L2NormGenomicIntegerSelectionProblem(
+        L2NormGenomicSelectionProblemMixin,
+        IntegerSelectionProblem,
+    ):
     """
     Class representing L2-norm Genomic Selection (L2GS) in integer search spaces.
     """
@@ -844,7 +853,10 @@ class L2NormGenomicIntegerSelectionProblem(L2NormGenomicSelectionProblemMixin,In
 
         return out
 
-class L2NormGenomicBinarySelectionProblem(L2NormGenomicSelectionProblemMixin,BinarySelectionProblem):
+class L2NormGenomicBinarySelectionProblem(
+        L2NormGenomicSelectionProblemMixin,
+        BinarySelectionProblem,
+    ):
     """
     Class representing L2-norm Genomic Selection (L2GS) in binary search spaces.
     """

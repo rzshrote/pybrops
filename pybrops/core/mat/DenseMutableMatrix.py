@@ -16,7 +16,10 @@ from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMatrix import DenseMatrix
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 
-class DenseMutableMatrix(DenseMatrix,MutableMatrix):
+class DenseMutableMatrix(
+        DenseMatrix,
+        MutableMatrix,
+    ):
     """
     A concrete class for dense mutable matrices.
     Dense mutable matrices utilize numpy.ndarray's for data storage.

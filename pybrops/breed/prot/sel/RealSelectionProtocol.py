@@ -34,7 +34,10 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class RealSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
+class RealSelectionProtocol(
+        SelectionProtocol,
+        metaclass = ABCMeta,
+    ):
     """
     Semi-abstract class for creating real selection protocols.
     """

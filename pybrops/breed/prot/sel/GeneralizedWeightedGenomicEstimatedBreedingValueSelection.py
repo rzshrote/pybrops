@@ -84,7 +84,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin(
         check_is_in_interval_inclusive(value, "alpha", 0.0, 1.0)
         self._alpha = value
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,BinarySelectionProtocol):
+class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection(
+        GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,
+        BinarySelectionProtocol,
+    ):
     """
     Generalized Weighted Genomic Estiamted Breeding Value Selection in a subset search space.
     """
@@ -492,7 +495,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection(Generalize
     ################# Selection Functions ##################
     # inherit select() from BinarySelectionProtocol
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,IntegerSelectionProtocol):
+class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection(
+        GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,
+        IntegerSelectionProtocol,
+    ):
     """
     Generalized Weighted Genomic Estiamted Breeding Value Selection in an integer search space.
     """
@@ -900,7 +906,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection(Generaliz
     ################# Selection Functions ##################
     # inherit select() from IntegerSelectionProtocol
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,RealSelectionProtocol):
+class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection(
+        GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,
+        RealSelectionProtocol,
+    ):
     """
     Generalized Weighted Genomic Estiamted Breeding Value Selection in a real search space.
     """
@@ -1308,7 +1317,10 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection(GeneralizedW
     ################# Selection Functions ##################
     # inherit select() from RealSelectionProtocol
 
-class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection(GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,SubsetSelectionProtocol):
+class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection(
+        GeneralizedWeightedGenomicEstimatedBreedingValueSelectionMixin,
+        SubsetSelectionProtocol,
+    ):
     """
     Generalized Weighted Genomic Estiamted Breeding Value Selection in a subset search space.
     """

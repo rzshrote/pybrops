@@ -14,7 +14,10 @@ import numpy
 from pybrops.core.mat.Matrix import Matrix
 
 # TODO: is this class even necessary?
-class PrunableMatrix(Matrix,metaclass=ABCMeta):
+class PrunableMatrix(
+        Matrix,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for prunable matrix wrapper objects.
 

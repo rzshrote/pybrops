@@ -6,7 +6,10 @@ are non-linear in nature.
 from abc import ABCMeta
 from pybrops.model.gmod.GenomicModel import GenomicModel
 
-class NonlinearGenomicModel(GenomicModel,metaclass=ABCMeta):
+class NonlinearGenomicModel(
+        GenomicModel,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for non-linear genomic models.
 

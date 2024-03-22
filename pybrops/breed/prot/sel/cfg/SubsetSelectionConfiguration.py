@@ -20,7 +20,10 @@ from pybrops.core.random.sampling import tiled_choice
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class SubsetSelectionConfiguration(SampledSelectionConfigurationMixin,SelectionConfiguration):
+class SubsetSelectionConfiguration(
+        SampledSelectionConfigurationMixin,
+        SelectionConfiguration,
+    ):
     """
     docstring for SubsetSelectionConfiguration.
     """

@@ -24,7 +24,9 @@ from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicM
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
-class WeightedGenomicSubsetSelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem):
+class WeightedGenomicSubsetSelectionProblem(
+        GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem,
+    ):
     """
     docstring for SubsetWeightedGenomicSelectionProblem.
     """
@@ -235,7 +237,9 @@ class WeightedGenomicSubsetSelectionProblem(GeneralizedWeightedGenomicEstimatedB
 
         return out
 
-class WeightedGenomicRealSelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem):
+class WeightedGenomicRealSelectionProblem(
+        GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem,
+    ):
     """
     docstring for RealWeightedGenomicSelectionProblem.
     """
@@ -446,7 +450,9 @@ class WeightedGenomicRealSelectionProblem(GeneralizedWeightedGenomicEstimatedBre
 
         return out
 
-class WeightedGenomicIntegerSelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem):
+class WeightedGenomicIntegerSelectionProblem(
+        GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem,
+    ):
     """
     docstring for IntegerWeightedGenomicSelectionProblem.
     """
@@ -657,7 +663,9 @@ class WeightedGenomicIntegerSelectionProblem(GeneralizedWeightedGenomicEstimated
 
         return out
 
-class WeightedGenomicBinarySelectionProblem(GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem):
+class WeightedGenomicBinarySelectionProblem(
+        GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem,
+    ):
     """
     docstring for BinaryWeightedGenomicSelectionProblem.
     """

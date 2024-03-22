@@ -8,14 +8,15 @@ __all__ = [
 ]
 
 from typing import Union
-
 import numpy
+
 from pybrops.popgen.cmat.DenseYangCoancestryMatrix import DenseYangCoancestryMatrix
 from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFactory
-
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class DenseYangCoancestryMatrixFactory(CoancestryMatrixFactory):
+class DenseYangCoancestryMatrixFactory(
+        CoancestryMatrixFactory,
+    ):
     """
     Factory class for producing CoancestryMatrix objects.
     """

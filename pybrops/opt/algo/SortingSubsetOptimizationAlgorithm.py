@@ -16,7 +16,9 @@ from pybrops.opt.prob.SubsetProblem import check_SubsetProblem_is_single_objecti
 from pybrops.opt.prob.SubsetProblem import check_is_SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
-class SortingSubsetOptimizationAlgorithm(SubsetOptimizationAlgorithm):
+class SortingSubsetOptimizationAlgorithm(
+        SubsetOptimizationAlgorithm,
+    ):
     """
     Optimization algorithm class that scores individuals separate from each other,
     sorts to scores, and selects a solution from the sorted list.

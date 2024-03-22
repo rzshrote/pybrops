@@ -25,7 +25,10 @@ from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
-class MateSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):
+class MateSelectionProtocol(
+        SelectionProtocol,
+        metaclass = ABCMeta,
+    ):
     """
     A semi-abstract class implementing several key properties common to most, 
     if not all, constrained selection protocols.

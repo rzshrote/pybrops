@@ -19,7 +19,9 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import check_GenotypeMatrix_has_taxa
 from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
 
-class MeanPhenotypicBreedingValue(BreedingValueProtocol):
+class MeanPhenotypicBreedingValue(
+        BreedingValueProtocol,
+    ):
     """
     Class implementing estimation of breeding values by taking the mean across
     all environments.

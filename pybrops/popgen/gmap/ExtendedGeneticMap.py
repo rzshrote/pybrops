@@ -34,7 +34,9 @@ from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 
-class ExtendedGeneticMap(GeneticMap):
+class ExtendedGeneticMap(
+        GeneticMap,
+    ):
     """
     A concrete class for representing an extended genetic map format.
 

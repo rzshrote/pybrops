@@ -33,7 +33,9 @@ from pymoo.operators.crossover.pcx import ParentCentricCrossover
 from pymoo.operators.mutation.pm import PolynomialMutation
 from pymoo.operators.sampling.rnd import FloatRandomSampling
 
-class NSGA2RealGeneticAlgorithm(RealOptimizationAlgorithm):
+class NSGA2RealGeneticAlgorithm(
+        RealOptimizationAlgorithm,
+    ):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.

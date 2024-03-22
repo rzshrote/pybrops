@@ -30,7 +30,9 @@ from pybrops.model.vmat.DenseAdditiveGenicVarianceMatrix import DenseAdditiveGen
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
-class DenseDihybridDHAdditiveGenicVarianceMatrix(DenseAdditiveGenicVarianceMatrix):
+class DenseDihybridDHAdditiveGenicVarianceMatrix(
+        DenseAdditiveGenicVarianceMatrix,
+    ):
     """
     A concrete class for dense additive genic variance matrices calculated
     for two-way DH progenies.

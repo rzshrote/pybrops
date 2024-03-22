@@ -24,7 +24,10 @@ from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.opt.prob.IntegerProblem import IntegerProblem
 
 # inheritance ordering is important here to avoid circular dependency/method resolution issues
-class IntegerSelectionProblem(IntegerProblem,SelectionProblem):
+class IntegerSelectionProblem(
+        IntegerProblem,
+        SelectionProblem,
+    ):
     """
     Semi-abstract class representing selection problems in integer search spaces.
     """

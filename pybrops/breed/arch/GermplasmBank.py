@@ -11,7 +11,10 @@ __all__ = [
 from abc import ABCMeta
 from pybrops.breed.arch.BreedingNode import BreedingNode
 
-class GermplasmBank(BreedingNode,metaclass=ABCMeta):
+class GermplasmBank(
+        BreedingNode,
+        metaclass = ABCMeta,
+    ):
     """
     Abstract class defining a germplasm bank.
 

@@ -11,7 +11,9 @@ import numpy
 from pybrops.popgen.gmap.GeneticMap import GeneticMap
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 
-class KosambiMapFunction(GeneticMapFunction):
+class KosambiMapFunction(
+        GeneticMapFunction,
+    ):
     """
     A concrete class for the Kosambi genetic map function.
 

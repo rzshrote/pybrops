@@ -111,7 +111,9 @@ class FunctionWeight:
         self._optimization_type = value
 
 
-class MinimizingFunctionWeight(FunctionWeight):
+class MinimizingFunctionWeight(
+        FunctionWeight,
+    ):
     """
     Class for representing weights for functions that are minimizing in their natural state.
     """
@@ -195,7 +197,9 @@ class MinimizingFunctionWeight(FunctionWeight):
 
 
 
-class MaximizingFunctionWeight(FunctionWeight):
+class MaximizingFunctionWeight(
+        FunctionWeight,
+    ):
     """
     Class for representing weights for functions that are maximizing in their natural state.
     """

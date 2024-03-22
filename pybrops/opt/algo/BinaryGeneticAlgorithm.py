@@ -33,7 +33,9 @@ from pymoo.operators.sampling.rnd import BinaryRandomSampling
 from pymoo.optimize import minimize
 from pymoo.termination.max_gen import MaximumGenerationTermination
 
-class BinaryGeneticAlgorithm(BinaryOptimizationAlgorithm):
+class BinaryGeneticAlgorithm(
+        BinaryOptimizationAlgorithm,
+    ):
     """
     Class implementing an NSGA-II genetic algorithm adapted for subset selection
     optimization. The search space is discrete and nominal in nature.

@@ -15,7 +15,9 @@ from pybrops.opt.prob.SubsetProblem import check_SubsetProblem_is_single_objecti
 from pybrops.opt.prob.SubsetProblem import check_is_SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
-class SortingSteepestDescentSubsetHillClimber(SubsetOptimizationAlgorithm):
+class SortingSteepestDescentSubsetHillClimber(
+        SubsetOptimizationAlgorithm,
+    ):
     """
     A variant on the steepest descent hill climber for subset search spaces.
     The hillclimber first tests each element in the decision space, identifies 

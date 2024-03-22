@@ -25,7 +25,10 @@ from pybrops.opt.prob.SubsetProblem import SubsetProblem
 
 # inheritance ordering is important here to avoid method resolution issues
 # SelectionProblem functions as a semi-abstract/mixin-esque class and must go second
-class SubsetSelectionProblem(SubsetProblem,SelectionProblem):
+class SubsetSelectionProblem(
+        SubsetProblem,
+        SelectionProblem,
+    ):
     """
     Semi-abstract class representing selection problems in subset search spaces.
     """

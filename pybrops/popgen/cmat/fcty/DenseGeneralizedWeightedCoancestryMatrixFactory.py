@@ -14,7 +14,9 @@ from pybrops.popgen.cmat.DenseGeneralizedWeightedCoancestryMatrix import DenseGe
 from pybrops.popgen.cmat.fcty.DenseCoancestryMatrixFactory import DenseCoancestryMatrixFactory
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class DenseGeneralizedWeightedCoancestryMatrixFactory(DenseCoancestryMatrixFactory):
+class DenseGeneralizedWeightedCoancestryMatrixFactory(
+        DenseCoancestryMatrixFactory,
+    ):
     """
     Factory class for producing CoancestryMatrix objects.
     """

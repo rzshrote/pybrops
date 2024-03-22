@@ -14,7 +14,10 @@ from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm
 from pybrops.opt.prob.SubsetProblem import SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 
-class SubsetOptimizationAlgorithm(OptimizationAlgorithm,metaclass=ABCMeta):
+class SubsetOptimizationAlgorithm(
+        OptimizationAlgorithm,
+        metaclass = ABCMeta,
+    ):
     """
     An abstract class for optimization algorithms optimizing in subset search spaces.
 
