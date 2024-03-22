@@ -10,22 +10,29 @@ __all__ = [
 
 # imports
 from numbers import Integral
-from numpy.random import Generator,RandomState
-from typing import Optional, Union
+from numpy.random import Generator
+from numpy.random import RandomState
+from typing import Optional
+from typing import Union
 import numpy
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
-from pybrops.core.error.error_value_python import check_is_gt
-from pybrops.core.random.prng import global_prng
-from pybrops.opt.algo.IntegerOptimizationAlgorithm import IntegerOptimizationAlgorithm
-from pybrops.opt.algo.pymoo_addon import IntegerPolynomialMutation, IntegerSimulatedBinaryCrossover
-from pybrops.opt.prob.IntegerProblem import IntegerProblem, check_IntegerProblem_is_single_objective, check_is_IntegerProblem
-from pybrops.opt.soln.IntegerSolution import IntegerSolution
-from pybrops.opt.soln.IntegerSolution import IntegerSolution
 from pymoo.algorithms.soo.nonconvex.ga import GA
 from pymoo.operators.sampling.rnd import IntegerRandomSampling
 from pymoo.optimize import minimize
 from pymoo.termination.max_gen import MaximumGenerationTermination
+
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.random.prng import global_prng
+from pybrops.opt.algo.IntegerOptimizationAlgorithm import IntegerOptimizationAlgorithm
+from pybrops.opt.algo.pymoo_addon import IntegerPolynomialMutation
+from pybrops.opt.algo.pymoo_addon import IntegerSimulatedBinaryCrossover
+from pybrops.opt.prob.IntegerProblem import IntegerProblem
+from pybrops.opt.prob.IntegerProblem import check_IntegerProblem_is_single_objective
+from pybrops.opt.prob.IntegerProblem import check_is_IntegerProblem
+from pybrops.opt.soln.IntegerSolution import IntegerSolution
+from pybrops.opt.soln.IntegerSolution import IntegerSolution
 
 class IntegerGeneticAlgorithm(IntegerOptimizationAlgorithm):
     """

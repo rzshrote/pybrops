@@ -10,9 +10,12 @@ __all__ = [
 ]
 
 from numbers import Integral
-from typing import Optional, Tuple, Union
+from typing import Optional
+from typing import Tuple
+from typing import Union
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 
 from pybrops.core.random.prng import global_prng
 from pybrops.core.util.arrayix import sliceaxisix

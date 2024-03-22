@@ -11,7 +11,8 @@ from abc import ABCMeta
 from abc import abstractmethod
 from numbers import Real
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
 from numpy.typing import DTypeLike
 import pandas

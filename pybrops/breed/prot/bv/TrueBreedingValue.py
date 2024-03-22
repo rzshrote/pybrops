@@ -6,7 +6,8 @@ from typing import Union
 import numpy
 import pandas
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
-from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 

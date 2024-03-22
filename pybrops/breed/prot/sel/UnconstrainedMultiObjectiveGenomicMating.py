@@ -3,15 +3,20 @@ Module implementing selection protocols for multi-objective genomic mating.
 """
 
 from numbers import Real
-from typing import Callable, Union
+from typing import Callable
+from typing import Union
 import numpy
 import types
-from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOptimizationAlgorithm, check_is_OptimizationAlgorithm
-from pybrops.breed.prot.sel.targetfn import target_negative, target_positive, target_stabilizing
-from pybrops.breed.prot.sel.weightfn import weight_absolute, weight_one
+
+from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOptimizationAlgorithm
+from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import check_is_OptimizationAlgorithm
+from pybrops.breed.prot.sel.targetfn import target_negative
+from pybrops.breed.prot.sel.targetfn import target_positive
+from pybrops.breed.prot.sel.targetfn import target_stabilizing
+from pybrops.breed.prot.sel.weightfn import weight_absolute
+from pybrops.breed.prot.sel.weightfn import weight_one
 from pybrops.core.error.error_type_python import check_is_int_or_inf
 from pybrops.core.error.error_value_python import check_is_gteq
-
 from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.UnconstrainedNSGA2SetGeneticAlgorithm import UnconstrainedNSGA2SetGeneticAlgorithm
 from pybrops.opt.algo.UnconstrainedSteepestAscentSetHillClimber import UnconstrainedSteepestAscentSetHillClimber
@@ -24,12 +29,14 @@ from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.error.error_type_python import check_is_int
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
-from pybrops.core.util.arrayix import triudix, triuix
+from pybrops.core.util.arrayix import triudix
+from pybrops.core.util.arrayix import triuix
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
 from pybrops.model.vmat.AdditiveGenicVarianceMatrix import AdditiveGenicVarianceMatrix
-from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory, check_is_GeneticVarianceMatrixFactory
+from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import GeneticVarianceMatrixFactory
+from pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory import check_is_GeneticVarianceMatrixFactory
 from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 

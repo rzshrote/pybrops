@@ -9,9 +9,12 @@ __all__ = [
 ]
 
 import copy
-from numbers import Integral, Real
+from numbers import Integral
+from numbers import Real
 from pathlib import Path
-from typing import Optional, Sequence, Union
+from typing import Optional
+from typing import Sequence
+from typing import Union
 import numpy
 from numpy.typing import ArrayLike
 import h5py
@@ -23,7 +26,9 @@ from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_python import check_is_str_or_Integral
 from pybrops.core.error.error_type_python import check_is_str_or_Sequence
 from pybrops.core.error.error_type_numpy import check_is_ndarray
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
 from pybrops.core.error.error_value_numpy import check_ndarray_all_gteq
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
@@ -32,7 +37,9 @@ from pybrops.core.error.error_value_python import check_is_gteq
 from pybrops.core.error.error_value_python import check_len
 from pybrops.core.error.error_value_python import check_str_value
 from pybrops.core.mat.DenseTaxaTraitMatrix import DenseTaxaTraitMatrix
-from pybrops.core.util.h5py import h5py_File_read_ndarray, h5py_File_read_ndarray_utf8, h5py_File_write_dict
+from pybrops.core.util.h5py import h5py_File_read_ndarray
+from pybrops.core.util.h5py import h5py_File_read_ndarray_utf8
+from pybrops.core.util.h5py import h5py_File_write_dict
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 
 class DenseBreedingValueMatrix(

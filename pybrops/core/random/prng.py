@@ -57,7 +57,8 @@ __all__ = [
     "spawn",
 ]
 
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
 import random as py_random
 from numpy.random import PCG64

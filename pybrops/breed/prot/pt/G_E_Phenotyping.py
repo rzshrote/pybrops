@@ -5,26 +5,42 @@ interaction.
 
 import copy
 import math
-from numbers import Integral, Real
+from numbers import Integral
+from numbers import Real
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import h5py
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 import pandas
 
 from pybrops.core.error.error_io_python import check_file_exists
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group, check_h5py_File_is_readable, check_h5py_File_is_writable
-from pybrops.core.error.error_value_numpy import check_ndarray_all_gt, check_ndarray_all_gteq, check_ndarray_ndim
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
+from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
+from pybrops.core.error.error_value_numpy import check_ndarray_all_gt
+from pybrops.core.error.error_value_numpy import check_ndarray_all_gteq
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.random.prng import global_prng
 from pybrops.breed.prot.pt.PhenotypingProtocol import PhenotypingProtocol
-from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_ndarray_dtype_is_integer, check_ndarray_dtype_is_real
+from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.error.error_value_python import check_is_gteq
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_real
 from pybrops.core.error.error_value_numpy import check_ndarray_size
-from pybrops.core.util.h5py import h5py_File_read_int, h5py_File_read_ndarray, h5py_File_read_ndarray_int, h5py_File_write_dict
-from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
+from pybrops.core.util.h5py import h5py_File_read_int
+from pybrops.core.util.h5py import h5py_File_read_ndarray
+from pybrops.core.util.h5py import h5py_File_read_ndarray_int
+from pybrops.core.util.h5py import h5py_File_write_dict
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 class G_E_Phenotyping(
         PhenotypingProtocol

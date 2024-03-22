@@ -7,8 +7,11 @@ __all__ = [
 ]
 
 from abc import ABCMeta
-from numbers import Integral, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 
 import numpy
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
@@ -16,7 +19,9 @@ from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_in_interval_inclusive
-from pybrops.core.util.haplo import haplobin, haplobin_bounds, nhaploblk_chrom
+from pybrops.core.util.haplo import haplobin
+from pybrops.core.util.haplo import haplobin_bounds
+from pybrops.core.util.haplo import nhaploblk_chrom
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 

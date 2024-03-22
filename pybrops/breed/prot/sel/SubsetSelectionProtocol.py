@@ -9,11 +9,15 @@ __all__ = [
 
 from abc import ABCMeta
 from abc import abstractmethod
-from numbers import Integral, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 import pandas
 
 from pybrops.breed.prot.sel.SelectionProtocol import SelectionProtocol
@@ -23,10 +27,12 @@ from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionPr
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.NSGA2SubsetGeneticAlgorithm import NSGA2SubsetGeneticAlgorithm
 from pybrops.opt.algo.SubsetGeneticAlgorithm import SubsetGeneticAlgorithm
-from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm, check_is_SubsetOptimizationAlgorithm
+from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
+from pybrops.opt.algo.SubsetOptimizationAlgorithm import check_is_SubsetOptimizationAlgorithm
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
 
 
 class SubsetSelectionProtocol(SelectionProtocol,metaclass=ABCMeta):

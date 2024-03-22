@@ -9,7 +9,9 @@ __all__ = [
 
 import copy
 import numpy
-from typing import Optional, Sequence, Union
+from typing import Optional
+from typing import Sequence
+from typing import Union
 from numpy.typing import ArrayLike
 
 from pybrops.core.error.error_type_python import check_is_array_like

@@ -9,7 +9,8 @@ __all__ = [
 ]
 
 import numpy
-from typing import Sequence, Union
+from typing import Sequence
+from typing import Union
 from typing import Optional
 from numpy.typing import ArrayLike
 

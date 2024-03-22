@@ -10,15 +10,20 @@ __all__ = [
 
 # imports
 from numbers import Integral
-from numpy.random import Generator,RandomState
-from typing import Optional, Union
+from numpy.random import Generator
+from numpy.random import RandomState
+from typing import Optional
+from typing import Union
 import numpy
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.RealOptimizationAlgorithm import RealOptimizationAlgorithm
-from pybrops.opt.prob.RealProblem import RealProblem, check_RealProblem_is_single_objective, check_is_RealProblem
+from pybrops.opt.prob.RealProblem import RealProblem
+from pybrops.opt.prob.RealProblem import check_RealProblem_is_single_objective
+from pybrops.opt.prob.RealProblem import check_is_RealProblem
 from pybrops.opt.soln.RealSolution import RealSolution
 from pybrops.opt.soln.RealSolution import RealSolution
 from pymoo.algorithms.soo.nonconvex.ga import GA

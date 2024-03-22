@@ -12,10 +12,14 @@ __all__ = [
 from abc import ABCMeta
 from abc import abstractmethod
 from numbers import Integral
-from typing import Callable, Tuple, Union
+from typing import Callable
+from typing import Tuple
+from typing import Union
 import numpy
-from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity
-from pybrops.core.error.error_type_python import check_is_Callable, check_is_dict
+from pybrops.breed.prot.sel.prob.trans import trans_empty
+from pybrops.breed.prot.sel.prob.trans import trans_identity
+from pybrops.core.error.error_type_python import check_is_Callable
+from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.opt.prob.Problem import Problem
 
 # inheritance order is important for method resolution order

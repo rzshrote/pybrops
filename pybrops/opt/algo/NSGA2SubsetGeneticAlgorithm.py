@@ -10,16 +10,23 @@ __all__ = [
 
 # imports
 from numbers import Integral
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_dict
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_dict
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.random.prng import global_prng
 from pybrops.opt.algo.SubsetOptimizationAlgorithm import SubsetOptimizationAlgorithm
-from pybrops.opt.algo.pymoo_addon import ReducedExchangeCrossover, ReducedExchangeMutation, SubsetRandomSampling
-from pybrops.opt.prob.SubsetProblem import SubsetProblem, check_SubsetProblem_is_multi_objective, check_is_SubsetProblem
+from pybrops.opt.algo.pymoo_addon import ReducedExchangeCrossover
+from pybrops.opt.algo.pymoo_addon import ReducedExchangeMutation
+from pybrops.opt.algo.pymoo_addon import SubsetRandomSampling
+from pybrops.opt.prob.SubsetProblem import SubsetProblem
+from pybrops.opt.prob.SubsetProblem import check_SubsetProblem_is_multi_objective
+from pybrops.opt.prob.SubsetProblem import check_is_SubsetProblem
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 from pybrops.opt.soln.SubsetSolution import SubsetSolution
 from pymoo.algorithms.moo.nsga2 import NSGA2

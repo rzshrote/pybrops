@@ -10,7 +10,10 @@ __all__ = [
 
 import copy
 from numbers import Integral
-from typing import Optional, Sequence, Tuple, Union
+from typing import Optional
+from typing import Sequence
+from typing import Tuple
+from typing import Union
 import numpy
 import math
 import pandas

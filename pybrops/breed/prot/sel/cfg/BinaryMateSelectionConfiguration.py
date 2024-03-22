@@ -4,10 +4,12 @@ where the binary originates from a cross map.
 """
 
 from numbers import Integral
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 from pybrops.breed.prot.sel.cfg.MateSelectionConfiguration import MateSelectionConfiguration
 from pybrops.breed.prot.sel.cfg.BinarySelectionConfiguration import BinarySelectionConfiguration
 from pybrops.core.random.sampling import tiled_choice
@@ -47,7 +49,7 @@ class BinaryMateSelectionConfiguration(
             specifies 10 two-way crosses.
         nmating : Integral, numpy.ndarray
             The number of times an individual cross configuration is executed.
-            This becomes important in four-way crosses with heterozygous parents, where
+            This becomes important in four-way crosses with heterozygous parents where
             initial F1 hybrids are unique and can affect the dihybrid composition.
         nprogeny : Integral, numpy.ndarray
             The number of progeny to derive from a mating event.

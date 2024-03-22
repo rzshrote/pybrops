@@ -11,8 +11,11 @@ __all__ = [
 
 from abc import ABCMeta
 from abc import abstractmethod
-from numbers import Integral, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 
 import numpy
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem

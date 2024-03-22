@@ -12,9 +12,11 @@ from typing import Optional
 
 import numpy
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
-from pybrops.popgen.gmap.GeneticMap import GeneticMap, check_is_GeneticMap
+from pybrops.popgen.gmap.GeneticMap import GeneticMap
+from pybrops.popgen.gmap.GeneticMap import check_is_GeneticMap
 from pybrops.popgen.gmap.GeneticMappableMatrix import GeneticMappableMatrix
-from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction, check_is_GeneticMapFunction
+from pybrops.popgen.gmap.GeneticMapFunction import GeneticMapFunction
+from pybrops.popgen.gmap.GeneticMapFunction import check_is_GeneticMapFunction
 
 class DenseGeneticMappableMatrix(DenseVariantMatrix,GeneticMappableMatrix):
     """

@@ -11,21 +11,36 @@ __all__ = [
 # imports
 from abc import ABCMeta
 from abc import abstractmethod
-from numbers import Integral, Real
-from typing import Callable, Optional, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Optional
+from typing import Union
 
 import numpy
-from numpy.random import Generator, RandomState
+from numpy.random import Generator
+from numpy.random import RandomState
 import pandas
 
 from pybrops.breed.prot.sel.cfg.SelectionConfiguration import SelectionConfiguration
 from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
-from pybrops.breed.prot.sel.prob.trans import trans_empty, trans_identity, trans_ndpt_to_vec_dist
+from pybrops.breed.prot.sel.prob.trans import trans_empty
+from pybrops.breed.prot.sel.prob.trans import trans_identity
+from pybrops.breed.prot.sel.prob.trans import trans_ndpt_to_vec_dist
 from pybrops.breed.prot.sel.soln.SelectionSolution import SelectionSolution
-from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState, check_is_ndarray, check_ndarray_dtype_is_integer
-from pybrops.core.error.error_type_python import check_is_Callable, check_is_Integral, check_is_Real, check_is_dict
-from pybrops.core.error.error_value_numpy import check_ndarray_all_gteq, check_ndarray_len_eq, check_ndarray_ndim
-from pybrops.core.error.error_value_python import check_is_gt, check_is_gteq, check_is_neq
+from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
+from pybrops.core.error.error_type_numpy import check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_integer
+from pybrops.core.error.error_type_python import check_is_Callable
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_Real
+from pybrops.core.error.error_type_python import check_is_dict
+from pybrops.core.error.error_value_numpy import check_ndarray_all_gteq
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_python import check_is_gt
+from pybrops.core.error.error_value_python import check_is_gteq
+from pybrops.core.error.error_value_python import check_is_neq
 from pybrops.core.random.prng import global_prng
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.opt.algo.OptimizationAlgorithm import OptimizationAlgorithm

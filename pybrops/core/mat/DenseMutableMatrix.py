@@ -9,7 +9,8 @@ __all__ = [
     "check_is_DenseMutableMatrix",
 ]
 
-from typing import Sequence, Union
+from typing import Sequence
+from typing import Union
 import numpy
 from pybrops.core.mat.util import get_axis
 from pybrops.core.mat.DenseMatrix import DenseMatrix

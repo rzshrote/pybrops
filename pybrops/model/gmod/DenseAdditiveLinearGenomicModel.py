@@ -6,7 +6,10 @@ models that incorporate genomic additive effects.
 import copy
 from numbers import Integral
 from pathlib import Path
-from typing import Dict, Optional, Sequence, Union
+from typing import Dict
+from typing import Optional
+from typing import Sequence
+from typing import Union
 import h5py
 import numpy
 import pandas

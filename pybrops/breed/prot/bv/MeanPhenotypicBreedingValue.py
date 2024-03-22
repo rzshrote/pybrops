@@ -2,17 +2,22 @@
 Module for estimating breeding values using the mean across all environments.
 """
 
-from typing import Iterable, Optional, Union
+from typing import Iterable
+from typing import Optional
+from typing import Union
 import numpy
 import pandas
 
 from pybrops.breed.prot.bv.BreedingValueProtocol import BreedingValueProtocol
 from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
 from pybrops.core.error.error_type_python import check_is_str
-from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column, check_pandas_DataFrame_has_columns
+from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column
+from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_columns
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.bvmat.DenseEstimatedBreedingValueMatrix import DenseEstimatedBreedingValueMatrix
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_GenotypeMatrix_has_taxa, check_is_GenotypeMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import check_GenotypeMatrix_has_taxa
+from pybrops.popgen.gmat.GenotypeMatrix import check_is_GenotypeMatrix
 
 class MeanPhenotypicBreedingValue(BreedingValueProtocol):
     """

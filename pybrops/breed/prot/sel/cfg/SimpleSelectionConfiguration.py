@@ -40,7 +40,7 @@ class SimpleSelectionConfiguration(SelectionConfiguration):
             specifies 10 two-way crosses.
         nmating : Integral, numpy.ndarray
             The number of times an individual cross configuration is executed.
-            This becomes important in four-way crosses with heterozygous parents, where
+            This becomes important in four-way crosses with heterozygous parents where
             initial F1 hybrids are unique and can affect the dihybrid composition.
         nprogeny : Integral, numpy.ndarray
             The number of progeny to derive from a mating event.

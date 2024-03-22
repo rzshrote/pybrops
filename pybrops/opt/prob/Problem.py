@@ -11,11 +11,19 @@ __all__ = [
 # imports
 from abc import ABCMeta
 from abc import abstractmethod
-from numbers import Integral, Real
-from typing import Callable, Container, Iterable, Tuple, Union
+from numbers import Integral
+from numbers import Real
+from typing import Callable
+from typing import Container
+from typing import Iterable
+from typing import Tuple
+from typing import Union
 import numpy
-from pybrops.core.error.error_type_python import check_is_Integral, check_is_type
-from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim, check_ndarray_shape_eq
+from pybrops.core.error.error_type_python import check_is_Integral
+from pybrops.core.error.error_type_python import check_is_type
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_shape_eq
 from pybrops.core.error.error_value_python import check_is_gteq
 import pymoo.core.problem
 

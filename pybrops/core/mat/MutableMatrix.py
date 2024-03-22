@@ -9,7 +9,8 @@ __all__ = [
 
 from abc import ABCMeta
 from abc import abstractmethod
-from typing import Sequence, Union
+from typing import Sequence
+from typing import Union
 
 import numpy
 from pybrops.core.mat.Matrix import Matrix

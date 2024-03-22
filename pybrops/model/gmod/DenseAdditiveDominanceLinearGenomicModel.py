@@ -7,7 +7,10 @@ import copy
 from pathlib import Path
 import h5py
 from numbers import Integral
-from typing import Dict, Optional, Sequence, Union
+from typing import Dict
+from typing import Optional
+from typing import Sequence
+from typing import Union
 import numpy
 import pandas
 

@@ -8,7 +8,8 @@ from typing import Union
 from typing import Callable
 
 from pybrops.opt.algo.UnconstrainedNSGA2SetGeneticAlgorithm import UnconstrainedNSGA2SetGeneticAlgorithm
-from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOptimizationAlgorithm, check_is_OptimizationAlgorithm
+from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import UnconstrainedOptimizationAlgorithm
+from pybrops.opt.algo.UnconstrainedOptimizationAlgorithm import check_is_OptimizationAlgorithm
 from pybrops.opt.algo.UnconstrainedSteepestAscentSetHillClimber import UnconstrainedSteepestAscentSetHillClimber
 from pybrops.breed.prot.sel.UnconstrainedSelectionProtocol import UnconstrainedSelectionProtocol
 from pybrops.breed.prot.sel.targetfn import target_positive

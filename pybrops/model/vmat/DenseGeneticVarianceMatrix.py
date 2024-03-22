@@ -5,7 +5,8 @@ storing dense genetic variance estimates.
 
 import copy
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
 import h5py
 from pybrops.core.error.error_attr_python import error_readonly

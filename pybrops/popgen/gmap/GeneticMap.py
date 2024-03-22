@@ -10,12 +10,14 @@ __all__ = [
 from abc import ABCMeta
 from abc import abstractmethod
 from numbers import Integral
-from typing import Optional, Sequence, Union
+from typing import Optional
+from typing import Sequence
+from typing import Union
 import numpy
 from numpy.typing import ArrayLike
 import pandas
-from pybrops.core.io.CSVInputOutput import CSVInputOutput
 
+from pybrops.core.io.CSVInputOutput import CSVInputOutput
 from pybrops.core.io.PandasInputOutput import PandasInputOutput
 
 class GeneticMap(

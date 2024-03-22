@@ -9,12 +9,15 @@ __all__ = [
 ]
 
 from abc import ABCMeta
-from numbers import Integral, Real
+from numbers import Integral
+from numbers import Real
 from typing import Union
 import numpy
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
-from pybrops.core.error.error_value_numpy import check_ndarray_len_eq, check_ndarray_ndim, check_ndarray_shape_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_len_eq
+from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_numpy import check_ndarray_shape_eq
 from pybrops.core.error.error_value_python import check_is_gteq
 
 
