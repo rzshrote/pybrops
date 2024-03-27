@@ -14,6 +14,7 @@ __all__ = [
     "MultiObjectiveStochasticDescentHillClimberMutation",
 ]
 
+from typing import Optional
 import numpy as np
 import copy
 from pymoo.core.variable import get
@@ -846,7 +847,7 @@ class MultiObjectiveStochasticDescentHillClimberMutation(
             self,
             setspace: np.ndarray,
             phc: float,
-            nhc: int | None = None,
+            nhc: Optional[int] = None,
             **kwargs: dict
         ) -> None:
         """
@@ -1684,8 +1685,8 @@ class MutatorF(
             self,
             setspace: np.ndarray,
             phc: float,
-            maxhc: int | None = None,
-            maxhcstep: int | None = None,
+            maxhc: Optional[int] = None,
+            maxhcstep: Optional[int] = None,
             **kwargs: dict
         ) -> None:
         """
