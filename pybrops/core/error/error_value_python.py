@@ -339,7 +339,7 @@ def check_dict_values_len_eq(v: dict, vname: str, vlen: int) -> None:
 ############# String check functions #############
 ##################################################
 
-def check_str_value(v: str, vname: str, *args: tuple[str]) -> None:
+def check_str_value(v: str, vname: str, *args: Tuple[str]) -> None:
     """
     Check if a string has an accepted value:
 
@@ -402,7 +402,7 @@ def check_Sequence_has_value(v: Sequence, vname: str, value: object) -> None:
     if value not in v:
         raise ValueError("Sequence '{0}' must have value '{1}'".format(vname,value))
 
-def check_Sequence_has_values(v: Sequence, vname: str, *args: tuple[str]) -> None:
+def check_Sequence_has_values(v: Sequence, vname: str, *args: Tuple[str]) -> None:
     """
     Check if a ``Sequence`` contains all required values.
 
@@ -435,7 +435,7 @@ def check_Sequence_has_index(v: Sequence, vname: str, ix: Integral) -> None:
     if (ix < 0) or (len(v) <= ix):
         raise ValueError("Sequence '{0}' must have index '{1}'".format(vname,ix))
 
-def check_Sequence_has_indices(v: Sequence, vname: str, *args: tuple[Integral]) -> None:
+def check_Sequence_has_indices(v: Sequence, vname: str, *args: Tuple[Integral]) -> None:
     """
     Check if a ``Sequence`` contains required indices.
 
