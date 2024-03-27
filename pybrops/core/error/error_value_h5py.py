@@ -2,6 +2,7 @@
 Error checking functions for ``h5py.File`` values.
 """
 
+from typing import Tuple
 import h5py
 
 def check_h5py_File_is_writable(h5file: h5py.File) -> None:
@@ -61,7 +62,7 @@ def check_h5py_File_has_group(h5file: h5py.File, group: str) -> None:
             )
         )
 
-def check_h5py_File_has_groups(h5file: h5py.File, *groups: tuple[str,...]) -> None:
+def check_h5py_File_has_groups(h5file: h5py.File, *groups: Tuple[str,...]) -> None:
     """
     Check if a ``h5py.File`` contains required groups.
 

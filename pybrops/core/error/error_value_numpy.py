@@ -29,6 +29,7 @@ __all__ = [
     "check_ndarray_len_is_multiple_of",
 ]
 from numbers import Real
+from typing import Tuple
 import numpy
 
 from pybrops.core.error.error_generic_numpy import generic_check_ndarray_shape
@@ -53,7 +54,7 @@ def check_ndarray_has_value(v: numpy.ndarray, vname: str, value: object) -> None
     if value not in v:
         raise ValueError("numpy.ndarray '{0}' must have value '{1}'".format(vname,value))
 
-def check_ndarray_has_values(v: numpy.ndarray, vname: str, *args: tuple[object]) -> None:
+def check_ndarray_has_values(v: numpy.ndarray, vname: str, *args: Tuple[object,...]) -> None:
     """
     Check if a ``numpy.ndarray`` contains all required values.
 
