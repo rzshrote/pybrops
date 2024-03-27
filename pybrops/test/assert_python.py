@@ -1,11 +1,11 @@
 from abc import ABCMeta
 import inspect
 import re
-from typing import Callable, Generator
+from typing import Callable, Generator, Tuple
 from contextlib import contextmanager
 
 @contextmanager
-def raises(*ExpectedExceptions: tuple[Exception]) -> Generator:
+def raises(*ExpectedExceptions: Tuple[Exception,...]) -> Generator:
     """
     Ensure that a function raises an expected exception or one of an expected 
     set of exceptions.
