@@ -10,10 +10,11 @@ __all__ = [
     "sliceaxisix",
 ]
 
+from typing import Generator, Tuple
 import numpy
 
 
-def sqarrayix(n: int, k: int) -> list:
+def sqarrayix(n: int, k: int) -> Generator:
     """
     Generate lists containing indices for indexing square arrays.
 
@@ -42,7 +43,7 @@ def sqarrayix(n: int, k: int) -> list:
                 l.pop()
     yield from recurse([],n,k)
 
-def triuix(n: int, k: int) -> list:
+def triuix(n: int, k: int) -> Generator:
     """
     Generate lists containing indices for indexing upper triangle arrays
     including elements along the diagonal.
@@ -73,7 +74,7 @@ def triuix(n: int, k: int) -> list:
                 l.pop()
     yield from recurse([],n,k)
 
-def triudix(n: int, k: int) -> list:
+def triudix(n: int, k: int) -> Generator:
     """
     Generate lists containing indices for indexing upper triangle arrays
     excluding elements along the diagonal.
@@ -104,7 +105,7 @@ def triudix(n: int, k: int) -> list:
                 l.pop()
     yield from recurse([],n,k)
 
-def xmapix(ntaxa: int, nparent: int, unique_parents: bool) -> list:
+def xmapix(ntaxa: int, nparent: int, unique_parents: bool) -> Generator:
     """
     Generate lists containing indices for cross maps.
 
@@ -127,7 +128,7 @@ def xmapix(ntaxa: int, nparent: int, unique_parents: bool) -> list:
     else:
         yield from triuix(ntaxa,nparent)
 
-def sliceaxisix(shape: tuple, axis: tuple) -> tuple:
+def sliceaxisix(shape: tuple, axis: tuple) -> Generator:
     """
     Generate tuples containing indices for iteratively slicing 
     a ``numpy.ndarray`` along a set of axes.
@@ -144,7 +145,7 @@ def sliceaxisix(shape: tuple, axis: tuple) -> tuple:
     out : tuple
         A tuple which can be used to slice an array.
     """
-    def recurse(l: list, s: tuple, a: tuple) -> tuple:
+    def recurse(l: list, s: tuple, a: tuple) -> Generator:
         if len(l) == len(s)-1:
             if len(l) in a:
                 for i in range(s[len(l)]):
@@ -169,7 +170,7 @@ def sliceaxisix(shape: tuple, axis: tuple) -> tuple:
 
 def flattenix(
         arr: numpy.ndarray
-    ) -> tuple[numpy.ndarray,tuple[numpy.ndarray,...]]:
+    ) -> Tuple[numpy.ndarray,Tuple[numpy.ndarray,...]]:
     """
     Flatten an array and return a tuple of axis indices corresponding to their 
     position along that axis.

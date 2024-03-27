@@ -8,6 +8,7 @@ __all__ = [
 ]
     
 from numbers import Integral
+from typing import Tuple
 import pandas
 
 
@@ -31,7 +32,7 @@ def check_pandas_DataFrame_has_column(df: pandas.DataFrame, dfname: str, column:
     if column not in df.columns:
         raise ValueError("pandas.DataFrame '{0}' must have column '{1}'".format(dfname,column))
 
-def check_pandas_DataFrame_has_columns(df: pandas.DataFrame, dfname: str, *args: tuple[str]) -> None:
+def check_pandas_DataFrame_has_columns(df: pandas.DataFrame, dfname: str, *args: Tuple[str,...]) -> None:
     """
     Check if a ``pandas.DataFrame`` contains all required columns.
 
@@ -64,7 +65,7 @@ def check_pandas_DataFrame_has_column_index(df: pandas.DataFrame, dfname: str, i
     if (ix < 0) or (len(df.columns) <= ix):
         raise ValueError("pandas.DataFrame '{0}' must have column index '{1}'".format(dfname,ix))
 
-def check_pandas_DataFrame_has_column_indices(df: pandas.DataFrame, dfname: str, *args: tuple[Integral]) -> None:
+def check_pandas_DataFrame_has_column_indices(df: pandas.DataFrame, dfname: str, *args: Tuple[Integral,...]) -> None:
     """
     Check if a ``pandas.DataFrame`` contains a required column indices.
 
@@ -101,7 +102,7 @@ def check_pandas_Series_has_value(v: pandas.Series, vname: str, value: object) -
     if value not in v:
         raise ValueError("pandas.Series '{0}' must have value '{1}'".format(vname,value))
 
-def check_pandas_Series_has_values(v: pandas.Series, vname: str, *args: tuple[str]) -> None:
+def check_pandas_Series_has_values(v: pandas.Series, vname: str, *args: Tuple[str,...]) -> None:
     """
     Check if a ``pandas.Series`` contains all required values.
 
@@ -134,7 +135,7 @@ def check_pandas_Series_has_index(v: pandas.Series, vname: str, ix: Integral) ->
     if (ix < 0) or (len(v) <= ix):
         raise ValueError("pandas.Series '{0}' must have index '{1}'".format(vname,ix))
 
-def check_pandas_Series_has_indices(v: pandas.Series, vname: str, *args: tuple[Integral]) -> None:
+def check_pandas_Series_has_indices(v: pandas.Series, vname: str, *args: Tuple[Integral,...]) -> None:
     """
     Check if a ``pandas.Series`` contains required indices.
 
