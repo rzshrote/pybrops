@@ -18,10 +18,10 @@ from typing import Union
 import numpy
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.breed.prot.mate.MatingProtocol import check_is_MatingProtocol
-from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
-from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
-from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.BinaryMateSelectionProblem import BinaryMateSelectionProblem
+from pybrops.breed.prot.sel.prob.IntegerMateSelectionProblem import IntegerMateSelectionProblem
+from pybrops.breed.prot.sel.prob.RealMateSelectionProblem import RealMateSelectionProblem
+from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
 from pybrops.core.error.error_type_python import check_is_bool
@@ -96,22 +96,14 @@ class ExpectedMaximumBreedingValueSelectionProblemMixin(
     
     @staticmethod
     def _calc_embv(
-            nparent: int,
             nmating: int,
             nprogeny: int,
             nrep: int,
-            unique_parents: bool,
+            xmap: numpy.ndarray, # (s,d)
             pgmat: PhasedGenotypeMatrix, 
             gpmod: GenomicModel, 
             mateprot: MatingProtocol
         ) -> numpy.ndarray:
-        # calculate cross map for our genotype matrix
-        # (s,d)
-        xmap = ExpectedMaximumBreedingValueSelectionProblemMixin._calc_xmap(
-            pgmat.ntaxa,
-            nparent,
-            unique_parents
-        )
 
         # allocate matrix for output EMBVs
         # (s,t)
@@ -154,7 +146,7 @@ class ExpectedMaximumBreedingValueSelectionProblemMixin(
 
 class ExpectedMaximumBreedingValueSubsetSelectionProblem(
         ExpectedMaximumBreedingValueSelectionProblemMixin,
-        SubsetSelectionProblem,
+        SubsetMateSelectionProblem,
     ):
     """
     Class representing Expected Maximum Breeding Value (EMBV) selection problems in subset search spaces.
@@ -168,6 +160,7 @@ class ExpectedMaximumBreedingValueSubsetSelectionProblem(
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
             decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -249,6 +242,7 @@ class ExpectedMaximumBreedingValueSubsetSelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -358,8 +352,11 @@ class ExpectedMaximumBreedingValueSubsetSelectionProblem(
         check_is_GenomicModel(gpmod, "gpmod")
         check_is_MatingProtocol(mateprot, "mateprot")
 
+        # calculate cross map
+        xmap = cls._calc_xmap(pgmat.ntaxa, nparent, unique_parents)
+
         # calculate estimated maximum breeding values
-        embv = cls._calc_embv(nparent, nmating, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
+        embv = cls._calc_embv(nmating, nprogeny, nrep, xmap, pgmat, gpmod, mateprot)
 
         # construct class
         out = cls(
@@ -368,6 +365,7 @@ class ExpectedMaximumBreedingValueSubsetSelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -387,7 +385,7 @@ class ExpectedMaximumBreedingValueSubsetSelectionProblem(
 
 class ExpectedMaximumBreedingValueRealSelectionProblem(
         ExpectedMaximumBreedingValueSelectionProblemMixin,
-        RealSelectionProblem,
+        RealMateSelectionProblem,
     ):
     """
     Class representing Expected Maximum Breeding Value (EMBV) selection problems in real search spaces.
@@ -401,6 +399,7 @@ class ExpectedMaximumBreedingValueRealSelectionProblem(
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
             decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -482,6 +481,7 @@ class ExpectedMaximumBreedingValueRealSelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -590,8 +590,11 @@ class ExpectedMaximumBreedingValueRealSelectionProblem(
         check_is_GenomicModel(gpmod, "gpmod")
         check_is_MatingProtocol(mateprot, "mateprot")
 
+        # calculate cross map
+        xmap = cls._calc_xmap(pgmat.ntaxa, nparent, unique_parents)
+
         # calculate estimated maximum breeding values
-        embv = cls._calc_embv(nparent, nmating, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
+        embv = cls._calc_embv(nmating, nprogeny, nrep, xmap, pgmat, gpmod, mateprot)
 
         # construct class
         out = cls(
@@ -600,6 +603,7 @@ class ExpectedMaximumBreedingValueRealSelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -619,7 +623,7 @@ class ExpectedMaximumBreedingValueRealSelectionProblem(
 
 class ExpectedMaximumBreedingValueIntegerSelectionProblem(
         ExpectedMaximumBreedingValueSelectionProblemMixin,
-        IntegerSelectionProblem,
+        IntegerMateSelectionProblem,
     ):
     """
     Class representing Expected Maximum Breeding Value (EMBV) selection problems in integer search spaces.
@@ -633,6 +637,7 @@ class ExpectedMaximumBreedingValueIntegerSelectionProblem(
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
             decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -714,6 +719,7 @@ class ExpectedMaximumBreedingValueIntegerSelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -822,8 +828,11 @@ class ExpectedMaximumBreedingValueIntegerSelectionProblem(
         check_is_GenomicModel(gpmod, "gpmod")
         check_is_MatingProtocol(mateprot, "mateprot")
 
+        # calculate cross map
+        xmap = cls._calc_xmap(pgmat.ntaxa, nparent, unique_parents)
+
         # calculate estimated maximum breeding values
-        embv = cls._calc_embv(nparent, nmating, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
+        embv = cls._calc_embv(nmating, nprogeny, nrep, xmap, pgmat, gpmod, mateprot)
 
         # construct class
         out = cls(
@@ -832,6 +841,7 @@ class ExpectedMaximumBreedingValueIntegerSelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -851,7 +861,7 @@ class ExpectedMaximumBreedingValueIntegerSelectionProblem(
 
 class ExpectedMaximumBreedingValueBinarySelectionProblem(
         ExpectedMaximumBreedingValueSelectionProblemMixin,
-        BinarySelectionProblem,
+        BinaryMateSelectionProblem,
     ):
     """
     Class representing Expected Maximum Breeding Value (EMBV) selection problems in binary search spaces.
@@ -865,6 +875,7 @@ class ExpectedMaximumBreedingValueBinarySelectionProblem(
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
             decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -946,6 +957,7 @@ class ExpectedMaximumBreedingValueBinarySelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -1054,8 +1066,11 @@ class ExpectedMaximumBreedingValueBinarySelectionProblem(
         check_is_GenomicModel(gpmod, "gpmod")
         check_is_MatingProtocol(mateprot, "mateprot")
 
+        # calculate cross map
+        xmap = cls._calc_xmap(pgmat.ntaxa, nparent, unique_parents)
+
         # calculate estimated maximum breeding values
-        embv = cls._calc_embv(nparent, nmating, nprogeny, nrep, unique_parents, pgmat, gpmod, mateprot)
+        embv = cls._calc_embv(nmating, nprogeny, nrep, xmap, pgmat, gpmod, mateprot)
 
         # construct class
         out = cls(
@@ -1064,6 +1079,7 @@ class ExpectedMaximumBreedingValueBinarySelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
