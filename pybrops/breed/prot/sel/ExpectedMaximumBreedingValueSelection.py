@@ -24,10 +24,10 @@ import pandas
 
 from pybrops.breed.prot.mate.MatingProtocol import MatingProtocol
 from pybrops.breed.prot.mate.MatingProtocol import check_is_MatingProtocol
-from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtocol
-from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProtocol
-from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
-from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
+from pybrops.breed.prot.sel.BinaryMateSelectionProtocol import BinaryMateSelectionProtocol
+from pybrops.breed.prot.sel.IntegerMateSelectionProtocol import IntegerMateSelectionProtocol
+from pybrops.breed.prot.sel.RealMateSelectionProtocol import RealMateSelectionProtocol
+from pybrops.breed.prot.sel.SubsetMateSelectionProtocol import SubsetMateSelectionProtocol
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem import ExpectedMaximumBreedingValueBinarySelectionProblem
 from pybrops.breed.prot.sel.prob.ExpectedMaximumBreedingValueSelectionProblem import ExpectedMaximumBreedingValueIntegerSelectionProblem
@@ -104,7 +104,7 @@ class ExpectedMaximumBreedingValueSelectionMixin(
 
 class ExpectedMaximumBreedingValueBinarySelection(
         ExpectedMaximumBreedingValueSelectionMixin,
-        BinarySelectionProtocol,
+        BinaryMateSelectionProtocol,
     ):
     """
     Expected Maximum Breeding Value (EMBV) Selection in a subset search space.
@@ -541,7 +541,7 @@ class ExpectedMaximumBreedingValueBinarySelection(
 
 class ExpectedMaximumBreedingValueIntegerSelection(
         ExpectedMaximumBreedingValueSelectionMixin,
-        IntegerSelectionProtocol,
+        IntegerMateSelectionProtocol,
     ):
     """
     Expected Maximum Breeding Value (EMBV) Selection in a subset search space.
@@ -978,7 +978,7 @@ class ExpectedMaximumBreedingValueIntegerSelection(
 
 class ExpectedMaximumBreedingValueRealSelection(
         ExpectedMaximumBreedingValueSelectionMixin,
-        RealSelectionProtocol,
+        RealMateSelectionProtocol,
     ):
     """
     Expected Maximum Breeding Value (EMBV) Selection in a subset search space.
@@ -1415,7 +1415,7 @@ class ExpectedMaximumBreedingValueRealSelection(
 
 class ExpectedMaximumBreedingValueSubsetSelection(
         ExpectedMaximumBreedingValueSelectionMixin,
-        SubsetSelectionProtocol,
+        SubsetMateSelectionProtocol,
     ):
     """
     Expected Maximum Breeding Value (EMBV) Selection in a subset search space.
