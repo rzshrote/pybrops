@@ -17,10 +17,10 @@ from typing import Callable
 from typing import Optional
 from typing import Union
 import numpy
-from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
-from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
-from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
+from pybrops.breed.prot.sel.prob.BinaryMateSelectionProblem import BinaryMateSelectionProblem
+from pybrops.breed.prot.sel.prob.IntegerMateSelectionProblem import IntegerMateSelectionProblem
+from pybrops.breed.prot.sel.prob.RealMateSelectionProblem import RealMateSelectionProblem
+from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.util.arrayix import triudix
@@ -260,7 +260,7 @@ class OptimalHaploidValueSelectionProblemMixin(
 
 class OptimalHaploidValueSubsetSelectionProblem(
         OptimalHaploidValueSelectionProblemMixin,
-        SubsetSelectionProblem,
+        SubsetMateSelectionProblem,
     ):
     """
     Class for representing Optimal Haploid Value (OHV) Selection problems in subset search spaces.
@@ -273,6 +273,7 @@ class OptimalHaploidValueSubsetSelectionProblem(
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
             decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -353,6 +354,7 @@ class OptimalHaploidValueSubsetSelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -457,6 +459,7 @@ class OptimalHaploidValueSubsetSelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -476,7 +479,7 @@ class OptimalHaploidValueSubsetSelectionProblem(
 
 class OptimalHaploidValueRealSelectionProblem(
         OptimalHaploidValueSelectionProblemMixin,
-        RealSelectionProblem,
+        RealMateSelectionProblem,
     ):
     """
     Class for representing Optimal Haploid Value (OHV) Selection problems in real search spaces.
@@ -489,6 +492,7 @@ class OptimalHaploidValueRealSelectionProblem(
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
             decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -569,6 +573,7 @@ class OptimalHaploidValueRealSelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -678,6 +683,7 @@ class OptimalHaploidValueRealSelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -697,7 +703,7 @@ class OptimalHaploidValueRealSelectionProblem(
 
 class OptimalHaploidValueIntegerSelectionProblem(
         OptimalHaploidValueSelectionProblemMixin,
-        IntegerSelectionProblem,
+        IntegerMateSelectionProblem,
     ):
     """
     Class for representing Optimal Haploid Value (OHV) Selection problems in integer search spaces.
@@ -710,6 +716,7 @@ class OptimalHaploidValueIntegerSelectionProblem(
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
             decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -790,6 +797,7 @@ class OptimalHaploidValueIntegerSelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -899,6 +907,7 @@ class OptimalHaploidValueIntegerSelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -918,7 +927,7 @@ class OptimalHaploidValueIntegerSelectionProblem(
 
 class OptimalHaploidValueBinarySelectionProblem(
         OptimalHaploidValueSelectionProblemMixin,
-        BinarySelectionProblem,
+        BinaryMateSelectionProblem,
     ):
     """
     Class for representing Optimal Haploid Value (OHV) Selection problems in binary search spaces.
@@ -931,6 +940,7 @@ class OptimalHaploidValueBinarySelectionProblem(
             decn_space: Union[numpy.ndarray,None],
             decn_space_lower: Union[numpy.ndarray,Real,None],
             decn_space_upper: Union[numpy.ndarray,Real,None],
+            decn_space_xmap: numpy.ndarray,
             nobj: Integral,
             obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
             obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
@@ -1011,6 +1021,7 @@ class OptimalHaploidValueBinarySelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = decn_space_xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,
@@ -1120,6 +1131,7 @@ class OptimalHaploidValueBinarySelectionProblem(
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
+            decn_space_xmap = xmap,
             nobj = nobj,
             obj_wt = obj_wt,
             obj_trans = obj_trans,

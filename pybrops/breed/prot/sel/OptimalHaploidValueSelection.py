@@ -22,6 +22,10 @@ from numpy.random import Generator
 from numpy.random import RandomState
 import pandas
 
+from pybrops.breed.prot.sel.BinaryMateSelectionProtocol import BinaryMateSelectionProtocol
+from pybrops.breed.prot.sel.IntegerMateSelectionProtocol import IntegerMateSelectionProtocol
+from pybrops.breed.prot.sel.RealMateSelectionProtocol import RealMateSelectionProtocol
+from pybrops.breed.prot.sel.SubsetMateSelectionProtocol import SubsetMateSelectionProtocol
 from pybrops.breed.prot.sel.prob.BinarySelectionProblem import BinarySelectionProblem
 from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueBinarySelectionProblem
@@ -29,10 +33,6 @@ from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import Opti
 from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueRealSelectionProblem
 from pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem import OptimalHaploidValueSubsetSelectionProblem
 from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
-from pybrops.breed.prot.sel.RealSelectionProtocol import RealSelectionProtocol
-from pybrops.breed.prot.sel.IntegerSelectionProtocol import IntegerSelectionProtocol
-from pybrops.breed.prot.sel.BinarySelectionProtocol import BinarySelectionProtocol
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.opt.algo.BinaryOptimizationAlgorithm import BinaryOptimizationAlgorithm
 from pybrops.opt.algo.IntegerOptimizationAlgorithm import IntegerOptimizationAlgorithm
@@ -93,7 +93,7 @@ class OptimalHaploidValueSelectionMixin(
 
 class OptimalHaploidValueBinarySelection(
         OptimalHaploidValueSelectionMixin,
-        BinarySelectionProtocol,
+        BinaryMateSelectionProtocol,
     ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for a binary search spaces.
@@ -519,7 +519,7 @@ class OptimalHaploidValueBinarySelection(
 
 class OptimalHaploidValueIntegerSelection(
         OptimalHaploidValueSelectionMixin,
-        IntegerSelectionProtocol,
+        IntegerMateSelectionProtocol,
     ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for a integer search spaces.
@@ -945,7 +945,7 @@ class OptimalHaploidValueIntegerSelection(
 
 class OptimalHaploidValueRealSelection(
         OptimalHaploidValueSelectionMixin,
-        RealSelectionProtocol,
+        RealMateSelectionProtocol,
     ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for real search spaces.
@@ -1371,7 +1371,7 @@ class OptimalHaploidValueRealSelection(
 
 class OptimalHaploidValueSubsetSelection(
         OptimalHaploidValueSelectionMixin,
-        SubsetSelectionProtocol,
+        SubsetMateSelectionProtocol,
     ):
     """
     Class defining Optimal Haploid Value (OHV) Selection for subset search spaces.
