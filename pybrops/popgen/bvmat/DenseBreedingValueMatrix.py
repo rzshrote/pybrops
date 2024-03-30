@@ -991,7 +991,7 @@ class DenseBreedingValueMatrix(
 
         Parameters
         ----------
-        a : numpy.ndarray
+        mat : numpy.ndarray
             A ``float64`` matrix of shape ``(n,t)``.
 
             Where:
@@ -1025,10 +1025,10 @@ class DenseBreedingValueMatrix(
         scale[scale == 0.0] = 1.0
 
         # mean center and scale values
-        # scalar / (t,) -> (t,)
-        # (t,) * ( (n,t) - (t,) ) -> (n,t)
+        # scalar / (1,t) -> (1,t)
+        # (1,t) * ( (n,t) - (1,t) ) -> (n,t)
         # multiply since multiplication is faster than division for floating points
-        mat = (1.0 / scale) * (mat - location) 
+        mat = (1.0 / scale[None,:]) * (mat - location[None,:]) 
 
         # construct output
         out = cls(

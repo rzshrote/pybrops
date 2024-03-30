@@ -27,7 +27,7 @@ def mat_meiosis(
     sel : numpy.ndarray
         Selection configuration array.
     xoprob : numpy.ndarray
-        Crossover porbability array.
+        Crossover probability array.
     rng : numpy.random.Generator, numpy.random.RandomState
         Random number generator instance
 
@@ -88,7 +88,7 @@ def mat_dh(
     sel : numpy.ndarray
         Selection configuration array.
     xoprob : numpy.ndarray
-        Crossover porbability array.
+        Crossover probability array.
     rng : numpy.random.Generator, numpy.random.RandomState
         Random number generator instance
 
@@ -127,7 +127,7 @@ def mat_mate(
     msel : numpy.ndarray
         Male selection configuration array.
     xoprob : numpy.ndarray
-        Crossover porbability array.
+        Crossover probability array.
     rng : numpy.random.Generator, numpy.random.RandomState
         Random number generator instance
 

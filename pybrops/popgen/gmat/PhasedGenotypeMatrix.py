@@ -45,9 +45,28 @@ def check_is_PhasedGenotypeMatrix(v: object, vname: str) -> None:
     if not isinstance(v, PhasedGenotypeMatrix):
         raise TypeError("'%s' must be a PhasedGenotypeMatrix." % vname)
 
+def check_PhasedGenotypeMatrix_has_vrnt_xoprob(v: PhasedGenotypeMatrix, vname: str) -> None:
+    """
+    Check if a ``PhasedGenotypeMatrix`` has the ``vrnt_xoprob`` field that is non-None.
+
+    Parameters
+    ----------
+    v : PhasedGenotypeMatrix
+        A phased genotype matrix.
+    vname : str
+        Name of the variable to print in ``ValueError`` message.
+    """
+    if v.vrnt_xoprob is None:
+        raise ValueError(
+            "{0} '{0}' must have 'vrnt_xoprob' (variant xoprob) assigned".format(
+                type(v).__name__,
+                vname
+            )
+        )
+
 def check_PhasedGenotypeMatrix_has_vrnt_mask(v: PhasedGenotypeMatrix, vname: str) -> None:
     """
-    Check if a PhasedGenotypeMatrix has the vrnt_mask field that is non-None.
+    Check if a ``PhasedGenotypeMatrix`` has the ``vrnt_mask`` field that is non-None.
 
     Parameters
     ----------
