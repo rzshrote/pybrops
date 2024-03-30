@@ -1,7 +1,7 @@
 from abc import ABCMeta
 import inspect
 import re
-from typing import Callable, Generator, Tuple
+from typing import Callable, Generator, Optional, Tuple
 from contextlib import contextmanager
 
 @contextmanager
@@ -921,6 +921,7 @@ def assert_module_documentation(obj: object) -> None:
     Parameters
     ----------
     obj : object
+        Input module.
     """
     # assert that the object is a class
     if not inspect.ismodule(obj):
@@ -937,3 +938,54 @@ def assert_module_documentation(obj: object) -> None:
     # make sure our docstring length is greater than zero
     if len(obj.__doc__) <= 0:
         raise AssertionError("in module ``{0}``: docstring is empty".format(obj.__name__))
+
+def assert_module_public_api(obj: object, exclude: Optional[list] = None) -> None:
+    """
+    Test a module for a public API.
+
+    Parameters
+    ----------
+    obj : object
+        Input module.
+    """
+    # assert that the object is a class
+    if not inspect.ismodule(obj):
+        raise AssertionError("type ``{0}`` is not a module".format(obj.__name__))
+
+    # make sure we have a public API (__all__) attribute
+    if not hasattr(obj, "__all__") or obj.__all__ is None:
+        raise AssertionError("in module ``{0}``: public API (``__all__``) is not present".format(obj.__name__))
+
+    # make sure our public API is a list
+    if not isinstance(obj.__all__, list):
+        raise AssertionError("in module ``{0}``: public API (``__all__``) is not a list".format(obj.__name__))
+
+    # get public function members defined within the module itself (not imported)
+    fnmbrs = [m for m in inspect.getmembers(obj, inspect.isfunction) if m[0][0] != "_" and inspect.getmodule(m[1]) == obj]
+    
+    # make sure all public function members are within the public API
+    if exclude is None:
+        for fnmbr in fnmbrs:
+            if fnmbr[0] not in obj.__all__:
+                raise AssertionError("in module ``{0}``: function ``{1}`` not in public API (``__all__``)".format(obj.__name__,fnmbr[0]))
+    else:
+        for fnmbr in fnmbrs:
+            if fnmbr[0] in exclude:
+                continue
+            if fnmbr[0] not in obj.__all__:
+                raise AssertionError("in module ``{0}``: function ``{1}`` not in public API (``__all__``)".format(obj.__name__,fnmbr[0]))
+
+    # get public class members defined within the the module itself (not imported)
+    clsmbrs = [m for m in inspect.getmembers(obj, inspect.isclass) if m[0][0] != "_" and inspect.getmodule(m[1]) == obj]
+
+    # make sure all public function members are within the public API
+    if exclude is None:
+        for clsmbr in clsmbrs:
+            if clsmbr[0] not in obj.__all__:
+                raise AssertionError("in module ``{0}``: class ``{1}`` not in public API (``__all__``)".format(obj.__name__,clsmbr[0]))
+    else:
+        for clsmbr in clsmbrs:
+            if clsmbr[0] in exclude:
+                continue
+            if clsmbr[0] not in obj.__all__:
+                raise AssertionError("in module ``{0}``: class ``{1}`` not in public API (``__all__``)".format(obj.__name__,clsmbr[0]))
