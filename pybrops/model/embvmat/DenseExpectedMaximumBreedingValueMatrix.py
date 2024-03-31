@@ -22,7 +22,7 @@ from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check
 
 class DenseExpectedMaximumBreedingValueMatrix(
         DenseBreedingValueMatrix,
-        ExpectedMaximumBreedingValueMatrix
+        ExpectedMaximumBreedingValueMatrix,
     ):
     """
     The ``DenseExpectedMaximumBreedingValueMatrix`` class is used to represent 
@@ -30,8 +30,8 @@ class DenseExpectedMaximumBreedingValueMatrix(
 
     Notes
     -----
-    All elements within a BreedingValueMatrix are mean-centered and scaled to
-    unit variance for each trait.
+    All elements within a ``DenseExpectedMaximumBreedingValueMatrix`` are 
+    mean-centered and scaled to unit variance for each trait.
 
     .. math::
         BV = \\frac{X - \\mu}{\\sigma}
@@ -110,12 +110,12 @@ class DenseExpectedMaximumBreedingValueMatrix(
         """
         # call DenseBreedingValueMatrix constructor
         super(DenseExpectedMaximumBreedingValueMatrix, self).__init__(
-            mat = mat,
+            mat      = mat,
             location = location,
-            scale = scale,
-            taxa = taxa,
+            scale    = scale,
+            taxa     = taxa,
             taxa_grp = taxa_grp,
-            trait = trait,
+            trait    = trait,
             **kwargs
         )
 
