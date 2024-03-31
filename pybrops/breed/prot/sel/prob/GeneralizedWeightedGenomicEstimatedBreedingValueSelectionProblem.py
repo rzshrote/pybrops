@@ -289,7 +289,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem(
         ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem":
         # construct class
         out = cls.from_numpy(
-            Z_a = gmat.mat,
+            Z_a = gmat.mat_asformat("{0,1,2}"),
             u_a = algpmod.u_a,
             fafreq = algpmod.fafreq(gmat),
             alpha = alpha,
@@ -561,7 +561,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem(
         ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem":
         # construct class
         out = cls.from_numpy(
-            Z_a = gmat.mat,
+            Z_a = gmat.mat_asformat("{0,1,2}"),
             u_a = algpmod.u_a,
             fafreq = algpmod.fafreq(gmat),
             alpha = alpha,
@@ -833,7 +833,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem(
         ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem":
         # construct class
         out = cls.from_numpy(
-            Z_a = gmat.mat,
+            Z_a = gmat.mat_asformat("{0,1,2}"),
             u_a = algpmod.u_a,
             fafreq = algpmod.fafreq(gmat),
             alpha = alpha,
@@ -1106,7 +1106,7 @@ class GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem(
         ) -> "GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem":
         # construct class
         out = cls.from_numpy(
-            Z_a = gmat.mat,
+            Z_a = gmat.mat_asformat("{0,1,2}"),
             u_a = algpmod.u_a,
             fafreq = algpmod.fafreq(gmat),
             alpha = alpha,
