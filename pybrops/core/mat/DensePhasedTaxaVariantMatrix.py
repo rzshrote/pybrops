@@ -17,7 +17,7 @@ from numpy.typing import ArrayLike
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim_gteq
 from pybrops.core.mat.Matrix import Matrix
-from pybrops.core.mat.util import get_axis
+from pybrops.core.util.array import get_axis
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
 from pybrops.core.mat.DensePhasedMatrix import DensePhasedMatrix
 from pybrops.core.mat.DenseTaxaVariantMatrix import DenseTaxaVariantMatrix

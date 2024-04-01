@@ -31,7 +31,7 @@ from pybrops.core.error.error_type_numpy import check_ndarray_dtype_is_object
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_generic_python import generic_check_isinstance
 from pybrops.core.mat.Matrix import Matrix
-from pybrops.core.mat.util import get_axis
+from pybrops.core.util.array import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.VariantMatrix import VariantMatrix
 from pybrops.core.util.h5py import h5py_File_read_ndarray

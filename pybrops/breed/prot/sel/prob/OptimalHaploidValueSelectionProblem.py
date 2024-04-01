@@ -23,8 +23,8 @@ from pybrops.breed.prot.sel.prob.RealMateSelectionProblem import RealMateSelecti
 from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.util.arrayix import triudix
-from pybrops.core.util.arrayix import triuix
+from pybrops.core.util.array import triudix
+from pybrops.core.util.array import triuix
 from pybrops.core.util.haplo import haplobin
 from pybrops.core.util.haplo import haplobin_bounds
 from pybrops.core.util.haplo import nhaploblk_chrom

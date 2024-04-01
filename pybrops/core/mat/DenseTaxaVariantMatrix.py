@@ -19,7 +19,7 @@ from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
 from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim_gteq
 from pybrops.core.mat.Matrix import Matrix
-from pybrops.core.mat.util import get_axis
+from pybrops.core.util.array import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseVariantMatrix import DenseVariantMatrix
 from pybrops.core.mat.TaxaVariantMatrix import TaxaVariantMatrix

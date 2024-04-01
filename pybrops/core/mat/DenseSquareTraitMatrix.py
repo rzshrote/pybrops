@@ -21,7 +21,7 @@ from pybrops.core.mat.DenseSquareMatrix import DenseSquareMatrix
 from pybrops.core.mat.DenseTraitMatrix import DenseTraitMatrix
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.SquareTraitMatrix import SquareTraitMatrix
-from pybrops.core.mat.util import get_axis
+from pybrops.core.util.array import get_axis
 
 class DenseSquareTraitMatrix(
         DenseSquareMatrix,

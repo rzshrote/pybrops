@@ -1,6 +1,6 @@
 import pytest
 
-from pybrops.core.mat.util import get_axis
+from pybrops.core.util.array import get_axis
 
 def test_get_axis():
     assert get_axis(-3, 3) == 0
