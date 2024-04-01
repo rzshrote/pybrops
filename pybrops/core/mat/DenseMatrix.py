@@ -24,7 +24,7 @@ from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
 from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
 from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
 from pybrops.core.mat.Matrix import Matrix
-from pybrops.core.mat.util import get_axis
+from pybrops.core.util.array import get_axis
 from pybrops.core.util.h5py import h5py_File_read_ndarray
 from pybrops.core.util.h5py import h5py_File_write_dict
 

@@ -21,7 +21,7 @@ from pybrops.core.error.error_type_python import check_is_str_or_Integral
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column
 from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column_index
-from pybrops.core.util.arrayix import flattenix
+from pybrops.core.util.array import flattenix
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.AdditiveLinearGenomicModel import check_is_AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel

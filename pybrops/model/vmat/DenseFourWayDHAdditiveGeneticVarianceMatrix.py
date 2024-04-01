@@ -14,7 +14,6 @@ import numpy
 import pandas
 import h5py
 
-from pybrops.core.error.error_io_python import check_file_exists
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
 from pybrops.core.error.error_type_python import check_is_Integral
@@ -22,13 +21,10 @@ from pybrops.core.error.error_type_python import check_is_Integral_or_None
 from pybrops.core.error.error_type_python import check_is_Integral_or_inf
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_python import check_is_str_or_Integral
-from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
-from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column
 from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column_index
-from pybrops.core.util.arrayix import flattenix
-from pybrops.core.util.h5py import h5py_File_write_dict
+from pybrops.core.util.array import flattenix
 from pybrops.core.util.subroutines import srange
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.AdditiveLinearGenomicModel import check_is_AdditiveLinearGenomicModel

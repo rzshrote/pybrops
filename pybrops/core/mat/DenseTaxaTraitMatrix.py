@@ -22,7 +22,7 @@ from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
 from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
 from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
 from pybrops.core.mat.Matrix import Matrix
-from pybrops.core.mat.util import get_axis
+from pybrops.core.util.array import get_axis
 from pybrops.core.mat.DenseTaxaMatrix import DenseTaxaMatrix
 from pybrops.core.mat.DenseTraitMatrix import DenseTraitMatrix
 from pybrops.core.mat.TaxaTraitMatrix import TaxaTraitMatrix

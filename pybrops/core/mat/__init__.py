@@ -35,9 +35,6 @@ __all__ = [
 
 # order dependent!
 
-# Utilities
-from pybrops.core.mat import util
-
 # level 0 interface
 from pybrops.core.mat import Matrix           # order 0
 from pybrops.core.mat import PrunableMatrix   # order 1

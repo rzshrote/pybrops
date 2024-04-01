@@ -18,7 +18,7 @@ from numpy.random import Generator
 from numpy.random import RandomState
 
 from pybrops.core.random.prng import global_prng
-from pybrops.core.util.arrayix import sliceaxisix
+from pybrops.core.util.array import sliceaxisix
 
 
 def stochastic_universal_sampling(

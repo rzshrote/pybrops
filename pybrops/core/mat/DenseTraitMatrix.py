@@ -29,7 +29,7 @@ from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_attr_python import error_readonly
 from pybrops.core.error.error_generic_python import generic_check_isinstance
 from pybrops.core.mat.Matrix import Matrix
-from pybrops.core.mat.util import get_axis
+from pybrops.core.util.array import get_axis
 from pybrops.core.mat.DenseMutableMatrix import DenseMutableMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
 from pybrops.core.util.h5py import h5py_File_read_ndarray

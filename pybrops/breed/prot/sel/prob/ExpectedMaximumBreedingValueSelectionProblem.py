@@ -28,8 +28,8 @@ from pybrops.core.error.error_type_python import check_is_bool
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_eq
 from pybrops.core.error.error_value_numpy import check_ndarray_axis_len_gteq
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
-from pybrops.core.util.arrayix import triudix
-from pybrops.core.util.arrayix import triuix
+from pybrops.core.util.array import triudix
+from pybrops.core.util.array import triuix
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.gmod.GenomicModel import check_is_GenomicModel
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix

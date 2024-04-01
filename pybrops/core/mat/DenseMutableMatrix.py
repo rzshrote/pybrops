@@ -12,7 +12,7 @@ __all__ = [
 from typing import Sequence
 from typing import Union
 import numpy
-from pybrops.core.mat.util import get_axis
+from pybrops.core.util.array import get_axis
 from pybrops.core.mat.DenseMatrix import DenseMatrix
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 

@@ -1,13 +1,10 @@
 import numpy
 import pytest
 from pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem import UsefulnessCriterionIntegerMateSelectionProblem
-from pybrops.core.util.arrayix import triudix, triuix
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.model.vmat.fcty.DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory import DenseTwoWayDHAdditiveGeneticVarianceMatrixFactory
 from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
-from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
-from pybrops.popgen.bvmat.DenseBreedingValueMatrix import DenseBreedingValueMatrix
 from pybrops.test.assert_python import assert_property_isconcrete, assert_class_documentation, not_raises
 from pybrops.test.assert_python import assert_method_isconcrete
 from pybrops.test.assert_python import assert_property_isconcrete

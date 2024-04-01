@@ -24,7 +24,7 @@ from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
 from pybrops.core.mat.DenseSquareTraitMatrix import DenseSquareTraitMatrix
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.SquareTaxaSquareTraitMatrix import SquareTaxaSquareTraitMatrix
-from pybrops.core.mat.util import get_axis
+from pybrops.core.util.array import get_axis
 from pybrops.core.util.h5py import h5py_File_read_ndarray
 from pybrops.core.util.h5py import h5py_File_read_ndarray_utf8
 from pybrops.core.util.h5py import h5py_File_write_dict

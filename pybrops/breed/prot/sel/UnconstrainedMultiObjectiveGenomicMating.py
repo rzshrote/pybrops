@@ -29,8 +29,8 @@ from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.core.error.error_type_python import check_is_int
 from pybrops.core.error.error_type_python import check_is_str
 from pybrops.core.error.error_type_numpy import check_is_Generator_or_RandomState
-from pybrops.core.util.arrayix import triudix
-from pybrops.core.util.arrayix import triuix
+from pybrops.core.util.array import triudix
+from pybrops.core.util.array import triuix
 from pybrops.model.gmod.AdditiveLinearGenomicModel import AdditiveLinearGenomicModel
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.model.vmat.AdditiveGeneticVarianceMatrix import AdditiveGeneticVarianceMatrix
