@@ -17,7 +17,6 @@ from typing import Union
 import numpy
 # from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem
 # from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem
-from pybrops.breed.prot.sel.prob.SelectionProblem import SelectionProblem
 from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
 from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_Integral
@@ -78,6 +77,35 @@ class MultiObjectiveGenomicSelectionProblemMixin(
         self._mkrwt = value
 
     ############ target allele frequency values ############
+    # @property
+    # def tfreq(self) -> numpy.ndarray:
+    #     """Target allele frequency."""
+    #     return self._tfreq
+    # @tfreq.setter
+    # def tfreq(self, value: numpy.ndarray) -> None:
+    #     """Set target allele frequency."""
+    #     check_is_ndarray(value, "tfreq")
+    #     check_ndarray_ndim(value, "tfreq", 2)
+    #     self._tfreq = value
+    #     self._tminor = self._calc_tminor(self._tfreq)
+    #     self._thet = self._calc_thet(self._tfreq)
+    #     self._tmajor = self._calc_tmajor(self._tfreq)
+    
+    # @property
+    # def tminor(self) -> numpy.ndarray:
+    #     """Whether the target allele frequency is fixation of a minor allele."""
+    #     return self._tminor
+    
+    # @property
+    # def thet(self) -> numpy.ndarray:
+    #     """Whether the target allele frequency is heterozygous."""
+    #     return self._thet
+    
+    # @property
+    # def tmajor(self) -> numpy.ndarray:
+    #     """Whether the target allele frequency is fixation of a major allele."""
+    #     return self._tmajor
+    
     @property
     def tfreq(self) -> numpy.ndarray:
         """Target allele frequency."""
@@ -88,25 +116,25 @@ class MultiObjectiveGenomicSelectionProblemMixin(
         check_is_ndarray(value, "tfreq")
         check_ndarray_ndim(value, "tfreq", 2)
         self._tfreq = value
-        self._tminor = self._calc_tminor(self._tfreq)
-        self._thet = self._calc_thet(self._tfreq)
-        self._tmajor = self._calc_tminor(self._tfreq)
+        self._tfreq_fix_minor = (self._tfreq <= 0.0)
+        self._tfreq_fix_major = (self._tfreq >= 1.0)
+        self._tfreq_fix_heter = ~(self._tfreq_fix_minor | self._tfreq_fix_major)
     
     @property
-    def tminor(self) -> numpy.ndarray:
+    def tfreq_fix_minor(self) -> numpy.ndarray:
         """Whether the target allele frequency is fixation of a minor allele."""
-        return self._tminor
+        return self._tfreq_fix_minor
     
     @property
-    def thet(self) -> numpy.ndarray:
+    def tfreq_fix_heter(self) -> numpy.ndarray:
         """Whether the target allele frequency is heterozygous."""
-        return self._thet
+        return self._tfreq_fix_heter
     
     @property
-    def tmajor(self) -> numpy.ndarray:
+    def tfreq_fix_major(self) -> numpy.ndarray:
         """Whether the target allele frequency is fixation of a major allele."""
-        return self._tmajor
-    
+        return self._tfreq_fix_major
+
     ######################### Private Object Methods ###########################
     @staticmethod
     def _calc_mkrwt(weight: Union[numpy.ndarray,Callable], u_a: numpy.ndarray):
@@ -126,17 +154,17 @@ class MultiObjectiveGenomicSelectionProblemMixin(
         else:
             raise TypeError("variable 'target' must be a callable function or numpy.ndarray")
 
-    @staticmethod
-    def _calc_tminor(tfreq: numpy.ndarray):
-        return (tfreq == 0.0)
+    # @staticmethod
+    # def _calc_tminor(tfreq: numpy.ndarray):
+    #     return (tfreq == 0.0)
     
-    @staticmethod
-    def _calc_tmajor(tfreq: numpy.ndarray):
-        return (tfreq == 1.0)
+    # @staticmethod
+    # def _calc_tmajor(tfreq: numpy.ndarray):
+    #     return (tfreq == 1.0)
     
-    @staticmethod
-    def _calc_thet(tfreq: numpy.ndarray):
-        return (tfreq > 0.0) & (tfreq < 1.0)
+    # @staticmethod
+    # def _calc_thet(tfreq: numpy.ndarray):
+    #     return (tfreq > 0.0) & (tfreq < 1.0)
     
     ############################## Class Methods ###############################
     @classmethod
@@ -392,43 +420,154 @@ class MultiObjectiveGenomicSubsetSelectionProblem(
         # (n,p)[(k,),:,None] -> (p,1)
         pfreq = (1.0 / (self.ploidy * len(x))) * self.geno[x,:,None].sum(0)
 
-        # determine where allele frequencies are < 1.0
+        # mask for whether the major allele has been lost (minor allele is fixed)
         # (p,1)
-        p_ltmajor = (pfreq < 1.0)
+        pfreq_major_islost = (pfreq <= 0.0)
 
-        # determine where allele frequencies are > 0.0
+        # mask for whether the minor allele has been lost (major allele is fixed)
         # (p,1)
-        p_gtminor = (pfreq > 0.0)
+        pfreq_minor_islost = (pfreq >= 1.0)
 
-        # determine where allele frequencies are < 1.0 and > 0.0
+        # mask for whether heterozygosity has been lost (minor or major allele is fixed)
         # (p,1)
-        p_het = numpy.logical_and(p_ltmajor, p_gtminor)
+        pfreq_heter_islost = (pfreq_major_islost | pfreq_minor_islost)
 
-        # determine where alleles are unavailable using precomputed arrays
+        # calculate minor, major, heterozygosity penalties
         # (p,t)
-        allele_unavail = numpy.logical_not(
-            numpy.logical_or(
-                numpy.logical_and(p_ltmajor, self.tminor), 
-                numpy.logical_or(
-                    numpy.logical_and(p_het, self.thet), 
-                    numpy.logical_and(p_gtminor, self.tmajor)
-                )
-            )
-        )
+        minor_penalty = (self.tfreq_fix_minor & pfreq_minor_islost)
+        major_penalty = (self.tfreq_fix_major & pfreq_major_islost)
+        heter_penalty = (self.tfreq_fix_heter & pfreq_heter_islost)
+
+        # calculate allele unavailability
+        # (p,t)
+        allele_unavail = minor_penalty | major_penalty | heter_penalty
+
+        # calculate the allele unavailability
+        # (p,t) * (p,t) -> (p,t)
+        # (p,t) -> (t,)
+        pau = (self.mkrwt * allele_unavail).sum(0)
 
         # calculate the manhattan distance and PAFD
         # (p,t) -> (t,)
         pafd = (self.mkrwt * numpy.absolute(self.tfreq - pfreq)).sum(0)
-        
-        # calculate the allele unavailability
-        # (p,t) -> (t,)
-        pau = (self.mkrwt * allele_unavail).sum(0)
 
         # concatenate to make MOGS vector
         # (t,) and (t,) -> (t + t,)
         out = numpy.concatenate([pau, pafd])
 
         return out
+
+    def _old_latentfn(
+            self, 
+            x: numpy.ndarray, 
+            *args: tuple, 
+            **kwargs: dict
+        ) -> numpy.ndarray:
+        """Old latent function for historical purposes"""
+        pass
+        # # calculate the allele frequency of the selected subset
+        # # (n,p)[(k,),:,None] -> (p,1)
+        # pfreq = (1.0 / (self.ploidy * len(x))) * self.geno[x,:,None].sum(0)
+
+        # # get pointer to target frequency
+        # # (p,t)
+        # tfreq = self.tfreq
+
+        # # mask for whether the goal is to fix the minor allele
+        # # (p,t)
+        # tfreq_fix_minor = (tfreq <= 0.0)
+        
+        # # mask for whether the goal is to fix the major allele
+        # # (p,t)
+        # tfreq_fix_major = (tfreq >= 1.0)
+        
+        # # mask for whether the goal is to maintain heterozygosity
+        # # (p,t)
+        # tfreq_maintain_het = ~(tfreq_fix_minor | tfreq_fix_major)
+
+        # # mask for whether the major allele has been lost (minor allele is fixed)
+        # # (p,1)
+        # pfreq_major_islost = (pfreq <= 0.0)
+        
+        # # mask for whether the minor allele has been lost (major allele is fixed)
+        # # (p,1)
+        # pfreq_minor_islost = (pfreq >= 1.0)
+
+        # # mask for whether heterozygosity has been lost (minor or major allele is fixed)
+        # # (p,1)
+        # pfreq_heter_islost = (pfreq_major_islost | pfreq_minor_islost)
+
+        # # calculate allele unavailability
+        # # (p,t)
+        # allele_unavail = numpy.where(
+        #     tfreq_fix_major,        # (p,t) if target fixation of major allele
+        #     pfreq_major_islost,     # (p,1) score True if major allele is lost
+        #     numpy.where(
+        #         tfreq_maintain_het, # (p,t) else if target heterozygosity maintenance
+        #         pfreq_heter_islost, # (p,1) score True if heterozygosity is lost
+        #         pfreq_minor_islost, # (p,1) else if target fixation of minor allele, score True if minor allele is lost
+        #     )
+        # )
+
+        # ### Version 1 (good, but slower than v2)
+        # # calculate allele unavailability
+        # # (p,t)
+        # allele_unavail = numpy.where(
+        #     tfreq >= 1.0,           # (p,t) if target freq == 1.0
+        #     pfreq <= 0.0,           # (p,1) then set True if sel has allele freq == 0
+        #     numpy.where(            # (p,t)
+        #         tfreq > 0.0,        # (p,t) elif 0.0 < target freq < 1.0
+        #         numpy.logical_or(   # (p,1) then set True if pop freq is outside (0.0,1.0)
+        #             pfreq <= 0.0,   # (p,1) mask for whether population freq <= 0.0
+        #             pfreq >= 1.0    # (p,1) mask for whether population freq >= 1.0
+        #         ),                  # (p,1) else target freq == 0.0
+        #         pfreq >= 1.0        # (p,1) else set True if pop freq is >= 1.0
+        #     )
+        # )
+
+        # self.tmajor: True if target is major allele fixation, False otherwise
+        # self.tminor: True if target is minor allele fixation, False otherwise
+        # self.thet  : True if target is heterozygosity, False otherwise
+
+        # ### Version 2 (bugs???)
+        # # determine where allele frequencies are < 1.0
+        # # (p,1)
+        # p_ltmajor = (pfreq < 1.0)
+
+        # # determine where allele frequencies are > 0.0
+        # # (p,1)
+        # p_gtminor = (pfreq > 0.0)
+
+        # # determine where allele frequencies are < 1.0 and > 0.0
+        # # (p,1)
+        # p_het = numpy.logical_and(p_ltmajor, p_gtminor)
+
+        # # determine where alleles are unavailable using precomputed arrays
+        # # (p,t)
+        # allele_unavail = numpy.logical_not(
+        #     numpy.logical_or(
+        #         numpy.logical_and(p_ltmajor, self.tminor), 
+        #         numpy.logical_or(
+        #             numpy.logical_and(p_het, self.thet), 
+        #             numpy.logical_and(p_gtminor, self.tmajor)
+        #         )
+        #     )
+        # )
+
+        # # calculate the manhattan distance and PAFD
+        # # (p,t) -> (t,)
+        # pafd = (self.mkrwt * numpy.absolute(self.tfreq - pfreq)).sum(0)
+        
+        # # calculate the allele unavailability
+        # # (p,t) * (p,t) -> (p,t)
+        # # (p,t) -> (t,)
+        # pau = (self.mkrwt * allele_unavail).sum(0)
+
+        # # concatenate to make MOGS vector
+        # # (t,) and (t,) -> (t + t,)
+        # out = numpy.concatenate([pau, pafd])
+
+        # return out
 
     ############################## Class Methods ###############################
     @classmethod
