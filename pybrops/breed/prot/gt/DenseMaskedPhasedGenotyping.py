@@ -1,5 +1,5 @@
 """
-Module implementing unphased genotyping for dense genotype matrices.
+Module implementing masked, phased genotyping for dense genotype matrices.
 """
 
 from typing import Optional
@@ -7,18 +7,18 @@ from typing import Optional
 import numpy
 from pybrops.breed.prot.gt.GenotypingProtocol import GenotypingProtocol
 from pybrops.core.error.error_type_python import check_is_bool
-from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
+from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
-from pybrops.popgen.gmat.PhasedGenotypeMatrix import check_is_PhasedGenotypeMatrix
+from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix, check_is_PhasedGenotypeMatrix
 
-class DenseMaskedUnphasedGenotyping(
+
+class DenseMaskedPhasedGenotyping(
         GenotypingProtocol,
     ):
     """
-    Class implementing unphased genotyping for dense genotype matrices. This
-    converts a DensePhasedGenotypeMatrix to a DenseGenotypeMatrix containing
-    genotype values.
+    Class implementing masked, phased genotyping for dense genotyp matrices.
+    This converts a DensePhasedGenotypeMarix to a DensePhasedGenotypMatrix 
+    containing genotypic values.
     """
 
     ########################## Special Object Methods ##########################
@@ -88,7 +88,7 @@ class DenseMaskedUnphasedGenotyping(
         mask = pgmat.vrnt_mask
 
         # extract matrix information
-        mat         = pgmat.mat_asformat("{0,1,2}")
+        mat         = pgmat.mat
         taxa        = pgmat.taxa
         taxa_grp    = pgmat.taxa_grp
         vrnt_chrgrp = pgmat.vrnt_chrgrp
@@ -109,7 +109,7 @@ class DenseMaskedUnphasedGenotyping(
                 mask = ~mask
             # apply mask to fields
             if mat is not None:
-                mat = mat[:,mask]
+                mat = mat[:,:,mask]
             if vrnt_chrgrp is not None:
                 vrnt_chrgrp = vrnt_chrgrp[mask]
             if vrnt_phypos is not None:
@@ -130,7 +130,7 @@ class DenseMaskedUnphasedGenotyping(
                 vrnt_mask = vrnt_mask[mask]
 
         # create genotype matrix
-        out = DenseGenotypeMatrix(
+        out = DensePhasedGenotypeMatrix(
             mat         = mat,
             taxa        = taxa,
             taxa_grp    = taxa_grp,
