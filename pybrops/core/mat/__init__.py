@@ -7,6 +7,7 @@ __all__ = [
     "Matrix",
     "PrunableMatrix",
     "SquareMatrix",
+    "ScaledMatrix",
     "MutableMatrix",
     "PhasedMatrix",
     "SortableMatrix",
@@ -39,6 +40,7 @@ __all__ = [
 from pybrops.core.mat import Matrix           # order 0
 from pybrops.core.mat import PrunableMatrix   # order 1
 from pybrops.core.mat import SquareMatrix     # order 1
+from pybrops.core.mat import ScaledMatrix     # order 1
 
 # level 1 interface
 from pybrops.core.mat import MutableMatrix    # order 0

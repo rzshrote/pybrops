@@ -61,7 +61,7 @@ class WeightedGenomicEstimatedBreedingValueMatrix(
             A ``WeightedGenomicEstimatedBreedingValueMatrix`` object containing 
             wGEBVs.
         """
-        raise NotImplementedError("classmethod is abstract")
+        raise NotImplementedError("class method is abstract")
     
     ############################## Static Methods ##############################
 
