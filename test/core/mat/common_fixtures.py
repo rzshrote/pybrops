@@ -6,6 +6,7 @@ from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.MutableMatrix import MutableMatrix
 from pybrops.core.mat.PhasedTaxaVariantMatrix import PhasedTaxaVariantMatrix
+from pybrops.core.mat.ScaledMatrix import ScaledMatrix
 from pybrops.core.mat.SortableMatrix import SortableMatrix
 from pybrops.core.mat.GroupableMatrix import GroupableMatrix
 from pybrops.core.mat.PhasedMatrix import PhasedMatrix
@@ -520,3 +521,25 @@ class DummySquareTaxaSquareTraitMatrix(DummySquareTaxaMatrix,DummySquareTraitMat
 
 class DummyPhasedTaxaVariantMatrix(DummyTaxaVariantMatrix,DummyPhasedMatrix,PhasedTaxaVariantMatrix):
     pass
+
+class DummyScaledMatrix(DummyMatrix,ScaledMatrix):
+    @property
+    def location(self) -> object:
+        return super().location
+    @location.setter
+    def location(self, value: object) -> None:
+        super().location = value
+    @property
+    def scale(self) -> object:
+        return super().scale
+    @scale.setter
+    def scale(self, value: object) -> None:
+        super().scale = value
+    def transform(self, mat: numpy.ndarray, copy: bool) -> numpy.ndarray:
+        return super().transform(mat, copy)
+    def untransform(self, mat: numpy.ndarray, copy: bool) -> numpy.ndarray:
+        return super().untransform(mat, copy)
+    def rescale(self, inplace: bool) -> numpy.ndarray:
+        return super().rescale(inplace)
+    def unscale(self, inplace: bool) -> numpy.ndarray:
+        return super().unscale(inplace)

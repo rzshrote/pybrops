@@ -76,7 +76,7 @@ class ExpectedMaximumBreedingValueMatrix(
         out : ExpectedMaximumBreedingValueMatrix
             An ``ExpectedMaximumBreedingValueMatrix`` object containing EMBVs.
         """
-        raise NotImplementedError("classmethod is abstract")
+        raise NotImplementedError("class method is abstract")
 
     ############################## Static Methods ##############################
 
