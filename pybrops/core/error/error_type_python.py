@@ -35,7 +35,7 @@ from numbers import Complex
 from numbers import Integral
 from numbers import Number
 from numbers import Real
-from typing import Callable
+from typing import Callable, Tuple
 from typing import Container
 from typing import Sequence
 from typing import Union
@@ -532,12 +532,12 @@ def check_is_Integral_or_None(v: object, vname: str) -> None:
 
 ### Iterating type checks ###
 
-def check_Sequence_all_type(v: Sequence, vname: str, vtype: Union[type,tuple]) -> None:
+def check_Sequence_all_type(v: Sequence, vname: str, vtype: Union[type,Tuple[type]]) -> None:
     if not all(isinstance(e, vtype) for e in v):
         raise TypeError(
             "Sequence '{0}' must have values all of type '{1}'".format(
                 vname,
-                vtype.__name__
+                vtype.__name__ if isinstance(vtype, type) else tuple(e.__name__ for e in vtype)
             )
         )
 

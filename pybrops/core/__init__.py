@@ -29,7 +29,7 @@ from pybrops.core import util
 # random number generator interface
 from pybrops.core import random
 
-# input/output interfaces
+# input/output interfaces: must be imported before ``mat``
 from pybrops.core import io
 
 # base matrix interfaces
