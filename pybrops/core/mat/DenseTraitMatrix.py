@@ -141,19 +141,11 @@ class DenseTraitMatrix(
     def ntrait(self) -> int:
         """Number of traits."""
         return self._mat.shape[self.trait_axis]
-    @ntrait.setter
-    def ntrait(self, value: int) -> None:
-        """Set number of traits"""
-        error_readonly("ntrait")
     
     @property
     def trait_axis(self) -> int:
         """Axis along which traits are stored."""
         return 0
-    @trait_axis.setter
-    def trait_axis(self, value: int) -> None:
-        """Set trait axis number"""
-        error_readonly("ntrait")
     
     ######### Matrix element copy-on-manipulation ##########
     def adjoin(

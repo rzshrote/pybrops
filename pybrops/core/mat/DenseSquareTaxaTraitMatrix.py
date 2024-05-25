@@ -8,8 +8,9 @@ __all__ = [
     "check_is_DenseSquareTaxaTraitMatrix",
 ]
 
-
 import copy
+from functools import reduce
+from numbers import Integral
 from pathlib import Path
 from typing import Optional
 from typing import Sequence
@@ -17,22 +18,30 @@ from typing import Union
 import numpy
 import h5py
 from numpy.typing import ArrayLike
+import pandas
 from pybrops.core.error.error_io_python import check_file_exists
+from pybrops.core.error.error_type_pandas import check_is_pandas_DataFrame
+from pybrops.core.error.error_type_python import check_Sequence_all_type, check_is_Integral, check_is_str
 from pybrops.core.error.error_value_h5py import check_h5py_File_has_group
 from pybrops.core.error.error_value_h5py import check_h5py_File_is_readable
 from pybrops.core.error.error_value_h5py import check_h5py_File_is_writable
+from pybrops.core.error.error_value_pandas import check_pandas_DataFrame_has_column_indices
+from pybrops.core.error.error_value_python import check_len
+from pybrops.core.io.CSVInputOutput import CSVInputOutput
+from pybrops.core.io.PandasInputOutput import PandasInputOutput
 from pybrops.core.mat.DenseSquareTaxaMatrix import DenseSquareTaxaMatrix
 from pybrops.core.mat.DenseTraitMatrix import DenseTraitMatrix
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.SquareTaxaTraitMatrix import SquareTaxaTraitMatrix
-from pybrops.core.util.array import get_axis
+from pybrops.core.util.array import flattenix, get_axis
 from pybrops.core.util.h5py import h5py_File_write_dict
-
 
 class DenseSquareTaxaTraitMatrix(
         DenseSquareTaxaMatrix,
         DenseTraitMatrix,
         SquareTaxaTraitMatrix,
+        PandasInputOutput,
+        CSVInputOutput,
     ):
     """
     A concrete class for dense matrices with taxa axes that are square and a 
@@ -139,6 +148,22 @@ class DenseSquareTaxaTraitMatrix(
         out.taxa_grp_len = copy.deepcopy(self.taxa_grp_len, memo)
 
         return out
+
+    ############################ Object Properties #############################
+
+    ############## Square Metadata Properties ##############
+    @DenseSquareTaxaMatrix.square_taxa_axes.getter
+    def square_taxa_axes(self) -> tuple:
+        """Axis indices for taxa axes that are square."""
+        # square taxa axes are everything except the last axis
+        return tuple(range(self._mat.ndim-1))
+
+    #################### Trait metadata ####################
+    @DenseTraitMatrix.trait_axis.getter
+    def trait_axis(self) -> int:
+        """Axis along which traits are stored."""
+        # traits are always stored on the last axis.
+        return self._mat.ndim - 1
 
     ############################## Object Methods ##############################
 
@@ -744,6 +769,7 @@ class DenseSquareTaxaTraitMatrix(
         return grouped
 
     ################### Matrix File I/O ####################
+
     def to_hdf5(
             self, 
             filename: Union[str,Path,h5py.File], 
@@ -833,9 +859,278 @@ class DenseSquareTaxaTraitMatrix(
         if isinstance(filename, (str,Path)):
             h5file.close()
 
+    def to_pandas(
+            self,
+            taxa_colnames: Optional[Union[bool,str,Sequence[Union[str,None]]]] = True,
+            taxa_grp_colnames: Optional[Union[bool,str,Sequence[Union[str,None]]]] = True,
+            trait_colnames: Optional[Union[bool,str,Sequence[Union[str,None]]]] = True,
+            value_colname: str = "value",
+            **kwargs: dict
+        ) -> pandas.DataFrame:
+        """
+        Export a DenseSquareTaxaTraitMatrix to a pandas.DataFrame.
+
+        Parameters
+        ----------
+        taxa_colnames : bool, str, Sequence of str or None, None, default = True
+            Sequence of column names for which to name taxa axis columns.
+            There must be one column name for each taxa axis.
+            If an element in the sequence is ``None``, then do not export the column.
+            If ``bool``, then assign default names if ``True`` or do not export columns if ``False``.
+            If ``str``, then one taxa axis column is assumed.
+            If ``None``, then do not export taxa columns.
+        
+        taxa_grp_colnames : bool, str, Sequence of str or None, None, default = True
+            Sequence of column names for which to name taxa group axis columns.
+            There must be one column name for each taxa axis.
+            If an element in the sequence is ``None``, then do not export the column.
+            If ``bool``, then assign default names if ``True`` or do not export columns if ``False``.
+            If ``str``, then one taxa group axis column is assumed.
+            If ``None``, then do not export taxa group columns.
+
+        trait_colnames : bool, str, Sequence of str or None, None, default = True
+            Sequence of column names for which to name trait columns.
+            There must be one column name for each trait.
+            If an element in the sequence is ``None``, then do not export the column.
+            If ``bool``, then assign default names if ``True`` or do not export columns if ``False``.
+            If ``str``, then one column name is assumed.
+            If ``None``, then do not export trait column.
+        
+        value_colname : str, default = "value"
+            Name of the value column.
+        
+        kwargs : dict
+            Additional keyword arguments to be passed for dataframe construction.
+
+        Returns
+        -------
+        out : pandas.DataFrame
+            Output pandas dataframe.
+        """
+        ###
+        ### Process inputs
+        ###
+
+        # get the number of taxa axes
+        ntaxaaxes = self.nsquare_taxa
+
+        # get the number of trait axes
+        ntraitaxes = 1
+
+        ### process inputs: taxa_colnames
+
+        # process ``None``
+        if taxa_colnames is None:
+            taxa_colnames = False
+        
+        # process ``bool``, ``str``, ``Sequence``
+        if isinstance(taxa_colnames, bool):
+            taxa_colnames = ["taxa_"+str(i).zfill(len(str(ntaxaaxes))) for i in range(ntaxaaxes)] if taxa_colnames else [None for i in range(ntaxaaxes)]
+        elif isinstance(taxa_colnames, str):
+            taxa_colnames = [taxa_colnames]
+        elif isinstance(taxa_colnames, Sequence):
+            pass
+        else:
+            raise TypeError(
+                "``taxa_colnames`` must be of type ``bool``, ``str``, ``Sequence``, or ``None`` but received type ``{0}``".format(
+                    type(taxa_colnames).__name__
+                )
+            )
+        
+        # check the sequence length
+        check_len(taxa_colnames, "taxa_colnames", ntaxaaxes)
+
+        # check sequence element types
+        check_Sequence_all_type(taxa_colnames, "taxa_colnames", (str,type(None)))
+        
+        ### process inputs: taxa_grp_colnames
+
+        # process ``None``
+        if taxa_grp_colnames is None:
+            taxa_grp_colnames = False
+        
+        # process ``bool``, ``str``, ``Sequence``
+        if isinstance(taxa_grp_colnames, bool):
+            taxa_grp_colnames = ["taxa_grp_"+str(i).zfill(len(str(ntaxaaxes))) for i in range(ntaxaaxes)] if taxa_grp_colnames else [None for i in range(ntaxaaxes)]
+        elif isinstance(taxa_grp_colnames, str):
+            taxa_grp_colnames = [taxa_grp_colnames]
+        elif isinstance(taxa_grp_colnames, Sequence):
+            pass
+        else:
+            raise TypeError(
+                "``taxa_grp_colnames`` must be of type ``bool``, ``str``, ``Sequence``, or ``None`` but received type ``{0}``".format(
+                    type(taxa_grp_colnames).__name__
+                )
+            )
+        
+        # check the sequence length
+        check_len(taxa_grp_colnames, "taxa_grp_colnames", ntaxaaxes)
+
+        # check sequence element types
+        check_Sequence_all_type(taxa_grp_colnames, "taxa_grp_colnames", (str,type(None)))
+
+        ### process inputs: trait_colnames
+
+        # process ``None``
+        if trait_colnames is None:
+            trait_colnames = False
+        
+        # process ``bool``, ``str``, ``Sequence``
+        if isinstance(trait_colnames, bool):
+            trait_colnames = ["trait_"+str(i).zfill(len(str(ntraitaxes))) for i in range(ntraitaxes)] if trait_colnames else [None for i in range(ntraitaxes)]
+        elif isinstance(trait_colnames, str):
+            trait_colnames = [trait_colnames]
+        elif isinstance(trait_colnames, Sequence):
+            pass
+        else:
+            raise TypeError(
+                "``trait_colnames`` must be of type ``bool``, ``str``, ``Sequence``, or ``None`` but received type ``{0}``".format(
+                    type(trait_colnames).__name__
+                )
+            )
+        
+        # check the sequence length
+        check_len(trait_colnames, "trait_colnames", ntraitaxes)
+
+        # check sequence element types
+        check_Sequence_all_type(trait_colnames, "trait_colnames", (str,type(None)))
+
+        ### process inputs: value_colname
+        check_is_str(value_colname, "value_colname")
+
+        ###
+        ### Process data
+        ###
+
+        # get taxa names
+        taxa = numpy.array(["Taxon"+str(e).zfill(len(str(self.ntaxa))) for e in range(self.ntaxa)], dtype = object) if self.taxa is None else self.taxa
+
+        # get taxa_grp names
+        taxa_grp = numpy.array([pandas.NA for i in range(self.ntaxa)], dtype=object) if self.taxa_grp is None else self.taxa_grp
+
+        # get trait names
+        trait = numpy.array(["Trait"+str(i).zfill(len(str(self.ntrait))) for i in range(self.ntrait)], dtype=object) if self.trait is None else self.trait
+
+        print(self.ntrait)
+
+        # calculate flattened array and corresponding axis indices
+        flatmat, axisix_data = flattenix(self.mat)
+
+        ###
+        ### Export data to dict then to pandas and return
+        ###
+
+        # create empty dict
+        out_dict = {}
+
+        # save taxa column data
+        for ix,taxa_colname in zip(self.square_taxa_axes,taxa_colnames):
+            if taxa_colname is None:
+                continue
+            axisix = axisix_data[ix]
+            out_dict.update({taxa_colname: taxa[axisix]})
+
+        # save taxa grp column data
+        for ix,taxa_grp_colname in zip(self.square_taxa_axes,taxa_grp_colnames):
+            if taxa_grp_colname is None:
+                continue
+            axisix = axisix_data[ix]
+            out_dict.update({taxa_grp_colname: taxa_grp[axisix]})
+        
+        # save trait data
+        trait_colname = trait_colnames[0]
+        if trait_colname is not None:
+            axisix = axisix_data[self.trait_axis]
+            out_dict.update({trait_colname: trait[axisix]})
+        
+        # save values
+        out_dict.update({value_colname: flatmat})
+
+        # create a pandas DataFrame from the data
+        out = pandas.DataFrame(out_dict, **kwargs)
+
+        return out
+
+    def to_csv(
+            self,
+            filename: str,
+            taxa_colnames: Optional[Union[bool,str,Sequence[Union[str,None]]]] = True,
+            taxa_grp_colnames: Optional[Union[bool,str,Sequence[Union[str,None]]]] = True,
+            trait_colnames: Optional[Union[bool,str,Sequence[Union[str,None]]]] = True,
+            value_colname: str = "value",
+            sep: str = ',', 
+            header: bool = True, 
+            index: bool = False, 
+            **kwargs: dict
+        ) -> None:
+        """
+        Export a DenseSquareTaxaTraitMatrix to a CSV file.
+
+        Parameters
+        ----------
+        filename : str
+            CSV file name to which to write.
+        
+        taxa_colnames : bool, str, Sequence of str or None, None, default = True
+            Sequence of column names for which to name taxa axis columns.
+            There must be one column name for each taxa axis.
+            If an element in the sequence is ``None``, then do not export the column.
+            If ``bool``, then assign default names if ``True`` or do not export columns if ``False``.
+            If ``str``, then one taxa axis column is assumed.
+            If ``None``, then do not export taxa columns.
+        
+        taxa_grp_colnames : bool, str, Sequence of str or None, None, default = True
+            Sequence of column names for which to name taxa group axis columns.
+            There must be one column name for each taxa axis.
+            If an element in the sequence is ``None``, then do not export the column.
+            If ``bool``, then assign default names if ``True`` or do not export columns if ``False``.
+            If ``str``, then one taxa group axis column is assumed.
+            If ``None``, then do not export taxa group columns.
+
+        trait_colnames : bool, str, Sequence of str or None, None, default = True
+            Sequence of column names for which to name trait columns.
+            There must be one column name for each trait.
+            If an element in the sequence is ``None``, then do not export the column.
+            If ``bool``, then assign default names if ``True`` or do not export columns if ``False``.
+            If ``str``, then one column name is assumed.
+            If ``None``, then do not export trait column.
+        
+        value_colname : str, default = "value"
+            Name of the value column.
+        
+        sep : str, default = ","
+            Separator to use in the exported CSV file.
+        
+        header : bool, default = True
+            Whether to save header names.
+        
+        index : bool, default = False
+            Whether to save a row index in the exported CSV file.
+
+        kwargs : dict
+            Additional keyword arguments to use for dictating export to a CSV.
+        """
+        # convert DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix to pandas.DataFrame
+        df = self.to_pandas(
+            taxa_colnames = taxa_colnames,
+            taxa_grp_colnames = taxa_grp_colnames,
+            trait_colnames = trait_colnames,
+            value_colname = value_colname,
+        )
+
+        # export using pandas
+        df.to_csv(
+            path_or_buf = filename,
+            sep         = sep,
+            header      = header,
+            index       = index,
+            **kwargs
+        )
+
     ############################## Class Methods ###############################
 
     ################### Matrix File I/O ####################
+
     @classmethod
     def from_hdf5(
             cls, 
@@ -996,7 +1291,378 @@ class DenseSquareTaxaTraitMatrix(
 
         return mat
 
+    @classmethod
+    def from_pandas(
+            cls,
+            df: pandas.DataFrame,
+            taxa_colnames: Optional[Union[bool,str,Integral,Sequence[Union[str,Integral]]]] = True,
+            taxa_grp_colnames: Optional[Union[bool,str,Integral,Sequence[Union[str,Integral]]]] = True,
+            trait_colnames: Optional[Union[bool,str,Integral,Sequence[Union[str,Integral]]]] = True,
+            value_colname: Union[str,Integral] = "value",
+            ntaxaaxes: Integral = 2,
+            **kwargs: dict
+        ) -> 'DenseSquareTaxaTraitMatrix':
+        """
+        Import a DenseSquareTaxaTraitMatrix from a pandas.DataFrame.
 
+        Parameters
+        ----------
+        df : pandas.DataFrame
+            Pandas dataframe from which to read.
+
+        taxa_colnames : bool, str, Integral, Sequence of str or Integral, None, default = True
+            Sequence of column names or indices from which to read taxa axis columns.
+            There must be one column name or index for each taxa axis.
+            If an element in the sequence cannot be ``None``; all columns must be present.
+            If ``bool``, then import using default names if ``True`` or raise error if ``False``.
+            If ``str``, then one taxa axis column is assumed.
+            If ``Integral``, then one taxa axis column is assumed.
+            If ``None``, then raise error.
+        
+        taxa_grp_colnames : bool, str, Integral, Sequence of str or None, None, default = True
+            Sequence of column names from which to read taxa group axis columns.
+            There must be one column name for each taxa axis.
+            If an element in the sequence is ``None``, then do not export the column.
+            If ``bool``, then import using default names if ``True`` or raise error if ``False``.
+            If ``str``, then one taxa group axis column is assumed.
+            If ``Integral``, then one taxa group axis column is assumed.
+            If ``None``, then raise error.
+
+        trait_colnames : bool, str, Integral, Sequence of str or Integral, None, default = True
+            Sequence of column names or indices from which to read trait columns.
+            There must be one column name for each trait.
+            If an element in the sequence is ``None``, then do not export the column.
+            If ``bool``, then import using default names if ``True`` or raise error if ``False``.
+            If ``str``, then one column name is assumed.
+            If ``Integral``, then one column name is assumed.
+            If ``None``, then raise error.
+        
+        value_colname : str, Integral, default = "value"
+            Name or index of the value column.
+        
+        ntaxaaxes : Integral
+            Expected number of taxa axes for the matrix.
+        
+        kwargs : dict
+            Additional keyword arguments to be passed for dataframe construction.
+
+        Returns
+        -------
+        out : pandas.DataFrame
+            Output pandas dataframe.
+        """
+        ###
+        ### Type checks and preprocessing
+        ###
+
+        # get the number of taxa axes
+        check_is_Integral(ntaxaaxes, "ntaxaaxes")
+
+        # get the number of trait axes
+        ntraitaxes = 1
+
+        ### process inputs: df
+        check_is_pandas_DataFrame(df, "df")
+
+        ### process inputs: taxa_colnames
+
+        # process ``None``
+        if taxa_colnames is None:
+            taxa_colnames = False
+        
+        # process ``bool``, ``str``, ``Sequence``
+        if isinstance(taxa_colnames, bool):
+            if taxa_colnames:
+                taxa_colnames = ["taxa_"+str(i).zfill(len(str(ntaxaaxes))) for i in range(ntaxaaxes)]
+            else:
+                raise ValueError("must provide taxa column name or index values")
+        elif isinstance(taxa_colnames, (str,Integral)):
+            taxa_colnames = [taxa_colnames]
+        elif isinstance(taxa_colnames, Sequence):
+            pass
+        else:
+            raise TypeError(
+                "``taxa_colnames`` must be of type ``bool``, ``str``, ``Integral``, ``Sequence``, or ``None`` but received type ``{0}``".format(
+                    type(taxa_colnames).__name__
+                )
+            )
+        
+        # check the sequence length
+        check_len(taxa_colnames, "taxa_colnames", ntaxaaxes)
+
+        # check sequence element types
+        check_Sequence_all_type(taxa_colnames, "taxa_colnames", (str,Integral))
+
+        # convert taxa_colnames to list so it is mutable
+        taxa_colnames = list(taxa_colnames)
+
+        # convert taxa_colnames sequence to all Integral
+        for i,elem in enumerate(taxa_colnames):
+            if isinstance(elem, str):
+                taxa_colnames[i] = df.columns.get_loc(elem)
+
+        # check column indices
+        check_pandas_DataFrame_has_column_indices(df, "df", *taxa_colnames)
+
+        ### process inputs: taxa_grp_colnames
+
+        # process ``None``
+        if taxa_grp_colnames is None:
+            taxa_grp_colnames = False
+        
+        # process ``bool``, ``str``, ``Sequence``
+        if isinstance(taxa_grp_colnames, bool):
+            taxa_grp_colnames = ["taxa_grp_"+str(i).zfill(len(str(ntaxaaxes))) for i in range(ntaxaaxes)] if taxa_grp_colnames else [None for i in range(ntaxaaxes)]
+        elif isinstance(taxa_grp_colnames, (str,Integral)):
+            taxa_grp_colnames = [taxa_grp_colnames]
+        elif isinstance(taxa_grp_colnames, Sequence):
+            pass
+        else:
+            raise TypeError(
+                "``taxa_grp_colnames`` must be of type ``bool``, ``str``, ``Integral``, ``Sequence``, or ``None`` but received type ``{0}``".format(
+                    type(taxa_grp_colnames).__name__
+                )
+            )
+        
+        # check the sequence length
+        check_len(taxa_grp_colnames, "taxa_grp_colnames", ntaxaaxes)
+
+        # check sequence element types
+        check_Sequence_all_type(taxa_grp_colnames, "taxa_grp_colnames", (str,Integral,type(None)))
+
+        # convert taxa_grp_colnames to list so it is mutable
+        taxa_grp_colnames = list(taxa_grp_colnames)
+
+        # convert taxa_grp_colnames sequence to all Integral
+        for i,elem in enumerate(taxa_grp_colnames):
+            if isinstance(elem, str):
+                taxa_grp_colnames[i] = df.columns.get_loc(elem)
+
+        # create a reduced set that does not contain None (skip None columns)
+        reduced = [e for e in taxa_grp_colnames if e is not None]
+
+        # check column indices
+        check_pandas_DataFrame_has_column_indices(df, "df", *reduced)
+
+        ### process inputs: trait_colnames
+
+        # process ``None``
+        if trait_colnames is None:
+            trait_colnames = False
+        
+        # process ``bool``, ``str``, ``Sequence``
+        if isinstance(trait_colnames, bool):
+            if trait_colnames:
+                trait_colnames = ["trait_"+str(i).zfill(len(str(ntraitaxes))) for i in range(ntraitaxes)]
+            else:
+                raise ValueError("must provide trait column name or index values")
+        elif isinstance(trait_colnames, (str,Integral)):
+            trait_colnames = [trait_colnames]
+        elif isinstance(trait_colnames, Sequence):
+            pass
+        else:
+            raise TypeError(
+                "``trait_colnames`` must be of type ``bool``, ``str``, ``Integral``, ``Sequence``, or ``None`` but received type ``{0}``".format(
+                    type(trait_colnames).__name__
+                )
+            )
+        
+        # check the sequence length
+        check_len(trait_colnames, "trait_colnames", ntraitaxes)
+
+        # check sequence element types
+        check_Sequence_all_type(trait_colnames, "trait_colnames", (str,type(None)))
+
+        # convert trait_colnames to list so it is mutable
+        trait_colnames = list(trait_colnames)
+
+        # convert trait_colnames sequence to all Integral
+        for i,elem in enumerate(trait_colnames):
+            if isinstance(elem, str):
+                trait_colnames[i] = df.columns.get_loc(elem)
+
+        # check column indices
+        check_pandas_DataFrame_has_column_indices(df, "df", *trait_colnames)
+
+        ### process inputs: value_colname
+        if isinstance(value_colname, str):
+            value_colname = df.columns.get_loc(value_colname)
+        
+        check_is_Integral(value_colname, "value_colname")
+
+        #####
+        ##### Processing
+        #####
+
+        ###
+        ### Process taxa
+        ###
+
+        # get taxa columns data
+        taxa_data_ls = [df.iloc[:,ix].to_numpy(dtype=object) for ix in taxa_colnames]
+
+        # get unique taxa and corresponding indices
+        taxa_vector_ls, taxa_index_ls = tuple(zip(*[numpy.unique(e, return_index=True) for e in taxa_data_ls]))
+
+        # get unique taxa for all columns: union all taxa together
+        taxa = reduce(numpy.union1d, taxa_vector_ls)
+
+        # allocate index arrays for each taxa column
+        taxaix_ls = [numpy.empty(len(e), dtype=int) for e in taxa_data_ls]
+
+        # calculate taxa indices
+        for i,taxon in enumerate(taxa):
+            for taxaix,taxa_data in zip(taxaix_ls,taxa_data_ls):
+                taxaix[taxa_data == taxon] = i
+        
+        ###
+        ### Process taxa_grp
+        ###
+
+        # get taxa_grp columns data
+        taxa_grp_data_ls = [None if ix is None else df.iloc[:,ix].to_numpy(dtype=int) for ix in taxa_grp_colnames]
+
+        # get optional taxa group data
+        taxa_grp = None
+        for taxa_vector,taxa_index,taxa_grp_data in zip(taxa_vector_ls,taxa_index_ls,taxa_grp_data_ls):
+            if taxa_grp_data is not None:
+                if taxa_grp is None:
+                    taxa_grp = numpy.empty(len(taxa), dtype=int)
+                for i, taxon in enumerate(taxa):
+                    if taxon in taxa_vector:
+                        taxa_grp[i] = taxa_grp_data[(taxa_index[taxa_vector == taxon][0])]
+
+        ###
+        ### Process trait
+        ###
+
+        # get trait column data
+        trait_data = df.iloc[:,(trait_colnames[0])].to_numpy(dtype=object)
+
+        # calculate unique 
+        trait, traitix = numpy.unique(trait_data, return_inverse=True)
+
+        # combine trait names
+        # trait = reduce(numpy.union1d, blah)
+
+        ###
+        ### Process values
+        ###
+
+        # get value column data
+        value_data = df.iloc[:,(value_colname)].to_numpy(dtype=float)
+
+        # get array dimensions
+        ntaxa_tup = tuple(len(taxa) for _ in range(ntaxaaxes))
+        ntrait_tup = (len(trait),)
+        dim_tup = ntaxa_tup + ntrait_tup
+
+        # allocate NaN array for matrix
+        mat = numpy.full(dim_tup, numpy.nan, dtype = float)
+
+        # construct index tuple
+        ix_tup = tuple(taxaix_ls) + (traitix,)
+
+        # overwirte NaN values with values
+        mat[ix_tup] = value_data
+
+        # construct an object
+        out = cls(
+            mat = mat, 
+            taxa = taxa, 
+            taxa_grp = taxa_grp, 
+            trait = trait, 
+        )
+
+        return out
+
+    @classmethod
+    def from_csv(
+            cls,
+            filename: str, 
+            taxa_colnames: Optional[Union[bool,str,Integral,Sequence[Union[str,Integral]]]] = True,
+            taxa_grp_colnames: Optional[Union[bool,str,Integral,Sequence[Union[str,Integral]]]] = True,
+            trait_colnames: Optional[Union[bool,str,Integral,Sequence[Union[str,Integral]]]] = True,
+            value_colname: Union[str,Integral] = "value",
+            ntaxaaxes: Integral = 2,
+            sep: str = ',',
+            header: int = 0,
+            **kwargs: dict
+        ) -> 'DenseSquareTaxaTraitMatrix':
+        """
+        Read a DenseSquareTaxaTraitMatrix from a CSV file.
+
+        Parameters
+        ----------
+        filename : str
+            CSV file name from which to read.
+
+        taxa_colnames : bool, str, Integral, Sequence of str or Integral, None, default = True
+            Sequence of column names or indices from which to read taxa axis columns.
+            There must be one column name or index for each taxa axis.
+            If an element in the sequence cannot be ``None``; all columns must be present.
+            If ``bool``, then import using default names if ``True`` or raise error if ``False``.
+            If ``str``, then one taxa axis column is assumed.
+            If ``Integral``, then one taxa axis column is assumed.
+            If ``None``, then raise error.
+        
+        taxa_grp_colnames : bool, str, Integral, Sequence of str or None, None, default = True
+            Sequence of column names from which to read taxa group axis columns.
+            There must be one column name for each taxa axis.
+            If an element in the sequence is ``None``, then do not export the column.
+            If ``bool``, then import using default names if ``True`` or raise error if ``False``.
+            If ``str``, then one taxa group axis column is assumed.
+            If ``Integral``, then one taxa group axis column is assumed.
+            If ``None``, then raise error.
+
+        trait_colnames : bool, str, Integral, Sequence of str or Integral, None, default = True
+            Sequence of column names or indices from which to read trait columns.
+            There must be one column name for each trait.
+            If an element in the sequence is ``None``, then do not export the column.
+            If ``bool``, then import using default names if ``True`` or raise error if ``False``.
+            If ``str``, then one column name is assumed.
+            If ``Integral``, then one column name is assumed.
+            If ``None``, then raise error.
+        
+        value_colname : str, Integral, default = "value"
+            Name or index of the value column.
+        
+        ntaxaaxes : Integral
+            Expected number of taxa axes for the matrix.
+
+        sep : str
+            CSV file separator.
+        
+        header : int
+            Header row index.
+        
+        kwargs : dict
+            Additional keyword arguments to use for dictating importing from a CSV.
+
+        Returns
+        -------
+        out : CSVInputOutput
+            An object read from a CSV file.
+        """
+        # read dataframe from file to pandas
+        df = pandas.read_csv(
+            filepath_or_buffer = filename,
+            sep = sep,
+            header = header,
+            **kwargs
+        )
+
+        # convert pandas to matrix
+        out = cls.from_pandas(
+            df = df,
+            taxa_colnames = taxa_colnames,
+            taxa_grp_colnames = taxa_grp_colnames,
+            trait_colnames = trait_colnames,
+            value_colname = value_colname,
+            ntaxaaxes = ntaxaaxes,
+        )
+
+        return out
 
 ################################## Utilities ###################################
 def check_is_DenseSquareTaxaTraitMatrix(v: object, vname: str) -> None:

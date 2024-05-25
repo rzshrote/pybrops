@@ -1,5 +1,7 @@
 import os
 from pathlib import Path
+import tempfile
+import pandas
 import pytest
 import numpy
 import h5py
@@ -16,18 +18,17 @@ from pybrops.core.mat.DenseSquareTaxaTraitMatrix import check_is_DenseSquareTaxa
 ################################ Test fixtures #################################
 ################################################################################
 @pytest.fixture
-def mat_float64():
-    a = numpy.float64([
-        [[3.3, 9.2, 5.6, 2.5],
-         [8.7, 3.7, 4.1, 6.2],
-         [9.0, 4.7, 3.8, 1.5],
-         [0.6, 5.2, 8.3, 1.8]],
-        [[2.2, 3.2, 5.2, 7.2],
-         [2.3, 3.3, 5.3, 7.3],
-         [2.5, 3.5, 5.5, 7.5],
-         [2.7, 3.7, 5.7, 7.7]], 
-    ]).transpose(1,2,0)
-    yield a
+def mat_ntaxa():
+    yield 4
+
+@pytest.fixture
+def mat_ntrait():
+    yield 2
+
+@pytest.fixture
+def mat_float64(mat_ntaxa, mat_ntrait):
+    out = numpy.random.random((mat_ntaxa,mat_ntaxa,mat_ntrait))
+    yield out
 
 @pytest.fixture
 def taxa_object():
@@ -69,7 +70,7 @@ def mat(mat_float64, taxa_object, taxa_grp_int64):
     out = DenseSquareTaxaTraitMatrix(
         mat = mat_float64,
         taxa = taxa_object,
-        taxa_grp = taxa_grp_int64
+        taxa_grp = taxa_grp_int64,
     )
     out.group_taxa()
     yield out
@@ -420,6 +421,243 @@ def test_to_hdf5_h5py_File(mat):
     assert os.path.exists(fp)
     os.remove(fp)
 
+### to_pandas
+
+def test_to_pandas_is_concrete():
+    assert_method_isconcrete(DenseSquareTaxaTraitMatrix, "to_pandas")
+
+def test_to_pandas_default(mat):
+    with not_raises(Exception):
+        df = mat.to_pandas()
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+# taxa_colnames tests
+def test_to_pandas_taxa_colnames_None(mat):
+    with not_raises(Exception):
+        df = mat.to_pandas(taxa_colnames=None)
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    # expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+def test_to_pandas_taxa_colnames_True(mat):
+    with not_raises(Exception):
+        df = mat.to_pandas(taxa_colnames=True)
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+def test_to_pandas_taxa_colnames_False(mat):
+    with not_raises(Exception):
+        df = mat.to_pandas(taxa_colnames=False)
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    # expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+def test_to_pandas_taxa_colnames_Sequence(mat):
+    # test Sequence[str] inputs
+    with not_raises(Exception):
+        df = mat.to_pandas(taxa_colnames=[str(i) for i in range(mat.nsquare_taxa)])
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+    # test Sequence[None] inputs
+    with not_raises(Exception):
+        df = mat.to_pandas(taxa_colnames=[None for i in range(mat.nsquare_taxa)])
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    # expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+def test_to_pandas_taxa_colnames_TypeError(mat):
+    with pytest.raises(TypeError):
+        mat.to_pandas(taxa_colnames=object())
+    with pytest.raises(TypeError):
+        mat.to_pandas(taxa_colnames=[object() for i in range(mat.nsquare_taxa)])
+
+# taxa_grp_colnames tests
+def test_to_pandas_taxa_grp_colnames_None(mat):
+    with not_raises(Exception):
+        df = mat.to_pandas(taxa_grp_colnames=None)
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    # expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+def test_to_pandas_taxa_grp_colnames_True(mat):
+    with not_raises(Exception):
+        df = mat.to_pandas(taxa_grp_colnames=True)
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+def test_to_pandas_taxa_grp_colnames_False(mat):
+    with not_raises(Exception):
+        df = mat.to_pandas(taxa_grp_colnames=False)
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    # expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+def test_to_pandas_taxa_grp_colnames_Sequence(mat):
+    # test Sequence[str] inputs
+    with not_raises(Exception):
+        df = mat.to_pandas(taxa_grp_colnames=[str(i) for i in range(mat.nsquare_taxa)])
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+    # test Sequence[None] inputs
+    with not_raises(Exception):
+        df = mat.to_pandas(taxa_grp_colnames=[None for i in range(mat.nsquare_taxa)])
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    # expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+def test_to_pandas_taxa_grp_colnames_TypeError(mat):
+    with pytest.raises(TypeError):
+        mat.to_pandas(taxa_grp_colnames=object())
+    with pytest.raises(TypeError):
+        mat.to_pandas(taxa_grp_colnames=[object() for i in range(mat.nsquare_taxa)])
+
+# trait_colnames tests
+def test_to_pandas_trait_colnames_None(mat):
+    with not_raises(Exception):
+        df = mat.to_pandas(trait_colnames=None)
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    # expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+def test_to_pandas_trait_colnames_True(mat):
+    with not_raises(Exception):
+        df = mat.to_pandas(trait_colnames=True)
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+def test_to_pandas_trait_colnames_False(mat):
+    with not_raises(Exception):
+        df = mat.to_pandas(trait_colnames=False)
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    # expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+def test_to_pandas_trait_colnames_Sequence(mat):
+    # test Sequence[str] inputs
+    with not_raises(Exception):
+        df = mat.to_pandas(trait_colnames=["0"])
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+    # test Sequence[None] inputs
+    with not_raises(Exception):
+        df = mat.to_pandas(trait_colnames=[None])
+    assert isinstance(df, pandas.DataFrame)
+    expndim = 0
+    expndim += mat.nsquare_taxa # taxa columns
+    expndim += mat.nsquare_taxa # taxa_grp columns
+    # expndim += 1                # trait column
+    expndim += 1                # value column
+    assert len(df.columns) == expndim
+    assert len(df) == mat.mat.size
+
+def test_to_pandas_trait_colnames_TypeError(mat):
+    with pytest.raises(TypeError):
+        mat.to_pandas(trait_colnames=object())
+    with pytest.raises(TypeError):
+        mat.to_pandas(trait_colnames=[object()])
+
+### to_csv
+
+def test_to_csv_is_concrete():
+    assert_method_isconcrete(DenseSquareTaxaTraitMatrix, "to_csv")
+
+def test_to_csv_default(mat):
+    tmp = tempfile.NamedTemporaryFile()
+    with not_raises(Exception):
+        mat.to_csv(tmp)
+    assert os.stat(tmp.name).st_size > 0
+    tmp.close()
+
+def test_to_csv_sep(mat):
+    tmp = tempfile.NamedTemporaryFile()
+    with not_raises(Exception):
+        mat.to_csv(tmp, sep = "\t")
+    assert os.stat(tmp.name).st_size > 0
+    tmp.close()
+
 ################################################################################
 ########################## Test concrete classmethods ##########################
 ################################################################################
@@ -514,6 +752,117 @@ def test_from_hdf5_h5py_File(mat):
     assert mat.trait_axis == out.trait_axis
     h5file.close()
     os.remove(fp)
+
+### from_pandas
+
+def test_from_pandas_is_concrete():
+    assert_classmethod_isconcrete(DenseSquareTaxaTraitMatrix, "from_pandas")
+
+def test_from_pandas_default(mat):
+    df = mat.to_pandas()
+    out = DenseSquareTaxaTraitMatrix.from_pandas(df, ntaxaaxes=2)
+    assert isinstance(out, DenseSquareTaxaTraitMatrix)
+    assert numpy.all(mat.mat == out.mat)
+
+# taxa_colnames tests
+def test_from_pandas_taxa_colnames_None_ValueError(mat):
+    df = mat.to_pandas()
+    with pytest.raises(ValueError):
+        DenseSquareTaxaTraitMatrix.from_pandas(df, taxa_colnames=None, ntaxaaxes=2)
+
+def test_from_pandas_taxa_colnames_True(mat):
+    df = mat.to_pandas()
+    out = DenseSquareTaxaTraitMatrix.from_pandas(df, taxa_colnames=True, ntaxaaxes=2)
+    assert isinstance(out, DenseSquareTaxaTraitMatrix)
+    assert numpy.all(mat.mat == out.mat)
+
+def test_from_pandas_taxa_colnames_False_ValueError(mat):
+    df = mat.to_pandas()
+    with pytest.raises(ValueError):
+        DenseSquareTaxaTraitMatrix.from_pandas(df, taxa_colnames=False, ntaxaaxes=2)
+
+def test_from_pandas_taxa_colnames_Sequence(mat):
+    df = mat.to_pandas()
+    ntaxaaxes = 2
+    out = DenseSquareTaxaTraitMatrix.from_pandas(
+        df = df,
+        taxa_colnames = ["taxa_"+str(i) for i in range(ntaxaaxes)],
+        ntaxaaxes = ntaxaaxes,
+    )
+
+def test_from_pandas_taxa_colnames_Sequence_KeyError(mat):
+    df = mat.to_pandas()
+    ntaxaaxes = 2
+    with pytest.raises(Exception):
+        DenseSquareTaxaTraitMatrix.from_pandas(
+            df = df,
+            taxa_colnames = ["not_present_"+str(i) for i in range(ntaxaaxes)],
+            ntaxaaxes = ntaxaaxes,
+        )
+
+def test_from_pandas_taxa_colnames_TypeError(mat):
+    df = mat.to_pandas()
+    with pytest.raises(TypeError):
+        DenseSquareTaxaTraitMatrix.from_pandas(df, taxa_colnames=object(), ntaxaaxes=2)
+
+# taxa_grp_colnames tests
+def test_from_pandas_taxa_grp_colnames_None(mat):
+    df = mat.to_pandas()
+    out = DenseSquareTaxaTraitMatrix.from_pandas(df, taxa_grp_colnames=None, ntaxaaxes=2)
+    assert isinstance(out, DenseSquareTaxaTraitMatrix)
+    assert numpy.all(mat.mat == out.mat)
+    assert out.taxa_grp is None
+
+def test_from_pandas_taxa_grp_colnames_True(mat):
+    df = mat.to_pandas()
+    out = DenseSquareTaxaTraitMatrix.from_pandas(df, taxa_grp_colnames=True, ntaxaaxes=2)
+    assert isinstance(out, DenseSquareTaxaTraitMatrix)
+    assert numpy.all(mat.mat == out.mat)
+
+def test_from_pandas_taxa_grp_colnames_False(mat):
+    df = mat.to_pandas()
+    out = DenseSquareTaxaTraitMatrix.from_pandas(df, taxa_grp_colnames=False, ntaxaaxes=2)
+    assert isinstance(out, DenseSquareTaxaTraitMatrix)
+    assert numpy.all(mat.mat == out.mat)
+    assert out.taxa_grp is None
+
+def test_from_pandas_taxa_grp_colnames_Sequence(mat):
+    df = mat.to_pandas()
+    ntaxaaxes = 2
+    out = DenseSquareTaxaTraitMatrix.from_pandas(
+        df = df,
+        taxa_grp_colnames = ["taxa_grp_"+str(i) for i in range(ntaxaaxes)],
+        ntaxaaxes = ntaxaaxes,
+    )
+    assert isinstance(out, DenseSquareTaxaTraitMatrix)
+    assert numpy.all(mat.mat == out.mat)
+
+def test_from_pandas_taxa_grp_colnames_Sequence_KeyError(mat):
+    df = mat.to_pandas()
+    ntaxaaxes = 2
+    with pytest.raises(Exception):
+        DenseSquareTaxaTraitMatrix.from_pandas(
+            df = df,
+            taxa_grp_colnames = ["not_present_"+str(i) for i in range(ntaxaaxes)],
+            ntaxaaxes = ntaxaaxes,
+        )
+
+def test_from_pandas_taxa_grp_colnames_TypeError(mat):
+    df = mat.to_pandas()
+    with pytest.raises(TypeError):
+        DenseSquareTaxaTraitMatrix.from_pandas(df, taxa_grp_colnames=object(), ntaxaaxes=2)
+
+### from_csv
+
+def test_from_csv_is_concrete():
+    assert_classmethod_isconcrete(DenseSquareTaxaTraitMatrix, "from_csv")
+
+def test_from_csv_default(mat):
+    tmp = tempfile.NamedTemporaryFile()
+    mat.to_csv(tmp.name)
+    out = DenseSquareTaxaTraitMatrix.from_csv(tmp)
+    assert isinstance(out, DenseSquareTaxaTraitMatrix)
+    tmp.close()
 
 ################################################################################
 ######################### Test class utility functions #########################
