@@ -122,6 +122,9 @@ selsoln = selprot.mosolve(
 # Creating a static image
 # -----------------------
 
+# set default font size
+rcParams['font.size'] = 10
+
 # image base name
 basename = "triobjective_OCS_pareto_frontier"
 
@@ -141,8 +144,8 @@ for i,j,k,h in zip(x,y,z,z2):
 
 ax.set_title("Multi-Objective Optimal Contribution Selection Pareto Frontier")
 ax.set_xlabel("Inbreeding")
-ax.set_ylabel("Synthetic Trait 1 Mean Breeding Value")
-ax.set_zlabel("Synthetic Trait 2 Mean Breeding Value")
+ax.set_ylabel("Quantitative Trait 1\nMean Breeding Value")
+ax.set_zlabel("Quantitative Trait 2\nMean Breeding Value")
 ax.view_init(elev = 30., azim = 32)
 pyplot.savefig(basename + ".png", dpi = 250)
 pyplot.close(fig)
@@ -150,6 +153,9 @@ pyplot.close(fig)
 #
 # Creating an animation
 # ---------------------
+
+# set default font size
+rcParams['font.size'] = 10
 
 # image base name
 basename = "triobjective_OCS_pareto_frontier"
@@ -166,8 +172,8 @@ for i in range(360):
     ax.scatter3D(x, y, z)
     ax.set_title("Multi-Objective Optimal Contribution Selection Pareto Frontier")
     ax.set_xlabel("Inbreeding")
-    ax.set_ylabel("Synthetic Trait 1 Mean Breeding Value")
-    ax.set_zlabel("Synthetic Trait 2 Mean Breeding Value")
+    ax.set_ylabel("Quantitative Trait 1\nMean Breeding Value")
+    ax.set_zlabel("Quantitative Trait 2\nMean Breeding Value")
     ax.view_init(elev = 30., azim = i)
     pyplot.savefig(outdir + "/" + basename + "_" + str(i).zfill(3) + ".png", dpi = 250)
     pyplot.close(fig)

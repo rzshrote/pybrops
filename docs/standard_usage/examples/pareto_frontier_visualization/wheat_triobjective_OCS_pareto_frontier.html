@@ -1,0 +1,972 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tri-Objective Optimal Contribution Selection Pareto Frontier Visualization in Wheat &#8212; pybrops 1.0.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=1ed6394b"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'standard_usage/examples/pareto_frontier_visualization/wheat_triobjective_OCS_pareto_frontier';</script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Custom Bi-Objective Germplasm Panel Reduction Pareto Frontier Visualization" href="germplasm_panel_reduction.html" />
+    <link rel="prev" title="Tri-Objective Optimal Contribution Selection Pareto Frontier Visualization" href="triobjective_OCS_pareto_frontier.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 1.0.2 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="../../standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Core Infrastructure Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../core_infrastructure/random_number_generation.html">Random Number Generation</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Population Genetics Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../population_genetics/genetic_maps.html">Genetic Maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../population_genetics/genetic_map_functions.html">Genetic Map Functions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../population_genetics/genotype_matrices.html">Genotype Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../population_genetics/phased_genotype_matrices.html">Phased Genotype Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../population_genetics/breeding_value_matrices.html">Breeding Value Matrices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../population_genetics/coancestry_matrices.html">Coancestry Matrices</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Optimization Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../optimization/optimization_problems.html">Optimization Problems</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimization/optimization_solutions.html">Optimization Solutions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../optimization/optimization_algorithms.html">Optimization Algorithms</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Genomic Modeling Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../genomic_modeling/genomic_models.html">Genomic Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../genomic_modeling/variance_matrices.html">Variance Matrices</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Breeding Protocol Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_protocols/genotyping_protocols.html">Genotyping Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_protocols/phenotyping_protocols.html">Phenotyping Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_protocols/breeding_value_protocols.html">Breeding Value Estimation Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_protocols/mating_protocols.html">Mating Protocols</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_protocols/selection_protocols.html">Selection Protocols</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Breeding Operator Modules Usage:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_operators/initialization_operators.html">Initialization Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_operators/parental_selection_operators.html">Parental Selection Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_operators/mating_operators.html">Mating Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_operators/evaluation_operators.html">Evaluation Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_operators/survivor_selection_operators.html">Survivor Selection Operators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../breeding_operators/logbooks.html">Logbooks</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Breeding Program Simulation Examples:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="biobjective_GEBV_pareto_frontier.html">Bi-Objective GEBV Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="biobjective_wGEBV_pareto_frontier.html">Bi-Objective wGEBV Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="triobjective_OCS_pareto_frontier.html">Tri-Objective Optimal Contribution Selection</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Tri-Objective Optimal Contribution Selection with Real-World Wheat Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="germplasm_panel_reduction.html">Germplasm panel reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../breeding_program_simulation/single_trait_phenotypic_selection.html">Single-Trait Phenotypic Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../breeding_program_simulation/constrained_single_trait_phenotypic_selection.html">Constrained Single-Trait Phenotypic Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../breeding_program_simulation/multiobjective_genomic_selection.html">Bi-Trait Genotypic Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../breeding_program_simulation/constrained_bitrait_phenotypic_selection.html">Constrained Bi-Trait Phenotypic Selection</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../standard_usage.html" class="nav-link">Standard PyBrOpS Usage</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../examples.html" class="nav-link">Examples</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">Tri-Objectiv...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="tri-objective-optimal-contribution-selection-pareto-frontier-visualization-in-wheat">
+<h1>Tri-Objective Optimal Contribution Selection Pareto Frontier Visualization in Wheat<a class="headerlink" href="#tri-objective-optimal-contribution-selection-pareto-frontier-visualization-in-wheat" title="Link to this heading">#</a></h1>
+<p>Optimial Contribution Selection (OCS) is a diversity preservation strategy commonly used in breeding. In this example, we demonstrate how to load an external model into PyBrOpS, perform a multi-objective optimization for a tri-objective OCS problem in a subset search space, and visualize an estimate of the Pareto frontier. In the tri-objective OCS problem, we seek to maximize the mean genomic estimated breeding values (GEBVs) for two traits and minimize the inbreeding between individuals in the selected subset, simultaneously.</p>
+<section id="loading-wheat-datasets-in-r">
+<h2>Loading wheat datasets in R<a class="headerlink" href="#loading-wheat-datasets-in-r" title="Link to this heading">#</a></h2>
+<p>First, we will load several libraries in R, namely the <code class="docutils literal notranslate"><span class="pre">BGLR</span></code> package which contains the dataset we’ll be using, and the <code class="docutils literal notranslate"><span class="pre">rrBLUP</span></code> package which contains the routines we’ll be using to fit our models. The <code class="docutils literal notranslate"><span class="pre">wheat</span></code> dataset in the <code class="docutils literal notranslate"><span class="pre">BGLR</span></code> package contains estimated breeding values for wheat yield in four different locations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># load libraries</span>
+<span class="n">library</span><span class="p">(</span><span class="n">BGLR</span><span class="p">)</span>
+<span class="n">library</span><span class="p">(</span><span class="n">rrBLUP</span><span class="p">)</span>
+
+<span class="c1"># load wheat dataset from BGLR</span>
+<span class="n">data</span><span class="p">(</span><span class="n">wheat</span><span class="p">)</span>
+
+<span class="c1"># get marker matrix in {0,1,2} encoding</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">wheat</span><span class="o">.</span><span class="n">X</span>
+</pre></div>
+</div>
+</section>
+<section id="fitting-rr-blup-models-for-each-of-four-traits-in-r">
+<h2>Fitting RR-BLUP models for each of four traits in R<a class="headerlink" href="#fitting-rr-blup-models-for-each-of-four-traits-in-r" title="Link to this heading">#</a></h2>
+<p>After loading the dataset, we fit an RR-BLUP models for each of our traits of interest.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># fit rrBLUP models for yield data in location 1, 2, 3, 4</span>
+<span class="n">fm1</span> <span class="o">=</span> <span class="n">mixed</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">wheat</span><span class="o">.</span><span class="n">Y</span><span class="p">[,</span><span class="mi">1</span><span class="p">],</span> <span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="p">)</span>
+<span class="n">fm2</span> <span class="o">=</span> <span class="n">mixed</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">wheat</span><span class="o">.</span><span class="n">Y</span><span class="p">[,</span><span class="mi">2</span><span class="p">],</span> <span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="p">)</span>
+<span class="n">fm3</span> <span class="o">=</span> <span class="n">mixed</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">wheat</span><span class="o">.</span><span class="n">Y</span><span class="p">[,</span><span class="mi">3</span><span class="p">],</span> <span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="p">)</span>
+<span class="n">fm4</span> <span class="o">=</span> <span class="n">mixed</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">wheat</span><span class="o">.</span><span class="n">Y</span><span class="p">[,</span><span class="mi">4</span><span class="p">],</span> <span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="writing-rr-blup-models-to-file">
+<h2>Writing RR-BLUP models to file<a class="headerlink" href="#writing-rr-blup-models-to-file" title="Link to this heading">#</a></h2>
+<p>Finally, we save our marker matrix and model parameters to several CSV files. Information in these files will be imported into PyBrOpS.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># extract fixed effects (intercepts) for yield models in locations 1, 2, 3, 4</span>
+<span class="n">beta_df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span>
+    <span class="s2">&quot;fixed_effect&quot;</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s2">&quot;intercept&quot;</span><span class="p">),</span>
+    <span class="s2">&quot;yield1&quot;</span> <span class="o">=</span> <span class="n">fm1</span><span class="err">$</span><span class="n">beta</span><span class="p">,</span>
+    <span class="s2">&quot;yield2&quot;</span> <span class="o">=</span> <span class="n">fm2</span><span class="err">$</span><span class="n">beta</span><span class="p">,</span>
+    <span class="s2">&quot;yield3&quot;</span> <span class="o">=</span> <span class="n">fm3</span><span class="err">$</span><span class="n">beta</span><span class="p">,</span>
+    <span class="s2">&quot;yield4&quot;</span> <span class="o">=</span> <span class="n">fm4</span><span class="err">$</span><span class="n">beta</span>
+<span class="p">)</span>
+
+<span class="c1"># extract additive marker effects for yield models in locations 1, 2, 3, 4</span>
+<span class="n">u_a_df</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">frame</span><span class="p">(</span>
+    <span class="s2">&quot;marker_name&quot;</span> <span class="o">=</span> <span class="n">colnames</span><span class="p">(</span><span class="n">Z</span><span class="p">),</span>
+    <span class="s2">&quot;yield1&quot;</span> <span class="o">=</span> <span class="n">fm1</span><span class="err">$</span><span class="n">u</span><span class="p">,</span>
+    <span class="s2">&quot;yield2&quot;</span> <span class="o">=</span> <span class="n">fm2</span><span class="err">$</span><span class="n">u</span><span class="p">,</span>
+    <span class="s2">&quot;yield3&quot;</span> <span class="o">=</span> <span class="n">fm3</span><span class="err">$</span><span class="n">u</span><span class="p">,</span>
+    <span class="s2">&quot;yield4&quot;</span> <span class="o">=</span> <span class="n">fm4</span><span class="err">$</span><span class="n">u</span>
+<span class="p">)</span>
+
+<span class="c1"># save the marker matrix to csv file in {0,1,2} format</span>
+<span class="n">write</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;wheat_markers.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># save the fixed effects to csv file</span>
+<span class="n">write</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="n">beta_df</span><span class="p">,</span> <span class="s2">&quot;wheat_intercepts.csv&quot;</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">)</span>
+
+<span class="c1"># save the marker effects to csv file</span>
+<span class="n">write</span><span class="o">.</span><span class="n">csv</span><span class="p">(</span><span class="n">u_a_df</span><span class="p">,</span> <span class="s2">&quot;wheat_marker_effects.csv&quot;</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="n">FALSE</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="loading-required-modules-and-seeding-the-global-prng">
+<h2>Loading Required Modules and Seeding the global PRNG<a class="headerlink" href="#loading-required-modules-and-seeding-the-global-prng" title="Link to this heading">#</a></h2>
+<p>After exporting our markers and models, we switch over to Python and load important libraries that we’ll be needing as well as setting a random seed for reproducibility.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.family&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Liberation Serif&#39;</span> <span class="c1"># set default font</span>
+
+<span class="kn">import</span> <span class="nn">pybrops</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.OptimalContributionSelection</span> <span class="kn">import</span> <span class="n">OptimalContributionSubsetSelection</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.DenseAdditiveLinearGenomicModel</span> <span class="kn">import</span> <span class="n">DenseAdditiveLinearGenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.opt.algo.NSGA3SubsetGeneticAlgorithm</span> <span class="kn">import</span> <span class="n">NSGA3SubsetGeneticAlgorithm</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory</span> <span class="kn">import</span> <span class="n">DenseMolecularCoancestryMatrixFactory</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.DenseGenotypeMatrix</span> <span class="kn">import</span> <span class="n">DenseGenotypeMatrix</span>
+
+<span class="c1"># seed python random and numpy random</span>
+<span class="n">pybrops</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">prng</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">92750176</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="reading-external-data">
+<h2>Reading External Data<a class="headerlink" href="#reading-external-data" title="Link to this heading">#</a></h2>
+<section id="loading-genotypic-data-from-a-csv-file">
+<h3>Loading Genotypic Data from a CSV File<a class="headerlink" href="#loading-genotypic-data-from-a-csv-file" title="Link to this heading">#</a></h3>
+<p>First, we load our marker data and use it to construct a dense genotype matrix.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read marker matrix from file</span>
+<span class="n">wheat_markers_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;wheat_markers.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># construct a genotype matrix from read inputs</span>
+<span class="n">gmat</span> <span class="o">=</span> <span class="n">DenseGenotypeMatrix</span><span class="p">(</span>
+    <span class="n">mat</span> <span class="o">=</span> <span class="n">wheat_markers_df</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="s1">&#39;int8&#39;</span><span class="p">),</span>
+    <span class="n">taxa</span> <span class="o">=</span> <span class="n">wheat_markers_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="nb">object</span><span class="p">),</span>
+    <span class="n">vrnt_name</span> <span class="o">=</span> <span class="n">wheat_markers_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="nb">object</span><span class="p">),</span>
+    <span class="n">ploidy</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="loading-genomic-model-data-from-csv-files">
+<h3>Loading Genomic Model Data from CSV Files<a class="headerlink" href="#loading-genomic-model-data-from-csv-files" title="Link to this heading">#</a></h3>
+<p>Next, we load our RR-BLUP models from file. We opt to only select the first two trait models and construct an additive linear genomic model from which we can calculate GEBVs.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># read intercepts from file</span>
+<span class="n">wheat_intercepts_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;wheat_intercepts.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># read marker effects from file</span>
+<span class="n">wheat_marker_effects_df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;wheat_marker_effects.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># construct an additive linear genomic model from read inputs</span>
+<span class="c1"># use only the first two traits to create the genomic model</span>
+<span class="n">algmod</span> <span class="o">=</span> <span class="n">DenseAdditiveLinearGenomicModel</span><span class="p">(</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">wheat_intercepts_df</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="nb">float</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">u_misc</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">u_a</span> <span class="o">=</span> <span class="n">wheat_marker_effects_df</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="nb">float</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span>
+    <span class="n">model_name</span> <span class="o">=</span> <span class="s2">&quot;bi-trait&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="constructing-a-breeding-value-matrix">
+<h2>Constructing a Breeding Value Matrix<a class="headerlink" href="#constructing-a-breeding-value-matrix" title="Link to this heading">#</a></h2>
+<p>Using the loaded genotype matrix and RR-BLUP models, we calculate the GEBVs of our genotypes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate the GEBVs from the genotype matrix</span>
+<span class="n">bvmat</span> <span class="o">=</span> <span class="n">algmod</span><span class="o">.</span><span class="n">gebv</span><span class="p">(</span><span class="n">gtobj</span> <span class="o">=</span> <span class="n">gmat</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="constructing-an-optimal-contribution-subset-selection-object">
+<h2>Constructing an Optimal Contribution Subset Selection Object<a class="headerlink" href="#constructing-an-optimal-contribution-subset-selection-object" title="Link to this heading">#</a></h2>
+<p>Next, we construct an optimal contribution selection protocol object. For our optimizations, we specifically want to use an identity-by-state kinship matrix. We create an NSGA-III optimization algorithm object and use it for selection protocol object.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># create coancestry matrix factory object for creating</span>
+<span class="c1"># identity by state coancestry matrices</span>
+<span class="n">ibscmatfcty</span> <span class="o">=</span> <span class="n">DenseMolecularCoancestryMatrixFactory</span><span class="p">()</span>
+
+<span class="c1"># create custom multi-objective algorithm for optimization</span>
+<span class="n">algo</span> <span class="o">=</span> <span class="n">NSGA3SubsetGeneticAlgorithm</span><span class="p">(</span>
+    <span class="n">ngen</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">,</span>    <span class="c1"># number of generations to evolve</span>
+    <span class="n">pop_size</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="c1"># number of parents in population</span>
+    <span class="n">nrefpts</span> <span class="o">=</span> <span class="mi">91</span><span class="p">,</span>   <span class="c1"># number of reference points for optimization</span>
+<span class="p">)</span>
+
+<span class="c1"># construct a subset selection problem for OCS</span>
+<span class="n">selprot</span> <span class="o">=</span> <span class="n">OptimalContributionSubsetSelection</span><span class="p">(</span>
+    <span class="n">ntrait</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>             <span class="c1"># number of expected traits</span>
+    <span class="n">cmatfcty</span> <span class="o">=</span> <span class="n">ibscmatfcty</span><span class="p">,</span> <span class="c1"># identity by state</span>
+    <span class="n">unscale</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>         <span class="c1"># whether to unscale breeding values</span>
+    <span class="n">ncross</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>            <span class="c1"># number of breeding crosses to select</span>
+    <span class="n">nparent</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>            <span class="c1"># number of parents per breeding cross to select</span>
+    <span class="n">nmating</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>            <span class="c1"># number of times parents are mated per cross</span>
+    <span class="n">nprogeny</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span>          <span class="c1"># number of progenies to derive from a mating event</span>
+    <span class="n">nobj</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>               <span class="c1"># number of objectives (1+ntrait)</span>
+    <span class="n">moalgo</span> <span class="o">=</span> <span class="n">algo</span><span class="p">,</span>          <span class="c1"># custom multi-objective algorithm</span>
+    <span class="c1"># leave all other arguments as their default values</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="estimating-the-pareto-frontier">
+<h2>Estimating the Pareto Frontier<a class="headerlink" href="#estimating-the-pareto-frontier" title="Link to this heading">#</a></h2>
+<p>Finally, we perform the multi-objective optimization and identify a Pareto frontier.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># estimate pareto frontier</span>
+<span class="n">selsoln</span> <span class="o">=</span> <span class="n">selprot</span><span class="o">.</span><span class="n">mosolve</span><span class="p">(</span>
+    <span class="n">pgmat</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>   <span class="c1"># argument not utilized</span>
+    <span class="n">gmat</span> <span class="o">=</span> <span class="n">gmat</span><span class="p">,</span>    <span class="c1"># ``gmat`` argument required</span>
+    <span class="n">ptdf</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>    <span class="c1"># argument not utilized</span>
+    <span class="n">bvmat</span> <span class="o">=</span> <span class="n">bvmat</span><span class="p">,</span>  <span class="c1"># ``bvmat`` argument required</span>
+    <span class="n">gpmod</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>   <span class="c1"># argument not utilized</span>
+    <span class="n">t_cur</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>      <span class="c1"># argument not utilized</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>      <span class="c1"># argument not utilized</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="select-a-single-point-from-the-pareto-frontier">
+<h2>Select a Single Point from the Pareto Frontier<a class="headerlink" href="#select-a-single-point-from-the-pareto-frontier" title="Link to this heading">#</a></h2>
+<p>Next, we algorithmically select a single point from the Pareto frontier. The selection strategy is briefly explained. First, we take our non-dominated points identified from our multi-objective optimization and normalize them with respect to each objective. Normalized objectives fall in the 0 to 1 range. Next, we draw out a pesudoweight vector according to our preferences and calculate the distance between each normalized point and the preference vector. The function below does this.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># define a function to calculate distances from a pseudoweight vector</span>
+<span class="k">def</span> <span class="nf">trans_ndpt_pseudo_dist</span><span class="p">(</span>
+        <span class="n">ndptmat</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">objfn_minmax</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="n">objfn_pseudoweight</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transform a set of non-dominated points by calculating their distances to a</span>
+<span class="sd">    vector.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ndptmat : numpy.ndarray</span>
+<span class="sd">        A point coordinate array of shape (npt, nobj) where &#39;npt&#39; is the number</span>
+<span class="sd">        of points and &#39;nobj&#39; is the number of objectives (dimensions).</span>
+<span class="sd">        This array contains input points for calculating the distance between a</span>
+<span class="sd">        point to a pseudoweight vector.</span>
+
+<span class="sd">    objfn_minmax : numpy.ndarray</span>
+<span class="sd">        An objective function min/max sign indicator array of shape ``(nobj,)``.</span>
+<span class="sd">        This array contains sign indicator variables for whather an objective is</span>
+<span class="sd">        minimizing (-1.0) or maximizing (1.0).</span>
+
+<span class="sd">    objfn_pseudopreference : numpy.ndarray</span>
+<span class="sd">        An objective function pseudoweight array of shape ``(nobj,)``</span>
+
+<span class="sd">    kwargs : dict</span>
+<span class="sd">        Additional keyword arguments. Not used by this function.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : numpy.ndarray</span>
+<span class="sd">        An array of shape (npt,) containing the distance between each point</span>
+<span class="sd">        to the vector.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># input assertions</span>
+    <span class="k">assert</span> <span class="n">numpy</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">objfn_pseudoweight</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">objfn_pseudoweight</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">objfn_pseudoweight</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">objfn_pseudoweight</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.0</span>
+    <span class="c1"># transform ndptmat to all maximizing functions</span>
+    <span class="c1"># (npt,nobj) * (nobj,) -&gt; (npt,nobj) * (1,nobj) -&gt; (npt,nobj)</span>
+    <span class="n">ndptmat</span> <span class="o">=</span> <span class="n">ndptmat</span> <span class="o">*</span> <span class="n">objfn_minmax</span>
+    <span class="c1"># subtract column minimums</span>
+    <span class="c1"># (npt,nobj).min(0) -&gt; (nobj,)</span>
+    <span class="c1"># (npt,nobj) - (nobj,) -&gt; (npt,nobj) - (1,nobj) -&gt; (npt,nobj)</span>
+    <span class="n">ndptmat</span> <span class="o">=</span> <span class="n">ndptmat</span> <span class="o">-</span> <span class="n">ndptmat</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="c1"># divide by column maximums avoiding division by zero; ndptmat is in range [0,1]</span>
+    <span class="c1"># (npt,nobj).min(0) -&gt; (nobj,)</span>
+    <span class="c1"># scalar / (nobj,) -&gt; (nobj,)</span>
+    <span class="c1"># (nobj,) * (npt,nobj) -&gt; (npt,nobj)</span>
+    <span class="n">maximum</span> <span class="o">=</span> <span class="n">ndptmat</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">maximum</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">maximum</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">maximum</span>
+    <span class="n">scale</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">ndptmat</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">ndptmat</span>
+    <span class="c1"># calculate the projection of a point onto the line</span>
+    <span class="c1">#             P.L</span>
+    <span class="c1"># proj_L(P) = --- L</span>
+    <span class="c1">#             L.L</span>
+    <span class="c1"># where:</span>
+    <span class="c1">#   P = ndptmat</span>
+    <span class="c1">#   L = objfn_pseudoweight</span>
+    <span class="c1"># (nobj,) . (nobj,) -&gt; scalar</span>
+    <span class="n">LdotLinv</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">objfn_pseudoweight</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">objfn_pseudoweight</span><span class="p">)</span>
+    <span class="c1"># (npt,nobj) . (nobj,) -&gt; (npt,)</span>
+    <span class="n">PdotL</span> <span class="o">=</span> <span class="n">ndptmat</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">objfn_pseudoweight</span><span class="p">)</span>
+    <span class="c1"># scalar * (npt,) -&gt; (npt,)</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">LdotLinv</span> <span class="o">*</span> <span class="n">PdotL</span>
+    <span class="c1"># (npt,1) * (npt,nobj) -&gt; (npt,nobj)</span>
+    <span class="n">projL_P</span> <span class="o">=</span> <span class="n">scale</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">objfn_pseudoweight</span>
+    <span class="c1"># calculate the orthoprojection of a point onto the line</span>
+    <span class="c1"># oproj_L(P) = P - proj_L(P)</span>
+    <span class="c1"># (npt,nobj) - (npt,nobj) -&gt; (npt,nobj)</span>
+    <span class="n">oprojL_P</span> <span class="o">=</span> <span class="n">ndptmat</span> <span class="o">-</span> <span class="n">projL_P</span>
+    <span class="c1"># calculate the euclidean distance of orthoprojection</span>
+    <span class="c1"># (npt,nobj) -&gt; (npt,)</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">oprojL_P</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dist</span>
+</pre></div>
+</div>
+<p>After defining this function, we use it to calculate these distances and select the point with the closest distance to our preference vector.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># calculate distances from a pseudoweight vector</span>
+<span class="n">dist</span> <span class="o">=</span> <span class="n">trans_ndpt_pseudo_dist</span><span class="p">(</span>
+    <span class="n">ndptmat</span> <span class="o">=</span> <span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">,</span>
+    <span class="n">objfn_minmax</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]),</span> <span class="c1"># all are minimizing objectives</span>
+    <span class="n">objfn_pseudoweight</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">])</span> <span class="c1"># give 20% priority to kinship, 40% priority to each trait</span>
+<span class="p">)</span>
+
+<span class="c1"># find the index of the closest distance, what we will select</span>
+<span class="n">selix</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+
+<span class="c1"># get the solution vector for the selected point</span>
+<span class="n">sel_decn</span> <span class="o">=</span> <span class="n">selsoln</span><span class="o">.</span><span class="n">soln_decn</span><span class="p">[</span><span class="n">selix</span><span class="p">]</span>
+<span class="n">sel_obj</span>  <span class="o">=</span> <span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">[</span><span class="n">selix</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="visualizing-the-pareto-frontier-with-matplotlib">
+<h2>Visualizing the Pareto Frontier with <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code><a class="headerlink" href="#visualizing-the-pareto-frontier-with-matplotlib" title="Link to this heading">#</a></h2>
+<p>Finally, we create a static image visualizing our selection decision and an animation for the Pareto frontier.</p>
+<section id="creating-a-static-image">
+<h3>Creating a static image<a class="headerlink" href="#creating-a-static-image" title="Link to this heading">#</a></h3>
+<p>To create the static image, we use the code below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># set default font size</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># image base name</span>
+<span class="n">basename</span> <span class="o">=</span> <span class="s2">&quot;wheat_triobjective_OCS_pareto_frontier&quot;</span>
+
+<span class="c1"># get axis data</span>
+<span class="n">x</span> <span class="o">=</span>  <span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># 2 * mean kinship (additive relationship/inbreeding)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="c1"># negate to get Breeding Value</span>
+<span class="n">z</span> <span class="o">=</span> <span class="o">-</span><span class="n">selsoln</span><span class="o">.</span><span class="n">soln_obj</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># negate to get Breeding Value</span>
+<span class="n">z2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">shape</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="nb">min</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;blue&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">colors</span><span class="p">[</span><span class="n">selix</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;red&quot;</span>
+<span class="n">lcolors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cornflowerblue&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">lcolors</span><span class="p">[</span><span class="n">selix</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;lightcoral&quot;</span>
+
+<span class="c1"># create static figure</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span> <span class="o">=</span> <span class="s2">&quot;3d&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">h</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">l</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">z2</span><span class="p">,</span><span class="n">colors</span><span class="p">,</span><span class="n">lcolors</span><span class="p">):</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="mf">0.5</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">c</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="p">],[</span><span class="n">j</span><span class="p">,</span><span class="n">j</span><span class="p">],[</span><span class="n">k</span><span class="p">,</span><span class="n">h</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">l</span><span class="p">,</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">a</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Bi-Trait Optimal Contribution</span><span class="se">\n</span><span class="s2">Selection Pareto Frontier in Wheat&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Inbreeding&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Location 1 Yield Mean GEBV&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Location 2 Yield Mean GEBV&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span> <span class="o">=</span> <span class="mf">30.</span><span class="p">,</span> <span class="n">azim</span> <span class="o">=</span> <span class="mi">120</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">basename</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">250</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Below is the resulting image:</p>
+<img alt="../../../_images/wheat_triobjective_OCS_pareto_frontier.png" src="../../../_images/wheat_triobjective_OCS_pareto_frontier.png" />
+</section>
+<section id="creating-an-animation">
+<h3>Creating an animation<a class="headerlink" href="#creating-an-animation" title="Link to this heading">#</a></h3>
+<p>To create the animation, we use the code below.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># set default font size</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># image base name</span>
+<span class="n">basename</span> <span class="o">=</span> <span class="s2">&quot;wheat_triobjective_OCS_pareto_frontier&quot;</span>
+
+<span class="c1"># create animation frames output directory</span>
+<span class="n">outdir</span> <span class="o">=</span> <span class="s2">&quot;frames&quot;</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">outdir</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">outdir</span><span class="p">)</span>
+
+<span class="c1"># create animation frames</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">360</span><span class="p">):</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">pyplot</span><span class="o">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span> <span class="o">=</span> <span class="s1">&#39;3d&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter3D</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Bi-Trait Optimal Contribution</span><span class="se">\n</span><span class="s2">Selection Pareto Frontier in Wheat&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Inbreeding&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Location 1 Yield Mean GEBV&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Location 2 Yield Mean GEBV&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span> <span class="o">=</span> <span class="mf">30.</span><span class="p">,</span> <span class="n">azim</span> <span class="o">=</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">outdir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">basename</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">250</span><span class="p">)</span>
+    <span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
+
+<span class="c1"># construct filenames from which to read</span>
+<span class="n">filenames</span> <span class="o">=</span> <span class="p">[</span><span class="n">outdir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">basename</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">360</span><span class="p">)]</span>
+
+<span class="c1"># read image files from which to create animation using PIL</span>
+<span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">]</span>
+
+<span class="c1"># resize images to 50% size using PIL</span>
+<span class="n">images_resize</span> <span class="o">=</span> <span class="p">[</span><span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">px</span> <span class="o">//</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">px</span> <span class="ow">in</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">))</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">images</span><span class="p">]</span>
+
+<span class="c1"># get first image</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">images_resize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># create gif by appending remaining images to end of first image</span>
+<span class="n">img</span><span class="o">.</span><span class="n">save</span><span class="p">(</span>
+    <span class="n">basename</span> <span class="o">+</span> <span class="s2">&quot;.gif&quot;</span><span class="p">,</span>
+    <span class="n">save_all</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">append_images</span> <span class="o">=</span> <span class="n">images_resize</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
+    <span class="n">optimize</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">duration</span> <span class="o">=</span> <span class="mi">55</span><span class="p">,</span>      <span class="c1"># inverse of speed</span>
+    <span class="n">loop</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>           <span class="c1"># loop indefinitely</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Below is the resulting animation:</p>
+<img alt="../../../_images/wheat_triobjective_OCS_pareto_frontier.gif" src="../../../_images/wheat_triobjective_OCS_pareto_frontier.gif" />
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="triobjective_OCS_pareto_frontier.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Tri-Objective Optimal Contribution Selection Pareto Frontier Visualization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="germplasm_panel_reduction.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Custom Bi-Objective Germplasm Panel Reduction Pareto Frontier Visualization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-wheat-datasets-in-r">Loading wheat datasets in R</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fitting-rr-blup-models-for-each-of-four-traits-in-r">Fitting RR-BLUP models for each of four traits in R</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-rr-blup-models-to-file">Writing RR-BLUP models to file</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-required-modules-and-seeding-the-global-prng">Loading Required Modules and Seeding the global PRNG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reading-external-data">Reading External Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-genotypic-data-from-a-csv-file">Loading Genotypic Data from a CSV File</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-genomic-model-data-from-csv-files">Loading Genomic Model Data from CSV Files</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-a-breeding-value-matrix">Constructing a Breeding Value Matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#constructing-an-optimal-contribution-subset-selection-object">Constructing an Optimal Contribution Subset Selection Object</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-pareto-frontier">Estimating the Pareto Frontier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#select-a-single-point-from-the-pareto-frontier">Select a Single Point from the Pareto Frontier</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-pareto-frontier-with-matplotlib">Visualizing the Pareto Frontier with <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-a-static-image">Creating a static image</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#creating-an-animation">Creating an animation</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Robert Z. Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

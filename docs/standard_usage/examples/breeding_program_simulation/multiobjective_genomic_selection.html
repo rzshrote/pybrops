@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -184,13 +184,6 @@
                       </a>
                     </li>
                 
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../_autosummary/pybrops.html">
-                        API reference
-                      </a>
-                    </li>
-                
                 </ul>
             </li>
             
@@ -329,13 +322,6 @@ document.write(`
                       </a>
                     </li>
                 
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../_autosummary/pybrops.html">
-                        API reference
-                      </a>
-                    </li>
-                
                 </ul>
             </li>
             
@@ -413,9 +399,10 @@ document.write(`
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Breeding Program Simulation Examples:</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../pareto_frontier_visualization/biobjective_GEBV_pareto_frontier.html">Bi-Objective GEBV selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pareto_frontier_visualization/biobjective_wGEBV_pareto_frontier.html">Bi-Objective wGEBV selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pareto_frontier_visualization/triobjective_OCS_pareto_frontier.html">Tri-Objective Optimal Contribution selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pareto_frontier_visualization/biobjective_GEBV_pareto_frontier.html">Bi-Objective GEBV Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pareto_frontier_visualization/biobjective_wGEBV_pareto_frontier.html">Bi-Objective wGEBV Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pareto_frontier_visualization/triobjective_OCS_pareto_frontier.html">Tri-Objective Optimal Contribution Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pareto_frontier_visualization/wheat_triobjective_OCS_pareto_frontier.html">Tri-Objective Optimal Contribution Selection with Real-World Wheat Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../pareto_frontier_visualization/germplasm_panel_reduction.html">Germplasm panel reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="single_trait_phenotypic_selection.html">Single-Trait Phenotypic Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="constrained_single_trait_phenotypic_selection.html">Constrained Single-Trait Phenotypic Selection</a></li>
@@ -527,7 +514,7 @@ document.write(`
 <p>Next, we define a couple of simulation parameter constants. These constants include the number of founders, number of QTL to simulate, number of burn-in generations, and number of generations for which to conduct simulations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nfndr</span> <span class="o">=</span> <span class="mi">40</span>          <span class="c1"># number of random founders to select</span>
 <span class="n">nqtl</span> <span class="o">=</span> <span class="mi">1000</span>         <span class="c1"># number of QTL</span>
-<span class="n">qlen</span> <span class="o">=</span> <span class="mi">6</span>            <span class="c1"># breeding pipeline queue length</span>
+<span class="n">qlen</span> <span class="o">=</span> <span class="mi">5</span>            <span class="c1"># breeding pipeline queue length (3 active + 2 in pipeline)</span>
 <span class="n">ncross</span> <span class="o">=</span> <span class="mi">20</span>         <span class="c1"># number of cross configurations (20, 2-way crosses)</span>
 <span class="n">nparent</span> <span class="o">=</span> <span class="mi">2</span>         <span class="c1"># number of parents per cross configuration (2-way crosses)</span>
 <span class="n">nmating</span> <span class="o">=</span> <span class="mi">1</span>         <span class="c1"># number of times to perform cross configuration</span>
@@ -1453,6 +1440,7 @@ document.write(`
 <span class="c1"># set default font to use in plots to something that isn&#39;t completely ugly</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rcParams</span>
 <span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.family&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Liberation Serif&#39;</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">15</span>
 </pre></div>
 </div>
 </section>
@@ -1480,9 +1468,9 @@ document.write(`
     <span class="n">y</span> <span class="o">=</span> <span class="s2">&quot;syn2&quot;</span><span class="p">,</span>
     <span class="n">hue</span> <span class="o">=</span> <span class="s2">&quot;t_cur&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">pyplot</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Pareto Frontier for Multi-Objective Conventional Genomic Selection Over Time&quot;</span><span class="p">)</span>
-<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 1 Breeding Value: Selection Mean (h² = 0.4)&quot;</span><span class="p">)</span>
-<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 2 Breeding Value: Selection Mean (h² = 0.6)&quot;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Pareto Frontier for Multi-Objective</span><span class="se">\n</span><span class="s2">Conventional Genomic Selection Over Time&quot;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Quantitative Trait 1 Breeding Value: Selection Mean (h² = 0.4)&quot;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Quantitative Trait 2 Breeding Value: Selection Mean (h² = 0.6)&quot;</span><span class="p">)</span>
 <span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Generation&quot;</span><span class="p">)</span>
 <span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;multiobjective_genomic_selection_program_frontier.png&quot;</span><span class="p">)</span>
 <span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -1530,8 +1518,8 @@ document.write(`
 <span class="p">)</span>
 <span class="n">pyplot</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Multi-Objective Conventional Genomic Selection Over Time&quot;</span><span class="p">)</span>
 <span class="c1"># pyplot.suptitle(&quot;Mean Expected Heterozygosity&quot;)</span>
-<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 1 Breeding Value: Population Mean (h² = 0.4)&quot;</span><span class="p">)</span>
-<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 2 Breeding Value: Population Mean (h² = 0.6)&quot;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Quantitative Trait 1 Breeding Value: Population Mean (h² = 0.4)&quot;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Quantitative Trait 2 Breeding Value: Population Mean (h² = 0.6)&quot;</span><span class="p">)</span>
 <span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;Generation&quot;</span><span class="p">)</span>
 <span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;multiobjective_genomic_selection_breeding_values.png&quot;</span><span class="p">)</span>
 <span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>

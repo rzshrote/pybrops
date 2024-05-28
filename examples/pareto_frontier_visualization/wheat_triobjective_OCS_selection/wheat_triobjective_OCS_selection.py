@@ -12,6 +12,8 @@ import numpy
 import pandas
 from matplotlib import pyplot
 from PIL import Image
+from matplotlib import rcParams
+rcParams['font.family'] = 'Liberation Serif' # set default font
 
 import pybrops
 from pybrops.breed.prot.sel.OptimalContributionSelection import OptimalContributionSubsetSelection
@@ -219,6 +221,9 @@ sel_obj  = selsoln.soln_obj[selix]
 # Creating a static image
 # -----------------------
 
+# set default font size
+rcParams['font.size'] = 10
+
 # image base name
 basename = "wheat_triobjective_OCS_pareto_frontier"
 
@@ -240,7 +245,7 @@ for i,j,k,h,c,l in zip(x,y,z,z2,colors,lcolors):
     ax.scatter(i, j, k, color = c)
     ax.plot([i,i],[j,j],[k,h], color=l, alpha = a)
 
-ax.set_title("Bi-Trait OCS Pareto Frontier in Wheat")
+ax.set_title("Bi-Trait Optimal Contribution\nSelection Pareto Frontier in Wheat")
 ax.set_xlabel("Inbreeding")
 ax.set_ylabel("Location 1 Yield Mean GEBV")
 ax.set_zlabel("Location 2 Yield Mean GEBV")
@@ -251,6 +256,9 @@ pyplot.close(fig)
 #
 # Creating an animation
 # ---------------------
+
+# set default font size
+rcParams['font.size'] = 10
 
 # image base name
 basename = "wheat_triobjective_OCS_pareto_frontier"
@@ -265,7 +273,7 @@ for i in range(360):
     fig = pyplot.figure()
     ax = pyplot.axes(projection = '3d')
     ax.scatter3D(x, y, z)
-    ax.set_title("Bi-Trait OCS Pareto Frontier in Wheat")
+    ax.set_title("Bi-Trait Optimal Contribution\nSelection Pareto Frontier in Wheat")
     ax.set_xlabel("Inbreeding")
     ax.set_ylabel("Location 1 Yield Mean GEBV")
     ax.set_zlabel("Location 2 Yield Mean GEBV")

@@ -8,9 +8,10 @@ Pareto Frontier Visualization Examples
     :maxdepth: 1
     :caption: Pre-built selection strategies
     
-    Bi-Objective GEBV selection <pareto_frontier_visualization/biobjective_GEBV_pareto_frontier>
-    Bi-Objective wGEBV selection <pareto_frontier_visualization/biobjective_wGEBV_pareto_frontier>
-    Tri-Objective Optimal Contribution selection <pareto_frontier_visualization/triobjective_OCS_pareto_frontier>
+    Bi-Objective GEBV Selection <pareto_frontier_visualization/biobjective_GEBV_pareto_frontier>
+    Bi-Objective wGEBV Selection <pareto_frontier_visualization/biobjective_wGEBV_pareto_frontier>
+    Tri-Objective Optimal Contribution Selection <pareto_frontier_visualization/triobjective_OCS_pareto_frontier>
+    Tri-Objective Optimal Contribution Selection with Real-World Wheat Data <pareto_frontier_visualization/wheat_triobjective_OCS_pareto_frontier>
 
 .. toctree::
     :maxdepth: 1
