@@ -30,6 +30,7 @@ io
 
    pybrops.core.io.CSVDictInputOutput
    pybrops.core.io.CSVInputOutput
+   pybrops.core.io.Copyable
    pybrops.core.io.DictInputOutput
    pybrops.core.io.HDF5InputOutput
    pybrops.core.io.NPYInputOutput

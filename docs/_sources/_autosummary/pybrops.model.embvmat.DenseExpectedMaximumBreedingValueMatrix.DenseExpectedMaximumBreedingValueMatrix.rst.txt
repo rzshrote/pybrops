@@ -1,0 +1,103 @@
+DenseExpectedMaximumBreedingValueMatrix
+=======================================
+
+.. currentmodule:: pybrops.model.embvmat.DenseExpectedMaximumBreedingValueMatrix
+
+.. autoclass:: DenseExpectedMaximumBreedingValueMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseExpectedMaximumBreedingValueMatrix.adjoin
+      ~DenseExpectedMaximumBreedingValueMatrix.adjoin_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.adjoin_trait
+      ~DenseExpectedMaximumBreedingValueMatrix.append
+      ~DenseExpectedMaximumBreedingValueMatrix.append_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.append_trait
+      ~DenseExpectedMaximumBreedingValueMatrix.concat
+      ~DenseExpectedMaximumBreedingValueMatrix.concat_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.concat_trait
+      ~DenseExpectedMaximumBreedingValueMatrix.copy
+      ~DenseExpectedMaximumBreedingValueMatrix.deepcopy
+      ~DenseExpectedMaximumBreedingValueMatrix.delete
+      ~DenseExpectedMaximumBreedingValueMatrix.delete_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.delete_trait
+      ~DenseExpectedMaximumBreedingValueMatrix.from_csv
+      ~DenseExpectedMaximumBreedingValueMatrix.from_gmod
+      ~DenseExpectedMaximumBreedingValueMatrix.from_hdf5
+      ~DenseExpectedMaximumBreedingValueMatrix.from_numpy
+      ~DenseExpectedMaximumBreedingValueMatrix.from_pandas
+      ~DenseExpectedMaximumBreedingValueMatrix.group
+      ~DenseExpectedMaximumBreedingValueMatrix.group_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.incorp
+      ~DenseExpectedMaximumBreedingValueMatrix.incorp_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.incorp_trait
+      ~DenseExpectedMaximumBreedingValueMatrix.insert
+      ~DenseExpectedMaximumBreedingValueMatrix.insert_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.insert_trait
+      ~DenseExpectedMaximumBreedingValueMatrix.is_grouped
+      ~DenseExpectedMaximumBreedingValueMatrix.is_grouped_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.lexsort
+      ~DenseExpectedMaximumBreedingValueMatrix.lexsort_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.lexsort_trait
+      ~DenseExpectedMaximumBreedingValueMatrix.remove
+      ~DenseExpectedMaximumBreedingValueMatrix.remove_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.remove_trait
+      ~DenseExpectedMaximumBreedingValueMatrix.reorder
+      ~DenseExpectedMaximumBreedingValueMatrix.reorder_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.reorder_trait
+      ~DenseExpectedMaximumBreedingValueMatrix.select
+      ~DenseExpectedMaximumBreedingValueMatrix.select_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.select_trait
+      ~DenseExpectedMaximumBreedingValueMatrix.sort
+      ~DenseExpectedMaximumBreedingValueMatrix.sort_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.sort_trait
+      ~DenseExpectedMaximumBreedingValueMatrix.targmax
+      ~DenseExpectedMaximumBreedingValueMatrix.targmin
+      ~DenseExpectedMaximumBreedingValueMatrix.tmax
+      ~DenseExpectedMaximumBreedingValueMatrix.tmean
+      ~DenseExpectedMaximumBreedingValueMatrix.tmin
+      ~DenseExpectedMaximumBreedingValueMatrix.to_csv
+      ~DenseExpectedMaximumBreedingValueMatrix.to_hdf5
+      ~DenseExpectedMaximumBreedingValueMatrix.to_pandas
+      ~DenseExpectedMaximumBreedingValueMatrix.trange
+      ~DenseExpectedMaximumBreedingValueMatrix.tstd
+      ~DenseExpectedMaximumBreedingValueMatrix.tvar
+      ~DenseExpectedMaximumBreedingValueMatrix.ungroup
+      ~DenseExpectedMaximumBreedingValueMatrix.ungroup_taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.unscale
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseExpectedMaximumBreedingValueMatrix.location
+      ~DenseExpectedMaximumBreedingValueMatrix.mat
+      ~DenseExpectedMaximumBreedingValueMatrix.mat_ndim
+      ~DenseExpectedMaximumBreedingValueMatrix.mat_shape
+      ~DenseExpectedMaximumBreedingValueMatrix.ntaxa
+      ~DenseExpectedMaximumBreedingValueMatrix.ntrait
+      ~DenseExpectedMaximumBreedingValueMatrix.scale
+      ~DenseExpectedMaximumBreedingValueMatrix.taxa
+      ~DenseExpectedMaximumBreedingValueMatrix.taxa_axis
+      ~DenseExpectedMaximumBreedingValueMatrix.taxa_grp
+      ~DenseExpectedMaximumBreedingValueMatrix.taxa_grp_len
+      ~DenseExpectedMaximumBreedingValueMatrix.taxa_grp_name
+      ~DenseExpectedMaximumBreedingValueMatrix.taxa_grp_spix
+      ~DenseExpectedMaximumBreedingValueMatrix.taxa_grp_stix
+      ~DenseExpectedMaximumBreedingValueMatrix.trait
+      ~DenseExpectedMaximumBreedingValueMatrix.trait_axis
+   
+   

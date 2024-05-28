@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/popgen/gmat/DensePhasedGenotypeMatrix';</script>
@@ -418,12 +418,17 @@ document.write(`
 
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
-
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
 <span class="kn">import</span> <span class="nn">cyvcf2</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">DTypeLike</span><span class="p">,</span> <span class="n">ArrayLike</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">DTypeLike</span>
+<span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
 
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_io_python</span> <span class="kn">import</span> <span class="n">check_file_exists</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_dtype_is_int8</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
@@ -1182,7 +1187,7 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dtype : dtype, None</span>
-<span class="sd">            The dtype of the accumulator and returned array.</span>
+<span class="sd">            The data type of the accumulator and returned array.</span>
 <span class="sd">            If ``None``, use the native accumulator type (int or float).</span>
 
 <span class="sd">        Returns</span>
@@ -1219,7 +1224,8 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dtype : dtype, None</span>
-<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+<span class="sd">            The data type of the returned array. </span>
+<span class="sd">            If ``None``, use the native type.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1249,7 +1255,8 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dtype : dtype, None</span>
-<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+<span class="sd">            The data type of the returned array. </span>
+<span class="sd">            If ``None``, use the native type.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1277,7 +1284,8 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dtype : dtype, None</span>
-<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+<span class="sd">            The data type of the returned array. </span>
+<span class="sd">            If ``None``, use the native type.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1306,7 +1314,8 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dtype : dtype, None</span>
-<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+<span class="sd">            The data type of the returned array. </span>
+<span class="sd">            If ``None``, use the native type.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1344,7 +1353,8 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dtype : dtype, None</span>
-<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+<span class="sd">            The data type of the returned array. </span>
+<span class="sd">            If ``None``, use the native type.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1370,7 +1380,8 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dtype : dtype, None</span>
-<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+<span class="sd">            The data type of the returned array. </span>
+<span class="sd">            If ``None``, use the native type.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1402,7 +1413,8 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        dtype : dtype, None</span>
-<span class="sd">            The dtype of the returned array. If ``None``, use the native type.</span>
+<span class="sd">            The data type of the returned array. </span>
+<span class="sd">            If ``None``, use the native type.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1483,7 +1495,7 @@ document.write(`
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_hdf5</span><span class="p">(</span>
             <span class="bp">cls</span><span class="p">,</span> 
-            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">,</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">],</span> 
             <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1491,11 +1503,12 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str</span>
-<span class="sd">            HDF5 file name which to read.</span>
-<span class="sd">        groupname : str or None</span>
-<span class="sd">            HDF5 group name under which GenotypeMatrix data is stored.</span>
-<span class="sd">            If None, GenotypeMatrix is read from base HDF5 group.</span>
+<span class="sd">        filename : str, Path, h5py.File</span>
+<span class="sd">            If ``str`` or ``Path``, an HDF5 file name from which to read. File is closed after reading.</span>
+<span class="sd">            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.</span>
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            If ``str``, HDF5 group name under which GenotypeMatrix data is stored.</span>
+<span class="sd">            If ``None``, GenotypeMatrix is read from base HDF5 group.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1517,8 +1530,25 @@ document.write(`
             <span class="n">auto_group_vrnt</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DensePhasedGenotypeMatrix&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Does not ensure that data is phased, just reads it as phased.</span>
+<span class="sd">        Read a ``DensePhasedGenotypeMatrix`` from a VCF file. This classmethod </span>
+<span class="sd">        treats the VCF file as if it has been phased. It does not check if </span>
+<span class="sd">        this assumption is correct.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            Path to a VCF file.</span>
+<span class="sd">        auto_group_vrnt : bool</span>
+<span class="sd">            Whether to automatically group variants into chromosome groupings.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DensePhasedGenotypeMatrix</span>
+<span class="sd">            A ``DensePhasedGenotypeMatrix`` read from the VCF file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check that the file exists</span>
+        <span class="n">check_file_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
         <span class="c1"># make VCF iterator</span>
         <span class="n">vcf</span> <span class="o">=</span> <span class="n">cyvcf2</span><span class="o">.</span><span class="n">VCF</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
 

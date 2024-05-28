@@ -47,6 +47,8 @@ sel
    pybrops.breed.prot.sel.OptimalContributionSelection
    pybrops.breed.prot.sel.OptimalHaploidValueSelection
    pybrops.breed.prot.sel.OptimalPopulationValueSelection
+   pybrops.breed.prot.sel.PopulationAlleleFrequencyDistanceSelection
+   pybrops.breed.prot.sel.PopulationAlleleUnavailabilitySelection
    pybrops.breed.prot.sel.RandomSelection
    pybrops.breed.prot.sel.RealMateSelectionProtocol
    pybrops.breed.prot.sel.RealSelectionProtocol
@@ -55,8 +57,6 @@ sel
    pybrops.breed.prot.sel.SubsetSelectionProtocol
    pybrops.breed.prot.sel.UnconstrainedGeneralized1NormGenomicSelection
    pybrops.breed.prot.sel.UnconstrainedMultiObjectiveGenomicMating
-   pybrops.breed.prot.sel.UnconstrainedPopulationAlleleFrequencyDistanceSelection
-   pybrops.breed.prot.sel.UnconstrainedPopulationAlleleUnavailabilitySelection
    pybrops.breed.prot.sel.UnconstrainedSelectionProtocol
    pybrops.breed.prot.sel.UsefulnessCriterionSelection
    pybrops.breed.prot.sel.WeightedGenomicSelection

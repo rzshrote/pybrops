@@ -1,0 +1,6 @@
+h5py\_File\_read\_ndarray\_utf8
+===============================
+
+.. currentmodule:: pybrops.core.util.h5py
+
+.. autofunction:: h5py_File_read_ndarray_utf8

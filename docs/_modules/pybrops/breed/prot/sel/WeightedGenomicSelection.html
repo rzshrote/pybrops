@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/sel/WeightedGenomicSelection';</script>
@@ -422,11 +422,15 @@ document.write(`
     <span class="s2">&quot;WeightedGenomicSubsetSelection&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">RandomState</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">RandomState</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.GeneralizedWeightedGenomicEstimatedBreedingValueSelection</span> <span class="kn">import</span> <span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection</span>
@@ -438,7 +442,9 @@ document.write(`
 
 <div class="viewcode-block" id="WeightedGenomicBinarySelection">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.WeightedGenomicSelection.WeightedGenomicBinarySelection.html#pybrops.breed.prot.sel.WeightedGenomicSelection.WeightedGenomicBinarySelection">[docs]</a>
-<span class="k">class</span> <span class="nc">WeightedGenomicBinarySelection</span><span class="p">(</span><span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">WeightedGenomicBinarySelection</span><span class="p">(</span>
+        <span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelection</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Weighted Genomic Selection in a subset search space.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -761,7 +767,9 @@ document.write(`
 
 <div class="viewcode-block" id="WeightedGenomicIntegerSelection">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.WeightedGenomicSelection.WeightedGenomicIntegerSelection.html#pybrops.breed.prot.sel.WeightedGenomicSelection.WeightedGenomicIntegerSelection">[docs]</a>
-<span class="k">class</span> <span class="nc">WeightedGenomicIntegerSelection</span><span class="p">(</span><span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">WeightedGenomicIntegerSelection</span><span class="p">(</span>
+        <span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelection</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Weighted Genomic Selection in an integer search space.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1084,7 +1092,9 @@ document.write(`
 
 <div class="viewcode-block" id="WeightedGenomicRealSelection">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.WeightedGenomicSelection.WeightedGenomicRealSelection.html#pybrops.breed.prot.sel.WeightedGenomicSelection.WeightedGenomicRealSelection">[docs]</a>
-<span class="k">class</span> <span class="nc">WeightedGenomicRealSelection</span><span class="p">(</span><span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">WeightedGenomicRealSelection</span><span class="p">(</span>
+        <span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueRealSelection</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Weighted Genomic Selection in a real search space.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1407,7 +1417,9 @@ document.write(`
 
 <div class="viewcode-block" id="WeightedGenomicSubsetSelection">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.WeightedGenomicSelection.WeightedGenomicSubsetSelection.html#pybrops.breed.prot.sel.WeightedGenomicSelection.WeightedGenomicSubsetSelection">[docs]</a>
-<span class="k">class</span> <span class="nc">WeightedGenomicSubsetSelection</span><span class="p">(</span><span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">WeightedGenomicSubsetSelection</span><span class="p">(</span>
+        <span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelection</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Weighted Genomic Selection in a subset search space.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

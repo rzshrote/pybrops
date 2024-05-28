@@ -1,0 +1,6 @@
+check\_is\_DenseExpectedMaximumBreedingValueMatrix
+==================================================
+
+.. currentmodule:: pybrops.model.embvmat.DenseExpectedMaximumBreedingValueMatrix
+
+.. autofunction:: check_is_DenseExpectedMaximumBreedingValueMatrix

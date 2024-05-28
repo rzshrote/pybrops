@@ -32,6 +32,9 @@ mat
    pybrops.core.mat.DenseMutableMatrix
    pybrops.core.mat.DensePhasedMatrix
    pybrops.core.mat.DensePhasedTaxaVariantMatrix
+   pybrops.core.mat.DenseScaledMatrix
+   pybrops.core.mat.DenseScaledSquareTaxaTraitMatrix
+   pybrops.core.mat.DenseSquare2TaxaTraitMatrix
    pybrops.core.mat.DenseSquareMatrix
    pybrops.core.mat.DenseSquareTaxaMatrix
    pybrops.core.mat.DenseSquareTaxaSquareTraitMatrix
@@ -48,6 +51,8 @@ mat
    pybrops.core.mat.PhasedMatrix
    pybrops.core.mat.PhasedTaxaVariantMatrix
    pybrops.core.mat.PrunableMatrix
+   pybrops.core.mat.ScaledMatrix
+   pybrops.core.mat.ScaledSquareTaxaTraitMatrix
    pybrops.core.mat.SortableMatrix
    pybrops.core.mat.SquareMatrix
    pybrops.core.mat.SquareTaxaMatrix
@@ -59,5 +64,4 @@ mat
    pybrops.core.mat.TaxaVariantMatrix
    pybrops.core.mat.TraitMatrix
    pybrops.core.mat.VariantMatrix
-   pybrops.core.mat.util
 

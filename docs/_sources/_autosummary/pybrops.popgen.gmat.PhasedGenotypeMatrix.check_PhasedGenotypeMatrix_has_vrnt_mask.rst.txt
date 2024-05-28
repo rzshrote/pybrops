@@ -1,0 +1,6 @@
+check\_PhasedGenotypeMatrix\_has\_vrnt\_mask
+============================================
+
+.. currentmodule:: pybrops.popgen.gmat.PhasedGenotypeMatrix
+
+.. autofunction:: check_PhasedGenotypeMatrix_has_vrnt_mask

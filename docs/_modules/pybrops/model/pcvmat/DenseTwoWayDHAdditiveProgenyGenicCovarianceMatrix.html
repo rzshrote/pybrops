@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/model/pcvmat/DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix';</script>
@@ -419,27 +419,35 @@ document.write(`
 
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">pandas</span>
 <span class="kn">import</span> <span class="nn">h5py</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_io_python</span> <span class="kn">import</span> <span class="n">check_file_exists</span>
+
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_pandas</span> <span class="kn">import</span> <span class="n">check_is_pandas_DataFrame</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span><span class="p">,</span> <span class="n">check_is_str</span><span class="p">,</span> <span class="n">check_is_str_or_Integral</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_has_group</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_str</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_str_or_Integral</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_ndim</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_pandas</span> <span class="kn">import</span> <span class="n">check_pandas_DataFrame_has_column</span><span class="p">,</span> <span class="n">check_pandas_DataFrame_has_column_index</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.util.arrayix</span> <span class="kn">import</span> <span class="n">flattenix</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">save_dict_to_hdf5</span>
-<span class="kn">from</span> <span class="nn">pybrops.model.gmod.AdditiveLinearGenomicModel</span> <span class="kn">import</span> <span class="n">AdditiveLinearGenomicModel</span><span class="p">,</span> <span class="n">check_is_AdditiveLinearGenomicModel</span>
-<span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">GenomicModel</span><span class="p">,</span> <span class="n">check_is_GenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_pandas</span> <span class="kn">import</span> <span class="n">check_pandas_DataFrame_has_column</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_pandas</span> <span class="kn">import</span> <span class="n">check_pandas_DataFrame_has_column_index</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.array</span> <span class="kn">import</span> <span class="n">flattenix</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.AdditiveLinearGenomicModel</span> <span class="kn">import</span> <span class="n">AdditiveLinearGenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.AdditiveLinearGenomicModel</span> <span class="kn">import</span> <span class="n">check_is_AdditiveLinearGenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">GenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">check_is_GenomicModel</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.pcvmat.DenseAdditiveProgenyGenicCovarianceMatrix</span> <span class="kn">import</span> <span class="n">DenseAdditiveProgenyGenicCovarianceMatrix</span>
-<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> <span class="n">check_is_PhasedGenotypeMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">check_is_PhasedGenotypeMatrix</span>
 
 <div class="viewcode-block" id="DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.model.pcvmat.DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix.DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix.html#pybrops.model.pcvmat.DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix.DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix">[docs]</a>
-<span class="k">class</span> <span class="nc">DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix</span><span class="p">(</span><span class="n">DenseAdditiveProgenyGenicCovarianceMatrix</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix</span><span class="p">(</span>
+        <span class="n">DenseAdditiveProgenyGenicCovarianceMatrix</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A concrete class for dense additive genic covariance matrices calculated</span>
 <span class="sd">    for two-way DH progenies.</span>
@@ -477,6 +485,27 @@ document.write(`
             <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
             <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+    <span class="c1">########### Miscellaneous special functions ############</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return repr(self).</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : str</span>
+<span class="sd">            A representation of the object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;&lt;</span><span class="si">{0}</span><span class="s2"> of shape (nfemale = </span><span class="si">{1}</span><span class="s2">, nmale = </span><span class="si">{2}</span><span class="s2">, ntrait = </span><span class="si">{3}</span><span class="s2">, ntrait = </span><span class="si">{4}</span><span class="s2">) at </span><span class="si">{5}</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nfemale</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nmale</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">,</span>
+            <span class="nb">hex</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)),</span>
         <span class="p">)</span>
 
     <span class="c1">############################ Object Properties #############################</span>
@@ -705,67 +734,31 @@ document.write(`
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.model.pcvmat.DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix.DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix.html#pybrops.model.pcvmat.DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix.DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix.to_hdf5">[docs]</a>
     <span class="k">def</span> <span class="nf">to_hdf5</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
-            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">,</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">],</span> 
             <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Write DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix to an HDF5 file.</span>
+<span class="sd">        Write ``DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix`` to an HDF5 file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str, h5py.File</span>
+<span class="sd">        filename : str, Path, h5py.File</span>
 <span class="sd">            HDF5 file name or HDF5 file stream to which to write.</span>
 
-<span class="sd">        groupname : str or None</span>
-<span class="sd">            HDF5 group name under which the ``DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix`` data is stored.</span>
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            If ``str``, an HDF5 group name under which the ``DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix`` data is stored.</span>
 <span class="sd">            If ``None``, the ``DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix`` is written to the base HDF5 group.</span>
 <span class="sd">        </span>
 <span class="sd">        overwrite : bool</span>
 <span class="sd">            Whether to overwrite data fields if they are present in the HDF5 file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1">### type checks</span>
-        <span class="n">check_is_str</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">)</span>
-
-        <span class="c1"># open HDF5 in write mode</span>
-        <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
-
-        <span class="c1">############ process groupname argument ############</span>
-
-        <span class="c1"># if groupname is None, set groupname to empty string</span>
-        <span class="k">if</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        
-        <span class="c1"># if groupname is a string, add &#39;/&#39; to end of string if not last character</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
-                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
-
-        <span class="c1"># else raise error</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">check_is_str</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="s2">&quot;groupname&quot;</span><span class="p">)</span>
-        
-        <span class="c1">################ populate HDF5 file ################</span>
-
-        <span class="c1"># data dictionary</span>
-        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;mat&quot;</span>           <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span>
-            <span class="s2">&quot;taxa&quot;</span>          <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span>
-            <span class="s2">&quot;taxa_grp&quot;</span>      <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">,</span>
-            <span class="s2">&quot;trait&quot;</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">,</span>
-            <span class="s2">&quot;taxa_grp_name&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_name</span><span class="p">,</span>
-            <span class="s2">&quot;taxa_grp_stix&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_stix</span><span class="p">,</span>
-            <span class="s2">&quot;taxa_grp_spix&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_spix</span><span class="p">,</span>
-            <span class="s2">&quot;taxa_grp_len&quot;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_len</span><span class="p">,</span>
-        <span class="p">}</span>
-
-        <span class="c1"># save data</span>
-        <span class="n">save_dict_to_hdf5</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">)</span>
-
-        <span class="c1">################# write conclusion #################</span>
-
-        <span class="c1"># close the file</span>
-        <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+        <span class="c1"># call super function</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">to_hdf5</span><span class="p">(</span>
+            <span class="n">filename</span>  <span class="o">=</span> <span class="n">filename</span><span class="p">,</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="n">groupname</span><span class="p">,</span>
+            <span class="n">overwrite</span> <span class="o">=</span> <span class="n">overwrite</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
     
     <span class="c1">############################## Class Methods ###############################</span>
@@ -1046,121 +1039,31 @@ document.write(`
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_hdf5</span><span class="p">(</span>
             <span class="bp">cls</span><span class="p">,</span> 
-            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">,</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">],</span> 
             <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix from an HDF5 file.</span>
+<span class="sd">        Read ``DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix`` from an HDF5 file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str</span>
-<span class="sd">            HDF5 file name which to read.</span>
-<span class="sd">        groupname : str or None</span>
-<span class="sd">            HDF5 group name under which DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix data is stored.</span>
-<span class="sd">            If None, DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix is read from base HDF5 group.</span>
+<span class="sd">        filename : str, Path, h5py.File</span>
+<span class="sd">            If ``str`` or ``Path``, an HDF5 file name from which to read. File is closed after reading.</span>
+<span class="sd">            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.</span>
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            If ``str``, an HDF5 group name under which ``DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix`` data is stored.</span>
+<span class="sd">            If ``None``, ``DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix`` is read from base HDF5 group.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        out : DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix</span>
-<span class="sd">            A DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix read from file.</span>
+<span class="sd">            A ``DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix`` read from file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># type checks</span>
-        <span class="n">check_is_str</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;filename&quot;</span><span class="p">)</span>
-
-        <span class="c1">#################### Open file #####################</span>
-        
-        <span class="c1"># check file exists</span>
-        <span class="n">check_file_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
-        
-        <span class="c1"># open HDF5 in read only</span>
-        <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
-        
-        <span class="c1">############ Process groupname argument ############</span>
-
-        <span class="c1"># if groupname is None, set groupname to empty string</span>
-        <span class="k">if</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        
-        <span class="c1"># if we have a string, check that group exists, add &#39;/&#39; to end if needed</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">groupname</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
-                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
-        
-        <span class="c1"># else raise error</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">check_is_str</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="s2">&quot;groupname&quot;</span><span class="p">)</span>
-        
-        <span class="c1">############ Check for required fields #############</span>
-
-        <span class="c1"># list of all required arguments</span>
-        <span class="n">required_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mat&quot;</span><span class="p">]</span>
-
-        <span class="c1"># for each required field, concatenate base groupname and field and</span>
-        <span class="c1"># check that group exists</span>
-        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">:</span>
-            <span class="n">fieldname</span> <span class="o">=</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span>
-            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">)</span>
-        
-        <span class="c1">#################### Read data #####################</span>
-
-        <span class="c1"># output dictionary</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;mat&quot;</span>           <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;taxa&quot;</span>          <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;taxa_grp&quot;</span>      <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;trait&quot;</span>         <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;taxa_grp_name&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;taxa_grp_stix&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;taxa_grp_spix&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;taxa_grp_len&quot;</span>  <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="p">}</span>
-
-        <span class="c1"># for each field, concatenate base groupname and field and</span>
-        <span class="c1"># if the field exists in the HDF5 file, then read the array</span>
-        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">fieldname</span> <span class="o">=</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span>
-            <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
-                <span class="n">data</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][()]</span>
-
-        <span class="c1">#################### Close file ####################</span>
-        
-        <span class="c1"># close file</span>
-        <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        
-        <span class="c1">############### Datatype conversion ################</span>
-
-        <span class="c1"># if taxa names read, convert taxa strings from byte to utf-8</span>
-        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">]],</span>
-                <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span>
-            <span class="p">)</span>
-
-        <span class="c1"># if trait names read, convert trait strings from byte to utf-8</span>
-        <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trait&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trait&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-                <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trait&quot;</span><span class="p">]],</span>
-                <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span>
-            <span class="p">)</span>
-        
-        <span class="c1">################# Object creation ##################</span>
-        <span class="c1"># create object from read data</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
-            <span class="n">mat</span>      <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;mat&quot;</span><span class="p">],</span>
-            <span class="n">taxa</span>     <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">],</span>
-            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp&quot;</span><span class="p">],</span>
-            <span class="n">trait</span>    <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trait&quot;</span><span class="p">],</span>
-        <span class="p">)</span>
-        
-        <span class="c1"># copy metadata if there is any</span>
-        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_name</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_name&quot;</span><span class="p">]</span>
-        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_stix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_stix&quot;</span><span class="p">]</span>
-        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_spix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_spix&quot;</span><span class="p">]</span>
-        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_len</span>  <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_len&quot;</span><span class="p">]</span>
-
-        <span class="k">return</span> <span class="n">out</span></div>
+        <span class="c1"># call super function</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">DenseTwoWayDHAdditiveProgenyGenicCovarianceMatrix</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">from_hdf5</span><span class="p">(</span>
+            <span class="n">filename</span>  <span class="o">=</span> <span class="n">filename</span><span class="p">,</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="n">groupname</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
     <span class="c1">############# Matrix Factory Class Methods #############</span>

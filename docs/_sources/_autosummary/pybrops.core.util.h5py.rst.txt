@@ -20,8 +20,17 @@ h5py
       :template: custom-function-template.rst
       :nosignatures:
    
+      h5py_File_has_group
+      h5py_File_is_readable
       h5py_File_is_writable
-      save_dict_to_hdf5
+      h5py_File_read_dict
+      h5py_File_read_int
+      h5py_File_read_ndarray
+      h5py_File_read_ndarray_int
+      h5py_File_read_ndarray_int8
+      h5py_File_read_ndarray_utf8
+      h5py_File_read_utf8
+      h5py_File_write_dict
    
    
 

@@ -1,0 +1,34 @@
+mate
+====
+
+.. automodule:: pybrops.core.util.mate
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      dense_cross
+      dense_dh
+      dense_meiosis
+   
+   
+
+   
+   
+   
+
+
+

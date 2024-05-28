@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/sel/MultiObjectiveGenomicSelection';</script>
@@ -421,11 +421,15 @@ document.write(`
 <span class="p">]</span>
 
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">RandomState</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">RandomState</span>
 <span class="kn">import</span> <span class="nn">pandas</span>
 
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.SubsetSelectionProtocol</span> <span class="kn">import</span> <span class="n">SubsetSelectionProtocol</span>
@@ -442,7 +446,9 @@ document.write(`
 
 <div class="viewcode-block" id="MultiObjectiveGenomicSelectionMixin">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.MultiObjectiveGenomicSelection.MultiObjectiveGenomicSelectionMixin.html#pybrops.breed.prot.sel.MultiObjectiveGenomicSelection.MultiObjectiveGenomicSelectionMixin">[docs]</a>
-<span class="k">class</span> <span class="nc">MultiObjectiveGenomicSelectionMixin</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MultiObjectiveGenomicSelectionMixin</span><span class="p">(</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Semi-abstract class for Multi-Objective Genomic Selection with constraints.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -493,7 +499,10 @@ document.write(`
 
 <div class="viewcode-block" id="MultiObjectiveGenomicSubsetSelection">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.MultiObjectiveGenomicSelection.MultiObjectiveGenomicSubsetSelection.html#pybrops.breed.prot.sel.MultiObjectiveGenomicSelection.MultiObjectiveGenomicSubsetSelection">[docs]</a>
-<span class="k">class</span> <span class="nc">MultiObjectiveGenomicSubsetSelection</span><span class="p">(</span><span class="n">MultiObjectiveGenomicSelectionMixin</span><span class="p">,</span><span class="n">SubsetSelectionProtocol</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MultiObjectiveGenomicSubsetSelection</span><span class="p">(</span>
+        <span class="n">MultiObjectiveGenomicSelectionMixin</span><span class="p">,</span>
+        <span class="n">SubsetSelectionProtocol</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class defining Optimal Haploid Value (OHV) Selection for subset search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -871,9 +880,10 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># get decision space parameters</span>
         <span class="n">ntaxa</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">ntaxa</span>
+        <span class="n">ndecn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncross</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nparent</span>
         <span class="n">decn_space</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">ntaxa</span><span class="p">)</span>
-        <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nparent</span><span class="p">)</span>
-        <span class="n">decn_space_upper</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">ntaxa</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nparent</span><span class="p">)</span>
+        <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ndecn</span><span class="p">)</span>
+        <span class="n">decn_space_upper</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">ntaxa</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">ndecn</span><span class="p">)</span>
 
         <span class="c1"># construct problem</span>
         <span class="n">prob</span> <span class="o">=</span> <span class="n">MultiObjectiveGenomicSubsetSelectionProblem</span><span class="o">.</span><span class="n">from_gmat_gpmod</span><span class="p">(</span>
@@ -881,7 +891,7 @@ document.write(`
             <span class="n">weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">,</span>
             <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target</span><span class="p">,</span>
             <span class="n">gpmod</span> <span class="o">=</span> <span class="n">gpmod</span><span class="p">,</span>
-            <span class="n">ndecn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nparent</span><span class="p">,</span>
+            <span class="n">ndecn</span> <span class="o">=</span> <span class="n">ndecn</span><span class="p">,</span>
             <span class="n">decn_space</span> <span class="o">=</span> <span class="n">decn_space</span><span class="p">,</span>
             <span class="n">decn_space_lower</span> <span class="o">=</span> <span class="n">decn_space_lower</span><span class="p">,</span>
             <span class="n">decn_space_upper</span> <span class="o">=</span> <span class="n">decn_space_upper</span><span class="p">,</span>

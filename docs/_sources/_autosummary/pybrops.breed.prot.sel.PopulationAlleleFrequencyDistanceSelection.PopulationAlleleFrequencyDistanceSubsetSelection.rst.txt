@@ -1,0 +1,59 @@
+PopulationAlleleFrequencyDistanceSubsetSelection
+================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.PopulationAlleleFrequencyDistanceSelection
+
+.. autoclass:: PopulationAlleleFrequencyDistanceSubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.mosolve
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.problem
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.select
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.eqcv_trans
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.eqcv_trans_kwargs
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.eqcv_wt
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.ineqcv_trans
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.ineqcv_trans_kwargs
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.ineqcv_wt
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.moalgo
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.ncross
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.ndset_trans
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.ndset_trans_kwargs
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.ndset_wt
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.neqcv
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.nineqcv
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.nmating
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.nobj
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.nparent
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.nprogeny
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.nselindiv
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.ntrait
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.obj_trans
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.obj_trans_kwargs
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.obj_wt
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.rng
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.soalgo
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.target
+      ~PopulationAlleleFrequencyDistanceSubsetSelection.weight
+   
+   

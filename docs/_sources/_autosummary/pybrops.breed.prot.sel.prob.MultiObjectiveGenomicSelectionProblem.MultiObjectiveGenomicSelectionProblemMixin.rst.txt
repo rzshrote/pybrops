@@ -31,8 +31,8 @@ MultiObjectiveGenomicSelectionProblemMixin
       ~MultiObjectiveGenomicSelectionProblemMixin.nlatent
       ~MultiObjectiveGenomicSelectionProblemMixin.ploidy
       ~MultiObjectiveGenomicSelectionProblemMixin.tfreq
-      ~MultiObjectiveGenomicSelectionProblemMixin.thet
-      ~MultiObjectiveGenomicSelectionProblemMixin.tmajor
-      ~MultiObjectiveGenomicSelectionProblemMixin.tminor
+      ~MultiObjectiveGenomicSelectionProblemMixin.tfreq_fix_heter
+      ~MultiObjectiveGenomicSelectionProblemMixin.tfreq_fix_major
+      ~MultiObjectiveGenomicSelectionProblemMixin.tfreq_fix_minor
    
    

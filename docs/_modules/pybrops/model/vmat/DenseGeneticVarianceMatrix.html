@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/model/vmat/DenseGeneticVarianceMatrix';</script>
@@ -417,15 +417,21 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_attr_python</span> <span class="kn">import</span> <span class="n">error_readonly</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.mat.DenseSquareTaxaTraitMatrix</span> <span class="kn">import</span> <span class="n">DenseSquareTaxaTraitMatrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.vmat.GeneticVarianceMatrix</span> <span class="kn">import</span> <span class="n">GeneticVarianceMatrix</span>
 
 <div class="viewcode-block" id="DenseGeneticVarianceMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.model.vmat.DenseGeneticVarianceMatrix.DenseGeneticVarianceMatrix.html#pybrops.model.vmat.DenseGeneticVarianceMatrix.DenseGeneticVarianceMatrix">[docs]</a>
-<span class="k">class</span> <span class="nc">DenseGeneticVarianceMatrix</span><span class="p">(</span><span class="n">DenseSquareTaxaTraitMatrix</span><span class="p">,</span><span class="n">GeneticVarianceMatrix</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DenseGeneticVarianceMatrix</span><span class="p">(</span>
+        <span class="n">DenseSquareTaxaTraitMatrix</span><span class="p">,</span>
+        <span class="n">GeneticVarianceMatrix</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A semi-concrete class for dense genetic variance matrices.</span>
 
@@ -504,7 +510,7 @@ document.write(`
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        out : DenseGeneticVarianceMatrix</span>
-<span class="sd">            A shallow copy of the original DenseGeneticVarianceMatrix.</span>
+<span class="sd">            A shallow copy of the original ``DenseGeneticVarianceMatrix``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
@@ -526,7 +532,7 @@ document.write(`
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        out : DenseGeneticVarianceMatrix</span>
-<span class="sd">            A deep copy of the original DenseGeneticVarianceMatrix.</span>
+<span class="sd">            A deep copy of the original ``DenseGeneticVarianceMatrix``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span></div>
 
@@ -541,19 +547,20 @@ document.write(`
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_hdf5</span><span class="p">(</span>
             <span class="bp">cls</span><span class="p">,</span> 
-            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">,</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">],</span> 
             <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseGeneticVarianceMatrix&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Read DenseGeneticVarianceMatrix from an HDF5 file.</span>
+<span class="sd">        Read ``DenseGeneticVarianceMatrix`` from an HDF5 file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str</span>
-<span class="sd">            HDF5 file name which to read.</span>
-<span class="sd">        groupname : str or None</span>
-<span class="sd">            HDF5 group name under which DenseGeneticVarianceMatrix data is stored.</span>
-<span class="sd">            If None, DenseGeneticVarianceMatrix is read from base HDF5 group.</span>
+<span class="sd">        filename : str, Path, h5py.File</span>
+<span class="sd">            If ``str`` or ``Path``, an HDF5 file name from which to read. File is closed after reading.</span>
+<span class="sd">            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.</span>
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            If ``str``, HDF5 group name under which ``DenseGeneticVarianceMatrix`` data is stored.</span>
+<span class="sd">            If ``None``, ``DenseGeneticVarianceMatrix`` is read from base HDF5 group.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -561,8 +568,8 @@ document.write(`
 <span class="sd">            A dense matrix read from file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">DenseGeneticVarianceMatrix</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">from_hdf5</span><span class="p">(</span>
-            <span class="n">filename</span><span class="p">,</span> 
-            <span class="n">groupname</span>
+            <span class="n">filename</span>  <span class="o">=</span> <span class="n">filename</span><span class="p">,</span> 
+            <span class="n">groupname</span> <span class="o">=</span> <span class="n">groupname</span><span class="p">,</span>
         <span class="p">)</span></div>
 </div>
 

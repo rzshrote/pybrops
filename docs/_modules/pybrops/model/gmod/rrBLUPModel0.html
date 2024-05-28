@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/model/gmod/rrBLUPModel0';</script>
@@ -417,16 +417,22 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">pandas</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span><span class="p">,</span> <span class="n">check_is_Real</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len_eq</span><span class="p">,</span> <span class="n">check_ndarray_ndim</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Real</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len_eq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_ndim</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_gteq</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.gmod.DenseAdditiveLinearGenomicModel</span> <span class="kn">import</span> <span class="n">DenseAdditiveLinearGenomicModel</span>
-<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span><span class="p">,</span> <span class="n">Bounds</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">Bounds</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.bvmat.BreedingValueMatrix</span> <span class="kn">import</span> <span class="n">BreedingValueMatrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.GenotypeMatrix</span> <span class="kn">import</span> <span class="n">GenotypeMatrix</span>
 
@@ -502,7 +508,8 @@ document.write(`
 <span class="sd">    out : tuple</span>
 <span class="sd">        A tuple containing ``(d,V)``.</span>
 <span class="sd">        </span>
-<span class="sd">        Where::</span>
+<span class="sd">        Where:</span>
+
 <span class="sd">        - ``d`` is a vector of shape ``(nobs,)`` representing the diagonal of the spectral decomposition.</span>
 <span class="sd">        - ``V`` is a matrix of shape ``(nobs,nobs)`` representing the orthonormal basis of the spectral decomposition.</span>
 
@@ -542,7 +549,8 @@ document.write(`
 <span class="sd">    out : tuple</span>
 <span class="sd">        A tuple containing ``(d,V)``.</span>
 <span class="sd">        </span>
-<span class="sd">        Where::</span>
+<span class="sd">        Where:</span>
+
 <span class="sd">        - ``d`` is a vector of shape ``(ncomp,)`` representing the diagonal of the spectral decomposition.</span>
 <span class="sd">        - ``V`` is a matrix of shape ``(nobs,ncomp)`` representing the orthonormal basis of the spectral decomposition.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -761,6 +769,7 @@ document.write(`
 <span class="sd">    y = Zu + e</span>
 
 <span class="sd">    Where::</span>
+<span class="sd">    </span>
 <span class="sd">        - ``y`` are observations.</span>
 <span class="sd">        - ``Z`` is a design matrix for genetic markers.</span>
 <span class="sd">        - ``u`` are marker effects which follow the distribution ``MVN(0, varU * I)``.</span>
@@ -924,7 +933,9 @@ document.write(`
 
 <div class="viewcode-block" id="rrBLUPModel0">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.model.gmod.rrBLUPModel0.rrBLUPModel0.html#pybrops.model.gmod.rrBLUPModel0.rrBLUPModel0">[docs]</a>
-<span class="k">class</span> <span class="nc">rrBLUPModel0</span><span class="p">(</span><span class="n">DenseAdditiveLinearGenomicModel</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">rrBLUPModel0</span><span class="p">(</span>
+        <span class="n">DenseAdditiveLinearGenomicModel</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    The rrBLUPModel0 class represents a simple RR-BLUP model with an intercept </span>
 <span class="sd">    (fixed) and marker effects (random).</span>
@@ -983,6 +994,7 @@ document.write(`
 <span class="sd">    y = Xb + Zu + e</span>
 
 <span class="sd">    Where::</span>
+
 <span class="sd">        - ``y`` are observations.</span>
 <span class="sd">        - ``X`` is a matrix of ones for the incidence of the slope.</span>
 <span class="sd">        - ``b`` is the intercept.</span>
@@ -995,6 +1007,7 @@ document.write(`
 <span class="sd">    y = Zu + e</span>
 
 <span class="sd">    Where::</span>
+<span class="sd">    </span>
 <span class="sd">        - ``y`` are observations.</span>
 <span class="sd">        - ``Z`` is a design matrix for genetic markers.</span>
 <span class="sd">        - ``u`` are marker effects which follow the distribution ``MVN(0, varU * I)``.</span>
@@ -1217,19 +1230,45 @@ document.write(`
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        Y : numpy.ndarray</span>
-<span class="sd">            A phenotype matrix of shape (n,t).</span>
+<span class="sd">            A phenotype matrix of shape ``(n,t)``.</span>
+<span class="sd">            </span>
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of observations.</span>
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        </span>
 <span class="sd">        X : numpy.ndarray</span>
 <span class="sd">            Not used by this model. Assumed to be ``(n,q)`` matrix of ones.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of observations.</span>
+<span class="sd">            - ``q`` is the number of fixed effects.</span>
+<span class="sd">        </span>
 <span class="sd">        Z : numpy.ndarray</span>
-<span class="sd">            A genotypes matrix of shape (n,p).</span>
-<span class="sd">        trait : numpy.ndarray</span>
-<span class="sd">            A trait name array of shape (t,).</span>
+<span class="sd">            A genotypes matrix of shape ``(n,p)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``n`` is the number of observations.</span>
+<span class="sd">            - ``p`` is the number of markers to be considered as random effects.</span>
+<span class="sd">        </span>
+<span class="sd">        trait : numpy.ndarray, None</span>
+<span class="sd">            A trait name array of shape ``(t,)``.</span>
+
+<span class="sd">            Where:</span>
+
+<span class="sd">            - ``t`` is the number of traits.</span>
+<span class="sd">        </span>
 <span class="sd">        method : str</span>
 <span class="sd">            Fitting method to use. Options are ``{&quot;ML&quot;}``.</span>
+<span class="sd">        </span>
 <span class="sd">        model_name : str, None</span>
 <span class="sd">            Name of the model.</span>
+<span class="sd">        </span>
 <span class="sd">        hyperparams : dict, None</span>
 <span class="sd">            Model parameters.</span>
+<span class="sd">        </span>
 <span class="sd">        kwargs : dict</span>
 <span class="sd">            Additional keyword arguments.</span>
 
@@ -1238,15 +1277,21 @@ document.write(`
 <span class="sd">        out : rrBLUPModel0</span>
 <span class="sd">            An RR-BLUP model.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># type checks</span>
+        <span class="c1"># type and shape checks</span>
         <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>
-        <span class="c1"># check_is_ndarray(X, &quot;X&quot;) # ignored by this model</span>
-        <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
-
-        <span class="c1"># shape checks</span>
         <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># check_is_ndarray(X, &quot;X&quot;) # ignored by this model</span>
         <span class="c1"># check_ndarray_ndim(X, &quot;X&quot;, 2) # ignored by this model</span>
+        <span class="c1"># check_ndarray_axis_len_eq(X, &quot;X&quot;, 0, Y.shape[0])</span>
+        <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">)</span>
         <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">check_ndarray_axis_len_eq</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="c1"># get number of taxa (n), traits (t), markers (p)</span>
+        <span class="c1"># scalar</span>
+        <span class="c1"># ntaxa = Y.shape[0]</span>
+        <span class="n">ntrait</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">nmarker</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># convert data types to floating if needed</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">floating</span><span class="p">):</span>
@@ -1254,20 +1299,31 @@ document.write(`
         <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">Z</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">floating</span><span class="p">):</span>
             <span class="n">Z</span> <span class="o">=</span> <span class="n">Z</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
 
-        <span class="c1"># get number of traits</span>
-        <span class="c1"># scalar = t</span>
-        <span class="n">ntrait</span> <span class="o">=</span> <span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># determine columns (loci) that are polymorphic</span>
+        <span class="c1"># True if polymorphic, False if monomorphic</span>
+        <span class="c1"># (p,)</span>
+        <span class="n">ispolymorphic</span> <span class="o">=</span> <span class="o">~</span><span class="n">numpy</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">Z</span> <span class="o">==</span> <span class="n">Z</span><span class="p">[</span><span class="mi">0</span><span class="p">,:],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
 
-        <span class="c1"># for each trait, fit a model</span>
-        <span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">rrBLUP_ML0</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">Z</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntrait</span><span class="p">)]</span>
+        <span class="c1"># get columns that are polymorphic</span>
+        <span class="c1"># (n,p)[:,mask] -&gt; (n,p_poly)</span>
+        <span class="n">Zpoly</span> <span class="o">=</span> <span class="n">Z</span><span class="p">[:,</span><span class="n">ispolymorphic</span><span class="p">]</span>
+
+        <span class="c1"># for each trait, fit a model with polymorphic markers</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">rrBLUP_ML0</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">Zpoly</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntrait</span><span class="p">)]</span>
 
         <span class="c1"># aggregate intercepts and stack estimates</span>
         <span class="c1"># (1,t)</span>
         <span class="n">beta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">models</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;betahat&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntrait</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 
         <span class="c1"># aggregate marker effects and stack estimates</span>
+        <span class="c1"># (p_poly,t)</span>
+        <span class="n">uhat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">models</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;uhat&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntrait</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># create marker effect coefficent matrix, for monomorphic loci, assign effect as zero</span>
         <span class="c1"># (p,t)</span>
-        <span class="n">u_a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">models</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">&quot;uhat&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntrait</span><span class="p">)],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">u_a</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">nmarker</span><span class="p">,</span><span class="n">ntrait</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="n">u_a</span><span class="p">[</span><span class="n">ispolymorphic</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">uhat</span>
+        <span class="n">u_a</span><span class="p">[</span><span class="o">~</span><span class="n">ispolymorphic</span><span class="p">,:]</span> <span class="o">=</span> <span class="mf">0.0</span>
 
         <span class="c1"># create output</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>

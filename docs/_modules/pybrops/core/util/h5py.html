@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/core/util/h5py';</script>
@@ -419,10 +419,12 @@ document.write(`
 <span class="kn">import</span> <span class="nn">h5py</span>
 
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_h5py</span> <span class="kn">import</span> <span class="n">check_is_h5py_File</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_str</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_is_readable</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_is_writable</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;save_dict_to_hdf5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;h5py_File_write_dict&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="c1"># writable items</span>
@@ -439,13 +441,13 @@ document.write(`
 
 <div class="viewcode-block" id="h5py_File_is_writable">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.core.util.h5py.h5py_File_is_writable.html#pybrops.core.util.h5py.h5py_File_is_writable">[docs]</a>
-<span class="k">def</span> <span class="nf">h5py_File_is_writable</span><span class="p">(</span><span class="n">stream</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">h5py_File_is_writable</span><span class="p">(</span><span class="n">h5file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine if a ``h5py.File`` is writable.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    stream : h5py.File</span>
+<span class="sd">    h5file : h5py.File</span>
 <span class="sd">        HDF5 file stream to check.</span>
 
 <span class="sd">    Returns</span>
@@ -453,29 +455,64 @@ document.write(`
 <span class="sd">    out : bool</span>
 <span class="sd">        Whether the HDF5 file is writable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">streammode</span> <span class="o">=</span> <span class="n">stream</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">mode</span>
-    <span class="k">if</span> <span class="n">streammode</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;r+&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;w-&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="kc">True</span>
-    <span class="k">return</span> <span class="kc">False</span></div>
+    <span class="k">return</span> <span class="n">h5file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">mode</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;r+&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="s2">&quot;w-&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span></div>
 
+
+<div class="viewcode-block" id="h5py_File_is_readable">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.util.h5py.h5py_File_is_readable.html#pybrops.core.util.h5py.h5py_File_is_readable">[docs]</a>
+<span class="k">def</span> <span class="nf">h5py_File_is_readable</span><span class="p">(</span><span class="n">stream</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine if a ``h5py.File`` is readable.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5file : h5py.File</span>
+<span class="sd">        HDF5 file stream to check.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : bool</span>
+<span class="sd">        Whether the HDF5 file is readable.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">stream</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">mode</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="s2">&quot;r+&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="h5py_File_has_group">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.util.h5py.h5py_File_has_group.html#pybrops.core.util.h5py.h5py_File_has_group">[docs]</a>
+<span class="k">def</span> <span class="nf">h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> <span class="n">groupname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Determine if an ``h5py.File`` has a group.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5file : h5py.File</span>
+<span class="sd">        An HDF5 file stream to check.</span>
+<span class="sd">    groupname : str</span>
+<span class="sd">        Name of the group to check in ``h5file``</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : bool</span>
+<span class="sd">        Whether ``groupname`` is in ``h5file``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">groupname</span> <span class="ow">in</span> <span class="n">h5file</span></div>
+
+
+<span class="c1">#######################</span>
+<span class="c1">### Write functions ###</span>
 
 <span class="c1"># ruthlessly stolen/based on:</span>
 <span class="c1"># https://codereview.stackexchange.com/questions/120802/recursively-save-python-dictionaries-to-hdf5-files-using-h5py/121308</span>
-<div class="viewcode-block" id="save_dict_to_hdf5">
-<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.util.h5py.save_dict_to_hdf5.html#pybrops.core.util.h5py.save_dict_to_hdf5">[docs]</a>
-<span class="k">def</span> <span class="nf">save_dict_to_hdf5</span><span class="p">(</span>
-        <span class="n">h5file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> 
-        <span class="n">groupname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
-        <span class="n">in_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-        <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="h5py_File_write_dict">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.util.h5py.h5py_File_write_dict.html#pybrops.core.util.h5py.h5py_File_write_dict">[docs]</a>
+<span class="k">def</span> <span class="nf">h5py_File_write_dict</span><span class="p">(</span><span class="n">h5file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> <span class="n">groupname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">in_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Recursively save dictionary contents to an open HDF5 file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    h5file : h5py.File</span>
-<span class="sd">        An open HDF5 file.</span>
+<span class="sd">        An open, writable HDF5 file stream.</span>
 <span class="sd">    groupname : str</span>
 <span class="sd">        String representation of group name. Must be terminated by &#39;/&#39;.</span>
 <span class="sd">    in_dict : dict</span>
@@ -487,7 +524,7 @@ document.write(`
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># type checks</span>
     <span class="n">check_is_h5py_File</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="s2">&quot;h5file&quot;</span><span class="p">)</span>
-    <span class="n">check_h5py_File_is_writable</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="s2">&quot;h5file&quot;</span><span class="p">)</span>
+    <span class="n">check_h5py_File_is_writable</span><span class="p">(</span><span class="n">h5file</span><span class="p">)</span>
 
     <span class="c1"># for each item in dictionary</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">in_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -506,11 +543,248 @@ document.write(`
         
         <span class="c1"># else if is dictionary</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="n">save_dict_to_hdf5</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">fieldname</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+            <span class="n">h5py_File_write_dict</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">fieldname</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
         
         <span class="c1"># else raise error</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Cannot save </span><span class="si">{0}</span><span class="s2">: </span><span class="si">{1}</span><span class="s2"> type&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">item</span><span class="p">)))</span></div>
+
+
+<span class="c1">######################</span>
+<span class="c1">### Read functions ###</span>
+
+<div class="viewcode-block" id="h5py_File_read_int">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.util.h5py.h5py_File_read_int.html#pybrops.core.util.h5py.h5py_File_read_int">[docs]</a>
+<span class="k">def</span> <span class="nf">h5py_File_read_int</span><span class="p">(</span><span class="n">h5file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read an ``int`` from a file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5file : h5py.File</span>
+<span class="sd">        An open, readable HDF5 file stream.</span>
+<span class="sd">    fieldname : str</span>
+<span class="sd">        Name of the field from which to read.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : int</span>
+<span class="sd">        A ``int`` read from the HDF5 file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># type checks</span>
+    <span class="n">check_is_h5py_File</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="s2">&quot;h5file&quot;</span><span class="p">)</span>
+    <span class="n">check_h5py_File_is_readable</span><span class="p">(</span><span class="n">h5file</span><span class="p">)</span>
+    <span class="n">check_is_str</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="s2">&quot;fieldname&quot;</span><span class="p">)</span>
+
+    <span class="c1"># extract field as int</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">h5file</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][()])</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="h5py_File_read_ndarray">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.util.h5py.h5py_File_read_ndarray.html#pybrops.core.util.h5py.h5py_File_read_ndarray">[docs]</a>
+<span class="k">def</span> <span class="nf">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a ``numpy.ndarray`` from a file as is. Do not perform any type conversions.</span>
+
+<span class="sd">    Bare-bones function. Does not perform any type checks on inputs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5file : h5py.File</span>
+<span class="sd">        An open, readable HDF5 file stream.</span>
+<span class="sd">    fieldname : str</span>
+<span class="sd">        Name of the field from which to read.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : numpy.ndarray</span>
+<span class="sd">        An array read from the HDF5 file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># type checks</span>
+    <span class="n">check_is_h5py_File</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="s2">&quot;h5file&quot;</span><span class="p">)</span>
+    <span class="n">check_h5py_File_is_readable</span><span class="p">(</span><span class="n">h5file</span><span class="p">)</span>
+    <span class="n">check_is_str</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="s2">&quot;fieldname&quot;</span><span class="p">)</span>
+
+    <span class="c1"># extract field as numpy.ndarray</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][()]</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="h5py_File_read_ndarray_int">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.util.h5py.h5py_File_read_ndarray_int.html#pybrops.core.util.h5py.h5py_File_read_ndarray_int">[docs]</a>
+<span class="k">def</span> <span class="nf">h5py_File_read_ndarray_int</span><span class="p">(</span><span class="n">h5file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a ``numpy.ndarray`` from a file. If the datatype is not ``int``, convert to ``int``.</span>
+
+<span class="sd">    Bare-bones function. Does not perform any type checks on inputs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5file : h5py.File</span>
+<span class="sd">        An open, readable HDF5 file stream.</span>
+<span class="sd">    fieldname : str</span>
+<span class="sd">        Name of the field from which to read.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : numpy.ndarray</span>
+<span class="sd">        An ``int`` array read from the HDF5 file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># type checks</span>
+    <span class="n">check_is_h5py_File</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="s2">&quot;h5file&quot;</span><span class="p">)</span>
+    <span class="n">check_h5py_File_is_readable</span><span class="p">(</span><span class="n">h5file</span><span class="p">)</span>
+    <span class="n">check_is_str</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="s2">&quot;fieldname&quot;</span><span class="p">)</span>
+
+    <span class="c1"># extract field as numpy.ndarray</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][()]</span>
+
+    <span class="c1"># if the ndarray is not integer, convert to integer</span>
+    <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="h5py_File_read_ndarray_int8">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.util.h5py.h5py_File_read_ndarray_int8.html#pybrops.core.util.h5py.h5py_File_read_ndarray_int8">[docs]</a>
+<span class="k">def</span> <span class="nf">h5py_File_read_ndarray_int8</span><span class="p">(</span><span class="n">h5file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a ``numpy.ndarray`` from a file. If the datatype is not ``int8``, convert to ``int8``.</span>
+
+<span class="sd">    Bare-bones function. Does not perform any type checks on inputs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5file : h5py.File</span>
+<span class="sd">        An open, readable HDF5 file stream.</span>
+<span class="sd">    fieldname : str</span>
+<span class="sd">        Name of the field from which to read.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : numpy.ndarray</span>
+<span class="sd">        An ``int8`` array read from the HDF5 file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># type checks</span>
+    <span class="n">check_is_h5py_File</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="s2">&quot;h5file&quot;</span><span class="p">)</span>
+    <span class="n">check_h5py_File_is_readable</span><span class="p">(</span><span class="n">h5file</span><span class="p">)</span>
+    <span class="n">check_is_str</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="s2">&quot;fieldname&quot;</span><span class="p">)</span>
+
+    <span class="c1"># extract field as numpy.ndarray</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][()]</span>
+
+    <span class="c1"># if the ndarray is not int8, convert to int8</span>
+    <span class="k">if</span> <span class="n">out</span><span class="o">.</span><span class="n">dtype</span> <span class="o">!=</span> <span class="s2">&quot;int8&quot;</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;int8&quot;</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="h5py_File_read_ndarray_utf8">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.util.h5py.h5py_File_read_ndarray_utf8.html#pybrops.core.util.h5py.h5py_File_read_ndarray_utf8">[docs]</a>
+<span class="k">def</span> <span class="nf">h5py_File_read_ndarray_utf8</span><span class="p">(</span><span class="n">h5file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a ``numpy.ndarray`` from a file. If the datatype is ``bytes``, convert </span>
+<span class="sd">    to a utf-8 encoded ``str`` format, otherwise keep as is.</span>
+
+<span class="sd">    Bare-bones function. Does not perform any type checks on inputs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5file : h5py.File</span>
+<span class="sd">        An open, readable HDF5 file stream.</span>
+<span class="sd">    fieldname : str</span>
+<span class="sd">        Name of the field from which to read.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : numpy.ndarray</span>
+<span class="sd">        An ``object`` array containing strings read from the HDF5 file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># type checks</span>
+    <span class="n">check_is_h5py_File</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="s2">&quot;h5file&quot;</span><span class="p">)</span>
+    <span class="n">check_h5py_File_is_readable</span><span class="p">(</span><span class="n">h5file</span><span class="p">)</span>
+    <span class="n">check_is_str</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="s2">&quot;fieldname&quot;</span><span class="p">)</span>
+
+    <span class="c1"># extract field as numpy.ndarray</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][()]</span>
+    
+    <span class="c1"># convert array elements to unicode / any</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="nb">bytes</span><span class="p">)</span> <span class="k">else</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">out</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="h5py_File_read_utf8">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.util.h5py.h5py_File_read_utf8.html#pybrops.core.util.h5py.h5py_File_read_utf8">[docs]</a>
+<span class="k">def</span> <span class="nf">h5py_File_read_utf8</span><span class="p">(</span><span class="n">h5file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read an ``str`` from a file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5file : h5py.File</span>
+<span class="sd">        An open, readable HDF5 file stream.</span>
+<span class="sd">    fieldname : str</span>
+<span class="sd">        Name of the field from which to read.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : str</span>
+<span class="sd">        A ``str`` read from the HDF5 file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># type checks</span>
+    <span class="n">check_is_h5py_File</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="s2">&quot;h5file&quot;</span><span class="p">)</span>
+    <span class="n">check_h5py_File_is_readable</span><span class="p">(</span><span class="n">h5file</span><span class="p">)</span>
+    <span class="n">check_is_str</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="s2">&quot;fieldname&quot;</span><span class="p">)</span>
+
+    <span class="c1"># extract field as bytes</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][()]</span>
+
+    <span class="c1"># convert bytes to utf-8 string format</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="h5py_File_read_dict">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.util.h5py.h5py_File_read_dict.html#pybrops.core.util.h5py.h5py_File_read_dict">[docs]</a>
+<span class="k">def</span> <span class="nf">h5py_File_read_dict</span><span class="p">(</span><span class="n">h5file</span><span class="p">:</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read an ``dict`` from a file.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    h5file : h5py.File</span>
+<span class="sd">        An open, readable HDF5 file stream.</span>
+<span class="sd">    fieldname : str</span>
+<span class="sd">        Name of the field from which to read.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    out : dict</span>
+<span class="sd">        A ``dict`` read from the HDF5 file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># type checks</span>
+    <span class="n">check_is_h5py_File</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="s2">&quot;h5file&quot;</span><span class="p">)</span>
+    <span class="n">check_h5py_File_is_readable</span><span class="p">(</span><span class="n">h5file</span><span class="p">)</span>
+    <span class="n">check_is_str</span><span class="p">(</span><span class="n">fieldname</span><span class="p">,</span> <span class="s2">&quot;fieldname&quot;</span><span class="p">)</span>
+
+    <span class="c1"># create empty dict</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># get view of dataset</span>
+    <span class="n">view</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">fieldname</span><span class="p">]</span>
+
+    <span class="c1"># for each field in the view, extract data</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">view</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">out</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">view</span><span class="p">[</span><span class="n">key</span><span class="p">][()]</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
 
 </pre></div>
 

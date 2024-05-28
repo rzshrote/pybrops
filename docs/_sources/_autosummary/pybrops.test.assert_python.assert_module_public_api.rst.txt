@@ -1,0 +1,6 @@
+assert\_module\_public\_api
+===========================
+
+.. currentmodule:: pybrops.test.assert_python
+
+.. autofunction:: assert_module_public_api

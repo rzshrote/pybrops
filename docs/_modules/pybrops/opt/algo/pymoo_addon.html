@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/opt/algo/pymoo_addon';</script>
@@ -427,6 +427,7 @@ document.write(`
     <span class="s2">&quot;MultiObjectiveStochasticDescentHillClimberMutation&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">from</span> <span class="nn">pymoo.core.variable</span> <span class="kn">import</span> <span class="n">get</span>
@@ -491,7 +492,9 @@ document.write(`
 
 <div class="viewcode-block" id="SubsetRandomSampling">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.pymoo_addon.SubsetRandomSampling.html#pybrops.opt.algo.pymoo_addon.SubsetRandomSampling">[docs]</a>
-<span class="k">class</span> <span class="nc">SubsetRandomSampling</span><span class="p">(</span><span class="n">Sampling</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">SubsetRandomSampling</span><span class="p">(</span>
+        <span class="n">Sampling</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class implementing subset sampling for chromosome construction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -586,7 +589,9 @@ document.write(`
 
 <div class="viewcode-block" id="ReducedExchangeCrossover">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.pymoo_addon.ReducedExchangeCrossover.html#pybrops.opt.algo.pymoo_addon.ReducedExchangeCrossover">[docs]</a>
-<span class="k">class</span> <span class="nc">ReducedExchangeCrossover</span><span class="p">(</span><span class="n">Crossover</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ReducedExchangeCrossover</span><span class="p">(</span>
+        <span class="n">Crossover</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform a subset crossover according to Correa et al. (2001).</span>
 
@@ -671,7 +676,9 @@ document.write(`
 
 <div class="viewcode-block" id="ReducedExchangeMutation">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.pymoo_addon.ReducedExchangeMutation.html#pybrops.opt.algo.pymoo_addon.ReducedExchangeMutation">[docs]</a>
-<span class="k">class</span> <span class="nc">ReducedExchangeMutation</span><span class="p">(</span><span class="n">Mutation</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ReducedExchangeMutation</span><span class="p">(</span>
+        <span class="n">Mutation</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform a subset exchange mutation according to Correa et al. (2001).</span>
 
@@ -765,7 +772,9 @@ document.write(`
 
 <div class="viewcode-block" id="IntegerSimulatedBinaryCrossover">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.pymoo_addon.IntegerSimulatedBinaryCrossover.html#pybrops.opt.algo.pymoo_addon.IntegerSimulatedBinaryCrossover">[docs]</a>
-<span class="k">class</span> <span class="nc">IntegerSimulatedBinaryCrossover</span><span class="p">(</span><span class="n">SimulatedBinaryCrossover</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">IntegerSimulatedBinaryCrossover</span><span class="p">(</span>
+        <span class="n">SimulatedBinaryCrossover</span><span class="p">,</span>
+    <span class="p">):</span>
     <span class="k">def</span> <span class="nf">_do</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
             <span class="n">problem</span><span class="p">:</span> <span class="n">Problem</span><span class="p">,</span> 
@@ -805,7 +814,9 @@ document.write(`
 
 <div class="viewcode-block" id="IntegerPolynomialMutation">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.pymoo_addon.IntegerPolynomialMutation.html#pybrops.opt.algo.pymoo_addon.IntegerPolynomialMutation">[docs]</a>
-<span class="k">class</span> <span class="nc">IntegerPolynomialMutation</span><span class="p">(</span><span class="n">PolynomialMutation</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">IntegerPolynomialMutation</span><span class="p">(</span>
+        <span class="n">PolynomialMutation</span><span class="p">,</span>
+    <span class="p">):</span>
     <span class="k">def</span> <span class="nf">_do</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
             <span class="n">problem</span><span class="p">:</span> <span class="n">Problem</span><span class="p">,</span> 
@@ -845,7 +856,9 @@ document.write(`
 
 <div class="viewcode-block" id="MultiObjectiveStochasticHillClimberMutation">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.pymoo_addon.MultiObjectiveStochasticHillClimberMutation.html#pybrops.opt.algo.pymoo_addon.MultiObjectiveStochasticHillClimberMutation">[docs]</a>
-<span class="k">class</span> <span class="nc">MultiObjectiveStochasticHillClimberMutation</span><span class="p">(</span><span class="n">Mutation</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MultiObjectiveStochasticHillClimberMutation</span><span class="p">(</span>
+        <span class="n">Mutation</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform a memetic subset exchange mutation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1055,7 +1068,9 @@ document.write(`
 
 <div class="viewcode-block" id="MultiObjectiveSteepestDescentHillClimberMutation">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.pymoo_addon.MultiObjectiveSteepestDescentHillClimberMutation.html#pybrops.opt.algo.pymoo_addon.MultiObjectiveSteepestDescentHillClimberMutation">[docs]</a>
-<span class="k">class</span> <span class="nc">MultiObjectiveSteepestDescentHillClimberMutation</span><span class="p">(</span><span class="n">Mutation</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MultiObjectiveSteepestDescentHillClimberMutation</span><span class="p">(</span>
+        <span class="n">Mutation</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform a memetic subset exchange mutation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1271,7 +1286,9 @@ document.write(`
 
 <div class="viewcode-block" id="MultiObjectiveStochasticDescentHillClimberMutation">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.pymoo_addon.MultiObjectiveStochasticDescentHillClimberMutation.html#pybrops.opt.algo.pymoo_addon.MultiObjectiveStochasticDescentHillClimberMutation">[docs]</a>
-<span class="k">class</span> <span class="nc">MultiObjectiveStochasticDescentHillClimberMutation</span><span class="p">(</span><span class="n">Mutation</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MultiObjectiveStochasticDescentHillClimberMutation</span><span class="p">(</span>
+        <span class="n">Mutation</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform a memetic subset exchange mutation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1281,7 +1298,7 @@ document.write(`
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">setspace</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
             <span class="n">phc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-            <span class="n">nhc</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">nhc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1527,7 +1544,9 @@ document.write(`
 
 <div class="viewcode-block" id="StochasticHillClimberMutation">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.pymoo_addon.StochasticHillClimberMutation.html#pybrops.opt.algo.pymoo_addon.StochasticHillClimberMutation">[docs]</a>
-<span class="k">class</span> <span class="nc">StochasticHillClimberMutation</span><span class="p">(</span><span class="n">Mutation</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">StochasticHillClimberMutation</span><span class="p">(</span>
+        <span class="n">Mutation</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform a memetic subset exchange mutation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1754,7 +1773,9 @@ document.write(`
 
 <div class="viewcode-block" id="MutatorA">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.pymoo_addon.MutatorA.html#pybrops.opt.algo.pymoo_addon.MutatorA">[docs]</a>
-<span class="k">class</span> <span class="nc">MutatorA</span><span class="p">(</span><span class="n">Mutation</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MutatorA</span><span class="p">(</span>
+        <span class="n">Mutation</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Randomly test nearby solutions and randomly choose one solution that </span>
 <span class="sd">    non-dominates from the tested mutations.</span>
@@ -1944,7 +1965,9 @@ document.write(`
 
 <div class="viewcode-block" id="MutatorB">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.pymoo_addon.MutatorB.html#pybrops.opt.algo.pymoo_addon.MutatorB">[docs]</a>
-<span class="k">class</span> <span class="nc">MutatorB</span><span class="p">(</span><span class="n">Mutation</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MutatorB</span><span class="p">(</span>
+        <span class="n">Mutation</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Randomly test nearby solutions and randomly choose one solution that </span>
 <span class="sd">    exhibits extreme values for one of the objectives.</span>
@@ -2137,7 +2160,9 @@ document.write(`
 
 <div class="viewcode-block" id="MutatorF">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.pymoo_addon.MutatorF.html#pybrops.opt.algo.pymoo_addon.MutatorF">[docs]</a>
-<span class="k">class</span> <span class="nc">MutatorF</span><span class="p">(</span><span class="n">Mutation</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MutatorF</span><span class="p">(</span>
+        <span class="n">Mutation</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform a memetic subset exchange mutation (Mutation F).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -2147,8 +2172,8 @@ document.write(`
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">setspace</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
             <span class="n">phc</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-            <span class="n">maxhc</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">maxhcstep</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">maxhc</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">maxhcstep</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>

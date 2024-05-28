@@ -1,0 +1,6 @@
+check\_is\_DenseWeightedGenomicEstimatedBreedingValueMatrix
+===========================================================
+
+.. currentmodule:: pybrops.model.wgebvmat.DenseWeightedGenomicEstimatedBreedingValueMatrix
+
+.. autofunction:: check_is_DenseWeightedGenomicEstimatedBreedingValueMatrix

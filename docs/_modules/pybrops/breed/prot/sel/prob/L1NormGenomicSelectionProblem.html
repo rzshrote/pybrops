@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/sel/prob/L1NormGenomicSelectionProblem';</script>
@@ -422,9 +422,13 @@ document.write(`
     <span class="s2">&quot;L1NormGenomicSubsetSelectionProblem&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.BinarySelectionProblem</span> <span class="kn">import</span> <span class="n">BinarySelectionProblem</span>
@@ -437,7 +441,9 @@ document.write(`
 
 <div class="viewcode-block" id="L1NormGenomicSelectionProblemMixin">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem.L1NormGenomicSelectionProblemMixin.html#pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem.L1NormGenomicSelectionProblemMixin">[docs]</a>
-<span class="k">class</span> <span class="nc">L1NormGenomicSelectionProblemMixin</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">L1NormGenomicSelectionProblemMixin</span><span class="p">(</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper class containing common properties for L1GS problems.&quot;&quot;&quot;</span>
 
     <span class="c1">########################## Special Object Methods ##########################</span>
@@ -584,7 +590,10 @@ document.write(`
 
 <div class="viewcode-block" id="L1NormGenomicSubsetSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem.L1NormGenomicSubsetSelectionProblem.html#pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem.L1NormGenomicSubsetSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">L1NormGenomicSubsetSelectionProblem</span><span class="p">(</span><span class="n">L1NormGenomicSelectionProblemMixin</span><span class="p">,</span><span class="n">SubsetSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">L1NormGenomicSubsetSelectionProblem</span><span class="p">(</span>
+        <span class="n">L1NormGenomicSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">SubsetSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing L1-norm Genomic Selection (L1GS) in subset search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -837,7 +846,10 @@ document.write(`
 
 <div class="viewcode-block" id="L1NormGenomicRealSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem.L1NormGenomicRealSelectionProblem.html#pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem.L1NormGenomicRealSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">L1NormGenomicRealSelectionProblem</span><span class="p">(</span><span class="n">L1NormGenomicSelectionProblemMixin</span><span class="p">,</span><span class="n">RealSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">L1NormGenomicRealSelectionProblem</span><span class="p">(</span>
+        <span class="n">L1NormGenomicSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">RealSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing L1-norm Genomic Selection (L1GS) in real search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1093,7 +1105,10 @@ document.write(`
 
 <div class="viewcode-block" id="L1NormGenomicIntegerSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem.L1NormGenomicIntegerSelectionProblem.html#pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem.L1NormGenomicIntegerSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">L1NormGenomicIntegerSelectionProblem</span><span class="p">(</span><span class="n">L1NormGenomicSelectionProblemMixin</span><span class="p">,</span><span class="n">IntegerSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">L1NormGenomicIntegerSelectionProblem</span><span class="p">(</span>
+        <span class="n">L1NormGenomicSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">IntegerSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing L1-norm Genomic Selection (L1GS) in integer search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1349,7 +1364,10 @@ document.write(`
 
 <div class="viewcode-block" id="L1NormGenomicBinarySelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem.L1NormGenomicBinarySelectionProblem.html#pybrops.breed.prot.sel.prob.L1NormGenomicSelectionProblem.L1NormGenomicBinarySelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">L1NormGenomicBinarySelectionProblem</span><span class="p">(</span><span class="n">L1NormGenomicSelectionProblemMixin</span><span class="p">,</span><span class="n">BinarySelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">L1NormGenomicBinarySelectionProblem</span><span class="p">(</span>
+        <span class="n">L1NormGenomicSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">BinarySelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing L1-norm Genomic Selection (L1GS) in binary search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

@@ -29,6 +29,8 @@ PhasedGenotypeMatrix
       :template: custom-function-template.rst
       :nosignatures:
    
+      check_PhasedGenotypeMatrix_has_vrnt_mask
+      check_PhasedGenotypeMatrix_has_vrnt_xoprob
       check_is_PhasedGenotypeMatrix
    
    

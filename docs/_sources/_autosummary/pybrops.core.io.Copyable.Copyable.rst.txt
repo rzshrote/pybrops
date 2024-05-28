@@ -1,0 +1,26 @@
+Copyable
+========
+
+.. currentmodule:: pybrops.core.io.Copyable
+
+.. autoclass:: Copyable
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~Copyable.copy
+      ~Copyable.deepcopy
+   
+   
+
+   
+   
+   

@@ -28,10 +28,12 @@ util
    :template: custom-module-template.rst
    :recursive:
 
-   pybrops.core.util.arrayix
+   pybrops.core.util.array
    pybrops.core.util.h5py
    pybrops.core.util.haplo
    pybrops.core.util.iterator
+   pybrops.core.util.mate
    pybrops.core.util.pareto
    pybrops.core.util.subroutines
+   pybrops.core.util.trans
 

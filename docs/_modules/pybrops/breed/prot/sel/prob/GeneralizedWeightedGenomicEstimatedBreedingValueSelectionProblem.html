@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/sel/prob/GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem';</script>
@@ -423,8 +423,12 @@ document.write(`
 <span class="p">]</span>
 
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Number</span><span class="p">,</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.BinarySelectionProblem</span> <span class="kn">import</span> <span class="n">BinarySelectionProblem</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.IntegerSelectionProblem</span> <span class="kn">import</span> <span class="n">IntegerSelectionProblem</span>
@@ -437,7 +441,9 @@ document.write(`
 
 <div class="viewcode-block" id="GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin.html#pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin">[docs]</a>
-<span class="k">class</span> <span class="nc">GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin</span><span class="p">(</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper class containing common properties for gwGEBV selection problems.&quot;&quot;&quot;</span>
 
     <span class="c1">########################## Special Object Methods ##########################</span>
@@ -464,7 +470,10 @@ document.write(`
 
 <div class="viewcode-block" id="GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem.GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem.html#pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem.GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem</span><span class="p">(</span><span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span><span class="n">SubsetSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem</span><span class="p">(</span>
+        <span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">SubsetSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in subset search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -647,7 +656,9 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem&quot;</span><span class="p">:</span>
         <span class="c1"># calculate wGEBVs</span>
         <span class="c1"># (n,p) @ (p,t) -&gt; (n,t)</span>
-        <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fafreq</span><span class="p">,</span> <span class="o">-</span><span class="n">alpha</span><span class="p">))</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">fafreq</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">tmp</span><span class="p">[</span><span class="n">tmp</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="o">-</span><span class="n">alpha</span><span class="p">))</span>
 
         <span class="c1"># construct problem</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
@@ -699,7 +710,7 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GeneralizedWeightedGenomicEstimatedBreedingValueSubsetSelectionProblem&quot;</span><span class="p">:</span>
         <span class="c1"># construct class</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
-            <span class="n">Z_a</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span>
+            <span class="n">Z_a</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">mat_asformat</span><span class="p">(</span><span class="s2">&quot;{0,1,2}&quot;</span><span class="p">),</span>
             <span class="n">u_a</span> <span class="o">=</span> <span class="n">algpmod</span><span class="o">.</span><span class="n">u_a</span><span class="p">,</span>
             <span class="n">fafreq</span> <span class="o">=</span> <span class="n">algpmod</span><span class="o">.</span><span class="n">fafreq</span><span class="p">(</span><span class="n">gmat</span><span class="p">),</span>
             <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">,</span>
@@ -727,7 +738,10 @@ document.write(`
 
 <div class="viewcode-block" id="GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem.GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem.html#pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem.GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem</span><span class="p">(</span><span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span><span class="n">RealSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem</span><span class="p">(</span>
+        <span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">RealSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in real search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -920,7 +934,9 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem&quot;</span><span class="p">:</span>
         <span class="c1"># calculate wGEBVs</span>
         <span class="c1"># (n,p) @ (p,t) -&gt; (n,t)</span>
-        <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fafreq</span><span class="p">,</span> <span class="o">-</span><span class="n">alpha</span><span class="p">))</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">fafreq</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">tmp</span><span class="p">[</span><span class="n">tmp</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="o">-</span><span class="n">alpha</span><span class="p">))</span>
 
         <span class="c1"># construct problem</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
@@ -972,7 +988,7 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GeneralizedWeightedGenomicEstimatedBreedingValueRealSelectionProblem&quot;</span><span class="p">:</span>
         <span class="c1"># construct class</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
-            <span class="n">Z_a</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span>
+            <span class="n">Z_a</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">mat_asformat</span><span class="p">(</span><span class="s2">&quot;{0,1,2}&quot;</span><span class="p">),</span>
             <span class="n">u_a</span> <span class="o">=</span> <span class="n">algpmod</span><span class="o">.</span><span class="n">u_a</span><span class="p">,</span>
             <span class="n">fafreq</span> <span class="o">=</span> <span class="n">algpmod</span><span class="o">.</span><span class="n">fafreq</span><span class="p">(</span><span class="n">gmat</span><span class="p">),</span>
             <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">,</span>
@@ -1000,7 +1016,10 @@ document.write(`
 
 <div class="viewcode-block" id="GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem.GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem.html#pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem.GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem</span><span class="p">(</span><span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span><span class="n">IntegerSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem</span><span class="p">(</span>
+        <span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">IntegerSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in integer search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1193,7 +1212,9 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem&quot;</span><span class="p">:</span>
         <span class="c1"># calculate wGEBVs</span>
         <span class="c1"># (n,p) @ (p,t) -&gt; (n,t)</span>
-        <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fafreq</span><span class="p">,</span> <span class="o">-</span><span class="n">alpha</span><span class="p">))</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">fafreq</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">tmp</span><span class="p">[</span><span class="n">tmp</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="o">-</span><span class="n">alpha</span><span class="p">))</span>
 
         <span class="c1"># construct problem</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
@@ -1245,7 +1266,7 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GeneralizedWeightedGenomicEstimatedBreedingValueIntegerSelectionProblem&quot;</span><span class="p">:</span>
         <span class="c1"># construct class</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
-            <span class="n">Z_a</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span>
+            <span class="n">Z_a</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">mat_asformat</span><span class="p">(</span><span class="s2">&quot;{0,1,2}&quot;</span><span class="p">),</span>
             <span class="n">u_a</span> <span class="o">=</span> <span class="n">algpmod</span><span class="o">.</span><span class="n">u_a</span><span class="p">,</span>
             <span class="n">fafreq</span> <span class="o">=</span> <span class="n">algpmod</span><span class="o">.</span><span class="n">fafreq</span><span class="p">(</span><span class="n">gmat</span><span class="p">),</span>
             <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">,</span>
@@ -1273,7 +1294,10 @@ document.write(`
 
 <div class="viewcode-block" id="GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem.GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem.html#pybrops.breed.prot.sel.prob.GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblem.GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem</span><span class="p">(</span><span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span><span class="n">BinarySelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem</span><span class="p">(</span>
+        <span class="n">GeneralizedWeightedGenomicEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">BinarySelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing selection on Generalized Weighted Genomic Estimated Breeding Values (gwGEBVs) in binary search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1467,7 +1491,9 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem&quot;</span><span class="p">:</span>
         <span class="c1"># calculate wGEBVs</span>
         <span class="c1"># (n,p) @ (p,t) -&gt; (n,t)</span>
-        <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">fafreq</span><span class="p">,</span> <span class="o">-</span><span class="n">alpha</span><span class="p">))</span>
+        <span class="n">tmp</span> <span class="o">=</span> <span class="n">fafreq</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">tmp</span><span class="p">[</span><span class="n">tmp</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">gwgebv</span> <span class="o">=</span> <span class="n">Z_a</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">u_a</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">tmp</span><span class="p">,</span> <span class="o">-</span><span class="n">alpha</span><span class="p">))</span>
 
         <span class="c1"># construct problem</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
@@ -1519,7 +1545,7 @@ document.write(`
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;GeneralizedWeightedGenomicEstimatedBreedingValueBinarySelectionProblem&quot;</span><span class="p">:</span>
         <span class="c1"># construct class</span>
         <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span>
-            <span class="n">Z_a</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span>
+            <span class="n">Z_a</span> <span class="o">=</span> <span class="n">gmat</span><span class="o">.</span><span class="n">mat_asformat</span><span class="p">(</span><span class="s2">&quot;{0,1,2}&quot;</span><span class="p">),</span>
             <span class="n">u_a</span> <span class="o">=</span> <span class="n">algpmod</span><span class="o">.</span><span class="n">u_a</span><span class="p">,</span>
             <span class="n">fafreq</span> <span class="o">=</span> <span class="n">algpmod</span><span class="o">.</span><span class="n">fafreq</span><span class="p">(</span><span class="n">gmat</span><span class="p">),</span>
             <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">,</span>

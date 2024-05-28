@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/core/mat/DenseSquareTaxaTraitMatrix';</script>
@@ -421,21 +421,33 @@ document.write(`
     <span class="s2">&quot;check_is_DenseSquareTaxaTraitMatrix&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
-
 <span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">h5py</span>
 <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_io_python</span> <span class="kn">import</span> <span class="n">check_file_exists</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_pandas</span> <span class="kn">import</span> <span class="n">check_is_pandas_DataFrame</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_Sequence_all_type</span><span class="p">,</span> <span class="n">check_is_Integral</span><span class="p">,</span> <span class="n">check_is_str</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_has_group</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_is_readable</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_is_writable</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_pandas</span> <span class="kn">import</span> <span class="n">check_pandas_DataFrame_has_column_indices</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_len</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.io.CSVInputOutput</span> <span class="kn">import</span> <span class="n">CSVInputOutput</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.io.PandasInputOutput</span> <span class="kn">import</span> <span class="n">PandasInputOutput</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.mat.DenseSquareTaxaMatrix</span> <span class="kn">import</span> <span class="n">DenseSquareTaxaMatrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.mat.DenseTraitMatrix</span> <span class="kn">import</span> <span class="n">DenseTraitMatrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.mat.Matrix</span> <span class="kn">import</span> <span class="n">Matrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.mat.SquareTaxaTraitMatrix</span> <span class="kn">import</span> <span class="n">SquareTaxaTraitMatrix</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.mat.util</span> <span class="kn">import</span> <span class="n">get_axis</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">save_dict_to_hdf5</span>
-
+<span class="kn">from</span> <span class="nn">pybrops.core.util.array</span> <span class="kn">import</span> <span class="n">flattenix</span><span class="p">,</span> <span class="n">get_axis</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">h5py_File_write_dict</span>
 
 <div class="viewcode-block" id="DenseSquareTaxaTraitMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.html#pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix">[docs]</a>
@@ -443,6 +455,8 @@ document.write(`
         <span class="n">DenseSquareTaxaMatrix</span><span class="p">,</span>
         <span class="n">DenseTraitMatrix</span><span class="p">,</span>
         <span class="n">SquareTaxaTraitMatrix</span><span class="p">,</span>
+        <span class="n">PandasInputOutput</span><span class="p">,</span>
+        <span class="n">CSVInputOutput</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A concrete class for dense matrices with taxa axes that are square and a </span>
@@ -549,6 +563,22 @@ document.write(`
         <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_len</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_len</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">out</span>
+
+    <span class="c1">############################ Object Properties #############################</span>
+
+    <span class="c1">############## Square Metadata Properties ##############</span>
+    <span class="nd">@DenseSquareTaxaMatrix</span><span class="o">.</span><span class="n">square_taxa_axes</span><span class="o">.</span><span class="n">getter</span>
+    <span class="k">def</span> <span class="nf">square_taxa_axes</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Axis indices for taxa axes that are square.&quot;&quot;&quot;</span>
+        <span class="c1"># square taxa axes are everything except the last axis</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">ndim</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1">#################### Trait metadata ####################</span>
+    <span class="nd">@DenseTraitMatrix</span><span class="o">.</span><span class="n">trait_axis</span><span class="o">.</span><span class="n">getter</span>
+    <span class="k">def</span> <span class="nf">trait_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Axis along which traits are stored.&quot;&quot;&quot;</span>
+        <span class="c1"># traits are always stored on the last axis.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mat</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">1</span>
 
     <span class="c1">############################## Object Methods ##############################</span>
 
@@ -1202,54 +1232,383 @@ document.write(`
 
 
     <span class="c1">################### Matrix File I/O ####################</span>
+
 <div class="viewcode-block" id="DenseSquareTaxaTraitMatrix.to_hdf5">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.html#pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.to_hdf5">[docs]</a>
     <span class="k">def</span> <span class="nf">to_hdf5</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
-            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
-            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">,</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">],</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Write DenseSquareTaxaTraitMatrix to an HDF5 file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str</span>
-<span class="sd">            HDF5 file name to which to write.</span>
-<span class="sd">        groupname : str or None</span>
-<span class="sd">            HDF5 group name under which the ``DenseSquareTaxaTraitMatrix`` data is stored.</span>
+<span class="sd">        filename : str, Path, h5py.File</span>
+<span class="sd">            If ``str``, an HDF5 file name to which to write. File is closed after writing.</span>
+<span class="sd">            If ``h5py.File``, an opened HDF5 file to which to write. File is not closed after writing.</span>
+
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            If ``str``, an HDF5 group name under which the ``DenseSquareTaxaTraitMatrix`` data is stored.</span>
 <span class="sd">            If ``None``, the ``DenseSquareTaxaTraitMatrix`` is written to the base HDF5 group.</span>
+
+<span class="sd">        overwrite : bool</span>
+<span class="sd">            Whether to overwrite values in an HDF5 file if a field already exists.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>                       <span class="c1"># open HDF5 in write mode</span>
-        <span class="c1">######################################################### process groupname argument</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>                          <span class="c1"># if we have a string</span>
-            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>                            <span class="c1"># if last character in string is not &#39;/&#39;</span>
-                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>                                <span class="c1"># add &#39;/&#39; to end of string</span>
-        <span class="k">elif</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>                                 <span class="c1"># else if groupname is None</span>
-            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>                                      <span class="c1"># empty string</span>
-        <span class="k">else</span><span class="p">:</span>                                                   <span class="c1"># else raise error</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;groupname&#39; must be of type str or None&quot;</span><span class="p">)</span>
-        <span class="c1">######################################################### populate HDF5 file</span>
-        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>                                           <span class="c1"># data dictionary</span>
-            <span class="s2">&quot;mat&quot;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span>
-            <span class="s2">&quot;taxa&quot;</span>      <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span>
-            <span class="s2">&quot;taxa_grp&quot;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">,</span>
-            <span class="s2">&quot;trait&quot;</span>     <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span>
+        <span class="c1">########################################################</span>
+        <span class="c1">############ process ``filename`` argument #############</span>
+
+        <span class="c1"># HDF5 file object</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># if we have a string or Path, open HDF5 file in append (``r+``) mode</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+        <span class="c1"># elif we have an h5py.File, make sure mode is writable, and copy pointer</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
+            <span class="n">check_h5py_File_is_writable</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">h5file</span> <span class="o">=</span> <span class="n">filename</span>
+        
+        <span class="c1"># else raise TypeError</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">############ process ``groupname`` argument ############</span>
+
+        <span class="c1"># if we have a string</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># if last character in string is not &#39;/&#39;, add &#39;/&#39; to end of string</span>
+            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+        
+        <span class="c1"># else if ``groupname`` is None, set ``groupname`` to empty string</span>
+        <span class="k">elif</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        
+        <span class="c1"># else raise error</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``groupname`` must be of type ``str`` or ``None`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">groupname</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">#### write data to HDF5 file and (optionally) close ####</span>
+
+        <span class="c1"># data dictionary</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;mat&quot;</span>           <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span>
+            <span class="s2">&quot;taxa&quot;</span>          <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp&quot;</span>      <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="s2">&quot;trait&quot;</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">,</span>
+            <span class="c1"># metadata</span>
+            <span class="s2">&quot;taxa_grp_name&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_name</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_stix&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_stix</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_spix&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_spix</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_len&quot;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_len</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">save_dict_to_hdf5</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">)</span>         <span class="c1"># save data</span>
-        <span class="c1">######################################################### write conclusion</span>
-        <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>                                          <span class="c1"># close the file</span></div>
+
+        <span class="c1"># save data</span>
+        <span class="n">h5py_File_write_dict</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">)</span>
+
+        <span class="c1"># close the file, only if the provided filename was a string or Path and not a h5py.File.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTaxaTraitMatrix.to_pandas">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.html#pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.to_pandas">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_pandas</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">taxa_colnames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="kc">None</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">taxa_grp_colnames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="kc">None</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">trait_colnames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="kc">None</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">value_colname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export a DenseSquareTaxaTraitMatrix to a pandas.DataFrame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        taxa_colnames : bool, str, Sequence of str or None, None, default = True</span>
+<span class="sd">            Sequence of column names for which to name taxa axis columns.</span>
+<span class="sd">            There must be one column name for each taxa axis.</span>
+<span class="sd">            If an element in the sequence is ``None``, then do not export the column.</span>
+<span class="sd">            If ``bool``, then assign default names if ``True`` or do not export columns if ``False``.</span>
+<span class="sd">            If ``str``, then one taxa axis column is assumed.</span>
+<span class="sd">            If ``None``, then do not export taxa columns.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp_colnames : bool, str, Sequence of str or None, None, default = True</span>
+<span class="sd">            Sequence of column names for which to name taxa group axis columns.</span>
+<span class="sd">            There must be one column name for each taxa axis.</span>
+<span class="sd">            If an element in the sequence is ``None``, then do not export the column.</span>
+<span class="sd">            If ``bool``, then assign default names if ``True`` or do not export columns if ``False``.</span>
+<span class="sd">            If ``str``, then one taxa group axis column is assumed.</span>
+<span class="sd">            If ``None``, then do not export taxa group columns.</span>
+
+<span class="sd">        trait_colnames : bool, str, Sequence of str or None, None, default = True</span>
+<span class="sd">            Sequence of column names for which to name trait columns.</span>
+<span class="sd">            There must be one column name for each trait.</span>
+<span class="sd">            If an element in the sequence is ``None``, then do not export the column.</span>
+<span class="sd">            If ``bool``, then assign default names if ``True`` or do not export columns if ``False``.</span>
+<span class="sd">            If ``str``, then one column name is assumed.</span>
+<span class="sd">            If ``None``, then do not export trait column.</span>
+<span class="sd">        </span>
+<span class="sd">        value_colname : str, default = &quot;value&quot;</span>
+<span class="sd">            Name of the value column.</span>
+<span class="sd">        </span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to be passed for dataframe construction.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : pandas.DataFrame</span>
+<span class="sd">            Output pandas dataframe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">###</span>
+        <span class="c1">### Process inputs</span>
+        <span class="c1">###</span>
+
+        <span class="c1"># get the number of taxa axes</span>
+        <span class="n">ntaxaaxes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nsquare_taxa</span>
+
+        <span class="c1"># get the number of trait axes</span>
+        <span class="n">ntraitaxes</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1">### process inputs: taxa_colnames</span>
+
+        <span class="c1"># process ``None``</span>
+        <span class="k">if</span> <span class="n">taxa_colnames</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa_colnames</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="c1"># process ``bool``, ``str``, ``Sequence``</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="n">taxa_colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;taxa_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">)]</span> <span class="k">if</span> <span class="n">taxa_colnames</span> <span class="k">else</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">taxa_colnames</span> <span class="o">=</span> <span class="p">[</span><span class="n">taxa_colnames</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``taxa_colnames`` must be of type ``bool``, ``str``, ``Sequence``, or ``None`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        
+        <span class="c1"># check the sequence length</span>
+        <span class="n">check_len</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">,</span> <span class="s2">&quot;taxa_colnames&quot;</span><span class="p">,</span> <span class="n">ntaxaaxes</span><span class="p">)</span>
+
+        <span class="c1"># check sequence element types</span>
+        <span class="n">check_Sequence_all_type</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">,</span> <span class="s2">&quot;taxa_colnames&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+        
+        <span class="c1">### process inputs: taxa_grp_colnames</span>
+
+        <span class="c1"># process ``None``</span>
+        <span class="k">if</span> <span class="n">taxa_grp_colnames</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa_grp_colnames</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="c1"># process ``bool``, ``str``, ``Sequence``</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="n">taxa_grp_colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;taxa_grp_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">)]</span> <span class="k">if</span> <span class="n">taxa_grp_colnames</span> <span class="k">else</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">taxa_grp_colnames</span> <span class="o">=</span> <span class="p">[</span><span class="n">taxa_grp_colnames</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``taxa_grp_colnames`` must be of type ``bool``, ``str``, ``Sequence``, or ``None`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        
+        <span class="c1"># check the sequence length</span>
+        <span class="n">check_len</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_colnames&quot;</span><span class="p">,</span> <span class="n">ntaxaaxes</span><span class="p">)</span>
+
+        <span class="c1"># check sequence element types</span>
+        <span class="n">check_Sequence_all_type</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_colnames&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+
+        <span class="c1">### process inputs: trait_colnames</span>
+
+        <span class="c1"># process ``None``</span>
+        <span class="k">if</span> <span class="n">trait_colnames</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">trait_colnames</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="c1"># process ``bool``, ``str``, ``Sequence``</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="n">trait_colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;trait_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ntraitaxes</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntraitaxes</span><span class="p">)]</span> <span class="k">if</span> <span class="n">trait_colnames</span> <span class="k">else</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntraitaxes</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">trait_colnames</span> <span class="o">=</span> <span class="p">[</span><span class="n">trait_colnames</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``trait_colnames`` must be of type ``bool``, ``str``, ``Sequence``, or ``None`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        
+        <span class="c1"># check the sequence length</span>
+        <span class="n">check_len</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">,</span> <span class="s2">&quot;trait_colnames&quot;</span><span class="p">,</span> <span class="n">ntraitaxes</span><span class="p">)</span>
+
+        <span class="c1"># check sequence element types</span>
+        <span class="n">check_Sequence_all_type</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">,</span> <span class="s2">&quot;trait_colnames&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+
+        <span class="c1">### process inputs: value_colname</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">value_colname</span><span class="p">,</span> <span class="s2">&quot;value_colname&quot;</span><span class="p">)</span>
+
+        <span class="c1">###</span>
+        <span class="c1">### Process data</span>
+        <span class="c1">###</span>
+
+        <span class="c1"># get taxa names</span>
+        <span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;Taxon&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">)))</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">)],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span>
+
+        <span class="c1"># get taxa_grp names</span>
+        <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pandas</span><span class="o">.</span><span class="n">NA</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span>
+
+        <span class="c1"># get trait names</span>
+        <span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;Trait&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)</span>
+
+        <span class="c1"># calculate flattened array and corresponding axis indices</span>
+        <span class="n">flatmat</span><span class="p">,</span> <span class="n">axisix_data</span> <span class="o">=</span> <span class="n">flattenix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span>
+
+        <span class="c1">###</span>
+        <span class="c1">### Export data to dict then to pandas and return</span>
+        <span class="c1">###</span>
+
+        <span class="c1"># create empty dict</span>
+        <span class="n">out_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># save taxa column data</span>
+        <span class="k">for</span> <span class="n">ix</span><span class="p">,</span><span class="n">taxa_colname</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">square_taxa_axes</span><span class="p">,</span><span class="n">taxa_colnames</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">taxa_colname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">axisix</span> <span class="o">=</span> <span class="n">axisix_data</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+            <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">taxa_colname</span><span class="p">:</span> <span class="n">taxa</span><span class="p">[</span><span class="n">axisix</span><span class="p">]})</span>
+
+        <span class="c1"># save taxa grp column data</span>
+        <span class="k">for</span> <span class="n">ix</span><span class="p">,</span><span class="n">taxa_grp_colname</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">square_taxa_axes</span><span class="p">,</span><span class="n">taxa_grp_colnames</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">taxa_grp_colname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">axisix</span> <span class="o">=</span> <span class="n">axisix_data</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+            <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">taxa_grp_colname</span><span class="p">:</span> <span class="n">taxa_grp</span><span class="p">[</span><span class="n">axisix</span><span class="p">]})</span>
+        
+        <span class="c1"># save trait data</span>
+        <span class="n">trait_colname</span> <span class="o">=</span> <span class="n">trait_colnames</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">trait_colname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">axisix</span> <span class="o">=</span> <span class="n">axisix_data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">trait_axis</span><span class="p">]</span>
+            <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">trait_colname</span><span class="p">:</span> <span class="n">trait</span><span class="p">[</span><span class="n">axisix</span><span class="p">]})</span>
+        
+        <span class="c1"># save values</span>
+        <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">value_colname</span><span class="p">:</span> <span class="n">flatmat</span><span class="p">})</span>
+
+        <span class="c1"># create a pandas DataFrame from the data</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">out_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTaxaTraitMatrix.to_csv">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.html#pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.to_csv">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_csv</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+            <span class="n">taxa_colnames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="kc">None</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">taxa_grp_colnames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="kc">None</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">trait_colnames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="kc">None</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">value_colname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> 
+            <span class="n">header</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
+            <span class="n">index</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export a DenseSquareTaxaTraitMatrix to a CSV file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            CSV file name to which to write.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_colnames : bool, str, Sequence of str or None, None, default = True</span>
+<span class="sd">            Sequence of column names for which to name taxa axis columns.</span>
+<span class="sd">            There must be one column name for each taxa axis.</span>
+<span class="sd">            If an element in the sequence is ``None``, then do not export the column.</span>
+<span class="sd">            If ``bool``, then assign default names if ``True`` or do not export columns if ``False``.</span>
+<span class="sd">            If ``str``, then one taxa axis column is assumed.</span>
+<span class="sd">            If ``None``, then do not export taxa columns.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp_colnames : bool, str, Sequence of str or None, None, default = True</span>
+<span class="sd">            Sequence of column names for which to name taxa group axis columns.</span>
+<span class="sd">            There must be one column name for each taxa axis.</span>
+<span class="sd">            If an element in the sequence is ``None``, then do not export the column.</span>
+<span class="sd">            If ``bool``, then assign default names if ``True`` or do not export columns if ``False``.</span>
+<span class="sd">            If ``str``, then one taxa group axis column is assumed.</span>
+<span class="sd">            If ``None``, then do not export taxa group columns.</span>
+
+<span class="sd">        trait_colnames : bool, str, Sequence of str or None, None, default = True</span>
+<span class="sd">            Sequence of column names for which to name trait columns.</span>
+<span class="sd">            There must be one column name for each trait.</span>
+<span class="sd">            If an element in the sequence is ``None``, then do not export the column.</span>
+<span class="sd">            If ``bool``, then assign default names if ``True`` or do not export columns if ``False``.</span>
+<span class="sd">            If ``str``, then one column name is assumed.</span>
+<span class="sd">            If ``None``, then do not export trait column.</span>
+<span class="sd">        </span>
+<span class="sd">        value_colname : str, default = &quot;value&quot;</span>
+<span class="sd">            Name of the value column.</span>
+<span class="sd">        </span>
+<span class="sd">        sep : str, default = &quot;,&quot;</span>
+<span class="sd">            Separator to use in the exported CSV file.</span>
+<span class="sd">        </span>
+<span class="sd">        header : bool, default = True</span>
+<span class="sd">            Whether to save header names.</span>
+<span class="sd">        </span>
+<span class="sd">        index : bool, default = False</span>
+<span class="sd">            Whether to save a row index in the exported CSV file.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating export to a CSV.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># convert DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix to pandas.DataFrame</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">(</span>
+            <span class="n">taxa_colnames</span> <span class="o">=</span> <span class="n">taxa_colnames</span><span class="p">,</span>
+            <span class="n">taxa_grp_colnames</span> <span class="o">=</span> <span class="n">taxa_grp_colnames</span><span class="p">,</span>
+            <span class="n">trait_colnames</span> <span class="o">=</span> <span class="n">trait_colnames</span><span class="p">,</span>
+            <span class="n">value_colname</span> <span class="o">=</span> <span class="n">value_colname</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># export using pandas</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span>
+            <span class="n">path_or_buf</span> <span class="o">=</span> <span class="n">filename</span><span class="p">,</span>
+            <span class="n">sep</span>         <span class="o">=</span> <span class="n">sep</span><span class="p">,</span>
+            <span class="n">header</span>      <span class="o">=</span> <span class="n">header</span><span class="p">,</span>
+            <span class="n">index</span>       <span class="o">=</span> <span class="n">index</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span></div>
 
 
     <span class="c1">############################## Class Methods ###############################</span>
 
     <span class="c1">################### Matrix File I/O ####################</span>
+
 <div class="viewcode-block" id="DenseSquareTaxaTraitMatrix.from_hdf5">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.html#pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.from_hdf5">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_hdf5</span><span class="p">(</span>
             <span class="bp">cls</span><span class="p">,</span> 
-            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">,</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">],</span> 
             <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTaxaTraitMatrix&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1257,10 +1616,11 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str</span>
-<span class="sd">            HDF5 file name which to read.</span>
-<span class="sd">        groupname : str or None</span>
-<span class="sd">            HDF5 group name under which DenseSquareTaxaTraitMatrix data is stored.</span>
+<span class="sd">        filename : str, Path, h5py.File</span>
+<span class="sd">            If ``str`` or ``Path``, an HDF5 file name from which to read. File is closed after reading.</span>
+<span class="sd">            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.</span>
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            If ``str``, an HDF5 group name under which DenseSquareTaxaTraitMatrix data is stored.</span>
 <span class="sd">            If None, DenseSquareTaxaTraitMatrix is read from base HDF5 group.</span>
 
 <span class="sd">        Returns</span>
@@ -1268,50 +1628,522 @@ document.write(`
 <span class="sd">        out : DenseSquareTaxaTraitMatrix</span>
 <span class="sd">            A dense matrix read from file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_file_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>                             <span class="c1"># check file exists</span>
-        <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>                       <span class="c1"># open HDF5 in read only</span>
-        <span class="c1">######################################################### process groupname argument</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>                          <span class="c1"># if we have a string</span>
-            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">groupname</span><span class="p">)</span>    <span class="c1"># check that group exists</span>
-            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>                            <span class="c1"># if last character in string is not &#39;/&#39;</span>
-                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>                                <span class="c1"># add &#39;/&#39; to end of string</span>
-        <span class="k">elif</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>                                 <span class="c1"># else if groupname is None</span>
-            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>                                      <span class="c1"># empty string</span>
-        <span class="k">else</span><span class="p">:</span>                                                   <span class="c1"># else raise error</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;&#39;groupname&#39; must be of type str or None&quot;</span><span class="p">)</span>
-        <span class="c1">######################################################### check that we have all required fields</span>
+        <span class="c1">########################################################</span>
+        <span class="c1">############ process ``groupname`` argument ############</span>
+
+        <span class="c1"># if we have a string</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># if last character in string is not &#39;/&#39;, add &#39;/&#39; to end of string</span>
+            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+        
+        <span class="c1"># else if ``groupname`` is None, set ``groupname`` to empty string</span>
+        <span class="k">elif</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        
+        <span class="c1"># else raise error</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``groupname`` must be of type ``str`` or ``None`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">groupname</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">############ process ``filename`` argument #############</span>
+
+        <span class="c1"># HDF5 file object</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># if we have a string or Path, open HDF5 file in append (``r``) mode</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="n">check_file_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+
+        <span class="c1"># elif we have an h5py.File, make sure mode is in at least ``r`` mode, and copy pointer</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
+            <span class="n">check_h5py_File_is_readable</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">h5file</span> <span class="o">=</span> <span class="n">filename</span>
+        
+        <span class="c1"># else raise TypeError</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">######## check that we have all required fields ########</span>
+
+        <span class="c1"># all required arguments</span>
         <span class="n">required_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mat&quot;</span><span class="p">]</span>                               <span class="c1"># all required arguments</span>
-        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">:</span>                           <span class="c1"># for each required field</span>
-            <span class="n">fieldname</span> <span class="o">=</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span>                       <span class="c1"># concatenate base groupname and field</span>
-            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">fieldname</span><span class="p">)</span>    <span class="c1"># check that group exists</span>
-        <span class="c1">######################################################### read data</span>
-        <span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>                                           <span class="c1"># output dictionary</span>
-            <span class="s2">&quot;mat&quot;</span>       <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;taxa&quot;</span>      <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;taxa_grp&quot;</span>  <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;trait&quot;</span>     <span class="p">:</span> <span class="kc">None</span>
+
+        <span class="c1"># for each required field, check if the field exists in the HDF5 file.</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">:</span>
+            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span><span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">### read data from HDF5 file and (optionally) close ####</span>
+        
+        <span class="c1"># output dictionary</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;mat&quot;</span>           <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa&quot;</span>          <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp&quot;</span>      <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;trait&quot;</span>         <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="c1"># metadata</span>
+            <span class="s2">&quot;taxa_grp_name&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_stix&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_spix&quot;</span> <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_len&quot;</span>  <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>                          <span class="c1"># for each field</span>
-            <span class="n">fieldname</span> <span class="o">=</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span>                       <span class="c1"># concatenate base groupname and field</span>
-            <span class="k">if</span> <span class="n">fieldname</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>                             <span class="c1"># if the field exists in the HDF5 file</span>
-                <span class="n">data_dict</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">fieldname</span><span class="p">][()]</span>        <span class="c1"># read array</span>
-        <span class="c1">######################################################### read conclusion</span>
-        <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>                                          <span class="c1"># close file</span>
-        <span class="c1">######################################################### convert data types</span>
-        <span class="n">str_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">,</span><span class="s2">&quot;trait&quot;</span><span class="p">]</span>                           <span class="c1"># string array fields</span>
-        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">str_fields</span><span class="p">:</span>                                <span class="c1"># for each field</span>
-            <span class="k">if</span> <span class="n">data_dict</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>                    <span class="c1"># if the field is not None</span>
-                <span class="n">arr</span> <span class="o">=</span> <span class="n">data_dict</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>                          <span class="c1"># extract pointer to field</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)):</span>                       <span class="c1"># for each element in field</span>
-                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="nb">bytes</span><span class="p">):</span>               <span class="c1"># if element is bytes</span>
-                        <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>         <span class="c1"># convert bytes element to str</span>
-                <span class="n">data_dict</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span>                          <span class="c1"># store pointer</span>
-        <span class="c1">######################################################### create object</span>
-        <span class="n">mat</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">data_dict</span><span class="p">)</span>                                  <span class="c1"># create object from read data</span>
+        
+        <span class="c1">##################################</span>
+        <span class="c1">### read mandatory data fields ###</span>
+
+        <span class="c1"># read mat array</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;mat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;mat&quot;</span><span class="p">][()]</span>
+        
+        <span class="c1">#################################</span>
+        <span class="c1">### read optional data fields ###</span>
+
+        <span class="c1"># read taxa data, if &quot;groupname/taxa&quot; in HDF5 file</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="nb">bytes</span><span class="p">)</span> <span class="k">else</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">[</span><span class="n">groupname</span><span class="o">+</span><span class="s2">&quot;taxa&quot;</span><span class="p">][()]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+        <span class="c1"># read taxa_grp data, if &quot;groupname/taxa_grp&quot; in HDF5 file</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">][()]</span>
+        
+        <span class="c1"># read trait data, if &quot;groupname/trait&quot; in HDF5 file</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;trait&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trait&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="nb">bytes</span><span class="p">)</span> <span class="k">else</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">[</span><span class="n">groupname</span><span class="o">+</span><span class="s2">&quot;trait&quot;</span><span class="p">][()]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+        <span class="c1">#####################################</span>
+        <span class="c1">### read optional metadata fields ###</span>
+
+        <span class="c1"># read taxa_grp_name data, if &quot;groupname/taxa_grp_name&quot; in HDF5 file</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_name&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_name&quot;</span><span class="p">][()]</span>
+
+        <span class="c1"># read taxa_grp_stix data, if &quot;groupname/taxa_grp_stix&quot; in HDF5 file</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_stix&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_stix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_stix&quot;</span><span class="p">][()]</span>
+
+        <span class="c1"># read taxa_grp_spix data, if &quot;groupname/taxa_grp_spix&quot; in HDF5 file</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_spix&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_spix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_spix&quot;</span><span class="p">][()]</span>
+
+        <span class="c1"># read taxa_grp_len data, if &quot;groupname/taxa_grp_len&quot; in HDF5 file</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_len&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_len&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5file</span><span class="p">[</span><span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_len&quot;</span><span class="p">][()]</span>
+
+        <span class="c1">######################</span>
+        <span class="c1">### close the file ###</span>
+
+        <span class="c1"># close the file, only if the provided fieldname was a string or Path an not an h5py.File.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">################### Object creation ####################</span>
+        
+        <span class="c1"># create object from read data</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span>      <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;mat&quot;</span><span class="p">],</span>
+            <span class="n">taxa</span>     <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">],</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp&quot;</span><span class="p">],</span>
+            <span class="n">trait</span>    <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;trait&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="c1"># assign metadata</span>
+        <span class="n">mat</span><span class="o">.</span><span class="n">taxa_grp_name</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_name&quot;</span><span class="p">]</span>
+        <span class="n">mat</span><span class="o">.</span><span class="n">taxa_grp_stix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_stix&quot;</span><span class="p">]</span>
+        <span class="n">mat</span><span class="o">.</span><span class="n">taxa_grp_spix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_spix&quot;</span><span class="p">]</span>
+        <span class="n">mat</span><span class="o">.</span><span class="n">taxa_grp_len</span>  <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_len&quot;</span><span class="p">]</span>
+
         <span class="k">return</span> <span class="n">mat</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTaxaTraitMatrix.from_pandas">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.html#pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.from_pandas">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pandas</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span>
+            <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+            <span class="n">taxa_colnames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">taxa_grp_colnames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">trait_colnames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">value_colname</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="n">ntaxaaxes</span><span class="p">:</span> <span class="n">Integral</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTaxaTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Import a DenseSquareTaxaTraitMatrix from a pandas.DataFrame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : pandas.DataFrame</span>
+<span class="sd">            Pandas dataframe from which to read.</span>
+
+<span class="sd">        taxa_colnames : bool, str, Integral, Sequence of str or Integral, None, default = True</span>
+<span class="sd">            Sequence of column names or indices from which to read taxa axis columns.</span>
+<span class="sd">            There must be one column name or index for each taxa axis.</span>
+<span class="sd">            If an element in the sequence cannot be ``None``; all columns must be present.</span>
+<span class="sd">            If ``bool``, then import using default names if ``True`` or raise error if ``False``.</span>
+<span class="sd">            If ``str``, then one taxa axis column is assumed.</span>
+<span class="sd">            If ``Integral``, then one taxa axis column is assumed.</span>
+<span class="sd">            If ``None``, then raise error.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp_colnames : bool, str, Integral, Sequence of str or None, None, default = True</span>
+<span class="sd">            Sequence of column names from which to read taxa group axis columns.</span>
+<span class="sd">            There must be one column name for each taxa axis.</span>
+<span class="sd">            If an element in the sequence is ``None``, then do not export the column.</span>
+<span class="sd">            If ``bool``, then import using default names if ``True`` or raise error if ``False``.</span>
+<span class="sd">            If ``str``, then one taxa group axis column is assumed.</span>
+<span class="sd">            If ``Integral``, then one taxa group axis column is assumed.</span>
+<span class="sd">            If ``None``, then raise error.</span>
+
+<span class="sd">        trait_colnames : bool, str, Integral, Sequence of str or Integral, None, default = True</span>
+<span class="sd">            Sequence of column names or indices from which to read trait columns.</span>
+<span class="sd">            There must be one column name for each trait.</span>
+<span class="sd">            If an element in the sequence is ``None``, then do not export the column.</span>
+<span class="sd">            If ``bool``, then import using default names if ``True`` or raise error if ``False``.</span>
+<span class="sd">            If ``str``, then one column name is assumed.</span>
+<span class="sd">            If ``Integral``, then one column name is assumed.</span>
+<span class="sd">            If ``None``, then raise error.</span>
+<span class="sd">        </span>
+<span class="sd">        value_colname : str, Integral, default = &quot;value&quot;</span>
+<span class="sd">            Name or index of the value column.</span>
+<span class="sd">        </span>
+<span class="sd">        ntaxaaxes : Integral</span>
+<span class="sd">            Expected number of taxa axes for the matrix.</span>
+<span class="sd">        </span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to be passed for dataframe construction.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : pandas.DataFrame</span>
+<span class="sd">            Output pandas dataframe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">###</span>
+        <span class="c1">### Type checks and preprocessing</span>
+        <span class="c1">###</span>
+
+        <span class="c1"># get the number of taxa axes</span>
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">,</span> <span class="s2">&quot;ntaxaaxes&quot;</span><span class="p">)</span>
+
+        <span class="c1"># get the number of trait axes</span>
+        <span class="n">ntraitaxes</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="c1">### process inputs: df</span>
+        <span class="n">check_is_pandas_DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">)</span>
+
+        <span class="c1">### process inputs: taxa_colnames</span>
+
+        <span class="c1"># process ``None``</span>
+        <span class="k">if</span> <span class="n">taxa_colnames</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa_colnames</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="c1"># process ``bool``, ``str``, ``Sequence``</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">taxa_colnames</span><span class="p">:</span>
+                <span class="n">taxa_colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;taxa_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;must provide taxa column name or index values&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">)):</span>
+            <span class="n">taxa_colnames</span> <span class="o">=</span> <span class="p">[</span><span class="n">taxa_colnames</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``taxa_colnames`` must be of type ``bool``, ``str``, ``Integral``, ``Sequence``, or ``None`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        
+        <span class="c1"># check the sequence length</span>
+        <span class="n">check_len</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">,</span> <span class="s2">&quot;taxa_colnames&quot;</span><span class="p">,</span> <span class="n">ntaxaaxes</span><span class="p">)</span>
+
+        <span class="c1"># check sequence element types</span>
+        <span class="n">check_Sequence_all_type</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">,</span> <span class="s2">&quot;taxa_colnames&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">))</span>
+
+        <span class="c1"># convert taxa_colnames to list so it is mutable</span>
+        <span class="n">taxa_colnames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">)</span>
+
+        <span class="c1"># convert taxa_colnames sequence to all Integral</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">elem</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">taxa_colnames</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">taxa_colnames</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+        <span class="c1"># check column indices</span>
+        <span class="n">check_pandas_DataFrame_has_column_indices</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">taxa_colnames</span><span class="p">)</span>
+
+        <span class="c1">### process inputs: taxa_grp_colnames</span>
+
+        <span class="c1"># process ``None``</span>
+        <span class="k">if</span> <span class="n">taxa_grp_colnames</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">taxa_grp_colnames</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="c1"># process ``bool``, ``str``, ``Sequence``</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="n">taxa_grp_colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;taxa_grp_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">)]</span> <span class="k">if</span> <span class="n">taxa_grp_colnames</span> <span class="k">else</span> <span class="p">[</span><span class="kc">None</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">)]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">)):</span>
+            <span class="n">taxa_grp_colnames</span> <span class="o">=</span> <span class="p">[</span><span class="n">taxa_grp_colnames</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``taxa_grp_colnames`` must be of type ``bool``, ``str``, ``Integral``, ``Sequence``, or ``None`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        
+        <span class="c1"># check the sequence length</span>
+        <span class="n">check_len</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_colnames&quot;</span><span class="p">,</span> <span class="n">ntaxaaxes</span><span class="p">)</span>
+
+        <span class="c1"># check sequence element types</span>
+        <span class="n">check_Sequence_all_type</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">,</span> <span class="s2">&quot;taxa_grp_colnames&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+
+        <span class="c1"># convert taxa_grp_colnames to list so it is mutable</span>
+        <span class="n">taxa_grp_colnames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">)</span>
+
+        <span class="c1"># convert taxa_grp_colnames sequence to all Integral</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">elem</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">taxa_grp_colnames</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">taxa_grp_colnames</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+        <span class="c1"># create a reduced set that does not contain None (skip None columns)</span>
+        <span class="n">reduced</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">taxa_grp_colnames</span> <span class="k">if</span> <span class="n">e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
+
+        <span class="c1"># check column indices</span>
+        <span class="n">check_pandas_DataFrame_has_column_indices</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">reduced</span><span class="p">)</span>
+
+        <span class="c1">### process inputs: trait_colnames</span>
+
+        <span class="c1"># process ``None``</span>
+        <span class="k">if</span> <span class="n">trait_colnames</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">trait_colnames</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="c1"># process ``bool``, ``str``, ``Sequence``</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">trait_colnames</span><span class="p">:</span>
+                <span class="n">trait_colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;trait_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ntraitaxes</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntraitaxes</span><span class="p">)]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;must provide trait column name or index values&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">)):</span>
+            <span class="n">trait_colnames</span> <span class="o">=</span> <span class="p">[</span><span class="n">trait_colnames</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``trait_colnames`` must be of type ``bool``, ``str``, ``Integral``, ``Sequence``, or ``None`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        
+        <span class="c1"># check the sequence length</span>
+        <span class="n">check_len</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">,</span> <span class="s2">&quot;trait_colnames&quot;</span><span class="p">,</span> <span class="n">ntraitaxes</span><span class="p">)</span>
+
+        <span class="c1"># check sequence element types</span>
+        <span class="n">check_Sequence_all_type</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">,</span> <span class="s2">&quot;trait_colnames&quot;</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">)))</span>
+
+        <span class="c1"># convert trait_colnames to list so it is mutable</span>
+        <span class="n">trait_colnames</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">)</span>
+
+        <span class="c1"># convert trait_colnames sequence to all Integral</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">elem</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">trait_colnames</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">trait_colnames</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+        <span class="c1"># check column indices</span>
+        <span class="n">check_pandas_DataFrame_has_column_indices</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">trait_colnames</span><span class="p">)</span>
+
+        <span class="c1">### process inputs: value_colname</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value_colname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">value_colname</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">value_colname</span><span class="p">)</span>
+        
+        <span class="n">check_is_Integral</span><span class="p">(</span><span class="n">value_colname</span><span class="p">,</span> <span class="s2">&quot;value_colname&quot;</span><span class="p">)</span>
+
+        <span class="c1">#####</span>
+        <span class="c1">##### Processing</span>
+        <span class="c1">#####</span>
+
+        <span class="c1">###</span>
+        <span class="c1">### Process taxa</span>
+        <span class="c1">###</span>
+
+        <span class="c1"># get taxa columns data</span>
+        <span class="n">taxa_data_ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">ix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span> <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="n">taxa_colnames</span><span class="p">]</span>
+
+        <span class="c1"># get unique taxa and corresponding indices</span>
+        <span class="n">taxa_vector_ls</span><span class="p">,</span> <span class="n">taxa_index_ls</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">taxa_data_ls</span><span class="p">]))</span>
+
+        <span class="c1"># get unique taxa for all columns: union all taxa together</span>
+        <span class="n">taxa</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">union1d</span><span class="p">,</span> <span class="n">taxa_vector_ls</span><span class="p">)</span>
+
+        <span class="c1"># allocate index arrays for each taxa column</span>
+        <span class="n">taxaix_ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">e</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">taxa_data_ls</span><span class="p">]</span>
+
+        <span class="c1"># calculate taxa indices</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">taxon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">taxa</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">taxaix</span><span class="p">,</span><span class="n">taxa_data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">taxaix_ls</span><span class="p">,</span><span class="n">taxa_data_ls</span><span class="p">):</span>
+                <span class="n">taxaix</span><span class="p">[</span><span class="n">taxa_data</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+        
+        <span class="c1">###</span>
+        <span class="c1">### Process taxa_grp</span>
+        <span class="c1">###</span>
+
+        <span class="c1"># get taxa_grp columns data</span>
+        <span class="n">taxa_grp_data_ls</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span> <span class="k">if</span> <span class="n">ix</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">ix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span> <span class="k">for</span> <span class="n">ix</span> <span class="ow">in</span> <span class="n">taxa_grp_colnames</span><span class="p">]</span>
+
+        <span class="c1"># get optional taxa group data</span>
+        <span class="n">taxa_grp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">taxa_vector</span><span class="p">,</span><span class="n">taxa_index</span><span class="p">,</span><span class="n">taxa_grp_data</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">taxa_vector_ls</span><span class="p">,</span><span class="n">taxa_index_ls</span><span class="p">,</span><span class="n">taxa_grp_data_ls</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">taxa_grp_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">taxa</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">taxon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">taxa</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">taxon</span> <span class="ow">in</span> <span class="n">taxa_vector</span><span class="p">:</span>
+                        <span class="n">taxa_grp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">taxa_grp_data</span><span class="p">[(</span><span class="n">taxa_index</span><span class="p">[</span><span class="n">taxa_vector</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">][</span><span class="mi">0</span><span class="p">])]</span>
+
+        <span class="c1">###</span>
+        <span class="c1">### Process trait</span>
+        <span class="c1">###</span>
+
+        <span class="c1"># get trait column data</span>
+        <span class="n">trait_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,(</span><span class="n">trait_colnames</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+        <span class="c1"># calculate unique </span>
+        <span class="n">trait</span><span class="p">,</span> <span class="n">traitix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">trait_data</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># combine trait names</span>
+        <span class="c1"># trait = reduce(numpy.union1d, blah)</span>
+
+        <span class="c1">###</span>
+        <span class="c1">### Process values</span>
+        <span class="c1">###</span>
+
+        <span class="c1"># get value column data</span>
+        <span class="n">value_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,(</span><span class="n">value_colname</span><span class="p">)]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="c1"># get array dimensions</span>
+        <span class="n">ntaxa_tup</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">taxa</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ntaxaaxes</span><span class="p">))</span>
+        <span class="n">ntrait_tup</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">trait</span><span class="p">),)</span>
+        <span class="n">dim_tup</span> <span class="o">=</span> <span class="n">ntaxa_tup</span> <span class="o">+</span> <span class="n">ntrait_tup</span>
+
+        <span class="c1"># allocate NaN array for matrix</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">dim_tup</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+
+        <span class="c1"># construct index tuple</span>
+        <span class="n">ix_tup</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">taxaix_ls</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">traitix</span><span class="p">,)</span>
+
+        <span class="c1"># overwirte NaN values with values</span>
+        <span class="n">mat</span><span class="p">[</span><span class="n">ix_tup</span><span class="p">]</span> <span class="o">=</span> <span class="n">value_data</span>
+
+        <span class="c1"># construct an object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span> 
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span> 
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span> 
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="DenseSquareTaxaTraitMatrix.from_csv">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.html#pybrops.core.mat.DenseSquareTaxaTraitMatrix.DenseSquareTaxaTraitMatrix.from_csv">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_csv</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span>
+            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">taxa_colnames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">taxa_grp_colnames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">trait_colnames</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">,</span><span class="n">Sequence</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]]]</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="n">value_colname</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="n">ntaxaaxes</span><span class="p">:</span> <span class="n">Integral</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="n">sep</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span>
+            <span class="n">header</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquareTaxaTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a DenseSquareTaxaTraitMatrix from a CSV file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str</span>
+<span class="sd">            CSV file name from which to read.</span>
+
+<span class="sd">        taxa_colnames : bool, str, Integral, Sequence of str or Integral, None, default = True</span>
+<span class="sd">            Sequence of column names or indices from which to read taxa axis columns.</span>
+<span class="sd">            There must be one column name or index for each taxa axis.</span>
+<span class="sd">            If an element in the sequence cannot be ``None``; all columns must be present.</span>
+<span class="sd">            If ``bool``, then import using default names if ``True`` or raise error if ``False``.</span>
+<span class="sd">            If ``str``, then one taxa axis column is assumed.</span>
+<span class="sd">            If ``Integral``, then one taxa axis column is assumed.</span>
+<span class="sd">            If ``None``, then raise error.</span>
+<span class="sd">        </span>
+<span class="sd">        taxa_grp_colnames : bool, str, Integral, Sequence of str or None, None, default = True</span>
+<span class="sd">            Sequence of column names from which to read taxa group axis columns.</span>
+<span class="sd">            There must be one column name for each taxa axis.</span>
+<span class="sd">            If an element in the sequence is ``None``, then do not export the column.</span>
+<span class="sd">            If ``bool``, then import using default names if ``True`` or raise error if ``False``.</span>
+<span class="sd">            If ``str``, then one taxa group axis column is assumed.</span>
+<span class="sd">            If ``Integral``, then one taxa group axis column is assumed.</span>
+<span class="sd">            If ``None``, then raise error.</span>
+
+<span class="sd">        trait_colnames : bool, str, Integral, Sequence of str or Integral, None, default = True</span>
+<span class="sd">            Sequence of column names or indices from which to read trait columns.</span>
+<span class="sd">            There must be one column name for each trait.</span>
+<span class="sd">            If an element in the sequence is ``None``, then do not export the column.</span>
+<span class="sd">            If ``bool``, then import using default names if ``True`` or raise error if ``False``.</span>
+<span class="sd">            If ``str``, then one column name is assumed.</span>
+<span class="sd">            If ``Integral``, then one column name is assumed.</span>
+<span class="sd">            If ``None``, then raise error.</span>
+<span class="sd">        </span>
+<span class="sd">        value_colname : str, Integral, default = &quot;value&quot;</span>
+<span class="sd">            Name or index of the value column.</span>
+<span class="sd">        </span>
+<span class="sd">        ntaxaaxes : Integral</span>
+<span class="sd">            Expected number of taxa axes for the matrix.</span>
+
+<span class="sd">        sep : str</span>
+<span class="sd">            CSV file separator.</span>
+<span class="sd">        </span>
+<span class="sd">        header : int</span>
+<span class="sd">            Header row index.</span>
+<span class="sd">        </span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating importing from a CSV.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : CSVInputOutput</span>
+<span class="sd">            An object read from a CSV file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># read dataframe from file to pandas</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span>
+            <span class="n">filepath_or_buffer</span> <span class="o">=</span> <span class="n">filename</span><span class="p">,</span>
+            <span class="n">sep</span> <span class="o">=</span> <span class="n">sep</span><span class="p">,</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">header</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+        <span class="c1"># convert pandas to matrix</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_pandas</span><span class="p">(</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">,</span>
+            <span class="n">taxa_colnames</span> <span class="o">=</span> <span class="n">taxa_colnames</span><span class="p">,</span>
+            <span class="n">taxa_grp_colnames</span> <span class="o">=</span> <span class="n">taxa_grp_colnames</span><span class="p">,</span>
+            <span class="n">trait_colnames</span> <span class="o">=</span> <span class="n">trait_colnames</span><span class="p">,</span>
+            <span class="n">value_colname</span> <span class="o">=</span> <span class="n">value_colname</span><span class="p">,</span>
+            <span class="n">ntaxaaxes</span> <span class="o">=</span> <span class="n">ntaxaaxes</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
 </div>
-
-
 
 
 <span class="c1">################################## Utilities ###################################</span>

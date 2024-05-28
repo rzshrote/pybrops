@@ -16,9 +16,13 @@ TruePhenotyping
    .. autosummary::
       :nosignatures:
    
+      ~TruePhenotyping.copy
+      ~TruePhenotyping.deepcopy
+      ~TruePhenotyping.from_hdf5
       ~TruePhenotyping.phenotype
       ~TruePhenotyping.set_H2
       ~TruePhenotyping.set_h2
+      ~TruePhenotyping.to_hdf5
    
    
 

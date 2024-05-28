@@ -1,0 +1,59 @@
+PopulationAlleleUnavailabilitySubsetSelection
+=============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.PopulationAlleleUnavailabilitySelection
+
+.. autoclass:: PopulationAlleleUnavailabilitySubsetSelection
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PopulationAlleleUnavailabilitySubsetSelection.mosolve
+      ~PopulationAlleleUnavailabilitySubsetSelection.problem
+      ~PopulationAlleleUnavailabilitySubsetSelection.select
+      ~PopulationAlleleUnavailabilitySubsetSelection.sosolve
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PopulationAlleleUnavailabilitySubsetSelection.eqcv_trans
+      ~PopulationAlleleUnavailabilitySubsetSelection.eqcv_trans_kwargs
+      ~PopulationAlleleUnavailabilitySubsetSelection.eqcv_wt
+      ~PopulationAlleleUnavailabilitySubsetSelection.ineqcv_trans
+      ~PopulationAlleleUnavailabilitySubsetSelection.ineqcv_trans_kwargs
+      ~PopulationAlleleUnavailabilitySubsetSelection.ineqcv_wt
+      ~PopulationAlleleUnavailabilitySubsetSelection.moalgo
+      ~PopulationAlleleUnavailabilitySubsetSelection.ncross
+      ~PopulationAlleleUnavailabilitySubsetSelection.ndset_trans
+      ~PopulationAlleleUnavailabilitySubsetSelection.ndset_trans_kwargs
+      ~PopulationAlleleUnavailabilitySubsetSelection.ndset_wt
+      ~PopulationAlleleUnavailabilitySubsetSelection.neqcv
+      ~PopulationAlleleUnavailabilitySubsetSelection.nineqcv
+      ~PopulationAlleleUnavailabilitySubsetSelection.nmating
+      ~PopulationAlleleUnavailabilitySubsetSelection.nobj
+      ~PopulationAlleleUnavailabilitySubsetSelection.nparent
+      ~PopulationAlleleUnavailabilitySubsetSelection.nprogeny
+      ~PopulationAlleleUnavailabilitySubsetSelection.nselindiv
+      ~PopulationAlleleUnavailabilitySubsetSelection.ntrait
+      ~PopulationAlleleUnavailabilitySubsetSelection.obj_trans
+      ~PopulationAlleleUnavailabilitySubsetSelection.obj_trans_kwargs
+      ~PopulationAlleleUnavailabilitySubsetSelection.obj_wt
+      ~PopulationAlleleUnavailabilitySubsetSelection.rng
+      ~PopulationAlleleUnavailabilitySubsetSelection.soalgo
+      ~PopulationAlleleUnavailabilitySubsetSelection.target
+      ~PopulationAlleleUnavailabilitySubsetSelection.weight
+   
+   

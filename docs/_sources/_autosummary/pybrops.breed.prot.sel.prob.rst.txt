@@ -48,6 +48,8 @@ prob
    pybrops.breed.prot.sel.prob.OptimalContributionSelectionProblem
    pybrops.breed.prot.sel.prob.OptimalHaploidValueSelectionProblem
    pybrops.breed.prot.sel.prob.OptimalPopulationValueSelectionProblem
+   pybrops.breed.prot.sel.prob.PopulationAlleleFrequencyDistanceSelectionProblem
+   pybrops.breed.prot.sel.prob.PopulationAlleleUnavailabilitySelectionProblem
    pybrops.breed.prot.sel.prob.RandomSelectionProblem
    pybrops.breed.prot.sel.prob.RealLookAheadGeneralizedWeightedGenomicSelectionProblem
    pybrops.breed.prot.sel.prob.RealMateSelectionProblem

@@ -1,0 +1,32 @@
+DenseSquare2TaxaTraitMatrix
+===========================
+
+.. automodule:: pybrops.core.mat.DenseSquare2TaxaTraitMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseSquare2TaxaTraitMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -22,6 +22,7 @@ error\_value\_h5py
    
       check_h5py_File_has_group
       check_h5py_File_has_groups
+      check_h5py_File_is_readable
       check_h5py_File_is_writable
    
    

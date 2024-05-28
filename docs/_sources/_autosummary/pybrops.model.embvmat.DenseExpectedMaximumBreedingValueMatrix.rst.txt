@@ -1,0 +1,41 @@
+DenseExpectedMaximumBreedingValueMatrix
+=======================================
+
+.. automodule:: pybrops.model.embvmat.DenseExpectedMaximumBreedingValueMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseExpectedMaximumBreedingValueMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_DenseExpectedMaximumBreedingValueMatrix
+   
+   
+
+   
+   
+   
+
+
+

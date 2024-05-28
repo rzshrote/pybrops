@@ -43,6 +43,7 @@ ExpectedMaximumBreedingValueBinarySelectionProblem
       ~ExpectedMaximumBreedingValueBinarySelectionProblem.decn_space
       ~ExpectedMaximumBreedingValueBinarySelectionProblem.decn_space_lower
       ~ExpectedMaximumBreedingValueBinarySelectionProblem.decn_space_upper
+      ~ExpectedMaximumBreedingValueBinarySelectionProblem.decn_space_xmap
       ~ExpectedMaximumBreedingValueBinarySelectionProblem.elementwise
       ~ExpectedMaximumBreedingValueBinarySelectionProblem.elementwise_func
       ~ExpectedMaximumBreedingValueBinarySelectionProblem.elementwise_runner

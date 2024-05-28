@@ -1,0 +1,6 @@
+get\_axis
+=========
+
+.. currentmodule:: pybrops.core.util.array
+
+.. autofunction:: get_axis

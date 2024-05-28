@@ -1,0 +1,6 @@
+dense\_cross
+============
+
+.. currentmodule:: pybrops.core.util.mate
+
+.. autofunction:: dense_cross

@@ -1,0 +1,6 @@
+check\_is\_Copyable
+===================
+
+.. currentmodule:: pybrops.core.io.Copyable
+
+.. autofunction:: check_is_Copyable

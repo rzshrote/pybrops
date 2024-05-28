@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/model/vmat/fcty/DenseFourWayDHAdditiveGeneticVarianceMatrixFactory';</script>
@@ -421,7 +421,9 @@ document.write(`
 
 <div class="viewcode-block" id="DenseFourWayDHAdditiveGeneticVarianceMatrixFactory">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.model.vmat.fcty.DenseFourWayDHAdditiveGeneticVarianceMatrixFactory.DenseFourWayDHAdditiveGeneticVarianceMatrixFactory.html#pybrops.model.vmat.fcty.DenseFourWayDHAdditiveGeneticVarianceMatrixFactory.DenseFourWayDHAdditiveGeneticVarianceMatrixFactory">[docs]</a>
-<span class="k">class</span> <span class="nc">DenseFourWayDHAdditiveGeneticVarianceMatrixFactory</span><span class="p">(</span><span class="n">AdditiveGeneticVarianceMatrixFactory</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DenseFourWayDHAdditiveGeneticVarianceMatrixFactory</span><span class="p">(</span>
+        <span class="n">AdditiveGeneticVarianceMatrixFactory</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    docstring for DenseFourWayDHAdditiveGeneticVarianceMatrixFactory.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -485,7 +487,7 @@ document.write(`
         <span class="k">return</span> <span class="n">DenseFourWayDHAdditiveGeneticVarianceMatrix</span><span class="o">.</span><span class="n">from_gmod</span><span class="p">(</span>
             <span class="n">gmod</span> <span class="o">=</span> <span class="n">gmod</span><span class="p">,</span> 
             <span class="n">pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="p">,</span> 
-            <span class="n">ncross</span> <span class="o">=</span> <span class="n">ncross</span><span class="p">,</span> 
+            <span class="n">nmating</span> <span class="o">=</span> <span class="n">ncross</span><span class="p">,</span> 
             <span class="n">nprogeny</span> <span class="o">=</span> <span class="n">nprogeny</span><span class="p">,</span> 
             <span class="n">nself</span> <span class="o">=</span> <span class="n">nself</span><span class="p">,</span> 
             <span class="n">gmapfn</span> <span class="o">=</span> <span class="n">gmapfn</span><span class="p">,</span> 
@@ -540,7 +542,7 @@ document.write(`
         <span class="k">return</span> <span class="n">DenseFourWayDHAdditiveGeneticVarianceMatrix</span><span class="o">.</span><span class="n">from_algmod</span><span class="p">(</span>
             <span class="n">algmod</span> <span class="o">=</span> <span class="n">algmod</span><span class="p">,</span> 
             <span class="n">pgmat</span> <span class="o">=</span> <span class="n">pgmat</span><span class="p">,</span> 
-            <span class="n">ncross</span> <span class="o">=</span> <span class="n">ncross</span><span class="p">,</span> 
+            <span class="n">nmating</span> <span class="o">=</span> <span class="n">ncross</span><span class="p">,</span> 
             <span class="n">nprogeny</span> <span class="o">=</span> <span class="n">nprogeny</span><span class="p">,</span> 
             <span class="n">nself</span> <span class="o">=</span> <span class="n">nself</span><span class="p">,</span> 
             <span class="n">gmapfn</span> <span class="o">=</span> <span class="n">gmapfn</span><span class="p">,</span> 

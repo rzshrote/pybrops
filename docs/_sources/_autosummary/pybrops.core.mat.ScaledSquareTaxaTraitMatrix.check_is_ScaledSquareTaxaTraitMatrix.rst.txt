@@ -1,0 +1,6 @@
+check\_is\_ScaledSquareTaxaTraitMatrix
+======================================
+
+.. currentmodule:: pybrops.core.mat.ScaledSquareTaxaTraitMatrix
+
+.. autofunction:: check_is_ScaledSquareTaxaTraitMatrix

@@ -1,0 +1,933 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pybrops.core.mat.DenseSquare2TaxaTraitMatrix &#8212; pybrops 1.0.2 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/wider_borders.css?v=ec38ee01" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
+    <script src="../../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/core/mat/DenseSquare2TaxaTraitMatrix';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pybrops 1.0.2 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item">
+<nav class="navbar-nav">
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../getting_started/getting_started.html">
+                        Getting Started
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../fundamentals/fundamentals.html">
+                        Fundamentals
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/standard_usage.html">
+                        Standard Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../advanced_usage/advanced_usage.html">
+                        Advanced Usage
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="../../../../standard_usage/examples/examples.html">
+                        Examples
+                      </a>
+                    </li>
+                
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-controls="pst-nav-more-links-2">
+                    More
+                </button>
+                <ul id="pst-nav-more-links-2" class="dropdown-menu">
+                    
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../contributing/contributing.html">
+                        Contributing
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../faq/faq.html">
+                        Frequently Asked Questions
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link dropdown-item nav-internal" href="../../../../_autosummary/pybrops.html">
+                        API reference
+                      </a>
+                    </li>
+                
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page">pybrops.core...</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pybrops.core.mat.DenseSquare2TaxaTraitMatrix</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module implementing a dense matrix with two square taxa axes and one trait axis</span>
+<span class="sd">and associated error checking routines.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">pandas</span>
+<span class="kn">from</span> <span class="nn">pandas.core.api</span> <span class="kn">import</span> <span class="n">DataFrame</span> <span class="k">as</span> <span class="n">DataFrame</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_pandas</span> <span class="kn">import</span> <span class="n">check_is_pandas_DataFrame</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_str</span><span class="p">,</span> <span class="n">check_is_str_or_Integral</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_pandas</span> <span class="kn">import</span> <span class="n">check_pandas_DataFrame_has_column</span><span class="p">,</span> <span class="n">check_pandas_DataFrame_has_column_index</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.io.PandasInputOutput</span> <span class="kn">import</span> <span class="n">PandasInputOutput</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.mat.DenseSquareTaxaTraitMatrix</span> <span class="kn">import</span> <span class="n">DenseSquareTaxaTraitMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.array</span> <span class="kn">import</span> <span class="n">flattenix</span>
+
+<div class="viewcode-block" id="DenseSquare2TaxaTraitMatrix">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquare2TaxaTraitMatrix.DenseSquare2TaxaTraitMatrix.html#pybrops.core.mat.DenseSquare2TaxaTraitMatrix.DenseSquare2TaxaTraitMatrix">[docs]</a>
+<span class="k">class</span> <span class="nc">DenseSquare2TaxaTraitMatrix</span><span class="p">(</span>
+        <span class="n">DenseSquareTaxaTraitMatrix</span><span class="p">,</span>
+        <span class="n">PandasInputOutput</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A concrete class for dense matrices with two square taxa axes and one trait </span>
+<span class="sd">    axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">########################## Special Object Methods ##########################</span>
+
+    <span class="c1">##################### Constructor ######################</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">mat</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="n">taxa</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+            <span class="n">trait</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for DenseSquare2TaxaTraitMatrix.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mat : numpy.ndarray</span>
+<span class="sd">            Matrix used to construct the object.</span>
+<span class="sd">        taxa : numpy.ndarray</span>
+<span class="sd">            Taxa names.</span>
+<span class="sd">        taxa_grp : numpy.ndarray</span>
+<span class="sd">            Taxa groupings.</span>
+<span class="sd">        trait : numpy.ndarray</span>
+<span class="sd">            Trait labels.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># call DenseSquareTaxaTraitMatrix constructor</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DenseSquare2TaxaTraitMatrix</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+
+    <span class="c1">#################### Matrix copying ####################</span>
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquare2TaxaTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a shallow copy of the the matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquare2TaxaTraitMatrix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create new object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">),</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">),</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">),</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># copy taxa metadata</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_name</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_name</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_stix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_stix</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_spix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_spix</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_len</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_len</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">memo</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquare2TaxaTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a deep copy of the matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        memo : dict</span>
+<span class="sd">            Dictionary of memo metadata.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquare2TaxaTraitMatrix</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># create new object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trait</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># copy taxa metadata</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_name</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_name</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_stix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_stix</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_spix</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_spix</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_len</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_len</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="c1">############################ Object Properties #############################</span>
+
+    <span class="c1">#################### Matrix copying ####################</span>
+<div class="viewcode-block" id="DenseSquare2TaxaTraitMatrix.copy">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquare2TaxaTraitMatrix.DenseSquare2TaxaTraitMatrix.html#pybrops.core.mat.DenseSquare2TaxaTraitMatrix.DenseSquare2TaxaTraitMatrix.copy">[docs]</a>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquare2TaxaTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a shallow copy of the Matrix.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquare2TaxaTraitMatrix</span>
+<span class="sd">            A shallow copy of the original DenseSquare2TaxaTraitMatrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DenseSquare2TaxaTraitMatrix.deepcopy">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquare2TaxaTraitMatrix.DenseSquare2TaxaTraitMatrix.html#pybrops.core.mat.DenseSquare2TaxaTraitMatrix.DenseSquare2TaxaTraitMatrix.deepcopy">[docs]</a>
+    <span class="k">def</span> <span class="nf">deepcopy</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">memo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquare2TaxaTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a deep copy of the Matrix.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        memo : dict</span>
+<span class="sd">            Dictionary of memo metadata.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquare2TaxaTraitMatrix</span>
+<span class="sd">            A deep copy of the original DenseSquare2TaxaTraitMatrix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span></div>
+
+
+    <span class="c1">############################## Object Methods ##############################</span>
+
+<div class="viewcode-block" id="DenseSquare2TaxaTraitMatrix.to_pandas">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquare2TaxaTraitMatrix.DenseSquare2TaxaTraitMatrix.html#pybrops.core.mat.DenseSquare2TaxaTraitMatrix.DenseSquare2TaxaTraitMatrix.to_pandas">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_pandas</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">taxa1_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;taxa1&quot;</span><span class="p">,</span>
+            <span class="n">taxa1_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;taxa1_grp&quot;</span><span class="p">,</span>
+            <span class="n">taxa2_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;taxa2&quot;</span><span class="p">,</span>
+            <span class="n">taxa2_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;taxa2_grp&quot;</span><span class="p">,</span>
+            <span class="n">trait_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;trait&quot;</span><span class="p">,</span> 
+            <span class="n">value_col</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Export a DenseSquare2TaxaTraitMatrix to a pandas.DataFrame.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        taxa1_col : str, default = &quot;taxa1&quot;</span>
+<span class="sd">            Name of the column to which to write female taxa names.</span>
+
+<span class="sd">        taxa1_grp_col : str, None, default = &quot;taxa1_grp&quot;</span>
+<span class="sd">            Name of the column to which to write female taxa groups.</span>
+
+<span class="sd">        taxa2_col : str, default = &quot;taxa2&quot;</span>
+<span class="sd">            Name of the column to which to write male taxa names.</span>
+
+<span class="sd">        taxa2_grp_col : str, None, default = &quot;taxa2_grp&quot;</span>
+<span class="sd">            Name of the column to which to write male taxa groups.</span>
+
+<span class="sd">        trait_col : str, default = &quot;trait&quot;</span>
+<span class="sd">            Name of the column to which to write trait taxa names.</span>
+
+<span class="sd">        value_col : str, default = &quot;value&quot;</span>
+<span class="sd">            Name of the column to which to write covariance taxa names.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating export to a </span>
+<span class="sd">            pandas.DataFrame.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : pandas.DataFrame</span>
+<span class="sd">            An output dataframe.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># type checks</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">taxa1_col</span><span class="p">,</span> <span class="s2">&quot;taxa1_col&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">taxa1_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_str</span><span class="p">(</span><span class="n">taxa1_grp_col</span><span class="p">,</span> <span class="s2">&quot;taxa1_grp_col&quot;</span><span class="p">)</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">taxa2_col</span><span class="p">,</span> <span class="s2">&quot;taxa2_col&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">taxa2_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">check_is_str</span><span class="p">(</span><span class="n">taxa2_grp_col</span><span class="p">,</span> <span class="s2">&quot;taxa2_grp_col&quot;</span><span class="p">)</span>
+        <span class="n">check_is_str</span><span class="p">(</span><span class="n">trait_col</span><span class="p">,</span> <span class="s2">&quot;trait_col&quot;</span><span class="p">)</span>
+
+        <span class="c1"># get names for taxa</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">nzero</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;Taxon&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="n">nzero</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntaxa</span><span class="p">)],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">taxa</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span>
+
+        <span class="c1"># get names for traits</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">nzero</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">))</span><span class="o">+</span><span class="mi">1</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;Trait&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="n">nzero</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ntrait</span><span class="p">)],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">trait</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trait</span>
+
+        <span class="c1"># calculate flattened array and corresponding axis indices</span>
+        <span class="n">flatmat</span><span class="p">,</span> <span class="p">(</span><span class="n">femaleix</span><span class="p">,</span><span class="n">maleix</span><span class="p">,</span><span class="n">traitix</span><span class="p">)</span> <span class="o">=</span> <span class="n">flattenix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span>
+
+        <span class="c1"># make dictionary to store output columns in specific column ordering</span>
+        <span class="n">out_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">taxa1_col</span><span class="p">:</span> <span class="n">taxa</span><span class="p">[</span><span class="n">femaleix</span><span class="p">]})</span>
+        <span class="k">if</span> <span class="n">taxa1_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">[</span><span class="n">femaleix</span><span class="p">]</span>
+            <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">taxa1_grp_col</span><span class="p">:</span> <span class="n">values</span><span class="p">})</span>
+        <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">taxa2_col</span><span class="p">:</span> <span class="n">taxa</span><span class="p">[</span><span class="n">maleix</span><span class="p">]})</span>
+        <span class="k">if</span> <span class="n">taxa2_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">[</span><span class="n">maleix</span><span class="p">]</span>
+            <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">taxa2_grp_col</span><span class="p">:</span> <span class="n">values</span><span class="p">})</span>
+        <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">trait_col</span><span class="p">:</span> <span class="n">trait</span><span class="p">[</span><span class="n">traitix</span><span class="p">]})</span>
+        <span class="n">out_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">value_col</span><span class="p">:</span> <span class="n">flatmat</span><span class="p">})</span>
+
+        <span class="c1"># create a pandas DataFrame from the data</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">out_dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+
+
+    <span class="c1">############################## Class Methods ###############################</span>
+
+    <span class="c1">###################### Matrix I/O ######################</span>
+<div class="viewcode-block" id="DenseSquare2TaxaTraitMatrix.from_pandas">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseSquare2TaxaTraitMatrix.DenseSquare2TaxaTraitMatrix.html#pybrops.core.mat.DenseSquare2TaxaTraitMatrix.DenseSquare2TaxaTraitMatrix.from_pandas">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_pandas</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">df</span><span class="p">:</span> <span class="n">pandas</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> 
+            <span class="n">taxa1_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;female&quot;</span><span class="p">,</span>
+            <span class="n">taxa1_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;female_grp&quot;</span><span class="p">,</span>
+            <span class="n">taxa2_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;male&quot;</span><span class="p">,</span>
+            <span class="n">taxa2_grp_col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">&quot;male_grp&quot;</span><span class="p">,</span>
+            <span class="n">trait_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;trait1&quot;</span><span class="p">,</span>
+            <span class="n">value_col</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;covariance&quot;</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseSquare2TaxaTraitMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a ``DenseSquare2TaxaTraitMatrix`` from a ``pandas.DataFrame``.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        df : pandas.DataFrame</span>
+<span class="sd">            Pandas dataframe from which to read.</span>
+
+<span class="sd">        taxa1_col : str, Integral, default = &quot;female&quot;</span>
+<span class="sd">            Name or index of the column from which to read female taxa names.</span>
+
+<span class="sd">        taxa1_grp_col : str, Integral, None, default = &quot;female&quot;</span>
+<span class="sd">            Name or index of the column from which to read female taxa groups.</span>
+
+<span class="sd">        taxa2_col : str, Integral, None, default = &quot;male&quot;</span>
+<span class="sd">            Name or index of the column from which to read male taxa names.</span>
+
+<span class="sd">        taxa2_grp_col : str, Integral, None, default = &quot;male&quot;</span>
+<span class="sd">            Name or index of the column from which to read male taxa names.</span>
+
+<span class="sd">        trait_col : str, Integral, default = &quot;trait&quot;</span>
+<span class="sd">            Name or index of the column from which to read trait taxa names.</span>
+
+<span class="sd">        value_col : str, Integral, default = &quot;covariance&quot;</span>
+<span class="sd">            Name or index of the column from which to read covariance taxa names.</span>
+
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments to use for dictating importing from a </span>
+<span class="sd">            ``pandas.DataFrame``.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : DenseSquare2TaxaTraitMatrix</span>
+<span class="sd">            A ``DenseSquare2TaxaTraitMatrix`` read from a ``pandas.DataFrame``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">### type checks and get df indices</span>
+
+        <span class="c1"># df</span>
+        <span class="n">check_is_pandas_DataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">)</span>
+
+        <span class="c1"># taxa1_col</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa1_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">taxa1_col</span><span class="p">)</span>
+            <span class="n">taxa1_colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">taxa1_col</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa1_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">taxa1_col</span><span class="p">)</span>
+            <span class="n">taxa1_colix</span> <span class="o">=</span> <span class="n">taxa1_col</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">taxa1_col</span><span class="p">,</span> <span class="s2">&quot;taxa1_col&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># taxa1_grp_col</span>
+        <span class="k">if</span> <span class="n">taxa1_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa1_grp_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">taxa1_grp_col</span><span class="p">)</span>
+                <span class="n">taxa1_grp_colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">taxa1_grp_col</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa1_grp_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+                <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">taxa1_grp_col</span><span class="p">)</span>
+                <span class="n">taxa1_grp_colix</span> <span class="o">=</span> <span class="n">taxa1_grp_col</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">taxa1_grp_col</span><span class="p">,</span> <span class="s2">&quot;taxa1_grp_col&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># taxa2_col</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa2_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">taxa2_col</span><span class="p">)</span>
+            <span class="n">taxa2_colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">taxa2_col</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa2_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">taxa2_col</span><span class="p">)</span>
+            <span class="n">taxa2_colix</span> <span class="o">=</span> <span class="n">taxa2_col</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">taxa2_col</span><span class="p">,</span> <span class="s2">&quot;taxa2_col&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># taxa2_grp_col</span>
+        <span class="k">if</span> <span class="n">taxa2_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa2_grp_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">taxa2_grp_col</span><span class="p">)</span>
+                <span class="n">taxa2_grp_colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">taxa2_grp_col</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">taxa2_grp_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+                <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">taxa2_grp_col</span><span class="p">)</span>
+                <span class="n">taxa2_grp_colix</span> <span class="o">=</span> <span class="n">taxa2_grp_col</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">taxa2_grp_col</span><span class="p">,</span> <span class="s2">&quot;taxa2_grp_col&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># trait_col</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">trait_col</span><span class="p">)</span>
+            <span class="n">trait_colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">trait_col</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">trait_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">trait_col</span><span class="p">)</span>
+            <span class="n">trait_colix</span> <span class="o">=</span> <span class="n">trait_col</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">trait_col</span><span class="p">,</span> <span class="s2">&quot;trait_col&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># value_col</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value_col</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">value_col</span><span class="p">)</span>
+            <span class="n">value_colix</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">value_col</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value_col</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+            <span class="n">check_pandas_DataFrame_has_column_index</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;df&quot;</span><span class="p">,</span> <span class="n">value_col</span><span class="p">)</span>
+            <span class="n">value_colix</span> <span class="o">=</span> <span class="n">value_col</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">check_is_str_or_Integral</span><span class="p">(</span><span class="n">value_col</span><span class="p">,</span> <span class="s2">&quot;value_col&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># get required data columns (type numpy.ndarray)</span>
+        <span class="n">female_data</span>     <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">taxa1_colix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+        <span class="n">male_data</span>       <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">taxa2_colix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+        <span class="n">trait_data</span>      <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">trait_colix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">object</span><span class="p">)</span>
+        <span class="n">covariance_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">value_colix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+
+        <span class="c1"># get unique female, male taxa (type numpy.ndarray)</span>
+        <span class="n">female_taxa</span><span class="p">,</span> <span class="n">female_taxaix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">female_data</span><span class="p">,</span> <span class="n">return_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+        <span class="n">male_taxa</span><span class="p">,</span> <span class="n">male_taxaix</span>     <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">male_data</span><span class="p">,</span> <span class="n">return_index</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># combine female and male taxa names (type numpy.ndarray)</span>
+        <span class="n">taxa</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">union1d</span><span class="p">(</span><span class="n">female_taxa</span><span class="p">,</span> <span class="n">male_taxa</span><span class="p">)</span>
+
+        <span class="c1"># allocate female, male indices</span>
+        <span class="n">femaleix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">female_data</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+        <span class="n">maleix</span>   <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">male_data</span>  <span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+
+        <span class="c1"># calculate female, male indices</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">taxon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">taxa</span><span class="p">):</span>
+            <span class="n">femaleix</span><span class="p">[</span><span class="n">female_data</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">maleix</span><span class="p">[</span><span class="n">male_data</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+        
+        <span class="c1"># calculate unique trait values, trait indices</span>
+        <span class="n">trait</span><span class="p">,</span> <span class="n">traitix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">trait_data</span><span class="p">,</span> <span class="n">return_inverse</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># get optional taxa group data</span>
+        <span class="n">taxa_grp</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">taxa1_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">taxa</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="n">female_grp_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">taxa1_grp_colix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">taxon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">taxa</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">taxon</span> <span class="ow">in</span> <span class="n">female_taxa</span><span class="p">:</span>
+                    <span class="n">ix</span> <span class="o">=</span> <span class="n">female_taxaix</span><span class="p">[</span><span class="n">female_taxa</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">taxa_grp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">female_grp_data</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">taxa2_grp_col</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">taxa_grp</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">taxa</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="n">male_grp_data</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="n">taxa2_grp_colix</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">taxon</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">taxa</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">taxon</span> <span class="ow">in</span> <span class="n">male_taxa</span><span class="p">:</span>
+                    <span class="n">ix</span> <span class="o">=</span> <span class="n">male_taxaix</span><span class="p">[</span><span class="n">male_taxa</span> <span class="o">==</span> <span class="n">taxon</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">taxa_grp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">male_grp_data</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+
+        <span class="c1"># get array dimensions</span>
+        <span class="n">nfemale</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">taxa</span><span class="p">)</span>
+        <span class="n">nmale</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">taxa</span><span class="p">)</span>
+        <span class="n">ntrait</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trait</span><span class="p">)</span>
+
+        <span class="c1"># allocate NaN array for covariance matrix</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">((</span><span class="n">nfemale</span><span class="p">,</span><span class="n">nmale</span><span class="p">,</span><span class="n">ntrait</span><span class="p">,</span><span class="n">ntrait</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+
+        <span class="c1"># overwrite NaN values with covariance values</span>
+        <span class="n">mat</span><span class="p">[</span><span class="n">femaleix</span><span class="p">,</span><span class="n">maleix</span><span class="p">,</span><span class="n">traitix</span><span class="p">]</span> <span class="o">=</span> <span class="n">covariance_data</span>
+
+        <span class="c1"># construct an object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span> <span class="o">=</span> <span class="n">mat</span><span class="p">,</span> 
+            <span class="n">taxa</span> <span class="o">=</span> <span class="n">taxa</span><span class="p">,</span> 
+            <span class="n">taxa_grp</span> <span class="o">=</span> <span class="n">taxa_grp</span><span class="p">,</span> 
+            <span class="n">trait</span> <span class="o">=</span> <span class="n">trait</span><span class="p">,</span> 
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
+</div>
+
+
+
+    <span class="c1">############################## Static Methods ##############################</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Robert Z. Shrote.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.15.2.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

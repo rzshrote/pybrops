@@ -23,11 +23,13 @@ AdditiveDominanceLinearGenomicModel
       ~AdditiveDominanceLinearGenomicModel.dacount
       ~AdditiveDominanceLinearGenomicModel.dafixed
       ~AdditiveDominanceLinearGenomicModel.dafreq
+      ~AdditiveDominanceLinearGenomicModel.dapoly
       ~AdditiveDominanceLinearGenomicModel.deepcopy
       ~AdditiveDominanceLinearGenomicModel.faavail
       ~AdditiveDominanceLinearGenomicModel.facount
       ~AdditiveDominanceLinearGenomicModel.fafixed
       ~AdditiveDominanceLinearGenomicModel.fafreq
+      ~AdditiveDominanceLinearGenomicModel.fapoly
       ~AdditiveDominanceLinearGenomicModel.fit
       ~AdditiveDominanceLinearGenomicModel.fit_numpy
       ~AdditiveDominanceLinearGenomicModel.from_csv_dict
@@ -39,6 +41,8 @@ AdditiveDominanceLinearGenomicModel
       ~AdditiveDominanceLinearGenomicModel.gegv_numpy
       ~AdditiveDominanceLinearGenomicModel.lsl
       ~AdditiveDominanceLinearGenomicModel.lsl_numpy
+      ~AdditiveDominanceLinearGenomicModel.nafixed
+      ~AdditiveDominanceLinearGenomicModel.napoly
       ~AdditiveDominanceLinearGenomicModel.predict
       ~AdditiveDominanceLinearGenomicModel.predict_numpy
       ~AdditiveDominanceLinearGenomicModel.score
