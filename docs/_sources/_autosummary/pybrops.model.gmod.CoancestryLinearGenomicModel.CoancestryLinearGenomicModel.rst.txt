@@ -23,11 +23,13 @@ CoancestryLinearGenomicModel
       ~CoancestryLinearGenomicModel.dacount
       ~CoancestryLinearGenomicModel.dafixed
       ~CoancestryLinearGenomicModel.dafreq
+      ~CoancestryLinearGenomicModel.dapoly
       ~CoancestryLinearGenomicModel.deepcopy
       ~CoancestryLinearGenomicModel.faavail
       ~CoancestryLinearGenomicModel.facount
       ~CoancestryLinearGenomicModel.fafixed
       ~CoancestryLinearGenomicModel.fafreq
+      ~CoancestryLinearGenomicModel.fapoly
       ~CoancestryLinearGenomicModel.fit
       ~CoancestryLinearGenomicModel.fit_numpy
       ~CoancestryLinearGenomicModel.from_csv_dict
@@ -39,6 +41,8 @@ CoancestryLinearGenomicModel
       ~CoancestryLinearGenomicModel.gegv_numpy
       ~CoancestryLinearGenomicModel.lsl
       ~CoancestryLinearGenomicModel.lsl_numpy
+      ~CoancestryLinearGenomicModel.nafixed
+      ~CoancestryLinearGenomicModel.napoly
       ~CoancestryLinearGenomicModel.predict
       ~CoancestryLinearGenomicModel.predict_numpy
       ~CoancestryLinearGenomicModel.score

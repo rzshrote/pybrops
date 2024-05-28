@@ -43,6 +43,7 @@ OptimalHaploidValueBinarySelectionProblem
       ~OptimalHaploidValueBinarySelectionProblem.decn_space
       ~OptimalHaploidValueBinarySelectionProblem.decn_space_lower
       ~OptimalHaploidValueBinarySelectionProblem.decn_space_upper
+      ~OptimalHaploidValueBinarySelectionProblem.decn_space_xmap
       ~OptimalHaploidValueBinarySelectionProblem.elementwise
       ~OptimalHaploidValueBinarySelectionProblem.elementwise_func
       ~OptimalHaploidValueBinarySelectionProblem.elementwise_runner

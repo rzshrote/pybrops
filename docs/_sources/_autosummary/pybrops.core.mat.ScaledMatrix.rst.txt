@@ -1,0 +1,41 @@
+ScaledMatrix
+============
+
+.. automodule:: pybrops.core.mat.ScaledMatrix
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      ScaledMatrix
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      check_is_ScaledMatrix
+   
+   
+
+   
+   
+   
+
+
+

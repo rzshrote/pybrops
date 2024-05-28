@@ -1,0 +1,6 @@
+trans\_ndpt\_pseudo\_dist
+=========================
+
+.. currentmodule:: pybrops.core.util.trans
+
+.. autofunction:: trans_ndpt_pseudo_dist

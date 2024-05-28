@@ -1,0 +1,31 @@
+DenseMaskedPhasedGenotyping
+===========================
+
+.. currentmodule:: pybrops.breed.prot.gt.DenseMaskedPhasedGenotyping
+
+.. autoclass:: DenseMaskedPhasedGenotyping
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseMaskedPhasedGenotyping.genotype
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseMaskedPhasedGenotyping.invert
+   
+   

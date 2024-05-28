@@ -20,6 +20,7 @@ DenseGenotypeMatrix
       ~DenseGenotypeMatrix.adjoin
       ~DenseGenotypeMatrix.adjoin_taxa
       ~DenseGenotypeMatrix.adjoin_vrnt
+      ~DenseGenotypeMatrix.afixed
       ~DenseGenotypeMatrix.afreq
       ~DenseGenotypeMatrix.apoly
       ~DenseGenotypeMatrix.append

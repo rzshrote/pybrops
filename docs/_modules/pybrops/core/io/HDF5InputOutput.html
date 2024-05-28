@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/core/io/HDF5InputOutput';</script>
@@ -420,13 +420,18 @@ document.write(`
     <span class="s2">&quot;check_is_HDF5InputOutput&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
-
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
 <div class="viewcode-block" id="HDF5InputOutput">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.core.io.HDF5InputOutput.HDF5InputOutput.html#pybrops.core.io.HDF5InputOutput.HDF5InputOutput">[docs]</a>
-<span class="k">class</span> <span class="nc">HDF5InputOutput</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">HDF5InputOutput</span><span class="p">(</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Abstract class for defining HDF5 input/output functionality.</span>
 
@@ -446,19 +451,26 @@ document.write(`
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">to_hdf5</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> 
-            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
-            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">,</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">],</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+            <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Write an object to an HDF5 file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str</span>
-<span class="sd">            HDF5 file name to which to write.</span>
-<span class="sd">        groupname : str or None</span>
-<span class="sd">            HDF5 group name under which object data is stored.</span>
-<span class="sd">            If None, object is written to the base HDF5 group.</span>
+<span class="sd">        filename : str, Path, h5py.File</span>
+<span class="sd">            If ``str``, an HDF5 file name to which to write.</span>
+<span class="sd">            If ``Path``, an HDF5 file path to which to write.</span>
+<span class="sd">            If ``h5py.File``, an opened HDF5 file to which to write.</span>
+<span class="sd">        </span>
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            If ``str``, an HDF5 group name under which object data is stored.</span>
+<span class="sd">            If ``None``, object is written to the base HDF5 group.</span>
+<span class="sd">        </span>
+<span class="sd">        overwrite : bool</span>
+<span class="sd">            Whether to overwrite values in an HDF5 file if a field already exists.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;method is abstract&quot;</span><span class="p">)</span></div>
 
@@ -472,7 +484,7 @@ document.write(`
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">from_hdf5</span><span class="p">(</span>
             <span class="bp">cls</span><span class="p">,</span> 
-            <span class="n">filename</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">,</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">],</span> 
             <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;HDF5InputOutput&#39;</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
@@ -480,11 +492,14 @@ document.write(`
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        filename : str</span>
-<span class="sd">            HDF5 file name which to read.</span>
-<span class="sd">        groupname : str or None</span>
-<span class="sd">            HDF5 group name under which object data is stored.</span>
-<span class="sd">            If None, object is read from base HDF5 group.</span>
+<span class="sd">        filename : str, Path, h5py.File</span>
+<span class="sd">            If ``str``, an HDF5 file name from which to read.</span>
+<span class="sd">            If ``Path``, an HDF5 file name from which to read.</span>
+<span class="sd">            If ``h5py.File``, an opened HDF5 file from which to read. </span>
+<span class="sd">        </span>
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            If ``str``, an HDF5 group name under which object data is stored.</span>
+<span class="sd">            If ``None``, object is read from base HDF5 group.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>

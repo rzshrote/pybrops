@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/sel/SelectionProtocol';</script>
@@ -422,22 +422,38 @@ document.write(`
 <span class="p">]</span>
 
 <span class="c1"># imports</span>
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">RandomState</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">RandomState</span>
 <span class="kn">import</span> <span class="nn">pandas</span>
 
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.cfg.SelectionConfiguration</span> <span class="kn">import</span> <span class="n">SelectionConfiguration</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.SelectionProblem</span> <span class="kn">import</span> <span class="n">SelectionProblem</span>
-<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.trans</span> <span class="kn">import</span> <span class="n">trans_empty</span><span class="p">,</span> <span class="n">trans_identity</span><span class="p">,</span> <span class="n">trans_ndpt_to_vec_dist</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.trans</span> <span class="kn">import</span> <span class="n">trans_empty</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.trans</span> <span class="kn">import</span> <span class="n">trans_identity</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.trans</span> <span class="kn">import</span> <span class="n">trans_ndpt_to_vec_dist</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.soln.SelectionSolution</span> <span class="kn">import</span> <span class="n">SelectionSolution</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_Generator_or_RandomState</span><span class="p">,</span> <span class="n">check_is_ndarray</span><span class="p">,</span> <span class="n">check_ndarray_dtype_is_integer</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Callable</span><span class="p">,</span> <span class="n">check_is_Integral</span><span class="p">,</span> <span class="n">check_is_Real</span><span class="p">,</span> <span class="n">check_is_dict</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_all_gteq</span><span class="p">,</span> <span class="n">check_ndarray_len_eq</span><span class="p">,</span> <span class="n">check_ndarray_ndim</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_gt</span><span class="p">,</span> <span class="n">check_is_gteq</span><span class="p">,</span> <span class="n">check_is_neq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_Generator_or_RandomState</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_dtype_is_integer</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Callable</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Real</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_dict</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_all_gteq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_len_eq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_ndim</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_gt</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_gteq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_neq</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.random.prng</span> <span class="kn">import</span> <span class="n">global_prng</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">GenomicModel</span>
 <span class="kn">from</span> <span class="nn">pybrops.opt.algo.OptimizationAlgorithm</span> <span class="kn">import</span> <span class="n">OptimizationAlgorithm</span>
@@ -447,7 +463,9 @@ document.write(`
 
 <div class="viewcode-block" id="SelectionProtocol">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.SelectionProtocol.SelectionProtocol.html#pybrops.breed.prot.sel.SelectionProtocol.SelectionProtocol">[docs]</a>
-<span class="k">class</span> <span class="nc">SelectionProtocol</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">SelectionProtocol</span><span class="p">(</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A semi-abstract class implementing several key properties common to most, </span>
 <span class="sd">    if not all, constrained selection protocols.</span>

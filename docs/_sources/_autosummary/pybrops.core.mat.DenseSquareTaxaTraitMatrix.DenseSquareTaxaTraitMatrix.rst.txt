@@ -30,7 +30,9 @@ DenseSquareTaxaTraitMatrix
       ~DenseSquareTaxaTraitMatrix.delete
       ~DenseSquareTaxaTraitMatrix.delete_taxa
       ~DenseSquareTaxaTraitMatrix.delete_trait
+      ~DenseSquareTaxaTraitMatrix.from_csv
       ~DenseSquareTaxaTraitMatrix.from_hdf5
+      ~DenseSquareTaxaTraitMatrix.from_pandas
       ~DenseSquareTaxaTraitMatrix.group
       ~DenseSquareTaxaTraitMatrix.group_taxa
       ~DenseSquareTaxaTraitMatrix.incorp
@@ -58,7 +60,9 @@ DenseSquareTaxaTraitMatrix
       ~DenseSquareTaxaTraitMatrix.sort
       ~DenseSquareTaxaTraitMatrix.sort_taxa
       ~DenseSquareTaxaTraitMatrix.sort_trait
+      ~DenseSquareTaxaTraitMatrix.to_csv
       ~DenseSquareTaxaTraitMatrix.to_hdf5
+      ~DenseSquareTaxaTraitMatrix.to_pandas
       ~DenseSquareTaxaTraitMatrix.ungroup
       ~DenseSquareTaxaTraitMatrix.ungroup_taxa
    

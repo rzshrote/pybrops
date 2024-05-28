@@ -1,0 +1,6 @@
+h5py\_File\_read\_dict
+======================
+
+.. currentmodule:: pybrops.core.util.h5py
+
+.. autofunction:: h5py_File_read_dict

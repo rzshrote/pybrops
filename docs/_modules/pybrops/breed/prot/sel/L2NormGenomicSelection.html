@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/sel/L2NormGenomicSelection';</script>
@@ -426,11 +426,15 @@ document.write(`
 
 <span class="c1"># imports</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">RandomState</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">RandomState</span>
 <span class="kn">import</span> <span class="nn">pandas</span>
 
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.BinarySelectionProtocol</span> <span class="kn">import</span> <span class="n">BinarySelectionProtocol</span>
@@ -440,7 +444,10 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.BinarySelectionProblem</span> <span class="kn">import</span> <span class="n">BinarySelectionProblem</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.IntegerSelectionProblem</span> <span class="kn">import</span> <span class="n">IntegerSelectionProblem</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.RealSelectionProblem</span> <span class="kn">import</span> <span class="n">RealSelectionProblem</span>
-<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.L2NormGenomicSelectionProblem</span> <span class="kn">import</span> <span class="n">L2NormGenomicBinarySelectionProblem</span><span class="p">,</span> <span class="n">L2NormGenomicIntegerSelectionProblem</span><span class="p">,</span> <span class="n">L2NormGenomicRealSelectionProblem</span><span class="p">,</span> <span class="n">L2NormGenomicSubsetSelectionProblem</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.L2NormGenomicSelectionProblem</span> <span class="kn">import</span> <span class="n">L2NormGenomicBinarySelectionProblem</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.L2NormGenomicSelectionProblem</span> <span class="kn">import</span> <span class="n">L2NormGenomicIntegerSelectionProblem</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.L2NormGenomicSelectionProblem</span> <span class="kn">import</span> <span class="n">L2NormGenomicRealSelectionProblem</span>
+<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.L2NormGenomicSelectionProblem</span> <span class="kn">import</span> <span class="n">L2NormGenomicSubsetSelectionProblem</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.SubsetSelectionProblem</span> <span class="kn">import</span> <span class="n">SubsetSelectionProblem</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">GenomicModel</span>
 <span class="kn">from</span> <span class="nn">pybrops.opt.algo.BinaryOptimizationAlgorithm</span> <span class="kn">import</span> <span class="n">BinaryOptimizationAlgorithm</span>
@@ -448,13 +455,16 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pybrops.opt.algo.RealOptimizationAlgorithm</span> <span class="kn">import</span> <span class="n">RealOptimizationAlgorithm</span>
 <span class="kn">from</span> <span class="nn">pybrops.opt.algo.SubsetOptimizationAlgorithm</span> <span class="kn">import</span> <span class="n">SubsetOptimizationAlgorithm</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.bvmat.BreedingValueMatrix</span> <span class="kn">import</span> <span class="n">BreedingValueMatrix</span>
-<span class="kn">from</span> <span class="nn">pybrops.popgen.cmat.fcty.CoancestryMatrixFactory</span> <span class="kn">import</span> <span class="n">CoancestryMatrixFactory</span><span class="p">,</span> <span class="n">check_is_CoancestryMatrixFactory</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.cmat.fcty.CoancestryMatrixFactory</span> <span class="kn">import</span> <span class="n">CoancestryMatrixFactory</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.cmat.fcty.CoancestryMatrixFactory</span> <span class="kn">import</span> <span class="n">check_is_CoancestryMatrixFactory</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.GenotypeMatrix</span> <span class="kn">import</span> <span class="n">GenotypeMatrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span>
 
 <div class="viewcode-block" id="L2NormGenomicSelectionMixin">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.L2NormGenomicSelection.L2NormGenomicSelectionMixin.html#pybrops.breed.prot.sel.L2NormGenomicSelection.L2NormGenomicSelectionMixin">[docs]</a>
-<span class="k">class</span> <span class="nc">L2NormGenomicSelectionMixin</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">L2NormGenomicSelectionMixin</span><span class="p">(</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Semi-abstract class for L2-Norm Genomic Selection (L2GS) with constraints.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -476,7 +486,10 @@ document.write(`
 
 <div class="viewcode-block" id="L2NormGenomicBinarySelection">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.L2NormGenomicSelection.L2NormGenomicBinarySelection.html#pybrops.breed.prot.sel.L2NormGenomicSelection.L2NormGenomicBinarySelection">[docs]</a>
-<span class="k">class</span> <span class="nc">L2NormGenomicBinarySelection</span><span class="p">(</span><span class="n">L2NormGenomicSelectionMixin</span><span class="p">,</span><span class="n">BinarySelectionProtocol</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">L2NormGenomicBinarySelection</span><span class="p">(</span>
+        <span class="n">L2NormGenomicSelectionMixin</span><span class="p">,</span>
+        <span class="n">BinarySelectionProtocol</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    L2-Norm Genomic Selection (L2GS) in a subset search space.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -884,7 +897,10 @@ document.write(`
 
 <div class="viewcode-block" id="L2NormGenomicIntegerSelection">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.L2NormGenomicSelection.L2NormGenomicIntegerSelection.html#pybrops.breed.prot.sel.L2NormGenomicSelection.L2NormGenomicIntegerSelection">[docs]</a>
-<span class="k">class</span> <span class="nc">L2NormGenomicIntegerSelection</span><span class="p">(</span><span class="n">L2NormGenomicSelectionMixin</span><span class="p">,</span><span class="n">IntegerSelectionProtocol</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">L2NormGenomicIntegerSelection</span><span class="p">(</span>
+        <span class="n">L2NormGenomicSelectionMixin</span><span class="p">,</span>
+        <span class="n">IntegerSelectionProtocol</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    L2-Norm Genomic Selection (L2GS) in an integer search space.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1292,7 +1308,10 @@ document.write(`
 
 <div class="viewcode-block" id="L2NormGenomicRealSelection">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.L2NormGenomicSelection.L2NormGenomicRealSelection.html#pybrops.breed.prot.sel.L2NormGenomicSelection.L2NormGenomicRealSelection">[docs]</a>
-<span class="k">class</span> <span class="nc">L2NormGenomicRealSelection</span><span class="p">(</span><span class="n">L2NormGenomicSelectionMixin</span><span class="p">,</span><span class="n">RealSelectionProtocol</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">L2NormGenomicRealSelection</span><span class="p">(</span>
+        <span class="n">L2NormGenomicSelectionMixin</span><span class="p">,</span>
+        <span class="n">RealSelectionProtocol</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    L2-Norm Genomic Selection (L2GS) in a real search space.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1700,7 +1719,10 @@ document.write(`
 
 <div class="viewcode-block" id="L2NormGenomicSubsetSelection">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.sel.L2NormGenomicSelection.L2NormGenomicSubsetSelection.html#pybrops.breed.prot.sel.L2NormGenomicSelection.L2NormGenomicSubsetSelection">[docs]</a>
-<span class="k">class</span> <span class="nc">L2NormGenomicSubsetSelection</span><span class="p">(</span><span class="n">L2NormGenomicSelectionMixin</span><span class="p">,</span><span class="n">SubsetSelectionProtocol</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">L2NormGenomicSubsetSelection</span><span class="p">(</span>
+        <span class="n">L2NormGenomicSelectionMixin</span><span class="p">,</span>
+        <span class="n">SubsetSelectionProtocol</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    L2-Norm Genomic Selection (L2GS) in a subset search space.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

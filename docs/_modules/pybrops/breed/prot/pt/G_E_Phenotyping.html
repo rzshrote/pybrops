@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/pt/G_E_Phenotyping';</script>
@@ -416,27 +416,50 @@ document.write(`
 <span class="sd">interaction.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
-
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">RandomState</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">RandomState</span>
 <span class="kn">import</span> <span class="nn">pandas</span>
 
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span><span class="p">,</span> <span class="n">check_is_dict</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_all_gt</span><span class="p">,</span> <span class="n">check_ndarray_all_gteq</span><span class="p">,</span> <span class="n">check_ndarray_ndim</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_io_python</span> <span class="kn">import</span> <span class="n">check_file_exists</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_dict</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_has_group</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_is_readable</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_is_writable</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_all_gt</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_all_gteq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_ndim</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.random.prng</span> <span class="kn">import</span> <span class="n">global_prng</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.pt.PhenotypingProtocol</span> <span class="kn">import</span> <span class="n">PhenotypingProtocol</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_gt</span><span class="p">,</span> <span class="n">check_is_gteq</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_Generator_or_RandomState</span><span class="p">,</span> <span class="n">check_ndarray_dtype_is_integer</span><span class="p">,</span> <span class="n">check_ndarray_dtype_is_real</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_gt</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_gteq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_Generator_or_RandomState</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_dtype_is_integer</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_dtype_is_real</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_size</span>
-<span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">GenomicModel</span><span class="p">,</span> <span class="n">check_is_GenomicModel</span>
-<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> <span class="n">check_is_PhasedGenotypeMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">h5py_File_read_int</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">h5py_File_read_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">h5py_File_read_ndarray_int</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">h5py_File_write_dict</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">GenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">check_is_GenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">check_is_PhasedGenotypeMatrix</span>
 
 <div class="viewcode-block" id="G_E_Phenotyping">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.pt.G_E_Phenotyping.G_E_Phenotyping.html#pybrops.breed.prot.pt.G_E_Phenotyping.G_E_Phenotyping">[docs]</a>
-<span class="k">class</span> <span class="nc">G_E_Phenotyping</span><span class="p">(</span><span class="n">PhenotypingProtocol</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">G_E_Phenotyping</span><span class="p">(</span>
+        <span class="n">PhenotypingProtocol</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class implementing phenotyping protocols for simulating phenotyping with no</span>
 <span class="sd">    GxE interaction.</span>
@@ -511,6 +534,66 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">var_rep</span> <span class="o">=</span> <span class="n">var_rep</span>  <span class="c1"># order 4</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var_err</span> <span class="o">=</span> <span class="n">var_err</span>  <span class="c1"># order 5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rng</span> <span class="o">=</span> <span class="n">rng</span>
+
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;G_E_Phenotyping&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a shallow copy of the ``G_E_Phenotyping`` object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : G_E_Phenotyping</span>
+<span class="sd">            A shallow copy of the ``G_E_Phenotyping`` object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get the class</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># create a new class object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">gpmod</span>   <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gpmod</span><span class="p">),</span>
+            <span class="n">nenv</span>    <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nenv</span><span class="p">),</span>
+            <span class="n">nrep</span>    <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nrep</span><span class="p">),</span>
+            <span class="n">var_env</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var_env</span><span class="p">),</span>
+            <span class="n">var_rep</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var_rep</span><span class="p">),</span>
+            <span class="n">var_err</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var_err</span><span class="p">),</span>
+            <span class="n">rng</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="c1"># should not be copied</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
+
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">memo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;G_E_Phenotyping&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a deep copy of the ``G_E_Phenotyping`` object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        memo : dict, None</span>
+<span class="sd">            An optional dictionary of memo metadata.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : G_E_Phenotyping</span>
+<span class="sd">            A deep copy of the ``G_E_Phenotyping`` object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># get the class</span>
+        <span class="bp">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># create a new class object</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">gpmod</span>   <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gpmod</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">nenv</span>    <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nenv</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">nrep</span>    <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nrep</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">var_env</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var_env</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">var_rep</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var_rep</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">var_err</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">var_err</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
+            <span class="n">rng</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rng</span><span class="p">,</span> <span class="c1"># should not be copied</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span>
 
     <span class="c1">############################ Object Properties #############################</span>
 
@@ -640,6 +723,44 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_rng</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="c1">############################## Object Methods ##############################</span>
+<div class="viewcode-block" id="G_E_Phenotyping.copy">
+<a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.pt.G_E_Phenotyping.G_E_Phenotyping.html#pybrops.breed.prot.pt.G_E_Phenotyping.G_E_Phenotyping.copy">[docs]</a>
+    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span>
+            <span class="bp">self</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;G_E_Phenotyping&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a shallow copy of the ``G_E_Phenotyping`` object.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : G_E_Phenotyping</span>
+<span class="sd">            A shallow copy of the ``G_E_Phenotyping`` object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="G_E_Phenotyping.deepcopy">
+<a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.pt.G_E_Phenotyping.G_E_Phenotyping.html#pybrops.breed.prot.pt.G_E_Phenotyping.G_E_Phenotyping.deepcopy">[docs]</a>
+    <span class="k">def</span> <span class="nf">deepcopy</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">memo</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;G_E_Phenotyping&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Make a deep copy of the ``G_E_Phenotyping`` object.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        memo : dict, None</span>
+<span class="sd">            An optional dictionary of memo metadata.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : G_E_Phenotyping</span>
+<span class="sd">            A deep copy of the ``G_E_Phenotyping`` object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span></div>
+
+    
 <div class="viewcode-block" id="G_E_Phenotyping.phenotype">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.pt.G_E_Phenotyping.G_E_Phenotyping.html#pybrops.breed.prot.pt.G_E_Phenotyping.G_E_Phenotyping.phenotype">[docs]</a>
     <span class="k">def</span> <span class="nf">phenotype</span><span class="p">(</span>
@@ -842,6 +963,255 @@ document.write(`
         <span class="c1"># (t,) / (t,) -&gt; (t,)</span>
         <span class="c1"># (t,) * (t,) -&gt; (t,)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var_err</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">H2</span><span class="p">)</span> <span class="o">/</span> <span class="n">H2</span> <span class="o">*</span> <span class="n">var_G</span></div>
+
+
+    <span class="c1">################### Matrix File I/O ####################</span>
+<div class="viewcode-block" id="G_E_Phenotyping.to_hdf5">
+<a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.pt.G_E_Phenotyping.G_E_Phenotyping.html#pybrops.breed.prot.pt.G_E_Phenotyping.G_E_Phenotyping.to_hdf5">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_hdf5</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">,</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">],</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write a ``G_E_Phenotyping`` object to an HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str, Path, h5py.File</span>
+<span class="sd">            If ``str`` or ``Path``, an HDF5 file name to which to write. File is closed after writing.</span>
+<span class="sd">            If ``h5py.File``, an already opened HDF5 file to which to write. File remains open after writing.</span>
+
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            If ``str``, an HDF5 group name under which object data is stored.</span>
+<span class="sd">            If ``None``, object is written to the base HDF5 group.</span>
+
+<span class="sd">        overwrite : bool</span>
+<span class="sd">            Whether to overwrite values in an HDF5 file if a field already exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">########################################################</span>
+        <span class="c1">############ process ``groupname`` argument ############</span>
+
+        <span class="c1"># if we have a string</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># if last character in string is not &#39;/&#39;, add &#39;/&#39; to end of string</span>
+            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+        
+        <span class="c1"># else if ``groupname`` is None, set ``groupname`` to empty string</span>
+        <span class="k">elif</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># empty string</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        
+        <span class="c1"># else raise error</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``groupname`` must be of type ``str`` or ``None`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">groupname</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">############ process ``filename`` argument #############</span>
+
+        <span class="c1"># h5 file object</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># if we have a string or Path, open HDF5 file in append (``r+``) mode</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+        <span class="c1"># elif we have an h5py.File, make sure mode is writable, and copy pointer</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
+            <span class="n">check_h5py_File_is_writable</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">h5file</span> <span class="o">=</span> <span class="n">filename</span>
+
+        <span class="c1"># else raise TypeError</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;filename must be of type ``str`` or ``h5py.File`` but received type </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">### populate HDF5 file</span>
+
+        <span class="c1"># data dictionary</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;nenv&quot;</span>      <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nenv</span><span class="p">,</span>
+            <span class="s2">&quot;nrep&quot;</span>      <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">nrep</span><span class="p">,</span>
+            <span class="s2">&quot;var_env&quot;</span>   <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_env</span><span class="p">,</span>
+            <span class="s2">&quot;var_rep&quot;</span>   <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_rep</span><span class="p">,</span>
+            <span class="s2">&quot;var_err&quot;</span>   <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_err</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># save data</span>
+        <span class="n">h5py_File_write_dict</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">)</span>
+
+        <span class="c1"># close the file, only if the provided filename was a string or Path and not a h5py.File.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+    <span class="c1">############################## Class Methods ###############################</span>
+
+    <span class="c1">################### Matrix File I/O ####################</span>
+<div class="viewcode-block" id="G_E_Phenotyping.from_hdf5">
+<a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.pt.G_E_Phenotyping.G_E_Phenotyping.html#pybrops.breed.prot.pt.G_E_Phenotyping.G_E_Phenotyping.from_hdf5">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_hdf5</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">,</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">],</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">gpmod</span> <span class="p">:</span> <span class="n">GenomicModel</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;G_E_Phenotyping&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read a ``G_E_Phenotyping`` from an HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str, Path, h5py.File</span>
+<span class="sd">            If ``str`` or ``Path``, an HDF5 file name from which to read. File is closed after reading.</span>
+<span class="sd">            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.</span>
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            If ``str``, an HDF5 group name under which ``G_E_Phenotyping`` data is stored.</span>
+<span class="sd">            If ``None``, ``G_E_Phenotyping`` is read from base HDF5 group.</span>
+<span class="sd">        gpmod : GenomicModel</span>
+<span class="sd">            A genomic model to bind to the ``G_E_Phenotyping`` protocol.</span>
+<span class="sd">            This will be eliminated when a better storage mechanism is available.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        out : G_E_Phenotyping</span>
+<span class="sd">            An ``G_E_Phenotyping`` read from an HDF5 file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">########################################################</span>
+        <span class="c1">############ process ``filename`` argument #############</span>
+
+        <span class="c1"># HDF5 file object</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># if we have a string or Path, open HDF5 file in append (``r``) mode</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="n">check_file_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+
+        <span class="c1"># elif we have an h5py.File, make sure mode is in at least ``r`` mode, and copy pointer</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
+            <span class="n">check_h5py_File_is_readable</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">h5file</span> <span class="o">=</span> <span class="n">filename</span>
+        
+        <span class="c1"># else raise TypeError</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">############ process ``groupname`` argument ############</span>
+
+        <span class="c1"># if we have a string</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># FIXME: errors if groupname == &quot;&quot; or &quot;/&quot;</span>
+            <span class="c1"># if the group does not exist in the file, close and raise error</span>
+            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span><span class="p">)</span>
+
+            <span class="c1"># if last character in string is not &#39;/&#39;, add &#39;/&#39; to end of string</span>
+            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+        
+        <span class="c1"># else if ``groupname`` is None, set ``groupname`` to empty string</span>
+        <span class="k">elif</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        
+        <span class="c1"># else raise error</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``groupname`` must be of type ``str`` or ``None`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">groupname</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">################## process ``gpmod`` ###################</span>
+
+        <span class="n">check_is_GenomicModel</span><span class="p">(</span><span class="n">gpmod</span><span class="p">,</span> <span class="s2">&quot;gpmod&quot;</span><span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">######## check that we have all required fields ########</span>
+
+        <span class="c1"># all required arguments</span>
+        <span class="n">required_fields</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># for each required field, check if the field exists in the HDF5 file.</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">:</span>
+            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span><span class="p">)</span>
+        
+        <span class="c1">########################################################</span>
+        <span class="c1">### read data from HDF5 file and (optionally) close ####</span>
+        
+        <span class="c1"># output dictionary</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;nenv&quot;</span>      <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;nrep&quot;</span>      <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;var_env&quot;</span>   <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;var_rep&quot;</span>   <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;var_err&quot;</span>   <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1">##################################</span>
+        <span class="c1">### read mandatory data fields ###</span>
+
+        <span class="c1"># read nenv data (dtype = int)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;nenv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_int</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;nenv&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read nrep array (ndarray dtype = int)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;nrep&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray_int</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;nrep&quot;</span><span class="p">)</span>
+
+        <span class="c1">#################################</span>
+        <span class="c1">### read optional data fields ###</span>
+
+        <span class="c1"># read var_env array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;var_env&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;var_env&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;var_env&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read var_rep array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;var_rep&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;var_rep&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;var_rep&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read var_err array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;var_err&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;var_err&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;var_err&quot;</span><span class="p">)</span>
+
+        <span class="c1">#####################################</span>
+        <span class="c1">### read optional metadata fields ###</span>
+
+        <span class="c1">######################</span>
+        <span class="c1">### close the file ###</span>
+
+        <span class="c1"># close the file, only if the provided fieldname was a string or Path an not an h5py.File.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">### create object</span>
+        
+        <span class="c1"># create object from read data</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">gpmod</span>   <span class="o">=</span> <span class="n">gpmod</span><span class="p">,</span>
+            <span class="n">nenv</span>    <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;nenv&quot;</span><span class="p">],</span>
+            <span class="n">nrep</span>    <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;nrep&quot;</span><span class="p">],</span>
+            <span class="n">var_env</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;var_env&quot;</span><span class="p">],</span>
+            <span class="n">var_rep</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;var_rep&quot;</span><span class="p">],</span>
+            <span class="n">var_err</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;var_err&quot;</span><span class="p">],</span>
+            <span class="n">rng</span>     <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
 </div>
 
 </pre></div>

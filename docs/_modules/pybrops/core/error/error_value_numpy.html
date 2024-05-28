@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/core/error/error_value_numpy';</script>
@@ -442,6 +442,7 @@ document.write(`
     <span class="s2">&quot;check_ndarray_len_is_multiple_of&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_generic_numpy</span> <span class="kn">import</span> <span class="n">generic_check_ndarray_shape</span>
@@ -471,7 +472,7 @@ document.write(`
 
 <div class="viewcode-block" id="check_ndarray_has_values">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.core.error.error_value_numpy.check_ndarray_has_values.html#pybrops.core.error.error_value_numpy.check_ndarray_has_values">[docs]</a>
-<span class="k">def</span> <span class="nf">check_ndarray_has_values</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">check_ndarray_has_values</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">vname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span><span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Check if a ``numpy.ndarray`` contains all required values.</span>
 

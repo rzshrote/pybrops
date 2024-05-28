@@ -35,7 +35,7 @@ This guide is an overview and explains the important features PyBrOpS offers.
     Examples <standard_usage/examples/examples>
     Contributing <contributing/contributing>
     Frequently Asked Questions <faq/faq>
-    .. API reference <_autosummary/pybrops>
+    API reference <_autosummary/pybrops>
 
 
 Indices and tables

@@ -28,6 +28,8 @@ gt
    :template: custom-module-template.rst
    :recursive:
 
+   pybrops.breed.prot.gt.DenseMaskedPhasedGenotyping
+   pybrops.breed.prot.gt.DenseMaskedUnphasedGenotyping
    pybrops.breed.prot.gt.DenseUnphasedGenotyping
    pybrops.breed.prot.gt.GenotypingProtocol
 

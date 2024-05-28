@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/core/mat/TaxaVariantMatrix';</script>
@@ -427,7 +427,11 @@ document.write(`
 
 <div class="viewcode-block" id="TaxaVariantMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.TaxaVariantMatrix.TaxaVariantMatrix.html#pybrops.core.mat.TaxaVariantMatrix.TaxaVariantMatrix">[docs]</a>
-<span class="k">class</span> <span class="nc">TaxaVariantMatrix</span><span class="p">(</span><span class="n">TaxaMatrix</span><span class="p">,</span><span class="n">VariantMatrix</span><span class="p">,</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">TaxaVariantMatrix</span><span class="p">(</span>
+        <span class="n">TaxaMatrix</span><span class="p">,</span>
+        <span class="n">VariantMatrix</span><span class="p">,</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    An abstract class for matrix wrapper objects with taxa and variant metadata.</span>
 

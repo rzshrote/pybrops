@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/mate/FourWayDHCross';</script>
@@ -416,22 +416,32 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">RandomState</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">RandomState</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.mate.util</span> <span class="kn">import</span> <span class="n">mat_dh</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.mate.util</span> <span class="kn">import</span> <span class="n">mat_mate</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.mate.MatingProtocol</span> <span class="kn">import</span> <span class="n">MatingProtocol</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_Generator_or_RandomState</span><span class="p">,</span> <span class="n">check_is_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_Generator_or_RandomState</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_attr_python</span> <span class="kn">import</span> <span class="n">error_readonly</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span><span class="p">,</span> <span class="n">check_is_dict</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len</span><span class="p">,</span> <span class="n">check_ndarray_ndim</span><span class="p">,</span> <span class="n">check_ndarray_shape_eq</span>
-<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.DensePhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">DensePhasedGenotypeMatrix</span><span class="p">,</span> <span class="n">check_DensePhasedGenotypeMatrix_has_vrnt_xoprob</span><span class="p">,</span> <span class="n">check_is_DensePhasedGenotypeMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_dict</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_ndim</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_shape_eq</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.DensePhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">DensePhasedGenotypeMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.DensePhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">check_DensePhasedGenotypeMatrix_has_vrnt_xoprob</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.DensePhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">check_is_DensePhasedGenotypeMatrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.random.prng</span> <span class="kn">import</span> <span class="n">global_prng</span>
 
 <div class="viewcode-block" id="FourWayDHCross">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.mate.FourWayDHCross.FourWayDHCross.html#pybrops.breed.prot.mate.FourWayDHCross.FourWayDHCross">[docs]</a>
-<span class="k">class</span> <span class="nc">FourWayDHCross</span><span class="p">(</span><span class="n">MatingProtocol</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">FourWayDHCross</span><span class="p">(</span>
+        <span class="n">MatingProtocol</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class implementing mating protocols for four-way DH crosses.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

@@ -16,9 +16,13 @@ G\_E\_Phenotyping
    .. autosummary::
       :nosignatures:
    
+      ~G_E_Phenotyping.copy
+      ~G_E_Phenotyping.deepcopy
+      ~G_E_Phenotyping.from_hdf5
       ~G_E_Phenotyping.phenotype
       ~G_E_Phenotyping.set_H2
       ~G_E_Phenotyping.set_h2
+      ~G_E_Phenotyping.to_hdf5
    
    
 

@@ -1,0 +1,6 @@
+triudix
+=======
+
+.. currentmodule:: pybrops.core.util.array
+
+.. autofunction:: triudix

@@ -1,0 +1,32 @@
+PopulationAlleleUnavailabilitySelectionMixin
+============================================
+
+.. currentmodule:: pybrops.breed.prot.sel.PopulationAlleleUnavailabilitySelection
+
+.. autoclass:: PopulationAlleleUnavailabilitySelectionMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PopulationAlleleUnavailabilitySelectionMixin.ntrait
+      ~PopulationAlleleUnavailabilitySelectionMixin.target
+      ~PopulationAlleleUnavailabilitySelectionMixin.weight
+   
+   

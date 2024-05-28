@@ -1,0 +1,32 @@
+DenseMaskedUnphasedGenotyping
+=============================
+
+.. automodule:: pybrops.breed.prot.gt.DenseMaskedUnphasedGenotyping
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      DenseMaskedUnphasedGenotyping
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

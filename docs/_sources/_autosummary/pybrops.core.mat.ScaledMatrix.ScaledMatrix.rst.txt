@@ -1,0 +1,47 @@
+ScaledMatrix
+============
+
+.. currentmodule:: pybrops.core.mat.ScaledMatrix
+
+.. autoclass:: ScaledMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ScaledMatrix.adjoin
+      ~ScaledMatrix.concat
+      ~ScaledMatrix.copy
+      ~ScaledMatrix.deepcopy
+      ~ScaledMatrix.delete
+      ~ScaledMatrix.from_hdf5
+      ~ScaledMatrix.insert
+      ~ScaledMatrix.rescale
+      ~ScaledMatrix.select
+      ~ScaledMatrix.to_hdf5
+      ~ScaledMatrix.transform
+      ~ScaledMatrix.unscale
+      ~ScaledMatrix.untransform
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ScaledMatrix.location
+      ~ScaledMatrix.mat
+      ~ScaledMatrix.mat_ndim
+      ~ScaledMatrix.mat_shape
+      ~ScaledMatrix.scale
+   
+   

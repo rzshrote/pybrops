@@ -28,7 +28,10 @@ model
    :template: custom-module-template.rst
    :recursive:
 
+   pybrops.model.embvmat
    pybrops.model.gmod
    pybrops.model.pcvmat
+   pybrops.model.pmebvmat
    pybrops.model.vmat
+   pybrops.model.wgebvmat
 

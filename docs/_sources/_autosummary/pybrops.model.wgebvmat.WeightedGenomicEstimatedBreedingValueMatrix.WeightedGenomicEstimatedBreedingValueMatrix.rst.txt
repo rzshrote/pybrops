@@ -1,0 +1,102 @@
+WeightedGenomicEstimatedBreedingValueMatrix
+===========================================
+
+.. currentmodule:: pybrops.model.wgebvmat.WeightedGenomicEstimatedBreedingValueMatrix
+
+.. autoclass:: WeightedGenomicEstimatedBreedingValueMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~WeightedGenomicEstimatedBreedingValueMatrix.adjoin
+      ~WeightedGenomicEstimatedBreedingValueMatrix.adjoin_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.adjoin_trait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.append
+      ~WeightedGenomicEstimatedBreedingValueMatrix.append_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.append_trait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.concat
+      ~WeightedGenomicEstimatedBreedingValueMatrix.concat_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.concat_trait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.copy
+      ~WeightedGenomicEstimatedBreedingValueMatrix.deepcopy
+      ~WeightedGenomicEstimatedBreedingValueMatrix.delete
+      ~WeightedGenomicEstimatedBreedingValueMatrix.delete_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.delete_trait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.from_algmod
+      ~WeightedGenomicEstimatedBreedingValueMatrix.from_csv
+      ~WeightedGenomicEstimatedBreedingValueMatrix.from_hdf5
+      ~WeightedGenomicEstimatedBreedingValueMatrix.from_pandas
+      ~WeightedGenomicEstimatedBreedingValueMatrix.group
+      ~WeightedGenomicEstimatedBreedingValueMatrix.group_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.incorp
+      ~WeightedGenomicEstimatedBreedingValueMatrix.incorp_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.incorp_trait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.insert
+      ~WeightedGenomicEstimatedBreedingValueMatrix.insert_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.insert_trait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.is_grouped
+      ~WeightedGenomicEstimatedBreedingValueMatrix.is_grouped_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.lexsort
+      ~WeightedGenomicEstimatedBreedingValueMatrix.lexsort_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.lexsort_trait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.remove
+      ~WeightedGenomicEstimatedBreedingValueMatrix.remove_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.remove_trait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.reorder
+      ~WeightedGenomicEstimatedBreedingValueMatrix.reorder_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.reorder_trait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.select
+      ~WeightedGenomicEstimatedBreedingValueMatrix.select_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.select_trait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.sort
+      ~WeightedGenomicEstimatedBreedingValueMatrix.sort_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.sort_trait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.targmax
+      ~WeightedGenomicEstimatedBreedingValueMatrix.targmin
+      ~WeightedGenomicEstimatedBreedingValueMatrix.tmax
+      ~WeightedGenomicEstimatedBreedingValueMatrix.tmean
+      ~WeightedGenomicEstimatedBreedingValueMatrix.tmin
+      ~WeightedGenomicEstimatedBreedingValueMatrix.to_csv
+      ~WeightedGenomicEstimatedBreedingValueMatrix.to_hdf5
+      ~WeightedGenomicEstimatedBreedingValueMatrix.to_pandas
+      ~WeightedGenomicEstimatedBreedingValueMatrix.trange
+      ~WeightedGenomicEstimatedBreedingValueMatrix.tstd
+      ~WeightedGenomicEstimatedBreedingValueMatrix.tvar
+      ~WeightedGenomicEstimatedBreedingValueMatrix.ungroup
+      ~WeightedGenomicEstimatedBreedingValueMatrix.ungroup_taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.unscale
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~WeightedGenomicEstimatedBreedingValueMatrix.location
+      ~WeightedGenomicEstimatedBreedingValueMatrix.mat
+      ~WeightedGenomicEstimatedBreedingValueMatrix.mat_ndim
+      ~WeightedGenomicEstimatedBreedingValueMatrix.mat_shape
+      ~WeightedGenomicEstimatedBreedingValueMatrix.ntaxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.ntrait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.scale
+      ~WeightedGenomicEstimatedBreedingValueMatrix.taxa
+      ~WeightedGenomicEstimatedBreedingValueMatrix.taxa_axis
+      ~WeightedGenomicEstimatedBreedingValueMatrix.taxa_grp
+      ~WeightedGenomicEstimatedBreedingValueMatrix.taxa_grp_len
+      ~WeightedGenomicEstimatedBreedingValueMatrix.taxa_grp_name
+      ~WeightedGenomicEstimatedBreedingValueMatrix.taxa_grp_spix
+      ~WeightedGenomicEstimatedBreedingValueMatrix.taxa_grp_stix
+      ~WeightedGenomicEstimatedBreedingValueMatrix.trait
+      ~WeightedGenomicEstimatedBreedingValueMatrix.trait_axis
+   
+   

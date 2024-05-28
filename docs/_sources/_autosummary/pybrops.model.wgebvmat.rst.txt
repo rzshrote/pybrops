@@ -1,0 +1,33 @@
+wgebvmat
+========
+
+.. automodule:: pybrops.model.wgebvmat
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   pybrops.model.wgebvmat.DenseWeightedGenomicEstimatedBreedingValueMatrix
+   pybrops.model.wgebvmat.WeightedGenomicEstimatedBreedingValueMatrix
+

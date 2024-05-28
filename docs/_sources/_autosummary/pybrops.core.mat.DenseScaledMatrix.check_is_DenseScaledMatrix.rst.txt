@@ -1,0 +1,6 @@
+check\_is\_DenseScaledMatrix
+============================
+
+.. currentmodule:: pybrops.core.mat.DenseScaledMatrix
+
+.. autofunction:: check_is_DenseScaledMatrix

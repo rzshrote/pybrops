@@ -1,0 +1,6 @@
+dense\_meiosis
+==============
+
+.. currentmodule:: pybrops.core.util.mate
+
+.. autofunction:: dense_meiosis

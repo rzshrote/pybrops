@@ -1,0 +1,83 @@
+PopulationAlleleFrequencyDistanceSubsetSelectionProblem
+=======================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.PopulationAlleleFrequencyDistanceSelectionProblem
+
+.. autoclass:: PopulationAlleleFrequencyDistanceSubsetSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.bounds
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.do
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.evalfn
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.evaluate
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.from_gmat_gpmod
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.has_bounds
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.has_constraints
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.ideal_point
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.latentfn
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.nadir_point
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.name
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.pareto_front
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.callback
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.data
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.decn_space
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.decn_space_lower
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.decn_space_upper
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.elementwise
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.elementwise_func
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.elementwise_runner
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.eqcv_trans
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.eqcv_trans_kwargs
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.eqcv_wt
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.exclude_from_serialization
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.geno
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.ineqcv_trans
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.ineqcv_trans_kwargs
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.ineqcv_wt
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.mkrwt
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.n_constr
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.n_eq_constr
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.n_ieq_constr
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.n_obj
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.n_var
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.ndecn
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.neqcv
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.nineqcv
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.nlatent
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.nobj
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.obj_trans
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.obj_trans_kwargs
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.obj_wt
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.ploidy
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.replace_nan_values_by
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.strict
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.tfreq
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.thet
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.tmajor
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.tminor
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.vars
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.vtype
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.xl
+      ~PopulationAlleleFrequencyDistanceSubsetSelectionProblem.xu
+   
+   

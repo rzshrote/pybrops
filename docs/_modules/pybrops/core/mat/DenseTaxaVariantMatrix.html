@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/core/mat/DenseTaxaVariantMatrix';</script>
@@ -417,18 +417,28 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Sequence</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
 
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_io_python</span> <span class="kn">import</span> <span class="n">check_file_exists</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_has_group</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_is_readable</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_h5py</span> <span class="kn">import</span> <span class="n">check_h5py_File_is_writable</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_ndim_gteq</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.mat.Matrix</span> <span class="kn">import</span> <span class="n">Matrix</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.mat.util</span> <span class="kn">import</span> <span class="n">get_axis</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.array</span> <span class="kn">import</span> <span class="n">get_axis</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.mat.DenseTaxaMatrix</span> <span class="kn">import</span> <span class="n">DenseTaxaMatrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.mat.DenseVariantMatrix</span> <span class="kn">import</span> <span class="n">DenseVariantMatrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.mat.TaxaVariantMatrix</span> <span class="kn">import</span> <span class="n">TaxaVariantMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">h5py_File_read_ndarray</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">h5py_File_read_ndarray_utf8</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.h5py</span> <span class="kn">import</span> <span class="n">h5py_File_write_dict</span>
 
 <div class="viewcode-block" id="DenseTaxaVariantMatrix">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseTaxaVariantMatrix.DenseTaxaVariantMatrix.html#pybrops.core.mat.DenseTaxaVariantMatrix.DenseTaxaVariantMatrix">[docs]</a>
@@ -1857,6 +1867,8 @@ document.write(`
 <span class="sd">            Indices of where to place elements.</span>
 <span class="sd">        axis : int</span>
 <span class="sd">            The axis over which to reorder values.</span>
+<span class="sd">        kwargs : dict</span>
+<span class="sd">            Additional keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">axis</span> <span class="o">=</span> <span class="n">get_axis</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat_ndim</span><span class="p">)</span>                   <span class="c1"># transform axis number to an index</span>
 
@@ -1998,6 +2010,353 @@ document.write(`
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;cannot test for grouping along axis </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="n">grouped</span></div>
+
+
+    <span class="c1">################### Matrix File I/O ####################</span>
+<div class="viewcode-block" id="DenseTaxaVariantMatrix.to_hdf5">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseTaxaVariantMatrix.DenseTaxaVariantMatrix.html#pybrops.core.mat.DenseTaxaVariantMatrix.DenseTaxaVariantMatrix.to_hdf5">[docs]</a>
+    <span class="k">def</span> <span class="nf">to_hdf5</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">,</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">],</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write ``DenseTaxaVariantMatrix`` to an HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str, Path, h5py.File</span>
+<span class="sd">            If ``str``, an HDF5 file name to which to write. File is closed after writing.</span>
+<span class="sd">            If ``h5py.File``, an opened HDF5 file to which to write. File is not closed after writing.</span>
+
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            If ``str``, an HDF5 group name under which ``DenseTaxaVariantMatrix`` data is stored.</span>
+<span class="sd">            If None, ``DenseTaxaVariantMatrix`` is written to the base HDF5 group.</span>
+
+<span class="sd">        overwrite : bool</span>
+<span class="sd">            Whether to overwrite values in an HDF5 file if a field already exists.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">########################################################</span>
+        <span class="c1">############ process ``filename`` argument #############</span>
+
+        <span class="c1"># HDF5 file object</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># if we have a string or Path, open HDF5 file in append (``r+``) mode</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">)</span>
+
+        <span class="c1"># elif we have an h5py.File, make sure mode is writable, and copy pointer</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
+            <span class="n">check_h5py_File_is_writable</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">h5file</span> <span class="o">=</span> <span class="n">filename</span>
+        
+        <span class="c1"># else raise TypeError</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">############ process ``groupname`` argument ############</span>
+
+        <span class="c1"># if we have a string</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># if last character in string is not &#39;/&#39;, add &#39;/&#39; to end of string</span>
+            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+        
+        <span class="c1"># else if ``groupname`` is None, set ``groupname`` to empty string</span>
+        <span class="k">elif</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        
+        <span class="c1"># else raise error</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``groupname`` must be of type ``str`` or ``None`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">groupname</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">#### write data to HDF5 file and (optionally) close ####</span>
+
+        <span class="c1"># data dictionary</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;mat&quot;</span>               <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">mat</span><span class="p">,</span>
+            <span class="s2">&quot;taxa&quot;</span>              <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp&quot;</span>          <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_chrgrp&quot;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_phypos&quot;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_phypos</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_name&quot;</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_name</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_genpos&quot;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_genpos</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_xoprob&quot;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_xoprob</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_hapgrp&quot;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_hapgrp</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_hapalt&quot;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_hapalt</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_hapref&quot;</span>       <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_hapref</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_mask&quot;</span>         <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_mask</span><span class="p">,</span>
+            <span class="c1"># metadata</span>
+            <span class="s2">&quot;taxa_grp_name&quot;</span>     <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_name</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_stix&quot;</span>     <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_stix</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_spix&quot;</span>     <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_spix</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_len&quot;</span>      <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">taxa_grp_len</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_chrgrp_name&quot;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp_name</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_chrgrp_stix&quot;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp_stix</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_chrgrp_spix&quot;</span>  <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp_spix</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_chrgrp_len&quot;</span>   <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrnt_chrgrp_len</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1"># save data</span>
+        <span class="n">h5py_File_write_dict</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">overwrite</span><span class="p">)</span>
+
+        <span class="c1"># close the file, only if the provided filename was a string or Path and not a h5py.File.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+    <span class="c1">############################## Class Methods ###############################</span>
+
+    <span class="c1">################### Matrix File I/O ####################</span>
+<div class="viewcode-block" id="DenseTaxaVariantMatrix.from_hdf5">
+<a class="viewcode-back" href="../../../../_autosummary/pybrops.core.mat.DenseTaxaVariantMatrix.DenseTaxaVariantMatrix.html#pybrops.core.mat.DenseTaxaVariantMatrix.DenseTaxaVariantMatrix.from_hdf5">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_hdf5</span><span class="p">(</span>
+            <span class="bp">cls</span><span class="p">,</span> 
+            <span class="n">filename</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">,</span><span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">],</span> 
+            <span class="n">groupname</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;DenseTaxaVariantMatrix&#39;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read ``DenseTaxaVariantMatrix`` from an HDF5 file.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filename : str, Path, h5py.File</span>
+<span class="sd">            If ``str`` or ``Path``, an HDF5 file name from which to read. File is closed after reading.</span>
+<span class="sd">            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.</span>
+<span class="sd">        groupname : str, None</span>
+<span class="sd">            If ``str``, an HDF5 group name under which ``DenseTaxaVariantMatrix`` data is stored.</span>
+<span class="sd">            If None, ``DenseTaxaVariantMatrix`` is read from base HDF5 group.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        gmat : DenseTaxaVariantMatrix</span>
+<span class="sd">            A genotype matrix read from file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">########################################################</span>
+        <span class="c1">############ process ``filename`` argument #############</span>
+
+        <span class="c1"># HDF5 file object</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># if we have a string or Path, open HDF5 file in read (``r``) mode</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="n">check_file_exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">h5file</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+
+        <span class="c1"># elif we have an ``h5py.File``, make sure mode is in at least ``r`` mode, and copy pointer</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">):</span>
+            <span class="n">check_h5py_File_is_readable</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">h5file</span> <span class="o">=</span> <span class="n">filename</span>
+        
+        <span class="c1"># else raise TypeError</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``filename`` must be of type ``str``, ``Path``, or ``h5py.File`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">############ process ``groupname`` argument ############</span>
+
+        <span class="c1"># if we have a string</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">groupname</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="c1"># FIXME: errors if groupname == &quot;&quot; or &quot;/&quot;</span>
+            <span class="c1"># if the group does not exist in the file, close and raise error</span>
+            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span><span class="p">)</span>
+
+            <span class="c1"># if last character in string is not &#39;/&#39;, add &#39;/&#39; to end of string</span>
+            <span class="k">if</span> <span class="n">groupname</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
+                <span class="n">groupname</span> <span class="o">+=</span> <span class="s1">&#39;/&#39;</span>
+        
+        <span class="c1"># else if ``groupname`` is None, set ``groupname`` to empty string</span>
+        <span class="k">elif</span> <span class="n">groupname</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">groupname</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        
+        <span class="c1"># else raise error</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">&quot;``groupname`` must be of type ``str`` or ``None`` but received type ``</span><span class="si">{0}</span><span class="s2">``&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="nb">type</span><span class="p">(</span><span class="n">groupname</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">######## check that we have all required fields ########</span>
+
+        <span class="c1"># all required arguments</span>
+        <span class="n">required_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mat&quot;</span><span class="p">]</span>
+
+        <span class="c1"># for each required field, check if the field exists in the HDF5 file.</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">required_fields</span><span class="p">:</span>
+            <span class="n">check_h5py_File_has_group</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="n">field</span><span class="p">)</span>
+        
+        <span class="c1">########################################################</span>
+        <span class="c1">### read data from HDF5 file and (optionally) close ####</span>
+        
+        <span class="c1"># output dictionary</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;mat&quot;</span>               <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa&quot;</span>              <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp&quot;</span>          <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_chrgrp&quot;</span>       <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_phypos&quot;</span>       <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_name&quot;</span>         <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_genpos&quot;</span>       <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_xoprob&quot;</span>       <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_hapgrp&quot;</span>       <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_hapalt&quot;</span>       <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_hapref&quot;</span>       <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_mask&quot;</span>         <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="c1"># metadata</span>
+            <span class="s2">&quot;taxa_grp_name&quot;</span>     <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_stix&quot;</span>     <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_spix&quot;</span>     <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;taxa_grp_len&quot;</span>      <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_chrgrp_name&quot;</span>  <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_chrgrp_stix&quot;</span>  <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_chrgrp_spix&quot;</span>  <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;vrnt_chrgrp_len&quot;</span>   <span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="c1">##################################</span>
+        <span class="c1">### read mandatory data fields ###</span>
+
+        <span class="c1"># read mat array (ndarray dtype = any)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s2">&quot;mat&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;mat&quot;</span><span class="p">)</span>
+        
+        <span class="c1">#################################</span>
+        <span class="c1">### read optional data fields ###</span>
+
+        <span class="c1"># read taxa array (ndarray dtype = unicode / object)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray_utf8</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read taxa_grp array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># read vrnt_chrgrp array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_chrgrp&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_chrgrp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_chrgrp&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read vrnt_phypos array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_phypos&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_phypos&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_phypos&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read vrnt_name array (ndarray dtype = unicode / object)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_name&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray_utf8</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_name&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read vrnt_genpos array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_genpos&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_genpos&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_genpos&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read vrnt_xoprob array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_xoprob&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_xoprob&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_xoprob&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read vrnt_hapgrp array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_hapgrp&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_hapgrp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_hapgrp&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read vrnt_hapalt array (ndarray dtype = unicode / object)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_hapalt&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_hapalt&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray_utf8</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_hapalt&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read vrnt_hapref array (ndarray dtype = unicode / object)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_hapref&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_hapref&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray_utf8</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_hapref&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read vrnt_mask array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_mask&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_mask&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_mask&quot;</span><span class="p">)</span>
+
+        <span class="c1">#####################################</span>
+        <span class="c1">### read optional metadata fields ###</span>
+
+        <span class="c1"># read taxa_grp_name array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_name&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_name&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read taxa_grp_stix array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_stix&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_stix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_stix&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read taxa_grp_spix array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_spix&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_spix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_spix&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read taxa_grp_len array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_len&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_len&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;taxa_grp_len&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read vrnt_chrgrp_name array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_chrgrp_name&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_chrgrp_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_chrgrp_name&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read vrnt_chrgrp_stix array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_chrgrp_stix&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_chrgrp_stix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_chrgrp_stix&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read vrnt_chrgrp_spix array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_chrgrp_spix&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_chrgrp_spix&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_chrgrp_spix&quot;</span><span class="p">)</span>
+
+        <span class="c1"># read vrnt_chrgrp_len array (ndarray dtype = any)</span>
+        <span class="k">if</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_chrgrp_len&quot;</span> <span class="ow">in</span> <span class="n">h5file</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_chrgrp_len&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">h5py_File_read_ndarray</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">groupname</span> <span class="o">+</span> <span class="s2">&quot;vrnt_chrgrp_len&quot;</span><span class="p">)</span>
+
+        <span class="c1">######################</span>
+        <span class="c1">### close the file ###</span>
+
+        <span class="c1"># close the file, only if the provided fieldname was a string or Path an not an h5py.File.</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span><span class="n">Path</span><span class="p">)):</span>
+            <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="c1">########################################################</span>
+        <span class="c1">################### Object creation ####################</span>
+        
+        <span class="c1"># create object from read data</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">mat</span>         <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;mat&quot;</span><span class="p">],</span>
+            <span class="n">taxa</span>        <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa&quot;</span><span class="p">],</span>
+            <span class="n">taxa_grp</span>    <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp&quot;</span><span class="p">],</span>
+            <span class="n">vrnt_chrgrp</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_chrgrp&quot;</span><span class="p">],</span>
+            <span class="n">vrnt_phypos</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_phypos&quot;</span><span class="p">],</span>
+            <span class="n">vrnt_name</span>   <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_name&quot;</span><span class="p">],</span>
+            <span class="n">vrnt_genpos</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_genpos&quot;</span><span class="p">],</span>
+            <span class="n">vrnt_xoprob</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_xoprob&quot;</span><span class="p">],</span>
+            <span class="n">vrnt_hapgrp</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_hapgrp&quot;</span><span class="p">],</span>
+            <span class="n">vrnt_hapalt</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_hapalt&quot;</span><span class="p">],</span>
+            <span class="n">vrnt_hapref</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_hapref&quot;</span><span class="p">],</span>
+            <span class="n">vrnt_mask</span>   <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_mask&quot;</span><span class="p">],</span> 
+        <span class="p">)</span>
+
+        <span class="c1"># copy metadata</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_name</span>    <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_name&quot;</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_stix</span>    <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_stix&quot;</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_spix</span>    <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_spix&quot;</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_len</span>     <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;taxa_grp_len&quot;</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_name</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_chrgrp_name&quot;</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_stix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_chrgrp_stix&quot;</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_spix</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_chrgrp_spix&quot;</span><span class="p">]</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_len</span>  <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;vrnt_chrgrp_len&quot;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">out</span></div>
 </div>
 
 
