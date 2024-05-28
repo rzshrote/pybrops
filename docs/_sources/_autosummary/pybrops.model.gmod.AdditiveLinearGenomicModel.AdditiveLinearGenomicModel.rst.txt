@@ -23,11 +23,13 @@ AdditiveLinearGenomicModel
       ~AdditiveLinearGenomicModel.dacount
       ~AdditiveLinearGenomicModel.dafixed
       ~AdditiveLinearGenomicModel.dafreq
+      ~AdditiveLinearGenomicModel.dapoly
       ~AdditiveLinearGenomicModel.deepcopy
       ~AdditiveLinearGenomicModel.faavail
       ~AdditiveLinearGenomicModel.facount
       ~AdditiveLinearGenomicModel.fafixed
       ~AdditiveLinearGenomicModel.fafreq
+      ~AdditiveLinearGenomicModel.fapoly
       ~AdditiveLinearGenomicModel.fit
       ~AdditiveLinearGenomicModel.fit_numpy
       ~AdditiveLinearGenomicModel.from_csv_dict
@@ -39,6 +41,8 @@ AdditiveLinearGenomicModel
       ~AdditiveLinearGenomicModel.gegv_numpy
       ~AdditiveLinearGenomicModel.lsl
       ~AdditiveLinearGenomicModel.lsl_numpy
+      ~AdditiveLinearGenomicModel.nafixed
+      ~AdditiveLinearGenomicModel.napoly
       ~AdditiveLinearGenomicModel.predict
       ~AdditiveLinearGenomicModel.predict_numpy
       ~AdditiveLinearGenomicModel.score

@@ -1,0 +1,33 @@
+PopulationAlleleUnavailabilitySelection
+=======================================
+
+.. automodule:: pybrops.breed.prot.sel.PopulationAlleleUnavailabilitySelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      PopulationAlleleUnavailabilitySelectionMixin
+      PopulationAlleleUnavailabilitySubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

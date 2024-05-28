@@ -1,0 +1,6 @@
+h5py\_File\_is\_readable
+========================
+
+.. currentmodule:: pybrops.core.util.h5py
+
+.. autofunction:: h5py_File_is_readable

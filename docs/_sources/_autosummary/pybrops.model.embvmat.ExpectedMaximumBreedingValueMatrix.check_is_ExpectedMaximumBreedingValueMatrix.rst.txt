@@ -1,0 +1,6 @@
+check\_is\_ExpectedMaximumBreedingValueMatrix
+=============================================
+
+.. currentmodule:: pybrops.model.embvmat.ExpectedMaximumBreedingValueMatrix
+
+.. autofunction:: check_is_ExpectedMaximumBreedingValueMatrix

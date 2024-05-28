@@ -43,6 +43,7 @@ ExpectedMaximumBreedingValueIntegerSelectionProblem
       ~ExpectedMaximumBreedingValueIntegerSelectionProblem.decn_space
       ~ExpectedMaximumBreedingValueIntegerSelectionProblem.decn_space_lower
       ~ExpectedMaximumBreedingValueIntegerSelectionProblem.decn_space_upper
+      ~ExpectedMaximumBreedingValueIntegerSelectionProblem.decn_space_xmap
       ~ExpectedMaximumBreedingValueIntegerSelectionProblem.elementwise
       ~ExpectedMaximumBreedingValueIntegerSelectionProblem.elementwise_func
       ~ExpectedMaximumBreedingValueIntegerSelectionProblem.elementwise_runner

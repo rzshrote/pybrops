@@ -1,0 +1,33 @@
+PopulationAlleleFrequencyDistanceSelectionProblem
+=================================================
+
+.. automodule:: pybrops.breed.prot.sel.prob.PopulationAlleleFrequencyDistanceSelectionProblem
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      PopulationAlleleFrequencyDistanceSelectionProblemMixin
+      PopulationAlleleFrequencyDistanceSubsetSelectionProblem
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

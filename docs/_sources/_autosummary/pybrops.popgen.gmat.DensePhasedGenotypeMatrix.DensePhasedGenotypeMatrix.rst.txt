@@ -21,6 +21,7 @@ DensePhasedGenotypeMatrix
       ~DensePhasedGenotypeMatrix.adjoin_phase
       ~DensePhasedGenotypeMatrix.adjoin_taxa
       ~DensePhasedGenotypeMatrix.adjoin_vrnt
+      ~DensePhasedGenotypeMatrix.afixed
       ~DensePhasedGenotypeMatrix.afreq
       ~DensePhasedGenotypeMatrix.apoly
       ~DensePhasedGenotypeMatrix.append

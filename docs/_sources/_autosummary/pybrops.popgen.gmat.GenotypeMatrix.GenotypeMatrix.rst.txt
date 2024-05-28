@@ -20,6 +20,7 @@ GenotypeMatrix
       ~GenotypeMatrix.adjoin
       ~GenotypeMatrix.adjoin_taxa
       ~GenotypeMatrix.adjoin_vrnt
+      ~GenotypeMatrix.afixed
       ~GenotypeMatrix.afreq
       ~GenotypeMatrix.apoly
       ~GenotypeMatrix.append

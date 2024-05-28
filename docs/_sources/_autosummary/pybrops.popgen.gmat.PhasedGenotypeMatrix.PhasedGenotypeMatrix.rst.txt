@@ -21,6 +21,7 @@ PhasedGenotypeMatrix
       ~PhasedGenotypeMatrix.adjoin_phase
       ~PhasedGenotypeMatrix.adjoin_taxa
       ~PhasedGenotypeMatrix.adjoin_vrnt
+      ~PhasedGenotypeMatrix.afixed
       ~PhasedGenotypeMatrix.afreq
       ~PhasedGenotypeMatrix.apoly
       ~PhasedGenotypeMatrix.append

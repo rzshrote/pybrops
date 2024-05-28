@@ -1,0 +1,47 @@
+DenseScaledMatrix
+=================
+
+.. currentmodule:: pybrops.core.mat.DenseScaledMatrix
+
+.. autoclass:: DenseScaledMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseScaledMatrix.adjoin
+      ~DenseScaledMatrix.concat
+      ~DenseScaledMatrix.copy
+      ~DenseScaledMatrix.deepcopy
+      ~DenseScaledMatrix.delete
+      ~DenseScaledMatrix.from_hdf5
+      ~DenseScaledMatrix.insert
+      ~DenseScaledMatrix.rescale
+      ~DenseScaledMatrix.select
+      ~DenseScaledMatrix.to_hdf5
+      ~DenseScaledMatrix.transform
+      ~DenseScaledMatrix.unscale
+      ~DenseScaledMatrix.untransform
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseScaledMatrix.location
+      ~DenseScaledMatrix.mat
+      ~DenseScaledMatrix.mat_ndim
+      ~DenseScaledMatrix.mat_shape
+      ~DenseScaledMatrix.scale
+   
+   

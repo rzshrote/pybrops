@@ -1,0 +1,38 @@
+array
+=====
+
+.. automodule:: pybrops.core.util.array
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      flattenix
+      get_axis
+      sliceaxisix
+      sqarrayix
+      triudix
+      triuix
+      xmapix
+   
+   
+
+   
+   
+   
+
+
+

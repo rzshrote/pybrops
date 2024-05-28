@@ -43,6 +43,7 @@ ExpectedMaximumBreedingValueRealSelectionProblem
       ~ExpectedMaximumBreedingValueRealSelectionProblem.decn_space
       ~ExpectedMaximumBreedingValueRealSelectionProblem.decn_space_lower
       ~ExpectedMaximumBreedingValueRealSelectionProblem.decn_space_upper
+      ~ExpectedMaximumBreedingValueRealSelectionProblem.decn_space_xmap
       ~ExpectedMaximumBreedingValueRealSelectionProblem.elementwise
       ~ExpectedMaximumBreedingValueRealSelectionProblem.elementwise_func
       ~ExpectedMaximumBreedingValueRealSelectionProblem.elementwise_runner

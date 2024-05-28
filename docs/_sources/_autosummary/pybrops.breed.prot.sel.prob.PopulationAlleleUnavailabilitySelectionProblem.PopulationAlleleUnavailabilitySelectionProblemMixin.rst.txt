@@ -1,0 +1,38 @@
+PopulationAlleleUnavailabilitySelectionProblemMixin
+===================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.PopulationAlleleUnavailabilitySelectionProblem
+
+.. autoclass:: PopulationAlleleUnavailabilitySelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PopulationAlleleUnavailabilitySelectionProblemMixin.from_gmat_gpmod
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PopulationAlleleUnavailabilitySelectionProblemMixin.geno
+      ~PopulationAlleleUnavailabilitySelectionProblemMixin.mkrwt
+      ~PopulationAlleleUnavailabilitySelectionProblemMixin.nlatent
+      ~PopulationAlleleUnavailabilitySelectionProblemMixin.ploidy
+      ~PopulationAlleleUnavailabilitySelectionProblemMixin.tfreq
+      ~PopulationAlleleUnavailabilitySelectionProblemMixin.thet
+      ~PopulationAlleleUnavailabilitySelectionProblemMixin.tmajor
+      ~PopulationAlleleUnavailabilitySelectionProblemMixin.tminor
+   
+   

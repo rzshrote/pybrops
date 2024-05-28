@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/sel/prob/GenotypeBuilderSelectionProblem';</script>
@@ -420,8 +420,11 @@ document.write(`
 <span class="p">]</span>
 
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.SubsetSelectionProblem</span> <span class="kn">import</span> <span class="n">SubsetSelectionProblem</span>
@@ -429,14 +432,18 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_ndim</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_in_interval_inclusive</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.util.haplo</span> <span class="kn">import</span> <span class="n">haplobin</span><span class="p">,</span> <span class="n">haplobin_bounds</span><span class="p">,</span> <span class="n">nhaploblk_chrom</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.haplo</span> <span class="kn">import</span> <span class="n">haplobin</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.haplo</span> <span class="kn">import</span> <span class="n">haplobin_bounds</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.haplo</span> <span class="kn">import</span> <span class="n">nhaploblk_chrom</span>
 <span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">GenomicModel</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span>
 
 
 <div class="viewcode-block" id="GenotypeBuilderSelectionProblemMixin">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.GenotypeBuilderSelectionProblem.GenotypeBuilderSelectionProblemMixin.html#pybrops.breed.prot.sel.prob.GenotypeBuilderSelectionProblem.GenotypeBuilderSelectionProblemMixin">[docs]</a>
-<span class="k">class</span> <span class="nc">GenotypeBuilderSelectionProblemMixin</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">GenotypeBuilderSelectionProblemMixin</span><span class="p">(</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper class to implement properties common to GB.&quot;&quot;&quot;</span>
 
     <span class="c1">########################## Special Object Methods ##########################</span>
@@ -603,7 +610,10 @@ document.write(`
 
 <div class="viewcode-block" id="GenotypeBuilderSubsetSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.GenotypeBuilderSelectionProblem.GenotypeBuilderSubsetSelectionProblem.html#pybrops.breed.prot.sel.prob.GenotypeBuilderSelectionProblem.GenotypeBuilderSubsetSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">GenotypeBuilderSubsetSelectionProblem</span><span class="p">(</span><span class="n">GenotypeBuilderSelectionProblemMixin</span><span class="p">,</span><span class="n">SubsetSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">GenotypeBuilderSubsetSelectionProblem</span><span class="p">(</span>
+        <span class="n">GenotypeBuilderSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">SubsetSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing Genotype Builder (GB) Selection problems in subset search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

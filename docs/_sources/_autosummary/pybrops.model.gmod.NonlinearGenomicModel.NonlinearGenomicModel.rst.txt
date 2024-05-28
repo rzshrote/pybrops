@@ -23,11 +23,13 @@ NonlinearGenomicModel
       ~NonlinearGenomicModel.dacount
       ~NonlinearGenomicModel.dafixed
       ~NonlinearGenomicModel.dafreq
+      ~NonlinearGenomicModel.dapoly
       ~NonlinearGenomicModel.deepcopy
       ~NonlinearGenomicModel.faavail
       ~NonlinearGenomicModel.facount
       ~NonlinearGenomicModel.fafixed
       ~NonlinearGenomicModel.fafreq
+      ~NonlinearGenomicModel.fapoly
       ~NonlinearGenomicModel.fit
       ~NonlinearGenomicModel.fit_numpy
       ~NonlinearGenomicModel.from_hdf5
@@ -37,6 +39,8 @@ NonlinearGenomicModel
       ~NonlinearGenomicModel.gegv_numpy
       ~NonlinearGenomicModel.lsl
       ~NonlinearGenomicModel.lsl_numpy
+      ~NonlinearGenomicModel.nafixed
+      ~NonlinearGenomicModel.napoly
       ~NonlinearGenomicModel.predict
       ~NonlinearGenomicModel.predict_numpy
       ~NonlinearGenomicModel.score

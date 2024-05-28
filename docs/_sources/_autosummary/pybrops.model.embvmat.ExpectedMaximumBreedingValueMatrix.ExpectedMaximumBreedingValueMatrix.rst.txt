@@ -1,0 +1,102 @@
+ExpectedMaximumBreedingValueMatrix
+==================================
+
+.. currentmodule:: pybrops.model.embvmat.ExpectedMaximumBreedingValueMatrix
+
+.. autoclass:: ExpectedMaximumBreedingValueMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ExpectedMaximumBreedingValueMatrix.adjoin
+      ~ExpectedMaximumBreedingValueMatrix.adjoin_taxa
+      ~ExpectedMaximumBreedingValueMatrix.adjoin_trait
+      ~ExpectedMaximumBreedingValueMatrix.append
+      ~ExpectedMaximumBreedingValueMatrix.append_taxa
+      ~ExpectedMaximumBreedingValueMatrix.append_trait
+      ~ExpectedMaximumBreedingValueMatrix.concat
+      ~ExpectedMaximumBreedingValueMatrix.concat_taxa
+      ~ExpectedMaximumBreedingValueMatrix.concat_trait
+      ~ExpectedMaximumBreedingValueMatrix.copy
+      ~ExpectedMaximumBreedingValueMatrix.deepcopy
+      ~ExpectedMaximumBreedingValueMatrix.delete
+      ~ExpectedMaximumBreedingValueMatrix.delete_taxa
+      ~ExpectedMaximumBreedingValueMatrix.delete_trait
+      ~ExpectedMaximumBreedingValueMatrix.from_csv
+      ~ExpectedMaximumBreedingValueMatrix.from_gmod
+      ~ExpectedMaximumBreedingValueMatrix.from_hdf5
+      ~ExpectedMaximumBreedingValueMatrix.from_pandas
+      ~ExpectedMaximumBreedingValueMatrix.group
+      ~ExpectedMaximumBreedingValueMatrix.group_taxa
+      ~ExpectedMaximumBreedingValueMatrix.incorp
+      ~ExpectedMaximumBreedingValueMatrix.incorp_taxa
+      ~ExpectedMaximumBreedingValueMatrix.incorp_trait
+      ~ExpectedMaximumBreedingValueMatrix.insert
+      ~ExpectedMaximumBreedingValueMatrix.insert_taxa
+      ~ExpectedMaximumBreedingValueMatrix.insert_trait
+      ~ExpectedMaximumBreedingValueMatrix.is_grouped
+      ~ExpectedMaximumBreedingValueMatrix.is_grouped_taxa
+      ~ExpectedMaximumBreedingValueMatrix.lexsort
+      ~ExpectedMaximumBreedingValueMatrix.lexsort_taxa
+      ~ExpectedMaximumBreedingValueMatrix.lexsort_trait
+      ~ExpectedMaximumBreedingValueMatrix.remove
+      ~ExpectedMaximumBreedingValueMatrix.remove_taxa
+      ~ExpectedMaximumBreedingValueMatrix.remove_trait
+      ~ExpectedMaximumBreedingValueMatrix.reorder
+      ~ExpectedMaximumBreedingValueMatrix.reorder_taxa
+      ~ExpectedMaximumBreedingValueMatrix.reorder_trait
+      ~ExpectedMaximumBreedingValueMatrix.select
+      ~ExpectedMaximumBreedingValueMatrix.select_taxa
+      ~ExpectedMaximumBreedingValueMatrix.select_trait
+      ~ExpectedMaximumBreedingValueMatrix.sort
+      ~ExpectedMaximumBreedingValueMatrix.sort_taxa
+      ~ExpectedMaximumBreedingValueMatrix.sort_trait
+      ~ExpectedMaximumBreedingValueMatrix.targmax
+      ~ExpectedMaximumBreedingValueMatrix.targmin
+      ~ExpectedMaximumBreedingValueMatrix.tmax
+      ~ExpectedMaximumBreedingValueMatrix.tmean
+      ~ExpectedMaximumBreedingValueMatrix.tmin
+      ~ExpectedMaximumBreedingValueMatrix.to_csv
+      ~ExpectedMaximumBreedingValueMatrix.to_hdf5
+      ~ExpectedMaximumBreedingValueMatrix.to_pandas
+      ~ExpectedMaximumBreedingValueMatrix.trange
+      ~ExpectedMaximumBreedingValueMatrix.tstd
+      ~ExpectedMaximumBreedingValueMatrix.tvar
+      ~ExpectedMaximumBreedingValueMatrix.ungroup
+      ~ExpectedMaximumBreedingValueMatrix.ungroup_taxa
+      ~ExpectedMaximumBreedingValueMatrix.unscale
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ExpectedMaximumBreedingValueMatrix.location
+      ~ExpectedMaximumBreedingValueMatrix.mat
+      ~ExpectedMaximumBreedingValueMatrix.mat_ndim
+      ~ExpectedMaximumBreedingValueMatrix.mat_shape
+      ~ExpectedMaximumBreedingValueMatrix.ntaxa
+      ~ExpectedMaximumBreedingValueMatrix.ntrait
+      ~ExpectedMaximumBreedingValueMatrix.scale
+      ~ExpectedMaximumBreedingValueMatrix.taxa
+      ~ExpectedMaximumBreedingValueMatrix.taxa_axis
+      ~ExpectedMaximumBreedingValueMatrix.taxa_grp
+      ~ExpectedMaximumBreedingValueMatrix.taxa_grp_len
+      ~ExpectedMaximumBreedingValueMatrix.taxa_grp_name
+      ~ExpectedMaximumBreedingValueMatrix.taxa_grp_spix
+      ~ExpectedMaximumBreedingValueMatrix.taxa_grp_stix
+      ~ExpectedMaximumBreedingValueMatrix.trait
+      ~ExpectedMaximumBreedingValueMatrix.trait_axis
+   
+   

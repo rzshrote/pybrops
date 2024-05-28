@@ -1,0 +1,83 @@
+PopulationAlleleUnavailabilitySubsetSelectionProblem
+====================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.PopulationAlleleUnavailabilitySelectionProblem
+
+.. autoclass:: PopulationAlleleUnavailabilitySubsetSelectionProblem
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.bounds
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.do
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.evalfn
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.evaluate
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.from_gmat_gpmod
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.has_bounds
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.has_constraints
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.ideal_point
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.latentfn
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.nadir_point
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.name
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.pareto_front
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.pareto_set
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.callback
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.data
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.decn_space
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.decn_space_lower
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.decn_space_upper
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.elementwise
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.elementwise_func
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.elementwise_runner
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.eqcv_trans
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.eqcv_trans_kwargs
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.eqcv_wt
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.exclude_from_serialization
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.geno
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.ineqcv_trans
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.ineqcv_trans_kwargs
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.ineqcv_wt
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.mkrwt
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.n_constr
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.n_eq_constr
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.n_ieq_constr
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.n_obj
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.n_var
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.ndecn
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.neqcv
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.nineqcv
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.nlatent
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.nobj
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.obj_trans
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.obj_trans_kwargs
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.obj_wt
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.ploidy
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.replace_nan_values_by
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.strict
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.tfreq
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.thet
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.tmajor
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.tminor
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.vars
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.vtype
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.xl
+      ~PopulationAlleleUnavailabilitySubsetSelectionProblem.xu
+   
+   

@@ -1,0 +1,98 @@
+DenseSquare2TaxaTraitMatrix
+===========================
+
+.. currentmodule:: pybrops.core.mat.DenseSquare2TaxaTraitMatrix
+
+.. autoclass:: DenseSquare2TaxaTraitMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseSquare2TaxaTraitMatrix.adjoin
+      ~DenseSquare2TaxaTraitMatrix.adjoin_taxa
+      ~DenseSquare2TaxaTraitMatrix.adjoin_trait
+      ~DenseSquare2TaxaTraitMatrix.append
+      ~DenseSquare2TaxaTraitMatrix.append_taxa
+      ~DenseSquare2TaxaTraitMatrix.append_trait
+      ~DenseSquare2TaxaTraitMatrix.concat
+      ~DenseSquare2TaxaTraitMatrix.concat_taxa
+      ~DenseSquare2TaxaTraitMatrix.concat_trait
+      ~DenseSquare2TaxaTraitMatrix.copy
+      ~DenseSquare2TaxaTraitMatrix.deepcopy
+      ~DenseSquare2TaxaTraitMatrix.delete
+      ~DenseSquare2TaxaTraitMatrix.delete_taxa
+      ~DenseSquare2TaxaTraitMatrix.delete_trait
+      ~DenseSquare2TaxaTraitMatrix.from_csv
+      ~DenseSquare2TaxaTraitMatrix.from_hdf5
+      ~DenseSquare2TaxaTraitMatrix.from_pandas
+      ~DenseSquare2TaxaTraitMatrix.group
+      ~DenseSquare2TaxaTraitMatrix.group_taxa
+      ~DenseSquare2TaxaTraitMatrix.incorp
+      ~DenseSquare2TaxaTraitMatrix.incorp_taxa
+      ~DenseSquare2TaxaTraitMatrix.incorp_trait
+      ~DenseSquare2TaxaTraitMatrix.insert
+      ~DenseSquare2TaxaTraitMatrix.insert_taxa
+      ~DenseSquare2TaxaTraitMatrix.insert_trait
+      ~DenseSquare2TaxaTraitMatrix.is_grouped
+      ~DenseSquare2TaxaTraitMatrix.is_grouped_taxa
+      ~DenseSquare2TaxaTraitMatrix.is_square
+      ~DenseSquare2TaxaTraitMatrix.is_square_taxa
+      ~DenseSquare2TaxaTraitMatrix.lexsort
+      ~DenseSquare2TaxaTraitMatrix.lexsort_taxa
+      ~DenseSquare2TaxaTraitMatrix.lexsort_trait
+      ~DenseSquare2TaxaTraitMatrix.remove
+      ~DenseSquare2TaxaTraitMatrix.remove_taxa
+      ~DenseSquare2TaxaTraitMatrix.remove_trait
+      ~DenseSquare2TaxaTraitMatrix.reorder
+      ~DenseSquare2TaxaTraitMatrix.reorder_taxa
+      ~DenseSquare2TaxaTraitMatrix.reorder_trait
+      ~DenseSquare2TaxaTraitMatrix.select
+      ~DenseSquare2TaxaTraitMatrix.select_taxa
+      ~DenseSquare2TaxaTraitMatrix.select_trait
+      ~DenseSquare2TaxaTraitMatrix.sort
+      ~DenseSquare2TaxaTraitMatrix.sort_taxa
+      ~DenseSquare2TaxaTraitMatrix.sort_trait
+      ~DenseSquare2TaxaTraitMatrix.to_csv
+      ~DenseSquare2TaxaTraitMatrix.to_hdf5
+      ~DenseSquare2TaxaTraitMatrix.to_pandas
+      ~DenseSquare2TaxaTraitMatrix.ungroup
+      ~DenseSquare2TaxaTraitMatrix.ungroup_taxa
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseSquare2TaxaTraitMatrix.mat
+      ~DenseSquare2TaxaTraitMatrix.mat_ndim
+      ~DenseSquare2TaxaTraitMatrix.mat_shape
+      ~DenseSquare2TaxaTraitMatrix.nsquare
+      ~DenseSquare2TaxaTraitMatrix.nsquare_taxa
+      ~DenseSquare2TaxaTraitMatrix.ntaxa
+      ~DenseSquare2TaxaTraitMatrix.ntrait
+      ~DenseSquare2TaxaTraitMatrix.square_axes
+      ~DenseSquare2TaxaTraitMatrix.square_axes_len
+      ~DenseSquare2TaxaTraitMatrix.square_taxa_axes
+      ~DenseSquare2TaxaTraitMatrix.square_taxa_axes_len
+      ~DenseSquare2TaxaTraitMatrix.taxa
+      ~DenseSquare2TaxaTraitMatrix.taxa_axis
+      ~DenseSquare2TaxaTraitMatrix.taxa_grp
+      ~DenseSquare2TaxaTraitMatrix.taxa_grp_len
+      ~DenseSquare2TaxaTraitMatrix.taxa_grp_name
+      ~DenseSquare2TaxaTraitMatrix.taxa_grp_spix
+      ~DenseSquare2TaxaTraitMatrix.taxa_grp_stix
+      ~DenseSquare2TaxaTraitMatrix.trait
+      ~DenseSquare2TaxaTraitMatrix.trait_axis
+   
+   

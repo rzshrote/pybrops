@@ -72,9 +72,9 @@ MultiObjectiveGenomicSubsetSelectionProblem
       ~MultiObjectiveGenomicSubsetSelectionProblem.replace_nan_values_by
       ~MultiObjectiveGenomicSubsetSelectionProblem.strict
       ~MultiObjectiveGenomicSubsetSelectionProblem.tfreq
-      ~MultiObjectiveGenomicSubsetSelectionProblem.thet
-      ~MultiObjectiveGenomicSubsetSelectionProblem.tmajor
-      ~MultiObjectiveGenomicSubsetSelectionProblem.tminor
+      ~MultiObjectiveGenomicSubsetSelectionProblem.tfreq_fix_heter
+      ~MultiObjectiveGenomicSubsetSelectionProblem.tfreq_fix_major
+      ~MultiObjectiveGenomicSubsetSelectionProblem.tfreq_fix_minor
       ~MultiObjectiveGenomicSubsetSelectionProblem.vars
       ~MultiObjectiveGenomicSubsetSelectionProblem.vtype
       ~MultiObjectiveGenomicSubsetSelectionProblem.xl

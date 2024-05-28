@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/gt/DenseUnphasedGenotyping';</script>
@@ -419,11 +419,14 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.gt.GenotypingProtocol</span> <span class="kn">import</span> <span class="n">GenotypingProtocol</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.DenseGenotypeMatrix</span> <span class="kn">import</span> <span class="n">DenseGenotypeMatrix</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.GenotypeMatrix</span> <span class="kn">import</span> <span class="n">GenotypeMatrix</span>
-<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> <span class="n">check_is_PhasedGenotypeMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">check_is_PhasedGenotypeMatrix</span>
 
 <div class="viewcode-block" id="DenseUnphasedGenotyping">
 <a class="viewcode-back" href="../../../../../_autosummary/pybrops.breed.prot.gt.DenseUnphasedGenotyping.DenseUnphasedGenotyping.html#pybrops.breed.prot.gt.DenseUnphasedGenotyping.DenseUnphasedGenotyping">[docs]</a>
-<span class="k">class</span> <span class="nc">DenseUnphasedGenotyping</span><span class="p">(</span><span class="n">GenotypingProtocol</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DenseUnphasedGenotyping</span><span class="p">(</span>
+        <span class="n">GenotypingProtocol</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class implementing unphased genotyping for dense genotype matrices. This</span>
 <span class="sd">    converts a DensePhasedGenotypeMatrix to a DenseGenotypeMatrix containing</span>
@@ -495,6 +498,16 @@ document.write(`
             <span class="n">ploidy</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">ploidy</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span>
+
+        <span class="c1"># copy metadata</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_name</span>    <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">taxa_grp_name</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_stix</span>    <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">taxa_grp_stix</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_spix</span>    <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">taxa_grp_spix</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">taxa_grp_len</span>     <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">taxa_grp_len</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_name</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">vrnt_chrgrp_name</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_stix</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">vrnt_chrgrp_stix</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_spix</span> <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">vrnt_chrgrp_spix</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">vrnt_chrgrp_len</span>  <span class="o">=</span> <span class="n">pgmat</span><span class="o">.</span><span class="n">vrnt_chrgrp_len</span>
 
         <span class="k">return</span> <span class="n">out</span></div>
 </div>

@@ -43,6 +43,7 @@ assert\_python
       assert_method_not_raises_NotImplementedError
       assert_method_raises_NotImplementedError
       assert_module_documentation
+      assert_module_public_api
       assert_property_documentation
       assert_property_isabstract
       assert_property_isconcrete

@@ -1,0 +1,38 @@
+PopulationAlleleFrequencyDistanceSelectionProblemMixin
+======================================================
+
+.. currentmodule:: pybrops.breed.prot.sel.prob.PopulationAlleleFrequencyDistanceSelectionProblem
+
+.. autoclass:: PopulationAlleleFrequencyDistanceSelectionProblemMixin
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~PopulationAlleleFrequencyDistanceSelectionProblemMixin.from_gmat_gpmod
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~PopulationAlleleFrequencyDistanceSelectionProblemMixin.geno
+      ~PopulationAlleleFrequencyDistanceSelectionProblemMixin.mkrwt
+      ~PopulationAlleleFrequencyDistanceSelectionProblemMixin.nlatent
+      ~PopulationAlleleFrequencyDistanceSelectionProblemMixin.ploidy
+      ~PopulationAlleleFrequencyDistanceSelectionProblemMixin.tfreq
+      ~PopulationAlleleFrequencyDistanceSelectionProblemMixin.thet
+      ~PopulationAlleleFrequencyDistanceSelectionProblemMixin.tmajor
+      ~PopulationAlleleFrequencyDistanceSelectionProblemMixin.tminor
+   
+   

@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/sel/prob/MultiObjectiveGenomicSelectionProblem';</script>
@@ -419,14 +419,17 @@ document.write(`
     <span class="s2">&quot;MultiObjectiveGenomicSubsetSelectionProblem&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="c1"># from pybrops.breed.prot.sel.prob.IntegerSelectionProblem import IntegerSelectionProblem</span>
 <span class="c1"># from pybrops.breed.prot.sel.prob.RealSelectionProblem import RealSelectionProblem</span>
-<span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.SelectionProblem</span> <span class="kn">import</span> <span class="n">SelectionProblem</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.SubsetSelectionProblem</span> <span class="kn">import</span> <span class="n">SubsetSelectionProblem</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span>
@@ -438,7 +441,9 @@ document.write(`
 
 <div class="viewcode-block" id="MultiObjectiveGenomicSelectionProblemMixin">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.MultiObjectiveGenomicSelectionProblem.MultiObjectiveGenomicSelectionProblemMixin.html#pybrops.breed.prot.sel.prob.MultiObjectiveGenomicSelectionProblem.MultiObjectiveGenomicSelectionProblemMixin">[docs]</a>
-<span class="k">class</span> <span class="nc">MultiObjectiveGenomicSelectionProblemMixin</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MultiObjectiveGenomicSelectionProblemMixin</span><span class="p">(</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper class to implement properties common to MOGS.&quot;&quot;&quot;</span>
 
     <span class="c1">########################## Special Object Methods ##########################</span>
@@ -487,6 +492,35 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">_mkrwt</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="c1">############ target allele frequency values ############</span>
+    <span class="c1"># @property</span>
+    <span class="c1"># def tfreq(self) -&gt; numpy.ndarray:</span>
+    <span class="c1">#     &quot;&quot;&quot;Target allele frequency.&quot;&quot;&quot;</span>
+    <span class="c1">#     return self._tfreq</span>
+    <span class="c1"># @tfreq.setter</span>
+    <span class="c1"># def tfreq(self, value: numpy.ndarray) -&gt; None:</span>
+    <span class="c1">#     &quot;&quot;&quot;Set target allele frequency.&quot;&quot;&quot;</span>
+    <span class="c1">#     check_is_ndarray(value, &quot;tfreq&quot;)</span>
+    <span class="c1">#     check_ndarray_ndim(value, &quot;tfreq&quot;, 2)</span>
+    <span class="c1">#     self._tfreq = value</span>
+    <span class="c1">#     self._tminor = self._calc_tminor(self._tfreq)</span>
+    <span class="c1">#     self._thet = self._calc_thet(self._tfreq)</span>
+    <span class="c1">#     self._tmajor = self._calc_tmajor(self._tfreq)</span>
+    
+    <span class="c1"># @property</span>
+    <span class="c1"># def tminor(self) -&gt; numpy.ndarray:</span>
+    <span class="c1">#     &quot;&quot;&quot;Whether the target allele frequency is fixation of a minor allele.&quot;&quot;&quot;</span>
+    <span class="c1">#     return self._tminor</span>
+    
+    <span class="c1"># @property</span>
+    <span class="c1"># def thet(self) -&gt; numpy.ndarray:</span>
+    <span class="c1">#     &quot;&quot;&quot;Whether the target allele frequency is heterozygous.&quot;&quot;&quot;</span>
+    <span class="c1">#     return self._thet</span>
+    
+    <span class="c1"># @property</span>
+    <span class="c1"># def tmajor(self) -&gt; numpy.ndarray:</span>
+    <span class="c1">#     &quot;&quot;&quot;Whether the target allele frequency is fixation of a major allele.&quot;&quot;&quot;</span>
+    <span class="c1">#     return self._tmajor</span>
+    
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tfreq</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Target allele frequency.&quot;&quot;&quot;</span>
@@ -497,25 +531,25 @@ document.write(`
         <span class="n">check_is_ndarray</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;tfreq&quot;</span><span class="p">)</span>
         <span class="n">check_ndarray_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;tfreq&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tfreq</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tminor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_tminor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tfreq</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_thet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_thet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tfreq</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tmajor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_tminor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tfreq</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tfreq_fix_minor</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tfreq</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tfreq_fix_major</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tfreq</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tfreq_fix_heter</span> <span class="o">=</span> <span class="o">~</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tfreq_fix_minor</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tfreq_fix_major</span><span class="p">)</span>
     
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">tminor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">tfreq_fix_minor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether the target allele frequency is fixation of a minor allele.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tminor</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tfreq_fix_minor</span>
     
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">thet</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">tfreq_fix_heter</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether the target allele frequency is heterozygous.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thet</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tfreq_fix_heter</span>
     
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">tmajor</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">tfreq_fix_major</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether the target allele frequency is fixation of a major allele.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tmajor</span>
-    
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tfreq_fix_major</span>
+
     <span class="c1">######################### Private Object Methods ###########################</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_calc_mkrwt</span><span class="p">(</span><span class="n">weight</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span><span class="n">Callable</span><span class="p">],</span> <span class="n">u_a</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
@@ -535,17 +569,17 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;variable &#39;target&#39; must be a callable function or numpy.ndarray&quot;</span><span class="p">)</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_calc_tminor</span><span class="p">(</span><span class="n">tfreq</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">tfreq</span> <span class="o">==</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="c1"># @staticmethod</span>
+    <span class="c1"># def _calc_tminor(tfreq: numpy.ndarray):</span>
+    <span class="c1">#     return (tfreq == 0.0)</span>
     
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_calc_tmajor</span><span class="p">(</span><span class="n">tfreq</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">tfreq</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="c1"># @staticmethod</span>
+    <span class="c1"># def _calc_tmajor(tfreq: numpy.ndarray):</span>
+    <span class="c1">#     return (tfreq == 1.0)</span>
     
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_calc_thet</span><span class="p">(</span><span class="n">tfreq</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">tfreq</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">tfreq</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="c1"># @staticmethod</span>
+    <span class="c1"># def _calc_thet(tfreq: numpy.ndarray):</span>
+    <span class="c1">#     return (tfreq &gt; 0.0) &amp; (tfreq &lt; 1.0)</span>
     
     <span class="c1">############################## Class Methods ###############################</span>
     <span class="nd">@classmethod</span>
@@ -579,7 +613,10 @@ document.write(`
 
 <div class="viewcode-block" id="MultiObjectiveGenomicSubsetSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.MultiObjectiveGenomicSelectionProblem.MultiObjectiveGenomicSubsetSelectionProblem.html#pybrops.breed.prot.sel.prob.MultiObjectiveGenomicSelectionProblem.MultiObjectiveGenomicSubsetSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">MultiObjectiveGenomicSubsetSelectionProblem</span><span class="p">(</span><span class="n">MultiObjectiveGenomicSelectionProblemMixin</span><span class="p">,</span><span class="n">SubsetSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MultiObjectiveGenomicSubsetSelectionProblem</span><span class="p">(</span>
+        <span class="n">MultiObjectiveGenomicSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">SubsetSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    docstring for SubsetMultiObjectiveSelectionProblem.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -803,37 +840,36 @@ document.write(`
         <span class="c1"># (n,p)[(k,),:,None] -&gt; (p,1)</span>
         <span class="n">pfreq</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ploidy</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">geno</span><span class="p">[</span><span class="n">x</span><span class="p">,:,</span><span class="kc">None</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="c1"># determine where allele frequencies are &lt; 1.0</span>
+        <span class="c1"># mask for whether the major allele has been lost (minor allele is fixed)</span>
         <span class="c1"># (p,1)</span>
-        <span class="n">p_ltmajor</span> <span class="o">=</span> <span class="p">(</span><span class="n">pfreq</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span>
+        <span class="n">pfreq_major_islost</span> <span class="o">=</span> <span class="p">(</span><span class="n">pfreq</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">)</span>
 
-        <span class="c1"># determine where allele frequencies are &gt; 0.0</span>
+        <span class="c1"># mask for whether the minor allele has been lost (major allele is fixed)</span>
         <span class="c1"># (p,1)</span>
-        <span class="n">p_gtminor</span> <span class="o">=</span> <span class="p">(</span><span class="n">pfreq</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">pfreq_minor_islost</span> <span class="o">=</span> <span class="p">(</span><span class="n">pfreq</span> <span class="o">&gt;=</span> <span class="mf">1.0</span><span class="p">)</span>
 
-        <span class="c1"># determine where allele frequencies are &lt; 1.0 and &gt; 0.0</span>
+        <span class="c1"># mask for whether heterozygosity has been lost (minor or major allele is fixed)</span>
         <span class="c1"># (p,1)</span>
-        <span class="n">p_het</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">p_ltmajor</span><span class="p">,</span> <span class="n">p_gtminor</span><span class="p">)</span>
+        <span class="n">pfreq_heter_islost</span> <span class="o">=</span> <span class="p">(</span><span class="n">pfreq_major_islost</span> <span class="o">|</span> <span class="n">pfreq_minor_islost</span><span class="p">)</span>
 
-        <span class="c1"># determine where alleles are unavailable using precomputed arrays</span>
+        <span class="c1"># calculate minor, major, heterozygosity penalties</span>
         <span class="c1"># (p,t)</span>
-        <span class="n">allele_unavail</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span>
-            <span class="n">numpy</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span>
-                <span class="n">numpy</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">p_ltmajor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tminor</span><span class="p">),</span> 
-                <span class="n">numpy</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span>
-                    <span class="n">numpy</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">p_het</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thet</span><span class="p">),</span> 
-                    <span class="n">numpy</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">p_gtminor</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmajor</span><span class="p">)</span>
-                <span class="p">)</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">minor_penalty</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfreq_fix_minor</span> <span class="o">&amp;</span> <span class="n">pfreq_minor_islost</span><span class="p">)</span>
+        <span class="n">major_penalty</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfreq_fix_major</span> <span class="o">&amp;</span> <span class="n">pfreq_major_islost</span><span class="p">)</span>
+        <span class="n">heter_penalty</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfreq_fix_heter</span> <span class="o">&amp;</span> <span class="n">pfreq_heter_islost</span><span class="p">)</span>
+
+        <span class="c1"># calculate allele unavailability</span>
+        <span class="c1"># (p,t)</span>
+        <span class="n">allele_unavail</span> <span class="o">=</span> <span class="n">minor_penalty</span> <span class="o">|</span> <span class="n">major_penalty</span> <span class="o">|</span> <span class="n">heter_penalty</span>
+
+        <span class="c1"># calculate the allele unavailability</span>
+        <span class="c1"># (p,t) * (p,t) -&gt; (p,t)</span>
+        <span class="c1"># (p,t) -&gt; (t,)</span>
+        <span class="n">pau</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mkrwt</span> <span class="o">*</span> <span class="n">allele_unavail</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># calculate the manhattan distance and PAFD</span>
         <span class="c1"># (p,t) -&gt; (t,)</span>
         <span class="n">pafd</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mkrwt</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tfreq</span> <span class="o">-</span> <span class="n">pfreq</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-        
-        <span class="c1"># calculate the allele unavailability</span>
-        <span class="c1"># (p,t) -&gt; (t,)</span>
-        <span class="n">pau</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mkrwt</span> <span class="o">*</span> <span class="n">allele_unavail</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># concatenate to make MOGS vector</span>
         <span class="c1"># (t,) and (t,) -&gt; (t + t,)</span>
@@ -841,6 +877,118 @@ document.write(`
 
         <span class="k">return</span> <span class="n">out</span></div>
 
+
+    <span class="k">def</span> <span class="nf">_old_latentfn</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> 
+            <span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> 
+            <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> 
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Old latent function for historical purposes&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+        <span class="c1"># # calculate the allele frequency of the selected subset</span>
+        <span class="c1"># # (n,p)[(k,),:,None] -&gt; (p,1)</span>
+        <span class="c1"># pfreq = (1.0 / (self.ploidy * len(x))) * self.geno[x,:,None].sum(0)</span>
+
+        <span class="c1"># # get pointer to target frequency</span>
+        <span class="c1"># # (p,t)</span>
+        <span class="c1"># tfreq = self.tfreq</span>
+
+        <span class="c1"># # mask for whether the goal is to fix the minor allele</span>
+        <span class="c1"># # (p,t)</span>
+        <span class="c1"># tfreq_fix_minor = (tfreq &lt;= 0.0)</span>
+        
+        <span class="c1"># # mask for whether the goal is to fix the major allele</span>
+        <span class="c1"># # (p,t)</span>
+        <span class="c1"># tfreq_fix_major = (tfreq &gt;= 1.0)</span>
+        
+        <span class="c1"># # mask for whether the goal is to maintain heterozygosity</span>
+        <span class="c1"># # (p,t)</span>
+        <span class="c1"># tfreq_maintain_het = ~(tfreq_fix_minor | tfreq_fix_major)</span>
+
+        <span class="c1"># # mask for whether the major allele has been lost (minor allele is fixed)</span>
+        <span class="c1"># # (p,1)</span>
+        <span class="c1"># pfreq_major_islost = (pfreq &lt;= 0.0)</span>
+        
+        <span class="c1"># # mask for whether the minor allele has been lost (major allele is fixed)</span>
+        <span class="c1"># # (p,1)</span>
+        <span class="c1"># pfreq_minor_islost = (pfreq &gt;= 1.0)</span>
+
+        <span class="c1"># # mask for whether heterozygosity has been lost (minor or major allele is fixed)</span>
+        <span class="c1"># # (p,1)</span>
+        <span class="c1"># pfreq_heter_islost = (pfreq_major_islost | pfreq_minor_islost)</span>
+
+        <span class="c1"># # calculate allele unavailability</span>
+        <span class="c1"># # (p,t)</span>
+        <span class="c1"># allele_unavail = numpy.where(</span>
+        <span class="c1">#     tfreq_fix_major,        # (p,t) if target fixation of major allele</span>
+        <span class="c1">#     pfreq_major_islost,     # (p,1) score True if major allele is lost</span>
+        <span class="c1">#     numpy.where(</span>
+        <span class="c1">#         tfreq_maintain_het, # (p,t) else if target heterozygosity maintenance</span>
+        <span class="c1">#         pfreq_heter_islost, # (p,1) score True if heterozygosity is lost</span>
+        <span class="c1">#         pfreq_minor_islost, # (p,1) else if target fixation of minor allele, score True if minor allele is lost</span>
+        <span class="c1">#     )</span>
+        <span class="c1"># )</span>
+
+        <span class="c1"># ### Version 1 (good, but slower than v2)</span>
+        <span class="c1"># # calculate allele unavailability</span>
+        <span class="c1"># # (p,t)</span>
+        <span class="c1"># allele_unavail = numpy.where(</span>
+        <span class="c1">#     tfreq &gt;= 1.0,           # (p,t) if target freq == 1.0</span>
+        <span class="c1">#     pfreq &lt;= 0.0,           # (p,1) then set True if sel has allele freq == 0</span>
+        <span class="c1">#     numpy.where(            # (p,t)</span>
+        <span class="c1">#         tfreq &gt; 0.0,        # (p,t) elif 0.0 &lt; target freq &lt; 1.0</span>
+        <span class="c1">#         numpy.logical_or(   # (p,1) then set True if pop freq is outside (0.0,1.0)</span>
+        <span class="c1">#             pfreq &lt;= 0.0,   # (p,1) mask for whether population freq &lt;= 0.0</span>
+        <span class="c1">#             pfreq &gt;= 1.0    # (p,1) mask for whether population freq &gt;= 1.0</span>
+        <span class="c1">#         ),                  # (p,1) else target freq == 0.0</span>
+        <span class="c1">#         pfreq &gt;= 1.0        # (p,1) else set True if pop freq is &gt;= 1.0</span>
+        <span class="c1">#     )</span>
+        <span class="c1"># )</span>
+
+        <span class="c1"># self.tmajor: True if target is major allele fixation, False otherwise</span>
+        <span class="c1"># self.tminor: True if target is minor allele fixation, False otherwise</span>
+        <span class="c1"># self.thet  : True if target is heterozygosity, False otherwise</span>
+
+        <span class="c1"># ### Version 2 (bugs???)</span>
+        <span class="c1"># # determine where allele frequencies are &lt; 1.0</span>
+        <span class="c1"># # (p,1)</span>
+        <span class="c1"># p_ltmajor = (pfreq &lt; 1.0)</span>
+
+        <span class="c1"># # determine where allele frequencies are &gt; 0.0</span>
+        <span class="c1"># # (p,1)</span>
+        <span class="c1"># p_gtminor = (pfreq &gt; 0.0)</span>
+
+        <span class="c1"># # determine where allele frequencies are &lt; 1.0 and &gt; 0.0</span>
+        <span class="c1"># # (p,1)</span>
+        <span class="c1"># p_het = numpy.logical_and(p_ltmajor, p_gtminor)</span>
+
+        <span class="c1"># # determine where alleles are unavailable using precomputed arrays</span>
+        <span class="c1"># # (p,t)</span>
+        <span class="c1"># allele_unavail = numpy.logical_not(</span>
+        <span class="c1">#     numpy.logical_or(</span>
+        <span class="c1">#         numpy.logical_and(p_ltmajor, self.tminor), </span>
+        <span class="c1">#         numpy.logical_or(</span>
+        <span class="c1">#             numpy.logical_and(p_het, self.thet), </span>
+        <span class="c1">#             numpy.logical_and(p_gtminor, self.tmajor)</span>
+        <span class="c1">#         )</span>
+        <span class="c1">#     )</span>
+        <span class="c1"># )</span>
+
+        <span class="c1"># # calculate the manhattan distance and PAFD</span>
+        <span class="c1"># # (p,t) -&gt; (t,)</span>
+        <span class="c1"># pafd = (self.mkrwt * numpy.absolute(self.tfreq - pfreq)).sum(0)</span>
+        
+        <span class="c1"># # calculate the allele unavailability</span>
+        <span class="c1"># # (p,t) * (p,t) -&gt; (p,t)</span>
+        <span class="c1"># # (p,t) -&gt; (t,)</span>
+        <span class="c1"># pau = (self.mkrwt * allele_unavail).sum(0)</span>
+
+        <span class="c1"># # concatenate to make MOGS vector</span>
+        <span class="c1"># # (t,) and (t,) -&gt; (t + t,)</span>
+        <span class="c1"># out = numpy.concatenate([pau, pafd])</span>
+
+        <span class="c1"># return out</span>
 
     <span class="c1">############################## Class Methods ###############################</span>
     <span class="nd">@classmethod</span>

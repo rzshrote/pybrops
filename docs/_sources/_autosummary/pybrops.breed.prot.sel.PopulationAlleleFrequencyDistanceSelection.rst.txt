@@ -1,0 +1,33 @@
+PopulationAlleleFrequencyDistanceSelection
+==========================================
+
+.. automodule:: pybrops.breed.prot.sel.PopulationAlleleFrequencyDistanceSelection
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+      :nosignatures:
+   
+      PopulationAlleleFrequencyDistanceSelectionMixin
+      PopulationAlleleFrequencyDistanceSubsetSelection
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

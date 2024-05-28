@@ -43,6 +43,7 @@ OptimalHaploidValueIntegerSelectionProblem
       ~OptimalHaploidValueIntegerSelectionProblem.decn_space
       ~OptimalHaploidValueIntegerSelectionProblem.decn_space_lower
       ~OptimalHaploidValueIntegerSelectionProblem.decn_space_upper
+      ~OptimalHaploidValueIntegerSelectionProblem.decn_space_xmap
       ~OptimalHaploidValueIntegerSelectionProblem.elementwise
       ~OptimalHaploidValueIntegerSelectionProblem.elementwise_func
       ~OptimalHaploidValueIntegerSelectionProblem.elementwise_runner

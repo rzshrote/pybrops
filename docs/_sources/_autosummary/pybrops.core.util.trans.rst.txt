@@ -1,0 +1,32 @@
+trans
+=====
+
+.. automodule:: pybrops.core.util.trans
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+      :template: custom-function-template.rst
+      :nosignatures:
+   
+      trans_ndpt_pseudo_dist
+   
+   
+
+   
+   
+   
+
+
+

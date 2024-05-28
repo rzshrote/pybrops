@@ -1,0 +1,6 @@
+sliceaxisix
+===========
+
+.. currentmodule:: pybrops.core.util.array
+
+.. autofunction:: sliceaxisix

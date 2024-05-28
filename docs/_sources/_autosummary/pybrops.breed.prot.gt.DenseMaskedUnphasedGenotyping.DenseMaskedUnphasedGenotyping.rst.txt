@@ -1,0 +1,31 @@
+DenseMaskedUnphasedGenotyping
+=============================
+
+.. currentmodule:: pybrops.breed.prot.gt.DenseMaskedUnphasedGenotyping
+
+.. autoclass:: DenseMaskedUnphasedGenotyping
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~DenseMaskedUnphasedGenotyping.genotype
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~DenseMaskedUnphasedGenotyping.invert
+   
+   

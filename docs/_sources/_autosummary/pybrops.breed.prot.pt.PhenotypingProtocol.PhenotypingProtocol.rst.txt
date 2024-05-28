@@ -16,9 +16,13 @@ PhenotypingProtocol
    .. autosummary::
       :nosignatures:
    
+      ~PhenotypingProtocol.copy
+      ~PhenotypingProtocol.deepcopy
+      ~PhenotypingProtocol.from_hdf5
       ~PhenotypingProtocol.phenotype
       ~PhenotypingProtocol.set_H2
       ~PhenotypingProtocol.set_h2
+      ~PhenotypingProtocol.to_hdf5
    
    
 

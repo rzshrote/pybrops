@@ -1,0 +1,100 @@
+ScaledSquareTaxaTraitMatrix
+===========================
+
+.. currentmodule:: pybrops.core.mat.ScaledSquareTaxaTraitMatrix
+
+.. autoclass:: ScaledSquareTaxaTraitMatrix
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members: __call__, __add__, __mul__
+
+   
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+      :nosignatures:
+   
+      ~ScaledSquareTaxaTraitMatrix.adjoin
+      ~ScaledSquareTaxaTraitMatrix.adjoin_taxa
+      ~ScaledSquareTaxaTraitMatrix.adjoin_trait
+      ~ScaledSquareTaxaTraitMatrix.append
+      ~ScaledSquareTaxaTraitMatrix.append_taxa
+      ~ScaledSquareTaxaTraitMatrix.append_trait
+      ~ScaledSquareTaxaTraitMatrix.concat
+      ~ScaledSquareTaxaTraitMatrix.concat_taxa
+      ~ScaledSquareTaxaTraitMatrix.concat_trait
+      ~ScaledSquareTaxaTraitMatrix.copy
+      ~ScaledSquareTaxaTraitMatrix.deepcopy
+      ~ScaledSquareTaxaTraitMatrix.delete
+      ~ScaledSquareTaxaTraitMatrix.delete_taxa
+      ~ScaledSquareTaxaTraitMatrix.delete_trait
+      ~ScaledSquareTaxaTraitMatrix.from_hdf5
+      ~ScaledSquareTaxaTraitMatrix.group
+      ~ScaledSquareTaxaTraitMatrix.group_taxa
+      ~ScaledSquareTaxaTraitMatrix.incorp
+      ~ScaledSquareTaxaTraitMatrix.incorp_taxa
+      ~ScaledSquareTaxaTraitMatrix.incorp_trait
+      ~ScaledSquareTaxaTraitMatrix.insert
+      ~ScaledSquareTaxaTraitMatrix.insert_taxa
+      ~ScaledSquareTaxaTraitMatrix.insert_trait
+      ~ScaledSquareTaxaTraitMatrix.is_grouped
+      ~ScaledSquareTaxaTraitMatrix.is_grouped_taxa
+      ~ScaledSquareTaxaTraitMatrix.is_square
+      ~ScaledSquareTaxaTraitMatrix.is_square_taxa
+      ~ScaledSquareTaxaTraitMatrix.lexsort
+      ~ScaledSquareTaxaTraitMatrix.lexsort_taxa
+      ~ScaledSquareTaxaTraitMatrix.lexsort_trait
+      ~ScaledSquareTaxaTraitMatrix.remove
+      ~ScaledSquareTaxaTraitMatrix.remove_taxa
+      ~ScaledSquareTaxaTraitMatrix.remove_trait
+      ~ScaledSquareTaxaTraitMatrix.reorder
+      ~ScaledSquareTaxaTraitMatrix.reorder_taxa
+      ~ScaledSquareTaxaTraitMatrix.reorder_trait
+      ~ScaledSquareTaxaTraitMatrix.rescale
+      ~ScaledSquareTaxaTraitMatrix.select
+      ~ScaledSquareTaxaTraitMatrix.select_taxa
+      ~ScaledSquareTaxaTraitMatrix.select_trait
+      ~ScaledSquareTaxaTraitMatrix.sort
+      ~ScaledSquareTaxaTraitMatrix.sort_taxa
+      ~ScaledSquareTaxaTraitMatrix.sort_trait
+      ~ScaledSquareTaxaTraitMatrix.to_hdf5
+      ~ScaledSquareTaxaTraitMatrix.transform
+      ~ScaledSquareTaxaTraitMatrix.ungroup
+      ~ScaledSquareTaxaTraitMatrix.ungroup_taxa
+      ~ScaledSquareTaxaTraitMatrix.unscale
+      ~ScaledSquareTaxaTraitMatrix.untransform
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ScaledSquareTaxaTraitMatrix.location
+      ~ScaledSquareTaxaTraitMatrix.mat
+      ~ScaledSquareTaxaTraitMatrix.mat_ndim
+      ~ScaledSquareTaxaTraitMatrix.mat_shape
+      ~ScaledSquareTaxaTraitMatrix.nsquare
+      ~ScaledSquareTaxaTraitMatrix.nsquare_taxa
+      ~ScaledSquareTaxaTraitMatrix.ntaxa
+      ~ScaledSquareTaxaTraitMatrix.ntrait
+      ~ScaledSquareTaxaTraitMatrix.scale
+      ~ScaledSquareTaxaTraitMatrix.square_axes
+      ~ScaledSquareTaxaTraitMatrix.square_axes_len
+      ~ScaledSquareTaxaTraitMatrix.square_taxa_axes
+      ~ScaledSquareTaxaTraitMatrix.square_taxa_axes_len
+      ~ScaledSquareTaxaTraitMatrix.taxa
+      ~ScaledSquareTaxaTraitMatrix.taxa_axis
+      ~ScaledSquareTaxaTraitMatrix.taxa_grp
+      ~ScaledSquareTaxaTraitMatrix.taxa_grp_len
+      ~ScaledSquareTaxaTraitMatrix.taxa_grp_name
+      ~ScaledSquareTaxaTraitMatrix.taxa_grp_spix
+      ~ScaledSquareTaxaTraitMatrix.taxa_grp_stix
+      ~ScaledSquareTaxaTraitMatrix.trait
+      ~ScaledSquareTaxaTraitMatrix.trait_axis
+   
+   

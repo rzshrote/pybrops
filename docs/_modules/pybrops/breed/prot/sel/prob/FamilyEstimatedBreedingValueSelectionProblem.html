@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/sel/prob/FamilyEstimatedBreedingValueSelectionProblem';</script>
@@ -422,9 +422,14 @@ document.write(`
     <span class="s2">&quot;FamilyEstimatedBreedingValueBinarySelectionProblem&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Number</span><span class="p">,</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Number</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.BinarySelectionProblem</span> <span class="kn">import</span> <span class="n">BinarySelectionProblem</span>
@@ -432,13 +437,17 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.RealSelectionProblem</span> <span class="kn">import</span> <span class="n">RealSelectionProblem</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.SubsetSelectionProblem</span> <span class="kn">import</span> <span class="n">SubsetSelectionProblem</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len_eq</span><span class="p">,</span> <span class="n">check_ndarray_axis_len_gteq</span><span class="p">,</span> <span class="n">check_ndarray_ndim</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len_eq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len_gteq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_ndim</span>
 <span class="kn">from</span> <span class="nn">pybrops.popgen.bvmat.BreedingValueMatrix</span> <span class="kn">import</span> <span class="n">BreedingValueMatrix</span>
 
 
 <div class="viewcode-block" id="FamilyEstimatedBreedingValueSelectionProblemMixin">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem.FamilyEstimatedBreedingValueSelectionProblemMixin.html#pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem.FamilyEstimatedBreedingValueSelectionProblemMixin">[docs]</a>
-<span class="k">class</span> <span class="nc">FamilyEstimatedBreedingValueSelectionProblemMixin</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">FamilyEstimatedBreedingValueSelectionProblemMixin</span><span class="p">(</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper class containing common properties for EBV selection problems.&quot;&quot;&quot;</span>
 
     <span class="c1">########################## Special Object Methods ##########################</span>
@@ -519,7 +528,10 @@ document.write(`
 
 <div class="viewcode-block" id="FamilyEstimatedBreedingValueSubsetSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem.FamilyEstimatedBreedingValueSubsetSelectionProblem.html#pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem.FamilyEstimatedBreedingValueSubsetSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">FamilyEstimatedBreedingValueSubsetSelectionProblem</span><span class="p">(</span><span class="n">FamilyEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span><span class="n">SubsetSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">FamilyEstimatedBreedingValueSubsetSelectionProblem</span><span class="p">(</span>
+        <span class="n">FamilyEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">SubsetSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing selection on Genomic Estimated Breeding Values (GEBVs) in subset search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -759,7 +771,10 @@ document.write(`
 
 <div class="viewcode-block" id="FamilyEstimatedBreedingValueRealSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem.FamilyEstimatedBreedingValueRealSelectionProblem.html#pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem.FamilyEstimatedBreedingValueRealSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">FamilyEstimatedBreedingValueRealSelectionProblem</span><span class="p">(</span><span class="n">FamilyEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span><span class="n">RealSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">FamilyEstimatedBreedingValueRealSelectionProblem</span><span class="p">(</span>
+        <span class="n">FamilyEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">RealSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing selection on Genomic Estimated Breeding Values (GEBVs) in real search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -977,7 +992,10 @@ document.write(`
 
 <div class="viewcode-block" id="FamilyEstimatedBreedingValueIntegerSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem.FamilyEstimatedBreedingValueIntegerSelectionProblem.html#pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem.FamilyEstimatedBreedingValueIntegerSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">FamilyEstimatedBreedingValueIntegerSelectionProblem</span><span class="p">(</span><span class="n">FamilyEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span><span class="n">IntegerSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">FamilyEstimatedBreedingValueIntegerSelectionProblem</span><span class="p">(</span>
+        <span class="n">FamilyEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">IntegerSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing selection on Genomic Estimated Breeding Values (GEBVs) in integer search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1195,7 +1213,10 @@ document.write(`
 
 <div class="viewcode-block" id="FamilyEstimatedBreedingValueBinarySelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem.FamilyEstimatedBreedingValueBinarySelectionProblem.html#pybrops.breed.prot.sel.prob.FamilyEstimatedBreedingValueSelectionProblem.FamilyEstimatedBreedingValueBinarySelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">FamilyEstimatedBreedingValueBinarySelectionProblem</span><span class="p">(</span><span class="n">FamilyEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span><span class="n">BinarySelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">FamilyEstimatedBreedingValueBinarySelectionProblem</span><span class="p">(</span>
+        <span class="n">FamilyEstimatedBreedingValueSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">BinarySelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing selection on Genomic Estimated Breeding Values (GEBVs) in binary search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

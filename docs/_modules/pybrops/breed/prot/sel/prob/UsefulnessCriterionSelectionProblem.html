@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/breed/prot/sel/prob/UsefulnessCriterionSelectionProblem';</script>
@@ -415,9 +415,13 @@ document.write(`
 <span class="sd">Module implementing Usefulness Criterion (UC) Selection problems.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span><span class="p">,</span> <span class="n">Real</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Real</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">scipy.stats</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.BinaryMateSelectionProblem</span> <span class="kn">import</span> <span class="n">BinaryMateSelectionProblem</span>
@@ -425,19 +429,30 @@ document.write(`
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.RealMateSelectionProblem</span> <span class="kn">import</span> <span class="n">RealMateSelectionProblem</span>
 <span class="kn">from</span> <span class="nn">pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem</span> <span class="kn">import</span> <span class="n">SubsetMateSelectionProblem</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_ndarray</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span><span class="p">,</span> <span class="n">check_is_Real</span><span class="p">,</span> <span class="n">check_is_bool</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len_eq</span><span class="p">,</span> <span class="n">check_ndarray_axis_len_gteq</span><span class="p">,</span> <span class="n">check_ndarray_ndim</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Real</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_bool</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len_eq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_axis_len_gteq</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_numpy</span> <span class="kn">import</span> <span class="n">check_ndarray_ndim</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_in_interval_inclusive</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.util.arrayix</span> <span class="kn">import</span> <span class="n">triudix</span><span class="p">,</span> <span class="n">triuix</span>
-<span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">GenomicModel</span><span class="p">,</span> <span class="n">check_is_GenomicModel</span>
-<span class="kn">from</span> <span class="nn">pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory</span> <span class="kn">import</span> <span class="n">GeneticVarianceMatrixFactory</span><span class="p">,</span> <span class="n">check_is_GeneticVarianceMatrixFactory</span>
-<span class="kn">from</span> <span class="nn">pybrops.popgen.gmap.GeneticMapFunction</span> <span class="kn">import</span> <span class="n">GeneticMapFunction</span><span class="p">,</span> <span class="n">check_is_GeneticMapFunction</span>
-<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span><span class="p">,</span> <span class="n">check_is_PhasedGenotypeMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.array</span> <span class="kn">import</span> <span class="n">triudix</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.util.array</span> <span class="kn">import</span> <span class="n">triuix</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">GenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.gmod.GenomicModel</span> <span class="kn">import</span> <span class="n">check_is_GenomicModel</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory</span> <span class="kn">import</span> <span class="n">GeneticVarianceMatrixFactory</span>
+<span class="kn">from</span> <span class="nn">pybrops.model.vmat.fcty.GeneticVarianceMatrixFactory</span> <span class="kn">import</span> <span class="n">check_is_GeneticVarianceMatrixFactory</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmap.GeneticMapFunction</span> <span class="kn">import</span> <span class="n">GeneticMapFunction</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmap.GeneticMapFunction</span> <span class="kn">import</span> <span class="n">check_is_GeneticMapFunction</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">PhasedGenotypeMatrix</span>
+<span class="kn">from</span> <span class="nn">pybrops.popgen.gmat.PhasedGenotypeMatrix</span> <span class="kn">import</span> <span class="n">check_is_PhasedGenotypeMatrix</span>
 
 
 <div class="viewcode-block" id="UsefulnessCriterionSelectionProblemMixin">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem.UsefulnessCriterionSelectionProblemMixin.html#pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem.UsefulnessCriterionSelectionProblemMixin">[docs]</a>
-<span class="k">class</span> <span class="nc">UsefulnessCriterionSelectionProblemMixin</span><span class="p">(</span><span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">UsefulnessCriterionSelectionProblemMixin</span><span class="p">(</span>
+        <span class="n">metaclass</span> <span class="o">=</span> <span class="n">ABCMeta</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixin class containing properties common to UC selection problems.&quot;&quot;&quot;</span>
 
     <span class="c1">########################## Special Object Methods ##########################</span>
@@ -624,7 +639,10 @@ document.write(`
 
 <div class="viewcode-block" id="UsefulnessCriterionBinaryMateSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem.UsefulnessCriterionBinaryMateSelectionProblem.html#pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem.UsefulnessCriterionBinaryMateSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">UsefulnessCriterionBinaryMateSelectionProblem</span><span class="p">(</span><span class="n">UsefulnessCriterionSelectionProblemMixin</span><span class="p">,</span><span class="n">BinaryMateSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">UsefulnessCriterionBinaryMateSelectionProblem</span><span class="p">(</span>
+        <span class="n">UsefulnessCriterionSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">BinaryMateSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing Usefulness Criterion (UC) selection problems in subset search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -969,7 +987,10 @@ document.write(`
 
 <div class="viewcode-block" id="UsefulnessCriterionIntegerMateSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem.UsefulnessCriterionIntegerMateSelectionProblem.html#pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem.UsefulnessCriterionIntegerMateSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">UsefulnessCriterionIntegerMateSelectionProblem</span><span class="p">(</span><span class="n">UsefulnessCriterionSelectionProblemMixin</span><span class="p">,</span><span class="n">IntegerMateSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">UsefulnessCriterionIntegerMateSelectionProblem</span><span class="p">(</span>
+        <span class="n">UsefulnessCriterionSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">IntegerMateSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing Usefulness Criterion (UC) selection problems in integer search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1314,7 +1335,10 @@ document.write(`
 
 <div class="viewcode-block" id="UsefulnessCriterionRealMateSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem.UsefulnessCriterionRealMateSelectionProblem.html#pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem.UsefulnessCriterionRealMateSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">UsefulnessCriterionRealMateSelectionProblem</span><span class="p">(</span><span class="n">UsefulnessCriterionSelectionProblemMixin</span><span class="p">,</span><span class="n">RealMateSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">UsefulnessCriterionRealMateSelectionProblem</span><span class="p">(</span>
+        <span class="n">UsefulnessCriterionSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">RealMateSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing Usefulness Criterion (UC) selection problems in real search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1659,7 +1683,10 @@ document.write(`
 
 <div class="viewcode-block" id="UsefulnessCriterionSubsetMateSelectionProblem">
 <a class="viewcode-back" href="../../../../../../_autosummary/pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem.UsefulnessCriterionSubsetMateSelectionProblem.html#pybrops.breed.prot.sel.prob.UsefulnessCriterionSelectionProblem.UsefulnessCriterionSubsetMateSelectionProblem">[docs]</a>
-<span class="k">class</span> <span class="nc">UsefulnessCriterionSubsetMateSelectionProblem</span><span class="p">(</span><span class="n">UsefulnessCriterionSelectionProblemMixin</span><span class="p">,</span><span class="n">SubsetMateSelectionProblem</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">UsefulnessCriterionSubsetMateSelectionProblem</span><span class="p">(</span>
+        <span class="n">UsefulnessCriterionSelectionProblemMixin</span><span class="p">,</span>
+        <span class="n">SubsetMateSelectionProblem</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class representing Usefulness Criterion (UC) selection problems in subset search spaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

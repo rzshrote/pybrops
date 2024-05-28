@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pybrops/opt/algo/NSGA2IntegerGeneticAlgorithm';</script>
@@ -423,16 +423,22 @@ document.write(`
 
 <span class="c1"># imports</span>
 <span class="kn">from</span> <span class="nn">numbers</span> <span class="kn">import</span> <span class="n">Integral</span>
-<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span><span class="n">RandomState</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">numpy.random</span> <span class="kn">import</span> <span class="n">RandomState</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_numpy</span> <span class="kn">import</span> <span class="n">check_is_Generator_or_RandomState</span>
-<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span><span class="p">,</span> <span class="n">check_is_dict</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_Integral</span>
+<span class="kn">from</span> <span class="nn">pybrops.core.error.error_type_python</span> <span class="kn">import</span> <span class="n">check_is_dict</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.error.error_value_python</span> <span class="kn">import</span> <span class="n">check_is_gt</span>
 <span class="kn">from</span> <span class="nn">pybrops.core.random.prng</span> <span class="kn">import</span> <span class="n">global_prng</span>
 <span class="kn">from</span> <span class="nn">pybrops.opt.algo.IntegerOptimizationAlgorithm</span> <span class="kn">import</span> <span class="n">IntegerOptimizationAlgorithm</span>
-<span class="kn">from</span> <span class="nn">pybrops.opt.algo.pymoo_addon</span> <span class="kn">import</span> <span class="n">IntegerPolynomialMutation</span><span class="p">,</span> <span class="n">IntegerSimulatedBinaryCrossover</span>
-<span class="kn">from</span> <span class="nn">pybrops.opt.prob.IntegerProblem</span> <span class="kn">import</span> <span class="n">IntegerProblem</span><span class="p">,</span> <span class="n">check_IntegerProblem_is_multi_objective</span><span class="p">,</span> <span class="n">check_is_IntegerProblem</span>
+<span class="kn">from</span> <span class="nn">pybrops.opt.algo.pymoo_addon</span> <span class="kn">import</span> <span class="n">IntegerPolynomialMutation</span>
+<span class="kn">from</span> <span class="nn">pybrops.opt.algo.pymoo_addon</span> <span class="kn">import</span> <span class="n">IntegerSimulatedBinaryCrossover</span>
+<span class="kn">from</span> <span class="nn">pybrops.opt.prob.IntegerProblem</span> <span class="kn">import</span> <span class="n">IntegerProblem</span>
+<span class="kn">from</span> <span class="nn">pybrops.opt.prob.IntegerProblem</span> <span class="kn">import</span> <span class="n">check_IntegerProblem_is_multi_objective</span>
+<span class="kn">from</span> <span class="nn">pybrops.opt.prob.IntegerProblem</span> <span class="kn">import</span> <span class="n">check_is_IntegerProblem</span>
 <span class="kn">from</span> <span class="nn">pybrops.opt.soln.IntegerSolution</span> <span class="kn">import</span> <span class="n">IntegerSolution</span>
 <span class="kn">from</span> <span class="nn">pybrops.opt.soln.IntegerSolution</span> <span class="kn">import</span> <span class="n">IntegerSolution</span>
 <span class="kn">from</span> <span class="nn">pymoo.algorithms.moo.nsga2</span> <span class="kn">import</span> <span class="n">NSGA2</span>
@@ -442,7 +448,9 @@ document.write(`
 
 <div class="viewcode-block" id="NSGA2IntegerGeneticAlgorithm">
 <a class="viewcode-back" href="../../../../_autosummary/pybrops.opt.algo.NSGA2IntegerGeneticAlgorithm.NSGA2IntegerGeneticAlgorithm.html#pybrops.opt.algo.NSGA2IntegerGeneticAlgorithm.NSGA2IntegerGeneticAlgorithm">[docs]</a>
-<span class="k">class</span> <span class="nc">NSGA2IntegerGeneticAlgorithm</span><span class="p">(</span><span class="n">IntegerOptimizationAlgorithm</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">NSGA2IntegerGeneticAlgorithm</span><span class="p">(</span>
+        <span class="n">IntegerOptimizationAlgorithm</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Class implementing an NSGA-II genetic algorithm adapted for subset selection</span>
 <span class="sd">    optimization. The search space is discrete and nominal in nature.</span>

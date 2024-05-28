@@ -23,11 +23,13 @@ GenomicModel
       ~GenomicModel.dacount
       ~GenomicModel.dafixed
       ~GenomicModel.dafreq
+      ~GenomicModel.dapoly
       ~GenomicModel.deepcopy
       ~GenomicModel.faavail
       ~GenomicModel.facount
       ~GenomicModel.fafixed
       ~GenomicModel.fafreq
+      ~GenomicModel.fapoly
       ~GenomicModel.fit
       ~GenomicModel.fit_numpy
       ~GenomicModel.from_hdf5
@@ -37,6 +39,8 @@ GenomicModel
       ~GenomicModel.gegv_numpy
       ~GenomicModel.lsl
       ~GenomicModel.lsl_numpy
+      ~GenomicModel.nafixed
+      ~GenomicModel.napoly
       ~GenomicModel.predict
       ~GenomicModel.predict_numpy
       ~GenomicModel.score
