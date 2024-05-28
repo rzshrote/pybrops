@@ -153,6 +153,9 @@ After optimizing the objectives, we can use ``matplotlib`` or any other plotting
 
 .. code-block:: python
 
+    # set default font size
+    rcParams['font.size'] = 10
+
     # image base name
     basename = "triobjective_OCS_pareto_frontier"
 
@@ -172,8 +175,8 @@ After optimizing the objectives, we can use ``matplotlib`` or any other plotting
 
     ax.set_title("Multi-Objective Optimal Contribution Selection Pareto Frontier")
     ax.set_xlabel("Inbreeding")
-    ax.set_ylabel("Synthetic Trait 1 Mean Breeding Value")
-    ax.set_zlabel("Synthetic Trait 2 Mean Breeding Value")
+    ax.set_ylabel("Quantitative Trait 1\nMean Breeding Value")
+    ax.set_zlabel("Quantitative Trait 2\nMean Breeding Value")
     ax.view_init(elev = 30., azim = 32)
     pyplot.savefig(basename + ".png", dpi = 250)
     pyplot.close(fig)
@@ -188,6 +191,9 @@ Creating an animation
 Since there are three objectives, visualization of the estimated Pareto frontier may be difficult to see from a single vantage point. We can create an animation using the ``PIL`` library or other packages. The code below creates an animation to visualize the estimated Pareto frontier in 3D space.
 
 .. code-block:: python
+
+    # set default font size
+    rcParams['font.size'] = 10
 
     # image base name
     basename = "triobjective_OCS_pareto_frontier"
@@ -204,8 +210,8 @@ Since there are three objectives, visualization of the estimated Pareto frontier
         ax.scatter3D(x, y, z)
         ax.set_title("Multi-Objective Optimal Contribution Selection Pareto Frontier")
         ax.set_xlabel("Inbreeding")
-        ax.set_ylabel("Synthetic Trait 1 Mean Breeding Value")
-        ax.set_zlabel("Synthetic Trait 2 Mean Breeding Value")
+        ax.set_ylabel("Quantitative Trait 1\nMean Breeding Value")
+        ax.set_zlabel("Quantitative Trait 2\nMean Breeding Value")
         ax.view_init(elev = 30., azim = i)
         pyplot.savefig(outdir + "/" + basename + "_" + str(i).zfill(3) + ".png", dpi = 250)
         pyplot.close(fig)

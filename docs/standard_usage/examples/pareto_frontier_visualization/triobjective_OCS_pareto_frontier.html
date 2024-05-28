@@ -36,13 +36,13 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
   <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
 
-    <script src="../../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../../_static/documentation_options.js?v=1ed6394b"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'standard_usage/examples/pareto_frontier_visualization/triobjective_OCS_pareto_frontier';</script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Custom Bi-Objective Germplasm Panel Reduction Pareto Frontier Visualization" href="germplasm_panel_reduction.html" />
+    <link rel="next" title="Tri-Objective Optimal Contribution Selection Pareto Frontier Visualization in Wheat" href="wheat_triobjective_OCS_pareto_frontier.html" />
     <link rel="prev" title="Bi-Objective Weighted Genomic Selection Pareto Frontier Visualization" href="biobjective_wGEBV_pareto_frontier.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -180,13 +180,6 @@
                     <li class="nav-item">
                       <a class="nav-link dropdown-item nav-internal" href="../../../faq/faq.html">
                         Frequently Asked Questions
-                      </a>
-                    </li>
-                
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../_autosummary/pybrops.html">
-                        API reference
                       </a>
                     </li>
                 
@@ -328,13 +321,6 @@ document.write(`
                       </a>
                     </li>
                 
-
-                    <li class="nav-item">
-                      <a class="nav-link dropdown-item nav-internal" href="../../../_autosummary/pybrops.html">
-                        API reference
-                      </a>
-                    </li>
-                
                 </ul>
             </li>
             
@@ -412,9 +398,10 @@ document.write(`
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Breeding Program Simulation Examples:</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="biobjective_GEBV_pareto_frontier.html">Bi-Objective GEBV selection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="biobjective_wGEBV_pareto_frontier.html">Bi-Objective wGEBV selection</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Tri-Objective Optimal Contribution selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="biobjective_GEBV_pareto_frontier.html">Bi-Objective GEBV Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="biobjective_wGEBV_pareto_frontier.html">Bi-Objective wGEBV Selection</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Tri-Objective Optimal Contribution Selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wheat_triobjective_OCS_pareto_frontier.html">Tri-Objective Optimal Contribution Selection with Real-World Wheat Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="germplasm_panel_reduction.html">Germplasm panel reduction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../breeding_program_simulation/single_trait_phenotypic_selection.html">Single-Trait Phenotypic Selection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../breeding_program_simulation/constrained_single_trait_phenotypic_selection.html">Constrained Single-Trait Phenotypic Selection</a></li>
@@ -612,7 +599,10 @@ document.write(`
 <section id="creating-a-static-image">
 <h3>Creating a static image<a class="headerlink" href="#creating-a-static-image" title="Link to this heading">#</a></h3>
 <p>After optimizing the objectives, we can use <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> or any other plotting packages to visualize the results of the optimization. The code below creates a figure to visualize the estimated Pareto frontier.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># image base name</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># set default font size</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># image base name</span>
 <span class="n">basename</span> <span class="o">=</span> <span class="s2">&quot;triobjective_OCS_pareto_frontier&quot;</span>
 
 <span class="c1"># get axis data</span>
@@ -631,8 +621,8 @@ document.write(`
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Multi-Objective Optimal Contribution Selection Pareto Frontier&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Inbreeding&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 1 Mean Breeding Value&quot;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 2 Mean Breeding Value&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Quantitative Trait 1</span><span class="se">\n</span><span class="s2">Mean Breeding Value&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Quantitative Trait 2</span><span class="se">\n</span><span class="s2">Mean Breeding Value&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span> <span class="o">=</span> <span class="mf">30.</span><span class="p">,</span> <span class="n">azim</span> <span class="o">=</span> <span class="mi">32</span><span class="p">)</span>
 <span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">basename</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">250</span><span class="p">)</span>
 <span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
@@ -644,7 +634,10 @@ document.write(`
 <section id="creating-an-animation">
 <h3>Creating an animation<a class="headerlink" href="#creating-an-animation" title="Link to this heading">#</a></h3>
 <p>Since there are three objectives, visualization of the estimated Pareto frontier may be difficult to see from a single vantage point. We can create an animation using the <code class="docutils literal notranslate"><span class="pre">PIL</span></code> library or other packages. The code below creates an animation to visualize the estimated Pareto frontier in 3D space.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># image base name</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># set default font size</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;font.size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="c1"># image base name</span>
 <span class="n">basename</span> <span class="o">=</span> <span class="s2">&quot;triobjective_OCS_pareto_frontier&quot;</span>
 
 <span class="c1"># create animation frames output directory</span>
@@ -659,8 +652,8 @@ document.write(`
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter3D</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Multi-Objective Optimal Contribution Selection Pareto Frontier&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Inbreeding&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 1 Mean Breeding Value&quot;</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Synthetic Trait 2 Mean Breeding Value&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Quantitative Trait 1</span><span class="se">\n</span><span class="s2">Mean Breeding Value&quot;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s2">&quot;Quantitative Trait 2</span><span class="se">\n</span><span class="s2">Mean Breeding Value&quot;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">view_init</span><span class="p">(</span><span class="n">elev</span> <span class="o">=</span> <span class="mf">30.</span><span class="p">,</span> <span class="n">azim</span> <span class="o">=</span> <span class="n">i</span><span class="p">)</span>
     <span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">outdir</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">basename</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">,</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">250</span><span class="p">)</span>
     <span class="n">pyplot</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
@@ -714,11 +707,11 @@ document.write(`
       </div>
     </a>
     <a class="right-next"
-       href="germplasm_panel_reduction.html"
+       href="wheat_triobjective_OCS_pareto_frontier.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Custom Bi-Objective Germplasm Panel Reduction Pareto Frontier Visualization</p>
+        <p class="prev-next-title">Tri-Objective Optimal Contribution Selection Pareto Frontier Visualization in Wheat</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

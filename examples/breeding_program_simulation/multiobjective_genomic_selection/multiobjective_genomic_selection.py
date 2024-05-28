@@ -47,7 +47,7 @@ pybrops.core.random.prng.seed(17320132226)
 
 nfndr = 40          # number of random founders to select
 nqtl = 1000         # number of QTL
-qlen = 6            # breeding pipeline queue length
+qlen = 5            # breeding pipeline queue length (3 active + 2 in pipeline)
 ncross = 20         # number of cross configurations (20, 2-way crosses)
 nparent = 2         # number of parents per cross configuration (2-way crosses)
 nmating = 1         # number of times to perform cross configuration
@@ -946,6 +946,7 @@ import seaborn
 # set default font to use in plots to something that isn't completely ugly
 from matplotlib import rcParams
 rcParams['font.family'] = 'Liberation Serif'
+rcParams['font.size'] = 15
 
 #
 # Import data from breakpoint
@@ -971,9 +972,9 @@ seaborn.scatterplot(
     y = "syn2",
     hue = "t_cur",
 )
-pyplot.title("Pareto Frontier for Multi-Objective Conventional Genomic Selection Over Time")
-pyplot.xlabel("Synthetic Trait 1 Breeding Value: Selection Mean (h² = 0.4)")
-pyplot.ylabel("Synthetic Trait 2 Breeding Value: Selection Mean (h² = 0.6)")
+pyplot.title("Pareto Frontier for Multi-Objective\nConventional Genomic Selection Over Time")
+pyplot.xlabel("Quantitative Trait 1 Breeding Value: Selection Mean (h² = 0.4)")
+pyplot.ylabel("Quantitative Trait 2 Breeding Value: Selection Mean (h² = 0.6)")
 pyplot.legend(title = "Generation")
 pyplot.savefig("multiobjective_genomic_selection_program_frontier.png")
 pyplot.close()
@@ -1015,8 +1016,8 @@ seaborn.scatterplot(
 )
 pyplot.title("Multi-Objective Conventional Genomic Selection Over Time")
 # pyplot.suptitle("Mean Expected Heterozygosity")
-pyplot.xlabel("Synthetic Trait 1 Breeding Value: Population Mean (h² = 0.4)")
-pyplot.ylabel("Synthetic Trait 2 Breeding Value: Population Mean (h² = 0.6)")
+pyplot.xlabel("Quantitative Trait 1 Breeding Value: Population Mean (h² = 0.4)")
+pyplot.ylabel("Quantitative Trait 2 Breeding Value: Population Mean (h² = 0.6)")
 pyplot.legend(title = "Generation")
 pyplot.savefig("multiobjective_genomic_selection_breeding_values.png")
 pyplot.close()
