@@ -135,6 +135,39 @@ class DenseScaledMatrix(
 
     ############################## Object Methods ##############################
 
+    #################### Matrix copying ####################
+    def copy(
+            self
+        ) -> 'DenseScaledMatrix':
+        """
+        Make a shallow copy of the DenseScaledMatrix.
+
+        Returns
+        -------
+        out : DenseScaledMatrix
+            A shallow copy of the original DenseScaledMatrix.
+        """
+        return copy.copy(self)
+
+    def deepcopy(
+            self, 
+            memo: Optional[dict] = None
+        ) -> 'DenseScaledMatrix':
+        """
+        Make a deep copy of the DenseScaledMatrix.
+
+        Parameters
+        ----------
+        memo : dict
+            Dictionary of memo metadata.
+
+        Returns
+        -------
+        out : DenseScaledMatrix
+            A deep copy of the original DenseScaledMatrix.
+        """
+        return copy.deepcopy(self, memo)
+
     ################### Scaling methods ####################
 
     def transform(

@@ -123,6 +123,40 @@ def test_scale_is_concrete():
 ############################# Test concrete methods ############################
 ################################################################################
 
+###################### Matrix copying ######################
+
+### copy
+
+def test_copy_is_concrete():
+    assert_method_isconcrete(DenseScaledMatrix, "copy")
+
+def test_copy(smat):
+    original = smat
+    the_copy = smat.copy()
+    assert id(original.mat) != id(the_copy.mat)
+    assert id(original.location) != id(the_copy.location)
+    assert id(original.scale) != id(the_copy.scale)
+    assert numpy.all(original.mat == the_copy.mat)
+    assert numpy.all(original.location == the_copy.location)
+    assert numpy.all(original.scale == the_copy.scale)
+
+### deepcopy
+
+def test_deepcopy_is_concrete():
+    assert_method_isconcrete(DenseScaledMatrix, "deepcopy")
+
+def test_deepcopy(smat):
+    original = smat
+    the_copy = smat.deepcopy()
+    assert id(original.mat) != id(the_copy.mat)
+    assert id(original.location) != id(the_copy.location)
+    assert id(original.scale) != id(the_copy.scale)
+    assert numpy.all(original.mat == the_copy.mat)
+    assert numpy.all(original.location == the_copy.location)
+    assert numpy.all(original.scale == the_copy.scale)
+
+##################### Scaling methods ######################
+
 ### transform
 def test_transform_is_concrete():
     assert_method_isconcrete(DenseScaledMatrix, "transform")
