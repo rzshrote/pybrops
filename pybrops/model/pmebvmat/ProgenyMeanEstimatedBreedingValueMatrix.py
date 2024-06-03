@@ -234,6 +234,7 @@ class ProgenyMeanEstimatedBreedingValueMatrix(
     @classmethod
     @abstractmethod
     def from_bvmat(
+            cls,
             bvmat: BreedingValueMatrix,
             **kwargs: dict
         ) -> 'ProgenyMeanEstimatedBreedingValueMatrix':
