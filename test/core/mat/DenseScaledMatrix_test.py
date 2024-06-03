@@ -71,6 +71,14 @@ def test_DenseScaledMatrix_is_concrete():
 ######################## Test concrete special methods #########################
 ################################################################################
 
+### __init__
+def test___init___is_concrete():
+    assert_method_isconcrete(DenseScaledMatrix, "__init__")
+
+def test___init__(smat_mat, smat_location, smat_scale):
+    obj = DenseScaledMatrix(smat_mat, smat_location, smat_scale)
+    assert isinstance(obj, DenseScaledMatrix)
+
 ### __copy__
 def test___copy___is_concrete():
     assert_method_isconcrete(DenseScaledMatrix, "__copy__")
