@@ -47,6 +47,29 @@ class DenseScaledSquareTaxaTraitMatrix(
         
         Parameters
         ----------
+        mat : numpy.ndarray
+            Matrix values to store.
+
+        location : numpy.ndarray, Real
+            An array of shape ``(t,)`` containing locations for each trait.
+            If ``Real``, then the provided location is used for each trait.
+
+        scale : numpy.ndarray, Real
+            An array of shape ``(t,)`` containing scales for each trait.
+            If ``Real``, then the provided scale is used for each trait.
+
+        taxa : numpy.ndarray, None
+            An array of shape ``(n,)`` containing taxa names.
+            If ``None``, do not store any taxa name information.
+
+        taxa_grp : numpy.ndarray, None
+            An array of shape ``(n,)`` containing taxa groupings.
+            If ``None``, do not store any taxa group information.
+
+        trait : numpy.ndarray, None
+            An array of shape ``(t,)`` containing trait names.
+            If ``None``, do not store any trait name information.
+
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """

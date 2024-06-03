@@ -29,7 +29,99 @@ class SortableMatrix(
 
     ########################## Special Object Methods ##########################
 
+    ############## Forward numeric operators ###############
+    ### __add__         inherited from ``MutableMatrix``
+    ### __sub__         inherited from ``MutableMatrix``
+    ### __mul__         inherited from ``MutableMatrix``
+    ### __matmul__      inherited from ``MutableMatrix``
+    ### __truediv__     inherited from ``MutableMatrix``
+    ### __floordiv__    inherited from ``MutableMatrix``
+    ### __mod__         inherited from ``MutableMatrix``
+    ### __divmod__      inherited from ``MutableMatrix``
+    ### __pow__         inherited from ``MutableMatrix``
+    ### __lshift__      inherited from ``MutableMatrix``
+    ### __rshift__      inherited from ``MutableMatrix``
+    ### __and__         inherited from ``MutableMatrix``
+    ### __xor__         inherited from ``MutableMatrix``
+    ### __or__          inherited from ``MutableMatrix``
+
+    ############# Backwards numeric operators ##############
+    ### __radd__        inherited from ``MutableMatrix``
+    ### __rsub__        inherited from ``MutableMatrix``
+    ### __rmul__        inherited from ``MutableMatrix``
+    ### __rmatmul__     inherited from ``MutableMatrix``
+    ### __rtruediv__    inherited from ``MutableMatrix``
+    ### __rfloordiv__   inherited from ``MutableMatrix``
+    ### __rmod__        inherited from ``MutableMatrix``
+    ### __rdivmod__     inherited from ``MutableMatrix``
+    ### __rlshift__     inherited from ``MutableMatrix``
+    ### __rrshift__     inherited from ``MutableMatrix``
+    ### __rand__        inherited from ``MutableMatrix``
+    ### __rxor__        inherited from ``MutableMatrix``
+    ### __ror__         inherited from ``MutableMatrix``
+
+    ############# Augmented numeric operators ##############
+    ### __iadd__        inherited from ``MutableMatrix``
+    ### __isub__        inherited from ``MutableMatrix``
+    ### __imul__        inherited from ``MutableMatrix``
+    ### __imatmul__     inherited from ``MutableMatrix``
+    ### __itruediv__    inherited from ``MutableMatrix``
+    ### __ifloordiv__   inherited from ``MutableMatrix``
+    ### __imod__        inherited from ``MutableMatrix``
+    ### __ipow__        inherited from ``MutableMatrix``
+    ### __ilshift__     inherited from ``MutableMatrix``
+    ### __irshift__     inherited from ``MutableMatrix``
+    ### __iand__        inherited from ``MutableMatrix``
+    ### __ixor__        inherited from ``MutableMatrix``
+    ### __ior__         inherited from ``MutableMatrix``
+
+    ################## Logical operators ###################
+    ### __lt__          inherited from ``MutableMatrix``
+    ### __le__          inherited from ``MutableMatrix``
+    ### __eq__          inherited from ``MutableMatrix``
+    ### __ne__          inherited from ``MutableMatrix``
+    ### __gt__          inherited from ``MutableMatrix``
+    ### __ge__          inherited from ``MutableMatrix``
+
+    ################# Container operators ##################
+    ### __len__         inherited from ``MutableMatrix``
+    ### __getitem__     inherited from ``MutableMatrix``
+    ### __setitem__     inherited from ``MutableMatrix``
+    ### __delitem__     inherited from ``MutableMatrix``
+    ### __iter__        inherited from ``MutableMatrix``
+
+    #################### Matrix copying ####################
+    ### __copy__        inherited from ``MutableMatrix``
+    ### __deepcopy__    inherited from ``MutableMatrix``
+
+    ########### Miscellaneous special functions ############
+    ### __repr__        inherited from ``MutableMatrix``
+
+    ############################ Object Properties #############################
+
+    ################## Matrix Properties ###################
+    ### mat             inherited from ``MutableMatrix``
+
+    ############## Matrix Metadata Properties ##############
+    ### mat_ndim        inherited from ``MutableMatrix``
+    ### mat_shape       inherited from ``MutableMatrix``
+
     ############################## Object Methods ##############################
+
+    #################### Matrix copying ####################
+    ### copy            inherited from ``MutableMatrix``
+    ### deepcopy        inherited from ``MutableMatrix``
+
+    ######### Matrix element copy-on-manipulation ##########
+    ### adjoin          inherited from ``MutableMatrix``
+    ### delete          inherited from ``MutableMatrix``
+    ### insert          inherited from ``MutableMatrix``
+    ### select          inherited from ``MutableMatrix``
+
+    ######### Matrix element in-place-manipulation #########
+    ### append          inherited from ``MutableMatrix``
+    ### remove          inherited from ``MutableMatrix``
+    ### incorp          inherited from ``MutableMatrix``
 
     ################### Sorting Methods ####################
     @abstractmethod
@@ -103,6 +195,11 @@ class SortableMatrix(
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
+
+    ############################## Class Methods ###############################
+
+    ######### Matrix element copy-on-manipulation ##########
+    ### concat          inherited from ``MutableMatrix``
 
 
 

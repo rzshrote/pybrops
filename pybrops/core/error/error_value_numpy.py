@@ -3,6 +3,8 @@ Module containing subroutines to check ``numpy.ndarray`` values.
 """
 
 __all__ = [
+    "check_ndarray_has_value",
+    "check_ndarray_has_values",
     "check_ndarray_in_interval",
     "check_ndarray_all_gt",
     "check_ndarray_all_gteq",
@@ -25,11 +27,13 @@ __all__ = [
     "check_ndarray_axis_len_gteq",
     "check_ndarray_is_hypercube",
     "check_ndarray_is_square",
+    "check_ndarray_is_square_along_axes",
     "check_ndarray_is_triu",
     "check_ndarray_len_is_multiple_of",
 ]
+
 from numbers import Real
-from typing import Tuple
+from typing import Optional, Tuple, Union
 import numpy
 
 from pybrops.core.error.error_generic_numpy import generic_check_ndarray_shape
@@ -443,6 +447,7 @@ def check_ndarray_is_hypercube(v: numpy.ndarray, vname: str) -> None:
     if any(s[0] != e for e in s):
         raise ValueError("numpy.ndarray '{0}' must have equal lengths along all axes".format(vname))
 
+# TODO: replace me with ``check_ndarray_is_square_along_axes``
 def check_ndarray_is_square(v: numpy.ndarray, vname: str) -> None:
     """
     Check whether a ``numpy.ndarray`` is square along its last two axes.
@@ -458,6 +463,49 @@ def check_ndarray_is_square(v: numpy.ndarray, vname: str) -> None:
         raise ValueError("numpy.ndarray '{0}' must have at least two dimensions".format(vname))
     if v.shape[-2] != v.shape[-1]:
         raise ValueError("numpy.ndarray '{0}' must have equal lengths along axes {1} and {2}".format(vname,-2 % v.ndim,-1 % v.ndim))
+
+def check_ndarray_is_square_along_axes(v: numpy.ndarray, vname: str, vaxes: Optional[tuple] = None) -> None:
+    """
+    Check whether a ``numpy.ndarray`` is square along its axes.
+
+    Parameters
+    ----------
+    v : numpy.ndarray
+        Input array.
+    vname : str
+        Name assigned to input array.
+    vaxes : tuple, None
+        Axes along which to check for square property.
+        If ``tuple``, only check along the array dimensions provided in the tuple.
+        If ``None``, check along all array dimensions.
+    """
+    # if the axes are not provided, then use all axes
+    if vaxes is None:
+        vaxes = tuple(range(v.ndim))
+    
+    # raise error if not enough axes are provided
+    if len(vaxes) < 2:
+        raise ValueError("must provide at least 2 axes along which to check, but received {0}: vaxes = {1}".format(len(vaxes),vaxes))
+    
+    # get the shape of the array
+    shape = v.shape
+
+    # get the shape of the square axes
+    sshape = tuple(shape[axis] for axis in vaxes)
+
+    # create an iterator for the square axes
+    siter = iter(sshape)
+
+    # get the length of the first square axis
+    s0 = next(siter)
+
+    # test the remaining axes against the first axis
+    if any(s != s0 for s in siter):
+        raise ValueError(
+            "numpy.ndarray '{0}' must have equal lengths along axes {1}, but received lengths of {2} (full shape: {3})".format(
+                vname,vaxes,sshape,shape
+            )
+        )
 
 def check_ndarray_is_triu(v: numpy.ndarray, vname: str) -> None:
     """

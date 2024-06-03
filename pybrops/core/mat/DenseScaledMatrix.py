@@ -44,6 +44,12 @@ class DenseScaledMatrix(
         
         Parameters
         ----------
+        mat : numpy.ndarray
+            Matrix values to store.
+        location : numpy.ndarray
+            Location of the matrix data.
+        scale : numpy.ndarray
+            Scale of the matrix data.
         kwargs : dict
             Additional keyword arguments used for cooperative inheritance.
         """

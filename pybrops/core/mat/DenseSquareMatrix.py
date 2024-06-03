@@ -43,6 +43,8 @@ class DenseSquareMatrix(
     """
 
     ########################## Special Object Methods ##########################
+
+    ##################### Constructor ######################
     def __init__(
             self, 
             mat: numpy.ndarray, 
@@ -62,15 +64,87 @@ class DenseSquareMatrix(
             **kwargs
         )
 
+    ############## Forward numeric operators ###############
+    ### __add__         inherited from ``DenseMatrix``
+    ### __sub__         inherited from ``DenseMatrix``
+    ### __mul__         inherited from ``DenseMatrix``
+    ### __matmul__      inherited from ``DenseMatrix``
+    ### __truediv__     inherited from ``DenseMatrix``
+    ### __floordiv__    inherited from ``DenseMatrix``
+    ### __mod__         inherited from ``DenseMatrix``
+    ### __divmod__      inherited from ``DenseMatrix``
+    ### __pow__         inherited from ``DenseMatrix``
+    ### __lshift__      inherited from ``DenseMatrix``
+    ### __rshift__      inherited from ``DenseMatrix``
+    ### __and__         inherited from ``DenseMatrix``
+    ### __xor__         inherited from ``DenseMatrix``
+    ### __or__          inherited from ``DenseMatrix``
+
+    ############# Backwards numeric operators ##############
+    ### __radd__        inherited from ``DenseMatrix``
+    ### __rsub__        inherited from ``DenseMatrix``
+    ### __rmul__        inherited from ``DenseMatrix``
+    ### __rmatmul__     inherited from ``DenseMatrix``
+    ### __rtruediv__    inherited from ``DenseMatrix``
+    ### __rfloordiv__   inherited from ``DenseMatrix``
+    ### __rmod__        inherited from ``DenseMatrix``
+    ### __rdivmod__     inherited from ``DenseMatrix``
+    ### __rlshift__     inherited from ``DenseMatrix``
+    ### __rrshift__     inherited from ``DenseMatrix``
+    ### __rand__        inherited from ``DenseMatrix``
+    ### __rxor__        inherited from ``DenseMatrix``
+    ### __ror__         inherited from ``DenseMatrix``
+
+    ############# Augmented numeric operators ##############
+    ### __iadd__        inherited from ``DenseMatrix``
+    ### __isub__        inherited from ``DenseMatrix``
+    ### __imul__        inherited from ``DenseMatrix``
+    ### __imatmul__     inherited from ``DenseMatrix``
+    ### __itruediv__    inherited from ``DenseMatrix``
+    ### __ifloordiv__   inherited from ``DenseMatrix``
+    ### __imod__        inherited from ``DenseMatrix``
+    ### __ipow__        inherited from ``DenseMatrix``
+    ### __ilshift__     inherited from ``DenseMatrix``
+    ### __irshift__     inherited from ``DenseMatrix``
+    ### __iand__        inherited from ``DenseMatrix``
+    ### __ixor__        inherited from ``DenseMatrix``
+    ### __ior__         inherited from ``DenseMatrix``
+
+    ################## Logical operators ###################
+    ### __lt__          inherited from ``DenseMatrix``
+    ### __le__          inherited from ``DenseMatrix``
+    ### __eq__          inherited from ``DenseMatrix``
+    ### __ne__          inherited from ``DenseMatrix``
+    ### __gt__          inherited from ``DenseMatrix``
+    ### __ge__          inherited from ``DenseMatrix``
+
+    ################# Container operators ##################
+    ### __len__         inherited from ``DenseMatrix``
+    ### __getitem__     inherited from ``DenseMatrix``
+    ### __setitem__     inherited from ``DenseMatrix``
+    ### __delitem__     inherited from ``DenseMatrix``
+    ### __iter__        inherited from ``DenseMatrix``
+
+    #################### Matrix copying ####################
+    ### __copy__        inherited from ``DenseMatrix``
+    ### __deepcopy__    inherited from ``DenseMatrix``
+
+    ########### Miscellaneous special functions ############
+    ### __repr__        inherited from ``DenseMatrix``
+
     ############################ Object Properties #############################
 
-    ##################### Matrix Data ######################
+    ################## Matrix Properties ###################
     @DenseMatrix.mat.setter
     def mat(self, value: numpy.ndarray) -> None:
         """Set pointer to raw numpy.ndarray object."""
         check_is_ndarray(value, "mat")
         check_ndarray_ndim_gteq(value, "mat", 2)
         self._mat = value
+
+    ############## Matrix Metadata Properties ##############
+    ### mat_ndim        inherited from ``DenseMatrix``
+    ### mat_shape       inherited from ``DenseMatrix``
 
     ############## Square Metadata Properties ##############
     @property
