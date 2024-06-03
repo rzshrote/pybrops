@@ -224,6 +224,81 @@ def assert_function_isconcrete(fn: Callable) -> None:
     # assert that function is abstract
     assert_function_not_raises_NotImplementedError(fn)
 
+######################## Generator assertion functions #########################
+
+def assert_generator_documentation(fn: Callable) -> None:
+    """
+    Test a generator for complete documentation.
+
+    Parameters
+    ----------
+    fn : function
+        A function for which to test documentation.
+    """
+    # assert input is callable or a function
+    # this will fail if input function is a builtin function
+    if not (callable(fn) and inspect.isfunction(fn)):
+        raise AssertionError("object ``{0}`` is not callable and a function".format(fn.__name__))
+
+    # make sure we have a docstring attribute
+    if not hasattr(fn, "__doc__"):
+        raise AssertionError("in function ``{0}``: docstring is not present".format(fn.__name__))
+
+    # make sure our docstring is a string
+    if not isinstance(fn.__doc__, str):
+        raise AssertionError("in function ``{0}``: docstring is not a string".format(fn.__name__))
+
+    # make sure our docstring length is greater than zero
+    if len(fn.__doc__) <= 0:
+        raise AssertionError("in function ``{0}``: docstring is empty".format(fn.__name__))
+
+    # get function signature
+    fn_signature = inspect.signature(fn)
+
+    # get method parameters
+    fn_parameters = {param:hint for param,hint in fn_signature.parameters.items() if param not in ("self","cls")}
+
+    # get method return
+    fn_return = fn_signature.return_annotation
+
+    # test each parameter for type hint
+    for param, hint in fn_parameters.items():
+        if hint.annotation is hint.empty:
+            raise AssertionError("in function ``{0}``: parameter ``{1}`` does not have a type hint".format(fn.__name__,param))
+
+    # test the return type hint
+    if fn_return is fn_signature.empty:
+        raise AssertionError("in function ``{0}``: return type hint not present".format(fn.__name__))
+
+    # make sure our docstring has a Parameters section
+    if len(fn_parameters) > 0:
+        if not re.search(r'Parameters\n\s*----------', fn.__doc__):
+            raise AssertionError("in function ``{0}``: no ``Parameters`` section in docstring".format(fn.__name__))
+    
+    # make sure our docstring has a Returns section
+    if fn_return is not None:
+        if not re.search(r'Yields\n\s*------', fn.__doc__):
+            raise AssertionError("in function ``{0}``: no ``Returns`` section in docstring".format(fn.__name__))
+
+    # make sure our parameters are in the docstring
+    for param in fn_parameters.keys():
+        if not re.search(param + r'\s*:\s*\w+[^\n]*\n', fn.__doc__):
+            raise AssertionError("in function ``{0}``: parameter ``{1}`` not present in docstring".format(fn.__name__,param))
+
+def assert_generator_isconcrete(gen: Generator) -> None:
+    """
+    Assert a concrete generator for several attributes:
+
+    1) have documentation
+
+    Parameters
+    ----------
+    gen : generator
+        A concrete generator.
+    """
+    # assert for having a docstring
+    assert_generator_documentation(gen)
+
 ########################## Method assertion functions ##########################
 
 def assert_method_documentation(obj: type, name: str) -> None:
