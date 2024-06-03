@@ -44,6 +44,8 @@ class DenseMatrix(
     """
 
     ########################## Special Object Methods ##########################
+
+    ##################### Constructor ######################
     def __init__(
             self, 
             mat: numpy.ndarray, 

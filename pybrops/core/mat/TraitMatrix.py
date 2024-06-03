@@ -32,7 +32,82 @@ class TraitMatrix(
 
     ########################## Special Object Methods ##########################
 
+    ############## Forward numeric operators ###############
+    ### __add__         inherited from ``SortableMatrix``
+    ### __sub__         inherited from ``SortableMatrix``
+    ### __mul__         inherited from ``SortableMatrix``
+    ### __matmul__      inherited from ``SortableMatrix``
+    ### __truediv__     inherited from ``SortableMatrix``
+    ### __floordiv__    inherited from ``SortableMatrix``
+    ### __mod__         inherited from ``SortableMatrix``
+    ### __divmod__      inherited from ``SortableMatrix``
+    ### __pow__         inherited from ``SortableMatrix``
+    ### __lshift__      inherited from ``SortableMatrix``
+    ### __rshift__      inherited from ``SortableMatrix``
+    ### __and__         inherited from ``SortableMatrix``
+    ### __xor__         inherited from ``SortableMatrix``
+    ### __or__          inherited from ``SortableMatrix``
+
+    ############# Backwards numeric operators ##############
+    ### __radd__        inherited from ``SortableMatrix``
+    ### __rsub__        inherited from ``SortableMatrix``
+    ### __rmul__        inherited from ``SortableMatrix``
+    ### __rmatmul__     inherited from ``SortableMatrix``
+    ### __rtruediv__    inherited from ``SortableMatrix``
+    ### __rfloordiv__   inherited from ``SortableMatrix``
+    ### __rmod__        inherited from ``SortableMatrix``
+    ### __rdivmod__     inherited from ``SortableMatrix``
+    ### __rlshift__     inherited from ``SortableMatrix``
+    ### __rrshift__     inherited from ``SortableMatrix``
+    ### __rand__        inherited from ``SortableMatrix``
+    ### __rxor__        inherited from ``SortableMatrix``
+    ### __ror__         inherited from ``SortableMatrix``
+
+    ############# Augmented numeric operators ##############
+    ### __iadd__        inherited from ``SortableMatrix``
+    ### __isub__        inherited from ``SortableMatrix``
+    ### __imul__        inherited from ``SortableMatrix``
+    ### __imatmul__     inherited from ``SortableMatrix``
+    ### __itruediv__    inherited from ``SortableMatrix``
+    ### __ifloordiv__   inherited from ``SortableMatrix``
+    ### __imod__        inherited from ``SortableMatrix``
+    ### __ipow__        inherited from ``SortableMatrix``
+    ### __ilshift__     inherited from ``SortableMatrix``
+    ### __irshift__     inherited from ``SortableMatrix``
+    ### __iand__        inherited from ``SortableMatrix``
+    ### __ixor__        inherited from ``SortableMatrix``
+    ### __ior__         inherited from ``SortableMatrix``
+
+    ################## Logical operators ###################
+    ### __lt__          inherited from ``SortableMatrix``
+    ### __le__          inherited from ``SortableMatrix``
+    ### __eq__          inherited from ``SortableMatrix``
+    ### __ne__          inherited from ``SortableMatrix``
+    ### __gt__          inherited from ``SortableMatrix``
+    ### __ge__          inherited from ``SortableMatrix``
+
+    ################# Container operators ##################
+    ### __len__         inherited from ``SortableMatrix``
+    ### __getitem__     inherited from ``SortableMatrix``
+    ### __setitem__     inherited from ``SortableMatrix``
+    ### __delitem__     inherited from ``SortableMatrix``
+    ### __iter__        inherited from ``SortableMatrix``
+
+    #################### Matrix copying ####################
+    ### __copy__        inherited from ``SortableMatrix``
+    ### __deepcopy__    inherited from ``SortableMatrix``
+
+    ########### Miscellaneous special functions ############
+    ### __repr__        inherited from ``SortableMatrix``
+
     ############################ Object Properties #############################
+
+    ################## Matrix Properties ###################
+    ### mat             inherited from ``SortableMatrix``
+
+    ############## Matrix Metadata Properties ##############
+    ### mat_ndim        inherited from ``SortableMatrix``
+    ### mat_shape       inherited from ``SortableMatrix``
 
     ###################### Trait data ######################
     @property
@@ -61,7 +136,16 @@ class TraitMatrix(
     
     ############################## Object Methods ##############################
 
+    #################### Matrix copying ####################
+    ### copy            inherited from ``SortableMatrix``
+    ### deepcopy        inherited from ``SortableMatrix``
+
     ######### Matrix element copy-on-manipulation ##########
+    ### adjoin          inherited from ``SortableMatrix``
+    ### delete          inherited from ``SortableMatrix``
+    ### insert          inherited from ``SortableMatrix``
+    ### select          inherited from ``SortableMatrix``
+
     @abstractmethod
     def adjoin_trait(
             self, 
@@ -168,33 +252,11 @@ class TraitMatrix(
         """
         raise NotImplementedError("method is abstract")
 
-    @classmethod
-    @abstractmethod
-    def concat_trait(
-            cls,
-            mats: Sequence, 
-            **kwargs: dict
-        ) -> 'TraitMatrix':
-        """
-        Concatenate list of Matrix together along the trait axis.
-
-        Parameters
-        ----------
-        mats : Sequence of TraitMatrix
-            List of TraitMatrix to concatenate. The matrices must have the same
-            shape, except in the dimension corresponding to axis.
-        kwargs : dict
-            Additional keyword arguments
-
-        Returns
-        -------
-        out : TraitMatrix
-            The concatenated TraitMatrix. Note that concat does not occur in-place:
-            a new TraitMatrix is allocated and filled.
-        """
-        raise NotImplementedError("static method is abstract")
-
     ######### Matrix element in-place-manipulation #########
+    ### append          inherited from ``SortableMatrix``
+    ### remove          inherited from ``SortableMatrix``
+    ### incorp          inherited from ``SortableMatrix``
+
     @abstractmethod
     def append_trait(
             self, 
@@ -260,6 +322,10 @@ class TraitMatrix(
         raise NotImplementedError("method is abstract")
 
     ################### Sorting Methods ####################
+    ### lexsort         inherited from ``SortableMatrix``
+    ### reorder         inherited from ``SortableMatrix``
+    ### sort            inherited from ``SortableMatrix``
+
     @abstractmethod
     def lexsort_trait(
             self, 
@@ -323,6 +389,38 @@ class TraitMatrix(
             Additional keyword arguments.
         """
         raise NotImplementedError("method is abstract")
+
+    ############################## Class Methods ###############################
+
+    ######### Matrix element copy-on-manipulation ##########
+    ### concat          inherited from ``SortableMatrix``
+
+    @classmethod
+    @abstractmethod
+    def concat_trait(
+            cls,
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'TraitMatrix':
+        """
+        Concatenate list of Matrix together along the trait axis.
+
+        Parameters
+        ----------
+        mats : Sequence of TraitMatrix
+            List of TraitMatrix to concatenate. The matrices must have the same
+            shape, except in the dimension corresponding to axis.
+        kwargs : dict
+            Additional keyword arguments
+
+        Returns
+        -------
+        out : TraitMatrix
+            The concatenated TraitMatrix. Note that concat does not occur in-place:
+            a new TraitMatrix is allocated and filled.
+        """
+        raise NotImplementedError("static method is abstract")
+
 
 
 

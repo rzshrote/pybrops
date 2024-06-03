@@ -56,13 +56,16 @@ class DenseSquareTaxaMatrix(
         ----------
         mat : numpy.ndarray
             Matrix used to construct the object.
-        taxa : numpy.ndarray
-            Taxa names.
-        taxa_grp : numpy.ndarray
-            Taxa groupings.
+        taxa : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa names.
+            If ``None``, do not store any taxa name information.
+        taxa_grp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa groupings.
+            If ``None``, do not store any taxa group information.
         kwargs : dict
             Additional keyword arguments.
         """
+        # call DenseSquareMatrix constructor
         super(DenseSquareTaxaMatrix, self).__init__(
             mat = mat,
             **kwargs

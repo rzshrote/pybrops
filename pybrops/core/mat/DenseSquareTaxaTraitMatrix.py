@@ -71,12 +71,19 @@ class DenseSquareTaxaTraitMatrix(
         ----------
         mat : numpy.ndarray
             Matrix used to construct the object.
-        taxa : numpy.ndarray
-            Taxa names.
-        taxa_grp : numpy.ndarray
-            Taxa groupings.
-        trait : numpy.ndarray
-            Trait labels.
+
+        taxa : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa names.
+            If ``None``, do not store any taxa name information.
+
+        taxa_grp : numpy.ndarray, None
+            A numpy.ndarray of shape ``(n,)`` containing taxa groupings.
+            If ``None``, do not store any taxa group information.
+
+        trait : numpy.ndarray, None
+            A numpy.ndarray of shape ``(t,)`` containing trait names.
+            If ``None``, do not store any trait name information.
+
         kwargs : dict
             Additional keyword arguments.
         """
@@ -769,7 +776,6 @@ class DenseSquareTaxaTraitMatrix(
         return grouped
 
     ################### Matrix File I/O ####################
-
     def to_hdf5(
             self, 
             filename: Union[str,Path,h5py.File], 
@@ -1130,7 +1136,6 @@ class DenseSquareTaxaTraitMatrix(
     ############################## Class Methods ###############################
 
     ################### Matrix File I/O ####################
-
     @classmethod
     def from_hdf5(
             cls, 

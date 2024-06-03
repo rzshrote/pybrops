@@ -32,7 +32,82 @@ class TaxaMatrix(
 
     ########################## Special Object Methods ##########################
 
+    ############## Forward numeric operators ###############
+    ### __add__         inherited from ``GroupableMatrix``
+    ### __sub__         inherited from ``GroupableMatrix``
+    ### __mul__         inherited from ``GroupableMatrix``
+    ### __matmul__      inherited from ``GroupableMatrix``
+    ### __truediv__     inherited from ``GroupableMatrix``
+    ### __floordiv__    inherited from ``GroupableMatrix``
+    ### __mod__         inherited from ``GroupableMatrix``
+    ### __divmod__      inherited from ``GroupableMatrix``
+    ### __pow__         inherited from ``GroupableMatrix``
+    ### __lshift__      inherited from ``GroupableMatrix``
+    ### __rshift__      inherited from ``GroupableMatrix``
+    ### __and__         inherited from ``GroupableMatrix``
+    ### __xor__         inherited from ``GroupableMatrix``
+    ### __or__          inherited from ``GroupableMatrix``
+
+    ############# Backwards numeric operators ##############
+    ### __radd__        inherited from ``GroupableMatrix``
+    ### __rsub__        inherited from ``GroupableMatrix``
+    ### __rmul__        inherited from ``GroupableMatrix``
+    ### __rmatmul__     inherited from ``GroupableMatrix``
+    ### __rtruediv__    inherited from ``GroupableMatrix``
+    ### __rfloordiv__   inherited from ``GroupableMatrix``
+    ### __rmod__        inherited from ``GroupableMatrix``
+    ### __rdivmod__     inherited from ``GroupableMatrix``
+    ### __rlshift__     inherited from ``GroupableMatrix``
+    ### __rrshift__     inherited from ``GroupableMatrix``
+    ### __rand__        inherited from ``GroupableMatrix``
+    ### __rxor__        inherited from ``GroupableMatrix``
+    ### __ror__         inherited from ``GroupableMatrix``
+
+    ############# Augmented numeric operators ##############
+    ### __iadd__        inherited from ``GroupableMatrix``
+    ### __isub__        inherited from ``GroupableMatrix``
+    ### __imul__        inherited from ``GroupableMatrix``
+    ### __imatmul__     inherited from ``GroupableMatrix``
+    ### __itruediv__    inherited from ``GroupableMatrix``
+    ### __ifloordiv__   inherited from ``GroupableMatrix``
+    ### __imod__        inherited from ``GroupableMatrix``
+    ### __ipow__        inherited from ``GroupableMatrix``
+    ### __ilshift__     inherited from ``GroupableMatrix``
+    ### __irshift__     inherited from ``GroupableMatrix``
+    ### __iand__        inherited from ``GroupableMatrix``
+    ### __ixor__        inherited from ``GroupableMatrix``
+    ### __ior__         inherited from ``GroupableMatrix``
+
+    ################## Logical operators ###################
+    ### __lt__          inherited from ``GroupableMatrix``
+    ### __le__          inherited from ``GroupableMatrix``
+    ### __eq__          inherited from ``GroupableMatrix``
+    ### __ne__          inherited from ``GroupableMatrix``
+    ### __gt__          inherited from ``GroupableMatrix``
+    ### __ge__          inherited from ``GroupableMatrix``
+
+    ################# Container operators ##################
+    ### __len__         inherited from ``GroupableMatrix``
+    ### __getitem__     inherited from ``GroupableMatrix``
+    ### __setitem__     inherited from ``GroupableMatrix``
+    ### __delitem__     inherited from ``GroupableMatrix``
+    ### __iter__        inherited from ``GroupableMatrix``
+
+    #################### Matrix copying ####################
+    ### __copy__        inherited from ``GroupableMatrix``
+    ### __deepcopy__    inherited from ``GroupableMatrix``
+
+    ########### Miscellaneous special functions ############
+    ### __repr__        inherited from ``GroupableMatrix``
+
     ############################ Object Properties #############################
+
+    ################## Matrix Properties ###################
+    ### mat             inherited from ``GroupableMatrix``
+
+    ############## Matrix Metadata Properties ##############
+    ### mat_ndim        inherited from ``GroupableMatrix``
+    ### mat_shape       inherited from ``GroupableMatrix``
 
     ################# Taxa Data Properites #################
     @property
@@ -116,7 +191,16 @@ class TaxaMatrix(
     
     ############################## Object Methods ##############################
 
+    #################### Matrix copying ####################
+    ### copy            inherited from ``GroupableMatrix``
+    ### deepcopy        inherited from ``GroupableMatrix``
+
     ######### Matrix element copy-on-manipulation ##########
+    ### adjoin          inherited from ``GroupableMatrix``
+    ### delete          inherited from ``GroupableMatrix``
+    ### insert          inherited from ``GroupableMatrix``
+    ### select          inherited from ``GroupableMatrix``
+
     @abstractmethod
     def adjoin_taxa(
             self, 
@@ -229,33 +313,11 @@ class TaxaMatrix(
         """
         raise NotImplementedError("method is abstract")
 
-    @classmethod
-    @abstractmethod
-    def concat_taxa(
-            cls, 
-            mats: Sequence, 
-            **kwargs: dict
-        ) -> 'TaxaMatrix':
-        """
-        Concatenate list of Matrix together along the taxa axis.
-
-        Parameters
-        ----------
-        mats : Sequence of Matrix
-            List of Matrix to concatenate. The matrices must have the same
-            shape, except in the dimension corresponding to axis.
-        kwargs : dict
-            Additional keyword arguments
-
-        Returns
-        -------
-        out : TaxaMatrix
-            The concatenated TaxaMatrix. Note that concat does not occur in-place:
-            a new TaxaMatrix is allocated and filled.
-        """
-        raise NotImplementedError("class method is abstract")
-
     ######### Matrix element in-place-manipulation #########
+    ### append          inherited from ``GroupableMatrix``
+    ### remove          inherited from ``GroupableMatrix``
+    ### incorp          inherited from ``GroupableMatrix``
+
     @abstractmethod
     def append_taxa(
             self, 
@@ -327,6 +389,10 @@ class TaxaMatrix(
         raise NotImplementedError("method is abstract")
 
     ################### Sorting Methods ####################
+    ### lexsort         inherited from ``GroupableMatrix``
+    ### reorder         inherited from ``GroupableMatrix``
+    ### sort            inherited from ``GroupableMatrix``
+
     @abstractmethod
     def lexsort_taxa(
             self, 
@@ -392,6 +458,10 @@ class TaxaMatrix(
         raise NotImplementedError("method is abstract")
 
     ################### Grouping Methods ###################
+    ### group           inherited from ``GroupableMatrix``
+    ### ungroup         inherited from ``GroupableMatrix``
+    ### is_grouped      inherited from ``GroupableMatrix``
+
     @abstractmethod
     def group_taxa(
             self, 
@@ -445,6 +515,38 @@ class TaxaMatrix(
             grouped.
         """
         raise NotImplementedError("method is abstract")
+
+    ############################## Class Methods ###############################
+
+    ######### Matrix element copy-on-manipulation ##########
+    ### concat          inherited from ``GroupableMatrix``
+
+    @classmethod
+    @abstractmethod
+    def concat_taxa(
+            cls, 
+            mats: Sequence, 
+            **kwargs: dict
+        ) -> 'TaxaMatrix':
+        """
+        Concatenate list of Matrix together along the taxa axis.
+
+        Parameters
+        ----------
+        mats : Sequence of Matrix
+            List of Matrix to concatenate. The matrices must have the same
+            shape, except in the dimension corresponding to axis.
+        kwargs : dict
+            Additional keyword arguments
+
+        Returns
+        -------
+        out : TaxaMatrix
+            The concatenated TaxaMatrix. Note that concat does not occur in-place:
+            a new TaxaMatrix is allocated and filled.
+        """
+        raise NotImplementedError("class method is abstract")
+
 
 
 

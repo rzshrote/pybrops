@@ -868,6 +868,8 @@ class Matrix(
     #     raise NotImplementedError("method is abstract")
 
     ############################ Object Properties #############################
+
+    ################## Matrix Properties ###################
     @property
     @abstractmethod
     def mat(self) -> object:
@@ -879,6 +881,7 @@ class Matrix(
         """Set pointer to raw matrix object"""
         raise NotImplementedError("property is abstract")
     
+    ############## Matrix Metadata Properties ##############
     @property
     @abstractmethod
     def mat_ndim(self) -> int:
@@ -1051,9 +1054,9 @@ class Matrix(
         """
         raise NotImplementedError("method is abstract")
 
-    ############################################################################
-    ############################## Static Methods ##############################
-    ############################################################################
+    ############################## Class Methods ###############################
+
+    ######### Matrix element copy-on-manipulation ##########
     @classmethod
     @abstractmethod
     def concat(
