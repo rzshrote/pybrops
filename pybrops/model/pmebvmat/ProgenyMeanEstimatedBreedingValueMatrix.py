@@ -18,14 +18,13 @@ import pandas
 from pybrops.core.io.CSVInputOutput import CSVInputOutput
 from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.io.PandasInputOutput import PandasInputOutput
-from pybrops.core.mat.SquareTaxaTraitMatrix import SquareTaxaTraitMatrix
+from pybrops.core.mat.ScaledSquareTaxaTraitMatrix import ScaledSquareTaxaTraitMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 
 class ProgenyMeanEstimatedBreedingValueMatrix(
-        SquareTaxaTraitMatrix,
+        ScaledSquareTaxaTraitMatrix,
         PandasInputOutput,
         CSVInputOutput,
-        HDF5InputOutput,
         metaclass = ABCMeta,
     ):
     """
@@ -57,71 +56,196 @@ class ProgenyMeanEstimatedBreedingValueMatrix(
 
     ########################## Special Object Methods ##########################
 
+    ############## Forward numeric operators ###############
+    ### __add__                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __sub__                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __mul__                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __matmul__              inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __truediv__             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __floordiv__            inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __mod__                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __divmod__              inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __pow__                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __lshift__              inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __rshift__              inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __and__                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __xor__                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __or__                  inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ############# Backwards numeric operators ##############
+    ### __radd__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __rsub__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __rmul__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __rmatmul__             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __rtruediv__            inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __rfloordiv__           inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __rmod__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __rdivmod__             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __rlshift__             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __rrshift__             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __rand__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __rxor__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __ror__                 inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ############# Augmented numeric operators ##############
+    ### __iadd__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __isub__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __imul__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __imatmul__             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __itruediv__            inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __ifloordiv__           inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __imod__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __ipow__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __ilshift__             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __irshift__             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __iand__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __ixor__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __ior__                 inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ################## Logical operators ###################
+    ### __lt__                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __le__                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __eq__                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __ne__                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __gt__                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __ge__                  inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ################# Container operators ##################
+    ### __len__                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __getitem__             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __setitem__             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __delitem__             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __iter__                inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    #################### Matrix copying ####################
+    ### __copy__                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### __deepcopy__            inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ########### Miscellaneous special functions ############
+    ### __repr__                inherited from ``ScaledSquareTaxaTraitMatrix``
+
     ############################ Object Properties #############################
 
-    ######## Expected parental genome contributions ########
+    ################## Matrix Properties ###################
+    ### mat                     inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ############## Matrix Metadata Properties ##############
+    ### mat_ndim                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### mat_shape               inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ############## Square Metadata Properties ##############
+    ### nsquare                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### square_axes             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### square_axes_len         inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ########### Square Taxa Metadata Properties ############
+    ### nsquare_taxa            inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### square_taxa_axes        inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### square_taxa_axes_len    inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ################# Taxa Data Properites #################
+    ### taxa                    inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### taxa_grp                inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ############### Taxa Metadata Properites ###############
+    ### ntaxa                   inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### taxa_axis               inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### taxa_grp_name           inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### taxa_grp_stix           inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### taxa_grp_spix           inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### taxa_grp_len            inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ###################### Trait data ######################
+    ### trait                   inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    #################### Trait metadata ####################
+    ### ntrait                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### trait_axis              inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ############## Scale metadata properties ###############
+    ### location                inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### scale                   inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ################ EPGC metadata property ################
     @property
     @abstractmethod
     def epgc(self) -> tuple:
-        """Expected parental genome contribution to the offspring from each parent."""
-        raise NotImplementedError("property is abstract")
-
-    ############################ Object Properties #############################
-    @property
-    @abstractmethod
-    def location(self) -> object:
-        """Mean of the phenotype values used to calculate breeding values."""
-        raise NotImplementedError("property is abstract")
-    @location.setter
-    @abstractmethod
-    def location(self, value: object) -> None:
-        """Set the mean of the phenotype values used to calculate breeding values"""
-        raise NotImplementedError("property is abstract")
-    
-    @property
-    @abstractmethod
-    def scale(self) -> object:
-        """Standard deviation of the phenotype values used to calculate breeding values."""
-        raise NotImplementedError("property is abstract")
-    @scale.setter
-    @abstractmethod
-    def scale(self, value: object) -> None:
-        """Set the standard deviation of the phenotype values used to calculate breeding values"""
+        """Expected parental genomic contribution to the offspring from each parent."""
         raise NotImplementedError("property is abstract")
 
     ############################## Object Methods ##############################
 
-    ############## Matrix summary statistics ###############
+    #################### Matrix copying ####################
+    ### copy                    inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### deepcopy                inherited from ``ScaledSquareTaxaTraitMatrix``
 
-    @abstractmethod
-    def unscale(self) -> numpy.ndarray:
-        """
-        Transform values within the ProgenyMeanEstimatedBreedingValueMatrix 
-        back to their unscaled and de-centered values.
+    ######### Matrix element copy-on-manipulation ##########
+    ### adjoin                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### delete                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### insert                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### select                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### adjoin_taxa             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### delete_taxa             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### insert_taxa             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### select_taxa             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### adjoin_trait            inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### delete_trait            inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### insert_trait            inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### select_trait            inherited from ``ScaledSquareTaxaTraitMatrix``
 
-        Returns
-        -------
-        out : numpy.ndarray
-            An array of shape ``(n,n,t)`` containing unscaled and de-centered
-            values.
+    ######### Matrix element in-place-manipulation #########
+    ### append                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### remove                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### incorp                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### append_taxa             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### remove_taxa             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### incorp_taxa             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### append_trait            inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### remove_trait            inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### incorp_trait            inherited from ``ScaledSquareTaxaTraitMatrix``
 
-            Where:
+    ################### Sorting Methods ####################
+    ### lexsort                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### reorder                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### sort                    inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### lexsort_taxa            inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### reorder_taxa            inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### sort_taxa               inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### lexsort_trait           inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### reorder_trait           inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### sort_trait              inherited from ``ScaledSquareTaxaTraitMatrix``
 
-            - ``n`` is the number of taxa.
-            - ``t`` is the number of traits.
-        """
-        raise NotImplementedError("method is abstract")
+    ################### Grouping Methods ###################
+    ### group                   inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### ungroup                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### is_grouped              inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### group_taxa              inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### ungroup_taxa            inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### is_grouped_taxa         inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    #################### Square Methods ####################
+    ### is_square               inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### is_square_taxa          inherited from ``ScaledSquareTaxaTraitMatrix``
+
+    ################### Scaling methods ####################
+    ### transform               inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### untransform             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### rescale                 inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### unscale                 inherited from ``ScaledSquareTaxaTraitMatrix``
 
     #################### Export Methods ####################
-    
-    # to_pandas (inherited)
-    # to_csv (inherited)
-    # to_hdf5 (inherited)
+    ### to_pandas (inherited)   inherited from ``PandasInputOutput``
+    ### to_csv (inherited)      inherited from ``CSVInputOutput``
+    ### to_hdf5 (inherited)     inherited from ``ScaledSquareTaxaTraitMatrix``
 
     ############################## Class Methods ###############################
 
-    #################### Import Methods ####################
+    ######### Matrix element copy-on-manipulation ##########
+    ### concat                  inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### concat_taxa             inherited from ``ScaledSquareTaxaTraitMatrix``
+    ### concat_trait            inherited from ``ScaledSquareTaxaTraitMatrix``
 
+    #################### Import Methods ####################
     @classmethod
     @abstractmethod
     def from_numpy(
@@ -230,7 +354,6 @@ class ProgenyMeanEstimatedBreedingValueMatrix(
         raise NotImplementedError("class method is abstract")
 
     ################# Construction Methods #################
-    
     @classmethod
     @abstractmethod
     def from_bvmat(
