@@ -350,8 +350,14 @@ class DummyProgenyMeanEstimatedBreedingValueMatrix(ProgenyMeanEstimatedBreedingV
         return super().ungroup(axis, **kwargs)
     def ungroup_taxa(self, **kwargs: dict) -> None:
         return super().ungroup_taxa(**kwargs)
-    def unscale(self) -> numpy.ndarray:
-        return super().unscale()
+    def transform(self, mat: numpy.ndarray, copy: bool) -> numpy.ndarray:
+        return super().transform(mat, copy)
+    def untransform(self, mat: numpy.ndarray, copy: bool) -> numpy.ndarray:
+        return super().untransform(mat, copy)
+    def rescale(self, inplace: bool) -> numpy.ndarray:
+        return super().rescale(inplace)
+    def unscale(self, inplace: bool) -> numpy.ndarray:
+        return super().unscale(inplace)
     #################### I/O interfaces ####################
     def to_pandas(self, **kwargs: dict) -> DataFrame:
         return super().to_pandas(**kwargs)

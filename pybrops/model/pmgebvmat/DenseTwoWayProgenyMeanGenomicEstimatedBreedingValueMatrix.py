@@ -9,18 +9,23 @@ __all__ = [
 
 import copy
 from itertools import chain
+from numbers import Integral
 from numbers import Real
-from typing import Optional, Union
+from typing import Optional
+from typing import Union
 import numpy
-from pybrops.core.error.error_type_numpy import check_is_Real_or_ndarray, check_is_ndarray
+from pybrops.core.error.error_type_numpy import check_is_Real_or_ndarray
+from pybrops.core.error.error_type_numpy import check_is_ndarray
 from pybrops.core.error.error_type_python import check_is_bool
-from pybrops.core.error.error_value_numpy import check_ndarray_axis_len, check_ndarray_is_square_along_axes
+from pybrops.core.error.error_value_numpy import check_ndarray_all_gteq
+from pybrops.core.error.error_value_numpy import check_ndarray_axis_len
+from pybrops.core.error.error_value_numpy import check_ndarray_is_square_along_axes
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
+from pybrops.core.error.error_value_python import check_is_gteq
 from pybrops.core.mat.DenseScaledSquareTaxaTraitMatrix import DenseScaledSquareTaxaTraitMatrix
-from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.model.pmgebvmat.ProgenyMeanGenomicEstimatedBreedingValueMatrix import ProgenyMeanGenomicEstimatedBreedingValueMatrix
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
-
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 
 class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
         DenseScaledSquareTaxaTraitMatrix,
@@ -199,7 +204,24 @@ class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
         )
 
     ########### Miscellaneous special functions ############
-    ### __repr__                inherited from ``DenseScaledSquareTaxaTraitMatrix``
+    def __repr__(
+            self
+        ) -> str:
+        """
+        Return repr(self).
+        
+        Returns
+        -------
+        out : str
+            A representation of the object.
+        """
+        return "<{0} of shape (nfemale = {1}, nmale = {2}, ntrait = {3}) at {4}>".format(
+            type(self).__name__,
+            self.nfemale,
+            self.nmale,
+            self.ntrait,
+            hex(id(self)),
+        )
 
     ############################ Object Properties #############################
 
@@ -208,7 +230,7 @@ class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
     def mat(self, value: object) -> None:
         """Set pointer to raw numpy.ndarray object."""
         check_is_ndarray(value, "mat")
-        check_ndarray_ndim(value, "mat", 3)
+        check_ndarray_ndim(value, "mat", 3) # (ntaxa,ntaxa,ntrait)
         check_ndarray_is_square_along_axes(value, "mat", self.square_taxa_axes)
         self._mat = value
 
@@ -273,7 +295,9 @@ class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
         if isinstance(value, numpy.ndarray):
             check_ndarray_ndim(value, "scale", 1)
             check_ndarray_axis_len(value, "scale", 0, self.ntrait)
+            check_ndarray_all_gteq(value, "scale", 0)
         elif isinstance(value, Real):
+            check_is_gteq(value, "scale", 0)
             value = numpy.repeat(value, self.ntrait)
         else:
             check_is_Real_or_ndarray(value, "scale")
@@ -284,6 +308,27 @@ class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
     def epgc(self) -> tuple:
         """Expected parental genomic contribution."""
         return (0.5, 0.5) # female, male
+
+    ################# Parental dimensions ##################
+    @property
+    def nfemale(self) -> Integral:
+        """Number of female parents."""
+        return self._mat.shape[self.female_axis]
+    
+    @property
+    def female_axis(self) -> Integral:
+        """Axis along which female parents are stored."""
+        return 0
+    
+    @property
+    def nmale(self) -> Integral:
+        """Number of male parents."""
+        return self._mat.shape[self.male_axis]
+    
+    @property
+    def male_axis(self) -> Integral:
+        """Axis along which male parents are stored."""
+        return 1
 
     ############################## Object Methods ##############################
 
@@ -607,12 +652,16 @@ class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
         out : DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix
             A matrix of progeny mean GEBVs for a two way cross.
         """
+        # type checks
+        check_is_GenomicModel(gmod, "gmod")
+        check_is_GenotypeMatrix(gmat, "gmat")
+
         # calculate GEBVs
-        gebvs = gmod.gebv(gmat)
+        bvmat = gmod.gebv(gmat)
 
         # get parental matrix
         # (n,t)
-        pmat = gebvs.mat
+        pmat = bvmat.mat
 
         # reshape, add matrices together, and divide by 2 to get parental mean matrix
         # scalar * ((n,1,t) + (1,n,t)) = (n,n,t)
@@ -621,18 +670,18 @@ class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
         # copy metadata from GEBV matrix and construct matrix
         out = cls(
             mat = pmmat,
-            location = gebvs.location,
-            scale = gebvs.scale,
-            taxa = gebvs.taxa,
-            taxa_grp = gebvs.taxa_grp,
-            trait = gebvs.trait,
+            location = bvmat.location,
+            scale = bvmat.scale,
+            taxa = bvmat.taxa,
+            taxa_grp = bvmat.taxa_grp,
+            trait = bvmat.trait,
         )
 
         # copy metadata
-        out.taxa_grp_name = gebvs.taxa_grp_name
-        out.taxa_grp_stix = gebvs.taxa_grp_stix
-        out.taxa_grp_spix = gebvs.taxa_grp_spix
-        out.taxa_grp_len  = gebvs.taxa_grp_len
+        out.taxa_grp_name = bvmat.taxa_grp_name
+        out.taxa_grp_stix = bvmat.taxa_grp_stix
+        out.taxa_grp_spix = bvmat.taxa_grp_spix
+        out.taxa_grp_len  = bvmat.taxa_grp_len
 
         return out
 

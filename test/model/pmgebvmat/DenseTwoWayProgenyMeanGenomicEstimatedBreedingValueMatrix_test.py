@@ -1,3 +1,4 @@
+from numbers import Integral
 import numpy
 import pytest
 
@@ -300,6 +301,38 @@ def test_epgc_is_concrete():
 def test_epgc_fget(pmgebvmat):
     assert isinstance(pmgebvmat.epgc, tuple)
     assert pmgebvmat.epgc == (0.5, 0.5)
+
+### nfemale
+def test_nfemale_is_concrete():
+    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "nfemale")
+
+def test_nfemale(pmgebvmat, ntaxa):
+    assert isinstance(pmgebvmat.nfemale, Integral)
+    assert pmgebvmat.nfemale == ntaxa
+
+### female_axis
+def test_female_axis_is_concrete():
+    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "female_axis")
+
+def test_female_axis(pmgebvmat):
+    assert isinstance(pmgebvmat.female_axis, Integral)
+    assert pmgebvmat.female_axis == 0
+
+### nmale
+def test_nmale_is_concrete():
+    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "nmale")
+
+def test_nmale(pmgebvmat, ntaxa):
+    assert isinstance(pmgebvmat.nmale, Integral)
+    assert pmgebvmat.nmale == ntaxa
+
+### male_axis
+def test_male_axis_is_concrete():
+    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "male_axis")
+
+def test_male_axis(pmgebvmat):
+    assert isinstance(pmgebvmat.male_axis, Integral)
+    assert pmgebvmat.male_axis == 1
 
 ################################################################################
 ############################# Test abstract methods ############################
