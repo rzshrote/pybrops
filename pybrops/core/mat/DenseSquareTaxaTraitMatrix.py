@@ -865,6 +865,7 @@ class DenseSquareTaxaTraitMatrix(
         if isinstance(filename, (str,Path)):
             h5file.close()
 
+    # TODO: remove me
     def to_pandas(
             self,
             taxa_colnames: Optional[Union[bool,str,Sequence[Union[str,None]]]] = True,
@@ -1057,6 +1058,7 @@ class DenseSquareTaxaTraitMatrix(
 
         return out
 
+    # TODO: remove me
     def to_csv(
             self,
             filename: str,
@@ -1296,6 +1298,7 @@ class DenseSquareTaxaTraitMatrix(
 
         return mat
 
+    # TODO: remove me
     @classmethod
     def from_pandas(
             cls,
@@ -1581,6 +1584,7 @@ class DenseSquareTaxaTraitMatrix(
 
         return out
 
+    # TODO: remove me
     @classmethod
     def from_csv(
             cls,
