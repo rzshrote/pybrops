@@ -3,14 +3,14 @@ Module containing Progeny Mean Genomic Estimated Breeding Value (pmGEBV) matrix 
 """
 
 __all__ = [
-    "ProgenyMeanGenomicEstimatedBreedingValueMatrix",
-    "DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix",
+    "ParentalMeanGenomicEstimatedBreedingValueMatrix",
+    "DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix",
 ]
 
 # order dependent imports!
 
 # abstract interfaces
-from pybrops.model.pmgebvmat import ProgenyMeanGenomicEstimatedBreedingValueMatrix
+from pybrops.model.pmgebvmat import ParentalMeanGenomicEstimatedBreedingValueMatrix
 
 # implementations
-from pybrops.model.pmgebvmat import DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix
+from pybrops.model.pmgebvmat import DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix

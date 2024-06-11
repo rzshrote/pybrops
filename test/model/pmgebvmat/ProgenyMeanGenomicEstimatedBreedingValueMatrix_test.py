@@ -1,7 +1,7 @@
 import pytest
 
-from pybrops.model.pmgebvmat.ProgenyMeanGenomicEstimatedBreedingValueMatrix import ProgenyMeanGenomicEstimatedBreedingValueMatrix
-from pybrops.model.pmgebvmat.ProgenyMeanGenomicEstimatedBreedingValueMatrix import check_is_ProgenyMeanGenomicEstimatedBreedingValueMatrix
+from pybrops.model.pmgebvmat.ParentalMeanGenomicEstimatedBreedingValueMatrix import ParentalMeanGenomicEstimatedBreedingValueMatrix
+from pybrops.model.pmgebvmat.ParentalMeanGenomicEstimatedBreedingValueMatrix import check_is_ParentalMeanGenomicEstimatedBreedingValueMatrix
 from pybrops.test.assert_python import assert_class_isabstract
 from pybrops.test.assert_python import assert_classmethod_isabstract
 from pybrops.test.assert_python import assert_function_isconcrete
@@ -30,19 +30,19 @@ def pmgebvmat():
 ################################################################################
 
 def test_ProgenyMeanGenomicEstimatedBreedingValueMatrix_module_documentation():
-    import pybrops.model.pmgebvmat.ProgenyMeanGenomicEstimatedBreedingValueMatrix
-    assert_module_documentation(pybrops.model.pmgebvmat.ProgenyMeanGenomicEstimatedBreedingValueMatrix)
+    import pybrops.model.pmgebvmat.ParentalMeanGenomicEstimatedBreedingValueMatrix
+    assert_module_documentation(pybrops.model.pmgebvmat.ParentalMeanGenomicEstimatedBreedingValueMatrix)
 
 def test_ProgenyMeanGenomicEstimatedBreedingValueMatrix_module_public_api():
-    import pybrops.model.pmgebvmat.ProgenyMeanGenomicEstimatedBreedingValueMatrix
-    assert_module_public_api(pybrops.model.pmgebvmat.ProgenyMeanGenomicEstimatedBreedingValueMatrix)
+    import pybrops.model.pmgebvmat.ParentalMeanGenomicEstimatedBreedingValueMatrix
+    assert_module_public_api(pybrops.model.pmgebvmat.ParentalMeanGenomicEstimatedBreedingValueMatrix)
 
 ################################################################################
 ############################ Test class attributes #############################
 ################################################################################
 
 def test_ProgenyMeanGenomicEstimatedBreedingValueMatrix_is_abstract():
-    assert_class_isabstract(ProgenyMeanGenomicEstimatedBreedingValueMatrix)
+    assert_class_isabstract(ParentalMeanGenomicEstimatedBreedingValueMatrix)
 
 ################################################################################
 ######################## Test abstract special methods #########################
@@ -50,7 +50,7 @@ def test_ProgenyMeanGenomicEstimatedBreedingValueMatrix_is_abstract():
 
 ### epgc
 def test_epgc_is_abstract():
-    assert_property_isabstract(ProgenyMeanGenomicEstimatedBreedingValueMatrix, "epgc")
+    assert_property_isabstract(ParentalMeanGenomicEstimatedBreedingValueMatrix, "epgc")
 
 ################################################################################
 ######################## Test concrete special methods #########################
@@ -78,7 +78,7 @@ def test_epgc_is_abstract():
 
 ### from_gmod
 def test_from_gmod_is_abstract():
-    assert_classmethod_isabstract(ProgenyMeanGenomicEstimatedBreedingValueMatrix, "from_gmod")
+    assert_classmethod_isabstract(ParentalMeanGenomicEstimatedBreedingValueMatrix, "from_gmod")
 
 ################################################################################
 ########################## Test concrete classmethods ##########################
@@ -98,10 +98,10 @@ def test_from_gmod_is_abstract():
 
 ### check_is_ProgenyMeanGenomicEstimatedBreedingValueMatrix
 def test_check_is_ProgenyMeanGenomicEstimatedBreedingValueMatrix_is_concrete():
-    assert_function_isconcrete(check_is_ProgenyMeanGenomicEstimatedBreedingValueMatrix)
+    assert_function_isconcrete(check_is_ParentalMeanGenomicEstimatedBreedingValueMatrix)
 
 def test_check_is_ProgenyMeanGenomicEstimatedBreedingValueMatrix(pmgebvmat):
     with not_raises(TypeError):
-        check_is_ProgenyMeanGenomicEstimatedBreedingValueMatrix(pmgebvmat, "pmgebvmat")
+        check_is_ParentalMeanGenomicEstimatedBreedingValueMatrix(pmgebvmat, "pmgebvmat")
     with pytest.raises(TypeError):
-        check_is_ProgenyMeanGenomicEstimatedBreedingValueMatrix(None, "pmgebvmat")
+        check_is_ParentalMeanGenomicEstimatedBreedingValueMatrix(None, "pmgebvmat")

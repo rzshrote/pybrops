@@ -9,12 +9,12 @@ from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
 from pybrops.model.gmod.GenomicModel import GenomicModel
-from pybrops.model.pmgebvmat.ProgenyMeanGenomicEstimatedBreedingValueMatrix import ProgenyMeanGenomicEstimatedBreedingValueMatrix
+from pybrops.model.pmgebvmat.ParentalMeanGenomicEstimatedBreedingValueMatrix import ParentalMeanGenomicEstimatedBreedingValueMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
-class DummyProgenyMeanGenomicEstimatedBreedingValueMatrix(ProgenyMeanGenomicEstimatedBreedingValueMatrix):
+class DummyProgenyMeanGenomicEstimatedBreedingValueMatrix(ParentalMeanGenomicEstimatedBreedingValueMatrix):
     ################### Special methods ####################
     def __init__(self) -> None:
         pass
@@ -368,17 +368,17 @@ class DummyProgenyMeanGenomicEstimatedBreedingValueMatrix(ProgenyMeanGenomicEsti
     def to_hdf5(self, filename: str | Path | File, groupname: str | None, overwrite: bool) -> None:
         return super().to_hdf5(filename, groupname, overwrite)
     @classmethod
-    def from_numpy(cls, mat: numpy.ndarray, taxa: numpy.ndarray | None = None, taxa_grp: numpy.ndarray | None = None, trait: numpy.ndarray | None = None, **kwargs: dict) -> ProgenyMeanGenomicEstimatedBreedingValueMatrix:
+    def from_numpy(cls, mat: numpy.ndarray, taxa: numpy.ndarray | None = None, taxa_grp: numpy.ndarray | None = None, trait: numpy.ndarray | None = None, **kwargs: dict) -> ParentalMeanGenomicEstimatedBreedingValueMatrix:
         return super().from_numpy(mat, taxa, taxa_grp, trait, **kwargs)
     @classmethod
-    def from_pandas(cls, df: DataFrame, **kwargs: dict) -> ProgenyMeanGenomicEstimatedBreedingValueMatrix:
+    def from_pandas(cls, df: DataFrame, **kwargs: dict) -> ParentalMeanGenomicEstimatedBreedingValueMatrix:
         return super().from_pandas(df, **kwargs)
     @classmethod
-    def from_csv(cls, filename: str, **kwargs: dict) -> ProgenyMeanGenomicEstimatedBreedingValueMatrix:
+    def from_csv(cls, filename: str, **kwargs: dict) -> ParentalMeanGenomicEstimatedBreedingValueMatrix:
         return super().from_csv(filename, **kwargs)
     @classmethod
     def from_hdf5(cls, filename: str, groupname: str | None) -> HDF5InputOutput:
         return super().from_hdf5(filename, groupname)
     @classmethod
-    def from_gmod(cls, gmod: GenomicModel, gmat: GenotypeMatrix, **kwargs: dict) -> ProgenyMeanGenomicEstimatedBreedingValueMatrix:
+    def from_gmod(cls, gmod: GenomicModel, gmat: GenotypeMatrix, **kwargs: dict) -> ParentalMeanGenomicEstimatedBreedingValueMatrix:
         return super().from_gmod(gmod, gmat, **kwargs)

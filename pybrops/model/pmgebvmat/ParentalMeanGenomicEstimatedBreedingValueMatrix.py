@@ -4,8 +4,8 @@ estimated breeding value matrices.
 """
 
 __all__ = [
-    "ProgenyMeanGenomicEstimatedBreedingValueMatrix",
-    "check_is_ProgenyMeanGenomicEstimatedBreedingValueMatrix",
+    "ParentalMeanGenomicEstimatedBreedingValueMatrix",
+    "check_is_ParentalMeanGenomicEstimatedBreedingValueMatrix",
 ]
 
 from abc import ABCMeta
@@ -14,19 +14,19 @@ from pybrops.core.mat.ScaledSquareTaxaTraitMatrix import ScaledSquareTaxaTraitMa
 from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class ProgenyMeanGenomicEstimatedBreedingValueMatrix(
+class ParentalMeanGenomicEstimatedBreedingValueMatrix(
         ScaledSquareTaxaTraitMatrix,
         metaclass = ABCMeta,
     ):
     """
     Abstract class for progeny mean GEBV matrix representation.
 
-    The ProgenyMeanGenomicEstimatedBreedingValueMatrix class represents a Multivariate 
+    The ParentalMeanGenomicEstimatedBreedingValueMatrix class represents a Multivariate 
     Progeny Mean Estimated Breeding Value.
 
     Notes
     -----
-    All elements within a ProgenyMeanGenomicEstimatedBreedingValueMatrix are mean-
+    All elements within a ParentalMeanGenomicEstimatedBreedingValueMatrix are mean-
     centered and scaled to unit variance for each trait.
 
     .. math::
@@ -239,7 +239,7 @@ class ProgenyMeanGenomicEstimatedBreedingValueMatrix(
             gmod: GenomicModel, 
             gmat: GenotypeMatrix, 
             **kwargs: dict
-        ) -> 'ProgenyMeanGenomicEstimatedBreedingValueMatrix':
+        ) -> 'ParentalMeanGenomicEstimatedBreedingValueMatrix':
         """
         Calculate progeny mean GEBVs for each pairwise 2-way cross between individuals.
 
@@ -256,7 +256,7 @@ class ProgenyMeanGenomicEstimatedBreedingValueMatrix(
 
         Returns
         -------
-        out : ProgenyMeanGenomicEstimatedBreedingValueMatrix
+        out : ParentalMeanGenomicEstimatedBreedingValueMatrix
             A matrix of progeny mean GEBVs.
         """
         raise NotImplementedError("classmethod is abstract")
@@ -265,9 +265,9 @@ class ProgenyMeanGenomicEstimatedBreedingValueMatrix(
 
 
 
-def check_is_ProgenyMeanGenomicEstimatedBreedingValueMatrix(v: object, vname: str) -> None:
+def check_is_ParentalMeanGenomicEstimatedBreedingValueMatrix(v: object, vname: str) -> None:
     """
-    Check if an object is of type ``ProgenyMeanGenomicEstimatedBreedingValueMatrix``. Otherwise raise ``TypeError``.
+    Check if an object is of type ``ParentalMeanGenomicEstimatedBreedingValueMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
@@ -276,10 +276,10 @@ def check_is_ProgenyMeanGenomicEstimatedBreedingValueMatrix(v: object, vname: st
     vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(v, ProgenyMeanGenomicEstimatedBreedingValueMatrix):
+    if not isinstance(v, ParentalMeanGenomicEstimatedBreedingValueMatrix):
         raise TypeError("variable ``{0}`` must be of type ``{1}`` but received type ``{2}``".format(
                 vname,
-                ProgenyMeanGenomicEstimatedBreedingValueMatrix.__name__,
+                ParentalMeanGenomicEstimatedBreedingValueMatrix.__name__,
                 type(v).__name__
             )
         )
