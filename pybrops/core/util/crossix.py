@@ -433,10 +433,14 @@ def threewayix_symab_anyab_backc(ntaxa: int) -> Generator:
     out : tuple
         Tuple of indices. Indices are (recurrent,female,male) == (C x (A x B)).
     """
-    for i in range(ntaxa):
-        for j in range(i,ntaxa):
-            yield (i,i,j)
-            yield (j,i,j)
+    for recurrent in range(ntaxa):
+        female = recurrent
+        for male in range(female,ntaxa):
+            yield (recurrent,female,male)
+    # for i in range(ntaxa):
+    #     for j in range(i,ntaxa):
+    #         yield (i,i,j)
+    #         yield (j,i,j)
 
 def threewayix_symab_anyab_uniqc(ntaxa: int) -> Generator:
     """
