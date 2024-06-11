@@ -3,7 +3,7 @@ Module implementing dense two-way progeny mean GEBV matrices and associated erro
 """
 
 __all__ = [
-    "DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix",
+    "DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix",
     "check_is_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix",
 ]
 
@@ -24,12 +24,12 @@ from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_gteq
 from pybrops.core.mat.DenseScaledSquareTaxaTraitMatrix import DenseScaledSquareTaxaTraitMatrix
 from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
-from pybrops.model.pmgebvmat.ProgenyMeanGenomicEstimatedBreedingValueMatrix import ProgenyMeanGenomicEstimatedBreedingValueMatrix
+from pybrops.model.pmgebvmat.ParentalMeanGenomicEstimatedBreedingValueMatrix import ParentalMeanGenomicEstimatedBreedingValueMatrix
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 
-class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
+class DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix(
         DenseScaledSquareTaxaTraitMatrix,
-        ProgenyMeanGenomicEstimatedBreedingValueMatrix,
+        ParentalMeanGenomicEstimatedBreedingValueMatrix,
     ):
     """
     A concrete class for dense progeny mean GEBV matrix representation.
@@ -85,7 +85,7 @@ class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
             Additional keyword arguments.
         """
         # call DenseScaledSquareTaxaTraitMatrix constructor
-        super(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, self).__init__(
+        super(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, self).__init__(
             mat = mat,
             location = location,
             scale = scale,
@@ -159,7 +159,7 @@ class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
     #################### Matrix copying ####################
     def __copy__(
             self
-        ) -> 'DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix':
+        ) -> 'DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix':
         """
         Make a shallow copy of the the matrix.
 
@@ -180,7 +180,7 @@ class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
     def __deepcopy__(
             self, 
             memo: Optional[dict] = None
-        ) -> 'DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix':
+        ) -> 'DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix':
         """
         Make a deep copy of the matrix.
 
@@ -335,7 +335,7 @@ class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
     #################### Matrix copying ####################
     def copy(
             self
-        ) -> 'DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix':
+        ) -> 'DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix':
         """
         Make a shallow copy of the DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix.
 
@@ -349,7 +349,7 @@ class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
     def deepcopy(
             self, 
             memo: Optional[dict] = None
-        ) -> 'DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix':
+        ) -> 'DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix':
         """
         Make a deep copy of the DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix.
 
@@ -632,7 +632,7 @@ class DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
             gmod: GenomicModel, 
             gmat: GenotypeMatrix, 
             **kwargs: dict
-        ) -> 'DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix':
+        ) -> 'DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix':
         """
         Calculate progeny mean GEBVs for each pairwise 2-way cross between individuals.
 
@@ -701,10 +701,10 @@ def check_is_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(v: object
     vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(v, DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix):
+    if not isinstance(v, DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix):
         raise TypeError("variable ``{0}`` must be of type ``{1}`` but received type ``{2}``".format(
                 vname,
-                DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix.__name__,
+                DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix.__name__,
                 type(v).__name__
             )
         )

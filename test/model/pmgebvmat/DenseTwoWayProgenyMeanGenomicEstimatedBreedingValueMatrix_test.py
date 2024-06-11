@@ -3,8 +3,8 @@ import numpy
 import pytest
 
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
-from pybrops.model.pmgebvmat.DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix import DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix
-from pybrops.model.pmgebvmat.DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix import check_is_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix
+from pybrops.model.pmgebvmat.DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix import DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix
+from pybrops.model.pmgebvmat.DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix import check_is_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
 from pybrops.test.assert_python import assert_class_isconcrete
 from pybrops.test.assert_python import assert_classmethod_isconcrete
@@ -179,7 +179,7 @@ def pmgebvmat(
         pmgebvmat_taxa_grp,
         pmgebvmat_trait,
     ):
-    out = DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(
+    out = DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix(
         mat = pmgebvmat_mat,
         location = pmgebvmat_location,
         scale = pmgebvmat_scale,
@@ -194,19 +194,19 @@ def pmgebvmat(
 ################################################################################
 
 def test_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix_module_documentation():
-    import pybrops.model.pmgebvmat.DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix
-    assert_module_documentation(pybrops.model.pmgebvmat.DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix)
+    import pybrops.model.pmgebvmat.DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix
+    assert_module_documentation(pybrops.model.pmgebvmat.DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix)
 
 def test_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix_module_public_api():
-    import pybrops.model.pmgebvmat.DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix
-    assert_module_public_api(pybrops.model.pmgebvmat.DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix)
+    import pybrops.model.pmgebvmat.DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix
+    assert_module_public_api(pybrops.model.pmgebvmat.DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix)
 
 ################################################################################
 ############################ Test class attributes #############################
 ################################################################################
 
 def test_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix_is_concrete():
-    assert_class_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix)
+    assert_class_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix)
 
 ################################################################################
 ######################## Test abstract special methods #########################
@@ -218,15 +218,15 @@ def test_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix_is_concrete()
 
 ### __init__
 def test___init___is_concrete():
-    assert_method_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "__init__")
+    assert_method_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "__init__")
 
 ### __copy__
 def test___copy___is_concrete():
-    assert_method_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "__copy__")
+    assert_method_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "__copy__")
 
 ### __deepcopy__
 def test___deepcopy___is_concrete():
-    assert_method_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "__deepcopy__")
+    assert_method_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "__deepcopy__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -238,7 +238,7 @@ def test___deepcopy___is_concrete():
 
 ### mat
 def test_mat_is_concrete():
-    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "mat")
+    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "mat")
 
 def test_mat_fset_TypeError(pmgebvmat):
     with pytest.raises(TypeError):
@@ -254,21 +254,21 @@ def test_mat_fset_ValueError(pmgebvmat, ntaxa, ntrait):
 
 ### square_taxa_axes
 def test_square_taxa_axes_is_concrete():
-    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "square_taxa_axes")
+    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "square_taxa_axes")
 
 def test_square_taxa_axes_fget(pmgebvmat):
     assert pmgebvmat.square_taxa_axes == (0,1)
 
 ### trait_axis
 def test_trait_axis_is_concrete():
-    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "trait_axis")
+    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "trait_axis")
 
 def test_trait_axis_fget(pmgebvmat):
     assert pmgebvmat.trait_axis == 2
 
 ### location
 def test_location_is_concrete():
-    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "location")
+    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "location")
 
 def test_location_fset_TypeError(pmgebvmat):
     with pytest.raises(TypeError):
@@ -282,7 +282,7 @@ def test_location_fset_ValueError(pmgebvmat, ntrait):
 
 ### scale
 def test_scale_is_concrete():
-    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "scale")
+    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "scale")
 
 def test_scale_fset_TypeError(pmgebvmat):
     with pytest.raises(TypeError):
@@ -296,7 +296,7 @@ def test_scale_fset_ValueError(pmgebvmat, ntrait):
 
 ### epgc
 def test_epgc_is_concrete():
-    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "epgc")
+    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "epgc")
 
 def test_epgc_fget(pmgebvmat):
     assert isinstance(pmgebvmat.epgc, tuple)
@@ -304,7 +304,7 @@ def test_epgc_fget(pmgebvmat):
 
 ### nfemale
 def test_nfemale_is_concrete():
-    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "nfemale")
+    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "nfemale")
 
 def test_nfemale(pmgebvmat, ntaxa):
     assert isinstance(pmgebvmat.nfemale, Integral)
@@ -312,7 +312,7 @@ def test_nfemale(pmgebvmat, ntaxa):
 
 ### female_axis
 def test_female_axis_is_concrete():
-    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "female_axis")
+    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "female_axis")
 
 def test_female_axis(pmgebvmat):
     assert isinstance(pmgebvmat.female_axis, Integral)
@@ -320,7 +320,7 @@ def test_female_axis(pmgebvmat):
 
 ### nmale
 def test_nmale_is_concrete():
-    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "nmale")
+    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "nmale")
 
 def test_nmale(pmgebvmat, ntaxa):
     assert isinstance(pmgebvmat.nmale, Integral)
@@ -328,7 +328,7 @@ def test_nmale(pmgebvmat, ntaxa):
 
 ### male_axis
 def test_male_axis_is_concrete():
-    assert_property_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "male_axis")
+    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "male_axis")
 
 def test_male_axis(pmgebvmat):
     assert isinstance(pmgebvmat.male_axis, Integral)
@@ -344,11 +344,11 @@ def test_male_axis(pmgebvmat):
 
 ### copy
 def test_copy_is_concrete():
-    assert_method_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "copy")
+    assert_method_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "copy")
 
 ### deepcopy
 def test_deepcopy_is_concrete():
-    assert_method_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "deepcopy")
+    assert_method_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "deepcopy")
 
 ################################################################################
 ########################## Test abstract classmethods ##########################
@@ -360,14 +360,14 @@ def test_deepcopy_is_concrete():
 
 ### from_gmod
 def test_from_gmod_is_concrete():
-    assert_classmethod_isconcrete(DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix, "from_gmod")
+    assert_classmethod_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "from_gmod")
 
 def test_from_gmod(algmod, gmat, gebvmat, ntaxa, ntrait):
-    observed = DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix.from_gmod(
+    observed = DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix.from_gmod(
         gmod = algmod,
         gmat = gmat,
     )
-    assert isinstance(observed, DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix)
+    assert isinstance(observed, DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix)
     assert observed.mat_shape == (ntaxa,ntaxa,ntrait)
     # allocate expected matrix
     expected_mat = numpy.empty((ntaxa,ntaxa,ntrait), dtype = float)
