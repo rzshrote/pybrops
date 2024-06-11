@@ -1,10 +1,10 @@
 """
-Module implementing representation of dense two-way progeny mean EBV matrices.
+Module implementing dense two-way parental mean GEBV matrices and associated error checking routines.
 """
 
 __all__ = [
-    "DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix",
-    "check_is_DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix",
+    "DenseTwoWayParentalMeanEstimatedBreedingValueMatrix",
+    "check_is_DenseTwoWayParentalMeanEstimatedBreedingValueMatrix",
 ]
 
 import copy
@@ -23,19 +23,17 @@ from pybrops.core.error.error_value_numpy import check_ndarray_is_square_along_a
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_gteq
 from pybrops.core.mat.DenseScaledSquareTaxaTraitMatrix import DenseScaledSquareTaxaTraitMatrix
-from pybrops.model.pmebvmat.ProgenyMeanEstimatedBreedingValueMatrix import ProgenyMeanEstimatedBreedingValueMatrix
+from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
+from pybrops.model.pmebvmat.ParentalMeanEstimatedBreedingValueMatrix import ParentalMeanEstimatedBreedingValueMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix, check_is_BreedingValueMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 
-class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
+class DenseTwoWayParentalMeanEstimatedBreedingValueMatrix(
         DenseScaledSquareTaxaTraitMatrix,
-        ProgenyMeanEstimatedBreedingValueMatrix,
+        ParentalMeanEstimatedBreedingValueMatrix,
     ):
     """
-    A concrete class for dense progeny mean EBV matrix representation.
-
-    The purpose of this concrete class is to implement functionality for:
-        1) Progeny mean EBV estimation from breeding value matrices.
-        2) I/O for two-way progeny mean EBV matrices.
+    A concrete class for dense parental mean GEBV matrix representation.
     """
 
     ########################## Special Object Methods ##########################
@@ -43,65 +41,52 @@ class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
     ##################### Constructor ######################
     def __init__(
             self,
-            mat: numpy.ndarray,
+            mat: numpy.ndarray, 
             location: Union[numpy.ndarray,Real] = 0.0, 
             scale: Union[numpy.ndarray,Real] = 1.0, 
             taxa: Optional[numpy.ndarray] = None, 
             taxa_grp: Optional[numpy.ndarray] = None, 
-            trait: Optional[numpy.ndarray] = None, 
+            trait: Optional[numpy.ndarray] = None,
             **kwargs: dict
         ) -> None:
         """
-        Constructor for DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix.
+        Constructor for DenseTwoWayParentalMeanEstimatedBreedingValueMatrix.
         
         Parameters
         ----------
         mat : numpy.ndarray
-            An array of progeny mean estimated breeding values of shape 
-            ``(ntaxa,ntaxa,ntrait)``.
+            An array of shape ``(n,n,t)`` containing parental mean GEBVs.
 
             Where:
 
-            - ``ntaxa`` is the number of taxa.
-            - ``ntrait`` is the number of traits.
-
-            It is the responsibility of the user to ensure that the means and 
-            standard deviations of this array along the ``taxa`` axis are ``0`` and
-            ``1``, respectively, if the breeding values are with respect to the
-            individuals in the breeding value matrix.
+            - ``n`` is the number of taxa.
+            - ``t`` is the number of traits.
 
         location : numpy.ndarray, Real
-            If ``numpy.ndarray``, an array of shape ``(ntrait,)`` containing 
-            breeding value locations.
-            If ``Real``, create a ``numpy.ndarray`` of shape ``(ntrait,)`` 
-            filled with the provided value.
-        
+            An array of shape ``(t,)`` containing locations for each trait.
+            If ``Real``, then the provided location is used for each trait.
+
         scale : numpy.ndarray, Real
-            If ``numpy.ndarray``, an array of shape ``(ntrait,)`` containing 
-            breeding value scales.
-            If ``Real``, create a ``numpy.ndarray`` of shape ``(ntrait,)`` 
-            filled with the provided value.
-        
+            An array of shape ``(t,)`` containing scales for each trait.
+            If ``Real``, then the provided scale is used for each trait.
+
         taxa : numpy.ndarray, None
-            If ``numpy.ndarray``, an array of shape ``(ntaxa,)`` containing 
-            taxa names.
+            An array of shape ``(n,)`` containing taxa names.
             If ``None``, do not store any taxa name information.
-        
+
         taxa_grp : numpy.ndarray, None
-            If ``numpy.ndarray``, an array of shape ``(ntaxa,)`` containing 
-            taxa groupings.
+            An array of shape ``(n,)`` containing taxa groupings.
             If ``None``, do not store any taxa group information.
-        
+
         trait : numpy.ndarray, None
-            If ``numpy.ndarray``, an array of shape ``(ntrait,)`` containing 
-            trait names.
+            An array of shape ``(t,)`` containing trait names.
             If ``None``, do not store any trait name information.
-        
+
         kwargs : dict
-            Additional keyword arguments used for cooperative inheritance.
+            Additional keyword arguments.
         """
         # call DenseScaledSquareTaxaTraitMatrix constructor
-        super(DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix, self).__init__(
+        super(DenseTwoWayParentalMeanEstimatedBreedingValueMatrix, self).__init__(
             mat = mat,
             location = location,
             scale = scale,
@@ -175,14 +160,14 @@ class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
     #################### Matrix copying ####################
     def __copy__(
             self
-        ) -> 'DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix':
+        ) -> 'DenseTwoWayParentalMeanEstimatedBreedingValueMatrix':
         """
         Make a shallow copy of the the matrix.
 
         Returns
         -------
-        out : DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix
-            A copy of the DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix.
+        out : DenseTwoWayParentalMeanEstimatedBreedingValueMatrix
+            A copy of the DenseTwoWayParentalMeanEstimatedBreedingValueMatrix.
         """
         return self.__class__(
             mat = copy.copy(self.mat),
@@ -196,7 +181,7 @@ class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
     def __deepcopy__(
             self, 
             memo: Optional[dict] = None
-        ) -> 'DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix':
+        ) -> 'DenseTwoWayParentalMeanEstimatedBreedingValueMatrix':
         """
         Make a deep copy of the matrix.
 
@@ -207,8 +192,8 @@ class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
 
         Returns
         -------
-        out : DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix
-            A deep copy of the DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix.
+        out : DenseTwoWayParentalMeanEstimatedBreedingValueMatrix
+            A deep copy of the DenseTwoWayParentalMeanEstimatedBreedingValueMatrix.
         """
         return self.__class__(
             mat = copy.deepcopy(self.mat, memo),
@@ -241,9 +226,9 @@ class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
 
     ############################ Object Properties #############################
 
-    ##################### Matrix Data ######################
+    ################## Matrix Properties ###################
     @DenseScaledSquareTaxaTraitMatrix.mat.setter
-    def mat(self, value: numpy.ndarray) -> None:
+    def mat(self, value: object) -> None:
         """Set pointer to raw numpy.ndarray object."""
         check_is_ndarray(value, "mat")
         check_ndarray_ndim(value, "mat", 3) # (ntaxa,ntaxa,ntrait)
@@ -319,11 +304,11 @@ class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
             check_is_Real_or_ndarray(value, "scale")
         self._scale = value
 
-    ######## Expected parental genome contributions ########
+    ################ EPGC metadata property ################
     @property
     def epgc(self) -> tuple:
-        """Expected parental genome contribution to the offspring from each parent."""
-        return (0.5, 0.5) # (female, male)    
+        """Expected parental genomic contribution."""
+        return (0.5, 0.5) # female, male
 
     ################# Parental dimensions ##################
     @property
@@ -351,23 +336,23 @@ class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
     #################### Matrix copying ####################
     def copy(
             self
-        ) -> 'DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix':
+        ) -> 'DenseTwoWayParentalMeanEstimatedBreedingValueMatrix':
         """
-        Make a shallow copy of the DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix.
+        Make a shallow copy of the DenseTwoWayParentalMeanEstimatedBreedingValueMatrix.
 
         Returns
         -------
-        out : DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix
-            A shallow copy of the original DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix.
+        out : DenseTwoWayParentalMeanEstimatedBreedingValueMatrix
+            A shallow copy of the original DenseTwoWayParentalMeanEstimatedBreedingValueMatrix.
         """
         return self.__copy__()
 
     def deepcopy(
             self, 
             memo: Optional[dict] = None
-        ) -> 'DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix':
+        ) -> 'DenseTwoWayParentalMeanEstimatedBreedingValueMatrix':
         """
-        Make a deep copy of the DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix.
+        Make a deep copy of the DenseTwoWayParentalMeanEstimatedBreedingValueMatrix.
 
         Parameters
         ----------
@@ -376,8 +361,8 @@ class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
 
         Returns
         -------
-        out : DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix
-            A deep copy of the original DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix.
+        out : DenseTwoWayParentalMeanEstimatedBreedingValueMatrix
+            A deep copy of the original DenseTwoWayParentalMeanEstimatedBreedingValueMatrix.
         """
         return self.__deepcopy__(memo)
 
@@ -636,78 +621,10 @@ class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
 
     ############################## Class Methods ###############################
 
-    #################### Import Methods ####################
-
-    @classmethod
-    def from_numpy(
-            cls, 
-            mat: numpy.ndarray, 
-            taxa: Optional[numpy.ndarray] = None, 
-            taxa_grp: Optional[numpy.ndarray] = None, 
-            trait: Optional[numpy.ndarray] = None, 
-            **kwargs: dict
-        ) -> 'ProgenyMeanEstimatedBreedingValueMatrix':
-        """
-        Construct a ProgenyMeanEstimatedBreedingValueMatrix from a numpy.ndarray.
-        Calculates mean-centering and scaling to unit variance.
-
-        Parameters
-        ----------
-        mat : numpy.ndarray
-            An array of shape ``(ntaxa,ntaxa,ntrait)`` for which to mean-center and scale.
-
-            Where:
-
-            - ``ntaxa`` is the number of taxa.
-            - ``ntrait`` is the number of traits.
-
-        taxa : numpy.ndarray
-            An array of taxa names of shape ``(ntaxa,)``.
-
-        taxa_grp : numpy.ndarray
-            An array of taxa groups of shape ``(ntaxa)``.
-
-        trait : numpy.ndarray
-            An array of trait names of shape ``(ntrait,)``.
-
-        Returns
-        -------
-        out : ProgenyMeanEstimatedBreedingValueMatrix
-            Output progeny mean estimated breeding value matrix.
-        """
-        # check type inputs
-        check_is_ndarray(mat, "mat")
-        check_ndarray_ndim(mat, "mat", 3)
-
-        # calculate location parameters
-        # (n,n,t) -> (t,)
-        location = numpy.nanmean(mat, axis = (0,1))
-        
-        # calculate location scale parameters
-        # (n,n,t) -> (t,)
-        scale = numpy.nanstd(mat, axis = (0,1))
-
-        # if scale == 0.0, then set to 1.0 (do not scale to avoid division by zero)
-        scale[scale == 0.0] = 1.0
-
-        # mean center and scale values
-        # scalar / (1,t) -> (1,t)
-        # (1,t) * ( (n,t) - (1,t) ) -> (n,t)
-        # multiply since multiplication is faster than division for floating points
-        mat = (1.0 / scale[None,None,:]) * (mat - location[None,None,:]) 
-
-        # construct output
-        out = cls(
-            mat = mat,
-            location = location,
-            scale = scale,
-            taxa = taxa,
-            taxa_grp = taxa_grp,
-            trait = trait,
-            **kwargs
-        )
-
-        return out
+    ######### Matrix element copy-on-manipulation ##########
+    ### concat                  inherited from ``DenseScaledSquareTaxaTraitMatrix``
+    ### concat_taxa             inherited from ``DenseScaledSquareTaxaTraitMatrix``
+    ### concat_trait            inherited from ``DenseScaledSquareTaxaTraitMatrix``
 
     ################# Construction Methods #################
     @classmethod
@@ -715,21 +632,22 @@ class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
             cls,
             bvmat: BreedingValueMatrix,
             **kwargs: dict
-        ) -> 'ProgenyMeanEstimatedBreedingValueMatrix':
+        ) -> 'DenseTwoWayParentalMeanEstimatedBreedingValueMatrix':
         """
-        Calculate progeny mean estimated breeding values from a ``BreedingValueMatrix``.
+        Calculate parental mean GEBVs for each pairwise 2-way cross between individuals.
 
         Parameters
         ----------
         bvmat : BreedingValueMatrix
-            Breeding value matrix from which to estimate progeny mean EBVs.
+            Estimated breeding value matrix with which to calculate parental means.
+
         kwargs : dict
             Additional keyword arguments.
-        
+
         Returns
         -------
-        out : ProgenyMeanEstimatedBreedingValueMatrix
-            A matrix of progeny mean EBVs.
+        out : DenseTwoWayParentalMeanEstimatedBreedingValueMatrix
+            A matrix of parental mean GEBVs for a two way cross.
         """
         # type checks
         check_is_BreedingValueMatrix(bvmat, "bvmat")
@@ -742,7 +660,7 @@ class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
         # scalar * ((n,1,t) + (1,n,t)) = (n,n,t)
         pmmat = 0.5 * (pmat[:,None,:] + pmat[None,:,:])
 
-        # copy metadata from EBV matrix and construct matrix
+        # copy metadata from GEBV matrix and construct matrix
         out = cls(
             mat = pmmat,
             location = bvmat.location,
@@ -765,9 +683,9 @@ class DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(
 
 
 ################################## Utilities ###################################
-def check_is_DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(v: object, vname: str) -> None:
+def check_is_DenseTwoWayParentalMeanEstimatedBreedingValueMatrix(v: object, vname: str) -> None:
     """
-    Check if an object is of type ``DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix``. Otherwise raise ``TypeError``.
+    Check if an object is of type ``DenseTwoWayParentalMeanEstimatedBreedingValueMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
@@ -776,10 +694,10 @@ def check_is_DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix(v: object, vname
     vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(v, DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix):
+    if not isinstance(v, DenseTwoWayParentalMeanEstimatedBreedingValueMatrix):
         raise TypeError("variable ``{0}`` must be of type ``{1}`` but received type ``{2}``".format(
                 vname,
-                DenseTwoWayProgenyMeanEstimatedBreedingValueMatrix.__name__,
+                DenseTwoWayParentalMeanEstimatedBreedingValueMatrix.__name__,
                 type(v).__name__
             )
         )

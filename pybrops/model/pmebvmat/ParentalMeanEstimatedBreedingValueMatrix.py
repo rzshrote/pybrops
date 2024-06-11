@@ -1,41 +1,33 @@
 """
-Module defining interfaces and error checking routimes for progeny mean 
+Module defining interfaces and error checking routines for progeny mean genomic
 estimated breeding value matrices.
 """
 
 __all__ = [
-    "ProgenyMeanEstimatedBreedingValueMatrix",
-    "check_is_ProgenyMeanEstimatedBreedingValueMatrix",
+    "ParentalMeanEstimatedBreedingValueMatrix",
+    "check_is_ParentalMeanEstimatedBreedingValueMatrix",
 ]
 
 from abc import ABCMeta
 from abc import abstractmethod
-from pathlib import Path
-from typing import Optional, Union
-import h5py
-import numpy
-import pandas
-from pybrops.core.io.CSVInputOutput import CSVInputOutput
-from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
-from pybrops.core.io.PandasInputOutput import PandasInputOutput
 from pybrops.core.mat.ScaledSquareTaxaTraitMatrix import ScaledSquareTaxaTraitMatrix
+from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
-class ProgenyMeanEstimatedBreedingValueMatrix(
+class ParentalMeanEstimatedBreedingValueMatrix(
         ScaledSquareTaxaTraitMatrix,
-        PandasInputOutput,
-        CSVInputOutput,
         metaclass = ABCMeta,
     ):
     """
-    Abstract class for progeny mean EBV matrix representation.
+    Abstract class for progeny mean GEBV matrix representation.
 
-    The ProgenyMeanEstimatedBreedingValueMatrix class represents a Multivariate 
+    The ParentalMeanEstimatedBreedingValueMatrix class represents a Multivariate 
     Progeny Mean Estimated Breeding Value.
 
     Notes
     -----
-    All elements within a ProgenyMeanEstimatedBreedingValueMatrix are mean-
+    All elements within a ParentalMeanEstimatedBreedingValueMatrix are mean-
     centered and scaled to unit variance for each trait.
 
     .. math::
@@ -233,125 +225,12 @@ class ProgenyMeanEstimatedBreedingValueMatrix(
     ### rescale                 inherited from ``ScaledSquareTaxaTraitMatrix``
     ### unscale                 inherited from ``ScaledSquareTaxaTraitMatrix``
 
-    #################### Export Methods ####################
-    ### to_pandas (inherited)   inherited from ``PandasInputOutput``
-    ### to_csv (inherited)      inherited from ``CSVInputOutput``
-    ### to_hdf5 (inherited)     inherited from ``ScaledSquareTaxaTraitMatrix``
-
     ############################## Class Methods ###############################
 
     ######### Matrix element copy-on-manipulation ##########
     ### concat                  inherited from ``ScaledSquareTaxaTraitMatrix``
     ### concat_taxa             inherited from ``ScaledSquareTaxaTraitMatrix``
     ### concat_trait            inherited from ``ScaledSquareTaxaTraitMatrix``
-
-    #################### Import Methods ####################
-    @classmethod
-    @abstractmethod
-    def from_numpy(
-            cls, 
-            mat: numpy.ndarray, 
-            taxa: Optional[numpy.ndarray] = None, 
-            taxa_grp: Optional[numpy.ndarray] = None, 
-            trait: Optional[numpy.ndarray] = None, 
-            **kwargs: dict
-        ) -> 'ProgenyMeanEstimatedBreedingValueMatrix':
-        """
-        Construct a ProgenyMeanEstimatedBreedingValueMatrix from a numpy.ndarray.
-        Calculates mean-centering and scaling to unit variance.
-
-        Parameters
-        ----------
-        mat : numpy.ndarray
-            An array of shape which to mean-center and scale.
-        taxa : numpy.ndarray
-            An array of taxa names.
-        taxa_grp : numpy.ndarray
-            An array of taxa groups.
-        trait : numpy.ndarray
-            An array of trait names.
-
-        Returns
-        -------
-        out : ProgenyMeanEstimatedBreedingValueMatrix
-            Output progeny mean estimated breeding value matrix.
-        """
-        raise NotImplementedError("class method is abstract")
-
-    @classmethod
-    @abstractmethod
-    def from_pandas(
-            cls, 
-            df: pandas.DataFrame, 
-            **kwargs: dict
-        ) -> 'ProgenyMeanEstimatedBreedingValueMatrix':
-        """
-        Read a ProgenyMeanEstimatedBreedingValueMatrix from a pandas.DataFrame.
-
-        Parameters
-        ----------
-        df : pandas.DataFrame
-            Pandas dataframe from which to read.
-        kwargs : dict
-            Additional keyword arguments to use for dictating importing from a 
-            pandas.DataFrame.
-
-        Returns
-        -------
-        out : ProgenyMeanEstimatedBreedingValueMatrix
-            A ProgenyMeanEstimatedBreedingValueMatrix read from a pandas.DataFrame.
-        """
-        raise NotImplementedError("class method is abstract")
-    
-    @classmethod
-    @abstractmethod
-    def from_csv(
-            cls, 
-            filename: str, 
-            **kwargs: dict
-        ) -> 'ProgenyMeanEstimatedBreedingValueMatrix':
-        """
-        Read a ProgenyMeanEstimatedBreedingValueMatrix from a CSV file.
-
-        Parameters
-        ----------
-        filename : str
-            CSV file name from which to read.
-        kwargs : dict
-            Additional keyword arguments to use for dictating importing from a CSV.
-
-        Returns
-        -------
-        out : ProgenyMeanEstimatedBreedingValueMatrix
-            A ProgenyMeanEstimatedBreedingValueMatrix read from a CSV file.
-        """
-        raise NotImplementedError("class method is abstract")
-    
-    @classmethod
-    @abstractmethod
-    def from_hdf5(
-            cls, 
-            filename: Union[str,Path,h5py.File], 
-            groupname: Optional[str],
-        ) -> 'ProgenyMeanEstimatedBreedingValueMatrix':
-        """
-        Read a ProgenyMeanEstimatedBreedingValueMatrix from an HDF5 file.
-
-        Parameters
-        ----------
-        filename : str, Path, h5py.File
-            If ``str`` or ``Path``, an HDF5 file name from which to read. File is closed after reading.
-            If ``h5py.File``, an opened HDF5 file from which to read. File is not closed after reading.
-        groupname : str, None
-            If ``str``, HDF5 group name under which object data is stored.
-            If ``None``, object is read from base HDF5 group.
-
-        Returns
-        -------
-        out : ProgenyMeanEstimatedBreedingValueMatrix
-            A ProgenyMeanEstimatedBreedingValueMatrix read from an HDF5 file.
-        """
-        raise NotImplementedError("class method is abstract")
 
     ################# Construction Methods #################
     @classmethod
@@ -360,32 +239,32 @@ class ProgenyMeanEstimatedBreedingValueMatrix(
             cls,
             bvmat: BreedingValueMatrix,
             **kwargs: dict
-        ) -> 'ProgenyMeanEstimatedBreedingValueMatrix':
+        ) -> 'ParentalMeanEstimatedBreedingValueMatrix':
         """
-        Calculate progeny mean estimated breeding values from a ``BreedingValueMatrix``.
+        Calculate progeny mean GEBVs for each pairwise 2-way cross between individuals.
 
         Parameters
         ----------
         bvmat : BreedingValueMatrix
-            Breeding value matrix from which to estimate progeny mean EBVs.
+            Estimated breeding value matrix with which to calculate parental means.
+
         kwargs : dict
             Additional keyword arguments.
-        
+
         Returns
         -------
-        out : ProgenyMeanEstimatedBreedingValueMatrix
-            A matrix of progeny mean EBVs.
+        out : ParentalMeanEstimatedBreedingValueMatrix
+            A matrix of progeny mean GEBVs.
         """
-        raise NotImplementedError("class method is abstract")
+        raise NotImplementedError("classmethod is abstract")
 
     ############################## Static Methods ##############################
 
 
 
-################################## Utilities ###################################
-def check_is_ProgenyMeanEstimatedBreedingValueMatrix(v: object, vname: str) -> None:
+def check_is_ParentalMeanEstimatedBreedingValueMatrix(v: object, vname: str) -> None:
     """
-    Check if an object is of type ``ProgenyMeanEstimatedBreedingValueMatrix``. Otherwise raise ``TypeError``.
+    Check if an object is of type ``ParentalMeanEstimatedBreedingValueMatrix``. Otherwise raise ``TypeError``.
 
     Parameters
     ----------
@@ -394,10 +273,10 @@ def check_is_ProgenyMeanEstimatedBreedingValueMatrix(v: object, vname: str) -> N
     vname : str
         Name of variable to print in ``TypeError`` message.
     """
-    if not isinstance(v, ProgenyMeanEstimatedBreedingValueMatrix):
+    if not isinstance(v, ParentalMeanEstimatedBreedingValueMatrix):
         raise TypeError("variable ``{0}`` must be of type ``{1}`` but received type ``{2}``".format(
                 vname,
-                ProgenyMeanEstimatedBreedingValueMatrix.__name__,
+                ParentalMeanEstimatedBreedingValueMatrix.__name__,
                 type(v).__name__
             )
         )
