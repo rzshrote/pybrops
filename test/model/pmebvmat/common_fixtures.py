@@ -8,11 +8,13 @@ from pybrops.core.io.HDF5InputOutput import HDF5InputOutput
 from pybrops.core.mat.Matrix import Matrix
 from pybrops.core.mat.TaxaMatrix import TaxaMatrix
 from pybrops.core.mat.TraitMatrix import TraitMatrix
-from pybrops.model.pmebvmat.ProgenyMeanEstimatedBreedingValueMatrix import ProgenyMeanEstimatedBreedingValueMatrix
+from pybrops.model.gmod.GenomicModel import GenomicModel
+from pybrops.model.pmebvmat.ParentalMeanEstimatedBreedingValueMatrix import ParentalMeanEstimatedBreedingValueMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
+from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
-class DummyProgenyMeanEstimatedBreedingValueMatrix(ProgenyMeanEstimatedBreedingValueMatrix):
+class DummyProgenyMeanEstimatedBreedingValueMatrix(ParentalMeanEstimatedBreedingValueMatrix):
     ################### Special methods ####################
     def __init__(self) -> None:
         pass
@@ -350,12 +352,12 @@ class DummyProgenyMeanEstimatedBreedingValueMatrix(ProgenyMeanEstimatedBreedingV
         return super().ungroup(axis, **kwargs)
     def ungroup_taxa(self, **kwargs: dict) -> None:
         return super().ungroup_taxa(**kwargs)
+    def rescale(self, inplace: bool) -> numpy.ndarray:
+        return super().rescale(inplace)
     def transform(self, mat: numpy.ndarray, copy: bool) -> numpy.ndarray:
         return super().transform(mat, copy)
     def untransform(self, mat: numpy.ndarray, copy: bool) -> numpy.ndarray:
         return super().untransform(mat, copy)
-    def rescale(self, inplace: bool) -> numpy.ndarray:
-        return super().rescale(inplace)
     def unscale(self, inplace: bool) -> numpy.ndarray:
         return super().unscale(inplace)
     #################### I/O interfaces ####################
@@ -366,17 +368,17 @@ class DummyProgenyMeanEstimatedBreedingValueMatrix(ProgenyMeanEstimatedBreedingV
     def to_hdf5(self, filename: str | Path | File, groupname: str | None, overwrite: bool) -> None:
         return super().to_hdf5(filename, groupname, overwrite)
     @classmethod
-    def from_numpy(cls, mat: numpy.ndarray, taxa: numpy.ndarray | None = None, taxa_grp: numpy.ndarray | None = None, trait: numpy.ndarray | None = None, **kwargs: dict) -> ProgenyMeanEstimatedBreedingValueMatrix:
+    def from_numpy(cls, mat: numpy.ndarray, taxa: numpy.ndarray | None = None, taxa_grp: numpy.ndarray | None = None, trait: numpy.ndarray | None = None, **kwargs: dict) -> ParentalMeanEstimatedBreedingValueMatrix:
         return super().from_numpy(mat, taxa, taxa_grp, trait, **kwargs)
     @classmethod
-    def from_pandas(cls, df: DataFrame, **kwargs: dict) -> ProgenyMeanEstimatedBreedingValueMatrix:
+    def from_pandas(cls, df: DataFrame, **kwargs: dict) -> ParentalMeanEstimatedBreedingValueMatrix:
         return super().from_pandas(df, **kwargs)
     @classmethod
-    def from_csv(cls, filename: str, **kwargs: dict) -> ProgenyMeanEstimatedBreedingValueMatrix:
+    def from_csv(cls, filename: str, **kwargs: dict) -> ParentalMeanEstimatedBreedingValueMatrix:
         return super().from_csv(filename, **kwargs)
     @classmethod
     def from_hdf5(cls, filename: str, groupname: str | None) -> HDF5InputOutput:
         return super().from_hdf5(filename, groupname)
     @classmethod
-    def from_bvmat(bvmat: BreedingValueMatrix, **kwargs: dict) -> 'ProgenyMeanEstimatedBreedingValueMatrix':
+    def from_bvmat(cls, bvmat: BreedingValueMatrix, **kwargs: dict) -> ParentalMeanEstimatedBreedingValueMatrix:
         return super().from_bvmat(bvmat, **kwargs)
