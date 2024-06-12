@@ -9,8 +9,8 @@ from typing import Callable, Optional, Union
 import numpy
 from numpy.random import Generator, RandomState
 import pandas
-from pybrops.breed.prot.sel.SubsetSelectionProtocol import SubsetSelectionProtocol
-from pybrops.breed.prot.sel.prob.SubsetSelectionProblem import SubsetSelectionProblem
+from pybrops.breed.prot.sel.SubsetMateSelectionProtocol import SubsetMateSelectionProtocol
+from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSelectionProblem
 from pybrops.breed.prot.sel.prob.TwoWayParentalMeanEstimatedBreedingValueSelectionProblem import TwoWayParentalMeanEstimatedBreedingValueSubsetMateSelectionProblem
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_bool
 from pybrops.core.error.error_value_python import check_is_gt
@@ -73,7 +73,7 @@ class TwoWayParentalMeanEstimatedBreedingValueSelectionMixin(
 
 class TwoWayParentalMeanEstimatedBreedingValueSubsetSelection(
         TwoWayParentalMeanEstimatedBreedingValueSelectionMixin,
-        SubsetSelectionProtocol,
+        SubsetMateSelectionProtocol,
     ):
     """
     Genomic Estimated Breeding Value Selection in a subset search space.
@@ -424,7 +424,7 @@ class TwoWayParentalMeanEstimatedBreedingValueSubsetSelection(
             t_cur: Integral, 
             t_max: Integral, 
             **kwargs: dict
-        ) -> SubsetSelectionProblem:
+        ) -> SubsetMateSelectionProblem:
         """
         Create an optimization problem definition using provided inputs.
 
@@ -449,7 +449,7 @@ class TwoWayParentalMeanEstimatedBreedingValueSubsetSelection(
 
         Returns
         -------
-        out : SubsetSelectionProblem
+        out : SubsetMateSelectionProblem
             An optimization problem definition.
         """
         # get number of individuals

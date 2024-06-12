@@ -43,7 +43,6 @@ class TwoWayParentalMeanEstimatedBreedingValueProblemMixin(
         check_is_ndarray(value, "pmgebvmat")
         check_ndarray_ndim(value, "pmgebvmat", 2)
         # most (binary, real, integer) problems require decisons for each cross
-        print(value.shape)
         check_ndarray_axis_len_gteq(value, "pmgebvmat", 0, self.ndecn)
         self._pmgebvmat = value
 
