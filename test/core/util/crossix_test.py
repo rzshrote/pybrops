@@ -1,4 +1,17 @@
-from pybrops.core.util.crossix import threewayix, twowayix_asymab_anyab_len, twowayix_asymab_selfab_len, twowayix_asymab_uniqab_len, twowayix_len, twowayix_symab_anyab_len, twowayix_symab_selfab_len, twowayix_symab_uniqab_len
+from pybrops.core.util.crossix import twowayix_symab_anyab
+from pybrops.core.util.crossix import twowayix_symab_selfab
+from pybrops.core.util.crossix import twowayix_symab_uniqab
+from pybrops.core.util.crossix import twowayix_asymab_anyab
+from pybrops.core.util.crossix import twowayix_asymab_selfab
+from pybrops.core.util.crossix import twowayix_asymab_uniqab
+from pybrops.core.util.crossix import twowayix
+from pybrops.core.util.crossix import twowayix_symab_anyab_len
+from pybrops.core.util.crossix import twowayix_symab_selfab_len
+from pybrops.core.util.crossix import twowayix_symab_uniqab_len
+from pybrops.core.util.crossix import twowayix_asymab_anyab_len
+from pybrops.core.util.crossix import twowayix_asymab_selfab_len
+from pybrops.core.util.crossix import twowayix_asymab_uniqab_len
+from pybrops.core.util.crossix import twowayix_len
 from pybrops.core.util.crossix import threewayix_asymab_anyab_anyc
 from pybrops.core.util.crossix import threewayix_asymab_anyab_backc
 from pybrops.core.util.crossix import threewayix_asymab_anyab_uniqc
@@ -17,14 +30,9 @@ from pybrops.core.util.crossix import threewayix_symab_selfab_uniqc
 from pybrops.core.util.crossix import threewayix_symab_uniqab_anyc
 from pybrops.core.util.crossix import threewayix_symab_uniqab_backc
 from pybrops.core.util.crossix import threewayix_symab_uniqab_uniqc
-from pybrops.core.util.crossix import twowayix
-from pybrops.core.util.crossix import twowayix_asymab_selfab
-from pybrops.core.util.crossix import twowayix_symab_selfab
-from pybrops.core.util.crossix import twowayix_symab_anyab
-from pybrops.core.util.crossix import twowayix_symab_uniqab
-from pybrops.core.util.crossix import twowayix_asymab_anyab
-from pybrops.core.util.crossix import twowayix_asymab_uniqab
-from pybrops.test.assert_python import assert_function_isconcrete, assert_generator_isconcrete
+from pybrops.core.util.crossix import threewayix
+from pybrops.test.assert_python import assert_function_isconcrete
+from pybrops.test.assert_python import assert_generator_isconcrete
 from pybrops.test.assert_python import assert_module_documentation
 from pybrops.test.assert_python import assert_module_public_api
 
