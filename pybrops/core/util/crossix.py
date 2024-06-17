@@ -3,7 +3,8 @@ Module containing utility functions to generate cross indices.
 """
 
 __all__ = [
-    # two-way crosses
+    ### two-way crosses
+    # generators
     "twowayix_symab_anyab",
     "twowayix_symab_selfab",
     "twowayix_symab_uniqab",
@@ -11,6 +12,7 @@ __all__ = [
     "twowayix_asymab_selfab",
     "twowayix_asymab_uniqab",
     "twowayix",
+    # length
     "twowayix_symab_anyab_len",
     "twowayix_symab_selfab_len",
     "twowayix_symab_uniqab_len",
@@ -18,7 +20,8 @@ __all__ = [
     "twowayix_asymab_selfab_len",
     "twowayix_asymab_uniqab_len",
     "twowayix_len",
-    # three-way crosses
+    ### three-way crosses
+    # generators
     "threewayix_symab_anyab_anyc",
     "threewayix_symab_anyab_backc",
     "threewayix_symab_anyab_uniqc",
@@ -38,7 +41,27 @@ __all__ = [
     "threewayix_asymab_uniqab_backc",
     "threewayix_asymab_uniqab_uniqc",
     "threewayix",
-    # four-way crosses
+    # length
+    "threewayix_symab_anyab_anyc_len",
+    "threewayix_symab_anyab_backc_len",
+    "threewayix_symab_anyab_uniqc_len",
+    "threewayix_symab_selfab_anyc_len",
+    "threewayix_symab_selfab_backc_len",
+    "threewayix_symab_selfab_uniqc_len",
+    "threewayix_symab_uniqab_anyc_len",
+    "threewayix_symab_uniqab_backc_len",
+    "threewayix_symab_uniqab_uniqc_len",
+    "threewayix_asymab_anyab_anyc_len",
+    "threewayix_asymab_anyab_backc_len",
+    "threewayix_asymab_anyab_uniqc_len",
+    "threewayix_asymab_selfab_anyc_len",
+    "threewayix_asymab_selfab_backc_len",
+    "threewayix_asymab_selfab_uniqc_len",
+    "threewayix_asymab_uniqab_anyc_len",
+    "threewayix_asymab_uniqab_backc_len",
+    "threewayix_asymab_uniqab_uniqc_len",
+    "threewayix_len",
+    ### four-way crosses
     "fourwayix_perm_self",
 ]
 
@@ -392,6 +415,8 @@ def twowayix_len(ntaxa: int, symab: bool = True, mateab: str = "uniq") -> int:
 
 ####################### Three-way cross index generators #######################
 
+######################## Generators ########################
+
 def threewayix_symab_anyab_anyc(ntaxa: int) -> Generator:
     """
     Generate indices for three-way parent crosses with the following constraints:
@@ -416,25 +441,6 @@ def threewayix_symab_anyab_anyc(ntaxa: int) -> Generator:
         for female in range(ntaxa):
             for male in range(female,ntaxa):
                 yield (recurrent,female,male)
-
-def threewayix_symab_anyab_anyc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_symab_anyab_anyc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 0:
-        return 0
-    out = ntaxa * (ntaxa * (ntaxa+1) // 2)
-    return out
 
 def threewayix_symab_anyab_backc(ntaxa: int) -> Generator:
     """
@@ -463,26 +469,6 @@ def threewayix_symab_anyab_backc(ntaxa: int) -> Generator:
         female = recurrent
         for male in range(female,ntaxa):
             yield (recurrent,female,male)
-
-def threewayix_symab_anyab_backc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_symab_anyab_backc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 0:
-        return 0
-    # out = (ntaxa * (ntaxa-1) // 2) + (ntaxa * (ntaxa+1) // 2)
-    out = ntaxa * ntaxa
-    return out
 
 def threewayix_symab_anyab_uniqc(ntaxa: int) -> Generator:
     """
@@ -514,25 +500,6 @@ def threewayix_symab_anyab_uniqc(ntaxa: int) -> Generator:
             for male in range(female,ntaxa):
                 yield (recurrent,female,male)
 
-def threewayix_symab_anyab_uniqc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_symab_anyab_uniqc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 1:
-        return 0
-    out = ntaxa * (ntaxa * (ntaxa-1) // 2)
-    return out
-
 def threewayix_symab_selfab_anyc(ntaxa: int) -> Generator:
     """
     Generate indices for three-way parent crosses with the following constraints:
@@ -557,25 +524,6 @@ def threewayix_symab_selfab_anyc(ntaxa: int) -> Generator:
         for femalemale in range(ntaxa):
             yield (recurrent,femalemale,femalemale)
 
-def threewayix_symab_selfab_anyc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_symab_selfab_anyc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 0:
-        return 0
-    out = ntaxa * ntaxa
-    return out
-
 def threewayix_symab_selfab_backc(ntaxa: int) -> Generator:
     """
     Generate indices for three-way parent crosses with the following constraints:
@@ -598,24 +546,6 @@ def threewayix_symab_selfab_backc(ntaxa: int) -> Generator:
         yield from ()
     for recurrentfemalemale in range(ntaxa):
         yield (recurrentfemalemale,recurrentfemalemale,recurrentfemalemale)
-
-def threewayix_symab_selfab_backc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_symab_selfab_backc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 0:
-        return 0
-    return ntaxa
 
 def threewayix_symab_selfab_uniqc(ntaxa: int) -> Generator:
     """
@@ -643,25 +573,6 @@ def threewayix_symab_selfab_uniqc(ntaxa: int) -> Generator:
         for femalemale in range(recurrent+1,ntaxa):
             yield (recurrent,femalemale,femalemale)
 
-def threewayix_symab_selfab_uniqc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_symab_selfab_uniqc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 1:
-        return 0
-    out = ntaxa * (ntaxa - 1)
-    return out
-
 def threewayix_symab_uniqab_anyc(ntaxa: int) -> Generator:
     """
     Generate indices for three-way parent crosses with the following constraints:
@@ -686,25 +597,6 @@ def threewayix_symab_uniqab_anyc(ntaxa: int) -> Generator:
         for female in range(ntaxa):
             for male in range(female+1,ntaxa):
                 yield (recurrent,female,male)
-
-def threewayix_symab_uniqab_anyc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_symab_uniqab_anyc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 1:
-        return 0
-    out = ntaxa * (ntaxa * (ntaxa-1) // 2)
-    return out
 
 def threewayix_symab_uniqab_backc(ntaxa: int) -> Generator:
     """
@@ -733,25 +625,6 @@ def threewayix_symab_uniqab_backc(ntaxa: int) -> Generator:
         female = recurrent
         for male in range(female+1,ntaxa):
             yield (recurrent,female,male)
-
-def threewayix_symab_uniqab_backc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_symab_uniqab_backc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 1:
-        return 0
-    out = ntaxa * (ntaxa-1)
-    return out
 
 def threewayix_symab_uniqab_uniqc(ntaxa: int) -> Generator:
     """
@@ -783,25 +656,6 @@ def threewayix_symab_uniqab_uniqc(ntaxa: int) -> Generator:
             for male in range(female+1,ntaxa):
                 yield (recurrent,female,male)
 
-def threewayix_symab_uniqab_uniqc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_symab_uniqab_uniqc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 2:
-        return 0
-    out = ntaxa * (ntaxa-1) * (ntaxa-2) // 2
-    return out
-
 def threewayix_asymab_anyab_anyc(ntaxa: int) -> Generator:
     """
     Generate indices for three-way parent crosses with the following constraints:
@@ -826,25 +680,6 @@ def threewayix_asymab_anyab_anyc(ntaxa: int) -> Generator:
         for female in range(ntaxa):
             for male in range(ntaxa):
                 yield (recurrent,female,male)
-
-def threewayix_asymab_anyab_anyc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_asymab_anyab_anyc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 0:
-        return 0
-    out = ntaxa * ntaxa * ntaxa
-    return out
 
 def threewayix_asymab_anyab_backc(ntaxa: int) -> Generator:
     """
@@ -876,25 +711,6 @@ def threewayix_asymab_anyab_backc(ntaxa: int) -> Generator:
         male = recurrent
         for female in range(male+1,ntaxa):
             yield (recurrent,female,male)
-
-def threewayix_asymab_anyab_backc_len(ntaxa: int) -> Generator:
-    """
-    Calculate the length of a ``threewayix_asymab_anyab_backc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 0:
-        return 0
-    out = 2 * ntaxa * ntaxa - ntaxa
-    return out
 
 def threewayix_asymab_anyab_uniqc(ntaxa: int) -> Generator:
     """
@@ -928,25 +744,6 @@ def threewayix_asymab_anyab_uniqc(ntaxa: int) -> Generator:
             for male in range(recurrent+1,ntaxa):
                 yield (recurrent,female,male)
 
-def threewayix_asymab_anyab_uniqc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_asymab_anyab_uniqc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 1:
-        return 0
-    out = ntaxa * (ntaxa-1) * (ntaxa-1)
-    return out
-
 def threewayix_asymab_selfab_anyc(ntaxa: int) -> Generator:
     """
     Generate indices for three-way parent crosses with the following constraints:
@@ -971,25 +768,6 @@ def threewayix_asymab_selfab_anyc(ntaxa: int) -> Generator:
         for femalemale in range(ntaxa):
             yield (recurrent,femalemale,femalemale)
 
-def threewayix_asymab_selfab_anyc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_asymab_selfab_anyc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 0:
-        return 0
-    out = ntaxa * ntaxa
-    return out
-
 def threewayix_asymab_selfab_backc(ntaxa: int) -> Generator:
     """
     Generate indices for three-way parent crosses with the following constraints:
@@ -1012,25 +790,6 @@ def threewayix_asymab_selfab_backc(ntaxa: int) -> Generator:
         yield from ()
     for recurrentfemalemale in range(ntaxa):
         yield (recurrentfemalemale,recurrentfemalemale,recurrentfemalemale)
-
-def threewayix_asymab_selfab_backc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_asymab_selfab_backc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 0:
-        return 0
-    out = ntaxa
-    return out
 
 def threewayix_asymab_selfab_uniqc(ntaxa: int) -> Generator:
     """
@@ -1058,25 +817,6 @@ def threewayix_asymab_selfab_uniqc(ntaxa: int) -> Generator:
         for femalemale in range(recurrent+1,ntaxa):
             yield (recurrent,femalemale,femalemale)
 
-def threewayix_asymab_selfab_uniqc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_asymab_selfab_uniqc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 1:
-        return 0
-    out = ntaxa * (ntaxa-1)
-    return out
-
 def threewayix_asymab_uniqab_anyc(ntaxa: int) -> Generator:
     """
     Generate indices for three-way parent crosses with the following constraints:
@@ -1103,25 +843,6 @@ def threewayix_asymab_uniqab_anyc(ntaxa: int) -> Generator:
                 yield (recurrent,female,male)
             for male in range(female+1,ntaxa):
                 yield (recurrent,female,male)
-
-def threewayix_asymab_uniqab_anyc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_asymab_uniqab_anyc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 1:
-        return 0
-    out = ntaxa * ntaxa * (ntaxa-1)
-    return out
 
 def threewayix_asymab_uniqab_backc(ntaxa: int) -> Generator:
     """
@@ -1155,25 +876,6 @@ def threewayix_asymab_uniqab_backc(ntaxa: int) -> Generator:
         male = recurrent
         for female in range(male+1,ntaxa):
             yield (recurrent,female,male)
-
-def threewayix_asymab_uniqab_backc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_asymab_uniqab_backc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 1:
-        return 0
-    out = 2 * ntaxa * (ntaxa-1)
-    return out
 
 def threewayix_asymab_uniqab_uniqc(ntaxa: int) -> Generator:
     """
@@ -1210,25 +912,6 @@ def threewayix_asymab_uniqab_uniqc(ntaxa: int) -> Generator:
                 yield (recurrent,female,male)
             for male in range(female+1,ntaxa):
                 yield (recurrent,female,male)
-
-def threewayix_asymab_uniqab_uniqc_len(ntaxa: int) -> int:
-    """
-    Calculate the length of a ``threewayix_asymab_uniqab_uniqc`` generator.
-
-    Parameters
-    ----------
-    ntaxa : int
-        Number of taxa eligible to serve as parents.
-
-    Returns
-    -------
-    out : int
-        Length of the generator.
-    """
-    if ntaxa <= 2:
-        return 0
-    out = ntaxa * (ntaxa-1) * (ntaxa-2)
-    return out
 
 def threewayix(ntaxa: int, symab: bool = True, mateab: str = "uniq", matec: str = "uniq") -> Generator:
     """
@@ -1322,7 +1005,351 @@ def threewayix(ntaxa: int, symab: bool = True, mateab: str = "uniq", matec: str 
         else:
             raise ValueError
 
-def threewayix_len(ntaxa: int, symab: bool = True, mateab: str = "uniq", matec: str = "uniq") -> Generator:
+################### Length of Generators ###################
+
+def threewayix_symab_anyab_anyc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_symab_anyab_anyc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 0:
+        return 0
+    out = ntaxa * (ntaxa * (ntaxa+1) // 2)
+    return out
+
+def threewayix_symab_anyab_backc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_symab_anyab_backc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 0:
+        return 0
+    # out = (ntaxa * (ntaxa-1) // 2) + (ntaxa * (ntaxa+1) // 2)
+    out = ntaxa * ntaxa
+    return out
+
+def threewayix_symab_anyab_uniqc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_symab_anyab_uniqc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 1:
+        return 0
+    out = ntaxa * (ntaxa * (ntaxa-1) // 2)
+    return out
+
+def threewayix_symab_selfab_anyc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_symab_selfab_anyc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 0:
+        return 0
+    out = ntaxa * ntaxa
+    return out
+
+def threewayix_symab_selfab_backc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_symab_selfab_backc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 0:
+        return 0
+    return ntaxa
+
+def threewayix_symab_selfab_uniqc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_symab_selfab_uniqc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 1:
+        return 0
+    out = ntaxa * (ntaxa - 1)
+    return out
+
+def threewayix_symab_uniqab_anyc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_symab_uniqab_anyc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 1:
+        return 0
+    out = ntaxa * (ntaxa * (ntaxa-1) // 2)
+    return out
+
+def threewayix_symab_uniqab_backc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_symab_uniqab_backc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 1:
+        return 0
+    out = ntaxa * (ntaxa-1)
+    return out
+
+def threewayix_symab_uniqab_uniqc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_symab_uniqab_uniqc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 2:
+        return 0
+    out = ntaxa * (ntaxa-1) * (ntaxa-2) // 2
+    return out
+
+def threewayix_asymab_anyab_anyc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_asymab_anyab_anyc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 0:
+        return 0
+    out = ntaxa * ntaxa * ntaxa
+    return out
+
+def threewayix_asymab_anyab_backc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_asymab_anyab_backc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 0:
+        return 0
+    out = 2 * ntaxa * ntaxa - ntaxa
+    return out
+
+def threewayix_asymab_anyab_uniqc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_asymab_anyab_uniqc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 1:
+        return 0
+    out = ntaxa * (ntaxa-1) * (ntaxa-1)
+    return out
+
+def threewayix_asymab_selfab_anyc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_asymab_selfab_anyc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 0:
+        return 0
+    out = ntaxa * ntaxa
+    return out
+
+def threewayix_asymab_selfab_backc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_asymab_selfab_backc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 0:
+        return 0
+    out = ntaxa
+    return out
+
+def threewayix_asymab_selfab_uniqc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_asymab_selfab_uniqc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 1:
+        return 0
+    out = ntaxa * (ntaxa-1)
+    return out
+
+def threewayix_asymab_uniqab_anyc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_asymab_uniqab_anyc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 1:
+        return 0
+    out = ntaxa * ntaxa * (ntaxa-1)
+    return out
+
+def threewayix_asymab_uniqab_backc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_asymab_uniqab_backc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 1:
+        return 0
+    out = 2 * ntaxa * (ntaxa-1)
+    return out
+
+def threewayix_asymab_uniqab_uniqc_len(ntaxa: int) -> int:
+    """
+    Calculate the length of a ``threewayix_asymab_uniqab_uniqc`` generator.
+
+    Parameters
+    ----------
+    ntaxa : int
+        Number of taxa eligible to serve as parents.
+
+    Returns
+    -------
+    out : int
+        Length of the generator.
+    """
+    if ntaxa <= 2:
+        return 0
+    out = ntaxa * (ntaxa-1) * (ntaxa-2)
+    return out
+
+def threewayix_len(ntaxa: int, symab: bool = True, mateab: str = "uniq", matec: str = "uniq") -> int:
     """
     Calculate the length of a ``threewayix`` generator.
 
