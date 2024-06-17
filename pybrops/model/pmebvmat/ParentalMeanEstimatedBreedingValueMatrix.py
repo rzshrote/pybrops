@@ -11,9 +11,7 @@ __all__ = [
 from abc import ABCMeta
 from abc import abstractmethod
 from pybrops.core.mat.ScaledSquareTaxaTraitMatrix import ScaledSquareTaxaTraitMatrix
-from pybrops.model.gmod.GenomicModel import GenomicModel
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 class ParentalMeanEstimatedBreedingValueMatrix(
         ScaledSquareTaxaTraitMatrix,

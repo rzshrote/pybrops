@@ -23,10 +23,8 @@ from pybrops.core.error.error_value_numpy import check_ndarray_is_square_along_a
 from pybrops.core.error.error_value_numpy import check_ndarray_ndim
 from pybrops.core.error.error_value_python import check_is_gteq
 from pybrops.core.mat.DenseScaledSquareTaxaTraitMatrix import DenseScaledSquareTaxaTraitMatrix
-from pybrops.model.gmod.GenomicModel import GenomicModel, check_is_GenomicModel
 from pybrops.model.pmebvmat.ParentalMeanEstimatedBreedingValueMatrix import ParentalMeanEstimatedBreedingValueMatrix
 from pybrops.popgen.bvmat.BreedingValueMatrix import BreedingValueMatrix, check_is_BreedingValueMatrix
-from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix, check_is_GenotypeMatrix
 
 class DenseTwoWayParentalMeanEstimatedBreedingValueMatrix(
         DenseScaledSquareTaxaTraitMatrix,
