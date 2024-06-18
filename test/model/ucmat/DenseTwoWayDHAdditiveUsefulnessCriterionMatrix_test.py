@@ -3,9 +3,11 @@ import numpy
 import pytest
 
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
-from pybrops.model.pmgebvmat.DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix import DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix
-from pybrops.model.pmgebvmat.DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix import check_is_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix
+from pybrops.model.ucmat.DenseTwoWayDHAdditiveUsefulnessCriterionMatrix import DenseTwoWayDHAdditiveUsefulnessCriterionMatrix
+from pybrops.model.ucmat.DenseTwoWayDHAdditiveUsefulnessCriterionMatrix import check_is_DenseTwoWayDHAdditiveUsefulnessCriterionMatrix
+from pybrops.popgen.gmap.HaldaneMapFunction import HaldaneMapFunction
 from pybrops.popgen.gmat.DenseGenotypeMatrix import DenseGenotypeMatrix
+from pybrops.popgen.gmat.DensePhasedGenotypeMatrix import DensePhasedGenotypeMatrix
 from pybrops.test.assert_python import assert_class_isconcrete
 from pybrops.test.assert_python import assert_classmethod_isconcrete
 from pybrops.test.assert_python import assert_property_isconcrete
@@ -42,6 +44,14 @@ def nfixed():
 @pytest.fixture
 def nvrnt():
     yield 100
+
+@pytest.fixture
+def nphase():
+    yield 2
+
+@pytest.fixture
+def nchrom():
+    yield 5
 
 ############################################################
 ############## Additive Linear Genomic Model ###############
@@ -94,36 +104,60 @@ def algmod(
     yield out
 
 ############################################################
-##################### Genotype Matrix ######################
+################## Phased Genotype Matrix ##################
 ############################################################
 
 @pytest.fixture
-def gmat_mat(ntaxa, nvrnt):
-    out = numpy.random.binomial(2, 0.5, (ntaxa,nvrnt)).astype('int8')
+def pgmat_mat(nphase, ntaxa, nvrnt):
+    out = numpy.random.binomial(1, 0.5, (nphase,ntaxa,nvrnt)).astype('int8')
     yield out
 
 @pytest.fixture
-def gmat_taxa(ntaxa):
+def pgmat_taxa(ntaxa):
     out = numpy.array(["Line"+str(i).zfill(3) for i in range(ntaxa)], dtype=object)
     yield out
 
 @pytest.fixture
-def gmat_taxa_grp(ntaxa, ngroup):
+def pgmat_taxa_grp(ntaxa, ngroup):
     out = numpy.random.randint(1, ngroup+1, ntaxa)
     out.sort()
     yield out
 
 @pytest.fixture
-def gmat(
-        gmat_mat,
-        gmat_taxa,
-        gmat_taxa_grp,
+def pgmat_vrnt_chrgrp(nvrnt, nchrom):
+    out = numpy.repeat(numpy.arange(nvrnt//nchrom) + 1, nchrom)
+    yield out
+
+@pytest.fixture
+def pgmat_vrnt_phypos(nvrnt):
+    out = numpy.random.randint(0,2**32,nvrnt)
+    out.sort()
+    yield out
+
+@pytest.fixture
+def pgmat_vrnt_genpos(nvrnt):
+    out = numpy.random.random(nvrnt)
+    out.sort()
+    yield out
+
+@pytest.fixture
+def pgmat(
+        pgmat_mat,
+        pgmat_taxa,
+        pgmat_taxa_grp,
+        pgmat_vrnt_chrgrp,
+        pgmat_vrnt_phypos,
+        pgmat_vrnt_genpos,
     ):
-    out = DenseGenotypeMatrix(
-        mat = gmat_mat,
-        taxa = gmat_taxa,
-        taxa_grp = gmat_taxa_grp,
+    out = DensePhasedGenotypeMatrix(
+        mat = pgmat_mat,
+        taxa = pgmat_taxa,
+        taxa_grp = pgmat_taxa_grp,
+        vrnt_chrgrp = pgmat_vrnt_chrgrp,
+        vrnt_phypos = pgmat_vrnt_phypos,
+        vrnt_genpos = pgmat_vrnt_genpos,
     )
+    out.group_vrnt()
     yield out
 
 ############################################################
@@ -131,8 +165,8 @@ def gmat(
 ############################################################
 
 @pytest.fixture
-def gebvmat(algmod, gmat):
-    out = algmod.gebv(gmat)
+def gebvmat(algmod, pgmat):
+    out = algmod.gebv(pgmat)
     yield out
 
 ############################################################
@@ -140,52 +174,38 @@ def gebvmat(algmod, gmat):
 ############################################################
 
 @pytest.fixture
-def pmgebvmat_mat(ntaxa, ntrait):
+def ucmat_mat(ntaxa, ntrait):
     out = numpy.random.random((ntaxa,ntaxa,ntrait))
     yield out
 
 @pytest.fixture
-def pmgebvmat_location(ntrait):
-    out = numpy.repeat(0.0, ntrait)
-    yield out
-
-@pytest.fixture
-def pmgebvmat_scale(ntrait):
-    out = numpy.repeat(1.0, ntrait)
-    yield out
-
-@pytest.fixture
-def pmgebvmat_taxa(ntaxa):
+def ucmat_taxa(ntaxa):
     out = numpy.array(["Line"+str(i).zfill(3) for i in range(ntaxa)], dtype=object)
     yield out
 
 @pytest.fixture
-def pmgebvmat_taxa_grp(ntaxa, ngroup):
+def ucmat_taxa_grp(ntaxa, ngroup):
     out = numpy.random.randint(1, ngroup+1, ntaxa)
     out.sort()
     yield out
 
 @pytest.fixture
-def pmgebvmat_trait(ntrait):
+def ucmat_trait(ntrait):
     out = numpy.array(["Trait"+str(i).zfill(3) for i in range(ntrait)], dtype=object)
     yield out
 
 @pytest.fixture
-def pmgebvmat(
-        pmgebvmat_mat,
-        pmgebvmat_location,
-        pmgebvmat_scale,
-        pmgebvmat_taxa,
-        pmgebvmat_taxa_grp,
-        pmgebvmat_trait,
+def ucmat(
+        ucmat_mat,
+        ucmat_taxa,
+        ucmat_taxa_grp,
+        ucmat_trait,
     ):
-    out = DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix(
-        mat = pmgebvmat_mat,
-        location = pmgebvmat_location,
-        scale = pmgebvmat_scale,
-        taxa = pmgebvmat_taxa,
-        taxa_grp = pmgebvmat_taxa_grp,
-        trait = pmgebvmat_trait,
+    out = DenseTwoWayDHAdditiveUsefulnessCriterionMatrix(
+        mat = ucmat_mat,
+        taxa = ucmat_taxa,
+        taxa_grp = ucmat_taxa_grp,
+        trait = ucmat_trait,
     )
     yield out
 
@@ -194,19 +214,19 @@ def pmgebvmat(
 ################################################################################
 
 def test_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix_module_documentation():
-    import pybrops.model.pmgebvmat.DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix
-    assert_module_documentation(pybrops.model.pmgebvmat.DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix)
+    import pybrops.model.ucmat.DenseTwoWayDHAdditiveUsefulnessCriterionMatrix
+    assert_module_documentation(pybrops.model.ucmat.DenseTwoWayDHAdditiveUsefulnessCriterionMatrix)
 
 def test_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix_module_public_api():
-    import pybrops.model.pmgebvmat.DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix
-    assert_module_public_api(pybrops.model.pmgebvmat.DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix)
+    import pybrops.model.ucmat.DenseTwoWayDHAdditiveUsefulnessCriterionMatrix
+    assert_module_public_api(pybrops.model.ucmat.DenseTwoWayDHAdditiveUsefulnessCriterionMatrix)
 
 ################################################################################
 ############################ Test class attributes #############################
 ################################################################################
 
 def test_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix_is_concrete():
-    assert_class_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix)
+    assert_class_isconcrete(DenseTwoWayDHAdditiveUsefulnessCriterionMatrix)
 
 ################################################################################
 ######################## Test abstract special methods #########################
@@ -218,15 +238,15 @@ def test_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix_is_concrete()
 
 ### __init__
 def test___init___is_concrete():
-    assert_method_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "__init__")
+    assert_method_isconcrete(DenseTwoWayDHAdditiveUsefulnessCriterionMatrix, "__init__")
 
 ### __copy__
 def test___copy___is_concrete():
-    assert_method_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "__copy__")
+    assert_method_isconcrete(DenseTwoWayDHAdditiveUsefulnessCriterionMatrix, "__copy__")
 
 ### __deepcopy__
 def test___deepcopy___is_concrete():
-    assert_method_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "__deepcopy__")
+    assert_method_isconcrete(DenseTwoWayDHAdditiveUsefulnessCriterionMatrix, "__deepcopy__")
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -238,101 +258,41 @@ def test___deepcopy___is_concrete():
 
 ### mat
 def test_mat_is_concrete():
-    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "mat")
+    assert_property_isconcrete(DenseTwoWayDHAdditiveUsefulnessCriterionMatrix, "mat")
 
-def test_mat_fset_TypeError(pmgebvmat):
+def test_mat_fset_TypeError(ucmat):
     with pytest.raises(TypeError):
-        pmgebvmat.mat = object()
+        ucmat.mat = object()
 
-def test_mat_fset_ValueError(pmgebvmat, ntaxa, ntrait):
+def test_mat_fset_ValueError(ucmat, ntaxa, ntrait):
     with pytest.raises(ValueError):
-        pmgebvmat.mat = numpy.random.random((ntaxa,))
+        ucmat.mat = numpy.random.random((ntaxa,))
     with pytest.raises(ValueError):
-        pmgebvmat.mat = numpy.random.random((ntaxa,ntrait))
+        ucmat.mat = numpy.random.random((ntaxa,ntrait))
     with pytest.raises(ValueError):
-        pmgebvmat.mat = numpy.random.random((ntaxa,ntaxa,ntrait,ntrait))
+        ucmat.mat = numpy.random.random((ntaxa,ntaxa,ntrait,ntrait))
 
 ### square_taxa_axes
 def test_square_taxa_axes_is_concrete():
-    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "square_taxa_axes")
+    assert_property_isconcrete(DenseTwoWayDHAdditiveUsefulnessCriterionMatrix, "square_taxa_axes")
 
-def test_square_taxa_axes_fget(pmgebvmat):
-    assert pmgebvmat.square_taxa_axes == (0,1)
+def test_square_taxa_axes_fget(ucmat):
+    assert ucmat.square_taxa_axes == (0,1)
 
 ### trait_axis
 def test_trait_axis_is_concrete():
-    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "trait_axis")
+    assert_property_isconcrete(DenseTwoWayDHAdditiveUsefulnessCriterionMatrix, "trait_axis")
 
-def test_trait_axis_fget(pmgebvmat):
-    assert pmgebvmat.trait_axis == 2
-
-### location
-def test_location_is_concrete():
-    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "location")
-
-def test_location_fset_TypeError(pmgebvmat):
-    with pytest.raises(TypeError):
-        pmgebvmat.location = object()
-
-def test_location_fset_ValueError(pmgebvmat, ntrait):
-    with pytest.raises(ValueError):
-        pmgebvmat.location = numpy.random.random((ntrait+1,))
-    with pytest.raises(ValueError):
-        pmgebvmat.location = numpy.random.random((ntrait,ntrait))
-
-### scale
-def test_scale_is_concrete():
-    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "scale")
-
-def test_scale_fset_TypeError(pmgebvmat):
-    with pytest.raises(TypeError):
-        pmgebvmat.scale = object()
-
-def test_scale_fset_ValueError(pmgebvmat, ntrait):
-    with pytest.raises(ValueError):
-        pmgebvmat.scale = numpy.random.random((ntrait+1,))
-    with pytest.raises(ValueError):
-        pmgebvmat.scale = numpy.random.random((ntrait,ntrait))
+def test_trait_axis_fget(ucmat):
+    assert ucmat.trait_axis == 2
 
 ### epgc
 def test_epgc_is_concrete():
-    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "epgc")
+    assert_property_isconcrete(DenseTwoWayDHAdditiveUsefulnessCriterionMatrix, "epgc")
 
-def test_epgc_fget(pmgebvmat):
-    assert isinstance(pmgebvmat.epgc, tuple)
-    assert pmgebvmat.epgc == (0.5, 0.5)
-
-### nfemale
-def test_nfemale_is_concrete():
-    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "nfemale")
-
-def test_nfemale(pmgebvmat, ntaxa):
-    assert isinstance(pmgebvmat.nfemale, Integral)
-    assert pmgebvmat.nfemale == ntaxa
-
-### female_axis
-def test_female_axis_is_concrete():
-    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "female_axis")
-
-def test_female_axis(pmgebvmat):
-    assert isinstance(pmgebvmat.female_axis, Integral)
-    assert pmgebvmat.female_axis == 0
-
-### nmale
-def test_nmale_is_concrete():
-    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "nmale")
-
-def test_nmale(pmgebvmat, ntaxa):
-    assert isinstance(pmgebvmat.nmale, Integral)
-    assert pmgebvmat.nmale == ntaxa
-
-### male_axis
-def test_male_axis_is_concrete():
-    assert_property_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "male_axis")
-
-def test_male_axis(pmgebvmat):
-    assert isinstance(pmgebvmat.male_axis, Integral)
-    assert pmgebvmat.male_axis == 1
+def test_epgc_fget(ucmat):
+    assert isinstance(ucmat.epgc, tuple)
+    assert ucmat.epgc == (0.5, 0.5)
 
 ################################################################################
 ############################# Test abstract methods ############################
@@ -344,11 +304,11 @@ def test_male_axis(pmgebvmat):
 
 ### copy
 def test_copy_is_concrete():
-    assert_method_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "copy")
+    assert_method_isconcrete(DenseTwoWayDHAdditiveUsefulnessCriterionMatrix, "copy")
 
 ### deepcopy
 def test_deepcopy_is_concrete():
-    assert_method_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "deepcopy")
+    assert_method_isconcrete(DenseTwoWayDHAdditiveUsefulnessCriterionMatrix, "deepcopy")
 
 ################################################################################
 ########################## Test abstract classmethods ##########################
@@ -360,39 +320,54 @@ def test_deepcopy_is_concrete():
 
 ### from_gmod
 def test_from_gmod_is_concrete():
-    assert_classmethod_isconcrete(DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix, "from_gmod")
+    assert_classmethod_isconcrete(DenseTwoWayDHAdditiveUsefulnessCriterionMatrix, "from_gmod")
 
-def test_from_gmod_scaled(algmod, gmat, gebvmat, ntaxa, ntrait):
-    observed = DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix.from_gmod(
+def test_from_gmod(algmod, pgmat, gebvmat, ntaxa, ntrait):
+    observed = DenseTwoWayDHAdditiveUsefulnessCriterionMatrix.from_gmod(
         gmod = algmod,
-        gmat = gmat,
+        pgmat = pgmat,
+        nmating = 1,
+        nprogeny = 80,
+        nself = 0,
+        gmapfn = HaldaneMapFunction(),
+        upper_percentile = 0.05,
     )
-    assert isinstance(observed, DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix)
+    assert isinstance(observed, DenseTwoWayDHAdditiveUsefulnessCriterionMatrix)
     assert observed.mat_shape == (ntaxa,ntaxa,ntrait)
     # allocate expected matrix
-    expected_mat = numpy.empty((ntaxa,ntaxa,ntrait), dtype = float)
-    gebv = gebvmat.mat
-    for i in range(ntaxa):
-        for j in range(ntaxa):
-            for k in range(ntrait):
-                expected_mat[i,j,k] = 0.5 * (gebv[i,k] + gebv[j,k])
-    assert numpy.allclose(observed.mat, expected_mat)
-
-def test_from_gmod_unscaled(algmod, gmat, gebvmat, ntaxa, ntrait):
-    observed = DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix.from_gmod(
-        gmod = algmod,
-        gmat = gmat,
-    )
-    assert isinstance(observed, DenseTwoWayParentalMeanGenomicEstimatedBreedingValueMatrix)
-    assert observed.mat_shape == (ntaxa,ntaxa,ntrait)
-    # allocate expected matrix
-    expected_mat = numpy.empty((ntaxa,ntaxa,ntrait), dtype = float)
+    mean_mat = numpy.empty((ntaxa,ntaxa,ntrait), dtype = float)
     gebv = gebvmat.unscale()
     for i in range(ntaxa):
         for j in range(ntaxa):
             for k in range(ntrait):
-                expected_mat[i,j,k] = 0.5 * (gebv[i,k] + gebv[j,k])
-    assert numpy.allclose(observed.unscale(True), expected_mat)
+                mean_mat[i,j,k] = 0.5 * (gebv[i,k] + gebv[j,k])
+    assert numpy.all(observed.mat >= mean_mat)
+
+### from_algmod
+def test_from_algmod_is_concrete():
+    assert_classmethod_isconcrete(DenseTwoWayDHAdditiveUsefulnessCriterionMatrix, "from_algmod")
+
+def test_from_algmod(algmod, pgmat, gebvmat, ntaxa, ntrait):
+    observed = DenseTwoWayDHAdditiveUsefulnessCriterionMatrix.from_algmod(
+        algmod = algmod,
+        pgmat = pgmat,
+        nmating = 1,
+        nprogeny = 80,
+        nself = 0,
+        gmapfn = HaldaneMapFunction(),
+        upper_percentile = 0.05,
+        mem = 1028,
+    )
+    assert isinstance(observed, DenseTwoWayDHAdditiveUsefulnessCriterionMatrix)
+    assert observed.mat_shape == (ntaxa,ntaxa,ntrait)
+    # allocate expected matrix
+    mean_mat = numpy.empty((ntaxa,ntaxa,ntrait), dtype = float)
+    gebv = gebvmat.unscale()
+    for i in range(ntaxa):
+        for j in range(ntaxa):
+            for k in range(ntrait):
+                mean_mat[i,j,k] = 0.5 * (gebv[i,k] + gebv[j,k])
+    assert numpy.all(observed.mat >= mean_mat)
 
 ################################################################################
 ######################### Test abstract staticmethods ##########################
@@ -406,12 +381,12 @@ def test_from_gmod_unscaled(algmod, gmat, gebvmat, ntaxa, ntrait):
 ######################### Test class utility functions #########################
 ################################################################################
 
-### check_is_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix
-def test_check_is_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix_is_concrete():
-    assert_function_isconcrete(check_is_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix)
+### check_is_DenseTwoWayDHAdditiveUsefulnessCriterionMatrix
+def test_check_is_DenseTwoWayDHAdditiveUsefulnessCriterionMatrix_is_concrete():
+    assert_function_isconcrete(check_is_DenseTwoWayDHAdditiveUsefulnessCriterionMatrix)
 
-def test_check_is_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(pmgebvmat):
+def test_check_is_DenseTwoWayDHAdditiveUsefulnessCriterionMatrix(ucmat):
     with not_raises(TypeError):
-        check_is_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(pmgebvmat, "pmgebvmat")
+        check_is_DenseTwoWayDHAdditiveUsefulnessCriterionMatrix(ucmat, "ucmat")
     with pytest.raises(TypeError):
-        check_is_DenseTwoWayProgenyMeanGenomicEstimatedBreedingValueMatrix(None, "pmgebvmat")
+        check_is_DenseTwoWayDHAdditiveUsefulnessCriterionMatrix(None, "ucmat")
