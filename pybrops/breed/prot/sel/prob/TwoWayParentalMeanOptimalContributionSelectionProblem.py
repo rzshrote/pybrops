@@ -3,8 +3,8 @@ Module defining optimization problems for parental mean optimal contribution sel
 """
 
 __all__ = [
-    "TwoWayParentalMeanOptimalContributionMateSelectionProblemMixin",
-    "TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem",
+    "TwoWayParentalMeanOptimalContributionSelectionProblemMixin",
+    "TwoWayParentalMeanOptimalContributionSubsetSelectionProblem",
 ]
 
 from abc import ABCMeta, abstractmethod
@@ -23,7 +23,7 @@ from pybrops.popgen.cmat.fcty.CoancestryMatrixFactory import CoancestryMatrixFac
 from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 
 
-class TwoWayParentalMeanOptimalContributionMateSelectionProblemMixin(
+class TwoWayParentalMeanOptimalContributionSelectionProblemMixin(
         metaclass = ABCMeta,
     ):
     """Helper class containing common properties for Parental Mean Optimal Contribution Selection Problems."""
@@ -231,11 +231,11 @@ class TwoWayParentalMeanOptimalContributionMateSelectionProblemMixin(
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "TwoWayParentalMeanOptimalContributionMateSelectionProblemMixin":
+        ) -> "TwoWayParentalMeanOptimalContributionSelectionProblemMixin":
         raise NotImplementedError("class method is abstract")
 
-class TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem(
-        TwoWayParentalMeanOptimalContributionMateSelectionProblemMixin,
+class TwoWayParentalMeanOptimalContributionSubsetSelectionProblem(
+        TwoWayParentalMeanOptimalContributionSelectionProblemMixin,
         SubsetMateSelectionProblem,
     ):
     """
@@ -342,7 +342,7 @@ class TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem(
         kwargs : dict
             Additional keyword arguments passed to the parent class (SubsetMateSelectionProblem) constructor.
         """
-        super(TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem, self).__init__(
+        super(TwoWayParentalMeanOptimalContributionSubsetSelectionProblem, self).__init__(
             ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
@@ -477,7 +477,7 @@ class TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem(
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem":
+        ) -> "TwoWayParentalMeanOptimalContributionSubsetSelectionProblem":
         # calculate estimated breeding values and relationships
         pmebv = cls._calc_pmebv(bvmat, xmap, unscale)
         C = cls._calc_C(gmat, cmatfcty)
@@ -535,7 +535,7 @@ class TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem(
             eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
-        ) -> "TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem":
+        ) -> "TwoWayParentalMeanOptimalContributionSubsetSelectionProblem":
         # calculate estimated breeding values and relationships
         ntaxa = bvmat.ntaxa
         xmap = cls._calc_xmap(ntaxa, symab, mateab)
