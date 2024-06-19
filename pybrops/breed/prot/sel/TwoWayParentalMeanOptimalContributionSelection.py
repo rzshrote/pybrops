@@ -11,7 +11,7 @@ from numpy.random import Generator, RandomState
 import pandas
 from pybrops.breed.prot.sel.SubsetMateSelectionProtocol import SubsetMateSelectionProtocol
 from pybrops.breed.prot.sel.prob.SubsetMateSelectionProblem import SubsetMateSelectionProblem
-from pybrops.breed.prot.sel.prob.TwoWayParentalMeanOptimalContributionMateSelectionProblem import TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem
+from pybrops.breed.prot.sel.prob.TwoWayParentalMeanOptimalContributionSelectionProblem import TwoWayParentalMeanOptimalContributionSubsetSelectionProblem
 from pybrops.core.error.error_type_python import check_is_Integral, check_is_bool
 from pybrops.core.error.error_value_python import check_is_gt
 from pybrops.model.gmod.GenomicModel import GenomicModel
@@ -469,13 +469,13 @@ class TwoWayParentalMeanOptimalContributionValueSubsetSelection(
         ntaxa = gmat.ntaxa
 
         # get the cross map (inefficient)
-        xmap = TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem._calc_xmap(
+        xmap = TwoWayParentalMeanOptimalContributionSubsetSelectionProblem._calc_xmap(
             ntaxa = ntaxa,
             symab = self.symab,
             mateab = self.mateab,
         )
 
-        xcontrib = TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem._calc_xcontrib(
+        xcontrib = TwoWayParentalMeanOptimalContributionSubsetSelectionProblem._calc_xcontrib(
             ntaxa = ntaxa,
             symab = self.symab,
             mateab = self.mateab,
@@ -487,7 +487,7 @@ class TwoWayParentalMeanOptimalContributionValueSubsetSelection(
         decn_space_upper = numpy.repeat(len(xmap)-1, self.ncross)
 
         # construct problem
-        prob = TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem.from_bvmat_gmat_xmap_xcontrib(
+        prob = TwoWayParentalMeanOptimalContributionSubsetSelectionProblem.from_bvmat_gmat_xmap_xcontrib(
             bvmat = bvmat,
             gmat = gmat,
             cmatfcty = self.cmatfcty,

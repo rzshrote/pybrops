@@ -1,7 +1,7 @@
 import numpy
 import pytest
 
-from pybrops.breed.prot.sel.prob.TwoWayParentalMeanOptimalContributionMateSelectionProblem import TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem
+from pybrops.breed.prot.sel.prob.TwoWayParentalMeanOptimalContributionSelectionProblem import TwoWayParentalMeanOptimalContributionSubsetSelectionProblem
 from pybrops.core.util.crossix import twowayix, twowayix_len
 from pybrops.model.gmod.DenseAdditiveLinearGenomicModel import DenseAdditiveLinearGenomicModel
 from pybrops.popgen.cmat.fcty.DenseMolecularCoancestryMatrixFactory import DenseMolecularCoancestryMatrixFactory
@@ -196,7 +196,7 @@ def selprob(
         selprob_decn_space_upper,
         ntrait
     ):
-    out = TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem.from_bvmat_gmat(
+    out = TwoWayParentalMeanOptimalContributionSubsetSelectionProblem.from_bvmat_gmat(
         bvmat = gebvmat,
         gmat = gmat,
         cmatfcty = selprob_cmatfcty,
@@ -229,10 +229,10 @@ def selprob(
 
 ### __init__
 def test___init___is_concrete():
-    assert_method_isconcrete(TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem, "__init__")
+    assert_method_isconcrete(TwoWayParentalMeanOptimalContributionSubsetSelectionProblem, "__init__")
 
 def test___init__(selprob):
-    assert isinstance(selprob, TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem)
+    assert isinstance(selprob, TwoWayParentalMeanOptimalContributionSubsetSelectionProblem)
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -252,7 +252,7 @@ def test___init__(selprob):
 
 ### latentfn
 def test_latentfn_is_concrete():
-    assert_method_isconcrete(TwoWayParentalMeanOptimalContributionSubsetMateSelectionProblem, "latentfn")
+    assert_method_isconcrete(TwoWayParentalMeanOptimalContributionSubsetSelectionProblem, "latentfn")
 
 def test_latentfn(selprob,selprob_ndecn,selprob_xmap,ntrait):
     x = numpy.random.choice(len(selprob_xmap), selprob_ndecn)
