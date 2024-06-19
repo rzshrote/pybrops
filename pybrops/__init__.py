@@ -13,7 +13,7 @@ __all__ = [
 ]
 
 # define version
-__version__ = '1.0.2'
+__version__ = '1.0.4'
 
 # order dependent import of submodules
 
