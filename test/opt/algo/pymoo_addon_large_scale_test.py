@@ -1,8 +1,8 @@
 from typing import Iterable
 import numpy
 import pytest
-from pybrops.opt.algo.pymoo_addon_large_scale import TiledReducedExchangeMutation, TiledSubsetPoolIterator
-from pybrops.opt.algo.pymoo_addon_large_scale import TiledSubsetRandomSampling
+from pybrops.opt.algo.pymoo_addon_large_scale import SubsetPoolReducedExchangeMutation, TiledSubsetPoolIterator
+from pybrops.opt.algo.pymoo_addon_large_scale import SubsetPoolRandomSampling
 from pybrops.test.assert_python import assert_class_isconcrete
 from pybrops.test.assert_python import assert_method_isconcrete
 from pybrops.test.assert_python import assert_module_documentation
@@ -58,7 +58,7 @@ def tssample_problem(tssample_n_var):
 
 @pytest.fixture
 def tssample(tspiter):
-    out = TiledSubsetRandomSampling(tspiter)
+    out = SubsetPoolRandomSampling(tspiter)
     yield out
 
 ############################################################
@@ -67,7 +67,7 @@ def tssample(tspiter):
 
 @pytest.fixture
 def tremutation(tspiter):
-    out = TiledReducedExchangeMutation(tspiter)
+    out = SubsetPoolReducedExchangeMutation(tspiter)
     yield out
 
 ################################################################################
@@ -90,7 +90,7 @@ def test_TiledChoicePoolIterator_is_concrete():
     assert_class_isconcrete(TiledSubsetPoolIterator)
 
 def test_TiledSubsetRandomSampling_is_concrete():
-    assert_class_isconcrete(TiledSubsetRandomSampling)
+    assert_class_isconcrete(SubsetPoolRandomSampling)
 
 ################################################################################
 ######################## Test abstract special methods #########################
@@ -138,10 +138,10 @@ def test_TiledChoicePoolIterator___next___is_tiled(tspiter, nelem):
 
 ### __init__
 def test_TiledSubsetRandomSampling___init___is_concrete():
-    assert_method_isconcrete(TiledSubsetRandomSampling, "__init__")
+    assert_method_isconcrete(SubsetPoolRandomSampling, "__init__")
 
 def test_TiledSubsetRandomSampling___init__(tssample):
-    assert isinstance(tssample, TiledSubsetRandomSampling)
+    assert isinstance(tssample, SubsetPoolRandomSampling)
 
 ######
 ###### TiledReducedExchangeMutation
@@ -149,10 +149,10 @@ def test_TiledSubsetRandomSampling___init__(tssample):
 
 ### __init__
 def test_TiledReducedExchangeMutation___init___is_concrete():
-    assert_method_isconcrete(TiledReducedExchangeMutation, "__init__")
+    assert_method_isconcrete(SubsetPoolReducedExchangeMutation, "__init__")
 
 def test_TiledReducedExchangeMutation___init__(tremutation):
-    assert isinstance(tremutation, TiledReducedExchangeMutation)
+    assert isinstance(tremutation, SubsetPoolReducedExchangeMutation)
 
 ################################################################################
 ########################### Test abstract properties ###########################
@@ -179,7 +179,7 @@ def test_TiledChoicePoolIterator_setspace(tspiter, setspace):
 
 ### tspiter
 def test_TiledSubsetRandomSampling_tspiter_is_concrete():
-    assert_property_isconcrete(TiledSubsetRandomSampling, "tspiter")
+    assert_property_isconcrete(SubsetPoolRandomSampling, "tspiter")
 
 ######
 ###### TiledReducedExchangeMutation
@@ -187,7 +187,7 @@ def test_TiledSubsetRandomSampling_tspiter_is_concrete():
 
 ### tspiter
 def test_TiledReducedExchangeMutation_tspiter_is_concrete():
-    assert_property_isconcrete(TiledReducedExchangeMutation, "tspiter")
+    assert_property_isconcrete(SubsetPoolReducedExchangeMutation, "tspiter")
 
 ################################################################################
 ############################# Test abstract methods ############################
@@ -229,7 +229,7 @@ def test_TiledSubsetPoolIterator_getnext(tspiter):
 
 ### _do
 def test_TiledSubsetRandomSampling__do_is_concrete():
-    assert_method_isconcrete(TiledSubsetRandomSampling, "_do")
+    assert_method_isconcrete(SubsetPoolRandomSampling, "_do")
 
 def test_TiledSubsetRandomSampling__do(tssample, tssample_problem, tssample_n_samples, tssample_n_var):
     out = tssample._do(tssample_problem, tssample_n_samples)
@@ -241,7 +241,7 @@ def test_TiledSubsetRandomSampling__do(tssample, tssample_problem, tssample_n_sa
 
 ### _do
 def test_TiledReducedExchangeMutation__do_is_concrete():
-    assert_method_isconcrete(TiledReducedExchangeMutation, "_do")
+    assert_method_isconcrete(SubsetPoolReducedExchangeMutation, "_do")
 
 def test_TiledReducedExchangeMutation__do(
         tssample, 
