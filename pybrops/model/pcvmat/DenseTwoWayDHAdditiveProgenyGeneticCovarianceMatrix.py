@@ -4,6 +4,11 @@ storing dense additive genetic covariance estimates calculated using two-way DH
 formulae.
 """
 
+__all__ = [
+    "DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix",
+    "check_is_DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix",
+]
+
 import math
 from numbers import Integral
 from numbers import Real
@@ -57,7 +62,7 @@ class DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix(
             taxa_grp: Optional[numpy.ndarray] = None, 
             trait: Optional[numpy.ndarray] = None, 
             **kwargs: dict
-        ):
+        ) -> None:
         """
         Constructor for the concrete class DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.
 
@@ -69,6 +74,8 @@ class DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix(
             Taxa names.
         taxa_grp : numpy.ndarray
             Taxa groupings.
+        trait : numpy.ndarray
+            Trait names.
         kwargs : dict
             Additional keyword arguments.
         """
@@ -663,7 +670,7 @@ class DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix(
             cls, 
             gmod: GenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: Integral, 
+            nmating: Integral, 
             nprogeny: Integral, 
             nself: Union[Integral,Real],
             gmapfn: GeneticMapFunction,
@@ -679,7 +686,7 @@ class DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix(
             Genomic Model with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
-        ncross : Integral
+        nmating : Integral
             Number of cross patterns to simulate for genetic covariance
             estimation.
         nprogeny : Integral
@@ -716,7 +723,7 @@ class DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix(
         # type checks
         check_is_GenomicModel(gmod, "gmod")
         check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nmating, "nmating")
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral_or_inf(nself, "nself")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
@@ -726,7 +733,7 @@ class DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix(
             return cls.from_algmod(
                 algmod = gmod, 
                 pgmat = pgmat, 
-                ncross = ncross, 
+                nmating = nmating, 
                 nprogeny = nprogeny, 
                 nself = nself, 
                 gmapfn = gmapfn, 
@@ -741,7 +748,7 @@ class DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix(
             cls, 
             algmod: AdditiveLinearGenomicModel, 
             pgmat: PhasedGenotypeMatrix, 
-            ncross: Integral, 
+            nmating: Integral, 
             nprogeny: Integral, 
             nself: Union[Integral,Real], 
             gmapfn: GeneticMapFunction, 
@@ -758,7 +765,7 @@ class DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix(
             AdditiveLinearGenomicModel with which to estimate genetic variances.
         pgmat : PhasedGenotypeMatrix
             Input genomes to use to estimate genetic variances.
-        ncross : Integral
+        nmating : Integral
             Number of cross patterns to simulate for genetic covariance
             estimation.
         nprogeny : Integral
@@ -801,7 +808,7 @@ class DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix(
         # type checks
         check_is_AdditiveLinearGenomicModel(algmod, "algmod")
         check_is_PhasedGenotypeMatrix(pgmat, "pgmat")
-        check_is_Integral(ncross, "ncross")
+        check_is_Integral(nmating, "nmating")
         check_is_Integral(nprogeny, "nprogeny")
         check_is_Integral_or_inf(nself, "nself")
         check_is_GeneticMapFunction(gmapfn, "gmapfn")
@@ -892,3 +899,24 @@ class DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix(
         )
 
         return out
+
+
+
+def check_is_DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix(v: object, vname: str) -> None:
+    """
+    Check if an object is of type ``DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix``. Otherwise raise ``TypeError``.
+
+    Parameters
+    ----------
+    v : object
+        Any Python object to test.
+    vname : str
+        Name of variable to print in ``TypeError`` message.
+    """
+    if not isinstance(v, DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix):
+        raise TypeError("variable ``{0}`` must be of type ``{1}`` but received type ``{2}``".format(
+                vname,
+                DenseTwoWayDHAdditiveProgenyGeneticCovarianceMatrix.__name__,
+                type(v).__name__
+            )
+        )
