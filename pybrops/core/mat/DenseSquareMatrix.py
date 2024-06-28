@@ -185,7 +185,7 @@ class DenseSquareMatrix(
         "float32": numpy.float32(numpy.nan),                # NaN
         "float64": numpy.float64(numpy.nan),                # NaN
         "float128": numpy.float128(numpy.nan),              # NaN
-        "float": numpy.float_(numpy.nan),                   # NaN
+        "float": numpy.float64(numpy.nan),                   # NaN
 
         # actual dtypes
         numpy.dtype("int8"): numpy.int8(numpy.iinfo("int8").min),       # -128
@@ -206,7 +206,7 @@ class DenseSquareMatrix(
         numpy.dtype("float32"): numpy.float32(numpy.nan),               # NaN
         numpy.dtype("float64"): numpy.float64(numpy.nan),               # NaN
         numpy.dtype("float128"): numpy.float128(numpy.nan),             # NaN
-        numpy.dtype("float"): numpy.float_(numpy.nan),                  # NaN
+        numpy.dtype("float"): numpy.float64(numpy.nan),                  # NaN
     }
 
     ############################## Object Methods ##############################
