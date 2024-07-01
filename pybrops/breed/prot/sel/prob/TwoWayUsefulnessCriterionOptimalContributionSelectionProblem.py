@@ -223,33 +223,6 @@ class TwoWayUsefulnessCriterionOptimalContributionSelectionProblemMixin(
         return out
 
     ############################## Class Methods ###############################
-    @classmethod
-    @abstractmethod
-    def from_bvmat_gmat(
-            cls,
-            bvmat: BreedingValueMatrix,
-            gmat: GenotypeMatrix, 
-            cmatfcty: CoancestryMatrixFactory,
-            unscale: bool,
-            ndecn: Integral,
-            decn_space: Union[numpy.ndarray,None],
-            decn_space_lower: Union[numpy.ndarray,Real,None],
-            decn_space_upper: Union[numpy.ndarray,Real,None],
-            nobj: Integral,
-            obj_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            obj_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            obj_trans_kwargs: Optional[dict] = None,
-            nineqcv: Optional[Integral] = None,
-            ineqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            ineqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            ineqcv_trans_kwargs: Optional[dict] = None,
-            neqcv: Optional[Integral] = None,
-            eqcv_wt: Optional[Union[numpy.ndarray,Real]] = None,
-            eqcv_trans: Optional[Callable[[numpy.ndarray,numpy.ndarray,dict],numpy.ndarray]] = None,
-            eqcv_trans_kwargs: Optional[dict] = None,
-            **kwargs: dict
-        ) -> "TwoWayUsefulnessCriterionOptimalContributionSelectionProblemMixin":
-        raise NotImplementedError("class method is abstract")
 
 class TwoWayUsefulnessCriterionOptimalContributionSubsetSelectionProblem(
         TwoWayUsefulnessCriterionOptimalContributionSelectionProblemMixin,
@@ -499,6 +472,11 @@ class TwoWayUsefulnessCriterionOptimalContributionSubsetSelectionProblem(
             eqcv_trans_kwargs: Optional[dict] = None,
             **kwargs: dict
         ) -> "TwoWayUsefulnessCriterionOptimalContributionSubsetSelectionProblem":
+        if isinstance(nmating, numpy.ndarray):
+            nmating = int(numpy.median(nmating))
+        if isinstance(nprogeny, numpy.ndarray):
+            nprogeny = int(numpy.median(nprogeny))
+        
         # calculate usefulness criterion values and relationships
         uc = cls._calc_uc(
             algmod = algmod,
@@ -508,7 +486,8 @@ class TwoWayUsefulnessCriterionOptimalContributionSubsetSelectionProblem(
             nself = nself,
             gmapfn = gmapfn,
             upper_percentile = upper_percentile,
-            mem = mem
+            mem = mem,
+            xmap = xmap,
         )
         C = cls._calc_C(pgmat, cmatfcty)
 

@@ -23,7 +23,7 @@ from pybrops.popgen.gmat.GenotypeMatrix import GenotypeMatrix
 from pybrops.popgen.gmat.PhasedGenotypeMatrix import PhasedGenotypeMatrix
 
 
-class TwoWayUsefulnessCriterionOptimalContributionValueSelectionMixin(
+class TwoWayUsefulnessCriterionOptimalContributionSelectionMixin(
         metaclass = ABCMeta,
     ):
     """
@@ -100,8 +100,8 @@ class TwoWayUsefulnessCriterionOptimalContributionValueSelectionMixin(
         """Set mateab."""
         self._mateab = value
 
-class TwoWayUsefulnessCriterionOptimalContributionValueSubsetSelection(
-        TwoWayUsefulnessCriterionOptimalContributionValueSelectionMixin,
+class TwoWayUsefulnessCriterionOptimalContributionSubsetSelection(
+        TwoWayUsefulnessCriterionOptimalContributionSelectionMixin,
         SubsetMateSelectionProtocol,
     ):
     """
@@ -418,7 +418,7 @@ class TwoWayUsefulnessCriterionOptimalContributionValueSubsetSelection(
         self.symab = symab
         self.mateab = mateab
         # make assignments from SubsetSelectionProtocol second
-        super(TwoWayUsefulnessCriterionOptimalContributionValueSubsetSelection, self).__init__(
+        super(TwoWayUsefulnessCriterionOptimalContributionSubsetSelection, self).__init__(
             ncross = ncross,
             nparent = nparent,
             nmating = nmating,
