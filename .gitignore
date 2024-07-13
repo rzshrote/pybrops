@@ -91,6 +91,7 @@ venv.bak/
 *.tsv
 *.csv
 *.png
+*.tiff
 *.gif
 *.7z
 *.mp4

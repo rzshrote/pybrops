@@ -148,6 +148,7 @@ ax.set_ylabel("Quantitative Trait 1\nMean Breeding Value")
 ax.set_zlabel("Quantitative Trait 2\nMean Breeding Value")
 ax.view_init(elev = 30., azim = 32)
 pyplot.savefig(basename + ".png", dpi = 250)
+pyplot.savefig(basename + "_600dpi.tiff", dpi = 600)
 pyplot.close(fig)
 
 #

@@ -251,6 +251,7 @@ ax.set_ylabel("Location 1 Yield Mean GEBV")
 ax.set_zlabel("Location 2 Yield Mean GEBV")
 ax.view_init(elev = 30., azim = 120)
 pyplot.savefig(basename + ".png", dpi = 250)
+pyplot.savefig(basename + "_600dpi.tiff", dpi = 600)
 pyplot.close(fig)
 
 #
