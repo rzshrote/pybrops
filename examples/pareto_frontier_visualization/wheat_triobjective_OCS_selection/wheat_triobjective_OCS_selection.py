@@ -228,7 +228,7 @@ rcParams['font.size'] = 10
 basename = "wheat_triobjective_OCS_pareto_frontier"
 
 # get axis data
-x =  selsoln.soln_obj[:,0] # 2 * mean kinship (additive relationship/inbreeding)
+x =  selsoln.soln_obj[:,0] # mean kinship (additive relationship/inbreeding)
 y = -selsoln.soln_obj[:,1] # negate to get Breeding Value
 z = -selsoln.soln_obj[:,2] # negate to get Breeding Value
 z2 = numpy.ones(shape = x.shape) * min(z)
@@ -236,13 +236,15 @@ colors = ["blue"] * len(x)
 colors[selix] = "red"
 lcolors = ["cornflowerblue"] * len(x)
 lcolors[selix] = "lightcoral"
+markers = ["o"] * len(x)
+markers[selix] = 'x'
 
 # create static figure
 fig = pyplot.figure(figsize=(5,5))
 ax = pyplot.axes(projection = "3d")
-for i,j,k,h,c,l in zip(x,y,z,z2,colors,lcolors):
+for i,j,k,h,c,l,m in zip(x,y,z,z2,colors,lcolors,markers):
     a = 0.5 * (i - min(x)) / (max(x) - min(x)) + 0.5
-    ax.scatter(i, j, k, color = c)
+    ax.scatter(i, j, k, color = c, marker = m)
     ax.plot([i,i],[j,j],[k,h], color=l, alpha = a)
 
 ax.set_title("Bi-Trait Optimal Contribution\nSelection Pareto Frontier in Wheat")
