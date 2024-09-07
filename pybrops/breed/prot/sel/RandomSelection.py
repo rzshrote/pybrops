@@ -1645,17 +1645,22 @@ class RandomSubsetSelection(
         out : SubsetSelectionProblem
             An optimization problem definition.
         """
+        # get number of individuals
+        ntaxa = gmat.ntaxa
+
+        # get number of selected individuals as number of decision variables
+        ndecn = self.nselindiv
+
         # get decision space parameters
-        ntaxa = pgmat.ntaxa
         decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, self.nparent)
-        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+        decn_space_lower = numpy.repeat(0, ndecn)
+        decn_space_upper = numpy.repeat(ntaxa-1, ndecn)
 
         # construct problem
         prob = RandomSubsetSelectionProblem.from_object(
             ntaxa = ntaxa,
             ntrait = self.ntrait,
-            ndecn = self.nparent,
+            ndecn = ndecn,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
