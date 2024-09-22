@@ -471,8 +471,8 @@ class GenotypeBuilderSubsetSelection(
 
         # get decision space parameters
         decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, self.nparent)
-        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+        decn_space_lower = numpy.repeat(0, self.nselindiv)
+        decn_space_upper = numpy.repeat(ntaxa-1, self.nselindiv)
 
         # construct problem
         prob = GenotypeBuilderSubsetSelectionProblem.from_pgmat_gpmod(
@@ -480,7 +480,7 @@ class GenotypeBuilderSubsetSelection(
             gpmod = gpmod,
             nhaploblk = self.nhaploblk,
             nbestfndr = self.nbestfndr,
-            ndecn = self.nparent,
+            ndecn = self.nselindiv,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,

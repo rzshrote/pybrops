@@ -443,15 +443,15 @@ class OptimalPopulationValueSubsetSelection(
         # get decision space parameters
         ntaxa = pgmat.ntaxa
         decn_space = numpy.arange(ntaxa)
-        decn_space_lower = numpy.repeat(0, self.nparent)
-        decn_space_upper = numpy.repeat(ntaxa-1, self.nparent)
+        decn_space_lower = numpy.repeat(0, self.nselindiv)
+        decn_space_upper = numpy.repeat(ntaxa-1, self.nselindiv)
 
         # construct problem
         prob = OptimalPopulationValueSubsetSelectionProblem.from_pgmat_gpmod(
             nhaploblk = self.nhaploblk,
             pgmat = pgmat,
             gpmod = gpmod,
-            ndecn = self.nparent,
+            ndecn = self.nselindiv,
             decn_space = decn_space,
             decn_space_lower = decn_space_lower,
             decn_space_upper = decn_space_upper,
