@@ -43,7 +43,7 @@ pybrops.core.random.prng.seed(82651560)
 
 nfndr = 40      # number of founder individuals
 nqtl = 1000     # number of QTL
-qlen = 6        # length of the queue
+qlen = 5        # length of the queue
 ncross = 20     # number of cross configurations
 nparent = 2     # number of parents per cross configuration
 nmating = 1     # number of times to perform cross configuration
@@ -893,7 +893,7 @@ pyplot.close(fig)
 fig = pyplot.figure()
 ax = pyplot.axes()
 ax.plot(const_lbook_df  ["gen"], const_lbook_df  ["main_meh"], '-b', label = "Const.: Pop. MEH")
-ax.plot(unconst_lbook_df["gen"], unconst_lbook_df["main_meh"], '-r', label = "Const.: Pop. MEH")
+ax.plot(unconst_lbook_df["gen"], unconst_lbook_df["main_meh"], '-r', label = "Unconst.: Pop. MEH")
 ax.set_title("Constrained vs. Unconstrained Bi-Trait Recurrent Phenotypic Selection")
 ax.set_xlabel("Generation")
 ax.set_ylabel("Mean Expected Heterozygosity")
